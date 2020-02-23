@@ -1,0 +1,25 @@
+{
+    "variants": {
+        "normal": [
+            {
+                "model": "sevendaystomine:wooden_spikes_broken",
+                "weight": 1
+            },
+            {
+                "model": "sevendaystomine:wooden_spikes_broken",
+                "y": 90,
+                "weight": 1
+            },
+            {
+                "model": "sevendaystomine:wooden_spikes_broken",
+                "y": 180,
+                "weight": 1
+            },
+            {
+                "model": "sevendaystomine:wooden_spikes_broken",
+                "y": 270,
+                "weight": 1
+            }
+        ]
+    }
+}

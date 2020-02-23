@@ -1,0 +1,86 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"0": "sevendaystomine:blocks/flag_sheet",
+		"particle": "sevendaystomine:blocks/flag_sheet"
+	},
+	"elements": [
+		{
+			"name": "PoleBase",
+			"from": [5.02616, 0.98081, 14.99299],
+			"to": [9.02616, 4.98081, 16.99299],
+			"faces": {
+				"north": {"uv": [0.032, 0.032, 3.968, 3.968], "texture": "#0"},
+				"east": {"uv": [0.032, 0.032, 1.968, 3.968], "texture": "#0"},
+				"south": {"uv": [0.032, 0.032, 3.968, 3.968], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [0.032, 0.032, 1.968, 3.968], "texture": "#0"},
+				"up": {"uv": [0.032, 0.032, 3.968, 1.968], "texture": "#0"},
+				"down": {"uv": [0.032, 0.032, 3.968, 1.968], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Pole",
+			"from": [6.00369, 1.73208, 11.8752],
+			"to": [8.00369, 21.73208, 13.8752],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [7.00369, 10.73208, 12.8752]},
+			"faces": {
+				"north": {"uv": [0.032, 0.032, 15.968, 1.968], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [0.032, 2.032, 15.968, 3.968], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0.032, 5.032, 15.968, 6.968], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [0.032, 1.032, 15.968, 2.968], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [0.032, 0.032, 1.968, 1.968], "rotation": 180, "texture": "#0", "cullface": "up"},
+				"down": {"uv": [0.032, 0.032, 1.968, 1.968], "texture": "#0", "cullface": "south"}
+			}
+		},
+		{
+			"name": "FlagCloth",
+			"from": [6.99075, 5.50147, -4.29222],
+			"to": [6.99075, 15.50147, 14.70778],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [0.04075, 4.50147, -0.79222]},
+			"faces": {
+				"east": {"uv": [0.032, 7.579, 15.968, 15.968], "texture": "#0"},
+				"west": {"uv": [15.968, 7.579, 0.032, 15.968], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [40.75, 0, 0],
+			"translation": [1, 6.25, -3]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [40.75, 0, 0],
+			"translation": [-1, 6.25, -3]
+		},
+		"firstperson_righthand": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"translation": [0, -1.75, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"head": {
+			"rotation": [0, 90, 0],
+			"translation": [-14.5, 3.5, 0.75]
+		},
+		"fixed": {
+			"translation": [0, 0, -8.25]
+		}
+	},
+	"groups": [
+		{
+			"name": "Flag",
+			"origin": [0, 0, 0],
+			"children": [0, 1, 2]
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:beaker" },
+        "facing=south": { "model": "sevendaystomine:beaker", "y": 180 },
+        "facing=west":  { "model": "sevendaystomine:beaker", "y": 270 },
+        "facing=east":  { "model": "sevendaystomine:beaker", "y": 90 }
+    }
+}

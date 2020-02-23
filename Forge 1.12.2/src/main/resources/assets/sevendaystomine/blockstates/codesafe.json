@@ -1,0 +1,14 @@
+{
+    "variants": {
+        "facing=up,locked=true": { "model": "sevendaystomine:code_safe_locked","y":180 },
+		"facing=south,locked=true": { "model": "sevendaystomine:code_safe_locked","y":180 },
+		"facing=east,locked=true": { "model": "sevendaystomine:code_safe_locked","y":90 },
+		"facing=west,locked=true": { "model": "sevendaystomine:code_safe_locked","y":270 },
+		"facing=north,locked=true": { "model": "sevendaystomine:code_safe_locked","y":0 },
+		"facing=up,locked=false": { "model": "sevendaystomine:code_safe_unlocked","y":180 },
+		"facing=south,locked=false": { "model": "sevendaystomine:code_safe_unlocked","y":180 },
+		"facing=east,locked=false": { "model": "sevendaystomine:code_safe_unlocked","y":90 },
+		"facing=west,locked=false": { "model": "sevendaystomine:code_safe_unlocked","y":270 },
+		"facing=north,locked=false": { "model": "sevendaystomine:code_safe_unlocked","y":0 }
+    }
+}

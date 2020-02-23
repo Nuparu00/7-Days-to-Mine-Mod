@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=up": { "model": "sevendaystomine:trafficlight" },
+        "facing=north": { "model": "sevendaystomine:trafficlight" },
+        "facing=west": { "model": "sevendaystomine:trafficlight", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:trafficlight", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:trafficlight", "y": 180 }
+    }
+}

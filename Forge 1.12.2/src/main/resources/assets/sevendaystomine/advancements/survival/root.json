@@ -1,0 +1,21 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:bone"
+        },
+        "title": {
+            "translate": "advancements.survival.root.title"
+        },
+        "description": {
+            "translate": "advancements.survival.root.description"
+        },
+        "background": "sevendaystomine:textures/gui/advancements/backgrounds/dry_dirt.png",
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "criteria": {
+         "auto": {
+            "trigger": "minecraft:location"
+        }
+    }
+}

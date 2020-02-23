@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "sevendaystomine:blocks/cardboard_side",
+        "down": "sevendaystomine:blocks/cardboard_side",
+        "up": "sevendaystomine:blocks/cardboard_top",
+        "north": "sevendaystomine:blocks/cardboard_side",
+        "east": "sevendaystomine:blocks/cardboard_side",
+        "south": "sevendaystomine:blocks/cardboard_side",
+        "west": "sevendaystomine:blocks/cardboard_side"
+    }
+}

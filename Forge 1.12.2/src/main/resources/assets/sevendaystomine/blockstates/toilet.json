@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=up": { "model": "sevendaystomine:toilet" },
+        "facing=south": { "model": "sevendaystomine:toilet" },
+        "facing=east": { "model": "sevendaystomine:toilet", "y": 270 },
+        "facing=west": { "model": "sevendaystomine:toilet", "y": 90 },
+        "facing=north": { "model": "sevendaystomine:toilet", "y": 180 }
+    }
+}

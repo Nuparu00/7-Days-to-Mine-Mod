@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:cardboardbox" },
+        "facing=south": { "model": "sevendaystomine:cardboardbox", "y": 180 },
+        "facing=west":  { "model": "sevendaystomine:cardboardbox", "y": 270 },
+        "facing=east":  { "model": "sevendaystomine:cardboardbox", "y": 90 }
+    }
+}

@@ -1,0 +1,23 @@
+{
+	"parent": "block/block",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "sevendaystomine:blocks/blueberry_grown",
+		"1": "sevendaystomine:blocks/berry_ungrown",
+		"particle": "sevendaystomine:blocks/blueberry_grown"
+	},
+	"elements": [
+		{
+			"from": [0.5, 0, 0.5],
+			"to": [15.5, 15, 15.5],
+			"faces": {
+				"north": {"uv": [0, 0, 15, 15], "texture": "#0"},
+				"east": {"uv": [0, 0, 15, 15], "texture": "#0"},
+				"south": {"uv": [0, 0, 15, 15], "texture": "#0"},
+				"west": {"uv": [0, 0, 15, 15], "texture": "#0"},
+				"up": {"uv": [0, 0, 15, 15], "texture": "#0"},
+				"down": {"uv": [0, 0, 15, 15], "texture": "#1"}
+			}
+		}
+	]
+}

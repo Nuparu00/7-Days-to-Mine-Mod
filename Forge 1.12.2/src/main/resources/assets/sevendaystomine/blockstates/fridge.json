@@ -1,0 +1,36 @@
+{
+   "variants":{
+      "facing=east,half=lower":{
+         "model":"sevendaystomine:fridge_bottom",
+		  "y":270
+      },
+      "facing=south,half=lower":{
+         "model":"sevendaystomine:fridge_bottom",
+         "y":0
+      },
+      "facing=west,half=lower":{
+         "model":"sevendaystomine:fridge_bottom",
+         "y":90
+      },
+      "facing=north,half=lower":{
+         "model":"sevendaystomine:fridge_bottom",
+         "y":180
+      },
+      "facing=east,half=upper":{
+         "model":"sevendaystomine:fridge_top",
+		  "y":270
+      },
+      "facing=south,half=upper":{
+         "model":"sevendaystomine:fridge_top",
+         "y":0
+      },
+      "facing=west,half=upper":{
+         "model":"sevendaystomine:fridge_top",
+         "y":90
+      },
+      "facing=north,half=upper":{
+         "model":"sevendaystomine:fridge_top",
+         "y":180
+      }
+   }
+}

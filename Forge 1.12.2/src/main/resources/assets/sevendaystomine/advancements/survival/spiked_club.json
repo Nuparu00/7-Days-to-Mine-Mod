@@ -1,0 +1,34 @@
+{
+   "display":{
+      "icon":{
+         "item":"sevendaystomine:spikedclub"
+      },
+      "title":{
+         "translate":"advancements.spikedclub.title"
+      },
+      "description":{
+         "translate":"advancements.spikedclub.description"
+      }
+   },
+   "rewards":{
+      "experience": 1
+   },
+   "parent": "sevendaystomine:survival/wooden_club",
+   "criteria":{
+      "has_club":{
+         "trigger":"minecraft:inventory_changed",
+         "conditions":{
+            "items":[
+               {
+                  "item":"sevendaystomine:spikedclub"
+               }
+            ]
+         }
+      }
+   },
+   "requirements":[
+      [
+         "has_club"
+      ]
+   ]
+}

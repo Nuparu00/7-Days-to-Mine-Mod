@@ -1,0 +1,72 @@
+package com.nuparu.sevendaystomine.client.gui;
+
+import org.lwjgl.opengl.GL11;
+
+import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.item.ItemUpgrader;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class GuiUpgradeOverlay extends Gui {
+    
+	public static final ResourceLocation UPGRADE_TEX = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/upgrade.png");
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void eventHandler(RenderGameOverlayEvent event) {
+		if (!event.isCancelable() && event.getType() == ElementType.EXPERIENCE) {
+			
+			Minecraft mc = Minecraft.getMinecraft();
+			EntityPlayer entity = mc.player;
+			ItemStack stack = entity.inventory.getCurrentItem();
+			if (stack != null && stack.getItem() instanceof ItemUpgrader) {
+				RayTraceResult objectPosition = entity.rayTrace(5, 1);
+				if (objectPosition != null) {
+					BlockPos blockPos = objectPosition.getBlockPos();
+					if (blockPos != null) {
+						if (stack.getTagCompound().getFloat("Percent") != 0) {
+						//IBlockState state = world.getBlockState(blockPos);
+						//if (state.getBlock() instanceof IUpgradeable || VanillaManager.getVanillaUpgrade(state) != null) {
+							
+								
+								ScaledResolution resolution = event.getResolution();
+								int posX = (resolution.getScaledWidth() / 2);
+								int posY = (resolution.getScaledHeight() / 2);
+								float percent = (stack.getTagCompound().getFloat("Percent"));
+								
+								GL11.glPushMatrix();
+								GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+								GL11.glDisable(GL11.GL_LIGHTING);
+								GL11.glEnable(GL11.GL_BLEND);
+								mc.renderEngine.bindTexture(UPGRADE_TEX);
+								drawTexturedModalRect(posX - 50, posY + 2, 0, 42, (int) (percent * 100f), 7);
+								drawTexturedModalRect(posX - 51, posY - 32, 0, 0, 102, 42);
+								drawCenteredString(mc.fontRenderer, (int) (percent * 100f) + "%", posX, posY + 10,
+										0xffffff);
+								GL11.glPopMatrix();
+
+							//}
+						}
+
+					}
+
+				}
+			}
+
+		}
+	}
+}

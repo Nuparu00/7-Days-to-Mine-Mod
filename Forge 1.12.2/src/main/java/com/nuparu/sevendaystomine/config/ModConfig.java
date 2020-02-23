@@ -1,0 +1,31 @@
+package com.nuparu.sevendaystomine.config;
+
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import com.nuparu.sevendaystomine.SevenDaysToMine;
+
+@Config(modid = SevenDaysToMine.MODID)
+@Config.LangKey("sevendaystomine.config.title")
+public class ModConfig {
+
+	public static CategoryPlayer players = new CategoryPlayer();
+
+	public static class CategoryPlayer {
+		@Config.Comment("Cotrols rendering of player's items (weapons, tools).")
+		public boolean renderPlayerInventory = true;
+	}
+
+	@Mod.EventBusSubscriber(modid = SevenDaysToMine.MODID)
+	private static class EventHandler {
+		@SubscribeEvent
+		public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
+			if (event.getModID().equals(SevenDaysToMine.MODID)) {
+				ConfigManager.sync(SevenDaysToMine.MODID, Config.Type.INSTANCE);
+			}
+		}
+	}
+}

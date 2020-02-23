@@ -1,0 +1,6 @@
+{
+	"parent": "sevendaystomine:item/liquidincan",
+	"textures": {
+		"3": "blocks/water_still"
+	}
+}

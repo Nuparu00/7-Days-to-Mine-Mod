@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:chair_jungle" },
+        "facing=west": { "model": "sevendaystomine:chair_jungle", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:chair_jungle", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:chair_jungle", "y": 180 }
+    }
+}

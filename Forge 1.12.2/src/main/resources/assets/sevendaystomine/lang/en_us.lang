@@ -1,0 +1,578 @@
+#Stats
+stat.unfinished.name=Unfinished
+stat.quality.good.name=Good
+stat.quality.none.name=Faulty
+stat.quality.flawless.name=Flawless
+stat.quality.poor.name=Poor
+stat.quality.name=Quality: 
+stat.quality.faulty.name=Faulty
+stat.quality.fine.name=Fine
+stat.quality.great.name=Great
+stat.ammo.name=Ammo: 
+stat.capacity.name=Capacity: 
+
+#Colors
+color.red=Red
+color.green=Green
+color.blue=Blue
+color.white=White
+color.black=Black
+color.purple=Purple
+color.magenta=Magenta
+color.pink=Pink
+color.light_blue=Light Blue
+color.cyan=Cyan
+color.emerald_green=Emerald Green
+color.lime_green=Lime
+color.dark_red=Dark Red
+color.dark_green=Dark Green
+color.dark_blue=Dark Blue
+color.yellow=Yellow
+color.gold=Gold
+color.orange=Orange
+color.gray=Gray
+
+#Damage Sources
+
+death.attack.thirst.player=%1$s has died of thirst while fighting %2$s.
+death.attack.thirst=%1$s has died of thirst.
+
+death.attack.sharpGlass.player=%1$s has cut themself by sharp glass while fighting %2$s.
+death.attack.sharpGlass=%1$s has cut themself by sharp glass.
+
+death.attack.alcoholPoison.player=%1$s has died of alcohol poisoning while fighting %2$s.
+death.attack.alcoholPoison=%1$s has died of alcohol poisoning.
+
+death.attack.bleeding.player=%1$s bled while fighting %2$s.
+death.attack.bleeding=%1$s bled.
+
+death.attack.shot.entity=%1$s was shot by %2$s.
+death.attack.shot.entity.item=%1$s was shot by %2$s using %3$s.
+death.attack.shot.entity.unknown=%1$s was shot.
+
+#Chat Messages
+
+upgrade.missing=You need %1$s to upgrade %2$s.
+repair.missing=You need %1$s to repair %2$s.
+computer.install=Installing %1$s...
+computer.turn.on=Turning on...
+computer.turn.off=Turning off...
+
+#Computer Text
+computer.win10.product_key=It's time to enter the product key
+computer.win10.later=Do this later
+computer.next=Next
+computer.win10.make_it_yours=Make it yours
+computer.win10.make_it_yours_desc=Sign in using your Microsoft account.
+computer.win10.create_account=Create an account for this PC
+computer.win10.create_account_desc=A password is optional but recommended.
+computer.win10.welcome_back=Welcome back!
+computer.win10.login=Login
+computer.app.shell=Shell
+computer.app.shell.desc=A shell interface
+computer.app.notes=Notes
+computer.app.notes.desc=Yellow and sticky notes
+
+#Status Effects
+
+effect.sevendaystomine:thirst=Thirst
+effect.sevendaystomine:dysentery=Dysentery
+effect.sevendaystomine:alcoholbuzz=Alcohol Buzz
+effect.sevendaystomine:drunk=Drunk
+effect.sevendaystomine:alcoholpoison=Alcohol Poison
+effect.sevendaystomine:caffeinebuzz=Caffeine Buzz
+effect.sevendaystomine:bleeding=Bleeding
+effect.sevendaystomine:infection=Infection
+
+#GUI
+
+container.campfire=Campfire
+container.forge=Forge
+container.safe=Safe
+container.cardboard=Box
+container.cupboard=Cupboard
+container.garbage=Garbage
+container.bookshelf=Bookshelf
+container.table=Table
+container.medical=Med. Cabinet
+container.fridge=Refrigerator
+container.mailbox=Mail Box
+container.birdnest=Bird Nest
+container.trashcan=Trash Can
+container.toilet=Toilet
+container.microwave=Microwave
+container.backpack=Backpack
+container.corpse=Corpse
+container.workbench=Workbench
+container.chemistry=Chemistry
+container.generator.gas=Gas Generator
+container.projector=Screen Projector
+container.dresser=Dresser
+container.trash_bin=Trash Bin
+
+gui.warning=WARNING
+mod.new.update=Your 7 Days to Mine version is outdated!
+mod.new.explain=It is always good to keep your game updated. Updates are important to fixing bugs and/or adding new content to the game!
+gui.not.remind=Skip this update!
+gui.later=Remind later!
+gui.changelog=View Changelog
+gui.download=Download
+gui.version=Current version: 
+gui.lastVersion=Newest version: 
+menu.fast_connect=Official Server
+mp3.nofile.0=No files found!
+mp3.nofile.1=Please add some .wav file to
+
+gui.electricity.voltage=Voltage: 
+gui.electricity.stored=Stored: 
+
+#Creative Tabs
+
+itemGroup.sevendaystomine.materials=7 Days to Mine - Materials
+itemGroup.sevendaystomine.building=7 Days to Mine - Building Blocks
+itemGroup.sevendaystomine.medicine=7 Days to Mine - Medicine
+itemGroup.sevendaystomine.forging=7 Days to Mine - Forging
+itemGroup.sevendaystomine.electricity=7 Days to Mine - Electricity
+itemGroup.sevendaystomine.clothing=7 Days to Mine - Clothing
+
+#Items
+
+item.ScrapIron.name=Scrap Iron
+item.ScrapBrass.name=Scrap Brass
+item.ScrapLead.name=Scrap Lead
+item.EmptyCan.name=Empty Can
+item.StoneAxe.name=Stone Axe
+item.StoneShovel.name=Stone Shovel
+item.WoodPlank.name=Wood Plank
+item.SmallStone.name=Small Stone
+item.PlantFiber.name=Plant Fiber
+item.CookingGrill.name=Cooking Grill
+item.EmptyJar.name=Empty Jar
+item.BottledMurkyWater.name=Bottled Murky Water
+item.BottledWater.name=Bottled Water
+item.ScrapGlass.name=Scrap Glass
+item.BottledBeer.name=Beer
+item.GoldenrodTea.name=Goldenrod Tea
+item.BottledCoffee.name=Coffee
+item.JarOfHoney.name=Jar of Honey
+item.CannedMurkyWater.name=Canned Murky Water
+item.CannedWater.name=Canned Water
+item.CannedCatFood.name=Can of Cat Food
+item.CannedDogFood.name=Can of Dog Food
+item.CannedHam.name=Can of Ham
+item.CannedChicken.name=Can of Chicken
+item.CannedChili.name=Can of Chili
+item.CannedMiso.name=Can of Miso
+item.CannedPasta.name=Can of Pasta
+item.CannedPears.name=Can of Pears
+item.CannedPeas.name=Can of Peas
+item.CannedSalmon.name=Can of Salmon
+item.CannedSoup.name=Can of Soup
+item.CannedStock.name=Can of Stock
+item.CannedTuna.name=Can of Tuna
+item.CoffeeBeans.name=Coffee Beans
+item.Corn.name=Corn
+item.Blueberry.name=Blueberry
+item.Baneberry.name=White Baneberry
+item.Bandage.name=Bandage
+item.AdvancedBandage.name=Advanced Bandage
+item.FirstAidKit.name=First Aid Kit
+item.BloodBag.name=Blood Bag
+item.BloodDrawKit.name=Blood Draw Kit
+item.IronIngot.name=Iron Ingot
+item.GoldIngot.name=Gold Ingot
+item.LeadIngot.name=Lead Ingot
+item.BrassIngot.name=Brass Ingot
+item.SteelIngot.name=Steel Ingot
+item.CopperIngot.name=Copper Ingot
+item.TinIngot.name=Tin Ingot
+item.ZincIngot.name=Zinc Ingot
+item.BronzeIngot.name=Bronze Ingot
+item.IngotMold.name=Ingot Mold
+item.Cloth.name=Cloth
+item.Antibiotics.name=Antibiotics
+item.ConcreteMix.name=Concrete Mix
+item.BoneShiv.name=Bone Shiv
+item.Cement.name=Cement
+item.CrudeClub.name=Crude Club
+item.WoodenClub.name=Wooden Club
+item.IronReinforcedClub.name=Iron Reinforced Club
+item.BarbedClub.name=Barbed Club
+item.SpikedClub.name=Spiked Club
+item.Clawhammer.name=Clawhammer
+item.Wrench.name=Wrench
+item.KitchenKnife.name=Kitchen Knife
+item.ArmyKnife.name=Army Knife
+item.Machete.name=Machete
+item.Pistol.name=Pistol
+item.AK47.name=AK-47
+item.hunting_rifle.name=Hunting Rifle
+item.NineMMBullet.name=9mm Bullet
+item.SevenMMBullet.name=7.62mm Bullet
+item.Fridge.name=Refrigerator
+item.SleepingBagItem.white.name=White Sleeping Bag
+item.SleepingBagItem.orange.name=Orange Sleeping Bag
+item.SleepingBagItem.magenta.name=Magenta Sleeping Bag
+item.SleepingBagItem.lightBlue.name=Light Blue Sleeping Bag
+item.SleepingBagItem.yellow.name=Yellow Sleeping Bag
+item.SleepingBagItem.lime.name=Lime Sleeping Bag
+item.SleepingBagItem.pink.name=Pink Sleeping Bag
+item.SleepingBagItem.gray.name=Gray Sleeping Bag
+item.SleepingBagItem.silver.name=Silver Sleeping Bag
+item.SleepingBagItem.cyan.name=Cyan Sleeping Bag
+item.SleepingBagItem.purple.name=Purple Sleeping Bag
+item.SleepingBagItem.blue.name=Blue Sleeping Bag
+item.SleepingBagItem.brown.name=Brown Sleeping Bag
+item.SleepingBagItem.green.name=Green Sleeping Bag
+item.SleepingBagItem.red.name=Red Sleeping Bag
+item.SleepingBagItem.black.name=Black Sleeping Bag
+item.WoodenDoorItem.name=Wooden Door
+item.WoodenDoorReinforcedItem.name=Wooden Door Reinforced
+item.locked_door_item.name=Locked Door
+item.RealityWand.name=Reality Wand
+item.MP3Player.name=MP3 Player
+item.Auger.name=Auger
+item.screwdriver.name=Screwdriver
+item.ram.name=RAM
+item.gpu.name=Graphics Processing Unit
+item.cpu.name=Central Processing Unit
+item.power_supply.name=Power Supply Uni
+item.motherboard.name=Motherboard
+item.hdd.name=HDD
+item.wire.name=Wire
+item.street_sign.name=Street Sign
+item.photo.name=Photo
+item.analog_camera.name=Analog Camera
+item.disc.name=Compact Disc
+item.linux_disc.name=Linux Installation Disc
+item.mac_disc.name=macOS Installation Disc
+item.win10_disc.name=Windows 10 Installation Disc
+item.win8_disc.name=Windows 8 Installation Disc
+item.win7_disc.name=Windows 7 Installation Disc
+item.winxp_disc.name=Windows XP Installation Disc
+item.win98_disc.name=Windows 98 Installation Disc
+item.shorts.name=Shorts
+item.skirt.name=Skirt
+item.shorts_long.name=Long Shorts
+item.jacket.name=Jacket
+item.jeans.name=Jeans
+item.jumper.name=Jumper
+item.shirt.name=Shirt
+item.short_sleeved_shirt.name=Short Sleeved Shirt
+item.t_shirt_0.name=T-Shirt
+item.t_shirt_1.name=T-Shirt
+item.coat.name=Coat
+item.car_battery.name=Lead Car Battery
+item.minibike_chassis.name=Minibike Chassis
+item.minibike_seat.name=Minibike Seat
+item.minibike_handles.name=Minibike Handlebars
+item.small_engine.name=Small Engine
+item.fiber_chestplate.name=Fiber Chestplate
+item.fiber_leggings.name=Fiber Leggings
+item.fiber_boots.name=Fiber Footwraps
+item.fiber_hat.name=Fiber Hat
+item.steel_chestplate.name=Steel Chestplate
+item.steel_leggings.name=Steel Leggings
+item.steel_boots.name=Steel Boots
+item.steel_helmet.name=Steel Helmet
+item.iron_axe.name=Iron Axe
+item.cent.name=Cent
+item.backpack.name=Backpack
+
+#Blocks
+
+tile.OakPlanksFrame.name=Oak Planks Frame
+tile.BirchPlanksFrame.name=Birch Planks Frame
+tile.SprucePlanksFrame.name=Spruce Planks Frame
+tile.JunglePlanksFrame.name=Jungle Planks Frame
+tile.AcaciaPlanksFrame.name=Acacia Planks Frame
+tile.DarkOakPlanksFrame.name=Dark Oak Planks Frame
+
+tile.OakPlanksReinforced.name=Reinforced Oak Planks
+tile.BirchPlanksReinforced.name=Reinforced Birch Planks
+tile.SprucePlanksReinforced.name=Reinforced Spruce Planks
+tile.JunglePlanksReinforced.name=Reinforced Jungle Planks
+tile.AcaciaPlanksReinforced.name=Reinforced Acacia Planks
+tile.DarkOakPlanksReinforced.name=Reinforced Dark Oak Planks
+
+tile.OakPlanksReinforcedIron.name=Iron Reinforced Oak Planks
+tile.BirchPlanksReinforcedIron.name=Iron Reinforced Birch Planks
+tile.SprucePlanksReinforcedIron.name=Iron Reinforced Spruce Planks
+tile.JunglePlanksReinforcedIron.name=Iron Reinforced Jungle Planks
+tile.AcaciaPlanksReinforcedIron.name=Iron Reinforced Acacia Planks
+tile.DarkOakPlanksReinforcedIron.name=Iron Reinforced Dark Oak Planks
+
+tile.SmallRock.name=Small Rock
+tile.Stick.name=Stick
+tile.Bush.name=Bush
+tile.Goldenrod.name=Goldenrod
+tile.CoffeePlant.name=Coffee Plant
+tile.CornPlant.name=Corn Plant
+tile.BlueberryPlant.name=Blueberry Bush
+tile.BaneberryPlant.name=Baneberry Bush
+
+tile.Campfire.name=Campfire
+tile.CookingPot.name=Cooking Pot
+tile.Beaker.name=Beaker
+tile.forge.name=Forge
+tile.forge_lit.name=Lit Forge
+
+tile.OreCopper.name=Copper Ore
+tile.OreTin.name=Tin Ore
+tile.OreZinc.name=Zinc Ore
+tile.OreLead.name=Lead Ore
+tile.OrePotassium.name=Potassium Nitrate Ore
+tile.OreCinnabar.name=Cinnabar Ore
+
+tile.RebarFrame.name=Rebar Frame
+tile.RebarFrameWood.name=Rebar Frame
+tile.ReinforcedConcrete.name=Reinforced Concrete
+tile.Asphalt.name=Asphalt
+
+tile.CodeSafe.name=Code Safe
+tile.KeySafe.name=Key Safe
+
+tile.CardboardBox.name=Cardboard Box
+tile.Cupboard.name=Cupboard
+tile.Garbage.name=Garbage
+tile.Bookshelf.name=Bookshelf
+tile.WritingTable.name=Writing table
+tile.MedicalCabinet.name=Medical Cabinet
+tile.Fridge.name=Refrigerator
+tile.MailBox.name=Mail Box
+tile.BirdNest.name=Bird Nest
+tile.Trashcan.name=Trash Can
+
+tile.TorchUnlit.name=Unlit Torch
+tile.TorchLit.name=Torch
+
+tile.ArmchairBlack.name=Black Armchair
+tile.ArmchairWhite.name=White Armchair
+tile.ArmchairRed.name=Red Armchair
+tile.ArmchairGreen.name=Green Armchair
+tile.ArmchairBlue.name=Blue Armchair
+tile.ArmchairBrown.name=Brown Armchair
+tile.ArmchairPink.name=Pink Armchair
+tile.ArmchairYellow.name=Yellow Armchair
+tile.throttle.name=Throttle
+
+tile.TrafficLight.name=Traffic Light
+tile.TrafficLightPedestrian.name=Pedestrian Traffic Light
+
+tile.DeadMossyStone.name=Dead Mossy Stone
+tile.DeadMossyBrick.name=Dead Mossy Bricks
+tile.Marble.name=Marble
+tile.Basalt.name=Basalt
+tile.Rhyolite.name=Rhyolite
+
+tile.MarbleCobblestone.name=Marble Cobblestone
+tile.BasaltCobblestone.name=Basalt Cobblestone
+tile.RhyoliteCobblestone.name=Rhyolite Cobblestone
+
+tile.MarblePolished.name=Marble Polished
+tile.BasaltPolished.name=Basalt Polished
+tile.RhyolitePolished.name=Rhyolite Polished
+
+tile.MarbleBricks.name=Marble Bricks
+tile.BasaltBricks.name=Basalt Bricks
+tile.RhyoliteBricks.name=Rhyolite Bricks
+
+tile.AndesiteBricks.name=Andesite Bricks
+tile.GraniteBricks.name=Granite Bricks
+tile.DioriteBricks.name=Diorite Bricks
+
+tile.Catwalk.name=Catwalk
+tile.catwalk_stairs.name=Catwalk Stairs
+
+tile.stonebrick_wall.default.name=Stone Bricks Wall
+tile.stonebrick_wall.mossy.name=Mossy Stone Bricks Wall
+tile.stonebrick_wall.cracked.name=Cracked Stone Bricks Wall
+tile.stonebrick_wall.mossy_dead.name=Dead Mossy Stone Bricks Wall
+
+tile.basalt_bricks_cracked.name=Cracked Basalt Bricks
+tile.marble_bricks_cracked.name=Cracked Marble Bricks
+tile.rhyolite_bricks_cracked.name=Cracked Rhyolite Bricks
+
+tile.andesite_bricks_cracked.name=Cracked Andesite Bricks
+tile.diorite_bricks_cracked.name=Cracked Diorite Bricks
+tile.granite_bricks_cracked.name=Cracked Granite Bricks
+
+tile.basalt_bricks_mossy.name=Mossy Basalt Bricks
+tile.marble_bricks_mossy.name=Mossy Marble Bricks
+tile.rhyolite_bricks_mossy.name=Mossy Rhyolite Bricks
+
+tile.andesite_bricks_mossy.name=Mossy Andesite Bricks
+tile.diorite_bricks_mossy.name=Mossy Diorite Bricks
+tile.granite_bricks_mossy.name=Mossy Granite Bricks
+
+tile.computer.name=Computer Case
+tile.monitor_off.name=Monitor
+tile.monitor_mac.name=Monitor (Mac OS X)
+tile.monitor_linux.name=Monitor (Linux)
+tile.monitor_win98.name=Monitor (Windows 98)
+tile.monitor_winxp.name=Monitor (Windows XP)
+tile.monitor_win7.name=Monitor (Windows 7)
+tile.monitor_win8.name=Monitor (Windows 8)
+tile.monitor_win10.name=Monitor (Windows 10)
+
+tile.wooden_door.name=Wooden Door
+tile.wooden_door_reinforced.name=Wooden Door Reinforced
+tile.locked_door.name=Locked Door 
+tile.boards.name=Boards
+tile.toilet.name=Toilet
+tile.flag.name=Flag
+tile.microwave.name=Microwave
+tile.sink_faucet.name=Sink Faucet
+tile.metal_ladder.name=Metal Ladder
+tile.radiator.name=Radiator
+
+tile.dark_bricks.name=Dark Bricks
+tile.cinder.name=Cinder Blocks
+tile.backpack_normal.name=Backpack
+tile.backpack_army.name=Backpack
+tile.backpack_medical.name=Backpack
+
+tile.chest_old.name=Old Chest
+tile.television_broken.name=Broken Television
+tile.shower_head.name=Shower Head
+tile.corpse_00.name=Corpse
+tile.corpse_01.name=Corpse
+tile.skeleton.name=Skeleton
+tile.workbench_real.name=Workbench
+tile.chemistry_station.name=Chemistry Station
+
+tile.chair_oak.name=Oak Chair
+tile.chair_birch.name=Birch Chair
+tile.chair_spruce.name=Spruce Chair
+tile.chair_jungle.name=Jungle Chair
+tile.chair_acacia.name=Acacia Chair
+tile.chair_big_oak.name=Dark Oak Chair
+
+tile.table_oak.name=Oak Table
+tile.table_birch.name=Birch Table
+tile.table_spruce.name=Spruce Table
+tile.table_jungle.name=Jungle Table
+tile.table_acacia.name=Acacia Table
+tile.table_big_oak.name=Dark Oak Table
+
+tile.generator_gas.name=Gas Generator
+tile.energy_pole.name=Energy Pole
+tile.lamp.name=Lamp
+
+tile.street_sign.name=Street Sign
+tile.street_sign_wall.name=Street Sign
+tile.photo.name=Photo
+tile.screen_projector.name=Screen Projector
+tile.skeleton_sitting.name=Skeleton
+tile.dresser.name=Dresser
+tile.big_sign.name=Big Sign
+
+tile.sofa_black.name=Black Sofa
+tile.sofa_white.name=White Sofa
+tile.sofa_red.name=Red Sofa
+tile.sofa_green.name=Green Sofa
+tile.sofa_blue.name=Blue Sofa
+tile.sofa_brown.name=Brown Sofa
+tile.sofa_pink.name=Pink Sofa
+tile.sofa_yellow.name=Yellow Sofa
+
+tile.trash_bin.name=Trash Bin
+tile.wheels.name=Wheels
+tile.large_rock.name=Large Rock
+tile.wooden_spikes.name=Wooden Spikes
+tile.wooden_spikes_blooded.name=Wooden Spikes
+tile.wooden_spikes_broken.name=Wooden Spikes
+
+#Sound Subtitles
+
+sdtm.subtitle.upgrade_wood=Upgrade Wood
+sdtm.subtitle.campfire_crackling=Campfire Crackling
+sdtm.subtitle.heartbeat=Heartbeat
+sdtm.subtitle.menu_00=Menu Music
+sdtm.subtitle.menu_01=Menu Music
+sdtm.subtitle.pistol.shot=Pistol Shot
+sdtm.subtitle.pistol.dryshot=Pistol Dry Shot
+sdtm.subtitle.pistol.reload=Pistol Reload
+sdtm.subtitle.ak47.shot=AK-47 Shot
+sdtm.subtitle.ak47.reload=AK-47 Reload
+sdtm.subtitle.door.locked=Locked Door
+sdtm.subtitle.camera.take=Camera Take
+sdtm.subtitle.hunting_rifle.shot=Hunting Rifle Shot
+sdtm.subtitle.hunting_rifle.reload=Hunting Rifle Reload
+
+#Keybinding
+key.sevendaystomine.category=7 Days to Mine
+key.reload.desc=Gun Reload
+key.accelerate.desc=Vehicle Acceleration
+
+#Advancements
+advancements.survival.root.title=Survival
+advancements.survival.root.description=Survival in the ruins of the old world
+advancements.smallstone.title=Rock by rock
+advancements.smallstone.description=Collect your first rock!
+advancements.stoneaxe.title=It's sharp
+advancements.stoneaxe.description=Use rock, fiber and sticks to make an axe!
+advancements.stoneshovel.title=Ace of spades
+advancements.stoneshovel.description=Use rock, fiber and sticks to make a shovel!
+advancements.crafting_table.title=Woodworking
+advancements.crafting_table.description=Make a crafting table out of a wood!
+advancements.bow.title=Archery
+advancements.bow.description=Make a bow and an arrow!
+advancements.pistol.title=Small Arms
+advancements.pistol.description=Get a pistol!
+advancements.rifle.title=Military Issue
+advancements.rifle.description=Get a rifle!
+advancements.woodenclub.title=Right off the bat
+advancements.woodenclub.description=Make a Wooden Club out of a wood!
+advancements.spikedclub.title=Illegal Modification
+advancements.spikedclub.description=Make a Spiked Club!
+advancements.wooden_frame.title=Construction I
+advancements.wooden_frame.description=Craft a wooden frame!
+advancements.reinforcedconcrete.title=Construction III
+advancements.reinforcedconcrete.description=Craft a reinforced concrete!
+advancements.campfire.title=Only YOU Can Start Forest Fires
+advancements.campfire.description=Craft a campfire!
+advancements.forge.title=Metallurgy I
+advancements.forge.description=Craft a forge!
+advancements.sleeping_bag.title=Rolling Bed
+advancements.sleeping_bag.description=Well.. it's a bedroll.
+
+
+#Entities
+entity.reanimated_corpse.name=Reanimated Corpse
+entity.burnt_zombie.name=Burnt Zombie
+entity.frigid_hunter.name=Frigid Hunter
+entity.frostbitten_worker.name=Frostbitten Worker
+entity.frozen_lumberjack.name=Frozen Lumberjack
+entity.zombie_soldier.name=Zombie Soldier
+entity.mountable_block.name=Mountable Block
+entity.lootable_corpse.name=Lootable Corpse
+entity.shot.name=Shot
+entity.survivor.name=Survivor
+entity.bloated_zombie.name=Bloated Zombie
+entity.minibike.name=Minibike
+
+#Fluids
+fluid.gasoline=Gasoline
+
+
+
+
+
+
+
+
+
+
+
+#DIALOGUES
+
+survivor.generic.a.a.text=Can I trade with you?
+survivor.generic.a.b.text=Has anything interesting happened?
+survivor.generic.a.c.text=Do you have any work for me?
+survivor.generic.a.d.text=Can I ask you something?
+
+survivor.generic.a.a.response=Sure. Let's deal!
+survivor.generic.a.b.response=Nothing really.
+survivor.generic.a.c.response=Sorry, I don't.
+survivor.generic.a.d.response=I don't have time for you.

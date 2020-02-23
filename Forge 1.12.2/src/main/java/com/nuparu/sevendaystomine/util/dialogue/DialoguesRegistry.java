@@ -1,0 +1,62 @@
+package com.nuparu.sevendaystomine.util.dialogue;
+
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Map.Entry;
+
+import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.util.Utils;
+
+import net.minecraft.util.ResourceLocation;
+
+public class DialoguesRegistry {
+
+	public static final DialoguesRegistry INSTANCE = new DialoguesRegistry();
+
+	private HashMap<ResourceLocation, Dialogues> registry = new HashMap<ResourceLocation, Dialogues>();
+
+	public void registerDialogues(Dialogues dialogues, ResourceLocation res) {
+		if(dialogues == null) return;
+		dialogues.setKey(res);
+		registry.put(res, dialogues);
+	}
+
+	public void registerDialogues(ResourceLocation res) {
+		Dialogues dialogues = DialogueParser.INSTANCE.getDialoguesFromResource(res);
+		registerDialogues(dialogues, res);
+	}
+
+	public ResourceLocation getResByDialogues(Dialogues dialogues) {
+		for (Entry<ResourceLocation, Dialogues> entry : registry.entrySet()) {
+			if (Objects.equals(dialogues, entry.getValue())) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	public Dialogues getByRes(ResourceLocation res) {
+		for (Entry<ResourceLocation, Dialogues> entry : registry.entrySet()) {
+			if (Objects.equals(res, entry.getKey())) {
+				return entry.getValue();
+			}
+		}
+		return null;
+	}
+
+	public Dialogues getByName(String name) {
+		for (Dialogues dialogues : registry.values()) {
+			if (dialogues.getName().equals(name)) {
+				return dialogues;
+			}
+		}
+		return null;
+	}
+
+	public void register() {
+		registerDialogues(Dialogues.EMPTY, new ResourceLocation(SevenDaysToMine.MODID, "empty"));
+		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/test.json"));
+		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/survivor_generic.json"));
+		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/video.json"));
+	}
+}

@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=up": { "model": "sevendaystomine:forge" },
+		"facing=south": { "model": "sevendaystomine:forge" },
+		"facing=east": { "model": "sevendaystomine:forge","y":270 },
+		"facing=west": { "model": "sevendaystomine:forge","y":90 },
+		"facing=north": { "model": "sevendaystomine:forge","y":180 }
+    }
+}

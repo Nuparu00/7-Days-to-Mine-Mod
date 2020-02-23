@@ -1,0 +1,14 @@
+{  
+   "name":"survivor.generic",
+   "trees":[  
+      {  
+         "id":"survivor.generic.a",
+         "dialogues":[  
+            "survivor.generic.a.a",
+            "survivor.generic.a.b",
+			"survivor.generic.a.c",
+			"survivor.generic.a.d"
+         ]
+      }
+   ]
+}

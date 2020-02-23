@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:screen_projector" },
+        "facing=south": { "model": "sevendaystomine:screen_projector", "y": 180 },
+        "facing=west":  { "model": "sevendaystomine:screen_projector", "y": 270 },
+        "facing=east":  { "model": "sevendaystomine:screen_projector", "y": 90 }
+    }
+}
+

@@ -1,0 +1,34 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "sevendaystomine:smallrock"
+  },
+  "variants":{
+    "variant":{
+      "stone":{
+        "textures": {
+          "0": "blocks/stone",
+          "particle": "blocks/stone"
+        }
+      },
+      "granite":{
+        "textures": {
+          "0": "blocks/stone_granite",
+          "particle": "blocks/stone_granite"
+        }
+      },
+      "diorite":{
+        "textures": {
+          "0": "blocks/stone_diorite",
+          "particle": "blocks/stone_diorite"
+        }
+      },
+      "andesite":{
+        "textures": {
+          "0": "blocks/stone_andesite",
+          "particle": "blocks/stone_andesite"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"0": "sevendaystomine:blocks/berry_ungrown",
+		"particle": "sevendaystomine:blocks/berry_ungrown"
+	},
+	"variants": {
+		"age": {
+			"0": {
+				"model": "sevendaystomine:berry_0"
+			},
+			"1": {
+				"model": "sevendaystomine:berry_1"
+			},
+			"2": {
+				"model": "sevendaystomine:berry_2"
+			},
+			"3": {
+				"model": "sevendaystomine:berry_3"
+			},
+			"4": {
+				"model": "sevendaystomine:berry_4"
+			},
+			"5": {
+				"model": "sevendaystomine:berry_5"
+			},
+			"6": {
+				"model": "sevendaystomine:berry_6"
+			},
+			"7": {
+				"model": "sevendaystomine:berry_7",
+				"textures": {
+					"0": "sevendaystomine:blocks/blueberry_grown",
+					"particle": "sevendaystomine:blocks/blueberry_grown"
+				}
+			}
+		}
+	}
+}

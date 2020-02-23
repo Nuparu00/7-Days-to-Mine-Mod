@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/corpse_00",
+	"textures": {
+		"0": "sevendaystomine:blocks/corpse_01",
+		"particle": "sevendaystomine:blocks/corpse_01"
+	}
+}

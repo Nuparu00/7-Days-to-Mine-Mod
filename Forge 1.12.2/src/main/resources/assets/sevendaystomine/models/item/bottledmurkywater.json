@@ -1,0 +1,6 @@
+{
+	"parent": "sevendaystomine:item/liquidinjar",
+	"textures": {
+		"4": "sevendaystomine:blocks/murky_water_still"
+	}
+}

@@ -1,0 +1,6 @@
+package com.nuparu.sevendaystomine.item;
+
+public enum EnumMaterial {
+	NONE, IRON, BRASS, LEAD, STEEL, COPPER, BRONZE, TIN, ZINC, GOLD, WOLFRAM, URANIUM, WOOD, STONE, GLASS, CLOTH, PLANT_FIBER, PLASTIC, CLAY, MERCURY, POTASSIUM, CONCRETE, LEATHER;
+
+}

@@ -1,0 +1,30 @@
+{
+   "forge_marker":1,
+   "defaults":{
+      "model":"sevendaystomine:wooden_table"
+   },
+   "variants":{
+      "facing":{
+         "east":{
+            "y":90
+         },
+         "west":{
+            "y":270
+         },
+         "south":{
+            "y":180
+         },
+         "north":{
+            "y":0
+         }
+      },
+      "modern":{
+         "true":{
+            "model":"sevendaystomine:modern_table"
+         },
+         "false":{
+            "model":"sevendaystomine:wooden_table"
+         }
+      }
+   }
+}

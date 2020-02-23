@@ -1,0 +1,14 @@
+{  
+   "name":"test.dialogues",
+   "trees":[  
+      {  
+         "id":"test.dialogues.a",
+         "dialogues":[  
+            "test.dialogue.a",
+            "test.dialogue.b",
+			"test.dialogue.c",
+			"test.dialogue.d"
+         ]
+      }
+   ]
+}
