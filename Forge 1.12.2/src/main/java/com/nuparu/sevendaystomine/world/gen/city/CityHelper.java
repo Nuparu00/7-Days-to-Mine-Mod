@@ -9,6 +9,7 @@ import java.util.Random;
 import org.apache.commons.io.IOUtils;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.block.BlockCar;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.prefab.Prefab;
 import com.nuparu.sevendaystomine.world.gen.prefab.PrefabParser;
@@ -21,6 +22,7 @@ public class CityHelper {
 	protected static List<String> cities = null;
 	
 	public static List<Prefab> prefabs = new ArrayList<Prefab>();
+	public static List<BlockCar> cars = new ArrayList<BlockCar>();
 
 	public static void getStreetNames() {
 		InputStream stream = Utils.getInsideFileStream(SevenDaysToMine.MODID.toLowerCase() + "/data/streets.csv");

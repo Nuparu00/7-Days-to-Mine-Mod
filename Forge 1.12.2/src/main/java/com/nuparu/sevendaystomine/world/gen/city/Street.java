@@ -5,14 +5,13 @@ import java.util.List;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
-import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.block.BlockCar;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.prefab.Prefab;
-import com.nuparu.sevendaystomine.world.gen.prefab.PrefabParser;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
@@ -30,7 +29,6 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -64,9 +62,6 @@ public class Street {
 
 	private Street previousStreet;
 	private List<Street> connectedStreets = new ArrayList<Street>();
-
-	@SuppressWarnings("unused")
-	private WorldVolume worldVolume;
 
 	public Street(World world, BlockPos start, BlockPos end, EnumFacing facing, City city) {
 		this.world = world;
@@ -123,10 +118,7 @@ public class Street {
 	}
 
 	public void generate() {
-		// worldVolume = new
-		// WorldVolume(start.offset(facing.rotateY(),thickness/2),end.offset(facing.rotateYCCW(),thickness/2),world);
 		generateAsphaltAndSidewalk();
-
 	}
 
 	public void generateBuildings() {
@@ -137,10 +129,6 @@ public class Street {
 		EnumFacing f = (facing == EnumFacing.EAST || facing == EnumFacing.WEST) ? facing.rotateY()
 				: facing.rotateYCCW();
 		
-		// prefab.generate(world, start.offset(facing, canBranch == false ? -LENGTH/2 :
-		// LENGTH/2).offset(f,(thickness/2)+pavement),
-		// Math.round(facing.getHorizontalAngle())+90,true);
-
 		int checkA = Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) + (prefab.getWidth() / 2)).offset(f,
 				(thickness / 2) + pavement + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world);
 		int checkB = Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) - (prefab.getWidth() / 2)).offset(f,
@@ -174,17 +162,28 @@ public class Street {
 					return;
 				}
 			}
+			if(facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
+				return;
+			}
 			int r = (int) Math.ceil(thickness / 2);
 			for (int i = 1; i < r + pavement + 1; i++) {
-				for (int j = 1; j < Math.ceil(thickness / 2) + pavement + 1; j++) {
+				for (int j = 1; j < r + pavement + 1; j++) {
 					BlockPos pos = end.offset(facing, i).offset(facing.rotateY(), j);
-					IBlockState block = Blocks.STONEBRICK.getDefaultState();
+					IBlockState state = Blocks.STONEBRICK.getDefaultState();
 					if (i <= r && j <= r) {
-						block = ModBlocks.ASPHALT.getDefaultState();
+						state = ModBlocks.ASPHALT.getDefaultState();
 					}
 					Block block2 = world.getBlockState(pos).getBlock();
 					if (block2 != ModBlocks.ASPHALT && block2 != Blocks.CONCRETE) {
-						world.setBlockState(pos, block);
+						world.setBlockState(pos, state);
+						BlockPos pos2 = pos.down();
+						while(world.getBlockState(pos2).getBlock().isReplaceable(world, pos2)) {
+							world.setBlockState(pos2, Blocks.STONE.getDefaultState());
+							pos2 = pos2.down();
+						}
+					}
+					else {
+						break;
 					}
 				}
 			}
@@ -210,7 +209,6 @@ public class Street {
 				BlockPos road = pos.up(y);
 
 				IBlockState block = ModBlocks.ASPHALT.getDefaultState();
-
 				int cross = 0;
 				if (endCrossing == null) {
 					cross = city.getStreetsAtCrossingCount(end, 4);
@@ -332,15 +330,19 @@ public class Street {
 				}
 			}
 		}
-		if (roofBlocks >= ((this.thickness + 2 * this.pavement) * LENGTH) / 4) {
+		if (roofBlocks >= ((thickness + 2 * pavement) * LENGTH) / 4) {
 			this.tunnel = true;
 		}
 	}
 
+	/*
+	 * Handles generating of street lamps, traffic lights, city limits signs and cars
+	 */
 	public void decorate() {
 
 		for (int i = 0; i <= LENGTH - 1; i++) {
 
+			//What should be Y of the road in this position between the start and end
 			int lerpedHeight = (int) Utils.lerp(Utils.getTopSolidGroundHeight(start, world) - 1,
 					Utils.getTopSolidGroundHeight(end, world) - 1, i / (float) LENGTH);
 			int y = lerpedHeight;
@@ -348,9 +350,6 @@ public class Street {
 			for (int t = 0; t < thickness + (pavement * 2); t++) {
 
 				int offset = t - (thickness + (pavement * 2) / 2) + 4;
-				if (facing == EnumFacing.NORTH || facing == EnumFacing.WEST) {
-
-				}
 				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i).offset(facing.rotateY(),
 						offset);
 				int halfThickness = (int) Math.ceil(thickness / 2);
@@ -393,6 +392,24 @@ public class Street {
 						}
 					}
 				}
+				
+				//Cars generation
+				if(Math.abs(t - (thickness/2 + pavement)) <= 2) {
+					if(city.rand.nextInt(50) == 0) {
+						BlockPos pos2 = pos.up(y + 1);
+						if(world.getBlockState(pos2).getBlock() != Blocks.AIR) {
+							pos2 = pos2.up();
+						}
+						EnumFacing facing2 = facing;
+						if(city.rand.nextInt(4) == 0) {
+							facing2 = EnumFacing.getHorizontal(city.rand.nextInt(4));
+						}
+						BlockCar car = CityHelper.cars.get(city.rand.nextInt(CityHelper.cars.size()));
+						if(car.canBePlaced(world, pos2, facing2)) {
+							car.generate(world,pos2,facing2,true,null);
+						}
+					}
+				}
 
 			}
 
@@ -400,6 +417,15 @@ public class Street {
 	}
 
 	public void generateCityLimitsSign(BlockPos pos) {
+		IBlockState base = world.getBlockState(pos.down());
+		if(base.getBlock() == Blocks.STONE_SLAB) {
+			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
+		}
+		IBlockState base2 = world.getBlockState(pos.down().offset(facing.rotateY(), thickness + 1));
+		if(base2.getBlock() == Blocks.STONE_SLAB) {
+			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
+		}
+		
 		for (int i = 0; i < 8; i++) {
 			world.setBlockState(pos.up(i), Blocks.COBBLESTONE_WALL.getDefaultState());
 		}
@@ -435,6 +461,10 @@ public class Street {
 
 	public void generateTrafficLight(BlockPos pos) {
 
+		IBlockState base = world.getBlockState(pos.down());
+		if(base.getBlock() == Blocks.STONE_SLAB) {
+			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
+		}
 		int height = 5;
 		for (int i = 0; i < height; i++) {
 			world.setBlockState(pos.up(i), Blocks.COBBLESTONE_WALL.getDefaultState());
@@ -530,6 +560,10 @@ public class Street {
 	}
 
 	public void generateStreetLamp(BlockPos pos, boolean end) {
+		IBlockState base = world.getBlockState(pos.down());
+		if(base.getBlock() == Blocks.STONE_SLAB) {
+			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
+		}
 		int height = 5;
 		for (int i = 0; i < height; i++) {
 			world.setBlockState(pos.up(i), Blocks.COBBLESTONE_WALL.getDefaultState());
@@ -586,35 +620,5 @@ public class Street {
 		nbt.setLong("start", this.start.toLong());
 		nbt.setLong("end", this.end.toLong());
 		return nbt;
-	}
-
-	public static class WorldVolume {
-		public final BlockPos[][][] volume;
-		public final IBlockState[][][] states;
-		public final World world;
-
-		public WorldVolume(BlockPos a, BlockPos b, World world) {
-			this.world = world;
-
-			int minX = Math.min(a.getX(), b.getX());
-			int maxX = Math.max(a.getX(), b.getX());
-			int minY = Math.min(a.getY(), b.getY());
-			int maxY = Math.max(a.getY(), b.getY()) + 5;
-			int minZ = Math.min(a.getZ(), b.getZ());
-			int maxZ = Math.max(a.getZ(), b.getZ());
-
-			volume = new BlockPos[maxX - minX][maxY - minY][maxZ - minZ];
-			states = new IBlockState[maxX - minX][maxY - minY][maxZ - minZ];
-
-			for (int x = minX; x < maxX; x++) {
-				for (int y = minY; y < maxY; y++) {
-					for (int z = minZ; z < maxZ; z++) {
-						BlockPos blockpos = new BlockPos(x, y, z);
-						volume[x - minX][y - minY][z - minZ] = blockpos;
-						states[x - minX][y - minY][z - minZ] = world.getBlockState(blockpos);
-					}
-				}
-			}
-		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.block.BlockCar;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCarSlave;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -9,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -48,6 +50,7 @@ public class ItemBlockCar extends ItemBlock {
 	        
 	        EnumFacing facing2 = player.getHorizontalFacing().getOpposite();
 	        
+	        /*
 	        for (int width = -car.getWidthHalf(); width <= car.getWidthHalf(); width++) {
 				for (int length = -car.getLengthHalf(); length <= car.getLengthHalf(); length++) {
 					for (int height = 0; height < car.getHeight(); height++) {
@@ -59,6 +62,10 @@ public class ItemBlockCar extends ItemBlock {
 						}
 					}
 				}
+	        }*/
+	        
+	        if(!car.canBePlaced(worldIn, pos, facing2)) {
+	        	return EnumActionResult.FAIL;
 	        }
 
 	        ItemStack itemstack = player.getHeldItem(hand);

@@ -109,6 +109,7 @@ container.generator.gas=Gas Generator
 container.projector=Screen Projector
 container.dresser=Dresser
 container.trash_bin=Trash Bin
+container.car=Car
 
 gui.warning=WARNING
 mod.new.update=Your 7 Days to Mine version is outdated!
@@ -278,6 +279,10 @@ item.steel_helmet.name=Steel Helmet
 item.iron_axe.name=Iron Axe
 item.cent.name=Cent
 item.backpack.name=Backpack
+item.leather_iron_helmet.name=Leather-Iron Helmet
+item.leather_iron_chestplate.name=Leather-Iron Chestplate
+item.leather_iron_leggings.name=Leather-Iron Leggings
+item.leather_iron_boots.name=Leather-Iron Boots
 
 #Blocks
 
@@ -483,6 +488,13 @@ tile.wooden_spikes.name=Wooden Spikes
 tile.wooden_spikes_blooded.name=Wooden Spikes
 tile.wooden_spikes_broken.name=Wooden Spikes
 
+tile.sedan_red.name=Red Sedan
+tile.sedan_green.name=Green Sedan
+tile.sedan_blue.name=Blue Sedan
+tile.sedan_yellow.name=Yellow Sedan
+tile.sedan_white.name=White Sedan
+tile.sedan_black.name=Black Sedan
+
 #Sound Subtitles
 
 sdtm.subtitle.upgrade_wood=Upgrade Wood
@@ -551,6 +563,10 @@ entity.shot.name=Shot
 entity.survivor.name=Survivor
 entity.bloated_zombie.name=Bloated Zombie
 entity.minibike.name=Minibike
+entity.infected_survivor.name=Infected Survivor
+entity.spider_zombie.name=Spider Zombie
+entity.plagued_nurse.name=Plagued Nurse
+entity.blind_zombie.name=Blind Zombie
 
 #Fluids
 fluid.gasoline=Gasoline

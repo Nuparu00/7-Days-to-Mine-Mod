@@ -26,27 +26,36 @@ import com.nuparu.sevendaystomine.client.renderer.entity.RenderMountableBlock;
 import com.nuparu.sevendaystomine.client.renderer.entity.RenderPlayerEnhanced;
 import com.nuparu.sevendaystomine.client.renderer.entity.RenderReanimatedCorpse;
 import com.nuparu.sevendaystomine.client.renderer.entity.RenderShot;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderBlindZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBloatedZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderHumanFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderInfectedSurvivorFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderMinibikeFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderPlaguedNurseFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderSpiderZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieSoldierFactory;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityBigSignRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityFlagRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityOldChestRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityPhotoRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySedanRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySleepingBagRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityStreetSignRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWallClockRenderer;
+import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
 import com.nuparu.sevendaystomine.entity.EntityFrostbittenWorker;
 import com.nuparu.sevendaystomine.entity.EntityFrozenLumberjack;
+import com.nuparu.sevendaystomine.entity.EntityInfectedSurvivor;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
+import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
 import com.nuparu.sevendaystomine.entity.EntityReanimatedCorpse;
 import com.nuparu.sevendaystomine.entity.EntityShot;
+import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
 import com.nuparu.sevendaystomine.events.ClientEventHandler;
@@ -57,6 +66,7 @@ import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemClothing;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCar;
 import com.nuparu.sevendaystomine.tileentity.TileEntityFlag;
 import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
 import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
@@ -178,10 +188,6 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
-		// Minecraft mc = Minecraft.getMinecraft();
-
-		// mc.effectRenderer.registerParticle(EnumModParticleType.BLOOD.getId(), new
-		// ParticleBlood.Factory());
 	}
 
 	@Override
@@ -192,7 +198,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event) {
-		// This will never get called on client side
+
 	}
 
 	public void registerRenderers() {
@@ -202,8 +208,22 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityMinibike.class, RenderMinibikeFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityBloatedZombie.class,
 				RenderBloatedZombieFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInfectedSurvivor.class,
+				RenderInfectedSurvivorFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderZombie.class,
+				RenderSpiderZombieFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderZombie.class,
+				RenderSpiderZombieFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityPlaguedNurse.class,
+				RenderPlaguedNurseFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityBlindZombie.class,
+				RenderBlindZombieFactory.INSTANCE);
 	}
 
+	/*
+	 * Registers renderers without proper Factory class ==> should fix this in the
+	 * future and should not make any more renderers without a Factory class
+	 */
 	public void registerOldRenderers() {
 		RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
 		registerRenderer(EntityShot.class, new RenderShot(renderManager));
@@ -233,10 +253,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStreetSign.class, new TileEntityStreetSignRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPhoto.class, new TileEntityPhotoRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBigSignMaster.class, new TileEntityBigSignRenderer());
-		/*
-		 * ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreenProjector.class,
-		 * new TileEntityScreenProjectorRenderer());
-		 */
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCar.class, new TileEntitySedanRenderer());
 	}
 
 	@Override

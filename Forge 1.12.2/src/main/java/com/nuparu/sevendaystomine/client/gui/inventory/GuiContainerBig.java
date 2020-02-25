@@ -30,7 +30,7 @@ public class GuiContainerBig extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = tileEntity.getDisplayName().getUnformattedText();
-		this.fontRenderer.drawString(s, 58, 6, 4210752);
+		this.fontRenderer.drawString(s, 87 - (this.fontRenderer.getStringWidth(s) / 2), 6, 4210752);
 		this.fontRenderer.drawString(
 				new TextComponentTranslation("container.inventory", new Object[0]).getUnformattedText(), 8,
 				ySize - 96 + 2, 4210752);

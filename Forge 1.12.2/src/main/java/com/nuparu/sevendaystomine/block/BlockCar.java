@@ -13,14 +13,18 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
@@ -28,25 +32,42 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 
 	public static final PropertyInteger PIECE = PropertyInteger.create("piece", 0, 16);
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	// Master block handles inventory
 	public static final PropertyBool MASTER = PropertyBool.create("master");
 
-	private int widthHalf;
-	private int lengthHalf;
-	private int height;
+	/*
+	 * Format: Height/Width/Length 0 = Empty; Any other value = block Width should
+	 * ideally be odd number
+	 */
+	public byte[][][] shape;
 
-	public BlockCar(int widthHalf, int lengthHalf, int height) {
+	public BlockCar(byte[][][] shape) {
 		super(Material.ROCK);
-		this.setWidthHalf(widthHalf);
-		this.setLengthHalf(lengthHalf);
-		this.setHeight(height);
-
+		this.shape = shape;
 		this.setDefaultState(
 				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(MASTER, true));
+	}
+
+	/*
+	 * For perfect cuboids
+	 */
+	public BlockCar(int width, int length, int height) {
+		super(Material.ROCK);
+		this.shape = new byte[height][width][length];
+		this.setDefaultState(
+				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(MASTER, true));
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
 	@Override
@@ -117,29 +138,69 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 		}
 		if (state.getValue(MASTER)) {
 			EnumFacing facing = state.getValue(FACING);
+			generate(worldIn,pos,facing,false,masterTE);
 
-			int index = 1;
-			for (int width = -getWidthHalf(); width <= getWidthHalf(); width++) {
-				for (int length = -getLengthHalf(); length <= getLengthHalf(); length++) {
-					for (int height2 = 0; height2 < getHeight(); height2++) {
-						if (width == 0 && length == 0 && height2 == 0) {
+		}
+	}
+	
+	public void generate(World worldIn, BlockPos pos,EnumFacing facing, boolean placeMaster, TileEntityCarMaster masterTE) {
+		if(placeMaster) {
+			IBlockState state = getDefaultState().withProperty(FACING, facing).withProperty(MASTER, true);
+			worldIn.setBlockState(pos, state);
+			TileEntity TE = worldIn.getTileEntity(pos);
+			if (!(TE instanceof TileEntityCarMaster)) {
+				return;
+			}
+			masterTE = (TileEntityCarMaster) TE;
+		}
+		int index = 1;
+
+		for (int height = 0; height < shape.length; height++) {
+			byte[][] shape2d = shape[height];
+			for (int length = 0; length < shape2d.length; length++) {
+				byte[] shape1d = shape2d[length];
+				for (int width = 0; width < shape1d.length; width++) {
+					byte point = shape1d[width];
+					if (point == 0)
+						continue;
+					BlockPos pos2 = pos.offset(facing.rotateY(), width - Math.round(shape2d.length / 2) + 1)
+							.offset(facing, length - Math.round(shape1d.length / 2) - 1).up(height);
+					if (pos2 == pos) {
 							continue;
-						}
-						BlockPos pos2 = pos.offset(facing.rotateY(), width).offset(facing, length).up(height2);
-						IBlockState state2 = getState().withProperty(FACING, facing).withProperty(MASTER, false);
-						worldIn.setBlockState(pos2, state2);
-						TileEntity TE2 = worldIn.getTileEntity(pos2);
-						if (TE2 instanceof TileEntityCarSlave) {
-							TileEntityCarSlave slave = (TileEntityCarSlave) TE2;
-							slave.setMaster(pos, masterTE);
-							slave.setIndex(index);
-						}
-						index++;
+					}
+					IBlockState state2 = getDefaultState().withProperty(FACING, facing).withProperty(MASTER, false);
+					worldIn.setBlockState(pos2, state2);
+					TileEntity TE2 = worldIn.getTileEntity(pos2);
+					if (TE2 instanceof TileEntityCarSlave) {
+						TileEntityCarSlave slave = (TileEntityCarSlave) TE2;
+						slave.setMaster(pos, masterTE);
+						slave.setIndex(index);
+					}
+					index++;
+				}
+			}
+		}
+	}
+	
+	public boolean canBePlaced(World world, BlockPos pos, EnumFacing facing) {
+        for(int height = 0; height < shape.length; height++) {
+			byte[][] shape2d = shape[height];
+			for(int length = 0; length < shape2d.length; length++) {
+				byte[] shape1d = shape2d[length]; 
+				for(int width = 0; width < shape1d.length; width++) {
+					byte point = shape1d[width]; 
+					if(point == 0) continue;
+					BlockPos pos2 = pos.offset(facing.rotateY(), width - Math.round(shape2d.length / 2) + 1)
+							.offset(facing, length - Math.round(shape1d.length / 2) - 1).up(height);
+					IBlockState state = world.getBlockState(pos2);
+					Block block2 = state.getBlock();
+					if(!block2.isReplaceable(world, pos2)) {
+						return false;
 					}
 				}
 			}
-
 		}
+        return true;
 	}
 
 	@Override
@@ -199,12 +260,12 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 				TileEntity TE = worldIn.getTileEntity(pos2);
 				if (TE instanceof TileEntityCarSlave) {
 					TileEntityCarSlave slave2 = (TileEntityCarSlave) TE;
-					if (Utils.compareBlockPos(slave2.masterPos,slave.masterPos)) {
+					if (Utils.compareBlockPos(slave2.masterPos, slave.masterPos)) {
 						worldIn.destroyBlock(pos2, false);
 					}
 				} else if (TE instanceof TileEntityCarMaster) {
 					TileEntityCarMaster master = (TileEntityCarMaster) TE;
-					if (Utils.compareBlockPos(master.getPos(),slave.masterPos)) {
+					if (Utils.compareBlockPos(master.getPos(), slave.masterPos)) {
 						worldIn.destroyBlock(pos2, false);
 					}
 				}
@@ -218,32 +279,6 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 		return new BlockStateContainer(this, new IProperty[] { FACING, MASTER, PIECE });
 	}
 
-	public abstract IBlockState getState();
-
-	public int getWidthHalf() {
-		return widthHalf;
-	}
-
-	public void setWidthHalf(int widthHalf) {
-		this.widthHalf = widthHalf;
-	}
-
-	public int getLengthHalf() {
-		return lengthHalf;
-	}
-
-	public void setLengthHalf(int lengthHalf) {
-		this.lengthHalf = lengthHalf;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
 	public ItemBlock createItemBlock() {
 		return new ItemBlockCar(this);
 	}
@@ -253,6 +288,28 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 			return new ItemBlockCar((BlockCar) block);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasCustomStateMapper() {
+		return true;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IStateMapper getStateMapper() {
+		return new StateMap.Builder().ignore(FACING).ignore(PIECE).ignore(MASTER).build();
 	}
 
 }

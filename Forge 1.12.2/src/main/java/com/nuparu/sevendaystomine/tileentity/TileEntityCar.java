@@ -6,8 +6,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityCar extends TileEntityLockable{
+public class TileEntityCar extends TileEntityLockable {
 
 	public TileEntityCar() {
 
@@ -40,7 +43,7 @@ public class TileEntityCar extends TileEntityLockable{
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
-		
+
 	}
 
 	@Override
@@ -105,6 +108,18 @@ public class TileEntityCar extends TileEntityLockable{
 	@Override
 	public String getGuiID() {
 		return null;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(getPos().add(-2.5, 0, -2.5), getPos().add(2.5, 2, 2.5));
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public double getMaxRenderDistanceSquared() {
+		return 16384.0D;
 	}
 
 }

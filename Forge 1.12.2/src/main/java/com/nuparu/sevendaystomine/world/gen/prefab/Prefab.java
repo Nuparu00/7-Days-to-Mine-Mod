@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.world.gen.prefab.buffered.BufferedEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockVine;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -70,9 +71,9 @@ public class Prefab {
 	}
 
 	public void generate(World world, BlockPos pos, int rotation) {
-		this.generate(world, pos, rotation,false);
+		this.generate(world, pos, rotation, false);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public void generate(World world, BlockPos pos, int rotation, boolean base) {
 		for (BufferedBlock buffered : blocks) {
@@ -83,6 +84,14 @@ public class Prefab {
 			BlockPos pos2 = bufferedBlock.getPos(pos);
 			if (pos2 == null)
 				continue;
+
+			if (base) {
+				IBlockState state2 = world.getBlockState(pos2);
+				if (!state2.getBlock().isReplaceable(world, pos2)
+						&& state.getBlock() instanceof BlockVine) {
+					continue;
+				}
+			}
 
 			Block block = state.getBlock();
 			state = block.withRotation(state, Utils.intToRotation(rotation));
@@ -108,7 +117,8 @@ public class Prefab {
 					BlockPos pos3 = pos2.down();
 					IBlockState state2 = world.getBlockState(pos3);
 					Block block2 = state2.getBlock();
-					while (block2.isReplaceable(world, pos3) || block2 instanceof BlockLog || block2 instanceof BlockLeaves) {
+					while (block2.isReplaceable(world, pos3) || block2 instanceof BlockLog
+							|| block2 instanceof BlockLeaves) {
 						world.setBlockState(pos3, state);
 						pos3 = pos3.down();
 						state2 = world.getBlockState(pos3);
@@ -123,21 +133,21 @@ public class Prefab {
 	}
 
 	public void generate(World world, BlockPos pos, EnumFacing facing) {
-		this.generate(world,pos,facing,false);
+		this.generate(world, pos, facing, false);
 	}
-	
+
 	public void generate(World world, BlockPos pos, EnumFacing facing, boolean base) {
-		this.generate(world, pos, Utils.facingToInt(facing),base);
+		this.generate(world, pos, Utils.facingToInt(facing), base);
 	}
-	
+
 	public int getWidth() {
 		return this.width;
 	}
-	
+
 	public int getHeight() {
 		return this.height;
 	}
-	
+
 	public int getLength() {
 		return this.length;
 	}

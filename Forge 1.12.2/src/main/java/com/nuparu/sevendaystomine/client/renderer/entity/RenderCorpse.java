@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderCorpse<T extends EntityZombieBase> extends RenderLiving<T> {
+public abstract class RenderCorpse<T extends EntityZombieBase> extends RenderLiving<T> {
 	private static final ResourceLocation DEFAULT_RES_LOC = new ResourceLocation("textures/entity/steve.png");
 	public ModelBase model = new ModelBiped();
 	protected float field_77070_b;

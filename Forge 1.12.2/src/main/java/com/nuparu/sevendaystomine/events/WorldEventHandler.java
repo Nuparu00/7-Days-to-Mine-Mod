@@ -1,9 +1,12 @@
 package com.nuparu.sevendaystomine.events;
 
+import java.util.List;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.IUpgradeable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
+import com.nuparu.sevendaystomine.entity.INoiseListener;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.util.DamageSources;
@@ -16,14 +19,18 @@ import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -169,6 +176,9 @@ public class WorldEventHandler {
 		}
 	}
 
+	/*
+	 * Syncs block damage
+	 */
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 
@@ -181,6 +191,9 @@ public class WorldEventHandler {
 
 	}
 
+	/*
+	 * Replaces vanilla torches with modded ones
+	 */
 	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
 	public void replaceTorchs(PopulateChunkEvent.Post event) {
 
@@ -201,6 +214,23 @@ public class WorldEventHandler {
 						world.setBlockState(pos, toBlock.getDefaultState().withProperty(BlockTorch.FACING,
 								oldState.getValue(BlockTorch.FACING)));
 						chunk.markDirty();
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {
+		Entity entity = event.getEntity();
+		if (entity != null) {
+			if (!(entity instanceof EntityMob)) {
+				float range = event.getVolume() * 50f;
+				AxisAlignedBB aabb = new AxisAlignedBB(entity.posX-range,entity.posY-(range/5),entity.posZ-range,entity.posX+range,entity.posY+(range/5),entity.posZ+range);
+				List<Entity> entities = entity.world.getEntitiesWithinAABB(Entity.class, aabb);
+				for(Entity e : entities) {
+					if(e instanceof INoiseListener) {
+						INoiseListener noiseListener = (INoiseListener)e;
 					}
 				}
 			}

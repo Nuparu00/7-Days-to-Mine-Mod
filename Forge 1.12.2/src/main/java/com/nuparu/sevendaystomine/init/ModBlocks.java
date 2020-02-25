@@ -184,7 +184,12 @@ public class ModBlocks {
 	public static final Block TRAFFIC_LIGHT = new BlockTrafficLight().setRegistryName("TrafficLight").setUnlocalizedName("TrafficLight");
 	public static final Block TRAFFIC_LIGHT_PEDESTRIAN = new BlockTrafficLightPedestrian().setRegistryName("TrafficLightPedestrian").setUnlocalizedName("TrafficLightPedestrian");
 	
-	public static final Block SEDAN = new BlockSedan().setRegistryName("Sedan").setUnlocalizedName("Sedan");
+	public static final Block SEDAN_RED = new BlockSedan().setRegistryName("sedan_red").setUnlocalizedName("sedan_red");
+	public static final Block SEDAN_GREEN = new BlockSedan().setRegistryName("sedan_green").setUnlocalizedName("sedan_green");
+	public static final Block SEDAN_BLUE = new BlockSedan().setRegistryName("sedan_blue").setUnlocalizedName("sedan_blue");
+	public static final Block SEDAN_YELLOW = new BlockSedan().setRegistryName("sedan_yellow").setUnlocalizedName("sedan_yellow");
+	public static final Block SEDAN_WHITE = new BlockSedan().setRegistryName("sedan_white").setUnlocalizedName("sedan_white");
+	public static final Block SEDAN_BLACK = new BlockSedan().setRegistryName("sedan_black").setUnlocalizedName("sedan_black");
 	
 	
 	public static final Block DEAD_MOSSY_STONE = new BlockStoneBase().setRegistryName("DeadMossyStone").setUnlocalizedName("DeadMossyStone");

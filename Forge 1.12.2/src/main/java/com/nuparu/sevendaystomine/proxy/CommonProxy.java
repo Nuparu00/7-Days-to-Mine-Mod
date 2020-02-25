@@ -6,16 +6,20 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
 import com.nuparu.sevendaystomine.entity.EntityFrostbittenWorker;
 import com.nuparu.sevendaystomine.entity.EntityFrozenLumberjack;
+import com.nuparu.sevendaystomine.entity.EntityInfectedSurvivor;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
+import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
 import com.nuparu.sevendaystomine.entity.EntityReanimatedCorpse;
 import com.nuparu.sevendaystomine.entity.EntityShot;
+import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
 import com.nuparu.sevendaystomine.events.TickHandler;
@@ -125,18 +129,32 @@ public class CommonProxy {
 	public void registerEntities() {
 		registerEntity(EntityShot.class, "shot", 128, 1, true);
 		registerEntity(EntityMountableBlock.class, "mountable_block", 64, 20, false);
-		registerEntity(EntityReanimatedCorpse.class, "reanimated_corpse", 64, 2, true);
+		registerEntity(EntityReanimatedCorpse.class, "reanimated_corpse", 64, 2, true, 0xffffff, 0xffffff);
 		registerEntity(EntityLootableCorpse.class, "lootable_corpse", 64, 2, true);
-		registerEntity(EntityBurntZombie.class, "burnt_zombie", 64, 2, true);
-		registerEntity(EntityFrigidHunter.class, "frigid_hunter", 64, 2, true);
-		registerEntity(EntityFrostbittenWorker.class, "frostbitten_worker", 64, 2, true);
-		registerEntity(EntityFrozenLumberjack.class, "frozen_lumberjack", 64, 2, true);
-		registerEntity(EntityZombieSoldier.class, "zombie_soldier", 64, 2, true);
-		registerEntity(EntitySurvivor.class, "survivor", 64, 1, true);
+		registerEntity(EntityBurntZombie.class, "burnt_zombie", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityFrigidHunter.class, "frigid_hunter", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityFrostbittenWorker.class, "frostbitten_worker", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityFrozenLumberjack.class, "frozen_lumberjack", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityZombieSoldier.class, "zombie_soldier", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntitySurvivor.class, "survivor", 64, 1, true, 0xffffff, 0xffffff);
 		registerEntity(EntityMinibike.class, "minibike", 64, 1, true);
-		registerEntity(EntityBloatedZombie.class, "bloated_zombie", 64, 2, true);
+		registerEntity(EntityBloatedZombie.class, "bloated_zombie", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityInfectedSurvivor.class, "infected_survivor", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntitySpiderZombie.class, "spider_zombie", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityPlaguedNurse.class, "plagued_nurse", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityBlindZombie.class, "blind_zombie", 64, 2, true, 0xffffff, 0xffffff);
 	}
 
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void registerEntity(ResourceLocation res, Class clazz, String name, int trackingRange, int updateFrequency,
+			boolean tracking, int primaryColor, int secondaryColor) {
+		entityID++;
+		EntityRegistry.registerModEntity(res, clazz, name, entityID, SevenDaysToMine.instance, trackingRange,
+				updateFrequency, tracking, primaryColor, secondaryColor);
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void registerEntity(ResourceLocation res, Class clazz, String name, int trackingRange, int updateFrequency,
 			boolean tracking) {
@@ -149,6 +167,12 @@ public class CommonProxy {
 	public void registerEntity(Class clazz, String name, int trackingRange, int updateFrequency, boolean tracking) {
 		this.registerEntity(new ResourceLocation(SevenDaysToMine.MODID + ":" + name), clazz, name, trackingRange,
 				updateFrequency, tracking);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void registerEntity(Class clazz, String name, int trackingRange, int updateFrequency, boolean tracking, int primaryColor, int secondaryColor) {
+		this.registerEntity(new ResourceLocation(SevenDaysToMine.MODID + ":" + name), clazz, name, trackingRange,
+				updateFrequency, tracking, primaryColor, secondaryColor);
 	}
 
 	public void openClientSideGui(int id, int x, int y, int z) {

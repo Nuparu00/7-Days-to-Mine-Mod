@@ -293,6 +293,11 @@ public class ModItems {
 	public static final Item STEEL_LEGGINGS = new ItemArmorBase(SevenDaysToMine.STEEL_ARMOR, 1, EntityEquipmentSlot.LEGS, "steel_leggings");
 	public static final Item STEEL_BOOTS = new ItemArmorBase(SevenDaysToMine.STEEL_ARMOR, 0, EntityEquipmentSlot.FEET, "steel_boots");
 	public static final Item STEEL_HELMET = new ItemArmorBase(SevenDaysToMine.STEEL_ARMOR, 0, EntityEquipmentSlot.HEAD, "steel_helmet");
+	
+	public static final Item LEATHER_IRON_CHESTPLATE = new ItemArmorBase(SevenDaysToMine.LEATHER_IRON_ARMOR, 0, EntityEquipmentSlot.CHEST, "leather_iron_chestplate");
+	public static final Item LEATHER_IRON_LEGGINGS = new ItemArmorBase(SevenDaysToMine.LEATHER_IRON_ARMOR, 1, EntityEquipmentSlot.LEGS, "leather_iron_leggings");
+	public static final Item LEATHER_IRON_BOOTS = new ItemArmorBase(SevenDaysToMine.LEATHER_IRON_ARMOR, 0, EntityEquipmentSlot.FEET, "leather_iron_boots");
+	public static final Item LEATHER_IRON_HELMET = new ItemArmorBase(SevenDaysToMine.LEATHER_IRON_ARMOR, 0, EntityEquipmentSlot.HEAD, "leather_iron_helmet");
 
 	public static final Item IRON_AXE = new ItemQualityAxe(SevenDaysToMine.IRON_TOOLS,-2.8).setRegistryName("iron_axe").setUnlocalizedName("iron_axe");
 }

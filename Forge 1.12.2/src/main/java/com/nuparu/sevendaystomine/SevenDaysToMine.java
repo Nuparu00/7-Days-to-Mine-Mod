@@ -201,6 +201,8 @@ public class SevenDaysToMine {
 			100, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 	public static final ItemArmor.ArmorMaterial STEEL_ARMOR = EnumHelper.addArmorMaterial("steel",
 			"sevendaystomine:steel", 500, new int[] { 3, 4, 3, 2 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+	public static final ItemArmor.ArmorMaterial LEATHER_IRON_ARMOR = EnumHelper.addArmorMaterial("leather_iron",
+			"sevendaystomine:leather_iron", 400, new int[] { 2, 3, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
 
 	public static final Block[] BLOCKS = new Block[] { ModBlocks.OAK_FRAME, ModBlocks.BIRCH_FRAME,
 			ModBlocks.SPRUCE_FRAME, ModBlocks.JUNGLE_FRAME, ModBlocks.ACACIA_FRAME, ModBlocks.DARKOAK_FRAME,
@@ -221,7 +223,7 @@ public class SevenDaysToMine {
 			ModBlocks.BOOKSHELF, ModBlocks.WRITING_TABLE, ModBlocks.MEDICAL_CABINET, ModBlocks.FRIDGE,
 			ModBlocks.MAIL_BOX, ModBlocks.BIRD_NEST, ModBlocks.TRASH_CAN, ModBlocks.SLEEPING_BAG, ModBlocks.WOODEN_DOOR,
 			ModBlocks.WOODEN_DOOR_REINFORCED, ModBlocks.TRAFFIC_LIGHT, ModBlocks.TRAFFIC_LIGHT_PEDESTRIAN,
-			ModBlocks.SEDAN, ModBlocks.DEAD_MOSSY_STONE, ModBlocks.DEAD_MOSSY_BRICK, ModBlocks.BASALT, ModBlocks.MARBLE,
+			ModBlocks.SEDAN_RED, ModBlocks.SEDAN_GREEN, ModBlocks.SEDAN_BLUE, ModBlocks.SEDAN_YELLOW, ModBlocks.SEDAN_WHITE, ModBlocks.SEDAN_BLACK, ModBlocks.DEAD_MOSSY_STONE, ModBlocks.DEAD_MOSSY_BRICK, ModBlocks.BASALT, ModBlocks.MARBLE,
 			ModBlocks.RHYOLITE, ModBlocks.BASALT_COBBLESTONE, ModBlocks.MARBLE_COBBLESTONE,
 			ModBlocks.RHYOLITE_COBBLESTONE, ModBlocks.BASALT_BRICKS, ModBlocks.MARBLE_BRICKS, ModBlocks.RHYOLITE_BRICKS,
 			ModBlocks.BASALT_POLISHED, ModBlocks.MARBLE_POLISHED, ModBlocks.RHYOLITE_POLISHED,
@@ -276,7 +278,7 @@ public class SevenDaysToMine {
 			ModItems.SHORT_SLEEVED_SHIRT, ModItems.T_SHIRT_0, ModItems.T_SHIRT_1, ModItems.COAT, ModItems.FIBER_HAT,
 			ModItems.FIBER_CHESTPLATE, ModItems.FIBER_LEGGINGS, ModItems.FIBER_BOOTS, ModItems.STEEL_HELMET,
 			ModItems.STEEL_CHESTPLATE, ModItems.STEEL_LEGGINGS, ModItems.STEEL_BOOTS, ModItems.IRON_AXE, ModItems.CENT,
-			ModItems.BACKPACK };
+			ModItems.BACKPACK, ModItems.LEATHER_IRON_BOOTS, ModItems.LEATHER_IRON_CHESTPLATE, ModItems.LEATHER_IRON_HELMET, ModItems.LEATHER_IRON_LEGGINGS};
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
