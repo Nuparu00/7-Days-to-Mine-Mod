@@ -15,7 +15,7 @@ import net.minecraft.world.storage.WorldSavedData;
 
 
 public class BreakSavedData extends WorldSavedData {
-        public static final String DATA_NAME = SevenDaysToMine.MODID+"BreakData";
+        public static final String DATA_NAME = SevenDaysToMine.MODID+":break_data";
         public ArrayList<BreakData> list = new ArrayList<BreakData>();
 
         public BreakSavedData() {
@@ -105,7 +105,6 @@ public class BreakSavedData extends WorldSavedData {
         }
         
         public void readFromNBT(NBTTagCompound nbt) {
-       
             NBTTagCompound tag = nbt.getCompoundTag("list");
             list = BreakHelper.readFromNBT(tag);
         }

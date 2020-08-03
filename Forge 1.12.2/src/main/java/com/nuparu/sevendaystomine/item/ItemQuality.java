@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
@@ -92,8 +93,7 @@ public class ItemQuality extends Item implements IQuality {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		NBTTagCompound nbt = stack.getTagCompound();
-		nbt.setInteger("Quality",
-				(int) Math.min(Math.max(Math.floor(player.getScore() / XP_PER_QUALITY_POINT), 1), MAX_QUALITY));
+		nbt.setInteger("Quality",(int) MathUtils.clamp(player.getScore() / XP_PER_QUALITY_POINT, 1, MAX_QUALITY));
 
 		return stack;
 	}
@@ -112,4 +112,25 @@ public class ItemQuality extends Item implements IQuality {
 		return stack.getTagCompound() == null ? false : stack.getTagCompound().hasKey("Quality", Constants.NBT.TAG_INT);
 	}
 
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		switch (getQualityTierFromStack(stack)) {
+		case FLAWLESS:
+			return 0xA300A3;
+		case GREAT:
+			return 0x4545CC;
+		case FINE:
+			return 0x37A337;
+		case GOOD:
+			return 0xB2B23C;
+		case POOR:
+			return 0xF09900;
+		case FAULTY:
+			return 0x89713C;
+		case NONE:
+		default:
+			return super.getRGBDurabilityForDisplay(stack);
+		}
+	}
+	
 }

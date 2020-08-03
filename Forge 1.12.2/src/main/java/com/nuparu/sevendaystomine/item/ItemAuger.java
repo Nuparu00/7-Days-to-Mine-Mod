@@ -65,7 +65,7 @@ public class ItemAuger extends ItemFuelTool {
 			if (effectiveAgainst.contains(block) || mat == Material.IRON || mat == Material.GRASS
 					|| mat == Material.GROUND || mat == Material.ROCK || mat == Material.ANVIL
 					|| mat == Material.SAND) {
-				return this.efficiency * (stack.getTagCompound().getInteger("Quality") / 5) + 10;
+				return this.efficiency * (1+(float) this.getQuality(stack) / 200f);
 			} else {
 				return 0F;
 			}

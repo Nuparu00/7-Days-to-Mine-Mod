@@ -15,9 +15,9 @@ public class PotionDysentery extends PotionBase {
 		super(badEffect, color);
 		this.setIconIndex(4, 0);
 		setRegistryName(SevenDaysToMine.MODID, "dysentery");
-		setPotionName("effect." + getRegistryName().toString());
+		setPotionName("effect." + getRegistryName().getResourcePath());
 		this.registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, "9c44164e-bf44-11e7-abc4-cec278b6b50a",
-				-0.05D, 1);
+				-0.1D, 2);
 	}
 
 	@Override

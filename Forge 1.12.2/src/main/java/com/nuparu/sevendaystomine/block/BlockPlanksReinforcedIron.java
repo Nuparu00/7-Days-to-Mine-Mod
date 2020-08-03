@@ -11,7 +11,7 @@ public class BlockPlanksReinforcedIron extends BlockUpgradeable {
 	public BlockPlanksReinforcedIron() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
-		setHardness(35f);
+		setHardness(3.1f);
 		setResistance(10f);
 		setHarvestLevel("pickaxe", 1);
 	}
@@ -21,7 +21,13 @@ public class BlockPlanksReinforcedIron extends BlockUpgradeable {
 	}
 	
 	@Override
-    public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face) {
+	public boolean isTopSolid(IBlockState state)
+    {
+        return true;
+    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
         return true;
     }
 }

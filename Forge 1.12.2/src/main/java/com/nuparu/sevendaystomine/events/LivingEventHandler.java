@@ -1,6 +1,11 @@
 package com.nuparu.sevendaystomine.events;
 
+import java.util.ArrayList;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.MathUtils;
 
@@ -20,9 +25,12 @@ import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.EntityVex;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -65,12 +73,36 @@ public class LivingEventHandler {
 			return;
 		}
 
-		for (int i = 0; i < (int) Math.round(MathUtils.getDoubleInRange(1, 5)*SevenDaysToMine.proxy.getParticleLevel()); i++) {
-			double x = entity.posX + MathUtils.getDoubleInRange(-1, 1) * entity.width;
-			double y = entity.posY + MathUtils.getDoubleInRange(0, 1) * entity.height;
-			double z = entity.posZ + MathUtils.getDoubleInRange(-1, 1) * entity.width;
-			SevenDaysToMine.proxy.spawnParticle(world, EnumModParticleType.BLOOD, x, y, z,
-					MathUtils.getDoubleInRange(-1d, 1d) / 7d, MathUtils.getDoubleInRange(-0.5d, 1d)  / 7d, MathUtils.getDoubleInRange(-1d, 1d) / 7d);
+		if (amount >= (entity.getMaxHealth() / 100 * 20) && world.rand.nextInt(16) == 0) {
+			PotionEffect effect = new PotionEffect(Potions.bleeding, Integer.MAX_VALUE, 1, false, false);
+			effect.setCurativeItems(new ArrayList<ItemStack>());
+			entity.addPotionEffect(effect);
 		}
+		if (amount > 0) {
+			for (int i = 0; i < (int) Math
+					.round(MathUtils.getDoubleInRange(1, 5) * SevenDaysToMine.proxy.getParticleLevel()); i++) {
+				double x = entity.posX + MathUtils.getDoubleInRange(-1, 1) * entity.width;
+				double y = entity.posY + MathUtils.getDoubleInRange(0, 1) * entity.height;
+				double z = entity.posZ + MathUtils.getDoubleInRange(-1, 1) * entity.width;
+				SevenDaysToMine.proxy.spawnParticle(world, EnumModParticleType.BLOOD, x, y, z,
+						MathUtils.getDoubleInRange(-1d, 1d) / 7d, MathUtils.getDoubleInRange(-0.5d, 1d) / 7d,
+						MathUtils.getDoubleInRange(-1d, 1d) / 7d);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onEntityFall(LivingFallEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
+		if (living instanceof EntityPlayer) {
+			if (event.getDistance() > 4
+					&& living.world.rand.nextFloat() * (Math.max(256 - (event.getDistance() * 25), 0)) <= 1) {
+				PotionEffect effect = new PotionEffect(Potions.brokenLeg,
+						(int) (MathUtils.getFloatInRange(0.5f, 1.5f) * (500 * event.getDistance())), 1, false, false);
+				effect.setCurativeItems(new ArrayList<ItemStack>());
+				living.addPotionEffect(effect);
+			}
+		}
+
 	}
 }

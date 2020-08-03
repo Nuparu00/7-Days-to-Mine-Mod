@@ -1,5 +1,7 @@
 package com.nuparu.sevendaystomine.client.gui.monitor;
 
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
@@ -13,7 +15,10 @@ import com.nuparu.sevendaystomine.util.computer.WindowsDesktopProcess;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 public class DesktopShortcut implements IDesktopElement, IDraggable {
 
@@ -130,7 +135,16 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 				GlStateManager.scale(fontSize, fontSize, 1);
 				GL11.glTranslated(0, (height * fontSize) / 2d, 0);
 			}
-			RenderUtils.drawCenteredString(localizedName, 0, 0, textColor);
+			if(localizedName.length() > 16) {
+				localizedName = localizedName.subSequence(0, 16)+"...";
+			}
+			List<ITextComponent> l = GuiUtilRenderComponents.splitText(new TextComponentString(localizedName), (int) Math.floor(width*4),
+					Screen.mc.fontRenderer, true, true);
+			for (int l1 = 0; l1 < l.size(); ++l1) {
+				ITextComponent textcompoenent = l.get(l1);
+
+				RenderUtils.drawCenteredString(textcompoenent.getFormattedText(), 0, l1 * Screen.mc.fontRenderer.FONT_HEIGHT, textColor, true);
+			}
 			GL11.glPopMatrix();
 
 		}

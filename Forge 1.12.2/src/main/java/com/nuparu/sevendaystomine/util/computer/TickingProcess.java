@@ -1,15 +1,30 @@
 package com.nuparu.sevendaystomine.util.computer;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import com.nuparu.sevendaystomine.client.gui.monitor.IScreenElement;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
+import com.nuparu.sevendaystomine.network.PacketManager;
+import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
+import com.nuparu.sevendaystomine.network.packets.SyncProcessMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,7 +53,7 @@ public abstract class TickingProcess {
 	public void clientInit() {
 		clientInit = true;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void clientTick() {
 		for (IScreenElement element : elements) {
@@ -57,10 +72,10 @@ public abstract class TickingProcess {
 	public void onClose() {
 
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void onButtonPressed(Button button, int mouseButton) {
-		
+
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -82,10 +97,17 @@ public abstract class TickingProcess {
 	}
 
 	public void readFromNBT(NBTTagCompound nbt) {
-		noTimeLimit = nbt.getBoolean("noTimeLimit");
-		existedFor = nbt.getLong("existedFor");
-		duration = nbt.getLong("duration");
+		if (nbt.hasKey("noTimeLimit")) {
+			noTimeLimit = nbt.getBoolean("noTimeLimit");
+		}
+		if (nbt.hasKey("existedFor")) {
+			existedFor = nbt.getLong("existedFor");
+		}
+		if (nbt.hasKey("duration")) {
+			duration = nbt.getLong("duration");
+		}
 		id = nbt.getUniqueId("id");
+
 	}
 
 	public void setComputer(TileEntityComputer computerTE) {
@@ -126,29 +148,134 @@ public abstract class TickingProcess {
 	@SideOnly(Side.CLIENT)
 	public void mouseReleased(int mouseX, int mouseY, int state) {
 		for (IScreenElement element : elements) {
-			element.mouseReleased(mouseX,mouseY,state);
+			element.mouseReleased(mouseX, mouseY, state);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
 		for (IScreenElement element : elements) {
-			element.mouseClickMove(mouseX,mouseY,clickedMouseButton,timeSinceLastClick);
+			element.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
 		}
 	}
+
 	@SideOnly(Side.CLIENT)
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		for (IScreenElement element : elements) {
-			element.mouseClicked(mouseX,mouseY,mouseButton);
+			element.mouseClicked(mouseX, mouseY, mouseButton);
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void initWindow() {
-		
+
 	}
-	
+
 	public TileEntityComputer getTE() {
 		return this.computerTE;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void sync() {
+		NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
+		PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void sync(String... fields) {
+		NBTTagCompound nbt = new NBTTagCompound();
+		for (String s : fields) {
+			System.out.println(s);
+			Class<?> clazz = this.getClass();
+			Field f = null;
+			while (f == null && clazz != null) // stop when we got field or reached top of class hierarchy
+			{
+				try {
+					f = clazz.getDeclaredField(s);
+				} catch (NoSuchFieldException e) {
+					clazz = clazz.getSuperclass();
+				}
+			}
+
+			if (f == null)
+				continue;
+			try {
+				f.setAccessible(true);
+				Object fieldValue;
+
+				fieldValue = f.get(this);
+
+				if (fieldValue == null)
+					continue;
+				if (fieldValue instanceof Integer) {
+					nbt.setInteger(s, (int) fieldValue);
+				} else if (fieldValue instanceof Double) {
+					nbt.setDouble(s, (double) fieldValue);
+				} else if (fieldValue instanceof Float) {
+					nbt.setFloat(s, (float) fieldValue);
+				} else if (fieldValue instanceof Long) {
+					nbt.setLong(s, (long) fieldValue);
+				} else if (fieldValue instanceof String) {
+					nbt.setString(s, (String) fieldValue);
+				} else if (fieldValue instanceof Boolean) {
+					nbt.setBoolean(s, (Boolean) fieldValue);
+				} else if (fieldValue instanceof Byte) {
+					nbt.setByte(s, (Byte) fieldValue);
+				} else if (fieldValue instanceof Short) {
+					nbt.setShort(s, (short) fieldValue);
+				}
+
+				else if (fieldValue instanceof List) {
+					List<?> list = (List<?>) fieldValue;
+					if (list.isEmpty())
+						continue;
+					Object first = list.get(0);
+
+					NBTTagList nbtList = new NBTTagList();
+					if (first instanceof Integer) {
+						for (Object i : list) {
+							nbtList.appendTag(new NBTTagInt((int) i));
+						}
+					} else if (first instanceof Double) {
+						for (Object i : list) {
+							nbtList.appendTag(new NBTTagDouble((double) i));
+						}
+					} else if (first instanceof Float) {
+						for (Object i : list) {
+							nbtList.appendTag(new NBTTagFloat((float) i));
+						}
+					} else if (first instanceof Long) {
+						for (Object i : list) {
+							nbtList.appendTag(new NBTTagLong((long) i));
+						}
+					} else if (first instanceof String) {
+						for (Object i : list) {
+							nbtList.appendTag(new NBTTagString((String) i));
+						}
+					} else if (fieldValue instanceof Boolean) {
+						for (Object i : list) {
+							nbtList.appendTag(new NBTTagByte((byte) i));
+						}
+					} else if (first instanceof Byte) {
+						for (Object i : list) {
+							nbtList.appendTag(new NBTTagByte((byte) i));
+						}
+					} else if (first instanceof Short) {
+						for (Object i : list) {
+							nbtList.appendTag(new NBTTagShort((short) i));
+						}
+					}
+					nbt.setTag(s, nbtList);
+				}
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		nbt.setUniqueId("id", id);
+		nbt.setString(ProcessRegistry.RES_KEY, ProcessRegistry.INSTANCE.getResByClass(this.getClass()).toString());
+		if (computerTE != null && nbt != null) {
+			PacketManager.syncProcess.sendToServer(new SyncProcessMessage(computerTE.getPos(), nbt));
+			System.out.println(nbt.toString());
+		}
 	}
 }

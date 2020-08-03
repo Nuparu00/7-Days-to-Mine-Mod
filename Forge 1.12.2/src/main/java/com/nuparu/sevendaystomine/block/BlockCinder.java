@@ -24,8 +24,8 @@ public class BlockCinder extends BlockHorizontalBase implements IScrapable {
 
 	public BlockCinder() {
 		super(Material.ROCK);
-		this.setResistance(12F);
-		this.setHardness(13F);
+		this.setResistance(1F);
+		this.setHardness(1.3F);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	}
 	

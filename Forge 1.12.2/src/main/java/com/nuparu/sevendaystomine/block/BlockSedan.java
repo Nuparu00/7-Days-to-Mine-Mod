@@ -16,6 +16,8 @@ public class BlockSedan extends BlockCar {
 	public BlockSedan() {
 		super(new byte[][][] {{{1,1,1},{1,1,1},{1,1,1},{1,1,1},{1,1,1}},{{0,0,0},{1,1,1},{1,1,1},{1,1,1},{0,0,0}}});
 		CityHelper.cars.add(this);
+		setHardness(20.0F);
+		setResistance(5.0F);
 	}
 
 

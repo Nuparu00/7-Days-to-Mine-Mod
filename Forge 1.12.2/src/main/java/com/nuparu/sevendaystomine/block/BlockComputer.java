@@ -2,7 +2,9 @@ package com.nuparu.sevendaystomine.block;
 
 import javax.annotation.Nullable;
 
+import com.nuparu.sevendaystomine.electricity.network.INetwork;
 import com.nuparu.sevendaystomine.item.ItemInstallDisc;
+import com.nuparu.sevendaystomine.item.ItemLinkTool;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumState;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
@@ -42,11 +44,15 @@ public class BlockComputer extends BlockTileProvider<TileEntityComputer> {
 	public BlockComputer() {
 		super(Material.ROCK);
 		this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
+		setHardness(1.5F);
+		setResistance(1.0F);
 	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (playerIn.getHeldItem(hand).getItem() instanceof ItemLinkTool)
+			return false;
 		if (!worldIn.isRemote) {
 			if (!playerIn.isSneaking()) {
 				TileEntity TE = worldIn.getTileEntity(pos);
@@ -83,7 +89,7 @@ public class BlockComputer extends BlockTileProvider<TileEntityComputer> {
 	public TileEntityComputer createTileEntity(World world, IBlockState state) {
 		return new TileEntityComputer();
 	}
-	
+
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
@@ -141,6 +147,9 @@ public class BlockComputer extends BlockTileProvider<TileEntityComputer> {
 		if (tileentity instanceof TileEntityComputer) {
 			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityComputer) tileentity);
 			worldIn.updateComparatorOutputLevel(pos, this);
+		}
+		if (tileentity instanceof INetwork) {
+			((INetwork) tileentity).disconnectAll();
 		}
 
 		super.breakBlock(worldIn, pos, state);

@@ -177,4 +177,9 @@ public class TileEntityCarMaster extends TileEntityCar implements ISidedInventor
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
 		return false;
 	}
+	
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return inventory;
+	}
 }

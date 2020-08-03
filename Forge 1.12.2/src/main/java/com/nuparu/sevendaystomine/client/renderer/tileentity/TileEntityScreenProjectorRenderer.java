@@ -33,6 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntityScreenProjectorRenderer extends TileEntitySpecialRenderer<TileEntityScreenProjector> {
 
+	//TO-DO: clean this
 	public void render(TileEntityScreenProjector te, double x, double y, double z, float partialTicks, int destroyStage,
 			float alpha) {
 		if (!te.hasValidImage())

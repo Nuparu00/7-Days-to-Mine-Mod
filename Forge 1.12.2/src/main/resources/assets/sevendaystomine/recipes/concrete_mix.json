@@ -1,0 +1,19 @@
+{
+  "type": "sevendaystomine:crafting_locked_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:sand",
+      "data": 0
+    },
+    {
+      "item": "sevendaystomine:cement"
+    },
+    {
+      "item": "minecraft:water_bucket"
+    }
+  ],
+  "result": {
+   "item": "sevendaystomine:concretemix"
+  },
+  "recipe": "concrete"
+}

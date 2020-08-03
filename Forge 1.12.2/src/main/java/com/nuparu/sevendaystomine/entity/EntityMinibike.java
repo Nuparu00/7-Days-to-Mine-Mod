@@ -12,6 +12,7 @@ import com.nuparu.sevendaystomine.inventory.itemhandler.MinibikeInventoryHandler
 import com.nuparu.sevendaystomine.item.IQuality;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.util.DamageSources;
+import com.nuparu.sevendaystomine.util.ItemUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -19,6 +20,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -36,6 +38,7 @@ import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -70,6 +73,9 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	private static final DataParameter<Integer> CALCULATED_QUALITY = EntityDataManager
 			.<Integer>createKey(EntityMinibike.class, DataSerializers.VARINT);
 
+	private static final DataParameter<Boolean> CHARGED = EntityDataManager.<Boolean>createKey(EntityMinibike.class,
+			DataSerializers.BOOLEAN);
+
 	private static final DataParameter<Float> FUEL = EntityDataManager.<Float>createKey(EntityMinibike.class,
 			DataSerializers.FLOAT);
 
@@ -79,11 +85,14 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	public final static UUID SPEED_MODIFIER_UUID = UUID.fromString("294093da-54f0-4c1b-9dbb-13b77534a84c");
 
 	private ItemStackHandler inventory = null;
-	
+
 	private double velocity;
 
 	public float wheelAngle;
 	public float wheelAnglePrev;
+	private float deltaRotation;
+	
+	public static final float MAX_FUEL = 5000;
 
 	public EntityMinibike(World world) {
 		super(world);
@@ -105,10 +114,11 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		this.dataManager.register(SEAT, false);
 		this.dataManager.register(HANDLES, false);
 		this.dataManager.register(CHEST, false);
+		this.dataManager.register(CHARGED, false);
 		this.dataManager.register(CHASSIS_QUALITY, 1);
 		this.dataManager.register(CALCULATED_QUALITY, -1);
-		this.dataManager.register(FUEL, 0f);
-		this.dataManager.register(OLD_POS, new BlockPos(0,-64,0));
+		this.dataManager.register(FUEL, 100f);
+		this.dataManager.register(OLD_POS, new BlockPos(0, -64, 0));
 	}
 
 	@Override
@@ -199,6 +209,14 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		return this.dataManager.get(OLD_POS);
 	}
 
+	protected void setCharged(boolean state) {
+		this.dataManager.set(CHARGED, state);
+	}
+
+	public boolean getCharged() {
+		return this.dataManager.get(CHARGED);
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
@@ -231,6 +249,10 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 			this.setCalculatedQuality(compound.getInteger("calculated_quality"));
 		}
 
+		if (compound.hasKey("charged", Constants.NBT.TAG_BYTE)) {
+			this.setCharged(compound.getBoolean("charged"));
+		}
+
 		if (compound.hasKey("fuel", Constants.NBT.TAG_FLOAT)) {
 			this.setFuel(compound.getFloat("fuel"));
 		}
@@ -254,6 +276,7 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		compound.setBoolean("chest", getChest());
 		compound.setInteger("chassis_quality", getChassisQuality());
 		compound.setInteger("calculated_quality", getCalculatedQuality());
+		compound.setBoolean("charged", getCharged());
 		compound.setFloat("fuel", getFuel());
 		compound.setLong("old_pos", getOldPos().toLong());
 
@@ -362,7 +385,7 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 
 		if (this.isComplete()) {
 			AttributeModifier speedModifier = new AttributeModifier(SPEED_MODIFIER_UUID, "Speed Modifier",
-					(quality / 1000f), 0);
+					(quality / 3333f), 0);
 			if (this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED)
 					.getModifier(SPEED_MODIFIER_UUID) != null) {
 				this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(this
@@ -407,7 +430,8 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 							} else {
 								damagesource = DamageSources.causeVehicleDamage(this, this);
 							}
-							entityIn.attackEntityFrom(damagesource, (float) velocity * 50F * (float)(getCalculatedQuality()/ItemQuality.MAX_QUALITY));
+							entityIn.attackEntityFrom(damagesource, (float) velocity * 50F
+									* (float) (getCalculatedQuality() / ItemQuality.MAX_QUALITY));
 						}
 
 					}
@@ -429,13 +453,22 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	public boolean isComplete() {
 		return this.getBattery() && this.getEngine() && this.getHandles() && this.getSeat() && this.getWheels();
 	}
-	
+
+	public boolean isBateryCharged() {
+		ItemStack battery = getInventory().getStackInSlot(3);
+		NBTTagCompound nbt = battery.getTagCompound();
+		return getBattery() && nbt != null && nbt.hasKey("voltage", Constants.NBT.TAG_INT)
+				&& nbt.getInteger("voltage") > 0;
+	}
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if(this.getOldPos().getY()<-1) {
-		this.setOldPos(new BlockPos(this));
+		if (!world.isRemote) {
+			this.setCharged(this.isBateryCharged());
+		}
+		if (this.getOldPos().getY() < -1) {
+			this.setOldPos(new BlockPos(this));
 		}
 		BlockPos delta = this.getOldPos().subtract(new BlockPos(this));
 		this.velocity = Math.sqrt(delta.getX() * delta.getX() + delta.getZ() * delta.getZ());
@@ -462,12 +495,16 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 
 		if (d9 > 0.1) {
 			if (this.getControllingPassenger() != null && this.getControllingPassenger() instanceof EntityLivingBase) {
-				if(world.rand.nextInt(10) < 4) {
-				IBlockState iblockstate = this.world
-						.getBlockState(new BlockPos(this.prevPosX, this.prevPosY - 1, this.prevPosZ));
-				this.world.playEvent(2001, new BlockPos(this.prevPosX, this.prevPosY - 1, this.prevPosZ),
-						Block.getStateId(iblockstate));
+				if (world.rand.nextInt(10) < 4) {
+					IBlockState iblockstate = this.world
+							.getBlockState(new BlockPos(this.prevPosX, this.prevPosY - 1, this.prevPosZ));
+					this.world.playEvent(2001, new BlockPos(this.prevPosX, this.prevPosY - 1, this.prevPosZ),
+							Block.getStateId(iblockstate));
 				}
+				if (world.rand.nextInt(15) == 0) {
+					this.setFuel((this.getFuel() - (10F / ItemUtils.getQuality(getInventory().getStackInSlot(4)))));
+				}
+
 			}
 			if (d9 > 0.4) {
 
@@ -482,13 +519,13 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 						double d7 = this.posX;
 						double d8 = this.posZ;
 
-						this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d7, this.posY, d8,
-								this.motionX, this.motionY, this.motionZ, new int[0]);
+						this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d7, this.posY, d8, this.motionX,
+								this.motionY, this.motionZ, new int[0]);
 					} else {
 						double d24 = this.posX;
 						double d25 = this.posZ;
-						this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d24, this.posY, d25,
-								this.motionX, this.motionY, this.motionZ, new int[0]);
+						this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d24, this.posY, d25, this.motionX,
+								this.motionY, this.motionZ, new int[0]);
 					}
 				}
 			}
@@ -497,24 +534,22 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	}
 
 	public void travel(float strafe, float vertical, float forward) {
-		if (this.isBeingRidden() && this.canBeSteered() && this.isComplete()) {
+		if (this.isBeingRidden() && this.canBeSteered() && this.isComplete() && this.getFuel() >= 0 && getCharged()) {
 			EntityLivingBase entitylivingbase = (EntityLivingBase) this.getControllingPassenger();
 
 			strafe = entitylivingbase.moveStrafing * 0.5F;
 			forward = entitylivingbase.moveForward;
-			
+
 			if (velocity > 0) {
 				this.rotationYaw = entitylivingbase.rotationYaw;
-				//this.prevRotationYaw = this.rotationYaw;
+				// this.prevRotationYaw = this.rotationYaw;
 				this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
-				/*double deltaYaw = -strafe*10d;
-				if(forward < 0) {
-					deltaYaw=-deltaYaw;
-				}
-				entitylivingbase.rotationYaw+=deltaYaw;
-				entitylivingbase.prevRotationYaw=entitylivingbase.rotationYaw;
-				this.rotationYaw+=deltaYaw;
-				this.prevRotationYaw = this.rotationYaw;*/
+				/*
+				 * double deltaYaw = -strafe*10d; if(forward < 0) { deltaYaw=-deltaYaw; }
+				 * entitylivingbase.rotationYaw+=deltaYaw;
+				 * entitylivingbase.prevRotationYaw=entitylivingbase.rotationYaw;
+				 * this.rotationYaw+=deltaYaw; this.prevRotationYaw = this.rotationYaw;
+				 */
 				this.setRotation(this.rotationYaw, this.rotationPitch);
 				this.renderYawOffset = this.rotationYaw;
 				this.rotationYawHead = this.renderYawOffset;
@@ -524,6 +559,17 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 				this.wheelAngle += (velocity * -1f);
 			} else {
 				this.wheelAngle += velocity;
+			}
+			if (forward != 0 && !this.world.isRemote) {
+				if (world.rand.nextInt(30) == 0) {
+					ItemStack battery = getInventory().getStackInSlot(3);
+					if (!battery.isEmpty()) {
+						NBTTagCompound nbt = battery.getTagCompound();
+						if (nbt != null && nbt.hasKey("voltage", Constants.NBT.TAG_INT)) {
+							nbt.setInteger("voltage", nbt.getInteger("voltage") - 1);
+						}
+					}
+				}
 			}
 
 			if (this.canPassengerSteer()) {
@@ -561,4 +607,50 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		return null;
 	}
 
+	protected void applyYawToEntity(Entity entityToUpdate) {
+		entityToUpdate.setRenderYawOffset(this.rotationYaw);
+		float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
+		float f1 = MathHelper.clamp(f, -105.0F, 105.0F);
+		entityToUpdate.prevRotationYaw += f1 - f;
+		entityToUpdate.rotationYaw += f1 - f;
+		entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
+	}
+
+	@Override
+	public void updatePassenger(Entity passenger) {
+		if (this.isPassenger(passenger)) {
+			float f = 0.0F;
+			float f1 = (float) ((this.isDead ? 0.009999999776482582D : this.getMountedYOffset())
+					+ passenger.getYOffset());
+
+			if (this.getPassengers().size() > 1) {
+				int i = this.getPassengers().indexOf(passenger);
+
+				if (i == 0) {
+					f = 0.2F;
+				} else {
+					f = -0.6F;
+				}
+
+				if (passenger instanceof EntityAnimal) {
+					f = (float) ((double) f + 0.2D);
+				}
+			}
+
+			Vec3d vec3d = (new Vec3d((double) f, 0.0D, 0.0D))
+					.rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
+			passenger.setPosition(this.posX + vec3d.x, this.posY + (double) f1, this.posZ + vec3d.z);
+			passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
+			if (this.getControllingPassenger() != passenger) {
+				passenger.rotationYaw += this.rotationYaw - this.prevRotationYaw;
+				this.applyYawToEntity(passenger);
+			}
+
+			if (passenger instanceof EntityAnimal && this.getPassengers().size() > 1) {
+				int j = passenger.getEntityId() % 2 == 0 ? 90 : 270;
+				passenger.setRenderYawOffset(((EntityAnimal) passenger).renderYawOffset + (float) j);
+				passenger.setRotationYawHead(passenger.getRotationYawHead() + (float) j);
+			}
+		}
+	}
 }

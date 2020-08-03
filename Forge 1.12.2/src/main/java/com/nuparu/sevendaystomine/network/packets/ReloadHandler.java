@@ -1,11 +1,10 @@
 package com.nuparu.sevendaystomine.network.packets;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.nuparu.sevendaystomine.item.ItemGun;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -21,7 +20,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessage> {
 
 	private Timer timer = new Timer();
-	private TimerTask task = new MyTask(this, 1500);
+	private TimerTask task = new MyTask(this);
 
 	EntityPlayer player = null;
 	World world = null;
@@ -51,10 +50,11 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 				 * if (stack.getTagCompound().getBoolean("Reloading") == false) {
 				 * stack.getTagCompound().setBoolean("Reloading", true);
 				 */
+				int reloadTime = gun.getReloadTime(stack);
 				stack.getTagCompound().setLong("NextFire",
-						world.getTotalWorldTime() + (long) Math.ceil((gun.getReloadTime() / 1000d) * 20));
-				task = new MyTask(this, gun.getReloadTime());
-				timer.schedule(task, gun.getReloadTime(), 1000);
+						world.getTotalWorldTime() + (long) Math.ceil((reloadTime / 1000d) * 20));
+				task = new MyTask(this);
+				timer.schedule(task, reloadTime, 1000);
 				// }
 			}
 		}
@@ -66,18 +66,10 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 
 			stack.getTagCompound().setBoolean("Reloading", false);
 			int toReload = stack.getTagCompound().getInteger("Capacity") - stack.getTagCompound().getInteger("Ammo");
-			if (stackBullet.getCount() > toReload) {
-				stackBullet.shrink(
-						stack.getTagCompound().getInteger("Capacity") - stack.getTagCompound().getInteger("Ammo"));
-				stack.getTagCompound().setInteger("Ammo", stack.getTagCompound().getInteger("Ammo") + toReload);
-			} else if (stackBullet.getCount() == toReload) {
-				stack.getTagCompound().setInteger("Ammo", stack.getTagCompound().getInteger("Ammo") + toReload);
-				player.inventory.clearMatchingItems(stackBullet.getItem(), -1, toReload, null);
-			} else {
-				stack.getTagCompound().setInteger("Ammo",
-						stack.getTagCompound().getInteger("Ammo") + stackBullet.getCount());
-				player.inventory.clearMatchingItems(stackBullet.getItem(), -1, toReload, null);
-			}
+			int reload = Math.min(toReload, Utils.getItemCount(player.inventory, bulletItem));
+
+			stack.getTagCompound().setInteger("Ammo", stack.getTagCompound().getInteger("Ammo") + reload);
+			player.inventory.clearMatchingItems(stackBullet.getItem(), -1, reload, null);
 		}
 	}
 
@@ -98,11 +90,9 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 
 	private class MyTask extends TimerTask {
 
-		private int MAX_SECONDS = 1500;
-		private int seconds = 0;
 		private ReloadHandler handler;
 
-		private MyTask(ReloadHandler h, int sec) {
+		private MyTask(ReloadHandler h) {
 			this.handler = h;
 		}
 

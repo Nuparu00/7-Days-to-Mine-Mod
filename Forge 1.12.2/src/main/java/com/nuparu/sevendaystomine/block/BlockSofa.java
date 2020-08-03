@@ -84,8 +84,8 @@ public class BlockSofa extends BlockHorizontalBase implements IScrapable {
 	public BlockSofa() {
 		super(Material.CLOTH);
 		setSoundType(SoundType.CLOTH);
-		setHardness(2.0F);
-		setResistance(10.0F);
+		setHardness(1.7F);
+		setResistance(6.0F);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		setHarvestLevel("axe", 0);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(SHAPE,EnumShape.STRAIGHT));

@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/woodframe",
+	"textures": {
+		"0": "sevendaystomine:blocks/planks_burnt",
+		"particle": "sevendaystomine:blocks/planks_burnt"
+	}
+}

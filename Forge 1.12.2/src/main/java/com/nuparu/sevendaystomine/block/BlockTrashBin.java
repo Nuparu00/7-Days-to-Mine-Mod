@@ -37,7 +37,7 @@ public class BlockTrashBin extends BlockTileProvider<TileEntityTrashBin> impleme
 	public BlockTrashBin() {
 		super(Material.GROUND);
 		setSoundType(SoundType.METAL);
-		this.setHardness(2);
+		this.setHardness(1);
 		this.setResistance(1.5F);
 	}
 	

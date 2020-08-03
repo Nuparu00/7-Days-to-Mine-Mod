@@ -2,8 +2,8 @@
 	"parent": "block/block",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "sevendaystomine:blocks/berry_ungrown"
-		particle": "sevendaystomine:blocks/berry_ungrown"
+		"1": "sevendaystomine:blocks/berry_ungrown",
+		"particle": "sevendaystomine:blocks/berry_ungrown"
 	},
 	"elements": [
 		{

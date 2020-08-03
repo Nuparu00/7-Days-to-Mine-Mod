@@ -34,8 +34,8 @@ public class BlockMedicalCabinet extends BlockTileProvider<TileEntityMedicalCabi
 	public BlockMedicalCabinet() {
 		super(Material.ROCK);
 		setSoundType(SoundType.METAL);
-		setHardness(10.0F);
-		setResistance(10.0F);
+		setHardness(1.8F);
+		setResistance(3.0F);
 		setHarvestLevel("pickaxe", 0);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}

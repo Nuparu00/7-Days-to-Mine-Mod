@@ -1,7 +1,7 @@
 package com.nuparu.sevendaystomine.tileentity;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
-import com.nuparu.sevendaystomine.tileentity.TileEntityForge.slotEnum;
+import com.nuparu.sevendaystomine.tileentity.TileEntityForge.EnumSlots;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,11 +15,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 
-public abstract class TileEntitySafe extends TileEntityLockable implements ITickable, ISidedInventory {
+public abstract class TileEntitySafe extends TileEntityLockableLoot implements ITickable, ISidedInventory {
 
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(9, ItemStack.EMPTY);
 	private String customName;
@@ -126,7 +127,7 @@ public abstract class TileEntitySafe extends TileEntityLockable implements ITick
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return (index != slotEnum.OUTPUT_SLOT.ordinal());
+		return (index != EnumSlots.OUTPUT_SLOT.ordinal());
 	}
 
 	@Override
@@ -227,6 +228,11 @@ public abstract class TileEntitySafe extends TileEntityLockable implements ITick
 	    if(hasWorld()) {
 	    	world.notifyBlockUpdate(pos, world.getBlockState(this.pos), world.getBlockState(this.pos), 2);
 	    }
+	}
+	
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return inventory;
 	}
 
 }

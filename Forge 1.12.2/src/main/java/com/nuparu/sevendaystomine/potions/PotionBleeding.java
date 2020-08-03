@@ -6,6 +6,7 @@ import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.EnumDifficulty;
 
 public class PotionBleeding extends PotionBase {
 
@@ -13,7 +14,7 @@ public class PotionBleeding extends PotionBase {
 		super(badEffect, color);
 		this.setIconIndex(0, 0);
 		setRegistryName(SevenDaysToMine.MODID, "bleeding");
-		setPotionName("effect." + getRegistryName().toString());
+		setPotionName("effect." + getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -26,16 +27,17 @@ public class PotionBleeding extends PotionBase {
 		if (entity.world.rand.nextInt(12) == 0) {
 			entity.attackEntityFrom(DamageSources.bleeding, 1);
 		}
-		if (entity.world.rand.nextInt(5) == 0) {
+		if (entity.world.isRemote && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL) {
+			if (entity.world.rand.nextInt(5) == 0) {
 
-			if (entity.world.isRemote) {
-
-				for (int i = 0; i < (int) Math.round(MathUtils.getDoubleInRange(1, 5)*SevenDaysToMine.proxy.getParticleLevel()); i++) {
+				for (int i = 0; i < (int) Math
+						.round(MathUtils.getDoubleInRange(1, 5) * SevenDaysToMine.proxy.getParticleLevel()); i++) {
 					double x = entity.posX + MathUtils.getDoubleInRange(-1, 1) * entity.width;
 					double y = entity.posY + MathUtils.getDoubleInRange(0, 1) * entity.height;
 					double z = entity.posZ + MathUtils.getDoubleInRange(-1, 1) * entity.width;
 					SevenDaysToMine.proxy.spawnParticle(entity.world, EnumModParticleType.BLOOD, x, y, z,
-							MathUtils.getDoubleInRange(-1d, 1d) / 7d, MathUtils.getDoubleInRange(-0.5d, 1d)  / 7d, MathUtils.getDoubleInRange(-1d, 1d) / 7d);
+							MathUtils.getDoubleInRange(-1d, 1d) / 7d, MathUtils.getDoubleInRange(-0.5d, 1d) / 7d,
+							MathUtils.getDoubleInRange(-1d, 1d) / 7d);
 				}
 			}
 		}

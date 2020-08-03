@@ -1,0 +1,16 @@
+{
+   "type":"sevendaystomine:crafting_quality_shaped",
+   "pattern":[
+      "SSS",
+      "S S"
+   ],
+   "key":{
+      "S":{
+         "item":"sevendaystomine:scrapiron"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:scrap_helmet",
+      "count":1
+   }
+}

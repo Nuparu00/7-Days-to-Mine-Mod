@@ -29,8 +29,8 @@ public class BlockDresser extends BlockTileProvider<TileEntityDresser> {
 	public BlockDresser() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
-		setHardness(14.0F);
-		setResistance(6.0F);
+		setHardness(3.0F);
+		setResistance(5.0F);
 		setHarvestLevel("axe", 0);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}

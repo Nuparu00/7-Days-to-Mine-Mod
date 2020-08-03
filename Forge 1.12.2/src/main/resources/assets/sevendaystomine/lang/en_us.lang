@@ -43,20 +43,24 @@ death.attack.sharpGlass=%1$s has cut themself by sharp glass.
 death.attack.alcoholPoison.player=%1$s has died of alcohol poisoning while fighting %2$s.
 death.attack.alcoholPoison=%1$s has died of alcohol poisoning.
 
-death.attack.bleeding.player=%1$s bled while fighting %2$s.
-death.attack.bleeding=%1$s bled.
+death.attack.bleeding.player=%1$s bled out while fighting %2$s.
+death.attack.bleeding=%1$s bled out.
 
 death.attack.shot.entity=%1$s was shot by %2$s.
 death.attack.shot.entity.item=%1$s was shot by %2$s using %3$s.
 death.attack.shot.entity.unknown=%1$s was shot.
 
+death.attack.infection.player=%1$s died due to infection while fighting %2$s.
+death.attack.infection=%1$s died due to infection.
+
 #Chat Messages
 
 upgrade.missing=You need %1$s to upgrade %2$s.
 repair.missing=You need %1$s to repair %2$s.
-computer.install=Installing %1$s...
+computer.install=Installing %s...
 computer.turn.on=Turning on...
 computer.turn.off=Turning off...
+voltmeter.message=This block has voltage of %1$sV.
 
 #Computer Text
 computer.win10.product_key=It's time to enter the product key
@@ -70,19 +74,30 @@ computer.win10.welcome_back=Welcome back!
 computer.win10.login=Login
 computer.app.shell=Shell
 computer.app.shell.desc=A shell interface
+computer.app.command_line=Command Line
 computer.app.notes=Notes
-computer.app.notes.desc=Yellow and sticky notes
+computer.app.notes.desc=Yellow sticky notes
+computer.app.cctv=MineSpy
+computer.app.cctv.desc=MineSpy
+computer.app.cctv.no.camera=NO CAMERA CONNECTED
+computer.app.explorer=MineNet Explorer
 
 #Status Effects
 
-effect.sevendaystomine:thirst=Thirst
-effect.sevendaystomine:dysentery=Dysentery
-effect.sevendaystomine:alcoholbuzz=Alcohol Buzz
-effect.sevendaystomine:drunk=Drunk
-effect.sevendaystomine:alcoholpoison=Alcohol Poison
-effect.sevendaystomine:caffeinebuzz=Caffeine Buzz
-effect.sevendaystomine:bleeding=Bleeding
-effect.sevendaystomine:infection=Infection
+effect.thirst=Thirst
+effect.dysentery=Dysentery
+effect.alcoholbuzz=Alcohol Buzz
+effect.drunk=Drunk
+effect.alcoholpoison=Alcohol Poison
+effect.caffeinebuzz=Caffeine Buzz
+effect.bleeding=Bleeding
+effect.infection=Infection
+effect.broken_leg=Broken Leg
+
+#Enchantments
+
+enchantment.fast_reload=Fast Reload
+enchantment.marksman=Marksman
 
 #GUI
 
@@ -106,10 +121,13 @@ container.corpse=Corpse
 container.workbench=Workbench
 container.chemistry=Chemistry
 container.generator.gas=Gas Generator
+container.generator.combustion=Combustion Generator
 container.projector=Screen Projector
 container.dresser=Dresser
 container.trash_bin=Trash Bin
 container.car=Car
+container.file_cabinet=File Cabinet
+container.cash_register=Cash Register
 
 gui.warning=WARNING
 mod.new.update=Your 7 Days to Mine version is outdated!
@@ -122,10 +140,135 @@ gui.version=Current version:
 gui.lastVersion=Newest version: 
 menu.fast_connect=Official Server
 mp3.nofile.0=No files found!
-mp3.nofile.1=Please add some .wav file to
+mp3.nofile.1=Please add a .wav file to
 
 gui.electricity.voltage=Voltage: 
 gui.electricity.stored=Stored: 
+unlocked.toast=Recipes Unlocked!
+
+horde.bloodmoon.name=Bloodmoon Horde
+
+book_forging.title=Forge Ahead
+book_forging.desc=Blacksmithing, Metalworks and more
+survival_guide.title=Survival Guide
+survival_guide.desc=How to survive when things go wrong
+book_ammo.title=Ammunition Nation
+book_ammo.desc=From scrap to ammo
+book_computers.title=Null Pointer
+book_computers.desc=Program everything from a microwave to a deadly turret.
+book_concrete.title=Set In Concrete
+book_concrete.desc=Mixing and pouring concrete that lasts.
+
+#Books
+book.contents=Contents
+survival_guide.subtitle=How to survive when things go wrong
+survival_guide.author=Maxmilian Vyroubal
+survival_guide.contents.1=1. Primitive Tools
+survival_guide.tools.1=Tools are really important. One could say that they are what makes us people different from animals. They allow us to change our surroundings. That is why you have to make some! Most likely you only have materials like
+survival_guide.tools.2=rocks and wood, so you have to make do with these.
+survival_guide.contents.2=2. Primitive Clothes
+survival_guide.clothing.1=Clothing can give additional resistance to different environmental influences. Of course, you won't be able to make 100%% cotton clothing, but you can make one, for example, from plants.
+survival_guide.contents.3=3. Quality
+survival_guide.quality.1=Depending on how skillful you are the items you craft can have different quality. The quality of an item can affect how efficient/accurate and/or durable the item is. Getting more experience is the key to better items.
+survival_guide.quality.2=Right now, there are recognized these 6 tiers of quality:
+survival_guide.quality.3=Keep in mind that certain medical conditions such as death may negatively affect your crafting skill.
+survival_guide.contents.4=4. Campfire
+survival_guide.campfire.1=Fire is important. It gives you light and heat during nights and allows you to cook, grill, bake, distillate, etc.. It is one of the first things you should try to acquire.
+survival_guide.contents.5=5. Shelter
+survival_guide.shelter.1=While you could make a shelter from basically anything, the best starter choice is wood. Chop down a few trees and craft some frame blocks
+survival_guide.shelter.2=for your shelter, that you can later upgrade using your axe and some planks.
+survival_guide.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+survival_guide.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+book_forging.subtitle=Blacksmithing, Metalworks and more
+book_forging.author=Maxmilian Vyroubal
+book_forging.contents.1=1. Building a Forge
+book_forging.contents.2=2. Making Molds
+book_forging.contents.3=3. Casting Metals
+book_forging.contents.4=4. List of Metals
+book_forging.forge.1=The first thing you need if you want to start forging is a forge. It is surprisingly easy to build one if you have all material. Most of a forge is built out of some non-flammable material, like a stone.
+book_forging.forge.2=But this is not enough to melt metals. You need to force more oxygen to the forge. You can use bellows for this. The last thing you need is some pipe for smoke output.
+book_forging.molds.1=Making a mold is even simpler. You just need some clay - at least for the simpler ones. The more complicated ones also need the original item.
+book_forging.casting.1=In order to cast a metal, you need some source of the metal, like some ores or scraps and also something flammable, that will burn and eventually melt
+book_forging.casting.2=the metal. A very good choice is a coal but basically, everything that burns is enough.
+book_forging.casting.a=A - Mold
+book_forging.casting.b=B - Fuel
+book_forging.casting.c=C - Output
+book_forging.casting.d=D - Input
+book_forging.metals.iron=Iron
+book_forging.metals.iron.1=Common, durable metal. Used for making steel.
+book_forging.metals.gold=Gold
+book_forging.metals.gold.1=Rare, soft metal. Excellent electrical conductor.
+book_forging.metals.copper=Copper
+book_forging.metals.copper.1=Uncommon, soft metal. Good  electrical conductor. Used in alloys.
+book_forging.metals.tin=Tin
+book_forging.metals.tin.1=Uncommon, soft metal from the far lands of tin land. Used in alloys.
+book_forging.metals.zinc=Zinc
+book_forging.metals.zinc.1=Common, soft metal. Used in alloys (brass).
+book_forging.metals.lead=Lead
+book_forging.metals.lead.1=Uncommon, toxic metal. Used for electrical accumulators and bullet tips
+book_forging.metals.mercury=Mercury
+book_forging.metals.mercury.1=Liquid, toxic metal. 
+book_forging.metals.brass=Brass
+book_forging.metals.brass.1=Alloy, mixture of copper and zinc in ratio of 2:1.
+book_forging.metals.bronze=Bronze
+book_forging.metals.bronze.1=Alloy, mixture of copper and tin in ratio of 2:1.
+book_forging.metals.steel=Steel
+book_forging.metals.steel.1=Alloy, mixture of iron and carbon in ratio of 2:1.
+book_forging.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_forging.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+
+book_ammo.subtitle=From scrap to ammo
+book_ammo.author=Maxmilian Vyroubal
+book_ammo.contents.1=1. Bullet Parts
+book_ammo.contents.2=2. 9x19mm
+book_ammo.contents.3=3. 10x25mm
+book_ammo.contents.4=4. 7,62x39mm
+book_ammo.contents.5=5. .44 Mag
+book_ammo.contents.6=6. 5,56x45mm
+book_ammo.parts.1=Almost all types of bullets, except for shotgun shells, are made from bullet casing, bullet tip, and some gunpowder. It is quite simple to make them in large numbers if you have at least one piece of each one.
+book_ammo.parts.2=Simply just create a mold of each one, get a forge, some material and you have your bullet parts. The bullet tip is made of lead while the casing is made out of brass.
+book_ammo.pistol.1=9x19mm (or just 9mm) bullets are used by a pistol. They are not hard to make as they do not need very much gunpowder.
+book_ammo.smg.1=10x25mm (or just 10mm) bullets are used by MP5 Sub-Machine Gun.
+book_ammo.sniper.1=7,62x39mm (or just 7,62mm) bullets are probably the most widely used bullets because it used by almost all rifles.
+book_ammo.magnum.1=.44 Magnum (or just .44 Mag) is ammunition designed for revolver and its variants.
+book_ammo.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_ammo.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+book_computers.subtitle=Programming & Computers for beginners
+book_computers.author=Maxmilian Vyroubal
+book_computers.contents.1=1. Hardware
+book_computers.contents.2=2. Software
+book_computers.contents.3=3. Programming
+book_computers.contents.4=4. Turrets
+book_computers.hardware.1=Let's talk first about computer hardware. For a solid running computer, you need these parts: Motherboard, CPU, Power Source, HDD, RAM, GPU + some case, and a monitor to see something.
+book_computers.hardware.2=You might need a screwdriver to open the case.
+book_computers.software.1=The most important part of this topic is an operating system. The operating system provides communication between hardware and individual programs. There are many different operating systems, so you should
+book_computers.software.2=choose one that suits best your needs. You can install any OS on any functional computer without OS by clicking on the computer with its respective installation CD.
+book_computers.programming.1=Programming is not the main topic of this guide, however, let's take a small look at it. On every OS you can find a program called "OpenPCB". The main focus of OpenPCB is the programming of Printed Circuit Boards, but you can
+book_computers.programming.2=use it for programming in general.
+book_computers.turrets.1=A turret is a device that automatically aims at its target. It can be a missile or machine gun based. Though it is not completely legal to write here how to build one,
+book_computers.turrets.2=we believe that YOU have the right to protect yourself (though it is very unlikely you will get your hands on the required parts).
+book_computers.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_computers.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+book_concrete.subtitle=Concrete that lasts
+book_concrete.author=Maxmilian Vyroubal
+book_concrete.contents.1=1. Getting Cement
+book_concrete.contents.2=2. Mixing Concrete
+book_concrete.contents.3=3. Concrete
+book_concrete.contents.4=4. Reinforcing
+book_concrete.cement.1=Concrete consists of gravel, water, and also cement. Making cement is quite simple if you have a forge. First, you need a concrete mold. Also, you need a bunch of gravel.
+book_concrete.cement.2=Put both of them to the forge and let it burn. After a while, you will get some cement.
+book_concrete.mixing.1=As has been already mentioned, for mixing concrete you need some cement, gravel, and water.
+book_concrete.mixing.2=Just mix them in 1:1:1 ratio and you have some concrete mix.
+book_concrete.concrete.1=Making a concrete block is as simple as putting a concrete
+book_concrete.concrete.2=mix to crafting table. Yes, that's it. But this concrete is much less durable compared to reinforced concrete.
+book_concrete.reinforcing.1=Reinforced concrete is the strongest block (exlcuding Bedrock). However, because of this, it takes a while to get it. First, you need to create a Rebar Frame from pipes on a workbench. Then place the rebar frame where it suits you.
+book_concrete.reinforcing.2=Grab some construction tool, like a stone axe, clawhammer, wrench,etc.. , and some wood planks and punch it until it is not filed with wood on sides. Get some concrete mix and fill the block with it. Now just give it some time to drying.
+book_concrete.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_concrete.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
 
 #Creative Tabs
 
@@ -135,6 +278,7 @@ itemGroup.sevendaystomine.medicine=7 Days to Mine - Medicine
 itemGroup.sevendaystomine.forging=7 Days to Mine - Forging
 itemGroup.sevendaystomine.electricity=7 Days to Mine - Electricity
 itemGroup.sevendaystomine.clothing=7 Days to Mine - Clothing
+itemGroup.sevendaystomine.books=7 Days to Mine - Recipe Books
 
 #Items
 
@@ -232,12 +376,12 @@ item.WoodenDoorReinforcedItem.name=Wooden Door Reinforced
 item.locked_door_item.name=Locked Door
 item.RealityWand.name=Reality Wand
 item.MP3Player.name=MP3 Player
-item.Auger.name=Auger
+item.auger.name=Auger
 item.screwdriver.name=Screwdriver
 item.ram.name=RAM
 item.gpu.name=Graphics Processing Unit
 item.cpu.name=Central Processing Unit
-item.power_supply.name=Power Supply Uni
+item.power_supply.name=Power Supply Unit
 item.motherboard.name=Motherboard
 item.hdd.name=HDD
 item.wire.name=Wire
@@ -283,6 +427,55 @@ item.leather_iron_helmet.name=Leather-Iron Helmet
 item.leather_iron_chestplate.name=Leather-Iron Chestplate
 item.leather_iron_leggings.name=Leather-Iron Leggings
 item.leather_iron_boots.name=Leather-Iron Boots
+item.voltmeter.name=Voltmeter
+item.chainsaw.name=Chainsaw
+item.copper_pickaxe.name=Copper Pickaxe
+item.bronze_pickaxe.name=Bronze Pickaxe
+item.iron_pickaxe.name=Iron Pickaxe
+item.steel_pickaxe.name=Steel Pickaxe
+item.copper_axe.name=Copper Axe
+item.bronze_axe.name=Bronze Axe
+item.iron_axe.name=Iron Axe
+item.steel_axe.name=Steel Axe
+item.copper_shovel.name=Copper Shovel
+item.bronze_shovel.name=Bronze Shovel
+item.iron_shovel.name=Iron Shovel
+item.steel_shovel.name=Steel Shovel
+item.book_forging.name=Recipe Book
+item.book_ammo.name=Recipe Book
+item.book_computers.name=Recipe Book
+item.book_concrete.name=Recipe Book
+item.iron_pipe.name=Iron Pipe
+item.scrap_pickaxe.name=Scrap Pickaxe
+item.scrap_shovel.name=Scrap Shovel
+item.circuit.name=Circuit
+item.survival_guide.name=Survival Guide
+item.microphone.name=Microphone
+item.link_tool.name=Cable
+item.bullet_tip.name=Bullet Tip
+item.bullet_casing.name=Bullet Casing
+item.moldy_bread.name=Moldy Bread
+item.sledgehammer.name=Sledgehammer
+item.pistol_slide.name=Pistol Slide
+item.pistol_trigger.name=Pistol Trigger
+item.pistol_grip.name=Pistol Grip
+item.sniper_rifle_barrel.name=Sniper Rifle Barrel
+item.sniper_rifle_trigger.name=Sniper Rifle Trigger
+item.sniper_rifle_scope.name=Sniper Rifle Scope
+item.sniper_rifle_parts.name=Sniper Rifle Parts
+item.sniper_rifle_stock.name=Sniper Rifle Stock
+item.scrap_helmet.name=Scrap Helmet
+item.scrap_chestplate.name=Scrap Chestplate
+item.scrap_leggings.name=Scrap Leggings
+item.scrap_boots.name=Scrap Boots
+item.shotgun.name=Shotgun
+item.shotgun_short.name=Sawed-off Shotgun
+item.bellows.name=Bellows
+item.bullet_tip_mold.name=Bullet Tip Mold
+item.bullet_casing_mold.name=Bullet Casing Mold
+item.bullet_10mm=10mm Bullet
+item.cement_mold.name=Cement Mold
+item.sniper_rifle.name=Sniper Rifle
 
 #Blocks
 
@@ -495,6 +688,33 @@ tile.sedan_yellow.name=Yellow Sedan
 tile.sedan_white.name=White Sedan
 tile.sedan_black.name=Black Sedan
 
+tile.airplane_rotor.name=Airplane Engine
+tile.solar_panel.name=Solar Panel
+tile.wind_turbine.name=Wind Turbine
+tile.airplane_rotor.name=Airplane Engine
+tile.battery_station.name=Airplane Engine
+tile.energy_switch.name=Energy Switch
+tile.generator_combustion.name=Energy Switch
+tile.thermometer.name=Thermometer
+
+tile.brick_block_mossy.name=Mossy Bricks
+tile.dark_bricks_mossy.name=Mossy Dark Bricks
+
+tile.file_cabinet.name=File Cabinet
+tile.cash_register.name=Cash Register
+tile.burnt_log.name=Burnt Log
+tile.burnt_planks.name=Burnt Planks
+tile.burnt_frame.name=Burnt Frame
+tile.dry_ground.name=Dry Ground
+tile.burnt_planks_stairs.name=Burnt Planks Stairs
+tile.burnt_planks_slab.name=Burnt Planks Slab
+tile.burnt_planks_slab_double.name=Double Burnt Planks Slab
+tile.burnt_planks_fence.name=Burnt Planks Fence
+tile.burnt_chair.name=Burnt Chair
+tile.stone_brick_stairs_mossy.name=Mossy Stone Brick Stairs
+
+tile.radio.name=Radio
+
 #Sound Subtitles
 
 sdtm.subtitle.upgrade_wood=Upgrade Wood
@@ -511,6 +731,9 @@ sdtm.subtitle.door.locked=Locked Door
 sdtm.subtitle.camera.take=Camera Take
 sdtm.subtitle.hunting_rifle.shot=Hunting Rifle Shot
 sdtm.subtitle.hunting_rifle.reload=Hunting Rifle Reload
+sdtm.subtitle.white_noise=White Noise
+sdtm.subtitle.emergency_alert_system=Emergency Alert System
+sdtm.subtitle.recipe_unlocked=Recipe Unlocked
 
 #Keybinding
 key.sevendaystomine.category=7 Days to Mine
@@ -567,6 +790,11 @@ entity.infected_survivor.name=Infected Survivor
 entity.spider_zombie.name=Spider Zombie
 entity.plagued_nurse.name=Plagued Nurse
 entity.blind_zombie.name=Blind Zombie
+entity.bandit.name=Bandit
+entity.zombie_crawler.name=Zombie Crawler
+entity.airdrop.name=Airdrop
+entity.zombie_policeman.name=Zombie Policeman
+entity.projectile_vomit.name=Projectile Vomit
 
 #Fluids
 fluid.gasoline=Gasoline

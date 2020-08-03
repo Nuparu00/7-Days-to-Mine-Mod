@@ -485,7 +485,9 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 
 		dusts.addAll(dustsToAdd);
 		dusts.removeAll(dustsToRemove);
-
+		dustsToRemove.clear();
+		dustsToAdd.clear();
+		
 		List<Dust> dustsClone = new ArrayList<Dust>();
 		dustsClone.addAll(dusts);
 		ListIterator<Dust> it = dustsClone.listIterator();
@@ -497,7 +499,6 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 				dust.opacity -= 0.05f;
 			}
 		}
-		dustsToAdd.clear();
 
 		if ((dusts.size() + dustsToAdd.size()) < NATURAL_MAXIMUM_DUST_PARTICLES) {
 			while ((dusts.size() + dustsToAdd.size()) < Math.min(

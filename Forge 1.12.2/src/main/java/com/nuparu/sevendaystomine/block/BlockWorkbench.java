@@ -22,6 +22,8 @@ public class BlockWorkbench extends BlockHorizontalBase {
 		super(Material.WOOD);
 		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+		this.setHardness(2F);
+		this.setResistance(3.0F);
 	}
 
 	@Override

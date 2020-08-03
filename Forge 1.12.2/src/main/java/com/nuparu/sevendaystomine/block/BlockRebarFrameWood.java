@@ -22,7 +22,7 @@ public class BlockRebarFrameWood extends BlockBase {
 	public BlockRebarFrameWood() {
 		super(Material.IRON);
 		setSoundType(SoundType.METAL);
-		setHardness(10f);
+		setHardness(2.33f);
 		setResistance(10f);
 		setHarvestLevel("pickaxe", 1);
 	}

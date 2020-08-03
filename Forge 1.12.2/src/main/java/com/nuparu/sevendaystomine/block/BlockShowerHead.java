@@ -27,7 +27,7 @@ public class BlockShowerHead extends BlockHorizontalBase implements IScrapable {
 	public BlockShowerHead() {
 		super(Material.ROCK);
 		this.setSoundType(SoundType.METAL);
-		this.setHardness(4f);
+		this.setHardness(1f);
 		this.setResistance(2f);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	}

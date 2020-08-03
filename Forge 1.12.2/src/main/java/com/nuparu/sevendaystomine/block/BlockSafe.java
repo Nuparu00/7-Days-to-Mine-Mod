@@ -17,7 +17,7 @@ public abstract class BlockSafe<TE extends TileEntitySafe> extends BlockTileProv
 	
 	public BlockSafe() {
 		super(Material.IRON);
-		setHardness(40.0F);
+		setHardness(6.0F);
 		setResistance(15.0F);
 		setHarvestLevel("pickaxe", 2);
 	}

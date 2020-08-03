@@ -36,8 +36,8 @@ public class BlockWritingTable extends BlockTileProvider<TileEntityTable> {
 	public BlockWritingTable() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
-		setHardness(12.0F);
-		setResistance(10.0F);
+		setHardness(2.0F);
+		setResistance(5.0F);
 		setHarvestLevel("axe", 0);
 		this.setDefaultState(
 				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(MODERN, false));

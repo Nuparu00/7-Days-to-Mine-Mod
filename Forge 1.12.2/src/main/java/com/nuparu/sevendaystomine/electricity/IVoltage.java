@@ -42,5 +42,8 @@ public interface IVoltage {
 	
 	public Vec3d getWireOffset();
 	
+	/*
+	 * If is passive, the block does not require a direct connection to an energy pole to receive power (like lamps)
+	 */
 	public boolean isPassive();
 }

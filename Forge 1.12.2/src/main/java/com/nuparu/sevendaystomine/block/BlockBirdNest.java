@@ -31,7 +31,7 @@ public class BlockBirdNest extends BlockTileProvider<TileEntityBirdNest> {
 		super(Material.WOOD);
 		setSoundType(SoundType.PLANT);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		this.setHardness(1.0F);
+		this.setHardness(0.25F);
 		this.setResistance(0.0F);
 	}
 

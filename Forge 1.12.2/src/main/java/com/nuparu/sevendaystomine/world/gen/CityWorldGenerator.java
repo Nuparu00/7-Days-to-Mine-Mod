@@ -31,7 +31,7 @@ public class CityWorldGenerator implements IWorldGenerator {
 			generateNether(world, random, blockX, blockZ);
 			break;
 		case 0:
-			generateOverworld(world, random, blockX, blockZ);
+			generateOverworld(world, random, chunkX, chunkZ);
 			break;
 		case 1:
 			generateEnd(world, random, blockX, blockZ);
@@ -42,16 +42,19 @@ public class CityWorldGenerator implements IWorldGenerator {
 	private void generateNether(World world, Random rand, int blockX, int blockZ) {
 	}
 
-	/*
-	 * SPLIT WORLD IN TO REGIONS OF SIZE OF MAXIMUM CITY SIZE!!!
-	 */
-	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
+
+	private void generateOverworld(World world, Random rand, int chunkX, int chunkZ) {
 		if(world.getWorldType()==WorldType.FLAT) {
 			return;
 		}
-		if(blockX % 1000 != 0 || blockZ % 1000 != 0) {
+		
+		if(chunkX % 64 != 0 || chunkZ % 64 != 0) {
 			return;
-		}
+		}	
+		
+		int blockX = chunkX * 16;
+		int blockZ = chunkZ * 16;
+		
 		BlockPos pos = new BlockPos(blockX, 64, blockZ);
 		Biome biome = world.getBiomeForCoordsBody(pos);
 		Chunk chunk = world.getChunkFromBlockCoords(pos);
@@ -68,10 +71,10 @@ public class CityWorldGenerator implements IWorldGenerator {
 				}
 			}
 		}*/
-			City city = new City(world,pos);
+			/*City city = new City(world,pos);
 			city.startCityGen();
 			IExtendedChunk extendedChunk = CapabilityHelper.getExtendedChunk(chunk);
-			extendedChunk.setCity(city);
+			extendedChunk.setCity(city);*/
 
 	}
 

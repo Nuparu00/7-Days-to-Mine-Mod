@@ -8,7 +8,7 @@ public class BlockGoldenrod extends BlockBush {
 
 	public BlockGoldenrod() {
 		setHardness(0.01F);
-		setResistance(2.0F);
+		setResistance(0.02F);
 		setLightLevel(0.0F);
 		setSoundType(SoundType.PLANT);
 	}

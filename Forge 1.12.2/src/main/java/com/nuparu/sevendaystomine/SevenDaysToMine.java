@@ -1,5 +1,8 @@
 package com.nuparu.sevendaystomine;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.block.repair.RepairManager;
 import com.nuparu.sevendaystomine.capability.CapabilityHandler;
@@ -16,8 +19,10 @@ import com.nuparu.sevendaystomine.capability.ILockedRecipe;
 import com.nuparu.sevendaystomine.capability.LockedRecipe;
 import com.nuparu.sevendaystomine.capability.LockedRecipeStorage;
 import com.nuparu.sevendaystomine.client.renderer.RenderGlobalEnhanced;
+import com.nuparu.sevendaystomine.command.CommandAirdrop;
 import com.nuparu.sevendaystomine.command.CommandGenerateCity;
 import com.nuparu.sevendaystomine.command.CommandGetBlockBreak;
+import com.nuparu.sevendaystomine.command.CommandInfect;
 import com.nuparu.sevendaystomine.command.CommandPlaceLegacyPrefab;
 import com.nuparu.sevendaystomine.command.CommandPlacePrefab;
 import com.nuparu.sevendaystomine.command.CommandSavePrefab;
@@ -25,75 +30,44 @@ import com.nuparu.sevendaystomine.command.CommandSetBlockBreak;
 import com.nuparu.sevendaystomine.events.ClientEventHandler;
 import com.nuparu.sevendaystomine.events.LivingEventHandler;
 import com.nuparu.sevendaystomine.events.PlayerEventHandler;
+import com.nuparu.sevendaystomine.events.TerrainGenEventHandler;
 import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.events.WorldEventHandler;
-import com.nuparu.sevendaystomine.events.WorldGenEventHandler;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModFluids;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.crafting.RecipeManager;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.proxy.CommonProxy;
-import com.nuparu.sevendaystomine.tileentity.TileEntityBackpack;
-import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
-import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignSlave;
-import com.nuparu.sevendaystomine.tileentity.TileEntityBirdNest;
-import com.nuparu.sevendaystomine.tileentity.TileEntityBookshelf;
-import com.nuparu.sevendaystomine.tileentity.TileEntityCampfire;
-import com.nuparu.sevendaystomine.tileentity.TileEntityCarMaster;
-import com.nuparu.sevendaystomine.tileentity.TileEntityCarSlave;
-import com.nuparu.sevendaystomine.tileentity.TileEntityCardboard;
-import com.nuparu.sevendaystomine.tileentity.TileEntityChemistryStation;
-import com.nuparu.sevendaystomine.tileentity.TileEntityCodeSafe;
-import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
-import com.nuparu.sevendaystomine.tileentity.TileEntityCorpse;
-import com.nuparu.sevendaystomine.tileentity.TileEntityCupboard;
-import com.nuparu.sevendaystomine.tileentity.TileEntityDresser;
-import com.nuparu.sevendaystomine.tileentity.TileEntityEnergyPole;
-import com.nuparu.sevendaystomine.tileentity.TileEntityFlag;
-import com.nuparu.sevendaystomine.tileentity.TileEntityForge;
-import com.nuparu.sevendaystomine.tileentity.TileEntityGarbage;
-import com.nuparu.sevendaystomine.tileentity.TileEntityGenerator;
-import com.nuparu.sevendaystomine.tileentity.TileEntityKeySafe;
-import com.nuparu.sevendaystomine.tileentity.TileEntityLamp;
-import com.nuparu.sevendaystomine.tileentity.TileEntityMailBox;
-import com.nuparu.sevendaystomine.tileentity.TileEntityMedicalCabinet;
-import com.nuparu.sevendaystomine.tileentity.TileEntityMicrowave;
-import com.nuparu.sevendaystomine.tileentity.TileEntityMonitor;
-import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
-import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
-import com.nuparu.sevendaystomine.tileentity.TileEntityRefrigerator;
-import com.nuparu.sevendaystomine.tileentity.TileEntitySafe;
-import com.nuparu.sevendaystomine.tileentity.TileEntityScreenProjector;
-import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
-import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTable;
-import com.nuparu.sevendaystomine.tileentity.TileEntityToilet;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTorch;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTrashBin;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTrashCan;
-import com.nuparu.sevendaystomine.tileentity.TileEntityWallClock;
-import com.nuparu.sevendaystomine.tileentity.TileEntityWheels;
-import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenSpikes;
 import com.nuparu.sevendaystomine.util.GuiHandler;
 import com.nuparu.sevendaystomine.util.VanillaManager;
 import com.nuparu.sevendaystomine.world.gen.BlueberryWorldGenerator;
-import com.nuparu.sevendaystomine.world.gen.BushWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.CityWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.CornWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.GoldenrodWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.OreWorldGenerator;
-import com.nuparu.sevendaystomine.world.gen.SmallRockWorldGenerator;
-import com.nuparu.sevendaystomine.world.gen.StickWorldGenerator;
+import com.nuparu.sevendaystomine.world.gen.RoadWorldGenerator;
+import com.nuparu.sevendaystomine.world.gen.SmallFeatureWorldGenerator;
+import com.nuparu.sevendaystomine.world.gen.StructureGenerator;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
+import com.nuparu.sevendaystomine.world.gen.structure.MapGenCity;
+import com.nuparu.sevendaystomine.world.gen.structure.StructureCityPieces;
+import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
@@ -121,7 +95,6 @@ public class SevenDaysToMine {
 
 	@Instance(SevenDaysToMine.MODID)
 	public static SevenDaysToMine instance;
-
 	@SidedProxy(clientSide = SevenDaysToMine.CLIENT_PROXY_CLASS, serverSide = SevenDaysToMine.SERVER_PROXY_CLASS)
 	public static CommonProxy proxy;
 
@@ -129,6 +102,10 @@ public class SevenDaysToMine {
 	public static RenderGlobalEnhanced renderGlobalEnhanced;
 
 	public static BreakSavedData breakSavedData;
+	public static HordeSavedData hordeSavedData;
+
+	public static HashMap<ChunkPos, Integer> ticketList;
+	public static Ticket chunkLoaderTicket;
 
 	static {
 		// DataSerializers.registerSerializer(Utils.DIALOGUES);
@@ -166,7 +143,7 @@ public class SevenDaysToMine {
 	public static CreativeTabs TAB_FORGING = new CreativeTabs(MODID + ".forging") {
 		@SideOnly(Side.CLIENT)
 		public ItemStack getTabIconItem() {
-			return new ItemStack(ModItems.MOLD_INGOT);
+			return new ItemStack(ModBlocks.FORGE);
 		}
 	};
 
@@ -184,25 +161,43 @@ public class SevenDaysToMine {
 		}
 	};
 
-	public static final Item.ToolMaterial STONE_TOOLS = EnumHelper.addToolMaterial("stone_tools", 1, 100, 5f, 10, 2);
-	public static final Item.ToolMaterial BONE_TOOLS = EnumHelper.addToolMaterial("bone_tools", 1, 100, 2f, 10, 2);
-	public static final Item.ToolMaterial CRUDE_TOOLS = EnumHelper.addToolMaterial("crude_tools", 1, 60, 2f, 12, 2);
-	public static final Item.ToolMaterial WOODEN_TOOLS = EnumHelper.addToolMaterial("wooden_tools", 1, 180, 2f, 15, 2);
+	public static CreativeTabs TAB_BOOKS = new CreativeTabs(MODID + ".books") {
+		@SideOnly(Side.CLIENT)
+		public ItemStack getTabIconItem() {
+			return new ItemStack(ModItems.BOOK_FORGING);
+		}
+	};
+
+	public static final Item.ToolMaterial STONE_TOOLS = EnumHelper.addToolMaterial("stone_tools", 1, 100, 3.5f, 14, 2);
+	public static final Item.ToolMaterial BONE_TOOLS = EnumHelper.addToolMaterial("bone_tools", 1, 100, 2f, 14, 2);
+	public static final Item.ToolMaterial CRUDE_TOOLS = EnumHelper.addToolMaterial("crude_tools", 1, 60, 2f, 16, 2);
+	public static final Item.ToolMaterial WOODEN_TOOLS = EnumHelper.addToolMaterial("wooden_tools", 1, 180, 2f, 20, 2);
 	public static final Item.ToolMaterial WOODEN_REINFORCED_TOOLS = EnumHelper
-			.addToolMaterial("wooden_reinforced_tools", 1, 200, 2f, 18, 2);
-	public static final Item.ToolMaterial BARBED_TOOLS = EnumHelper.addToolMaterial("barbed_tools", 1, 220, 2f, 21, 2);
-	public static final Item.ToolMaterial SPIKED_TOOLS = EnumHelper.addToolMaterial("spiked_tools", 1, 250, 2f, 24, 2);
-	public static final Item.ToolMaterial IRON_TOOLS = EnumHelper.addToolMaterial("iron_tools", 1, 300, 9.5f, 14, 2);
-	public static final Item.ToolMaterial ARMY_TOOLS = EnumHelper.addToolMaterial("army_tools", 1, 350, 2f, 18, 2);
-	public static final Item.ToolMaterial MACHETE = EnumHelper.addToolMaterial("machete", 1, 200, 2f, 23, 2);
+			.addToolMaterial("wooden_reinforced_tools", 1, 200, 2f, 25, 2);
+	public static final Item.ToolMaterial BARBED_TOOLS = EnumHelper.addToolMaterial("barbed_tools", 1, 220, 2f, 30, 2);
+	public static final Item.ToolMaterial SPIKED_TOOLS = EnumHelper.addToolMaterial("spiked_tools", 1, 250, 2f, 40, 2);
+	public static final Item.ToolMaterial COPPER_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 200, 4.8f, 16,
+			2);
+	public static final Item.ToolMaterial SCRAP_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 125, 5.5f, 12, 2);
+	public static final Item.ToolMaterial BRONZE_TOOLS = EnumHelper.addToolMaterial("bronze_tools", 1, 250, 6f, 18, 2);
+	public static final Item.ToolMaterial IRON_TOOLS = EnumHelper.addToolMaterial("iron_tools", 1, 300, 8.2f, 22, 2);
+	public static final Item.ToolMaterial STEEL_TOOLS = EnumHelper.addToolMaterial("steel_tools", 1, 40, 11f, 24, 2);
+	public static final Item.ToolMaterial ARMY_TOOLS = EnumHelper.addToolMaterial("army_tools", 1, 350, 2f, 26, 2);
+	public static final Item.ToolMaterial MACHETE = EnumHelper.addToolMaterial("machete", 1, 200, 2f, 35, 2);
+	public static final Item.ToolMaterial SLEDGEHAMMER = EnumHelper.addToolMaterial("sledgehammer", 1, 40, 11f, 60, 2);
+	public static final Item.ToolMaterial AUGER = EnumHelper.addToolMaterial("AUGER", 5, 600, 26F, 80, 0);
+
 	public static final ItemArmor.ArmorMaterial CLOTHING = EnumHelper.addArmorMaterial("clothing",
-			"sevendaystomine:clothing", 200, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+			"sevendaystomine:clothing", 5, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 	public static final ItemArmor.ArmorMaterial FIBER = EnumHelper.addArmorMaterial("fiber", "sevendaystomine:fiber",
-			100, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+			10, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 	public static final ItemArmor.ArmorMaterial STEEL_ARMOR = EnumHelper.addArmorMaterial("steel",
-			"sevendaystomine:steel", 500, new int[] { 3, 4, 3, 2 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+			"sevendaystomine:steel", 25, new int[] { 3, 4, 3, 2 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
 	public static final ItemArmor.ArmorMaterial LEATHER_IRON_ARMOR = EnumHelper.addArmorMaterial("leather_iron",
-			"sevendaystomine:leather_iron", 400, new int[] { 2, 3, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+			"sevendaystomine:leather_iron", 12, new int[] { 2, 3, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+
+	public static final ItemArmor.ArmorMaterial SCRAP_ARMOR = EnumHelper.addArmorMaterial("scrap",
+			"sevendaystomine:scrap", 10, new int[] { 2, 3, 1, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
 
 	public static final Block[] BLOCKS = new Block[] { ModBlocks.OAK_FRAME, ModBlocks.BIRCH_FRAME,
 			ModBlocks.SPRUCE_FRAME, ModBlocks.JUNGLE_FRAME, ModBlocks.ACACIA_FRAME, ModBlocks.DARKOAK_FRAME,
@@ -223,22 +218,24 @@ public class SevenDaysToMine {
 			ModBlocks.BOOKSHELF, ModBlocks.WRITING_TABLE, ModBlocks.MEDICAL_CABINET, ModBlocks.FRIDGE,
 			ModBlocks.MAIL_BOX, ModBlocks.BIRD_NEST, ModBlocks.TRASH_CAN, ModBlocks.SLEEPING_BAG, ModBlocks.WOODEN_DOOR,
 			ModBlocks.WOODEN_DOOR_REINFORCED, ModBlocks.TRAFFIC_LIGHT, ModBlocks.TRAFFIC_LIGHT_PEDESTRIAN,
-			ModBlocks.SEDAN_RED, ModBlocks.SEDAN_GREEN, ModBlocks.SEDAN_BLUE, ModBlocks.SEDAN_YELLOW, ModBlocks.SEDAN_WHITE, ModBlocks.SEDAN_BLACK, ModBlocks.DEAD_MOSSY_STONE, ModBlocks.DEAD_MOSSY_BRICK, ModBlocks.BASALT, ModBlocks.MARBLE,
-			ModBlocks.RHYOLITE, ModBlocks.BASALT_COBBLESTONE, ModBlocks.MARBLE_COBBLESTONE,
-			ModBlocks.RHYOLITE_COBBLESTONE, ModBlocks.BASALT_BRICKS, ModBlocks.MARBLE_BRICKS, ModBlocks.RHYOLITE_BRICKS,
-			ModBlocks.BASALT_POLISHED, ModBlocks.MARBLE_POLISHED, ModBlocks.RHYOLITE_POLISHED,
-			ModBlocks.ANDESITE_BRICKS, ModBlocks.DIORITE_BRICKS, ModBlocks.GRANITE_BRICKS, ModBlocks.CATWALK,
-			ModBlocks.CATWALK_STAIRS, ModBlocks.STONEBRICK_WALL, ModBlocks.THROTTLE, ModBlocks.BASALT_BRICKS_CRACKED,
-			ModBlocks.MARBLE_BRICKS_CRACKED, ModBlocks.RHYOLITE_BRICKS_CRACKED, ModBlocks.ANDESITE_BRICKS_CRACKED,
-			ModBlocks.DIORITE_BRICKS_CRACKED, ModBlocks.GRANITE_BRICKS_CRACKED, ModBlocks.BASALT_BRICKS_MOSSY,
-			ModBlocks.MARBLE_BRICKS_MOSSY, ModBlocks.RHYOLITE_BRICKS_MOSSY, ModBlocks.ANDESITE_BRICKS_MOSSY,
-			ModBlocks.DIORITE_BRICKS_MOSSY, ModBlocks.GRANITE_BRICKS_MOSSY, ModBlocks.COMPUTER, ModBlocks.MONITOR_OFF,
-			ModBlocks.MONITOR_MAC, ModBlocks.MONITOR_LINUX, ModBlocks.MONITOR_WIN98, ModBlocks.MONITOR_WINXP,
-			ModBlocks.MONITOR_WIN7, ModBlocks.MONITOR_WIN8, ModBlocks.MONITOR_WIN10/* , ModBlocks.WALL_CLOCK */,
-			ModBlocks.LOCKED_DOOR, ModBlocks.BOARDS, ModBlocks.TOILET, ModBlocks.FLAG, ModBlocks.MICROWAVE,
-			ModBlocks.SINK_FAUCET, ModBlocks.METAL_LADDER, ModBlocks.RADIATOR, ModBlocks.DARK_BRICKS, ModBlocks.CINDER,
-			ModBlocks.BACKPACK_NORMAL, ModBlocks.BACKPACK_ARMY, ModBlocks.BACKPACK_MEDICAL, ModBlocks.CHEST_OLD,
-			ModBlocks.TV_BROKEN, ModBlocks.SHOWER_HEAD, ModBlocks.CORPSE_00, ModBlocks.CORPSE_01, ModBlocks.SKELETON,
+			ModBlocks.SEDAN_RED, ModBlocks.SEDAN_GREEN, ModBlocks.SEDAN_BLUE, ModBlocks.SEDAN_YELLOW,
+			ModBlocks.SEDAN_WHITE, ModBlocks.SEDAN_BLACK, ModBlocks.DEAD_MOSSY_STONE, ModBlocks.DEAD_MOSSY_BRICK,
+			ModBlocks.BASALT, ModBlocks.MARBLE, ModBlocks.RHYOLITE, ModBlocks.BASALT_COBBLESTONE,
+			ModBlocks.MARBLE_COBBLESTONE, ModBlocks.RHYOLITE_COBBLESTONE, ModBlocks.BASALT_BRICKS,
+			ModBlocks.MARBLE_BRICKS, ModBlocks.RHYOLITE_BRICKS, ModBlocks.BASALT_POLISHED, ModBlocks.MARBLE_POLISHED,
+			ModBlocks.RHYOLITE_POLISHED, ModBlocks.ANDESITE_BRICKS, ModBlocks.DIORITE_BRICKS, ModBlocks.GRANITE_BRICKS,
+			ModBlocks.CATWALK, ModBlocks.CATWALK_STAIRS, ModBlocks.STONEBRICK_WALL, ModBlocks.THROTTLE,
+			ModBlocks.BASALT_BRICKS_CRACKED, ModBlocks.MARBLE_BRICKS_CRACKED, ModBlocks.RHYOLITE_BRICKS_CRACKED,
+			ModBlocks.ANDESITE_BRICKS_CRACKED, ModBlocks.DIORITE_BRICKS_CRACKED, ModBlocks.GRANITE_BRICKS_CRACKED,
+			ModBlocks.BASALT_BRICKS_MOSSY, ModBlocks.MARBLE_BRICKS_MOSSY, ModBlocks.RHYOLITE_BRICKS_MOSSY,
+			ModBlocks.ANDESITE_BRICKS_MOSSY, ModBlocks.DIORITE_BRICKS_MOSSY, ModBlocks.GRANITE_BRICKS_MOSSY,
+			ModBlocks.COMPUTER, ModBlocks.MONITOR_OFF, ModBlocks.MONITOR_MAC, ModBlocks.MONITOR_LINUX,
+			ModBlocks.MONITOR_WIN98, ModBlocks.MONITOR_WINXP, ModBlocks.MONITOR_WIN7, ModBlocks.MONITOR_WIN8,
+			ModBlocks.MONITOR_WIN10/* , ModBlocks.WALL_CLOCK */, ModBlocks.LOCKED_DOOR, ModBlocks.BOARDS,
+			ModBlocks.TOILET, ModBlocks.FLAG, ModBlocks.MICROWAVE, ModBlocks.SINK_FAUCET, ModBlocks.METAL_LADDER,
+			ModBlocks.RADIATOR, ModBlocks.DARK_BRICKS, ModBlocks.CINDER, ModBlocks.BACKPACK_NORMAL,
+			ModBlocks.BACKPACK_ARMY, ModBlocks.BACKPACK_MEDICAL, ModBlocks.CHEST_OLD, ModBlocks.TV_BROKEN,
+			ModBlocks.SHOWER_HEAD, ModBlocks.CORPSE_00, ModBlocks.CORPSE_01, ModBlocks.SKELETON,
 			ModBlocks.SKELETON_SITTING, ModBlocks.WORKBENCH, ModBlocks.CHEMISTRY_STATION, ModBlocks.CHAIR_OAK,
 			ModBlocks.CHAIR_BIRCH, ModBlocks.CHAIR_SPRUCE, ModBlocks.CHAIR_JUNGLE, ModBlocks.CHAIR_ACACIA,
 			ModBlocks.CHAIR_BIG_OAK, ModBlocks.TABLE_OAK, ModBlocks.TABLE_BIRCH, ModBlocks.TABLE_SPRUCE,
@@ -248,7 +245,15 @@ public class SevenDaysToMine {
 			ModBlocks.BIG_SIGN_MASTER, ModBlocks.BIG_SIGN_SLAVE, ModBlocks.SOFA_BLACK, ModBlocks.SOFA_WHITE,
 			ModBlocks.SOFA_RED, ModBlocks.SOFA_GREEN, ModBlocks.SOFA_BLUE, ModBlocks.SOFA_BROWN, ModBlocks.SOFA_PINK,
 			ModBlocks.SOFA_YELLOW, ModBlocks.TRASH_BIN, ModBlocks.WHEELS, ModBlocks.LARGE_ROCK, ModBlocks.WOODEN_SPIKES,
-			ModBlocks.WOODEN_SPIKES_BLOODED, ModBlocks.WOODEN_SPIKES_BROKEN };
+			ModBlocks.WOODEN_SPIKES_BLOODED, ModBlocks.WOODEN_SPIKES_BROKEN, ModBlocks.AIRPLANE_ROTOR,
+			ModBlocks.SOLAR_PANEL, ModBlocks.WIND_TURBINE, ModBlocks.BATTERY_STATION, ModBlocks.GENERATOR_COMBUSTION,
+			ModBlocks.ENERGY_SWITCH, ModBlocks.THERMOMETER, ModBlocks.BRICK_MOSSY, ModBlocks.DARK_BRICKS_MOSSY,
+			ModBlocks.TURRET_BASE, ModBlocks.OAK_LOG_SPIKE, ModBlocks.BIRCH_LOG_SPIKE, ModBlocks.SPRUCE_LOG_SPIKE,
+			ModBlocks.JUNGLE_LOG_SPIKE, ModBlocks.ACACIA_LOG_SPIKE, ModBlocks.DARK_OAK_LOG_SPIKE, ModBlocks.SANDBAGS,
+			ModBlocks.FILE_CABINET, ModBlocks.CASH_REGISTER, ModBlocks.CAMERA, ModBlocks.BURNT_LOG,
+			ModBlocks.BURNT_PLANKS, ModBlocks.BURNT_FRAME, ModBlocks.DRY_GROUND, ModBlocks.BURNT_PLANKS_STAIRS,
+			ModBlocks.BURNT_PLANKS_SLAB, ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE,
+			ModBlocks.BURNT_CHAIR, ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE };
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -278,11 +283,24 @@ public class SevenDaysToMine {
 			ModItems.SHORT_SLEEVED_SHIRT, ModItems.T_SHIRT_0, ModItems.T_SHIRT_1, ModItems.COAT, ModItems.FIBER_HAT,
 			ModItems.FIBER_CHESTPLATE, ModItems.FIBER_LEGGINGS, ModItems.FIBER_BOOTS, ModItems.STEEL_HELMET,
 			ModItems.STEEL_CHESTPLATE, ModItems.STEEL_LEGGINGS, ModItems.STEEL_BOOTS, ModItems.IRON_AXE, ModItems.CENT,
-			ModItems.BACKPACK, ModItems.LEATHER_IRON_BOOTS, ModItems.LEATHER_IRON_CHESTPLATE, ModItems.LEATHER_IRON_HELMET, ModItems.LEATHER_IRON_LEGGINGS};
+			ModItems.BACKPACK, ModItems.LEATHER_IRON_BOOTS, ModItems.LEATHER_IRON_CHESTPLATE,
+			ModItems.LEATHER_IRON_HELMET, ModItems.LEATHER_IRON_LEGGINGS, ModItems.VOLTMETER, ModItems.CHAINSAW,
+			ModItems.COPPER_PICKAXE, ModItems.BRONZE_PICKAXE, ModItems.IRON_PICKAXE, ModItems.STEEL_PICKAXE,
+			ModItems.COPPER_AXE, ModItems.BRONZE_AXE, ModItems.STEEL_AXE, ModItems.COPPER_SHOVEL,
+			ModItems.BRONZE_SHOVEL, ModItems.IRON_SHOVEL, ModItems.STEEL_SHOVEL, ModItems.BOOK_FORGING,
+			ModItems.IRON_PIPE, ModItems.SCRAP_PICKAXE, ModItems.SCRAP_SHOVEL, ModItems.CIRCUIT, ModItems.LINK_TOOL,
+			ModItems.SURVIVAL_GUIDE, ModItems.MICROPHONE, ModItems.BULLET_TIP, ModItems.BULLET_CASING,
+			ModItems.MOLDY_BREAD, ModItems.SLEDGEHAMMER, ModItems.PISTOL_SLIDE, ModItems.PISTOL_TRIGGER,
+			ModItems.PISTOL_GRIP, ModItems.SNIPER_RIFLE_BARREL, ModItems.SNIPER_RIFLE_PARTS,
+			ModItems.SNIPER_RIFLE_SCOPE, ModItems.SNIPER_RIFLE_STOCK, ModItems.SNIPER_RIFLE_TRIGGER,
+			ModItems.SCRAP_BOOTS, ModItems.SCRAP_CHESTPLATE, ModItems.SCRAP_HELMET, ModItems.SCRAP_LEGGINGS,
+			ModItems.SNIPER_RIFLE, ModItems.SHOTGUN, ModItems.SHOTGUN_SAWED_OFF, ModItems.BELLOWS, ModItems.BOOK_AMMO,
+			ModItems.BULLET_TIP_MOLD, ModItems.BULLET_CASING_MOLD, ModItems.TEN_MM_BULLET, ModItems.BOOK_COMPUTERS,
+			ModItems.BOOK_CONCRETE, ModItems.CEMENT_MOLD, ModItems.BOOK_ELECTRICITY};
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
-	public static void preInit(FMLPreInitializationEvent event) {
+	public void preInit(FMLPreInitializationEvent event) {
 
 		// RegisterUtil.registerAll(event);
 		new RecipeManager().init();
@@ -298,10 +316,11 @@ public class SevenDaysToMine {
 		// Event Handlers
 		MinecraftForge.EVENT_BUS.register(new LivingEventHandler());
 		MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
-		MinecraftForge.EVENT_BUS.register(new WorldGenEventHandler());
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler());
 		MinecraftForge.EVENT_BUS.register(new TickHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+
+		MinecraftForge.TERRAIN_GEN_BUS.register(new TerrainGenEventHandler());
 		// Alters Vanilla
 		VanillaManager.modifyVanilla();
 		// Loads repairs
@@ -316,95 +335,83 @@ public class SevenDaysToMine {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 
+		GameRegistry.registerWorldGenerator(new RoadWorldGenerator(), Integer.MIN_VALUE);
 		GameRegistry.registerWorldGenerator(new CityWorldGenerator(), Integer.MIN_VALUE);
-		GameRegistry.registerWorldGenerator(new OreWorldGenerator(), 14);
-		GameRegistry.registerWorldGenerator(new SmallRockWorldGenerator(), 15);
-		GameRegistry.registerWorldGenerator(new StickWorldGenerator(), 16);
-		GameRegistry.registerWorldGenerator(new BushWorldGenerator(), 17);
+		GameRegistry.registerWorldGenerator(new StructureGenerator(), 0);
+		GameRegistry.registerWorldGenerator(new OreWorldGenerator(), 1);
+		GameRegistry.registerWorldGenerator(new SmallFeatureWorldGenerator(), 2);
 		GameRegistry.registerWorldGenerator(new GoldenrodWorldGenerator(), 18);
 		GameRegistry.registerWorldGenerator(new CornWorldGenerator(), 19);
 		GameRegistry.registerWorldGenerator(new BlueberryWorldGenerator(), 20);
 
+		MapGenStructureIO.registerStructure(MapGenCity.Start.class, MODID + ":city");
+		StructureCityPieces.registerVillagePieces();
+
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-
-		GameRegistry.registerTileEntity(TileEntityCampfire.class, new ResourceLocation(MODID + ":tileentitycampfire"));
-		GameRegistry.registerTileEntity(TileEntityForge.class, new ResourceLocation(MODID + ":tileentityforge"));
-		GameRegistry.registerTileEntity(TileEntitySafe.class, new ResourceLocation(MODID + ":tileentitysafe"));
-		GameRegistry.registerTileEntity(TileEntityKeySafe.class, new ResourceLocation(MODID + ":tileentitykeysafe"));
-		GameRegistry.registerTileEntity(TileEntityCodeSafe.class, new ResourceLocation(MODID + ":tileentitycodesafe"));
-		GameRegistry.registerTileEntity(TileEntityCardboard.class,
-				new ResourceLocation(MODID + ":tileentitycardboard"));
-		GameRegistry.registerTileEntity(TileEntityCupboard.class, new ResourceLocation(MODID + ":tileentitycupboard"));
-		GameRegistry.registerTileEntity(TileEntityTorch.class, new ResourceLocation(MODID + ":tileentitytorch"));
-		GameRegistry.registerTileEntity(TileEntityGarbage.class, new ResourceLocation(MODID + ":tileentitygarbage"));
-		GameRegistry.registerTileEntity(TileEntityBookshelf.class,
-				new ResourceLocation(MODID + ":tileentitybookshelf"));
-		GameRegistry.registerTileEntity(TileEntityTable.class, new ResourceLocation(MODID + ":tileentitytable"));
-		GameRegistry.registerTileEntity(TileEntityMedicalCabinet.class,
-				new ResourceLocation(MODID + ":tileentitymedical"));
-		GameRegistry.registerTileEntity(TileEntityMailBox.class, new ResourceLocation(MODID + ":tileentitymailbox"));
-		GameRegistry.registerTileEntity(TileEntityBirdNest.class, new ResourceLocation(MODID + ":tileentitybirdnest"));
-		GameRegistry.registerTileEntity(TileEntityTrashCan.class, new ResourceLocation(MODID + ":tileentitytrashcan"));
-		GameRegistry.registerTileEntity(TileEntitySleepingBag.class,
-				new ResourceLocation(MODID + ":tileentitysleepingbag"));
-		GameRegistry.registerTileEntity(TileEntityCarMaster.class,
-				new ResourceLocation(MODID + ":tileentitycarmaster"));
-		GameRegistry.registerTileEntity(TileEntityCarSlave.class, new ResourceLocation(MODID + ":tileentitycarslave"));
-		GameRegistry.registerTileEntity(TileEntityComputer.class, new ResourceLocation(MODID + ":tileentitycomputer"));
-		GameRegistry.registerTileEntity(TileEntityMonitor.class, new ResourceLocation(MODID + ":tileentitymonitor"));
-		GameRegistry.registerTileEntity(TileEntityWallClock.class, new ResourceLocation(MODID + ":tilentitywallclock"));
-		GameRegistry.registerTileEntity(TileEntityWallClock.class, new ResourceLocation(MODID + ":tilentitywallclock"));
-		GameRegistry.registerTileEntity(TileEntityFlag.class, new ResourceLocation(MODID + ":tileentityflag"));
-		GameRegistry.registerTileEntity(TileEntityToilet.class, new ResourceLocation(MODID + ":tileentitytoilet"));
-		GameRegistry.registerTileEntity(TileEntityMicrowave.class,
-				new ResourceLocation(MODID + ":tileentitymicrowave"));
-		GameRegistry.registerTileEntity(TileEntityRefrigerator.class,
-				new ResourceLocation(MODID + ":tileentityrefrigerator"));
-		GameRegistry.registerTileEntity(TileEntityBackpack.class, new ResourceLocation(MODID + ":tileentitybackpack"));
-		GameRegistry.registerTileEntity(TileEntityOldChest.class, new ResourceLocation(MODID + ":tileentityoldchest"));
-		GameRegistry.registerTileEntity(TileEntityCorpse.class, new ResourceLocation(MODID + ":tileentitycorpse"));
-		GameRegistry.registerTileEntity(TileEntityChemistryStation.class,
-				new ResourceLocation(MODID + ":tileentitychemistrystation"));
-		GameRegistry.registerTileEntity(TileEntityGenerator.class,
-				new ResourceLocation(MODID + ":tileentitygenerator"));
-		GameRegistry.registerTileEntity(TileEntityEnergyPole.class,
-				new ResourceLocation(MODID + ":tileenetityenergypole"));
-		GameRegistry.registerTileEntity(TileEntityLamp.class, new ResourceLocation(MODID + ":tileentitylamp"));
-		GameRegistry.registerTileEntity(TileEntityStreetSign.class,
-				new ResourceLocation(MODID + ":tileentitystreetsign"));
-		GameRegistry.registerTileEntity(TileEntityPhoto.class, new ResourceLocation(MODID + ":tileentityphoto"));
-		GameRegistry.registerTileEntity(TileEntityScreenProjector.class,
-				new ResourceLocation(MODID + ":tileentityscreenprojector"));
-		GameRegistry.registerTileEntity(TileEntityDresser.class, new ResourceLocation(MODID + ":tileentitydresser"));
-		GameRegistry.registerTileEntity(TileEntityBigSignMaster.class,
-				new ResourceLocation(MODID + ":tileentitybigsignmaster"));
-		GameRegistry.registerTileEntity(TileEntityBigSignSlave.class,
-				new ResourceLocation(MODID + ":tileentitybigsignslave"));
-		GameRegistry.registerTileEntity(TileEntityTrashBin.class, new ResourceLocation(MODID + ":tileentitytrashbin"));
-		GameRegistry.registerTileEntity(TileEntityWheels.class, new ResourceLocation(MODID + ":tileentitywheels"));
-		GameRegistry.registerTileEntity(TileEntityWoodenSpikes.class, new ResourceLocation(MODID + ":tileentitywoodenspikes"));
-
-		CityHelper.loadPrefabs();
+		CityHelper.loadBuildings();
 
 		proxy.init(event);
-		proxy.registerOreDictionary();
-		proxy.registerEntities();
 	}
 
 	@EventHandler
-	public static void postInit(FMLPostInitializationEvent event) {
+	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
+
+		ticketList = new HashMap<ChunkPos, Integer>();
+		ForgeChunkManager.setForcedChunkLoadingCallback(this, new LoadingCallback() {
+			@Override
+			public void ticketsLoaded(List<Ticket> tickets, World world) {
+
+			}
+		});
 	}
 
 	@EventHandler
-	public static void serverStarting(FMLServerStartingEvent event) {
+	public void serverStarting(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandSetBlockBreak());
 		event.registerServerCommand(new CommandGetBlockBreak());
 		event.registerServerCommand(new CommandGenerateCity());
 		event.registerServerCommand(new CommandSavePrefab());
 		event.registerServerCommand(new CommandPlacePrefab());
 		event.registerServerCommand(new CommandPlaceLegacyPrefab());
+		event.registerServerCommand(new CommandAirdrop());
+		event.registerServerCommand(new CommandInfect());
 
 		proxy.serverStarting(event);
+
+		World world = event.getServer().getEntityWorld();
+		GameRules rules = world.getGameRules();
+		if (!rules.hasRule("handleThirst")) {
+			rules.addGameRule("handleThirst", "true", GameRules.ValueType.BOOLEAN_VALUE);
+		} else {
+			rules.addGameRule("handleThirst", rules.getBoolean("handleThirst") + "", GameRules.ValueType.BOOLEAN_VALUE);
+		}
+
+	}
+
+	public static void forceChunkLoad(World w, ChunkPos pos, Entity entity) {
+		if (!ticketList.containsKey(pos)) {
+			if (chunkLoaderTicket == null) {
+				chunkLoaderTicket = ForgeChunkManager.requestTicket(instance, w, ForgeChunkManager.Type.ENTITY);
+			}
+			ticketList.put(pos, 1);
+
+			chunkLoaderTicket.bindEntity(entity);
+			ForgeChunkManager.forceChunk(chunkLoaderTicket, pos);
+		} else {
+			ticketList.put(pos, ticketList.get(pos) + 1);
+		}
+	}
+
+	public static void releaseChunkLoad(World w, ChunkPos pos) {
+		if (!ticketList.containsKey(pos) || chunkLoaderTicket == null) {
+			return;
+		} else {
+			int num = ticketList.get(pos) - 1;
+			if (num > 0)
+				ticketList.put(pos, num);
+			else
+				ForgeChunkManager.unforceChunk(chunkLoaderTicket, pos);
+		}
 	}
 }

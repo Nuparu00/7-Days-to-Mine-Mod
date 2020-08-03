@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class SmallRockWorldGenerator implements IWorldGenerator {
 
+	WorldGenerator generator = new WorldGenSmallRock();
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
@@ -41,7 +42,6 @@ public class SmallRockWorldGenerator implements IWorldGenerator {
 		if(world.getWorldType()==WorldType.FLAT) {
 			return;
 		}
-		WorldGenerator generator = new WorldGenSmallRock();
 		int MIN = 0;
 		int MAX = 8;
 		int num = MIN + rand.nextInt(MAX - MIN);
@@ -56,18 +56,4 @@ public class SmallRockWorldGenerator implements IWorldGenerator {
 	private void generateEnd(World world, Random rand, int blockX, int blockZ) {
 
 	}
-
-	public static int getGroundFromAbove(World world, int x, int z) {
-		int y = 255;
-		boolean foundGround = false;
-		while (!foundGround && y-- >= 0) {
-			BlockPos pos = new BlockPos(x, y, z);
-			IBlockState state = world.getBlockState(pos);
-			Block blockAt = state.getBlock();
-			foundGround = blockAt.isNormalCube(state, world, pos);
-		}
-
-		return y;
-	}
-
 }

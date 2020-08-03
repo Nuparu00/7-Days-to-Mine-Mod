@@ -2,7 +2,8 @@ package com.nuparu.sevendaystomine.util;
 
 public enum EnumModParticleType {
 
-	BLOOD("blood",49);
+	BLOOD("blood",49),
+	VOMIT("vomit",50);
 	
 	String name;
 	private int id;

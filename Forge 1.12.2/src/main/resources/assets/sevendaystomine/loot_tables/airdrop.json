@@ -1,0 +1,406 @@
+{
+    "pools": [
+        {
+		    "name": "food",
+            "rolls": {
+                "min": 2,
+                "max": 9
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "minecraft:porkchop",
+                    "functions": [
+                        {
+                            "function": "furnace_smelt",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "minecraft:bread",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:bottledwater",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 16
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 8,
+                    "name": "minecraft:apple",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 9
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "sevendaystomine:bottledbeer",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:bottledcoffee",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:cannedham",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 16
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "sevendaystomine:cannedbeef",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 16
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "sevendaystomine:cannedchicken",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 16
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:jarofhoney",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+		    "name": "medicine",
+            "rolls": {
+                "min": 0,
+                "max": 5
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "sevendaystomine:firstaidkit",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 8
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 8,
+                    "name": "sevendaystomine:bloodbag",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 8
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:bandage",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 24
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 8,
+                    "name": "sevendaystomine:advancedbandage",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 16
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "sevendaystomine:antibiotics",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 8
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:blooddrawkit",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 8
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 6,
+                    "name": "sevendaystomine:cloth",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 32
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "sevendaystomine:bottledbeer",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+		    "name": "tools",
+            "rolls": {
+                "min": 0,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:copper_pickaxe",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 6,
+                    "name": "sevendaystomine:bronze_pickaxe",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "sevendaystomine:iron_pickaxe",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 7,
+                    "name": "sevendaystomine:scrap_pickaxe",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:wrench",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:clawhammer",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:rebarframe",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 16
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:copper_axe",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 6,
+                    "name": "sevendaystomine:bronze_axe",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:copper_shovel",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 6,
+                    "name": "sevendaystomine:bronze_shovel",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

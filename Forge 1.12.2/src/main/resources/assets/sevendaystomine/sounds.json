@@ -102,5 +102,32 @@
       "sounds":[  
          "sevendaystomine:sdtm.hunting_rifle.reload"
       ]
-   }
+   },
+   "white_noise":{  
+      "category":"record",
+      "subtitle":"sdtm.subtitle.white_noise",
+      "sounds":[  
+         {  
+            "name":"sevendaystomine:white_noise",
+            "stream":true
+         }
+      ]
+   },
+   "emergency_alert_system":{  
+      "category":"record",
+      "subtitle":"sdtm.subtitle.emergency_alert_system",
+      "sounds":[  
+         {  
+            "name":"sevendaystomine:emergency_alert_system",
+            "stream":true
+         }
+      ]
+   },
+   "recipe_unlocked":{  
+      "category":"player",
+      "subtitle":"sdtm.subtitle.recipe_unlocked",
+      "sounds":[  
+         "sevendaystomine:recipe_unlocked"
+      ]
+   }   
 }

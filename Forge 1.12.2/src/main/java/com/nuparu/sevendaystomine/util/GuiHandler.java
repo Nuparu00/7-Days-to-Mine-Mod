@@ -8,7 +8,9 @@ import com.nuparu.sevendaystomine.client.gui.GuiMonitor;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiBackpack;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiCampfire;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiChemistryStation;
+import com.nuparu.sevendaystomine.client.gui.inventory.GuiCombustionGenerator;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiComputer;
+import com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerAirdrop;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerBig;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerLootableEntity;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerSmallOld;
@@ -19,10 +21,12 @@ import com.nuparu.sevendaystomine.client.gui.inventory.GuiMinibike;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiProjector;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiSafeUnlocked;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiWorkbench;
+import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.entity.EntityHuman;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.inventory.ContainerAirdrop;
 import com.nuparu.sevendaystomine.inventory.ContainerBig;
 import com.nuparu.sevendaystomine.inventory.ContainerCampfire;
 import com.nuparu.sevendaystomine.inventory.ContainerChemistryStation;
@@ -90,6 +94,13 @@ public class GuiHandler implements IGuiHandler {
 						stack.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, EnumFacing.UP));
 			}
 		}
+		if (ID == 21) {
+			Entity entity = world.getEntityByID(y);
+			if (entity != null && entity instanceof EntityAirdrop) {
+				EntityAirdrop airdrop = (EntityAirdrop) entity;
+				return new ContainerAirdrop(player.inventory, airdrop);
+			}
+		}
 		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 		if (tileEntity != null) {
 			switch (ID) {
@@ -123,10 +134,18 @@ public class GuiHandler implements IGuiHandler {
 				if (tileEntity instanceof TileEntityItemHandler) {
 					return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
 				}
+			case 19:
+				if (tileEntity instanceof TileEntityItemHandler) {
+					return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+				}
+			case 20:
+				return new ContainerGasGenerator(player.inventory, (IInventory) tileEntity);
 			}
+
 		}
 
 		return null;
+
 	}
 
 	@Override
@@ -162,10 +181,20 @@ public class GuiHandler implements IGuiHandler {
 						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 				final IItemHandlerNameable playerInventoryWrapper = new NameableCombinedInvWrapper(player.inventory,
 						playerInventory);
-				return new GuiBackpack(new ContainerBackpack(playerInventoryWrapper,
-						stack.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, EnumFacing.UP)),stack.getDisplayName());
+				return new GuiBackpack(
+						new ContainerBackpack(playerInventoryWrapper,
+								stack.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, EnumFacing.UP)),
+						stack.getDisplayName());
 			}
 
+		}
+		if (ID == 21) {
+			Entity entity = world.getEntityByID(y);
+			if (entity != null && entity instanceof EntityAirdrop) {
+				EntityAirdrop airdrop = (EntityAirdrop) entity;
+				return new GuiContainerAirdrop(player.inventory, airdrop,
+						new ContainerAirdrop(player.inventory, airdrop));
+			}
 		}
 		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 		if (tileEntity != null) {
@@ -208,6 +237,15 @@ public class GuiHandler implements IGuiHandler {
 							(com.nuparu.sevendaystomine.inventory.container.ContainerSmall) ((TileEntityItemHandler<?>) tileEntity)
 									.createContainer(player));
 				}
+			case 19:
+				if (tileEntity instanceof TileEntityItemHandler) {
+
+					return new com.nuparu.sevendaystomine.client.gui.inventory.GuiBatteryStation(
+							(com.nuparu.sevendaystomine.inventory.container.ContainerBatteryStation) ((TileEntityItemHandler<?>) tileEntity)
+									.createContainer(player));
+				}
+			case 20:
+				return new GuiCombustionGenerator(player.inventory, (IInventory) tileEntity);
 			}
 		}
 

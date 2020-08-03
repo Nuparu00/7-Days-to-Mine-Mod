@@ -32,8 +32,8 @@ public class BlockCorpse extends BlockTileProvider<TileEntityCorpse> {
 		super(Material.ROCK);
 		this.setSoundType(SoundType.SLIME);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		this.setHardness(1f);
-		this.setResistance(1f);
+		this.setHardness(0.7f);
+		this.setResistance(1.2f);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(BlockHorizontalBase.FACING, EnumFacing.NORTH));
 	}
 

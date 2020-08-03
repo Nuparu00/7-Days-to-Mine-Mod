@@ -27,39 +27,39 @@ public class ContainerChemistryStation extends Container {
 	public ContainerChemistryStation(InventoryPlayer playerInventory, final IInventory tileEntity) {
 		this.tileEntity = tileEntity;
 
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.slotEnum.INPUT_SLOT.ordinal(), 78, 11) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.EnumSlots.INPUT_SLOT.ordinal(), 78, 11) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.slotEnum.INPUT_SLOT2.ordinal(), 97, 11) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.EnumSlots.INPUT_SLOT2.ordinal(), 97, 11) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
 
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.slotEnum.INPUT_SLOT3.ordinal(), 78, 29) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.EnumSlots.INPUT_SLOT3.ordinal(), 78, 29) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.slotEnum.INPUT_SLOT4.ordinal(), 97, 29) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.EnumSlots.INPUT_SLOT4.ordinal(), 97, 29) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
 		this.addSlotToContainer(new SlotChemistryOutput(playerInventory.player, tileEntity,
-				TileEntityChemistryStation.slotEnum.OUTPUT_SLOT.ordinal(), 148, 42) {
+				TileEntityChemistryStation.EnumSlots.OUTPUT_SLOT.ordinal(), 148, 42) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new SlotChemistryFuel(tileEntity, TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal(), 88, 63) {
+		this.addSlotToContainer(new SlotChemistryFuel(tileEntity, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal(), 88, 63) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
@@ -130,47 +130,47 @@ public class ContainerChemistryStation extends Container {
 			ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index <= TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal())
+            if (index <= TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal())
             {
-                if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+1, 39, true))
+                if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+1, 39, true))
                 {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
             }
-            else if (index > TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal())
+            else if (index > TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal())
             {
             	if (TileEntityChemistryStation.isItemFuel(itemstack1))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal(), TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal(), TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	else if (isMold(itemstack1.getItem()))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal(), TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal(), TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	else if (isIngredient(itemstack1.getItem()))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.slotEnum.INPUT_SLOT.ordinal(), TileEntityChemistryStation.slotEnum.INPUT_SLOT4.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.EnumSlots.INPUT_SLOT.ordinal(), TileEntityChemistryStation.EnumSlots.INPUT_SLOT4.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	
-            	else if (index >= TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+1 && index < TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+27)
+            	else if (index >= TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+1 && index < TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+27)
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+27, TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+36, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+27, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+36, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (index >= TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+27 && index < TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+36 && !this.mergeItemStack(itemstack1, TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+1, TileEntityChemistryStation.slotEnum.FUEL_SLOT.ordinal()+27, false))
+                else if (index >= TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+27 && index < TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+36 && !this.mergeItemStack(itemstack1, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+1, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+27, false))
                 {
                     return ItemStack.EMPTY;
                 }

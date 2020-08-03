@@ -30,6 +30,8 @@ import com.nuparu.sevendaystomine.network.packets.SyncIconHandler;
 import com.nuparu.sevendaystomine.network.packets.SyncIconMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncInventoryHandler;
 import com.nuparu.sevendaystomine.network.packets.SyncInventoryMessage;
+import com.nuparu.sevendaystomine.network.packets.SyncProcessHandler;
+import com.nuparu.sevendaystomine.network.packets.SyncProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncThrottleHandler;
 import com.nuparu.sevendaystomine.network.packets.SyncThrottleMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncTileEntityHandler;
@@ -60,6 +62,7 @@ public class PacketManager {
 	public static SimpleNetworkWrapper controllableKeyUpdate;
 	public static SimpleNetworkWrapper syncThrottle;
 	public static SimpleNetworkWrapper killProcess;
+	public static SimpleNetworkWrapper syncProcess;
 
 	private static int discriminator = 0;
 
@@ -129,6 +132,10 @@ public class PacketManager {
 
 		killProcess = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:killProcess");
 		killProcess.registerMessage(new KillProcessHandler(), KillProcessMessage.class, discriminator++,
+				Side.SERVER);
+		
+		syncProcess = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncProcess");
+		syncProcess.registerMessage(new SyncProcessHandler(), SyncProcessMessage.class, discriminator++,
 				Side.SERVER);
 	}
 }

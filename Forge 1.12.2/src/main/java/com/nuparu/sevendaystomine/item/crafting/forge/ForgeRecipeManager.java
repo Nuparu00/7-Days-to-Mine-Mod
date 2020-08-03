@@ -56,17 +56,20 @@ private static ForgeRecipeManager INSTANCE;
 		ingotbronze1.put(EnumMaterial.BRONZE,6);
 		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.INGOT_BRONZE),new ItemStack(ModItems.MOLD_INGOT),ingotbronze1));
 		HashMap<EnumMaterial,Integer> ingotbronze2 = new HashMap<EnumMaterial,Integer>();
-		ingotbronze2.put(EnumMaterial.COPPER,5);
-		ingotbronze2.put(EnumMaterial.TIN,1);
+		ingotbronze2.put(EnumMaterial.COPPER,4);
+		ingotbronze2.put(EnumMaterial.TIN,2);
 		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.INGOT_BRONZE),new ItemStack(ModItems.MOLD_INGOT),ingotbronze2));
 		HashMap<EnumMaterial,Integer> ingotbrass2 = new HashMap<EnumMaterial,Integer>();
 		ingotbrass2.put(EnumMaterial.COPPER,4);
 		ingotbrass2.put(EnumMaterial.ZINC,2);
 		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.INGOT_BRASS),new ItemStack(ModItems.MOLD_INGOT),ingotbrass2));
-		
-		
-		
-		
+		HashMap<EnumMaterial,Integer> ingotsteel2 = new HashMap<EnumMaterial,Integer>();
+		ingotsteel2.put(EnumMaterial.STEEL,4);
+		ingotsteel2.put(EnumMaterial.CARBON,2);
+		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.INGOT_STEEL),new ItemStack(ModItems.MOLD_INGOT),ingotsteel2));
+		HashMap<EnumMaterial,Integer> cement = new HashMap<EnumMaterial,Integer>();
+		cement.put(EnumMaterial.STONE,4);
+		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.CEMENT),new ItemStack(ModItems.CEMENT_MOLD),cement));
 		//addRecipe(new CampfireRecipeShapeless(new ItemStack(Items.STICK),new ItemStack(Items.ARROW),new ArrayList(Arrays.asList(new ItemStack(Items.COAL),new ItemStack(Items.PAPER)))));
 	    //addRecipe(new CampfireRecipeShaped(new ItemStack(Items.CAKE),new ItemStack(Items.ARROW),new ItemStack[][]{{new ItemStack(Items.BONE),new ItemStack(Items.ARROW)},{new ItemStack(Items.APPLE),new ItemStack(Items.COOKIE)}}));
 	}

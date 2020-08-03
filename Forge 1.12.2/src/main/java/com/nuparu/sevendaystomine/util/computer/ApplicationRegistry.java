@@ -45,5 +45,7 @@ public class ApplicationRegistry {
 	public void register() {
 		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/shell.png"),"shell"),"shell");
 		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/notes.png"),"notes"),"notes");
+		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/cctv.png"),"cctv"),"cctv");
+		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/explorer.png"),"explorer"),"explorer");
 	}
 }

@@ -27,45 +27,45 @@ public class ContainerForge extends Container {
 	public ContainerForge(InventoryPlayer playerInventory, final IInventory tileEntity) {
 		this.tileEntity = tileEntity;
 
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.slotEnum.INPUT_SLOT.ordinal(), 78, 11) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.EnumSlots.INPUT_SLOT.ordinal(), 78, 11) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.slotEnum.INPUT_SLOT2.ordinal(), 97, 11) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.EnumSlots.INPUT_SLOT2.ordinal(), 97, 11) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
 
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.slotEnum.INPUT_SLOT3.ordinal(), 78, 29) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.EnumSlots.INPUT_SLOT3.ordinal(), 78, 29) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.slotEnum.INPUT_SLOT4.ordinal(), 97, 29) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.EnumSlots.INPUT_SLOT4.ordinal(), 97, 29) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
 		this.addSlotToContainer(new SlotForgeOutput(playerInventory.player, tileEntity,
-				TileEntityForge.slotEnum.OUTPUT_SLOT.ordinal(), 148, 42) {
+				TileEntityForge.EnumSlots.OUTPUT_SLOT.ordinal(), 148, 42) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new SlotForgeFuel(tileEntity, TileEntityForge.slotEnum.FUEL_SLOT.ordinal(), 88, 63) {
+		this.addSlotToContainer(new SlotForgeFuel(tileEntity, TileEntityForge.EnumSlots.FUEL_SLOT.ordinal(), 88, 63) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.slotEnum.MOLD_SLOT.ordinal(), 45, 42) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityForge.EnumSlots.MOLD_SLOT.ordinal(), 45, 42) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
@@ -141,47 +141,47 @@ public class ContainerForge extends Container {
 			ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index <= TileEntityForge.slotEnum.MOLD_SLOT.ordinal())
+            if (index <= TileEntityForge.EnumSlots.MOLD_SLOT.ordinal())
             {
-                if (!this.mergeItemStack(itemstack1, TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+1, 39, true))
+                if (!this.mergeItemStack(itemstack1, TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+1, 39, true))
                 {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
             }
-            else if (index > TileEntityForge.slotEnum.MOLD_SLOT.ordinal())
+            else if (index > TileEntityForge.EnumSlots.MOLD_SLOT.ordinal())
             {
             	if (TileEntityForge.isItemFuel(itemstack1))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityForge.slotEnum.FUEL_SLOT.ordinal(), TileEntityForge.slotEnum.FUEL_SLOT.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityForge.EnumSlots.FUEL_SLOT.ordinal(), TileEntityForge.EnumSlots.FUEL_SLOT.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	else if (isMold(itemstack1.getItem()))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityForge.slotEnum.MOLD_SLOT.ordinal(), TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityForge.EnumSlots.MOLD_SLOT.ordinal(), TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	else if (isIngredient(itemstack1.getItem()))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityForge.slotEnum.INPUT_SLOT.ordinal(), TileEntityForge.slotEnum.INPUT_SLOT4.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityForge.EnumSlots.INPUT_SLOT.ordinal(), TileEntityForge.EnumSlots.INPUT_SLOT4.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	
-            	else if (index >= TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+1 && index < TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+27)
+            	else if (index >= TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+1 && index < TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+27)
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+27, TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+36, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+27, TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+36, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (index >= TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+27 && index < TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+36 && !this.mergeItemStack(itemstack1, TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+1, TileEntityForge.slotEnum.MOLD_SLOT.ordinal()+27, false))
+                else if (index >= TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+27 && index < TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+36 && !this.mergeItemStack(itemstack1, TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+1, TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+27, false))
                 {
                     return ItemStack.EMPTY;
                 }

@@ -28,10 +28,11 @@ public class BlockCornPlant extends net.minecraft.block.BlockBush implements IGr
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 3);
 
 	public BlockCornPlant() {
-		this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(HALF,
+		setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(HALF,
 				BlockCornPlant.EnumBlockHalf.LOWER));
-		this.setHardness(0.0F);
-		this.setSoundType(SoundType.PLANT);
+		setHardness(0);
+		setResistance(0.01F);
+		setSoundType(SoundType.PLANT);
 	}
 
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

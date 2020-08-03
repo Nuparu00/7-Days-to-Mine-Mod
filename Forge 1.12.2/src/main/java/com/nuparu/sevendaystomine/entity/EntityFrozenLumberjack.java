@@ -15,9 +15,9 @@ public class EntityFrozenLumberjack extends EntityBipedalZombie {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.06D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1000);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500D);
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
 	}
 	

@@ -1,12 +1,9 @@
 package com.nuparu.sevendaystomine.block;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModItems;
-import com.nuparu.sevendaystomine.tileentity.TileEntityGenerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
 
 import net.minecraft.block.Block;
@@ -22,8 +19,6 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,8 +42,8 @@ public class BlockPhoto extends BlockTileProvider<TileEntityPhoto> {
 	public BlockPhoto() {
 		super(Material.CLOTH);
 		this.setSoundType(SoundType.CLOTH);
-		this.setHardness(0.5f);
-		this.setResistance(0.5f);
+		this.setHardness(0.1f);
+		this.setResistance(0.1f);
 	}
 
 	@Override

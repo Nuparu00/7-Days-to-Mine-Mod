@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.entity;
 
 import javax.annotation.Nullable;
 
+import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.events.HumanResponseEvent;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.network.PacketManager;
@@ -37,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EntityHuman extends EntityCreature {
 
-	//Should not be used outside of the Entity class - especially on client side!!
+	// Should not be used outside of the Entity class - especially on client side!!
 	private EnumSex sex = EnumSex.UNKNOWN;
 	private ResourceLocation res = new ResourceLocation("textures/entity/steve.png");
 
@@ -59,7 +60,7 @@ public abstract class EntityHuman extends EntityCreature {
 
 	private static final DataParameter<String> SEX = EntityDataManager.<String>createKey(EntityHuman.class,
 			DataSerializers.STRING);
-	
+
 	public EntityHuman(World worldIn) {
 		super(worldIn);
 		this.setSize(0.6F, 1.95F);
@@ -120,6 +121,19 @@ public abstract class EntityHuman extends EntityCreature {
 
 	public EnumSex getSexAsEnum() {
 		return this.sex;
+	}
+
+	public boolean canTalkTo(EntityPlayer player) {
+		return true;
+	}
+
+	@Override
+	public boolean processInteract(EntityPlayer player, EnumHand hand) {
+		if (canTalkTo(player)) {
+			player.openGui(SevenDaysToMine.instance, 15, world, this.getEntityId(), 0, 0);
+			return true;
+		}
+		return super.processInteract(player, hand);
 	}
 
 	public void onDialogue(String dialogue, EntityPlayer player) {

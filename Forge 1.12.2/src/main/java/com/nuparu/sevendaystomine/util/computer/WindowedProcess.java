@@ -45,10 +45,17 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	protected boolean isDragged = false;
 
 	protected boolean maximized;
+	protected boolean minimized;
 	protected double old_height;
 	protected double old_width;
-	
+
 	public static double title_bar_height = 0.05;
+
+	public Button close;
+	public Button maximize;
+	public Button minimize;
+
+	private int maxRelativeZ = 0;
 
 	public WindowedProcess() {
 		this(0, 0, 0, 0);
@@ -63,23 +70,36 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	public void clientInit() {
 		super.clientInit();
 		elements.clear();
-		Button button = new Button(x + width - Screen.screen.ySize * title_bar_height, y,
+		close = new Button(x + width - Screen.screen.ySize * title_bar_height, y,
 				Screen.screen.ySize * title_bar_height, Screen.screen.ySize * title_bar_height, Screen.screen, "X", 0);
-		button.textNormal = 0xffffff;
-		button.normal = new ColorRGBA(0.8, 0.2, 0.1);
-		button.setFontSize(0.7);
-		button.setProcess(this);
-		button.setZLevel(zLevel);
-		elements.add(button);
-		
-		Button button2 = new Button(x + width - 2* (Screen.screen.ySize * title_bar_height), y,
-				Screen.screen.ySize * title_bar_height, Screen.screen.ySize * title_bar_height, Screen.screen, "[]", -1);
-		button2.textNormal = 0xffffff;
-		button2.normal = new ColorRGBA(0.8, 0.2, 0.1);
-		button2.setFontSize(0.7);
-		button2.setProcess(this);
-		button2.setZLevel(zLevel);
-		elements.add(button2);
+		close.textNormal = 0xffffff;
+		close.normal = new ColorRGBA(0.8, 0.2, 0.1);
+		close.setFontSize(0.7);
+		close.setProcess(this);
+		close.setZLevel(zLevel);
+		close.border = false;
+		elements.add(close);
+
+		maximize = new Button(x + width - 2 * (Screen.screen.ySize * title_bar_height), y,
+				Screen.screen.ySize * title_bar_height, Screen.screen.ySize * title_bar_height, Screen.screen,
+				Character.toString((char) 0x25A1), -1);
+		maximize.textNormal = 0xffffff;
+		maximize.normal = new ColorRGBA(0.8, 0.2, 0.1);
+		maximize.setFontSize(0.7);
+		maximize.setProcess(this);
+		maximize.setZLevel(zLevel);
+		maximize.border = false;
+		elements.add(maximize);
+
+		minimize = new Button(x + width - 3 * (Screen.screen.ySize * title_bar_height), y,
+				Screen.screen.ySize * title_bar_height, Screen.screen.ySize * title_bar_height, Screen.screen, "-", -2);
+		minimize.textNormal = 0xffffff;
+		minimize.normal = new ColorRGBA(0.8, 0.2, 0.1);
+		minimize.setFontSize(0.7);
+		minimize.setProcess(this);
+		minimize.setZLevel(zLevel);
+		minimize.border = false;
+		elements.add(minimize);
 	}
 
 	@Override
@@ -100,6 +120,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 		nbt.setBoolean("isFocused", isFocused);
 		nbt.setBoolean("isDragged", isDragged);
 		nbt.setBoolean("maximized", maximized);
+		nbt.setBoolean("minimized", minimized);
 		nbt.setDouble("old_width", old_width);
 		nbt.setDouble("old_height", old_height);
 
@@ -109,22 +130,54 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-
-		this.x = nbt.getDouble("x");
-		this.y = nbt.getDouble("y");
-		this.width = nbt.getDouble("width");
-		this.height = nbt.getDouble("height");
-		this.zLevel = nbt.getInteger("zLevel");
-		this.windowOrder = nbt.getInteger("windowOrder");
-		this.old_x = nbt.getDouble("old_x");
-		this.old_y = nbt.getDouble("old_y");
-		this.offsetX = nbt.getDouble("offsetX");
-		this.offsetY = nbt.getDouble("offsetY");
-		this.isDragged = nbt.getBoolean("isDragged");
-		this.isFocused = nbt.getBoolean("isFocused");
-		this.maximized = nbt.getBoolean("maximized");
-		this.old_width = nbt.getDouble("old_width");
-		this.old_height = nbt.getDouble("old_height");
+		if (nbt.hasKey("x")) {
+			this.x = nbt.getDouble("x");
+		}
+		if (nbt.hasKey("y")) {
+			this.y = nbt.getDouble("y");
+		}
+		if (nbt.hasKey("width")) {
+			this.width = nbt.getDouble("width");
+		}
+		if (nbt.hasKey("height")) {
+			this.height = nbt.getDouble("height");
+		}
+		if (nbt.hasKey("zLevel")) {
+			this.zLevel = nbt.getInteger("zLevel");
+		}
+		if (nbt.hasKey("windowOrder")) {
+			this.windowOrder = nbt.getInteger("windowOrder");
+		}
+		if (nbt.hasKey("old_x")) {
+			this.old_x = nbt.getDouble("old_x");
+		}
+		if (nbt.hasKey("old_y")) {
+			this.old_y = nbt.getDouble("old_y");
+		}
+		if (nbt.hasKey("offsetX")) {
+			this.offsetX = nbt.getDouble("offsetX");
+		}
+		if (nbt.hasKey("offsetY")) {
+			this.offsetY = nbt.getDouble("offsetY");
+		}
+		if (nbt.hasKey("isDragged")) {
+			this.isDragged = nbt.getBoolean("isDragged");
+		}
+		if (nbt.hasKey("isFocused")) {
+			this.isFocused = nbt.getBoolean("isFocused");
+		}
+		if (nbt.hasKey("maximized")) {
+			this.maximized = nbt.getBoolean("maximized");
+		}
+		if (nbt.hasKey("minimized")) {
+			this.minimized = nbt.getBoolean("minimized");
+		}
+		if (nbt.hasKey("old_width")) {
+			this.old_width = nbt.getDouble("old_width");
+		}
+		if (nbt.hasKey("old_height")) {
+			this.old_height = nbt.getDouble("old_height");
+		}
 
 		if (nbt.hasKey("application")) {
 			String s = nbt.getString("application");
@@ -134,7 +187,9 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 
 	}
 
-	public abstract String getTitle();
+	public String getTitle() {
+		return this.application.getLocalizedName();
+	}
 
 	public double getX() {
 		return x;
@@ -164,6 +219,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	@SideOnly(Side.CLIENT)
 	public void render(float partialTicks) {
 		super.render(partialTicks);
+		this.maxRelativeZ = 0;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -181,59 +237,61 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void initWindow() {
-		if (elements.size() == 0) {
+
+		if (maximized && (this.width != Screen.screen.xSize || this.height != Screen.screen.ySize * 0.9
+				|| this.x != Screen.screen.localXToGlobal(0) || this.y != Screen.screen.localYToGlobal(0))) {
+			this.width = Screen.screen.xSize;
+			this.height = Screen.screen.ySize * 0.9;
+			this.x = Screen.screen.localXToGlobal(0);
+			this.y = Screen.screen.localYToGlobal(0);
+			sync("x","y","width","height");
+		}
+		if (close == null)
 			return;
-		}
-		
-		if(maximized && (this.width != Screen.screen.xSize || this.height != Screen.screen.ySize*0.9 || this.x != Screen.screen.localXToGlobal(0) || this.y != Screen.screen.localYToGlobal(0))) {
-			this.width=Screen.screen.xSize;
-			this.height=Screen.screen.ySize*0.9;
-			this.x=Screen.screen.localXToGlobal(0);
-			this.y=Screen.screen.localYToGlobal(0);
-			NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-			PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
-		}
+		close.setX(x + width - Screen.screen.ySize * title_bar_height);
+		close.setY(y);
+		close.setWidth(Screen.screen.ySize * title_bar_height);
+		close.setHeight(Screen.screen.ySize * title_bar_height);
 
-		IScreenElement element0 = elements.get(0);
+		maximize.setX(x + width - 2 * (Screen.screen.ySize * title_bar_height));
+		maximize.setY(y);
+		maximize.setWidth(Screen.screen.ySize * title_bar_height);
+		maximize.setHeight(Screen.screen.ySize * title_bar_height);
 
-		element0.setX(x + width - Screen.screen.ySize * title_bar_height);
-		element0.setY(y);
-		element0.setWidth(Screen.screen.ySize * title_bar_height);
-		element0.setHeight(Screen.screen.ySize * title_bar_height);
-		
-		
-		IScreenElement element1 = elements.get(1);
+		minimize.setX(x + width - 3 * (Screen.screen.ySize * title_bar_height));
+		minimize.setY(y);
+		minimize.setWidth(Screen.screen.ySize * title_bar_height);
+		minimize.setHeight(Screen.screen.ySize * title_bar_height);
 
-		element1.setX(x + width - 2*(Screen.screen.ySize * title_bar_height));
-		element1.setY(y);
-		element1.setWidth(Screen.screen.ySize * title_bar_height);
-		element1.setHeight(Screen.screen.ySize * title_bar_height);
-		
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onButtonPressed(Button button, int mouseButton) {
+		
+		if (isMinimized())
+			return;
 		int buttonId = button.ID;
 		if (buttonId == 0) {
 			PacketManager.killProcess.sendToServer(new KillProcessMessage(computerTE.getPos(), this.getId()));
-		}
-		if (buttonId == -1) {
-			if(!maximized) {
-			this.old_height = height;
-			this.old_width=width;
-			this.width=Screen.screen.xSize;
-			this.height=Screen.screen.ySize*0.9;
+		} else if (buttonId == -1) {
+			if (!maximized) {
+				this.old_height = height;
+				this.old_width = width;
+				this.width = Screen.screen.xSize;
+				this.height = Screen.screen.ySize * 0.9;
+			} else {
+				this.width = old_width;
+				this.height = old_height;
 			}
-			else {
-				this.width=old_width;
-				this.height=old_height;
-			}
-			this.x=Screen.screen.localXToGlobal(0);
-			this.y=Screen.screen.localYToGlobal(0);
+			this.x = Screen.screen.localXToGlobal(0);
+			this.y = Screen.screen.localYToGlobal(0);
 			this.maximized = !this.maximized;
-			NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-			PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+			
+		} else if (buttonId == -2) {
+			setMinimized(true);
+			sync("x","y","width","height","old_height","old_width","maximized","minimized");
+
 		}
 	}
 
@@ -244,28 +302,33 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void mouseReleased(int mouseX, int mouseY, int state) {
+		if (isMinimized())
+			return;
 		if (isDragged == true) {
 			isDragged = false;
-			isFocused = false;
 			if (mouseX < Screen.screen.getRelativeX(0) - 20 || mouseY < Screen.screen.getRelativeY(0) - 20
 					|| mouseX > Screen.screen.getRelativeX(0) + Screen.screen.xSize + 20
 					|| mouseY > Screen.screen.getRelativeY(0) + Screen.screen.ySize + 20) {
 				x = old_x;
 				y = old_y;
 			} else {
-				NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-				PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+				sync("x","y","isDragged");
 			}
 			setOffsetX(0);
 			setOffsetY(0);
+			sync("offsetX","offsetY");
 			onDragReleased();
+			initWindow();
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-		if (clickedMouseButton == 0 && isFocused() && !maximized) {
+		if (isMinimized())
+			return;
+		if (clickedMouseButton == 0 && isFocused() && !maximized && Utils.isInArea(mouseX, mouseY, x, y,
+				width - 3 * (Screen.screen.ySize * title_bar_height), Screen.screen.ySize * title_bar_height)) {
 			if (isDragged == false) {
 				isDragged = true;
 			}
@@ -278,10 +341,12 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+		boolean focusPrev = isFocused;
 		if (isNotHidden(mouseX, mouseY)) {
 
-			if (Utils.isInArea(mouseX, mouseY, x, y, width - 2*(Screen.screen.ySize * title_bar_height),
+			if (Utils.isInArea(mouseX, mouseY, x, y, width - 3 * (Screen.screen.ySize * title_bar_height),
 					Screen.screen.ySize * title_bar_height)) {
 				if (mouseButton == 0) {
 					isFocused = true;
@@ -290,12 +355,11 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 					setOffsetX(mouseX - x);
 					setOffsetY(mouseY - y);
 
-				} else {
-					for (IScreenElement element : elements) {
-						element.setFocus(false);
-					}
-					isFocused = false;
 				}
+			} else if (Utils.isInArea(mouseX, mouseY, x, y + Screen.screen.ySize * title_bar_height,
+					Screen.screen.ySize * width, Screen.screen.ySize * height)) {
+				isFocused = true;
+				super.mouseClicked(mouseX, mouseY, mouseButton);
 			} else {
 				for (IScreenElement element : elements) {
 					element.setFocus(false);
@@ -309,6 +373,9 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 				element.setFocus(false);
 			}
 			isFocused = false;
+		}
+		if (focusPrev != isFocused) {
+			sync("offsetX","offsetY","old_x","old_y","isFocused");
 		}
 	}
 
@@ -341,9 +408,21 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 		return isFocused;
 	}
 
+	public void setFocused(boolean state) {
+		boolean focusedPrev = isFocused;
+		this.isFocused = state;
+		if (focusedPrev != isFocused) {
+			sync("isFocused");
+		}
+	}
+
+	public boolean isMinimized() {
+		return minimized;
+	}
+
 	// Checks if the window is really visible at given coords
 	public boolean isNotHidden(int mouseX, int mouseY) {
-		if (isHovered(mouseX, mouseY)) {
+		if (!isMinimized() && isHovered(mouseX, mouseY)) {
 			@SuppressWarnings("unchecked")
 			ArrayList<TickingProcess> processes = (ArrayList<TickingProcess>) computerTE.getProcessesList().clone();
 			for (int i = 0; i < processes.size(); i++) {
@@ -402,8 +481,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 		this.windowOrder = newWindowOrder;
 		this.zLevel = (1 + windowOrder) * 3;
 		if (flag && application != null && computerTE != null) {
-			NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-			PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+			sync("windowOrder","zLevel");
 		}
 
 	}
@@ -415,7 +493,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 			TickingProcess tp = processes.get(i);
 			if (tp instanceof WindowedProcess) {
 				WindowedProcess wp = (WindowedProcess) tp;
-				if (Utils.isInArea(x, y, wp.x, wp.y, wp.width, wp.height)) {
+				if (!wp.isMinimized() && Utils.isInArea(x, y, wp.x, wp.y, wp.width, wp.height)) {
 					return false;
 				}
 
@@ -423,23 +501,32 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 		}
 		return true;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void clientTick() {
 		super.clientTick();
-		/*
-		int tolerance = 5;
-		
-		if(this.isFocused()) {
-			int mouseX = Screen.screen.mouseX;
-			int mouseY = Screen.screen.mouseY;
-			if(isNotHidden(mouseX, mouseY)) {
-				if(Math.abs(x-mouseX) <= tolerance) {
-					System.out.println("Edge");
-				}
-			}
-		}*/
 	}
 
+	public void setMinimized(boolean state) {
+		minimized = state;
+		if (minimized) {
+			for (IScreenElement element : elements) {
+				element.setFocus(false);
+			}
+			isFocused = false;
+		}
+	}
+
+	/*
+	 * TO-DO: Have to solve issue with some elemnts from hidden windows being
+	 * renderer on top of other windows
+	 */
+	public int offsetRelativeZ(int offset) {
+		int i = zLevel + offset;
+		if (i > maxRelativeZ) {
+			maxRelativeZ = i;
+		}
+		return i;
+	}
 
 }

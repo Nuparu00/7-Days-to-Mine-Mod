@@ -40,6 +40,8 @@ public class BlockBookshelfEnhanced extends BlockTileProvider<TileEntityBookshel
 		setSoundType(SoundType.WOOD);
 		this.setDefaultState(
 				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(FULL, false));
+		setHardness(2);
+		setResistance(7);
 	}
 
 	@Override
@@ -56,12 +58,11 @@ public class BlockBookshelfEnhanced extends BlockTileProvider<TileEntityBookshel
 	public int quantityDropped(Random rand) {
 		return rand.nextInt(5) + 1;
 	}
-	
+
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int i) {
@@ -71,8 +72,9 @@ public class BlockBookshelfEnhanced extends BlockTileProvider<TileEntityBookshel
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(playerIn.isSneaking()) return true;
-        
+		if (playerIn.isSneaking())
+			return true;
+
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te != null && te instanceof TileEntityBookshelf) {
 			playerIn.openGui(SevenDaysToMine.instance, 5, worldIn, pos.getX(), pos.getY(), pos.getZ());
@@ -122,21 +124,21 @@ public class BlockBookshelfEnhanced extends BlockTileProvider<TileEntityBookshel
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
-        return (meta & 8) > 0 ? this.getDefaultState().withProperty(FULL, false).withProperty(FACING, enumfacing): this.getDefaultState().withProperty(FULL, true).withProperty(FACING, enumfacing);
+		return (meta & 8) > 0 ? this.getDefaultState().withProperty(FULL, false).withProperty(FACING, enumfacing)
+				: this.getDefaultState().withProperty(FULL, true).withProperty(FACING, enumfacing);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int full = state.getValue(FULL) == false ? 0 : 1;
 		int i = 0;
-        i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+		i = i | ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
 
-        if (full == 0)
-        {
-            i |= 8;
-        }
+		if (full == 0) {
+			i |= 8;
+		}
 
-        return i;
+		return i;
 	}
 
 	protected BlockStateContainer createBlockState() {

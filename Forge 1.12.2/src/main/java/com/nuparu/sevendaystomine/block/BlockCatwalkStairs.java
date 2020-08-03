@@ -22,6 +22,8 @@ public class BlockCatwalkStairs extends BlockStairsBase implements IScrapable{
 		super(ModBlocks.CATWALK.getDefaultState());
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		this.lightOpacity = 5;
+		setHardness(2.0F);
+		setResistance(1.0F);
 	}
 	
 	@Override

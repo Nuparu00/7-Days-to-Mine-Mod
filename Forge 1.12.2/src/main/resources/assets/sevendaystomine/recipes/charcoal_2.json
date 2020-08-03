@@ -1,0 +1,13 @@
+{
+   "type":"minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:burnt_planks"
+        }
+    ],
+   "result":{
+      "item":"minecraft:coal",
+      "count":2,
+      "data":1
+   }
+}

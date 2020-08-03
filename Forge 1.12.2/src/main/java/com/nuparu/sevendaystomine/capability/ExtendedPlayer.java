@@ -1,10 +1,15 @@
 package com.nuparu.sevendaystomine.capability;
 
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.Constants;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import com.nuparu.sevendaystomine.network.PacketManager;
@@ -22,12 +27,15 @@ public class ExtendedPlayer implements IExtendedPlayer {
 
 	boolean isCrawling;
 
-	boolean isInfected;
-	int infectionStage;
-	int infectionDay;
-	int timeToNextStage;
+	int infectionTime = -1;
+	
+	//Has been a bloodmoon horde spawnde for this player on the current day?
+	boolean bloodmoon;
+	
+	
+	List<String> recipes = new ArrayList<String>();
 
-	EntityPlayer owner;
+	EntityPlayer player;
 
 	public void setThirst(int thirst) {
 		this.thirst = thirst;
@@ -84,49 +92,23 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		onDataChanged();
 	}
 
-	public boolean isInfected() {
-		return this.isInfected;
+
+	public int getInfectionTime() {
+		return this.infectionTime;
 	}
 
-	public void setInfected(boolean state) {
-		this.isInfected = state;
-		onDataChanged();
-	}
-
-	public int getInfectionStage() {
-		return this.infectionStage;
-	}
-
-	public void setInfectionStage(int stage) {
-		this.infectionStage = stage;
-		onDataChanged();
-	}
-
-	public int getInfectionDay() {
-		return this.infectionDay;
-	}
-
-	public void setInfectionDay(int day) {
-		this.infectionDay = day;
-		onDataChanged();
-	}
-
-	public int getTimeToNextStage() {
-		return this.timeToNextStage;
-	}
-
-	public void setTimeToNextStage(int time) {
-		this.timeToNextStage = time;
+	public void setInfectionTime(int time) {
+		this.infectionTime = time;
 		onDataChanged();
 	}
 
 	public IExtendedPlayer setOwner(EntityPlayer player) {
-		this.owner = player;
+		this.player = player;
 		return this;
 	}
 
 	public EntityPlayer getOwner() {
-		return this.owner;
+		return this.player;
 	}
 
 	public void readNBT(NBTTagCompound nbt) {
@@ -135,10 +117,15 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		thirst = nbt.getInteger("thirst");
 		stamina = nbt.getInteger("stamina");
 		isCrawling = nbt.getBoolean("isCrawling");
-		isInfected = nbt.getBoolean("isInfected");
-		infectionStage = nbt.getInteger("infectionStage");
-		infectionDay = nbt.getInteger("infectionDay");
-		timeToNextStage = nbt.getInteger("timeToNextStage");
+		infectionTime = nbt.getInteger("infectionTime");
+		bloodmoon = nbt.getBoolean("bloodmoon");
+		
+		
+		recipes.clear();
+		NBTTagList list = nbt.getTagList("recipes", Constants.NBT.TAG_STRING);
+		for (int i = 0; i < list.tagCount(); i++) {
+			recipes.add(list.getStringTagAt(i));
+		}
 	}
 
 	public NBTTagCompound writeNBT(NBTTagCompound nbt) {
@@ -149,11 +136,16 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		nbt.setInteger("stamina", stamina);
 
 		nbt.setBoolean("isCrawling", isCrawling);
-		nbt.setBoolean("isInfected", isInfected);
 
-		nbt.setInteger("infectionStage", infectionStage);
-		nbt.setInteger("infectionDay", infectionDay);
-		nbt.setInteger("timeToNextStage", timeToNextStage);
+		nbt.setInteger("infectionTime", infectionTime);
+		
+		nbt.setBoolean("bloodmoon", bloodmoon);
+		
+		NBTTagList list = new NBTTagList();
+		for(String rec : recipes) {
+			list.appendTag(new NBTTagString(rec));
+		}
+		nbt.setTag("recipes", list);
 
 		return nbt;
 	}
@@ -163,21 +155,21 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	public void onDataChanged() {
-		if (!owner.world.isRemote) {
-			EntityTracker tracker = ((WorldServer) owner.world).getEntityTracker();
-			PlayerCapabilitySyncMessage message = new PlayerCapabilitySyncMessage(this, owner);
+		if (!player.world.isRemote) {
+			EntityTracker tracker = ((WorldServer) player.world).getEntityTracker();
+			PlayerCapabilitySyncMessage message = new PlayerCapabilitySyncMessage(this, player);
 
-			for (EntityPlayer entityPlayer : tracker.getTrackingPlayers(owner)) {
+			for (EntityPlayer entityPlayer : tracker.getTrackingPlayers(player)) {
 				PacketManager.playerCapabilitySync.sendTo(message, (EntityPlayerMP) entityPlayer);
 			}
-			PacketManager.playerCapabilitySync.sendTo(message, (EntityPlayerMP) owner);
+			PacketManager.playerCapabilitySync.sendTo(message, (EntityPlayerMP) player);
 		}
 	}
 
 	public void onStartedTracking(EntityPlayer tracker) {
 
-		if (!owner.world.isRemote) {
-			PlayerCapabilitySyncMessage message = new PlayerCapabilitySyncMessage(this, owner);
+		if (!player.world.isRemote) {
+			PlayerCapabilitySyncMessage message = new PlayerCapabilitySyncMessage(this, player);
 			PacketManager.playerCapabilitySync.sendTo(message, (EntityPlayerMP) tracker);
 		}
 	}
@@ -188,6 +180,39 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		public IExtendedPlayer call() throws Exception {
 			return new ExtendedPlayer();
 		}
+	}
+
+	@Override
+	public void unlockRecipe(String rec) {
+		if(hasRecipe(rec)) return;
+		recipes.add(rec);
+		onDataChanged();
+	}
+
+	@Override
+	public boolean hasRecipe(String rec) {
+		return recipes.contains(rec);
+	}
+
+	@Override
+	public List<String> getRecipes() {
+		return recipes;
+	}
+
+	@Override
+	public boolean getBloodmoon() {
+		return bloodmoon;
+	}
+
+	@Override
+	public void setBloodmoon(boolean state) {
+		bloodmoon = state;
+		onDataChanged();
+	}
+
+	@Override
+	public boolean isInfected() {
+		return infectionTime != -1;
 	}
 	
 }

@@ -33,7 +33,7 @@ public class ItemWire extends ItemScrapable {
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
 			EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
-
+		
 		TileEntity te = worldIn.getTileEntity(pos);
 
 		if (te == null || !(te instanceof IVoltage))
@@ -70,6 +70,7 @@ public class ItemWire extends ItemScrapable {
 				long l = stack.getTagCompound().getLong("from");
 				BlockPos from = BlockPos.fromLong(l);
 				TileEntity te2 = worldIn.getTileEntity(from);
+
 				if (l != pos.toLong() && te2 != null && te2 instanceof IVoltage) {
 					ElectricConnection connection = new ElectricConnection(BlockPos.fromLong(l), pos);
 

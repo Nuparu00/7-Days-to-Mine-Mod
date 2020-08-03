@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.world.gen.feature;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.block.BlockCornPlant;
+import com.nuparu.sevendaystomine.init.ModBiomes;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,6 +18,7 @@ public class WorldGenCorn extends WorldGenerator {
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos pos) {
 		int bottomAge = rand.nextInt(4);
+		if(worldIn.getBiome(pos) == ModBiomes.BURNT_FOREST) return false;
 		IBlockState bottom = com.nuparu.sevendaystomine.init.ModBlocks.CORN_PLANT.getDefaultState()
 				.withProperty(BlockCornPlant.AGE, bottomAge)
 				.withProperty(BlockCornPlant.HALF, BlockCornPlant.EnumBlockHalf.LOWER);

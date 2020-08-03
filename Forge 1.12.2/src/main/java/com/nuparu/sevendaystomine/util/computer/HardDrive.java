@@ -26,6 +26,8 @@ public class HardDrive {
 		this.te = te;
 		desktopIcons.put(new double[] { 0.1, 0.1 }, ApplicationRegistry.INSTANCE.getByString("shell"));
 		desktopIcons.put(new double[] { 0.1, 64 }, ApplicationRegistry.INSTANCE.getByString("notes"));
+		desktopIcons.put(new double[] { 0.1, 32 }, ApplicationRegistry.INSTANCE.getByString("cctv"));
+		desktopIcons.put(new double[] { 0.1, 96 }, ApplicationRegistry.INSTANCE.getByString("explorer"));
 	}
 
 	@SuppressWarnings("unchecked")

@@ -66,6 +66,7 @@ public class BlockTorchEnhanced extends BlockTorch implements IBlockBase, ITileE
 
 	public static void extinguish(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
+		if(!(state.getBlock() instanceof BlockTorch)) return;
 		world.setBlockState(pos,
 				ModBlocks.TORCH_UNLIT.getDefaultState().withProperty(BlockUnlitTorch.FACING, state.getValue(FACING)), 3);
 		world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F),

@@ -33,8 +33,8 @@ public class BlockMailBox extends BlockTileProvider<TileEntityMailBox> {
 
 	public BlockMailBox() {
 		super(Material.ROCK);
-		setHardness(8.0F);
-		setResistance(4.0F);
+		setHardness(1.4F);
+		setResistance(2.0F);
 		setHarvestLevel("pickaxe", 0);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));

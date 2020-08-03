@@ -1,0 +1,17 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:cement_mold"
+  },
+  "recipe": "concrete"
+}

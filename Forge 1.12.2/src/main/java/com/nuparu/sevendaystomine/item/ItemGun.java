@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Multimap;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.util.Utils;
@@ -14,6 +15,7 @@ import com.nuparu.sevendaystomine.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -54,6 +56,8 @@ public class ItemGun extends Item implements IQuality {
 	private float spread = 10f;
 	private int reloadTime = 1500;
 	private int delay = 0;
+
+	private int projectiles = 1;
 
 	private EnumGun type;
 	private EnumLength length;
@@ -120,6 +124,11 @@ public class ItemGun extends Item implements IQuality {
 		return reloadTime;
 	}
 
+	public int getReloadTime(ItemStack stack) {
+		return (int) Math.ceil((float) getReloadTime()
+				/ (float) (1 + EnchantmentHelper.getEnchantmentLevel(ModEnchantments.fast_reload, stack)));
+	}
+
 	public float getFullDamage() {
 		return fullDamage;
 	}
@@ -182,7 +191,8 @@ public class ItemGun extends Item implements IQuality {
 
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
-		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.getScore()/ItemQuality.XP_PER_QUALITY_POINT), ItemQuality.MAX_QUALITY));
+		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT),
+				ItemQuality.MAX_QUALITY));
 		itemstack.getTagCompound().setInteger("Capacity", maxAmmo);
 		itemstack.getTagCompound().setInteger("Ammo", 0);
 		itemstack.getTagCompound().setInteger("ReloadTime", 90000);
@@ -228,7 +238,10 @@ public class ItemGun extends Item implements IQuality {
 			EntityPlayer player = Minecraft.getMinecraft().player;
 			ItemStack stack = new ItemStack(this, 1, 0);
 			if (player != null) {
-				setQuality(stack, (int) (int) Math.min(Math.max(Math.floor(player.getScore()/ItemQuality.XP_PER_QUALITY_POINT), 1), ItemQuality.MAX_QUALITY));
+				setQuality(stack,
+						(int) (int) Math.min(
+								Math.max(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT), 1),
+								ItemQuality.MAX_QUALITY));
 				stack.getTagCompound().setInteger("Capacity", maxAmmo);
 				stack.getTagCompound().setInteger("Ammo", 0);
 				stack.getTagCompound().setInteger("ReloadTime", 90000);
@@ -257,7 +270,6 @@ public class ItemGun extends Item implements IQuality {
 		 * ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack); }
 		 */
 
-
 		if ((wield == EnumWield.TWO_HAND && !playerIn.getHeldItem(getOtherHand(handIn)).isEmpty())) {
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
 		}
@@ -273,28 +285,27 @@ public class ItemGun extends Item implements IQuality {
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
 		}
 
-
-		
 		int ammo = nbt.getInteger("Ammo");
 		boolean flag = playerIn.isCreative();
 		if (ammo > 0 || flag) {
 			float velocity = getSpeed() * (getQuality(itemstack) / 5f);
-			EntityShot shot = new EntityShot(worldIn, playerIn, velocity, ((float) getSpread(playerIn, handIn)
-					* (float) (Math.abs(playerIn.motionX) + Math.abs(playerIn.motionY) + Math.abs(playerIn.motionZ))
-					* 5f) / (playerIn.isSneaking() ? 4 : 3));
-			if (!worldIn.isRemote) {
-				shot.setDamage(getFinalDamage(itemstack));
-				worldIn.spawnEntity(shot);
+			for (int i = 0; i < projectiles; i++) {
+				EntityShot shot = new EntityShot(worldIn, playerIn, velocity, ((float) getSpread(playerIn, handIn)
+						* (float) (Math.abs(playerIn.motionX) + Math.abs(playerIn.motionY) + Math.abs(playerIn.motionZ))
+						* 5f) / (playerIn.isSneaking() ? 4 : 3));
+				if (!worldIn.isRemote) {
+					shot.setDamage(getFinalDamage(itemstack));
+					worldIn.spawnEntity(shot);
+				}
 			}
-
 			itemstack.damageItem(1, playerIn);
 			worldIn.playSound(null, new BlockPos(playerIn), getShotSound(), SoundCategory.PLAYERS, getShotSoundVolume(),
 					getShotSoundPitch());
 			playerIn.swingArm(handIn);
-			if(worldIn.isRemote) {
-			SevenDaysToMine.proxy.addRecoil(getRecoil(), playerIn);
+			if (worldIn.isRemote) {
+				SevenDaysToMine.proxy.addRecoil(getRecoil(), playerIn);
 			}
-			
+
 			if (!flag) {
 				itemstack.getTagCompound().setInteger("Ammo", ammo - 1);
 			}
@@ -333,7 +344,8 @@ public class ItemGun extends Item implements IQuality {
 
 		double spread_local = spread * mult * (1d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)));
 		return (spread_local
-				* (double) (Math.abs(player.motionX) + Math.abs(player.motionY) + Math.abs(player.motionZ)));
+				* (double) (Math.abs(player.motionX) + Math.abs(player.motionY) + Math.abs(player.motionZ)))
+				/ (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack) + 1d);
 	}
 
 	public double getCross(EntityPlayer player, EnumHand hand) {
@@ -348,7 +360,8 @@ public class ItemGun extends Item implements IQuality {
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		return getCross() * mult * (1d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)));
+		return (spread * mult * (1d - ((double) quality / (ItemQuality.MAX_QUALITY + 1))))
+				/ (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack) + 1d);
 	}
 
 	@Override
@@ -380,8 +393,41 @@ public class ItemGun extends Item implements IQuality {
 		return EnumAction.BOW;
 	}
 
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		switch (getQualityTierFromStack(stack)) {
+		case FLAWLESS:
+			return 0xA300A3;
+		case GREAT:
+			return 0x4545CC;
+		case FINE:
+			return 0x37A337;
+		case GOOD:
+			return 0xB2B23C;
+		case POOR:
+			return 0xF09900;
+		case FAULTY:
+			return 0x89713C;
+		case NONE:
+		default:
+			return super.getRGBDurabilityForDisplay(stack);
+		}
+	}
+
+	public float getFOVFactor(ItemStack stack) {
+		return 1.0f;
+	}
+
+	public int getProjectiles() {
+		return projectiles;
+	}
+
+	public void setProjectiles(int projectiles) {
+		this.projectiles = projectiles;
+	}
+
 	public static enum EnumGun {
-		PISTOL, STHOTGUN, RIFLE, LAUNCHER, MACHINE, SUBMACHINE
+		PISTOL, SHOTGUN, RIFLE, LAUNCHER, MACHINE, SUBMACHINE
 	}
 
 	public static enum EnumWield {

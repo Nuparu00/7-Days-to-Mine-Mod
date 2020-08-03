@@ -21,6 +21,8 @@ public class BlockWoodenDoorReinforced extends BlockDoorBase {
 
 	public BlockWoodenDoorReinforced() {
 		super(Material.WOOD);
+		this.setHardness(2.5F);
+		this.setResistance(4.0F);
 	}
 	
 	@Override

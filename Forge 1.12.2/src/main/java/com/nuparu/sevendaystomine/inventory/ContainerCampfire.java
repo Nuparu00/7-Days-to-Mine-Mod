@@ -26,46 +26,46 @@ public class ContainerCampfire extends Container {
 	public ContainerCampfire(InventoryPlayer playerInventory, final IInventory tileEntity) {
 		this.tileEntity = tileEntity;
 
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.slotEnum.INPUT_SLOT.ordinal(), 78, 11) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.EnumSlots.INPUT_SLOT.ordinal(), 78, 11) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.slotEnum.INPUT_SLOT2.ordinal(), 97, 11) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.EnumSlots.INPUT_SLOT2.ordinal(), 97, 11) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
 
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.slotEnum.INPUT_SLOT3.ordinal(), 78, 29) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.EnumSlots.INPUT_SLOT3.ordinal(), 78, 29) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.slotEnum.INPUT_SLOT4.ordinal(), 97, 29) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.EnumSlots.INPUT_SLOT4.ordinal(), 97, 29) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
 		this.addSlotToContainer(new SlotCampfireOutput(playerInventory.player, tileEntity,
-				TileEntityCampfire.slotEnum.OUTPUT_SLOT.ordinal(), 148, 42) {
+				TileEntityCampfire.EnumSlots.OUTPUT_SLOT.ordinal(), 148, 42) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
 			}
 		});
 		this.addSlotToContainer(
-				new SlotCampfireFuel(tileEntity, TileEntityCampfire.slotEnum.FUEL_SLOT.ordinal(), 88, 63) {
+				new SlotCampfireFuel(tileEntity, TileEntityCampfire.EnumSlots.FUEL_SLOT.ordinal(), 88, 63) {
 					@Override
 					public void onSlotChanged() {
 						tileEntity.markDirty();
 					}
 				});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.slotEnum.POT_SLOT.ordinal(), 45, 42) {
+		this.addSlotToContainer(new Slot(tileEntity, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal(), 45, 42) {
 			@Override
 			public void onSlotChanged() {
 				tileEntity.markDirty();
@@ -141,47 +141,47 @@ public class ContainerCampfire extends Container {
 			ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index <= TileEntityCampfire.slotEnum.POT_SLOT.ordinal())
+            if (index <= TileEntityCampfire.EnumSlots.POT_SLOT.ordinal())
             {
-                if (!this.mergeItemStack(itemstack1, TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+1, 39, true))
+                if (!this.mergeItemStack(itemstack1, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+1, 39, true))
                 {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
             }
-            else if (index > TileEntityCampfire.slotEnum.POT_SLOT.ordinal())
+            else if (index > TileEntityCampfire.EnumSlots.POT_SLOT.ordinal())
             {
             	if (TileEntityCampfire.isItemFuel(itemstack1))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityCampfire.slotEnum.FUEL_SLOT.ordinal(), TileEntityCampfire.slotEnum.FUEL_SLOT.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityCampfire.EnumSlots.FUEL_SLOT.ordinal(), TileEntityCampfire.EnumSlots.FUEL_SLOT.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	else if (isPot(itemstack1.getItem()))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityCampfire.slotEnum.POT_SLOT.ordinal(), TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal(), TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	else if (isIngredient(itemstack1.getItem()))
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityCampfire.slotEnum.INPUT_SLOT.ordinal(), TileEntityCampfire.slotEnum.INPUT_SLOT4.ordinal()+1, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityCampfire.EnumSlots.INPUT_SLOT.ordinal(), TileEntityCampfire.EnumSlots.INPUT_SLOT4.ordinal()+1, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
             	
-            	else if (index >= TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+1 && index < TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+27)
+            	else if (index >= TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+1 && index < TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+27)
                 {
-                    if (!this.mergeItemStack(itemstack1, TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+27, TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+36, false))
+                    if (!this.mergeItemStack(itemstack1, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+27, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+36, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (index >= TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+27 && index < TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+36 && !this.mergeItemStack(itemstack1, TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+1, TileEntityCampfire.slotEnum.POT_SLOT.ordinal()+27, false))
+                else if (index >= TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+27 && index < TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+36 && !this.mergeItemStack(itemstack1, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+1, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+27, false))
                 {
                     return ItemStack.EMPTY;
                 }

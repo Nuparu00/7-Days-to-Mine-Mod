@@ -10,10 +10,11 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 
-public class TileEntityCorpse extends TileEntityLockable implements ISidedInventory {
+public class TileEntityCorpse extends TileEntityLockableLoot implements ISidedInventory {
 
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(9, ItemStack.EMPTY);
 	private String customName;
@@ -46,6 +47,11 @@ public class TileEntityCorpse extends TileEntityLockable implements ISidedInvent
 	@Override
 	public int getSizeInventory() {
 		return this.inventory.size();
+	}
+	
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return inventory;
 	}
 
 	public NonNullList<ItemStack> getInventory() {

@@ -44,7 +44,7 @@ public class BlockWheels extends BlockTileProvider<TileEntityWheels> {
 	public BlockWheels() {
 		super(Material.CLOTH);
 		this.setSoundType(SoundType.CLOTH);
-		this.setHardness(2f);
+		this.setHardness(0.05f);
 		this.setResistance(0.2f);
 	}
 

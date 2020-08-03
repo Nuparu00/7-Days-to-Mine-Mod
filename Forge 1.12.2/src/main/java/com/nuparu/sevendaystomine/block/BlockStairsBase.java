@@ -5,12 +5,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockStairsBase extends BlockStairs implements IBlockBase {
 
-	protected BlockStairsBase(IBlockState modelState) {
+	public BlockStairsBase(IBlockState modelState) {
 		super(modelState);
 		this.setHardness(modelState.getBlockHardness(null, null));
 	}
@@ -47,6 +48,12 @@ public class BlockStairsBase extends BlockStairs implements IBlockBase {
 	@SideOnly(Side.CLIENT)
 	public ItemMeshDefinition getItemMesh() {
 		return null;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.SOLID;
 	}
 
 }

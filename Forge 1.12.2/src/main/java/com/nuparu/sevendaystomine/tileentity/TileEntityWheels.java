@@ -23,7 +23,7 @@ public class TileEntityWheels extends TileEntity {
 		if (compound.hasKey("stack", Constants.NBT.TAG_COMPOUND)) {
 			this.stack = new ItemStack(compound.getCompoundTag("stack"));
 		} else {
-			this.stack = ItemStack.EMPTY;
+			this.stack = generateItemStack();
 		}
 	}
 

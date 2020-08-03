@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class BlockUpgradeable extends BlockBase implements IUpgradeable {
 
-	private ItemStack[] items = null;
+	private ItemStack[] items = new ItemStack[0];
 	private SoundEvent sound = null;
 	private IBlockState result = null;
 	private IBlockState prev = Blocks.AIR.getDefaultState();

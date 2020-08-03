@@ -29,6 +29,8 @@ public class VanillaManager {
 	}
 
 	public static void editVanillaBlockProperties() {
+		Blocks.CONCRETE.setHardness(6.4f);
+		/*
 		Blocks.DIRT.setHardness(22.5F);
 		Blocks.GRASS_PATH.setHardness(23F);
 		Blocks.STONE.setHardness(35F);
@@ -102,7 +104,7 @@ public class VanillaManager {
 		Blocks.IRON_BLOCK.setResistance(10F);
 		Blocks.IRON_BARS.setResistance(10F);
 		Blocks.CLAY.setResistance(1F);
-		Blocks.CONCRETE.setResistance(20F);
+		Blocks.CONCRETE.setResistance(20F);*/
 	}
 
 	public static void removeVanillaRecipes() {
@@ -207,6 +209,7 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.GRAVEL,EnumMaterial.STONE).setWeight(4));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.COBBLESTONE,EnumMaterial.STONE).setWeight(7));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.FLINT,EnumMaterial.STONE).setWeight(1));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.COAL,EnumMaterial.CARBON).setWeight(1));
 	}
 	
 	public static VanillaScrapableItem getVanillaScrapable(Item item) {

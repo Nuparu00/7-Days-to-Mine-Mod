@@ -32,8 +32,10 @@ public class BlockStreetSign extends BlockStandingSign implements IBlockBase {
 	public BlockStreetSign() {
 		super();
 		this.setSoundType(SoundType.METAL);
+		this.setHardness(1.5F);
+		this.setResistance(1F);
 	}
-	
+
 	@Override
 	public boolean metaItemBlock() {
 		return false;
@@ -67,13 +69,12 @@ public class BlockStreetSign extends BlockStandingSign implements IBlockBase {
 	public ItemMeshDefinition getItemMesh() {
 		return null;
 	}
-	
+
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta)
-    {
-        return new TileEntityStreetSign();
-    }
-	
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntityStreetSign();
+	}
+
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		return new ItemStack(ModItems.STREET_SIGN);
@@ -83,7 +84,7 @@ public class BlockStreetSign extends BlockStandingSign implements IBlockBase {
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return ModItems.STREET_SIGN;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -99,7 +100,7 @@ public class BlockStreetSign extends BlockStandingSign implements IBlockBase {
 						EnumDyeColor enumdyecolor = EnumDyeColor.byDyeDamage(stack.getMetadata());
 						TextFormatting textColor = Utils.dyeColorToTextFormatting(enumdyecolor);
 						sign.setTextColor(textColor);
-						if(!playerIn.isCreative()) {
+						if (!playerIn.isCreative()) {
 							stack.shrink(1);
 						}
 						return true;

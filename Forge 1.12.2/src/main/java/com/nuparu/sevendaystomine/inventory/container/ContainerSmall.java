@@ -65,7 +65,7 @@ public class ContainerSmall extends Container {
 			}
 
 			if (stack.getCount() == 0) {
-				slot.putStack(null);
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}

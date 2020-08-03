@@ -159,4 +159,6 @@ public class TileEntityCodeSafe extends TileEntitySafe {
 		nbt.removeTag("CorrectCode");
 		return nbt;
 	}
+
+
 }

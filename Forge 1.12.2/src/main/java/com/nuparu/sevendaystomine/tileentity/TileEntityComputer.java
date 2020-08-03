@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.electricity.network.INetwork;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SyncTileEntityMessage;
@@ -34,14 +36,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 
-public class TileEntityComputer extends TileEntityLockable implements ISidedInventory, ITickable {
+public class TileEntityComputer extends TileEntityLockableLoot implements ISidedInventory, ITickable, INetwork {
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(7, ItemStack.EMPTY);
 
 	private TileEntityMonitor monitorTE = null;
@@ -60,6 +67,8 @@ public class TileEntityComputer extends TileEntityLockable implements ISidedInve
 
 	// hard drive
 	private HardDrive hardDrive = new HardDrive(this);
+
+	private ArrayList<BlockPos> network = new ArrayList<BlockPos>();
 
 	public TileEntityComputer() {
 
@@ -121,7 +130,7 @@ public class TileEntityComputer extends TileEntityLockable implements ISidedInve
 		this.markDirty();
 	}
 
-	public void startProcess(NBTTagCompound nbt) {
+	public void startProcess(NBTTagCompound nbt, boolean sync) {
 		if (isCompleted() && isOn()) {
 			ArrayList<TickingProcess> processes2 = getProcessesList();
 
@@ -144,7 +153,9 @@ public class TileEntityComputer extends TileEntityLockable implements ISidedInve
 				this.markDirty();
 				return;
 			}
-
+			if(sync) {
+				return;
+			}
 			String res = nbt.getString(ProcessRegistry.RES_KEY);
 			TickingProcess process = ProcessRegistry.INSTANCE.getByRes(new ResourceLocation(res));
 			if (process != null) {
@@ -206,6 +217,7 @@ public class TileEntityComputer extends TileEntityLockable implements ISidedInve
 
 	@Override
 	public void update() {
+
 		if (world.isRemote) {
 			return;
 		}
@@ -234,7 +246,7 @@ public class TileEntityComputer extends TileEntityLockable implements ISidedInve
 		this.hint = compound.getString("hint");
 		this.setRegistered(compound.getBoolean("registered"));
 
-		NBTTagList list = compound.getTagList("processes", 10);
+		NBTTagList list = compound.getTagList("processes", Constants.NBT.TAG_COMPOUND);
 
 		ArrayList<TickingProcess> processes2 = getProcessesList();
 
@@ -277,6 +289,14 @@ public class TileEntityComputer extends TileEntityLockable implements ISidedInve
 				this.hardDrive.readFromNBT(compound.getCompoundTag("drive"));
 			}
 		}
+
+		network.clear();
+		NBTTagList list2 = compound.getTagList("network", Constants.NBT.TAG_LONG);
+		for (int i = 0; i < list2.tagCount(); ++i) {
+			NBTTagLong nbt = (NBTTagLong) list2.get(i);
+			BlockPos blockPos = BlockPos.fromLong(nbt.getLong());
+			network.add(blockPos);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -301,6 +321,13 @@ public class TileEntityComputer extends TileEntityLockable implements ISidedInve
 		if (hardDrive != null) {
 			compound.setTag("drive", hardDrive.writeToNBT(new NBTTagCompound()));
 		}
+
+		NBTTagList list2 = new NBTTagList();
+		for (BlockPos net : getConnections()) {
+			list2.appendTag(new NBTTagLong(net.toLong()));
+		}
+
+		compound.setTag("network", list2);
 
 		return compound;
 	}
@@ -576,6 +603,55 @@ public class TileEntityComputer extends TileEntityLockable implements ISidedInve
 			}
 			return EnumSystem.NONE;
 		}
+	}
+
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return inventory;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BlockPos> getConnections() {
+		return (List<BlockPos>) network.clone();
+	}
+
+	@Override
+	public void connectTo(INetwork toConnect) {
+		if (!isConnectedTo(toConnect)) {
+			network.add(toConnect.getPosition());
+			toConnect.connectTo(this);
+			markDirty();
+		}
+	}
+
+	@Override
+	public void disconnect(INetwork toDisconnect) {
+		if (isConnectedTo(toDisconnect)) {
+			network.remove(toDisconnect.getPosition());
+			toDisconnect.disconnect(this);
+			markDirty();
+		}
+	}
+
+	@Override
+	public boolean isConnectedTo(INetwork net) {
+		return network.contains(net.getPosition());
+	}
+
+	@Override
+	public void disconnectAll() {
+		for (BlockPos pos : getConnections()) {
+			TileEntity te = world.getTileEntity(pos);
+			if (te instanceof INetwork) {
+				((INetwork) te).disconnect(this);
+			}
+		}
+	}
+
+	@Override
+	public BlockPos getPosition() {
+		return this.getPos();
 	}
 
 }

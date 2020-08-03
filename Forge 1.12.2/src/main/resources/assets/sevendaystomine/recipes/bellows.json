@@ -1,0 +1,23 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "WLW",
+    "ILL",
+    "WLW"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    }, 
+    "I": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "W": {
+      "item": "sevendaystomine:woodplank"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:bellows"
+  },
+  "recipe": "forging"
+}

@@ -31,7 +31,7 @@ public class BlockWoodenSpikes extends BlockTileProvider<TileEntityWoodenSpikes>
 	public BlockWoodenSpikes() {
 		super(Material.WOOD);
 		this.setSoundType(SoundType.WOOD);
-		this.setHardness(6f);
+		this.setHardness(2f);
 		this.setResistance(2f);
 	}
 

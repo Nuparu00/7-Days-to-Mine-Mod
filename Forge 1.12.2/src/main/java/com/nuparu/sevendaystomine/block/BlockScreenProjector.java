@@ -39,8 +39,8 @@ public class BlockScreenProjector extends BlockTileProvider<TileEntityScreenProj
 		super(Material.GROUND);
 		this.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
 		this.setSoundType(SoundType.METAL);
-		this.setHardness(7.0F);
-		this.setResistance(7.0F);
+		this.setHardness(1.4F);
+		this.setResistance(5.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 

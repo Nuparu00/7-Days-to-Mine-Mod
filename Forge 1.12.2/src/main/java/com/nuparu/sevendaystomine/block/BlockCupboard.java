@@ -29,8 +29,8 @@ public class BlockCupboard extends BlockTileProvider<TileEntityCupboard> {
 	public BlockCupboard() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
-		setHardness(20.0F);
-		setResistance(20.0F);
+		setHardness(2.5F);
+		setResistance(7.0F);
 		setHarvestLevel("pickaxe", 0);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}

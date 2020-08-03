@@ -1,0 +1,24 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "IIIII",
+    "SSSSS",
+    "FFFFF",
+    "SSSSS",
+    "IIIII"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+      "item": "sevendaystomine:scrapiron"
+    },
+    "F": {
+      "item": "sevendaystomine:plantfiber"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:scrap_shovel"
+  }
+}

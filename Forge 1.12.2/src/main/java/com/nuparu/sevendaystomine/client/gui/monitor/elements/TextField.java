@@ -57,7 +57,7 @@ public class TextField implements IScreenElement {
 	private FontRenderer fontRenderer;
 
 	public ColorRGBA backgroundColor = new ColorRGBA(1, 1, 1);
-	public ColorRGBA cursorColor = new ColorRGBA(0,0,1);
+	public ColorRGBA cursorColor = new ColorRGBA(0, 0, 1);
 
 	public TextField(double x, double y, double width, double height, Screen screen) {
 		this.x = x;
@@ -121,7 +121,7 @@ public class TextField implements IScreenElement {
 
 			int textColor = this.isFocused && isEnabled ? enabledColor : disabledColor;
 			String textToDisplay = "";
-			if (getContentText().equals("")) {
+			if (getContentText() != null && getContentText().isEmpty()) {
 				if (!this.isFocused) {
 
 					textToDisplay = defaultText;
@@ -132,8 +132,8 @@ public class TextField implements IScreenElement {
 			}
 			int j = this.cursorPosition - this.lineScrollOffset;
 			int k = this.selectionEnd - this.lineScrollOffset;
-			String s = this.fontRenderer.trimStringToWidth(textToDisplay.substring(Math.max(0,this.lineScrollOffset)),
-					(int) Math.ceil(Math.max(0,this.getWidth())));
+			String s = this.fontRenderer.trimStringToWidth(textToDisplay.substring(Math.max(0, this.lineScrollOffset)),
+					(int) Math.ceil(Math.max(0, this.getWidth())));
 			if (k > s.length()) {
 				k = s.length();
 			}
@@ -162,12 +162,20 @@ public class TextField implements IScreenElement {
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		GlStateManager.disableTexture2D();
 		GlStateManager.enableColorLogic();
-		GlStateManager.colorLogicOp(GlStateManager.LogicOp.AND_REVERSE);
+		GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-		bufferbuilder.pos((double) x, (double) y + height, zLevel).color((float)cursorColor.R,(float)cursorColor.G,(float)cursorColor.B,(float)cursorColor.A).endVertex();
-		bufferbuilder.pos((double) x + width, (double) y + height, zLevel).color((float)cursorColor.R,(float)cursorColor.G,(float)cursorColor.B,(float)cursorColor.A).endVertex();
-		bufferbuilder.pos((double) x + width, (double) y, zLevel).color((float)cursorColor.R,(float)cursorColor.G,(float)cursorColor.B,(float)cursorColor.A).endVertex();
-		bufferbuilder.pos((double) x, (double) y, zLevel).color((float)cursorColor.R,(float)cursorColor.G,(float)cursorColor.B,(float)cursorColor.A).endVertex();
+		bufferbuilder.pos((double) x, (double) y + height, zLevel)
+				.color((float) cursorColor.R, (float) cursorColor.G, (float) cursorColor.B, (float) cursorColor.A)
+				.endVertex();
+		bufferbuilder.pos((double) x + width, (double) y + height, zLevel)
+				.color((float) cursorColor.R, (float) cursorColor.G, (float) cursorColor.B, (float) cursorColor.A)
+				.endVertex();
+		bufferbuilder.pos((double) x + width, (double) y, zLevel)
+				.color((float) cursorColor.R, (float) cursorColor.G, (float) cursorColor.B, (float) cursorColor.A)
+				.endVertex();
+		bufferbuilder.pos((double) x, (double) y, zLevel)
+				.color((float) cursorColor.R, (float) cursorColor.G, (float) cursorColor.B, (float) cursorColor.A)
+				.endVertex();
 		tessellator.draw();
 		GlStateManager.disableColorLogic();
 		GlStateManager.enableTexture2D();
@@ -180,6 +188,7 @@ public class TextField implements IScreenElement {
 
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+
 		if (!isDisabled()) {
 			if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
 				this.isFocused = true;
@@ -390,6 +399,9 @@ public class TextField implements IScreenElement {
 	}
 
 	public void setContentText(String contentText) {
+		if (contentText == null) {
+			contentText = "";
+		}
 		this.contentText = contentText;
 	}
 

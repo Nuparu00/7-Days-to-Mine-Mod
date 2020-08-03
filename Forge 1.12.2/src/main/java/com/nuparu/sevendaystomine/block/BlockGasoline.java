@@ -35,6 +35,7 @@ public class BlockGasoline extends BlockFluidFinite implements IBlockBase {
 
 	public BlockGasoline(Fluid fluid, Material material) {
 		super(fluid, material);
+		Blocks.FIRE.setFireInfo(this,60,160);
 	}
 
 	@Override
@@ -60,19 +61,6 @@ public class BlockGasoline extends BlockFluidFinite implements IBlockBase {
 
 		}
 	}
-	
-	@Override
-	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
-    {
-        return 160;
-    }
-
-	@Override
-
-    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face)
-    {
-        return 60;
-    }
 
 	@Override
 	@SideOnly(Side.CLIENT)

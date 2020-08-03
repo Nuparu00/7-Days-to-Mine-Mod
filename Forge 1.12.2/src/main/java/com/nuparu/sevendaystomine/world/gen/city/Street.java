@@ -10,7 +10,10 @@ import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
+import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingOvergrownHouse;
+import com.nuparu.sevendaystomine.world.gen.city.plot.Plot;
 import com.nuparu.sevendaystomine.world.gen.prefab.Prefab;
 
 import net.minecraft.block.Block;
@@ -19,9 +22,12 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockStoneSlab;
+import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.BlockWallSign;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
@@ -34,6 +40,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class Street {
 
@@ -56,9 +64,13 @@ public class Street {
 	public int streetIndex = 0;
 
 	public String name;
+	public List<Plot> plots = new ArrayList<Plot>();
 
 	public static final int LENGTH = 64;
 	public static final int MAX_SLOPE = 24;
+
+	public static final int SEWERS_HEIGHT = 5;
+	public static final int SEWERS_WIDTH = 3;
 
 	private Street previousStreet;
 	private List<Street> connectedStreets = new ArrayList<Street>();
@@ -122,27 +134,97 @@ public class Street {
 	}
 
 	public void generateBuildings() {
-		if (tunnel)
+		if (tunnel || world.isRemote)
 			return;
-		
-		Prefab prefab = CityHelper.prefabs.get(world.rand.nextInt(2));
 		EnumFacing f = (facing == EnumFacing.EAST || facing == EnumFacing.WEST) ? facing.rotateY()
 				: facing.rotateYCCW();
-		
-		int checkA = Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) + (prefab.getWidth() / 2)).offset(f,
-				(thickness / 2) + pavement + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world);
-		int checkB = Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) - (prefab.getWidth() / 2)).offset(f,
-				(thickness / 2) + pavement + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world);
-		int checkC = Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) + (prefab.getWidth() / 2)).offset(f,
-				(thickness / 2) + pavement + prefab.getLength() + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world);
-		int checkD = Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) - (prefab.getWidth() / 2)).offset(f,
-				(thickness / 2) + pavement + prefab.getLength() + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world);
+		/*
+		 * Prefab prefab =
+		 * CityHelper.prefabs.get(world.rand.nextInt(CityHelper.prefabs.size()));
+		 * EnumFacing f = (facing == EnumFacing.EAST || facing == EnumFacing.WEST) ?
+		 * facing.rotateY() : facing.rotateYCCW();
+		 * 
+		 * int checkA = Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2)
+		 * + (prefab.getWidth() / 2)).offset(f, (thickness / 2) + pavement + (f ==
+		 * EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world); int checkB =
+		 * Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) -
+		 * (prefab.getWidth() / 2)).offset(f, (thickness / 2) + pavement + (f ==
+		 * EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world); int checkC =
+		 * Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) +
+		 * (prefab.getWidth() / 2)).offset(f, (thickness / 2) + pavement +
+		 * prefab.getLength() + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 :
+		 * 0)), world); int checkD = Utils.getTopSolidGroundHeight(start.offset(facing,
+		 * (LENGTH / 2) - (prefab.getWidth() / 2)).offset(f, (thickness / 2) + pavement
+		 * + prefab.getLength() + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 :
+		 * 0)), world);
+		 * 
+		 * BlockPos pos = start.offset(facing, (LENGTH / 2) + (prefab.getWidth() /
+		 * 2)).offset((f == EnumFacing.NORTH || f == EnumFacing.SOUTH ? f.getOpposite()
+		 * : f), (thickness / 2) + pavement + (f == EnumFacing.NORTH || f ==
+		 * EnumFacing.EAST ? 1 : 0));
+		 * 
+		 * prefab.generate(world, new BlockPos(pos.getX(), (checkA + checkB + checkC +
+		 * checkD) / 4, pos.getZ()), f, true);
+		 */
+		// if(facing.getAxis() == EnumFacing.Axis.X) {
+		/*
+		 * CityHelper.buildings.get(world.rand.nextInt(CityHelper.buildings.size())).
+		 * generate(world, start.offset(f, (thickness / 2) + pavement + (f ==
+		 * EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), facing);
+		 */
+		/*
+		 * CityHelper.buildings.get(world.rand.nextInt(CityHelper.buildings.size())).
+		 * generate(world, start, facing, false); if (canBranch) {
+		 * CityHelper.buildings.get(world.rand.nextInt(CityHelper.buildings.size())).
+		 * generate(world, start, facing, true); }
+		 */
+		BlockPos pos = start;
+		// if(facing.getAxisDirection()==EnumFacing.AxisDirection.POSITIVE)return;
+		// if(facing!=EnumFacing.NORTH)return;
+		int i = 0;
+		while (i < (canBranch ? LENGTH - 10 : LENGTH)) {
+			Plot plot = new Plot(this, 0, CityHelper.getRandomBuilding(world.rand), false, pos);
 
-		BlockPos pos = start.offset(facing, (LENGTH / 2) + (prefab.getWidth() / 2)).offset((f == EnumFacing.NORTH || f == EnumFacing.SOUTH ? f.getOpposite() : f),
-				(thickness / 2) + pavement + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0));
+			if (facing.getAxis() == EnumFacing.Axis.X) {
+				i += plot.xSize + 1;
+				pos = pos.offset(facing, plot.xSize + 1);
 
-		prefab.generate(world, new BlockPos(pos.getX(), (checkA + checkB + checkC + checkD) / 4, pos.getZ()),
-				f, true);
+			} else {
+				i += plot.zSize + 1;
+				pos = pos.offset(facing, plot.zSize + 1);
+			}
+			if (i > (canBranch ? LENGTH - 10 : LENGTH))
+				break;
+			if (city.doesPlotIntersect(plot)) {
+				continue;
+			}
+			plots.add(plot);
+			plot.generate();
+
+		}
+		pos = start;
+		i = 0;
+		while (i < (canBranch ? LENGTH - 10 : LENGTH)) {
+			// HAVE TO FIND IF ANY OTHER BUILDING FITS
+			Plot plot = new Plot(this, 0, CityHelper.getRandomBuilding(world.rand), true, pos);
+
+			if (facing.getAxis() == EnumFacing.Axis.X) {
+				i += plot.xSize + 1;
+				pos = pos.offset(facing, plot.xSize + 1);
+
+			} else {
+				i += plot.zSize + 1;
+				pos = pos.offset(facing, plot.zSize + 1);
+			}
+			if (i > (canBranch ? LENGTH - 10 : LENGTH))
+				break;
+			if (city.doesPlotIntersect(plot)) {
+				continue;
+			}
+			plots.add(plot);
+			plot.generate();
+
+		}
 
 	}
 
@@ -162,7 +244,7 @@ public class Street {
 					return;
 				}
 			}
-			if(facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
+			if (facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
 				return;
 			}
 			int r = (int) Math.ceil(thickness / 2);
@@ -177,25 +259,30 @@ public class Street {
 					if (block2 != ModBlocks.ASPHALT && block2 != Blocks.CONCRETE) {
 						world.setBlockState(pos, state);
 						BlockPos pos2 = pos.down();
-						while(world.getBlockState(pos2).getBlock().isReplaceable(world, pos2)) {
+						while (world.getBlockState(pos2).getBlock().isReplaceable(world, pos2)) {
 							world.setBlockState(pos2, Blocks.STONE.getDefaultState());
 							pos2 = pos2.down();
 						}
-					}
-					else {
+					} else {
 						break;
 					}
 				}
 			}
 		}
+
 	}
 
 	public void generateAsphaltAndSidewalk() {
 		int roofBlocks = 0;
+
+		int startHeight = Utils.getTopSolidGroundHeight(start, world) - 1;
+		int endHeight = Utils.getTopSolidGroundHeight(end, world) - 1;
+
+		start = new BlockPos(start.getX(), startHeight, start.getZ());
+		end = new BlockPos(end.getX(), endHeight, end.getZ());
 		for (int i = 0; i <= LENGTH - 1; i++) {
 
-			int lerpedHeight = (int) Utils.lerp(Utils.getTopSolidGroundHeight(start, world) - 1,
-					Utils.getTopSolidGroundHeight(end, world) - 1, i / (float) LENGTH);
+			int lerpedHeight = (int) Utils.lerp(startHeight, endHeight, i / (float) LENGTH);
 			int y = lerpedHeight;
 
 			for (int t = 0; t < thickness + (pavement * 2); t++) {
@@ -209,6 +296,7 @@ public class Street {
 				BlockPos road = pos.up(y);
 
 				IBlockState block = ModBlocks.ASPHALT.getDefaultState();
+
 				int cross = 0;
 				if (endCrossing == null) {
 					cross = city.getStreetsAtCrossingCount(end, 4);
@@ -241,12 +329,13 @@ public class Street {
 
 					}
 
-				} else if (!canBranch && (i == 5 || i == 6) && (tt == 7 || tt == 5 || tt == 3) && cross > 1) {
-					block = Blocks.CONCRETE.getDefaultState();
-				} else if (canBranch && (i == LENGTH - (thickness - 0) || i == LENGTH - (thickness - 1))
-						&& (tt == 7 || tt == 5 || tt == 3) && cross > 1) {
-					block = Blocks.CONCRETE.getDefaultState();
-				}
+				} /*
+					 * else if (!canBranch && (i == 5 || i == 6) && (tt == 7 || tt == 5 || tt == 3)
+					 * && cross > 1) { block = Blocks.CONCRETE.getDefaultState(); } else if
+					 * (canBranch && (i == LENGTH - (thickness - 0) || i == LENGTH - (thickness -
+					 * 1)) && (tt == 7 || tt == 5 || tt == 3) && cross > 1) { block =
+					 * Blocks.CONCRETE.getDefaultState(); }
+					 */
 
 				// Makes room above the road - except when there is a tree
 				for (int air = y + 1; air < y + 6; air++) {
@@ -336,15 +425,97 @@ public class Street {
 	}
 
 	/*
-	 * Handles generating of street lamps, traffic lights, city limits signs and cars
+	 * Sewers
+	 */
+	public void generateSewers() {
+
+		for (int i = 0; i <= LENGTH - 1; i++) {
+
+			int lerpedHeight = (int) Utils.lerp(start.getY(), end.getY(), i / (float) LENGTH);
+			int y = lerpedHeight;
+
+			for (int t = 0; t < thickness + (pavement * 2); t++) {
+
+				int offset = t - (thickness + (pavement * 2) / 2) + 4;
+				if (facing == EnumFacing.NORTH || facing == EnumFacing.WEST) {
+
+				}
+				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i).offset(facing.rotateY(),
+						offset);
+
+				Chunk chunk = world.getChunkFromBlockCoords(pos);
+
+				BlockPos road = pos.up(y);
+
+				if (lerpedHeight >= 9 && Math.abs(offset) < SEWERS_WIDTH) {
+					BlockPos sewersFloot = road.down(7);
+
+					for (int j = 0; j < SEWERS_HEIGHT; j++) { // height of the sewers ceiling
+						BlockPos sewersPos = sewersFloot.up(j);
+						// state to place
+						IBlockState state = Blocks.AIR.getDefaultState();
+						// state to replace
+						IBlockState replaceState = world.getBlockState(sewersPos);
+						Block replaceBlock = replaceState.getBlock();
+						if ((replaceState.getMaterial() == Material.WATER || replaceState.getMaterial() == Material.AIR)
+								&& (i <= 2 || i >= LENGTH - 3))
+							continue;
+						if ((i > 2 || canBranch) && Math.abs(offset) == SEWERS_WIDTH - 1 || j == SEWERS_HEIGHT - 1
+								|| (j == 0 && offset != 0)) {
+							if (world.rand.nextInt(7) == 0) {
+								state = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
+										BlockStoneBrick.EnumType.CRACKED);
+							} else if (world.rand.nextInt(5) == 0) {
+								state = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
+										BlockStoneBrick.EnumType.MOSSY);
+							} else {
+
+								state = Blocks.STONEBRICK.getDefaultState();
+							}
+						}
+						if (i > 2 && Math.abs(offset) == 1 && j == 3) {
+							state = Blocks.STONE_BRICK_STAIRS.getDefaultState()
+									.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP).withProperty(
+											BlockStairs.FACING, offset > 0 ? facing.rotateY() : facing.rotateYCCW());
+						}
+						if (j == 0 && offset == 0) {
+							state = Blocks.WATER.getDefaultState();
+							world.setBlockState(sewersPos.down(), Blocks.STONEBRICK.getDefaultState());
+						}
+
+						world.setBlockState(sewersPos, state);
+					}
+					if (i == 0 && offset == 0) {
+						for (int j = 0; j < 8 - SEWERS_HEIGHT + 1; j++) {
+							IBlockState state = ModBlocks.METAL_LADDER.getDefaultState();
+							BlockPos manholePos = sewersFloot.up(SEWERS_HEIGHT - 1 + j);
+							if (j == 8 - SEWERS_HEIGHT) {
+								state = Blocks.TRAPDOOR.getDefaultState().withProperty(BlockTrapDoor.HALF,
+										BlockTrapDoor.DoorHalf.TOP);
+								for (EnumFacing f : EnumFacing.HORIZONTALS) {
+									if (world.getBlockState(manholePos.offset(f)).getMaterial().isReplaceable()) {
+										world.setBlockState(manholePos.offset(f), ModBlocks.ASPHALT.getDefaultState());
+									}
+								}
+							}
+							world.setBlockState(manholePos, state);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/*
+	 * Handles generating of street lamps, traffic lights, city limits signs and
+	 * cars
 	 */
 	public void decorate() {
 
 		for (int i = 0; i <= LENGTH - 1; i++) {
 
-			//What should be Y of the road in this position between the start and end
-			int lerpedHeight = (int) Utils.lerp(Utils.getTopSolidGroundHeight(start, world) - 1,
-					Utils.getTopSolidGroundHeight(end, world) - 1, i / (float) LENGTH);
+			// What should be Y of the road in this position between the start and end
+			int lerpedHeight = (int) Utils.lerp(start.getY(), end.getY(), i / (float) LENGTH);
 			int y = lerpedHeight;
 
 			for (int t = 0; t < thickness + (pavement * 2); t++) {
@@ -392,22 +563,19 @@ public class Street {
 						}
 					}
 				}
-				
-				//Cars generation
-				if(Math.abs(t - (thickness/2 + pavement)) <= 2) {
-					if(city.rand.nextInt(50) == 0) {
+
+				// Cars generation
+				if (Math.abs(t - (thickness / 2 + pavement)) <= 2) {
+					if (city.rand.nextInt(50) == 0) {
 						BlockPos pos2 = pos.up(y + 1);
-						if(world.getBlockState(pos2).getBlock() != Blocks.AIR) {
+						if (world.getBlockState(pos2).getBlock() != Blocks.AIR) {
 							pos2 = pos2.up();
 						}
 						EnumFacing facing2 = facing;
-						if(city.rand.nextInt(4) == 0) {
+						if (city.rand.nextInt(4) == 0) {
 							facing2 = EnumFacing.getHorizontal(city.rand.nextInt(4));
 						}
-						BlockCar car = CityHelper.cars.get(city.rand.nextInt(CityHelper.cars.size()));
-						if(car.canBePlaced(world, pos2, facing2)) {
-							car.generate(world,pos2,facing2,true,null);
-						}
+						CityHelper.placeRandomCar(world, pos2, facing2);
 					}
 				}
 
@@ -418,14 +586,14 @@ public class Street {
 
 	public void generateCityLimitsSign(BlockPos pos) {
 		IBlockState base = world.getBlockState(pos.down());
-		if(base.getBlock() == Blocks.STONE_SLAB) {
+		if (base.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
 		}
 		IBlockState base2 = world.getBlockState(pos.down().offset(facing.rotateY(), thickness + 1));
-		if(base2.getBlock() == Blocks.STONE_SLAB) {
+		if (base2.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
 		}
-		
+
 		for (int i = 0; i < 8; i++) {
 			world.setBlockState(pos.up(i), Blocks.COBBLESTONE_WALL.getDefaultState());
 		}
@@ -462,7 +630,7 @@ public class Street {
 	public void generateTrafficLight(BlockPos pos) {
 
 		IBlockState base = world.getBlockState(pos.down());
-		if(base.getBlock() == Blocks.STONE_SLAB) {
+		if (base.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
 		}
 		int height = 5;
@@ -561,7 +729,7 @@ public class Street {
 
 	public void generateStreetLamp(BlockPos pos, boolean end) {
 		IBlockState base = world.getBlockState(pos.down());
-		if(base.getBlock() == Blocks.STONE_SLAB) {
+		if (base.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
 		}
 		int height = 5;

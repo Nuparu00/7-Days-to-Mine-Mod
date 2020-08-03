@@ -47,15 +47,20 @@ public class CapabilityHandler
 		ILockedRecipe oldRecipe = event.getOriginal().getCapability(LockedRecipeProvider.LOCKED_RECIPE_CAP, null);
 		recipe.copy(oldRecipe);
 		// EXTENDED PLAYER
+		IExtendedPlayer extendedPlayer = CapabilityHelper.getExtendedPlayer(player);
+		IExtendedPlayer oldExtendedPlayer = CapabilityHelper.getExtendedPlayer(event.getOriginal());
 		if (!event.isWasDeath()) {
-			IExtendedPlayer extendedPlayer = CapabilityHelper.getExtendedPlayer(player);
-			IExtendedPlayer oldExtendedPlayer = CapabilityHelper.getExtendedPlayer(event.getOriginal());
 			extendedPlayer.copy(oldExtendedPlayer);
 
 			IItemHandlerExtended extendedInv = CapabilityHelper.getExtendedInventory(player);
 			IItemHandlerExtended oldExtendedInv = CapabilityHelper.getExtendedInventory(event.getOriginal());
 			extendedInv.copy(oldExtendedInv);
 
+		}else {
+			for(String s : oldExtendedPlayer.getRecipes()) {
+				extendedPlayer.unlockRecipe(s);
+			}
+			extendedPlayer.setBloodmoon(oldExtendedPlayer.getBloodmoon());
 		}
 
 	}

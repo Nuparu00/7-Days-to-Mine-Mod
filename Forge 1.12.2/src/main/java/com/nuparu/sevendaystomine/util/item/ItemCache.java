@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.EnumLength;
+import com.nuparu.sevendaystomine.item.ItemBackpack;
 import com.nuparu.sevendaystomine.item.ItemFuelTool;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.item.ItemQualitySword;
@@ -101,7 +102,6 @@ public class ItemCache implements Serializable {
 							}
 							continue;
 						}
-
 					}
 				}
 			}

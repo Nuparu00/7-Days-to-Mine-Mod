@@ -38,8 +38,8 @@ public class BlockMicrowave extends BlockTileProvider<TileEntityMicrowave> {
 	public BlockMicrowave() {
 		super(Material.GROUND);
 		setSoundType(SoundType.METAL);
-		this.setHardness(7.0F);
-		this.setResistance(7.0F);
+		this.setHardness(1.8F);
+		this.setResistance(4.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 

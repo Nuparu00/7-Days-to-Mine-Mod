@@ -24,6 +24,8 @@ public class BlockWoodenDoorIronReinforced extends BlockDoorBase implements IUpg
 
 	public BlockWoodenDoorIronReinforced() {
 		super(Material.WOOD);
+		this.setHardness(3.2F);
+		this.setResistance(4.0F);
 	}
 	
 	@Override

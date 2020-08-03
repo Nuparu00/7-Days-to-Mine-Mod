@@ -39,7 +39,7 @@ public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 	public BlockCampfire(boolean isBurning) {
 		super(Material.GROUND);
 		this.isBurning = isBurning;
-		setHardness(1.0F);
+		setHardness(1.8F);
 		setResistance(2.0F);
 		setLightOpacity(0);
 		setHarvestLevel("pickaxe", 0);

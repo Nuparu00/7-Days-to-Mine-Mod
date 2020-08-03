@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.item;
 
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
@@ -31,9 +32,13 @@ public class ItemQualityAxe extends ItemQualityTool {
 
 	public float getDestroySpeed(ItemStack stack, IBlockState state) {
 		Material material = state.getMaterial();
-		return material != Material.WOOD && material != Material.PLANTS && material != Material.VINE
+		float f = material != Material.WOOD && material != Material.PLANTS && material != Material.VINE
 				? super.getDestroySpeed(stack, state)
 				: this.efficiency;
+		return f;
 	}
-
+	@Override
+	public Set<String> getToolClasses(ItemStack stack) {
+	    return ImmutableSet.of("axe");
+	}
 }

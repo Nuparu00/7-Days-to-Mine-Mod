@@ -12,8 +12,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TextureStitcherEventHandler {
 	@SubscribeEvent
 	  public void stitcherEventPre(TextureStitchEvent.Pre event) {
-		ResourceLocation bloodTexture = new ResourceLocation(SevenDaysToMine.MODID,"entity/particles/blood");
-		event.getMap().registerSprite(bloodTexture);
+		event.getMap().registerSprite(new ResourceLocation(SevenDaysToMine.MODID,"entity/particles/blood"));
+		event.getMap().registerSprite(new ResourceLocation(SevenDaysToMine.MODID,"entity/particles/vomit"));
 		event.getMap().registerSprite(new ResourceLocation(SevenDaysToMine.MODID,"items/empty_backpack_slot"));
 	  }
 }

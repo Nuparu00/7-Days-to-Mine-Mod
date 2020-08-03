@@ -52,9 +52,11 @@ public class Screen {
 		drawDefaultScreen();
 		if (gui.shouldDisplayAnything()) {
 			ArrayList<WindowedProcess> wps = new ArrayList<WindowedProcess>();
-			if(gui.getComputer() == null) return;
-			for (TickingProcess process : (ArrayList<TickingProcess>)gui.getComputer().getProcessesList().clone()) {
-				if(process == null) continue;
+			if (gui.getComputer() == null)
+				return;
+			for (TickingProcess process : (ArrayList<TickingProcess>) gui.getComputer().getProcessesList().clone()) {
+				if (process == null)
+					continue;
 				if (process.getScreen() == null || process.getScreen() != this) {
 					process.setScreen(this);
 				}
@@ -63,19 +65,19 @@ public class Screen {
 				}
 
 				if (process instanceof WindowedProcess) {
-					wps.add((WindowedProcess)process);
+					wps.add((WindowedProcess) process);
 				} else {
 					process.render(partialTicks);
 				}
 			}
-			
 
 			wps.sort(Comparator.comparing(WindowedProcess::getWindowOrder));
-			for(WindowedProcess wp : wps) {
-				wp.render(partialTicks);
-
+			for (WindowedProcess wp : wps) {
+				if (!wp.isMinimized()) {
+					wp.render(partialTicks);
+				}
 			}
-			
+
 		}
 	}
 
@@ -125,10 +127,16 @@ public class Screen {
 		return (sr.getScaledHeight() / 2) - (ySize / 2) + y;
 	}
 
+	/*
+	 * Takes in range 0.0-1.0 (both inclusive)
+	 */
 	public double getRelativeX(double x) {
 		return localXToGlobal(x * xSize);
 	}
 
+	/*
+	 * Takes in range 0.0-1.0 (both inclusive)
+	 */
 	public double getRelativeY(double y) {
 		return localYToGlobal(y * ySize);
 	}

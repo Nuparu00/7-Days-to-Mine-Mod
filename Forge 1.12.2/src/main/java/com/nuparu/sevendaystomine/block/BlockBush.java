@@ -29,8 +29,8 @@ public class BlockBush extends BlockBase{
 	public BlockBush() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
-		setHardness(6f);
-		setResistance(1f);
+		setHardness(0.25f);
+		setResistance(0.4f);
 	}
 	
 	@Override

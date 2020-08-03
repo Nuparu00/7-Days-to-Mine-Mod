@@ -14,10 +14,11 @@ public static PotionAlcoholPoison alcoholPoison = new PotionAlcoholPoison(true, 
 public static PotionCaffeineBuzz caffeineBuzz = new PotionCaffeineBuzz(false, 5092544);
 public static PotionBleeding bleeding = new PotionBleeding(true, 5092544);
 public static PotionInfection infection = new PotionInfection(true, 1930808);
+public static PotionBrokenLeg brokenLeg = new PotionBrokenLeg(true, 0xaaaaaa);
 
 public static void register(IForgeRegistry<Potion> registry) {
     registry.registerAll(
-            thirst,dysentery,alcoholBuzz,drunk,alcoholPoison,caffeineBuzz,bleeding,infection
+            thirst,dysentery,alcoholBuzz,drunk,alcoholPoison,caffeineBuzz,bleeding,infection,brokenLeg
     );
 }
 

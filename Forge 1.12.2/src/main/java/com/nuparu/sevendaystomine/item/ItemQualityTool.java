@@ -6,6 +6,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.world.World;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemTool;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,7 @@ import java.util.List;
 public class ItemQualityTool extends ItemTool implements IQuality {
 
 	public static final double DEFAULT_SPEED = -2.4000000953674316D;
-	
+
 	public EnumLength length = EnumLength.LONG;
 	public double speed;
 
@@ -48,7 +49,7 @@ public class ItemQualityTool extends ItemTool implements IQuality {
 	}
 
 	public ItemQualityTool setAttackSpeed(double speed) {
-		attackSpeed = (float)speed;
+		attackSpeed = (float) speed;
 		this.speed = speed;
 		return this;
 	}
@@ -132,5 +133,59 @@ public class ItemQualityTool extends ItemTool implements IQuality {
 		}
 	}
 	
+	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
+		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
+
+		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
+					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.attackDamage, 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
+					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", speed, 0));
+		}
+
+		return multimap;
+	}
+
+	public double getAttackDamageModified(ItemStack stack) {
+		return this.attackDamage * (1+((float)getQuality(stack) / (float)ItemQuality.MAX_QUALITY));
+	}
+	
+	public double getAttackSpeedModified(ItemStack stack) {
+		return this.speed / (1+((float)getQuality(stack) / (float)ItemQuality.MAX_QUALITY));
+	}
+
+	@Override
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack)
+	{
+		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
+		if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
+		{
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", getAttackDamageModified(stack), 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", getAttackSpeedModified(stack), 0));
+		}
+
+		return multimap;
+	}
+
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		switch (getQualityTierFromStack(stack)) {
+		case FLAWLESS:
+			return 0xA300A3;
+		case GREAT:
+			return 0x4545CC;
+		case FINE:
+			return 0x37A337;
+		case GOOD:
+			return 0xB2B23C;
+		case POOR:
+			return 0xF09900;
+		case FAULTY:
+			return 0x89713C;
+		case NONE:
+		default:
+			return super.getRGBDurabilityForDisplay(stack);
+		}
+	}
 
 }

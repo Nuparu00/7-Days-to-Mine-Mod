@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -22,7 +23,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
-public class TileEntityTrashBin extends TileEntityLockable implements ISidedInventory, ITickable {
+public class TileEntityTrashBin extends TileEntityLockableLoot implements ISidedInventory, ITickable {
 
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
 	private String customName;
@@ -88,6 +89,11 @@ public class TileEntityTrashBin extends TileEntityLockable implements ISidedInve
 
 	public NonNullList<ItemStack> getInventory() {
 		return this.inventory;
+	}
+	
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return inventory;
 	}
 
 	@Override

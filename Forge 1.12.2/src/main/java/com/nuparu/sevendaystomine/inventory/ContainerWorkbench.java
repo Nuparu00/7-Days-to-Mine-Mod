@@ -20,13 +20,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerWorkbench extends Container {
-	/** The crafting matrix inventory (3x3). */
 	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 5, 5);
 	public InventoryCraftResult craftResult = new InventoryCraftResult();
 	private World worldObj;
 	/** Position of the workbench */
 	private BlockPos pos;
-	EntityPlayer player;
+	public EntityPlayer player;
 
 	public ContainerWorkbench(EntityPlayer player, World worldIn, BlockPos posIn) {
 		this.worldObj = worldIn;
@@ -36,12 +35,12 @@ public class ContainerWorkbench extends Container {
 
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
-				this.addSlotToContainer(new Slot(this.craftMatrix, j + i * 5, 8 + j * 18, 7 + i * 18));
+				this.addSlotToContainer(new Slot(this.craftMatrix,j + i * 5, 8 + j * 18, 7 + i * 18));
 			}
 		}
 
 		bindPlayerInventory(player.inventory);
-		// this.onCraftMatrixChanged(this.craftMatrix);
+		this.onCraftMatrixChanged(this.craftMatrix);
 
 	}
 
@@ -64,25 +63,6 @@ public class ContainerWorkbench extends Container {
 		this.slotChangedCraftingGrid(this.worldObj, this.player, this.craftMatrix, this.craftResult);
 	}
 	
-	protected void slotChangedCraftingGrid(World p_192389_1_, EntityPlayer p_192389_2_, InventoryCrafting p_192389_3_, InventoryCraftResult p_192389_4_)
-    {
-        if (!p_192389_1_.isRemote)
-        {
-            EntityPlayerMP entityplayermp = (EntityPlayerMP)p_192389_2_;
-            ItemStack itemstack = ItemStack.EMPTY;
-            IRecipe irecipe = WorkbenchCraftingManager.findMatchingRecipe(p_192389_3_, p_192389_1_);
-
-            if (irecipe != null && (irecipe.isDynamic() || !p_192389_1_.getGameRules().getBoolean("doLimitedCrafting") || entityplayermp.getRecipeBook().isUnlocked(irecipe)))
-            {
-                p_192389_4_.setRecipeUsed(irecipe);
-                itemstack = irecipe.getCraftingResult(p_192389_3_);
-            }
-
-            p_192389_4_.setInventorySlotContents(0, itemstack);
-            entityplayermp.connection.sendPacket(new SPacketSetSlot(this.windowId, 0, itemstack));
-        }
-    }
-
 	/**
 	 * Called when the container is closed.
 	 */

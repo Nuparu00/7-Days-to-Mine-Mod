@@ -20,4 +20,16 @@ public class Animations {
 			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win10/frame_7.png"),
 			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win10/frame_8.png"),
 			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win10/frame_9.png") });
+
+	public static final Animation WIN7_LOADING = new Animation(new ResourceLocation[] {
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_0.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_1.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_2.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_3.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_4.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_5.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_4.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_3.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_2.png"),
+			new ResourceLocation(SevenDaysToMine.MODID, "textures/animations/loading/win7/frame_1.png") });
 }

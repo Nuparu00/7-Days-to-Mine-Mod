@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
@@ -34,25 +37,38 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.IUpgradeable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
+import com.nuparu.sevendaystomine.capability.CapabilityHelper;
+import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.item.ItemGun.EnumWield;
+import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.dialogue.Dialogues;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBoat;
+import net.minecraft.item.ItemDoor;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -68,6 +84,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -329,13 +346,22 @@ public class Utils {
 	}
 
 	// returns true if the block has been destroyed
-	@SuppressWarnings("deprecation")
 	public static boolean damageBlock(World world, BlockPos pos, float damage, boolean breakBlock) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		float hardness = block.getBlockHardness(state, world, pos);
+		float hardness = state.getBlockHardness(world, pos);
 		if (hardness <= 0) {
 			return false;
+		}
+		if(block.isAir(state, world, pos)) {
+			return false;
+		}
+		if(block instanceof IFluidBlock || block instanceof BlockLiquid) {
+			return false;
+		}
+		if (hardness == 0) {
+			world.destroyBlock(pos, false);
+			return true;
 		}
 		BreakSavedData data = BreakSavedData.get(world);
 		if (data == null) {
@@ -577,5 +603,128 @@ public class Utils {
 		default:
 			return Rotation.NONE;
 		}
+	}
+
+	public static Rotation facingToRotation(EnumFacing facing) {
+
+		switch (facing) {
+		default:
+		case SOUTH:
+			return Rotation.NONE;
+		case WEST:
+			return Rotation.CLOCKWISE_90;
+		case NORTH:
+			return Rotation.CLOCKWISE_180;
+		case EAST:
+			return Rotation.COUNTERCLOCKWISE_90;
+		}
+	}
+
+	public static int getDay(World world) {
+		return (int) Math.round(world.getWorldTime() / 24000) + 1;
+	}
+
+	public static boolean isBloodmoon(World world) {
+		return Utils.getDay(world) % 7 == 0;
+	}
+
+	public static int getItemBurnTime(ItemStack stack) {
+		if (stack.isEmpty()) {
+			return 0;
+		} else {
+			int burnTime = net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(stack);
+			if (burnTime >= 0)
+				return burnTime;
+			Item item = stack.getItem();
+
+			if (item == Item.getItemFromBlock(Blocks.WOODEN_SLAB)) {
+				return 150;
+			} else if (item == Item.getItemFromBlock(Blocks.WOOL)) {
+				return 100;
+			} else if (item == Item.getItemFromBlock(Blocks.CARPET)) {
+				return 67;
+			} else if (item == Item.getItemFromBlock(Blocks.LADDER)) {
+				return 300;
+			} else if (item == Item.getItemFromBlock(Blocks.WOODEN_BUTTON)) {
+				return 100;
+			} else if (Block.getBlockFromItem(item).getDefaultState().getMaterial() == Material.WOOD) {
+				return 300;
+			} else if (item == Item.getItemFromBlock(Blocks.COAL_BLOCK)) {
+				return 16000;
+			} else if (item instanceof ItemTool && "WOOD".equals(((ItemTool) item).getToolMaterialName())) {
+				return 200;
+			} else if (item instanceof ItemSword && "WOOD".equals(((ItemSword) item).getToolMaterialName())) {
+				return 200;
+			} else if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe) item).getMaterialName())) {
+				return 200;
+			} else if (item == Items.STICK) {
+				return 100;
+			} else if (item != Items.BOW && item != Items.FISHING_ROD) {
+				if (item == Items.SIGN) {
+					return 200;
+				} else if (item == Items.COAL) {
+					return 1600;
+				} else if (item == Items.LAVA_BUCKET) {
+					return 20000;
+				} else if (item != Item.getItemFromBlock(Blocks.SAPLING) && item != Items.BOWL) {
+					if (item == Items.BLAZE_ROD) {
+						return 2400;
+					} else if (item instanceof ItemDoor && item != Items.IRON_DOOR) {
+						return 200;
+					} else {
+						return item instanceof ItemBoat ? 400 : 0;
+					}
+				} else {
+					return 100;
+				}
+			} else {
+				return 300;
+			}
+		}
+	}
+
+	public static BlockPos getAirdropPos(World world) {
+		List<EntityPlayer> players = world.playerEntities;
+		double xSum = 0;
+		double zSum = 0;
+
+		if (players.size() == 1) {
+			EntityPlayer player = players.get(0);
+			return new BlockPos(player.posX + (world.rand.nextDouble() * 512) - 256, 255,
+					player.posZ + (world.rand.nextDouble() * 512) - 256);
+		}
+
+		for (EntityPlayer player : players) {
+			xSum += player.posX;
+			zSum += player.posZ;
+		}
+		return new BlockPos((double) xSum / players.size() + (world.rand.nextDouble() * 512) - 256, 255,
+				(double) zSum / players.size() + (world.rand.nextDouble() * 512) - 256);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> Set<T> combine(Set<T>... sets) {
+		return Stream.of(sets).flatMap(Set::stream).collect(Collectors.toSet());
+	}
+
+	public static void infectPlayer(EntityPlayer player, int time) {
+		if (player.getActivePotionEffect(Potions.infection) == null) {
+			player.addPotionEffect(new PotionEffect(Potions.infection, 24000));
+		}
+		IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
+		if (!iep.isInfected()) {
+			iep.setInfectionTime(time);
+		}
+	}
+
+	public static int getItemCount(InventoryPlayer inv, Item item) {
+		int count = 0;
+		for (int slot = 0; slot < inv.getSizeInventory(); slot++) {
+			ItemStack stack = inv.getStackInSlot(slot);
+			if (stack != null && stack.getItem() == item) {
+				count += stack.getCount();
+			}
+		}
+		return count;
 	}
 }

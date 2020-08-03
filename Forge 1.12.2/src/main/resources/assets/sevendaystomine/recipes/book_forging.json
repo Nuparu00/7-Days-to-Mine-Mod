@@ -1,0 +1,22 @@
+{
+   "type":"sevendaystomine:crafting_locked_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:scrapiron"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:book_forging",
+      "count":1
+   },
+  "recipe": "forging"
+}

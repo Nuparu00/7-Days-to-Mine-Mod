@@ -1,7 +1,7 @@
 package com.nuparu.sevendaystomine.block;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
-import com.nuparu.sevendaystomine.tileentity.TileEntityGenerator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
 import com.nuparu.sevendaystomine.util.ITemperature;
 
 import net.minecraft.block.material.Material;
@@ -23,11 +23,13 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockGenerator extends BlockTileProvider<TileEntityGenerator> {
+public class BlockGenerator extends BlockTileProvider<TileEntityGasGenerator> {
 
 	public BlockGenerator(Material blockMaterialIn) {
 		super(blockMaterialIn);
 		this.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
+		setHardness(3);
+		setResistance(4);
 	}
 
 	@Override
@@ -52,24 +54,24 @@ public class BlockGenerator extends BlockTileProvider<TileEntityGenerator> {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityGenerator();
+		return new TileEntityGasGenerator();
 	}
 
 	@Override
-	public TileEntityGenerator createTileEntity(World world, IBlockState state) {
-		return new TileEntityGenerator();
+	public TileEntityGasGenerator createTileEntity(World world, IBlockState state) {
+		return new TileEntityGasGenerator();
 	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = worldIn.getTileEntity(pos);
-		if (te != null && te instanceof TileEntityGenerator) {
+		if (te != null && te instanceof TileEntityGasGenerator) {
 			if (!playerIn.isSneaking()) {
 				playerIn.openGui(SevenDaysToMine.instance, 13, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			}
 			else {
-				((TileEntityGenerator) te).isBurning = !(((TileEntityGenerator) te).isBurning);
+				((TileEntityGasGenerator) te).isBurning = !(((TileEntityGasGenerator) te).isBurning);
 			}
 
 		}
@@ -83,8 +85,8 @@ public class BlockGenerator extends BlockTileProvider<TileEntityGenerator> {
 		if (stack.hasDisplayName()) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
-			if (tileentity instanceof TileEntityGenerator) {
-				((TileEntityGenerator) tileentity).setCustomInventoryName(stack.getDisplayName());
+			if (tileentity instanceof TileEntityGasGenerator) {
+				((TileEntityGasGenerator) tileentity).setCustomInventoryName(stack.getDisplayName());
 			}
 		}
 	}
@@ -93,8 +95,8 @@ public class BlockGenerator extends BlockTileProvider<TileEntityGenerator> {
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
-		if (tileentity instanceof TileEntityGenerator) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityGenerator) tileentity);
+		if (tileentity instanceof TileEntityGasGenerator) {
+			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityGasGenerator) tileentity);
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 

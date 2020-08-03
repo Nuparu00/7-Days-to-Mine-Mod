@@ -9,7 +9,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.google.common.collect.Maps;
+import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.world.gen.city.plot.Plot;
 
 import net.minecraft.init.Biomes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +35,7 @@ public class City {
 
 	// 256 takes roughly 43 seconds ; 128 takes around 17 seconds
 	public static final int MAX_ROADS = 32;
-	
+
 	public int roads_limit;
 
 	private boolean allStreetsFound = false;
@@ -45,9 +47,9 @@ public class City {
 	public int population;
 
 	public City() {
-		
+
 	}
-	
+
 	public City(World world, BlockPos start) {
 		this.start = start;
 
@@ -57,9 +59,10 @@ public class City {
 
 		this.world = world;
 		this.rand = world.rand;
+		this.rand = new Random(0);
 		this.unclaimedStreetNames = new ArrayList<String>(CityHelper.streets);
 		this.name = CityHelper.getRandomCityName(this.rand);
-		this.roads_limit = ThreadLocalRandom.current().nextInt(16, MAX_ROADS + 1);
+		this.roads_limit = MathUtils.getIntInRange(rand, 8, MAX_ROADS);
 	}
 
 	public void startCityGen() {
@@ -67,7 +70,7 @@ public class City {
 		if (!areAllStreetsFound()) {
 			prepareStreets();
 		}
-		this.population = this.roads_limit*ThreadLocalRandom.current().nextInt(2048, 8192);
+		this.population = this.roads_limit * (MathUtils.getIntInRange(rand, 2048, 8192));
 		generate();
 		if (!world.isRemote) {
 			Utils.getLogger().info(this.name + " generated at " + start.getX() + " " + start.getZ() + " within "
@@ -94,7 +97,8 @@ public class City {
 			if (getStreetsCount() < this.roads_limit) {
 				BlockPos blockpos = bp_start.offset(facing, Street.LENGTH - 1);
 				Biome biome = world.getBiome(blockpos);
-				if(biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN || biome == Biomes.OCEAN) continue;
+				if (biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN || biome == Biomes.OCEAN)
+					continue;
 				int height = Utils.getTopSolidGroundHeight(blockpos, world);
 				int deltaHeight = bp_start.getY() - height;
 				if (deltaHeight <= Street.MAX_SLOPE) {
@@ -140,10 +144,15 @@ public class City {
 		for (Street street : streets) {
 			street.checkEnding();
 		}
+
+		for (Street street : streets) {
+			street.generateSewers();
+		}
+
 		for (Street street : streets) {
 			street.decorate();
 		}
-		
+
 		for (Street street : streets) {
 			street.generateBuildings();
 		}
@@ -162,7 +171,7 @@ public class City {
 		}
 
 		streets.add(street);
-		street.streetIndex=streets.size();
+		street.streetIndex = streets.size();
 		try {
 			streetsQueue.put(street);
 		} catch (InterruptedException e) {
@@ -242,6 +251,16 @@ public class City {
 		nbt.setLong("start", this.start.toLong());
 		nbt.setInteger("population", population);
 		return nbt;
+	}
+
+	public boolean doesPlotIntersect(Plot plot) {
+		for (Street street : streets) {
+			for (Plot plot2 : street.plots) {
+				if (plot2.intersects(plot))
+					return true;
+			}
+		}
+		return false;
 	}
 
 }

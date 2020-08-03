@@ -14,8 +14,8 @@ public class BlockBoards extends BlockHorizontalBase {
 
 	public BlockBoards() {
 		super(Material.WOOD);
-		this.setResistance(6f);
-		this.setHardness(7f);
+		this.setResistance(7f);
+		this.setHardness(2f);
 	}
 
 	@Override

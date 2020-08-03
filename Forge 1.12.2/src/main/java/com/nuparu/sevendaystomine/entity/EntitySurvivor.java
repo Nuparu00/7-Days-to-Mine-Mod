@@ -104,10 +104,4 @@ public class EntitySurvivor extends EntityHuman implements IMerchant {
 		return new BlockPos(this);
 	}
 
-	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand) {
-		player.openGui(SevenDaysToMine.instance, 15, world, this.getEntityId(), 0, 0);
-		return true;
-	}
-
 }

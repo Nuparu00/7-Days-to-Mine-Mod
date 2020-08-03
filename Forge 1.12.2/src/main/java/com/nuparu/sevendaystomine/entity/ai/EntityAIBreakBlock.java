@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.entity.ai;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
+import com.nuparu.sevendaystomine.entity.INoiseListener;
 import com.nuparu.sevendaystomine.events.MobBreakEvent;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -26,22 +27,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityAIBreakBlock extends EntityAIBase {
-	private int breakingTime;
 	public Block block;
 	public BlockPos blockPosition = BlockPos.ORIGIN;
 	public EntityZombieBase theEntity;
 	private float stepSoundTickCounter;
-	public float blockHealth = 0f;
+
 	public EntityAIBreakBlock(EntityZombieBase entityIn) {
 		this.theEntity = entityIn;
 	}
 
-	/**
-	 * Returns whether the EntityAIBase should begin execution.
-	 */
-
+	@Override
 	public boolean shouldExecute() {
-		if (this.theEntity.getAttackTarget() != null) {
+		if (theEntity.getAttackTarget() != null
+				|| ((theEntity instanceof INoiseListener) && ((INoiseListener) theEntity).getCurrentNoise() != null)) {
 			if (!this.theEntity.world.getGameRules().getBoolean("mobGriefing")) {
 				return false;
 			} else {
@@ -56,73 +54,32 @@ public class EntityAIBreakBlock extends EntityAIBase {
 				}
 			}
 		}
+
 		return false;
 	}
 
-	/**
-	 * Execute a one shot task or start executing a continuous task
-	 */
+	@Override
 	public void startExecuting() {
 		super.startExecuting();
-		this.breakingTime = 0;
-		this.blockHealth = 0f;
 	}
 
-	/**
-	 * Returns whether an in-progress EntityAIBase should continue executing
-	 */
-	public boolean continueExecuting() {
-		// double d0 = this.theEntity.getDistanceSq(this.doorPosition);
-
-		if (this.theEntity.getAttackTarget() != null) {
-			World world = theEntity.world;
-			RayTraceResult ray = this.theEntity.rayTraceServer(2, 1F);
-			if (ray != null) {
-				if (ray.getBlockPos() != null) {
-
-					if (this.breakingTime <= world.getBlockState(blockPosition).getBlockHardness(world, blockPosition)
-							/ blockStrength(this.theEntity.world.getBlockState(this.blockPosition),
-									this.theEntity, this.theEntity.world, this.blockPosition)) {
-
-						if (ray.getBlockPos().getX() == this.blockPosition.getX()
-								&& ray.getBlockPos().getY() == this.blockPosition.getY()
-								&& ray.getBlockPos().getZ() == this.blockPosition.getZ()) {
-
-							return true;
-
-						}
-
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Resets the task
-	 */
+	@Override
 	public void resetTask() {
 		super.resetTask();
-		this.blockHealth = 0f;
-		// this.theEntity.worldObj.sendBlockBreakProgress(this.theEntity.getEntityId(),
-		// this.doorPosition, -1);
-		// block = null;
-		// this.breakingTime = 0;
 	}
 
-	public float getBreakSpeed(IBlockState state, BlockPos pos, EntityLivingBase player) {
+	public float getBreakSpeed(IBlockState state, BlockPos pos, EntityLivingBase living) {
 
-		float f = 5f;
+		float f = 0.1f;
 
-		if (player.isPotionActive(MobEffects.HASTE)) {
-			f *= 1.0F + (float) (player.getActivePotionEffect(MobEffects.HASTE).getAmplifier() + 1) * 0.2F;
+		if (living.isPotionActive(MobEffects.HASTE)) {
+			f *= 1.0F + (float) (living.getActivePotionEffect(MobEffects.HASTE).getAmplifier() + 1) * 0.2F;
 		}
 
-		if (player.isPotionActive(MobEffects.MINING_FATIGUE)) {
+		if (living.isPotionActive(MobEffects.MINING_FATIGUE)) {
 			float f1 = 1.0F;
 
-			switch (player.getActivePotionEffect(MobEffects.MINING_FATIGUE).getAmplifier()) {
+			switch (living.getActivePotionEffect(MobEffects.MINING_FATIGUE).getAmplifier()) {
 			case 0:
 				f1 = 0.3F;
 				break;
@@ -140,16 +97,14 @@ public class EntityAIBreakBlock extends EntityAIBase {
 			f *= f1;
 		}
 
-		if (player.isInsideOfMaterial(Material.WATER) && !EnchantmentHelper.getAquaAffinityModifier(player)) {
+		if (living.isInsideOfMaterial(Material.WATER) && !EnchantmentHelper.getAquaAffinityModifier(living)) {
 			f /= 5.0F;
 		}
 
-		if (!player.onGround) {
+		if (!living.onGround) {
 			f /= 5.0F;
 		}
 
-		// f = net.minecraftforge.event.ForgeEventFactory.getBreakSpeed(this, state, f,
-		// pos);
 		return f;
 	}
 
@@ -158,14 +113,10 @@ public class EntityAIBreakBlock extends EntityAIBase {
 		if (hardness < 0.0F) {
 			return 0.0F;
 		}
-
-		return getBreakSpeed(state, pos, player) / hardness / 3F;
+		return hardness;
 
 	}
 
-	/**
-	 * Updates the task
-	 */
 	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
 	public void playBreakSound() {
@@ -177,38 +128,28 @@ public class EntityAIBreakBlock extends EntityAIBase {
 						(float) this.blockPosition.getZ() + 0.5F));
 	}
 
+	@Override
 	public void updateTask() {
 		super.updateTask();
-		World world = this.theEntity.world;
+		World world = theEntity.world;
 		BreakSavedData data = BreakSavedData.get(world);
-		BreakData b = data.getBreakData(this.blockPosition, this.theEntity.world.provider.getDimension());
-		if (b != null) {
-			this.blockHealth = b.getState();
-		}
-		IBlockState state = world.getBlockState(this.blockPosition);
-		if (state.getMaterial() != Material.AIR && state.getBlockHardness(world,blockPosition) >= 0) {
+		BreakData b = data.getBreakData(blockPosition, theEntity.world.provider.getDimension());
 
-			if (this.stepSoundTickCounter % 4.0F == 0.0F) {
-//plSound();
-				this.theEntity.swingArm(world.rand.nextInt(2) == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+		IBlockState state = world.getBlockState(blockPosition);
+		float hardness = state.getBlockHardness(world, blockPosition);
+		if (state.getMaterial() != Material.AIR && hardness >= 0) {
+
+			if (stepSoundTickCounter % 4.0F == 0.0F) {
+				theEntity.swingArm(world.rand.nextInt(2) == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 			}
-			float m = world.getBlockState(this.blockPosition).getBlockHardness(world, blockPosition)
-					/ blockStrength(world.getBlockState(this.blockPosition), this.theEntity,
-							world, this.blockPosition);
+			float m = (getBreakSpeed(state,blockPosition,theEntity)/hardness)/32f;
 			++this.stepSoundTickCounter;
-			this.blockHealth += (1f / m);
-			if (blockHealth >= 1f) {
-				blockHealth = 1f;
-			}
-			
-			Utils.damageBlock(world, blockPosition, blockHealth, false);
-			if (blockHealth >= 1f) {
-				world.playEvent(2001, blockPosition, Block.getStateId(world.getBlockState(this.blockPosition)));
-				Utils.damageBlock(world, blockPosition, blockHealth, true);
+
+			if (Utils.damageBlock(world, blockPosition, m, true)) {
+				world.playEvent(2001, blockPosition, Block.getStateId(world.getBlockState(blockPosition)));
 				resetTask();
-				MinecraftForge.EVENT_BUS.post(new MobBreakEvent(this.theEntity.world, this.blockPosition,
-						this.theEntity.world.getBlockState(this.blockPosition),
-						(EntityLivingBase) this.theEntity));
+				MinecraftForge.EVENT_BUS.post(new MobBreakEvent(theEntity.world, blockPosition,
+						theEntity.world.getBlockState(blockPosition), (EntityLivingBase) theEntity));
 
 			}
 		}

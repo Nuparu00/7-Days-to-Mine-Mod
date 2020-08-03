@@ -7,11 +7,13 @@ import com.nuparu.sevendaystomine.block.IUpgradeable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.entity.INoiseListener;
+import com.nuparu.sevendaystomine.entity.Noise;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.util.DamageSources;
 import com.nuparu.sevendaystomine.util.VanillaManager;
 import com.nuparu.sevendaystomine.util.VanillaManager.VanillaBlockUpgrade;
+import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoublePlant;
@@ -19,17 +21,25 @@ import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import net.minecraftforge.event.DifficultyChangeEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -37,6 +47,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class WorldEventHandler {
 	/*
@@ -59,11 +70,10 @@ public class WorldEventHandler {
 				return;
 			}
 		}
-		
-		if(!(block instanceof BlockDoublePlant)) {
+
+		if (!(block instanceof BlockDoublePlant)) {
 			block.removedByPlayer(state, world, pos, (EntityPlayer) null, true);
-		}
-		else {
+		} else {
 			world.setBlockToAir(pos);
 		}
 		world.notifyBlockUpdate(pos, state, Blocks.AIR.getDefaultState(), 3);
@@ -93,7 +103,10 @@ public class WorldEventHandler {
 			IUpgradeable upgradeable = (IUpgradeable) state.getBlock();
 			event.getDrops().clear();
 			world.setBlockState(pos, upgradeable.getPrev(world, pos));
-			for (ItemStack stack : ((IUpgradeable) upgradeable.getPrev(world, pos).getBlock()).getItems()) {
+			Block prev = upgradeable.getPrev(world, pos).getBlock();
+			if (!(prev instanceof IUpgradeable))
+				return;
+			for (ItemStack stack : ((IUpgradeable) prev).getItems()) {
 				int count = (int) (stack.getCount() * Math.random());
 				if (count > 0) {
 					ItemStack s = stack.copy();
@@ -107,18 +120,21 @@ public class WorldEventHandler {
 			if (upgrade != null && upgrade.getPrev() != null) {
 				event.getDrops().clear();
 				world.setBlockState(pos, upgrade.getPrev());
-				ItemStack[] stacks = (upgrade.getPrev().getBlock() instanceof IUpgradeable)
-						? (((IUpgradeable) upgrade.getPrev().getBlock()).getItems())
-						: ((VanillaManager.getVanillaUpgrade(upgrade.getPrev()) != null)
-								? (VanillaManager.getVanillaUpgrade(upgrade.getPrev()).getItems())
-								: (null));
-				if (stacks != null) {
-					for (ItemStack stack : stacks) {
-						int count = (int) (stack.getCount() * Math.random());
-						if (count > 0) {
-							ItemStack s = stack.copy();
-							s.setCount(count);
-							event.getDrops().add(s);
+				if (upgrade.getPrev().getBlock() instanceof IUpgradeable) {
+					ItemStack[] stacks = (upgrade.getPrev().getBlock() instanceof IUpgradeable)
+							? (((IUpgradeable) upgrade.getPrev().getBlock()).getItems())
+							: ((VanillaManager.getVanillaUpgrade(upgrade.getPrev()) != null)
+									? (VanillaManager.getVanillaUpgrade(upgrade.getPrev()).getItems())
+									: (null));
+
+					if (stacks != null) {
+						for (ItemStack stack : stacks) {
+							int count = (int) (stack.getCount() * Math.random());
+							if (count > 0) {
+								ItemStack s = stack.copy();
+								s.setCount(count);
+								event.getDrops().add(s);
+							}
 						}
 					}
 				}
@@ -137,15 +153,14 @@ public class WorldEventHandler {
 	/*
 	 * CALLED WHEN BLOCK IS BROKEN - CAN BE BY A PLAYER
 	 */
-	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
 		if (event.getPlayer() instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP) event.getPlayer();
 			World world = event.getWorld();
 			if (player.interactionManager.survivalOrAdventure()) {
-				if (player.getHeldItemMainhand() == null) {
-					if (event.getState().getBlock().getMaterial(event.getState()) == Material.GLASS) {
+				if (player.getHeldItemMainhand().isEmpty()) {
+					if (event.getState().getMaterial() == Material.GLASS) {
 						if (event.getWorld().rand.nextInt(5) == 0) {
 							player.attackEntityFrom(DamageSources.sharpGlass, 2.0F);
 
@@ -162,17 +177,33 @@ public class WorldEventHandler {
 	 */
 	@SubscribeEvent
 	public void loadWorld(WorldEvent.Load event) {
-		if (!event.getWorld().isRemote) {
+		World world = event.getWorld();
+		SevenDaysToMine.chunkLoaderTicket = null;
+		if (!world.isRemote) {
 			// BREAK SAVED DATA
-			BreakSavedData break_data = ((BreakSavedData) event.getWorld().getPerWorldStorage()
-					.getOrLoadData(BreakSavedData.class, BreakSavedData.DATA_NAME));
+			BreakSavedData break_data = ((BreakSavedData) world.getPerWorldStorage().getOrLoadData(BreakSavedData.class,
+					BreakSavedData.DATA_NAME));
 			if (break_data == null) {
 				SevenDaysToMine.breakSavedData = new BreakSavedData();
-				event.getWorld().getPerWorldStorage().setData(BreakSavedData.DATA_NAME, SevenDaysToMine.breakSavedData);
+				world.getPerWorldStorage().setData(BreakSavedData.DATA_NAME, SevenDaysToMine.breakSavedData);
 			} else {
 				SevenDaysToMine.breakSavedData = break_data;
 			}
 
+			HordeSavedData horde_data = ((HordeSavedData) world.getPerWorldStorage().getOrLoadData(HordeSavedData.class,
+					HordeSavedData.DATA_NAME));
+			if (horde_data == null) {
+				SevenDaysToMine.hordeSavedData = new HordeSavedData();
+				world.getPerWorldStorage().setData(HordeSavedData.DATA_NAME, SevenDaysToMine.hordeSavedData);
+			} else {
+				SevenDaysToMine.hordeSavedData = horde_data;
+			}
+
+		} else {
+			if (world.provider.getDimension() == 0) {
+				SevenDaysToMine.proxy.setSkyRenderer(world);
+				SevenDaysToMine.proxy.setCloudRenderer(world);
+			}
 		}
 	}
 
@@ -181,14 +212,13 @@ public class WorldEventHandler {
 	 */
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-
-		if (event.player instanceof EntityPlayerMP && !event.player.getEntityWorld().isRemote) {
+		World world = event.player.world;
+		if (event.player instanceof EntityPlayerMP && !world.isRemote) {
 			EntityPlayerMP player = (EntityPlayerMP) event.player;
-			if (SevenDaysToMine.breakSavedData == null)
-				return;
-			SevenDaysToMine.breakSavedData.sync(player);
+			if (SevenDaysToMine.breakSavedData != null) {
+				SevenDaysToMine.breakSavedData.sync(player);
+			}
 		}
-
 	}
 
 	/*
@@ -219,22 +249,36 @@ public class WorldEventHandler {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {
 		Entity entity = event.getEntity();
 		if (entity != null) {
 			if (!(entity instanceof EntityMob)) {
-				float range = event.getVolume() * 50f;
-				AxisAlignedBB aabb = new AxisAlignedBB(entity.posX-range,entity.posY-(range/5),entity.posZ-range,entity.posX+range,entity.posY+(range/5),entity.posZ+range);
+				if (entity.getEntityBoundingBox() == null)
+					return;
+				float range = event.getVolume() * 64f * (entity.isSneaking() ? 0.75f : 1f);
+				AxisAlignedBB aabb = entity.getEntityBoundingBox().grow(range, range / 2, range);
 				List<Entity> entities = entity.world.getEntitiesWithinAABB(Entity.class, aabb);
-				for(Entity e : entities) {
-					if(e instanceof INoiseListener) {
-						INoiseListener noiseListener = (INoiseListener)e;
+				for (Entity e : entities) {
+					if (e instanceof INoiseListener) {
+						INoiseListener noiseListener = (INoiseListener) e;
+						noiseListener.addNoise(new Noise(entity, new BlockPos(entity), entity.world, event.getVolume(),
+								event.getPitch()));
 					}
 				}
 			}
 		}
 	}
-	
+
+	@SubscribeEvent
+	public void onPotentialSpawns(EntityJoinWorldEvent event) {
+		/*
+		 * Entity entity = event.getEntity(); if(entity == null ||
+		 * EntityList.getKey(entity.getClass())== null) return; String name =
+		 * EntityList.getKey(entity.getClass()).toString().toLowerCase();
+		 * if(name.equals("minecraft:zombie") || name.equals("minecraft:skeleton")){
+		 * event.setCanceled(true); }
+		 */
+	}
 }

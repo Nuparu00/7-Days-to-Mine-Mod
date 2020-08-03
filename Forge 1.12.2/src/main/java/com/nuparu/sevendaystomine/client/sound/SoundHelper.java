@@ -50,6 +50,12 @@ public class SoundHelper {
 	public static final SoundEvent HUNTING_RIFLE_SHOT = Utils.Null();
 	@ObjectHolder("hunting_rifle.reload")
 	public static final SoundEvent HUNTING_RIFLE_RELOAD = Utils.Null();
+	@ObjectHolder("white_noise")
+	public static final SoundEvent WHITE_NOISE = Utils.Null();
+	@ObjectHolder("emergency_alert_system")
+	public static final SoundEvent EAS = Utils.Null();
+	@ObjectHolder("recipe_unlocked")
+	public static final SoundEvent RECIPE_UNLOCKED = Utils.Null();
 	
 	private static List<SoundEvent> sounds = new ArrayList<SoundEvent>();
 	
@@ -72,7 +78,10 @@ public class SoundHelper {
 					createSoundEvent("door.locked"),
 					createSoundEvent("camera.take"),
 					createSoundEvent("hunting_rifle.shot"),
-					createSoundEvent("hunting_rifle.reload")
+					createSoundEvent("hunting_rifle.reload"),
+					createSoundEvent("white_noise"),
+					createSoundEvent("emergency_alert_system"),
+					createSoundEvent("recipe_unlocked")
 			};
 
 			event.getRegistry().registerAll(soundEvents);

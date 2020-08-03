@@ -34,8 +34,8 @@ public class BlockChemistryStation extends BlockTileProvider<TileEntityChemistry
 	public BlockChemistryStation() {
 		super(Material.ROCK);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-		setHardness(1.0F);
-		setResistance(2.0F);
+		setHardness(3.0F);
+		setResistance(7.0F);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		setHarvestLevel("pickaxe", 1);
 	}

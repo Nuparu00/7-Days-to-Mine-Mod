@@ -61,8 +61,7 @@ public class RenderPlayerEnhanced extends RenderPlayer {
 	public void doRender(AbstractClientPlayer entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
         if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderPlayerEvent.Pre(entity, this, partialTicks, x, y, z))) return;
-        if (!entity.isUser() || this.renderManager.renderViewEntity == entity)
-        {
+        if (!entity.isSpectator() || (!entity.isUser() || this.renderManager.renderViewEntity == entity)) {
             double d0 = y;
 
             if (entity.isSneaking())

@@ -13,7 +13,7 @@ public class BlockReinforcedConcreteWet extends BlockBase {
 
 	public BlockReinforcedConcreteWet() {
 		super(Material.IRON);
-		setHardness(10.0F);
+		setHardness(7.5F);
 		setResistance(5.0F);
 		setHarvestLevel("pickaxe", 2);
 	}

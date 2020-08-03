@@ -21,7 +21,7 @@ public class BlockSkeleton extends BlockHorizontalBase {
 	public BlockSkeleton() {
 		super(Material.GROUND);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		this.setHardness(2f);
+		this.setHardness(1f);
 		this.setResistance(1f);
 	}
 	

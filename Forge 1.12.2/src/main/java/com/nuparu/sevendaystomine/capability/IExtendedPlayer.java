@@ -1,6 +1,9 @@
 package com.nuparu.sevendaystomine.capability;
 
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 
 public interface IExtendedPlayer {
@@ -31,19 +34,15 @@ public interface IExtendedPlayer {
 
 	public boolean isInfected();
 
-	public void setInfected(boolean state);
+	public int getInfectionTime();
 
-	public int getInfectionStage();
-
-	public void setInfectionStage(int stage);
-
-	public int getInfectionDay();
-
-	public void setInfectionDay(int day);
-
-	public int getTimeToNextStage();
-
-	public void setTimeToNextStage(int time);
+	public void setInfectionTime(int stage);
+	
+	public void unlockRecipe(String rec);
+	
+	public boolean hasRecipe(String rec);
+	
+	public List<String> getRecipes();
 
 	public IExtendedPlayer setOwner(EntityPlayer player);
 
@@ -58,5 +57,9 @@ public interface IExtendedPlayer {
 	public void onDataChanged();
 
 	public void onStartedTracking(EntityPlayer tracker);
+	
+	public boolean getBloodmoon();
+	
+	public void setBloodmoon(boolean state);
 
 }

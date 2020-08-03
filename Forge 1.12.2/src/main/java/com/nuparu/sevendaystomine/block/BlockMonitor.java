@@ -40,6 +40,8 @@ public class BlockMonitor extends BlockTileProvider<TileEntityMonitor> {
 	public BlockMonitor() {
 		super(Material.GROUND);
 		this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
+		setHardness(1.4F);
+		setResistance(1.0F);
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class BlockMonitor extends BlockTileProvider<TileEntityMonitor> {
 						text.getStyle().setColor(TextFormatting.GREEN);
 						playerIn.sendMessage(text);
 					} else {
-						TextComponentTranslation text = new TextComponentTranslation("computer.turn.on");
+						TextComponentTranslation text = new TextComponentTranslation("computer.turn.off");
 						text.getStyle().setColor(TextFormatting.GREEN);
 						playerIn.sendMessage(text);
 					}

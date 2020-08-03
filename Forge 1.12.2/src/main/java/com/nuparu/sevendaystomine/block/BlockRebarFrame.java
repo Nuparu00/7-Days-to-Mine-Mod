@@ -28,7 +28,7 @@ public class BlockRebarFrame extends BlockUpgradeable implements IScrapable{
 		setItems(new ItemStack[]{new ItemStack(ModItems.PLANK_WOOD, 6)});
 		setSound(SoundHelper.UPGRADE_WOOD);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		setHardness(10f);
+		setHardness(2f);
 		setResistance(10f);
 		setHarvestLevel("pickaxe", 1);
 	}

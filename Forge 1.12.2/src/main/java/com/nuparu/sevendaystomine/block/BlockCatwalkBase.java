@@ -38,6 +38,8 @@ public class BlockCatwalkBase extends BlockBase implements IScrapable {
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, EnumBlockCatwalk.BOTTOM));
 		this.lightOpacity = 5;
+		setHardness(2.0F);
+		setResistance(1.0F);
 	}
 
 	@Override

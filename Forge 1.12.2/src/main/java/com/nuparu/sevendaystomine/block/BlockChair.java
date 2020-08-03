@@ -33,7 +33,7 @@ public class BlockChair extends BlockHorizontalBase implements IScrapable{
 	public BlockChair() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
-		setHardness(1.5F);
+		setHardness(1.3F);
 		setResistance(2.0F);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		setHarvestLevel("axe", 0);

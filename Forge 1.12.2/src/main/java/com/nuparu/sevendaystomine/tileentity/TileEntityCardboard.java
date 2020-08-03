@@ -10,10 +10,11 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 
-public class TileEntityCardboard extends TileEntityLockable implements ISidedInventory {
+public class TileEntityCardboard extends TileEntityLockableLoot implements ISidedInventory {
 
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(9, ItemStack.EMPTY);
 	private String customName;
@@ -174,5 +175,10 @@ public class TileEntityCardboard extends TileEntityLockable implements ISidedInv
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
 		return false;
+	}
+
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return inventory;
 	}
 }

@@ -1,0 +1,17 @@
+{
+  "type": "sevendaystomine:crafting_locked_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:dye",
+      "data": 4
+    },
+    {
+      "item": "sevendaystomine:concretemix"
+    }
+  ],
+  "result": {
+   "item": "minecraft:concrete",
+    "data": 11
+  },
+  "recipe": "concrete"
+}

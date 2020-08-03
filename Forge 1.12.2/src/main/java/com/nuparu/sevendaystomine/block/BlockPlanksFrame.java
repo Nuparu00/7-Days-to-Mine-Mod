@@ -24,15 +24,16 @@ public class BlockPlanksFrame extends BlockUpgradeable {
 		setItems(new ItemStack[]{new ItemStack(ModItems.PLANK_WOOD, 6)});
 		setSound(SoundHelper.UPGRADE_WOOD);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		setHardness(15f);
+		setHardness(0.8f);
 		setResistance(2f);
 		setHarvestLevel("axe", 0);
+		Blocks.FIRE.setFireInfo(this,5,20);
 	}
-
+	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-
+	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
@@ -44,7 +45,13 @@ public class BlockPlanksFrame extends BlockUpgradeable {
     }
 	
 	@Override
-    public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face) {
+	public boolean isTopSolid(IBlockState state)
+    {
+        return true;
+    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
         return true;
     }
 }

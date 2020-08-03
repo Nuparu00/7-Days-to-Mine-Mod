@@ -12,48 +12,65 @@ import com.nuparu.sevendaystomine.item.ItemArmorBase;
 import com.nuparu.sevendaystomine.item.ItemAuger;
 import com.nuparu.sevendaystomine.item.ItemBackpack;
 import com.nuparu.sevendaystomine.item.ItemBandage;
+import com.nuparu.sevendaystomine.item.ItemBattery;
 import com.nuparu.sevendaystomine.item.ItemBloodBag;
 import com.nuparu.sevendaystomine.item.ItemBloodDrawKit;
 import com.nuparu.sevendaystomine.item.ItemCannedFood;
+import com.nuparu.sevendaystomine.item.ItemChainsaw;
+import com.nuparu.sevendaystomine.item.ItemCircuit;
 import com.nuparu.sevendaystomine.item.ItemClothingChest;
 import com.nuparu.sevendaystomine.item.ItemClothingLegs;
 import com.nuparu.sevendaystomine.item.ItemClub;
 import com.nuparu.sevendaystomine.item.ItemCoffeeBeans;
 import com.nuparu.sevendaystomine.item.ItemCoffeeDrink;
+import com.nuparu.sevendaystomine.item.ItemConcreteMix;
 import com.nuparu.sevendaystomine.item.ItemDoorBase;
 import com.nuparu.sevendaystomine.item.ItemDrink;
 import com.nuparu.sevendaystomine.item.ItemEmptyCan;
 import com.nuparu.sevendaystomine.item.ItemEmptyJar;
 import com.nuparu.sevendaystomine.item.ItemFirstAidKit;
+import com.nuparu.sevendaystomine.item.ItemGuide;
+import com.nuparu.sevendaystomine.item.ItemGunPart;
 import com.nuparu.sevendaystomine.item.ItemHuntingRifle;
 import com.nuparu.sevendaystomine.item.ItemInstallDisc;
+import com.nuparu.sevendaystomine.item.ItemLinkTool;
 import com.nuparu.sevendaystomine.item.ItemMP3;
 import com.nuparu.sevendaystomine.item.ItemMold;
 import com.nuparu.sevendaystomine.item.ItemMurkyWater;
 import com.nuparu.sevendaystomine.item.ItemPhoto;
 import com.nuparu.sevendaystomine.item.ItemPistol;
 import com.nuparu.sevendaystomine.item.ItemQualityAxe;
+import com.nuparu.sevendaystomine.item.ItemQualityPickaxe;
 import com.nuparu.sevendaystomine.item.ItemQualityScrapable;
+import com.nuparu.sevendaystomine.item.ItemQualitySpade;
 import com.nuparu.sevendaystomine.item.ItemQualitySword;
 import com.nuparu.sevendaystomine.item.ItemRealityWand;
+import com.nuparu.sevendaystomine.item.ItemRecipeBook;
 import com.nuparu.sevendaystomine.item.ItemRefrigerator;
 import com.nuparu.sevendaystomine.item.ItemScrap;
 import com.nuparu.sevendaystomine.item.ItemScrapable;
 import com.nuparu.sevendaystomine.item.ItemScrewdriver;
+import com.nuparu.sevendaystomine.item.ItemShotgun;
+import com.nuparu.sevendaystomine.item.ItemShotgunShort;
 import com.nuparu.sevendaystomine.item.ItemSleepingBag;
+import com.nuparu.sevendaystomine.item.ItemSniperRifle;
 import com.nuparu.sevendaystomine.item.ItemStoneAxe;
 import com.nuparu.sevendaystomine.item.ItemStoneShovel;
 import com.nuparu.sevendaystomine.item.ItemStreetSign;
 import com.nuparu.sevendaystomine.item.ItemTea;
 import com.nuparu.sevendaystomine.item.ItemUpgrader;
+import com.nuparu.sevendaystomine.item.ItemVoltmeter;
 import com.nuparu.sevendaystomine.item.ItemWire;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 
 public class ModItems {
@@ -81,7 +98,7 @@ public class ModItems {
 	public static final Item CLOTH = new ItemScrap(EnumMaterial.CLOTH).setRegistryName("Cloth")
 			.setUnlocalizedName("Cloth");
 
-	public static final Item STONE_AXE = new ItemStoneAxe().setRegistryName("StoneAxe").setUnlocalizedName("StoneAxe");
+	public static final Item STONE_AXE = new ItemStoneAxe(SevenDaysToMine.STONE_TOOLS,-2).setRegistryName("StoneAxe").setUnlocalizedName("StoneAxe");
 	public static final Item STONE_SHOVEL = new ItemStoneShovel(SevenDaysToMine.STONE_TOOLS, -1f, 8f)
 			.setRegistryName("StoneShovel").setUnlocalizedName("StoneShovel");
 	public static final Item BONE_SHIV = new ItemQualitySword(SevenDaysToMine.BONE_TOOLS).setRegistryName("BoneShiv")
@@ -205,8 +222,11 @@ public class ModItems {
 
 
 	public static final Item MOLD_INGOT = new ItemMold().setRegistryName("IngotMold").setUnlocalizedName("IngotMold");
-
-	public static final Item CONCRETE_MIX = new Item().setRegistryName("ConcreteMix").setUnlocalizedName("ConcreteMix")
+	public static final Item BULLET_TIP_MOLD = new ItemMold().setRegistryName("bullet_tip_mold").setUnlocalizedName("bullet_tip_mold");
+	public static final Item BULLET_CASING_MOLD = new ItemMold().setRegistryName("bullet_casing_mold").setUnlocalizedName("bullet_casing_mold");
+	public static final Item CEMENT_MOLD = new ItemMold().setRegistryName("cement_mold").setUnlocalizedName("cement_mold");
+	
+	public static final Item CONCRETE_MIX = new ItemConcreteMix().setRegistryName("ConcreteMix").setUnlocalizedName("ConcreteMix")
 			.setCreativeTab(SevenDaysToMine.TAB_MATERIALS);
 	public static final Item CEMENT = new ItemScrap(EnumMaterial.CONCRETE).setRegistryName("Cement")
 			.setUnlocalizedName("Cement");
@@ -215,7 +235,8 @@ public class ModItems {
 			.setUnlocalizedName("NineMMBullet").setCreativeTab(CreativeTabs.COMBAT);
 	public static final Item SEVEN_MM_BULLET = new Item().setRegistryName("SevenMMBullet")
 			.setUnlocalizedName("SevenMMBullet").setCreativeTab(CreativeTabs.COMBAT);
-
+	public static final Item TEN_MM_BULLET = new Item().setRegistryName("bullet_10mm")
+			.setUnlocalizedName("bullet_10mm").setCreativeTab(CreativeTabs.COMBAT);
 	public static final Item FRIDGE = new ItemRefrigerator().setRegistryName("FridgeItem").setUnlocalizedName("Fridge")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	public static final Item SLEEPING_BAG = new ItemSleepingBag().setRegistryName("SleepingBagItem")
@@ -240,8 +261,16 @@ public class ModItems {
 	}.setRegistryName("locked_door_item").setUnlocalizedName("locked_door_item")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 
-	public static final Item AUGER = new ItemAuger(20, 20, EnumHelper.addToolMaterial("AUGER", 5, 600, 26F, 80, 0))
-			.setRegistryName("Auger").setUnlocalizedName("Auger");
+	public static final Item AUGER = new ItemAuger(20, 20, SevenDaysToMine.AUGER)
+			.setRegistryName("auger").setUnlocalizedName("auger");
+	public static final Item CHAINSAW = new ItemChainsaw(20, 20, SevenDaysToMine.AUGER)
+			.setRegistryName("chainsaw").setUnlocalizedName("chainsaw");
+	
+	public static final Item COPPER_PICKAXE = new ItemQualityPickaxe(SevenDaysToMine.COPPER_TOOLS,-2.8).setRegistryName("copper_pickaxe").setUnlocalizedName("copper_pickaxe");
+	public static final Item BRONZE_PICKAXE = new ItemQualityPickaxe(SevenDaysToMine.BRONZE_TOOLS,-2.8).setRegistryName("bronze_pickaxe").setUnlocalizedName("bronze_pickaxe");
+	public static final Item IRON_PICKAXE = new ItemQualityPickaxe(SevenDaysToMine.IRON_TOOLS,-2.8).setRegistryName("iron_pickaxe").setUnlocalizedName("iron_pickaxe");
+	public static final Item STEEL_PICKAXE = new ItemQualityPickaxe(SevenDaysToMine.STEEL_TOOLS,-2.8).setRegistryName("steel_pickaxe").setUnlocalizedName("steel_pickaxe");
+	public static final Item SCRAP_PICKAXE = new ItemQualityPickaxe(SevenDaysToMine.SCRAP_TOOLS,-2.8).setRegistryName("scrap_pickaxe").setUnlocalizedName("scrap_pickaxe");
 	
 	public static final Item MP3_PLAYER = new ItemMP3().setRegistryName("MP3Player").setUnlocalizedName("MP3Player").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
 	
@@ -278,7 +307,7 @@ public class ModItems {
 	public static final Item T_SHIRT_1 = new ItemClothingChest(true,false,"t_shirt_1").setRegistryName("t_shirt_1").setUnlocalizedName("t_shirt_1");
 	public static final Item COAT = new ItemClothingChest(true,false,"coat").setRegistryName("coat").setUnlocalizedName("coat");
 	
-	public static final Item CAR_BATTERY = new ItemQualityScrapable(EnumMaterial.LEAD,9).setRegistryName("car_battery").setUnlocalizedName("car_battery").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
+	public static final Item CAR_BATTERY = new ItemBattery(EnumMaterial.LEAD,9).setRegistryName("car_battery").setUnlocalizedName("car_battery").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
 	public static final Item SMALL_ENGINE = new ItemQualityScrapable(EnumMaterial.IRON,5).setRegistryName("small_engine").setUnlocalizedName("small_engine").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
     public static final Item MINIBIKE_SEAT = new ItemQualityScrapable(EnumMaterial.LEATHER,5).setRegistryName("minibike_seat").setUnlocalizedName("minibike_seat").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
 	public static final Item MINIBIKE_HANDLES = new ItemQualityScrapable(EnumMaterial.IRON,4).setRegistryName("minibike_handles").setUnlocalizedName("minibike_handles").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
@@ -299,5 +328,61 @@ public class ModItems {
 	public static final Item LEATHER_IRON_BOOTS = new ItemArmorBase(SevenDaysToMine.LEATHER_IRON_ARMOR, 0, EntityEquipmentSlot.FEET, "leather_iron_boots");
 	public static final Item LEATHER_IRON_HELMET = new ItemArmorBase(SevenDaysToMine.LEATHER_IRON_ARMOR, 0, EntityEquipmentSlot.HEAD, "leather_iron_helmet");
 
+	public static final Item COPPER_AXE = new ItemQualityAxe(SevenDaysToMine.COPPER_TOOLS,-2.8).setRegistryName("copper_axe").setUnlocalizedName("copper_axe");
+	public static final Item BRONZE_AXE = new ItemQualityAxe(SevenDaysToMine.BRONZE_TOOLS,-2.8).setRegistryName("bronze_axe").setUnlocalizedName("bronze_axe");
 	public static final Item IRON_AXE = new ItemQualityAxe(SevenDaysToMine.IRON_TOOLS,-2.8).setRegistryName("iron_axe").setUnlocalizedName("iron_axe");
+	public static final Item STEEL_AXE = new ItemQualityAxe(SevenDaysToMine.STEEL_TOOLS,-2.8).setRegistryName("steel_axe").setUnlocalizedName("steel_axe");
+	
+	public static final Item COPPER_SHOVEL = new ItemQualitySpade(SevenDaysToMine.COPPER_TOOLS).setRegistryName("copper_shovel").setUnlocalizedName("copper_shovel");
+	public static final Item BRONZE_SHOVEL = new ItemQualitySpade(SevenDaysToMine.BRONZE_TOOLS).setRegistryName("bronze_shovel").setUnlocalizedName("bronze_shovel");
+	public static final Item IRON_SHOVEL = new ItemQualitySpade(SevenDaysToMine.IRON_TOOLS).setRegistryName("iron_shovel").setUnlocalizedName("iron_shovel");
+	public static final Item STEEL_SHOVEL = new ItemQualitySpade(SevenDaysToMine.STEEL_TOOLS).setRegistryName("steel_shovel").setUnlocalizedName("steel_shovel");
+	public static final Item SCRAP_SHOVEL = new ItemQualitySpade(SevenDaysToMine.SCRAP_TOOLS).setRegistryName("scrap_shovel").setUnlocalizedName("scrap_shovel");
+	
+	public static final Item VOLTMETER = new ItemVoltmeter().setRegistryName("voltmeter").setUnlocalizedName("voltmeter");
+	
+	public static final Item IRON_PIPE = new ItemScrapable(EnumMaterial.IRON, 1).setRegistryName("iron_pipe")
+			.setUnlocalizedName("iron_pipe");
+	
+	public static final Item CIRCUIT = new ItemCircuit().setRegistryName("circuit")
+			.setUnlocalizedName("circuit");
+	public static final Item LINK_TOOL = new ItemLinkTool().setRegistryName("link_tool")
+			.setUnlocalizedName("link_tool");
+	
+	public static final Item SURVIVAL_GUIDE = new ItemGuide(new ResourceLocation(SevenDaysToMine.MODID,"data/books/survival.json")).setRegistryName("survival_guide").setUnlocalizedName("survival_guide");
+	public static final Item BOOK_FORGING = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/forging.json"),"forging").setRegistryName("book_forging").setUnlocalizedName("book_forging");
+	public static final Item BOOK_AMMO = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/ammo.json"),"ammo").setRegistryName("book_ammo").setUnlocalizedName("book_ammo");
+	public static final Item BOOK_COMPUTERS = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/computers.json"),"computers").setRegistryName("book_computers").setUnlocalizedName("book_computers");
+	public static final Item BOOK_CONCRETE = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/concrete.json"),"concrete").setRegistryName("book_concrete").setUnlocalizedName("book_concrete");
+	public static final Item BOOK_ELECTRICITY = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/electricity.json"),"electricity").setRegistryName("book_electricity").setUnlocalizedName("book_electricity");
+	
+	public static final Item MICROPHONE = new Item().setRegistryName("microphone").setUnlocalizedName("microphone");
+	public static final Item BULLET_TIP = new ItemScrapable(EnumMaterial.LEAD,1).setRegistryName("bullet_tip").setUnlocalizedName("bullet_tip").setCreativeTab(SevenDaysToMine.TAB_FORGING);
+	public static final Item BULLET_CASING = new ItemScrapable(EnumMaterial.BRASS,1).setRegistryName("bullet_casing").setUnlocalizedName("bullet_casing").setCreativeTab(SevenDaysToMine.TAB_FORGING);
+	public static final Item MOLDY_BREAD = new ItemFood(2, 0.3F, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 100, 0), 0.6F).setRegistryName("moldy_bread").setUnlocalizedName("moldy_bread");
+	
+	public static final Item SLEDGEHAMMER = new ItemClub(SevenDaysToMine.SLEDGEHAMMER, -3.6d).setRegistryName("sledgehammer")
+			.setUnlocalizedName("sledgehammer");
+	
+	public static Item PISTOL_SLIDE = new ItemGunPart("pistol_slide");
+	public static Item PISTOL_TRIGGER = new ItemGunPart("pistol_trigger");
+	public static Item PISTOL_GRIP = new ItemGunPart("pistol_grip");
+	public static Item SNIPER_RIFLE_BARREL = new ItemGunPart("sniper_rifle_barrel");
+	public static Item SNIPER_RIFLE_TRIGGER = new ItemGunPart("sniper_rifle_trigger");
+	public static Item SNIPER_RIFLE_SCOPE = new ItemGunPart("sniper_rifle_scope");
+	public static Item SNIPER_RIFLE_PARTS = new ItemGunPart("sniper_rifle_parts");
+	public static Item SNIPER_RIFLE_STOCK = new ItemGunPart("sniper_rifle_stock");
+	
+	public static final Item SCRAP_CHESTPLATE = new ItemArmorBase(SevenDaysToMine.SCRAP_ARMOR, 0, EntityEquipmentSlot.CHEST, "scrap_chestplate");
+	public static final Item SCRAP_LEGGINGS = new ItemArmorBase(SevenDaysToMine.SCRAP_ARMOR, 1, EntityEquipmentSlot.LEGS, "scrap_leggings");
+	public static final Item SCRAP_BOOTS = new ItemArmorBase(SevenDaysToMine.SCRAP_ARMOR, 0, EntityEquipmentSlot.FEET, "scrap_boots");
+	public static final Item SCRAP_HELMET = new ItemArmorBase(SevenDaysToMine.SCRAP_ARMOR, 0, EntityEquipmentSlot.HEAD, "scrap_helmet");
+	
+
+	public static final Item SNIPER_RIFLE = new ItemSniperRifle().setRegistryName("sniper_rifle").setUnlocalizedName("sniper_rifle");
+	public static final Item SHOTGUN = new ItemShotgun().setRegistryName("shotgun").setUnlocalizedName("shotgun");
+	public static final Item SHOTGUN_SAWED_OFF = new ItemShotgunShort().setRegistryName("shotgun_short").setUnlocalizedName("shotgun_short");
+	
+	public static final Item BELLOWS = new Item().setMaxStackSize(1).setCreativeTab(SevenDaysToMine.TAB_FORGING).setRegistryName("bellows").setUnlocalizedName("bellows");
+
 }

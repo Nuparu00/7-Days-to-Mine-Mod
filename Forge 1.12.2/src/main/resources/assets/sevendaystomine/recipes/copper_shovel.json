@@ -1,0 +1,19 @@
+{
+  "type": "sevendaystomine:crafting_quality_shaped",
+  "pattern": [
+    "C",
+    "S",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "C": {
+      "item": "sevendaystomine:copperingot"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:copper_shovel"
+  }
+}

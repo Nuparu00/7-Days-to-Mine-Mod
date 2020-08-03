@@ -28,6 +28,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @SuppressWarnings("deprecation")
@@ -41,25 +42,26 @@ public class RecipeQualityShaped extends ShapedRecipes {
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
 		ItemStack stack = super.getCraftingResult(inv);
 		if (stack != null) {
-			Container c = ReflectionHelper.getPrivateValue(InventoryCrafting.class, inv, "eventHandler",
-					"field_70466_a");
-			if (c instanceof ContainerWorkbench) {
+			Container c = ObfuscationReflectionHelper.getPrivateValue(InventoryCrafting.class, inv,"field_70465_c");
+			EntityPlayer player = null;
+			if (c instanceof com.nuparu.sevendaystomine.inventory.ContainerWorkbench) {
+				com.nuparu.sevendaystomine.inventory.ContainerWorkbench container = (com.nuparu.sevendaystomine.inventory.ContainerWorkbench)c;
+				player = container.player;
+			}
+			else if (c instanceof ContainerWorkbench) {
 				ContainerWorkbench container = (ContainerWorkbench) (c);
 				SlotCrafting slot = (SlotCrafting) container.getSlot(0);
-				EntityPlayer player = (EntityPlayer) (ReflectionHelper.getPrivateValue(SlotCrafting.class, slot,
-						"player", "field_75229_a"));
-				if (stack.getTagCompound() == null) {
-					stack.setTagCompound(new NBTTagCompound());
-				}
-				stack.getTagCompound().setInteger("Quality", (int) (Math.max(Math.floor(player.getScore()/ItemQuality.XP_PER_QUALITY_POINT), 1)));
+				player = (EntityPlayer) (ObfuscationReflectionHelper.getPrivateValue(SlotCrafting.class, slot,"field_75238_b"));
 			} else if (c instanceof ContainerPlayer) {
 				ContainerPlayer container = (ContainerPlayer) (c);
-				EntityPlayer player = (EntityPlayer) (ReflectionHelper.getPrivateValue(ContainerPlayer.class, container,
-						"player", "field_82855_n"));
+				player = (EntityPlayer) (ObfuscationReflectionHelper.getPrivateValue(ContainerPlayer.class, container,"field_82862_h"));	
+			}
+			if(player != null) {
 				if (stack.getTagCompound() == null) {
 					stack.setTagCompound(new NBTTagCompound());
 				}
-				stack.getTagCompound().setInteger("Quality", (int) Math.min(Math.max(Math.floor(player.getScore()/ItemQuality.XP_PER_QUALITY_POINT), 1),600));
+				stack.getTagCompound().setInteger("Quality", (int) Math
+						.min(Math.max(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT), 1), 600));
 			}
 		}
 		return stack;

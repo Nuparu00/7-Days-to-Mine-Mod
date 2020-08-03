@@ -16,8 +16,8 @@ public class BlockTelevisionBroken extends BlockHorizontalBase {
 		super(Material.ROCK);
 		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		this.setHardness(5);
-		this.setResistance(4F);
+		this.setHardness(1.5f);
+		this.setResistance(2F);
 	}
 	
 	@Override

@@ -52,6 +52,8 @@ public class BlockChestOld extends BlockTileProvider<TileEntityOldChest> {
 		super(Material.WOOD);
 		this.setSoundType(SoundType.WOOD);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setHardness(2.1f);
+		setResistance(3f);
 
 	}
 	

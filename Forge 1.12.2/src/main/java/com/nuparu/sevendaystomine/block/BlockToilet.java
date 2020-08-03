@@ -1,6 +1,9 @@
 package com.nuparu.sevendaystomine.block;
 
+import java.util.Random;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.tileentity.TileEntityToilet;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -11,12 +14,14 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -26,8 +31,8 @@ public class BlockToilet extends BlockTileProvider<TileEntityToilet> {
 
 	public BlockToilet() {
 		super(Material.IRON);
-		this.setResistance(12f);
-		this.setHardness(10f);
+		this.setResistance(2f);
+		this.setHardness(4f);
 	}
 
 	@Override
@@ -90,6 +95,14 @@ public class BlockToilet extends BlockTileProvider<TileEntityToilet> {
 		}
 
 		super.breakBlock(worldIn, pos, state);
+	}
+	
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state,
+			int fortune) {
+		Random rand = world instanceof World ? ((World) world).rand : RANDOM;
+
+		drops.add(new ItemStack(ModItems.IRON_PIPE, rand.nextInt(2)*(fortune+1)));
 	}
 	
 	/**

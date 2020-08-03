@@ -27,6 +27,8 @@ public class BlockDoorLocked extends BlockDoorBase {
 
 	public BlockDoorLocked() {
 		super(Material.WOOD);
+		setHardness(3);
+		setResistance(6);
 	}
 
 	@Override

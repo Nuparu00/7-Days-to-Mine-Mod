@@ -58,7 +58,7 @@ public class EntityShot extends Entity implements IProjectile {
 	private static final DataParameter<String> SHOOTER_NAME = EntityDataManager.<String>createKey(EntityHuman.class,
 			DataSerializers.STRING);
 
-	private static final float BLOCK_DAMAGE_BASE = 0.02f;
+	private static final float BLOCK_DAMAGE_BASE = 0.003125f;
 
 	public EntityShot(World worldIn) {
 		super(worldIn);
@@ -347,7 +347,7 @@ public class EntityShot extends Entity implements IProjectile {
 				if (iblockstate.getMaterial() == Material.GLASS) {
 					this.world.destroyBlock(blockpos, false);
 				} else {
-					Utils.damageBlock(world, blockpos, BLOCK_DAMAGE_BASE * (float) damage, true);
+					Utils.damageBlock(world, blockpos, (float)(damage / iblockstate.getBlockHardness(world, blockpos)) * BLOCK_DAMAGE_BASE, true);
 
 				}
 			}

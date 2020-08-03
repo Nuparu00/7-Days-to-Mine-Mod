@@ -78,7 +78,7 @@ public class RenderEventHandler {
 		GlStateManager.pushAttrib();
 
 		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
-		SevenDaysToMine.renderGlobalEnhanced.drawBlockDamageTexture(tessellator, worldrenderer, mc.player,
+		SevenDaysToMine.renderGlobalEnhanced.drawBlockDamageTexture(tessellator, worldrenderer, mc.getRenderViewEntity(),
 				event.getPartialTicks());
 		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 		GlStateManager.popAttrib();
@@ -409,7 +409,7 @@ public class RenderEventHandler {
 		BufferBuilder worldrenderer = tessellator.getBuffer();
 
 		EntityPlayer player = mc.player;
-		if (player == null)
+		if (player == null || player != mc.getRenderViewEntity())
 			return;
 		ItemStack stack = player.getHeldItemMainhand();
 		if (stack != null && stack.getItem() == ModItems.REALITY_WAND) {
@@ -478,7 +478,7 @@ public class RenderEventHandler {
 		if (mc.world == null)
 			return;
 		World world = mc.world;
-		EntityPlayer player = mc.player;
+		Entity player = mc.getRenderViewEntity();
 		if (player == null)
 			return;
 		double x = player.prevPosX + (player.posX - player.prevPosX) * (double) event.getPartialTicks();
@@ -543,7 +543,6 @@ public class RenderEventHandler {
 			if (state.isSideSolid(world, pos, EnumFacing.UP)) {
 				deltaY = vec.y - pos.up().getY() - 0.00625d;
 			}
-
 			GL11.glVertex3d(vec.x, vec.y - deltaY, vec.z);
 		}
 
@@ -585,7 +584,7 @@ public class RenderEventHandler {
 		if (mc.world == null)
 			return;
 		World world = mc.world;
-		EntityPlayer player = mc.player;
+		Entity player = mc.getRenderViewEntity();
 		if (player == null)
 			return;
 
@@ -667,7 +666,7 @@ public class RenderEventHandler {
 			return;
 		World world = mc.world;
 		EntityPlayer player = mc.player;
-		if (player == null)
+		if (player == null || player != mc.getRenderViewEntity())
 			return;
 		ItemStack mainStack = player.getHeldItemMainhand();
 		ItemStack offStack = player.getHeldItemOffhand();
@@ -689,10 +688,16 @@ public class RenderEventHandler {
 
 					GL11.glPushMatrix();
 					GL11.glTranslated(-x, -y, -z);
+					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					GlStateManager.enableFog();
+					GL11.glColor3ub((byte) 0, (byte) 0, (byte) 0);
+					GL11.glEnable(GL11.GL_LINE_SMOOTH);
+					GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
 					renderLineHand(player, new Vec3d(to.getX() + 0.5, to.getY() + 0.5, to.getZ() + 0.5),
 							event.getPartialTicks());
+					GL11.glColor3f(1f, 1f, 1f);
 					GlStateManager.disableFog();
+					GL11.glEnable(GL11.GL_TEXTURE_2D);
 					GL11.glPopMatrix();
 
 				} else if (mainStack.getTagCompound().hasKey("from", Constants.NBT.TAG_LONG)) {
@@ -700,10 +705,16 @@ public class RenderEventHandler {
 
 					GL11.glPushMatrix();
 					GL11.glTranslated(-x, -y, -z);
+					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					GlStateManager.enableFog();
+					GL11.glColor3ub((byte) 0, (byte) 0, (byte) 0);
+					GL11.glEnable(GL11.GL_LINE_SMOOTH);
+					GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
 					renderLineHand(player, new Vec3d(from.getX() + 0.5, from.getY() + 0.5, from.getZ() + 0.5),
 							event.getPartialTicks());
+					GL11.glColor3f(1f, 1f, 1f);
 					GlStateManager.disableFog();
+					GL11.glEnable(GL11.GL_TEXTURE_2D);
 					GL11.glPopMatrix();
 				}
 			}
@@ -823,8 +834,7 @@ public class RenderEventHandler {
 			}
 
 			tessellator.draw();
-			GlStateManager.enableLighting();
-			GlStateManager.enableTexture2D();
+
 		}
 	}
 
@@ -837,7 +847,7 @@ public class RenderEventHandler {
 		if (mc.world == null)
 			return;
 		World world = mc.world;
-		EntityPlayer player = mc.player;
+		Entity player = mc.getRenderViewEntity();
 		if (player == null)
 			return;
 		double x = player.prevPosX + (player.posX - player.prevPosX) * (double) event.getPartialTicks();

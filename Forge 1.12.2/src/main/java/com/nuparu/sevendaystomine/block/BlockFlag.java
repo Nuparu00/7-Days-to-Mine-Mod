@@ -34,6 +34,8 @@ public class BlockFlag extends BlockTileProvider<TileEntityFlag>{
 
 	public BlockFlag() {
 		super(Material.GROUND);
+		setHardness(1);
+		setResistance(1);
 	}
 
 	@Override

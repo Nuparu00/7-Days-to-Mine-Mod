@@ -39,8 +39,8 @@ public class BlockBackpack extends BlockTileProvider<TileEntityBackpack> {
 		super(Material.CLOTH);
 		setSoundType(SoundType.CLOTH);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		this.setHardness(4.0F);
-		this.setResistance(4.0F);
+		this.setHardness(1.0F);
+		this.setResistance(1.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 

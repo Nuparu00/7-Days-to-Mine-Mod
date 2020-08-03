@@ -10,8 +10,9 @@ public class PotionInfection extends PotionBase {
 		super(badEffect, color);
 		this.setIconIndex(2, 0);
 		setRegistryName(SevenDaysToMine.MODID, "infection");
-		setPotionName("effect." + getRegistryName().toString());
-		this.registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, "96a8df9e-bf44-11e7-abc4-cec278b6b50a", -0.1D, 1);
+		setPotionName("effect." + getRegistryName().getResourcePath());
+		this.registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, "96a8df9e-bf44-11e7-abc4-cec278b6b50a",
+				-0.1D, 2);
 	}
 
 }

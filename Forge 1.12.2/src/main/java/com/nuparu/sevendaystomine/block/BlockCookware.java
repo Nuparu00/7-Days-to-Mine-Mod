@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.block;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 import com.nuparu.sevendaystomine.item.ItemCookware;
 
@@ -16,7 +17,10 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
@@ -42,6 +46,9 @@ public class BlockCookware extends BlockPickable {
 		setSoundType(sound);
 		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		setCreativeTab(SevenDaysToMine.TAB_MATERIALS);
+		setHardness(0.2F);
+		setResistance(1.0F);
+		this.setHarvestLevel("pickaxe", 0);
 	}
 	
 	@Override
@@ -129,6 +136,15 @@ public class BlockCookware extends BlockPickable {
 		item.setMaterial(cookware.enumMat);
 		item.setWeight(3);
 		return item;
+	}
+	
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Item.getItemFromBlock(ModBlocks.COOKING_POT);
+	}
+
+	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(ModBlocks.COOKING_POT);
 	}
 
 }

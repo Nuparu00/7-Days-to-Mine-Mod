@@ -31,6 +31,8 @@ public class BlockLamp extends BlockTileProvider<TileEntityLamp> {
 		super(Material.ROCK);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(LIT, false));
 		this.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
+		setHardness(0.8f);
+		setResistance(0.2f);
 	}
 
 	@Override

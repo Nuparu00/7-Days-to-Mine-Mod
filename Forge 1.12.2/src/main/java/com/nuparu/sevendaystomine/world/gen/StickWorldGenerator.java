@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class StickWorldGenerator implements IWorldGenerator {
 
+	WorldGenerator generator = new WorldGenStick();
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
@@ -45,7 +46,6 @@ public class StickWorldGenerator implements IWorldGenerator {
 		Biome biome = world.getBiomeForCoordsBody(new BlockPos(blockX, 64, blockZ));
 		if (biome.getRandomTreeFeature(rand) != null) {
 
-			WorldGenerator generator = new WorldGenStick();
 			int MIN = 0;
 			int MAX = 4;
 			int num = MIN + rand.nextInt(MAX - MIN);

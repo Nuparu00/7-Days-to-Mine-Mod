@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class GoldenrodWorldGenerator implements IWorldGenerator {
 
+	WorldGenerator generator = new WorldGenGoldenrod((BlockBush) ModBlocks.GOLDENROD);
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
@@ -47,7 +48,6 @@ public class GoldenrodWorldGenerator implements IWorldGenerator {
 		for (int i = 0; i < num; i++) {
 			int randX = blockX + rand.nextInt(16)+8;
 			int randZ = blockZ + rand.nextInt(16)+8;
-			WorldGenerator generator = new WorldGenGoldenrod((BlockBush) ModBlocks.GOLDENROD);
 			generator.generate(world, rand, new BlockPos(randX, rand.nextInt(128), randZ));
 			
 

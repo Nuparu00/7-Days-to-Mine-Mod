@@ -17,8 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiContainerLootableEntity extends GuiContainer {
 
-	private static final ResourceLocation resourceLocation = new ResourceLocation(SevenDaysToMine.MODID,
-			"textures/gui/container/container_corpse.png");
+	private static final ResourceLocation resourceLocation = new ResourceLocation("textures/gui/container/dispenser.png");
 	protected InventoryPlayer playerInventory;
 	protected EntityLootableCorpse entity;
 

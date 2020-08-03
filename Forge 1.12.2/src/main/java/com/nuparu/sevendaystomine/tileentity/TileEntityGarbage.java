@@ -7,6 +7,7 @@ import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedI
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -50,4 +51,11 @@ public class TileEntityGarbage extends TileEntityItemHandler<ItemHandlerNameable
 	public void setDisplayName(String displayName) {
 		inventory.setDisplayName(new TextComponentString(displayName));
 	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

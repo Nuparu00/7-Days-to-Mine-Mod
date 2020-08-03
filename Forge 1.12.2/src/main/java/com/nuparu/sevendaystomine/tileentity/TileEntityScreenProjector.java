@@ -14,13 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityScreenProjector extends TileEntityLockable implements ISidedInventory {
+public class TileEntityScreenProjector extends TileEntityLockableLoot implements ISidedInventory {
 
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
 	private String customName;
@@ -92,6 +93,11 @@ public class TileEntityScreenProjector extends TileEntityLockable implements ISi
 
 	public NonNullList<ItemStack> getInventory() {
 		return this.inventory;
+	}
+	
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return inventory;
 	}
 
 	@Override

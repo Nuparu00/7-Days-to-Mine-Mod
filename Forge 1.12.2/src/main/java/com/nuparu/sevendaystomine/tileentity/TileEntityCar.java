@@ -6,11 +6,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityCar extends TileEntityLockable {
+public class TileEntityCar extends TileEntityLockableLoot {
 
 	public TileEntityCar() {
 
@@ -120,6 +122,11 @@ public class TileEntityCar extends TileEntityLockable {
 	@SideOnly(Side.CLIENT)
 	public double getMaxRenderDistanceSquared() {
 		return 16384.0D;
+	}
+
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return null;
 	}
 
 }

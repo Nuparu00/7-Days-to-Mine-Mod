@@ -25,7 +25,7 @@ public class StartProcessHandler implements IMessageHandler<StartProcessMessage,
 		if (TE != null && TE instanceof TileEntityComputer) {
 			TileEntityComputer computerTE = (TileEntityComputer) TE;
 			if (computerTE.getMonitorTE() != null && computerTE.getMonitorTE().getLookingPlayers().contains(player)) {
-				computerTE.startProcess(nbt);
+				computerTE.startProcess(nbt,false);
 			}
 		}
 

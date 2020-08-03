@@ -8,6 +8,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -21,9 +22,10 @@ public class BlockPlanksReinforced extends BlockUpgradeable {
 		setPrev(net.minecraft.init.Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, variant));
 		setItems(new ItemStack[]{new ItemStack(ModItems.IRON_SCRAP, 6)});
 		setSound(SoundHelper.UPGRADE_WOOD);
-		setHardness(30f);
+		setHardness(2.5f);
 		setResistance(7.5f);
 		setHarvestLevel("axe", 0);
+		Blocks.FIRE.setFireInfo(this,5,20);
 	}
 	public IBlockState getResult(BlockPlanks.EnumType variant) {
 		switch(variant) {
@@ -42,7 +44,13 @@ public class BlockPlanksReinforced extends BlockUpgradeable {
 	}
 	
 	@Override
-    public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face) {
+	public boolean isTopSolid(IBlockState state)
+    {
+        return true;
+    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
         return true;
     }
 }

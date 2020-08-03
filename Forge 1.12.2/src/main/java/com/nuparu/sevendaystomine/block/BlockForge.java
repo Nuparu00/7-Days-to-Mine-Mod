@@ -44,8 +44,8 @@ public class BlockForge extends BlockTileProvider<TileEntityForge> {
 		super(Material.ROCK);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		this.isBurning = isBurning;
-		setHardness(1.0F);
-		setResistance(2.0F);
+		setHardness(3.0F);
+		setResistance(8.0F);
 		setLightOpacity(0);
 		setHarvestLevel("pickaxe", 1);
 		setTickRandomly(false);

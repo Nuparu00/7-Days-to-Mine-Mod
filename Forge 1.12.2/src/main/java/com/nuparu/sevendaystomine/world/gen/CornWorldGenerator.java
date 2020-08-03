@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class CornWorldGenerator implements IWorldGenerator {
 
+	WorldGenerator generator = new WorldGenCorn();
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
@@ -41,7 +42,6 @@ public class CornWorldGenerator implements IWorldGenerator {
 		if(world.getWorldType()==WorldType.FLAT) {
 			return;
 		}
-		WorldGenerator generator = new WorldGenCorn();
 		int MIN = 0;
 		int MAX = 5;
 		int num = MIN + rand.nextInt(MAX - MIN);

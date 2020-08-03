@@ -5,5 +5,6 @@ public enum EnumDeviceType {
 	GENERATOR,
 	CONDUCTOR,
 	TRANSFORMER,
-	CONSUMER
+	CONSUMER,
+	STORAGE
 }

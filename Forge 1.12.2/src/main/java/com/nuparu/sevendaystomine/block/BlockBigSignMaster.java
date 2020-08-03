@@ -44,6 +44,8 @@ public class BlockBigSignMaster extends BlockWallSign implements IBlockBase {
 	public BlockBigSignMaster() {
 		super();
 		this.setSoundType(SoundType.METAL);
+		setHardness(2);
+		setResistance(0);
 	}
 
 	protected static final AxisAlignedBB SIGN_EAST_AABB = new AxisAlignedBB(0.0D, 0D, 0, 0.125D, 1, 1D);

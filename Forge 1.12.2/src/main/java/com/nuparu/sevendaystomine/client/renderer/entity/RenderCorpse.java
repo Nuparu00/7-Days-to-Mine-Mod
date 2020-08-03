@@ -21,10 +21,13 @@ public abstract class RenderCorpse<T extends EntityZombieBase> extends RenderLiv
 	public ModelBase model = new ModelBiped();
 	protected float field_77070_b;
 
+	public LayerZombieEyes<T> eyes;
+	
 	public RenderCorpse(RenderManager manager, ModelBase model, float shadowSize) {
 		this(manager, model, shadowSize, 1.0F);
 		this.addLayer(new LayerHeldItem(this));
-		this.addLayer(new LayerZombieEyes<T>(this));
+		eyes = new LayerZombieEyes<T>(this);
+		this.addLayer(eyes);
 
 		LayerBipedArmor layerbipedarmor = new LayerBipedArmor(this);
 		this.addLayer(layerbipedarmor);
@@ -37,7 +40,8 @@ public abstract class RenderCorpse<T extends EntityZombieBase> extends RenderLiv
 		if(model instanceof ModelBiped) {
 		this.addLayer(new LayerCustomHead(((ModelBiped)model).bipedHead));
 		}
-		this.addLayer(new LayerZombieEyes<T>(this));
+		eyes = new LayerZombieEyes<T>(this);
+		this.addLayer(eyes);
 
 		LayerBipedArmor layerbipedarmor = new LayerBipedArmor(this);
 		this.addLayer(layerbipedarmor);

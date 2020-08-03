@@ -25,8 +25,8 @@ public class BlockRock extends BlockHorizontalBase {
 	
 	public BlockRock() {
 		super(Material.ROCK);
-		setHardness(20.0F);
-		setResistance(6.0F);
+		setHardness(2.0F);
+		setResistance(3.0F);
 		setSoundType(SoundType.STONE);
 		setHarvestLevel("pickaxe", 1);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
@@ -37,9 +37,9 @@ public class BlockRock extends BlockHorizontalBase {
 			int fortune) {
 		Random rand = world instanceof World ? ((World) world).rand : RANDOM;
 
-		drops.add(new ItemStack(ModItems.SMALL_STONE, rand.nextInt(8) + 4));
-		drops.add(new ItemStack(ModItems.IRON_SCRAP, rand.nextInt(6)));
-		drops.add(new ItemStack(Items.COAL, rand.nextInt(4)));
+		drops.add(new ItemStack(ModItems.SMALL_STONE, rand.nextInt(8)*(fortune+1) + 4));
+		drops.add(new ItemStack(ModItems.IRON_SCRAP, rand.nextInt(6)*(fortune+1)));
+		drops.add(new ItemStack(Items.COAL, rand.nextInt(4)*(fortune+1)));
 	}
 	
 	@Override

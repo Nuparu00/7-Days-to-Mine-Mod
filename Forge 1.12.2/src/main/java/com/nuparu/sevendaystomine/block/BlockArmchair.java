@@ -31,8 +31,8 @@ public class BlockArmchair extends BlockHorizontalBase implements IScrapable{
 	public BlockArmchair() {
 		super(Material.CLOTH);
 		setSoundType(SoundType.CLOTH);
-		setHardness(2.0F);
-		setResistance(10.0F);
+		setHardness(1.5F);
+		setResistance(4.0F);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		setHarvestLevel("axe", 0);
 	}

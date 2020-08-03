@@ -26,11 +26,11 @@ import net.minecraftforge.common.util.Constants;
 
 public class TileEntityEnergyPole extends TileEntity implements ITickable, IVoltage {
 
-	private List<ElectricConnection> inputs = new ArrayList<ElectricConnection>();
-	private List<ElectricConnection> outputs = new ArrayList<ElectricConnection>();
+	protected List<ElectricConnection> inputs = new ArrayList<ElectricConnection>();
+	protected List<ElectricConnection> outputs = new ArrayList<ElectricConnection>();
 
-	private long voltage = 0;
-	private long capacity = 3000;
+	protected long voltage = 0;
+	protected long capacity = 3000;
 
 	public TileEntityEnergyPole() {
 
@@ -119,12 +119,12 @@ public class TileEntityEnergyPole extends TileEntity implements ITickable, IVolt
 
 	@Override
 	public int getMaximalInputs() {
-		return 1;
+		return 10;
 	}
 
 	@Override
 	public int getMaximalOutputs() {
-		return 2;
+		return 10;
 	}
 
 	@Override
@@ -220,7 +220,6 @@ public class TileEntityEnergyPole extends TileEntity implements ITickable, IVolt
 
 	@Override
 	public void update() {
-
 		if (this.voltage > 0) {
 			int radius = (int) Math.ceil(ModConstants.PASSIVE_CONSUMER_RADIUS);
 			int radiusSq = radius * radius;
@@ -301,8 +300,8 @@ public class TileEntityEnergyPole extends TileEntity implements ITickable, IVolt
 		}
 	}
 
-	private static final Vec3d offset = new Vec3d(0.5, 0.5, 0.5);
-	private static final Vec3d offsetDown = new Vec3d(0.5, 0.75, 0.5);
+	protected static final Vec3d offset = new Vec3d(0.5, 0.75, 0.5);
+	protected static final Vec3d offsetDown = new Vec3d(0.5, 0.75, 0.5);
 
 	@Override
 	public Vec3d getWireOffset() {

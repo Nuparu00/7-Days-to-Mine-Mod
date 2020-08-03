@@ -18,8 +18,8 @@ public class BlockReinforcedConcrete extends BlockBase {
 
 	public BlockReinforcedConcrete() {
 		super(Material.ROCK);
-		setHardness(80.0F);
-		setResistance(40.0F);
+		setHardness(10.0F);
+		setResistance(30.0F);
 		setHarvestLevel("pickaxe", 3);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PHASE, Integer.valueOf(0)));
 	}

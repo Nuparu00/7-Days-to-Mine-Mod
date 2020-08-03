@@ -5,8 +5,7 @@ import java.util.List;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.inventory.ContainerGasGenerator;
-import com.nuparu.sevendaystomine.tileentity.TileEntityGenerator;
-import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -19,7 +18,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,14 +27,14 @@ public class GuiGasGenerator extends GuiContainer {
 	private static final ResourceLocation resourceLocation = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/gui/container/generator_gas.png");
 	InventoryPlayer playerInventory;
-	TileEntityGenerator tileEntity;
+	TileEntityGasGenerator tileEntity;
 
 	int fluidHeight = 0;
 
 	public GuiGasGenerator(InventoryPlayer playerInventory, IInventory tileEntity) {
 		super(new ContainerGasGenerator(playerInventory, tileEntity));
 		this.playerInventory = playerInventory;
-		this.tileEntity = (TileEntityGenerator) tileEntity;
+		this.tileEntity = (TileEntityGasGenerator) tileEntity;
 	}
 
 	@Override
@@ -74,7 +72,7 @@ public class GuiGasGenerator extends GuiContainer {
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;
 		drawTexturedModalRect(marginHorizontal, marginVertical, 0, 0, xSize, ySize);
-		if (TileEntityGenerator.isBurning(tileEntity)) {
+		if (TileEntityGasGenerator.isBurning(tileEntity)) {
 			int k = this.getBurnLeftScaled(13);
 			this.drawTexturedModalRect(marginHorizontal + 30, marginVertical + 45 + 12 - k, 176, 12 - k, 14, k + 1);
 		}
@@ -130,14 +128,6 @@ public class GuiGasGenerator extends GuiContainer {
 
 			y += renderHeight;
 		} while (height > 0);
-	}
-
-	private int getProgressLevel(int progressIndicatorPixelWidth) {
-		int ticksForgingItemSoFar = tileEntity.getField(2);
-		int ticksPerItem = tileEntity.getField(3);
-		return ticksPerItem != 0 && ticksForgingItemSoFar != 0
-				? ticksForgingItemSoFar * progressIndicatorPixelWidth / ticksPerItem
-				: 0;
 	}
 
 	private int getBurnLeftScaled(int pixels) {

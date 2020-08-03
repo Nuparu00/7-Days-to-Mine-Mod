@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.common.collect.Maps;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.gui.GuiBook;
 import com.nuparu.sevendaystomine.client.gui.GuiGun;
 import com.nuparu.sevendaystomine.client.gui.GuiMp3;
 import com.nuparu.sevendaystomine.client.gui.GuiPhoto;
@@ -13,7 +15,10 @@ import com.nuparu.sevendaystomine.client.gui.GuiPlayerUI;
 import com.nuparu.sevendaystomine.client.gui.GuiSubtitles;
 import com.nuparu.sevendaystomine.client.gui.GuiUpgradeOverlay;
 import com.nuparu.sevendaystomine.client.particle.ParticleBlood;
+import com.nuparu.sevendaystomine.client.particle.ParticleVomit;
+import com.nuparu.sevendaystomine.client.renderer.CloudRenderer;
 import com.nuparu.sevendaystomine.client.renderer.RenderGlobalEnhanced;
+import com.nuparu.sevendaystomine.client.renderer.SkyRenderer;
 import com.nuparu.sevendaystomine.client.renderer.entity.LayerBackpack;
 import com.nuparu.sevendaystomine.client.renderer.entity.LayerClothing;
 import com.nuparu.sevendaystomine.client.renderer.entity.LayerGuns;
@@ -26,22 +31,37 @@ import com.nuparu.sevendaystomine.client.renderer.entity.RenderMountableBlock;
 import com.nuparu.sevendaystomine.client.renderer.entity.RenderPlayerEnhanced;
 import com.nuparu.sevendaystomine.client.renderer.entity.RenderReanimatedCorpse;
 import com.nuparu.sevendaystomine.client.renderer.entity.RenderShot;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirdropFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBlindZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBloatedZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderHumanFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderInfectedSurvivorFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderMinibikeFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderPlaguedNurseFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderProjectileVomitFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderSpiderZombieFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieCrawlerFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombiePolicemanFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieSoldierFactory;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityAirplaneRotorRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityBigSignRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCameraRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityFlagRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityGlobeRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityOldChestRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityPhotoRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySedanRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySleepingBagRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySolarPanelRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityStreetSignRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityTurretBaseRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWallClockRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWindTurbineRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWoodenLogSpikeRenderer;
+import com.nuparu.sevendaystomine.client.sound.PositionedLoudSound;
+import com.nuparu.sevendaystomine.client.toast.NotificationToast;
+import com.nuparu.sevendaystomine.entity.EntityAirdrop;
+import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
@@ -53,10 +73,13 @@ import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
 import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
+import com.nuparu.sevendaystomine.entity.EntityProjectileVomit;
 import com.nuparu.sevendaystomine.entity.EntityReanimatedCorpse;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
+import com.nuparu.sevendaystomine.entity.EntityZombieCrawler;
+import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
 import com.nuparu.sevendaystomine.events.ClientEventHandler;
 import com.nuparu.sevendaystomine.events.KeyEventHandler;
@@ -65,19 +88,29 @@ import com.nuparu.sevendaystomine.events.TextureStitcherEventHandler;
 import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemClothing;
+import com.nuparu.sevendaystomine.item.ItemGuide;
+import com.nuparu.sevendaystomine.item.ItemRecipeBook;
+import com.nuparu.sevendaystomine.tileentity.TileEntityAirplaneRotor;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCar;
 import com.nuparu.sevendaystomine.tileentity.TileEntityFlag;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGlobe;
 import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
 import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
+import com.nuparu.sevendaystomine.tileentity.TileEntitySolarPanel;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurretBase;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWallClock;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWindTurbine;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenLogSpike;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.client.CameraHelper;
 import com.nuparu.sevendaystomine.util.client.MP3Helper;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
@@ -90,10 +123,14 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -113,6 +150,8 @@ public class ClientProxy extends CommonProxy {
 	public static KeyBinding[] keyBindings;
 
 	private Field f_skinMap;
+
+	private static final Map<BlockPos, ISound> mapSoundPositions = Maps.<BlockPos, ISound>newHashMap();
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -187,7 +226,13 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
+		super.postInit(event);/*
+								 * TickHandler.f_MOON_PHASES_TEXTURES =
+								 * ObfuscationReflectionHelper.findField(RenderGlobal.class, "field_110927_h");
+								 * if (TickHandler.f_MOON_PHASES_TEXTURES != null) {
+								 * TickHandler.f_MOON_PHASES_TEXTURES.setAccessible(true);
+								 * FieldUtils.removeFinalModifier(TickHandler.f_MOON_PHASES_TEXTURES); }
+								 */
 	}
 
 	@Override
@@ -205,19 +250,23 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombieSoldier.class,
 				RenderZombieSoldierFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySurvivor.class, RenderHumanFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityBandit.class, RenderHumanFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityMinibike.class, RenderMinibikeFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityBloatedZombie.class,
 				RenderBloatedZombieFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInfectedSurvivor.class,
 				RenderInfectedSurvivorFactory.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderZombie.class,
-				RenderSpiderZombieFactory.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderZombie.class,
-				RenderSpiderZombieFactory.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntityPlaguedNurse.class,
-				RenderPlaguedNurseFactory.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntityBlindZombie.class,
-				RenderBlindZombieFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderZombie.class, RenderSpiderZombieFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderZombie.class, RenderSpiderZombieFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityPlaguedNurse.class, RenderPlaguedNurseFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityBlindZombie.class, RenderBlindZombieFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityZombieCrawler.class,
+				RenderZombieCrawlerFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityAirdrop.class, RenderAirdropFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityZombiePoliceman.class,
+				RenderZombiePolicemanFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityProjectileVomit.class,
+				RenderProjectileVomitFactory.INSTANCE);
 	}
 
 	/*
@@ -254,6 +303,15 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPhoto.class, new TileEntityPhotoRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBigSignMaster.class, new TileEntityBigSignRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCar.class, new TileEntitySedanRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAirplaneRotor.class,
+				new TileEntityAirplaneRotorRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarPanel.class, new TileEntitySolarPanelRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindTurbine.class, new TileEntityWindTurbineRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurretBase.class, new TileEntityTurretBaseRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWoodenLogSpike.class,
+				new TileEntityWoodenLogSpikeRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCamera.class, new TileEntityCameraRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGlobe.class, new TileEntityGlobeRenderer());
 	}
 
 	@Override
@@ -262,7 +320,7 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	void initKeybindings() {
-		keyBindings = new KeyBinding[3];
+		keyBindings = new KeyBinding[4];
 		keyBindings[0] = new KeyBinding("key.reload.desc", Keyboard.KEY_R, "key.sevendaystomine.category");
 		keyBindings[1] = new KeyBinding("key.accelerate.desc", Keyboard.KEY_W, "key.sevendaystomine.category");
 		keyBindings[2] = new KeyBinding("key.brakes.desc", Keyboard.KEY_SPACE, "key.sevendaystomine.category");
@@ -294,6 +352,16 @@ public class ClientProxy extends CommonProxy {
 			return;
 		case 1:
 			mc.displayGuiScreen(new GuiPhoto(stack.getTagCompound().getString("path")));
+			return;
+		case 2:
+			mc.getToastGui()
+					.add(new NotificationToast(stack, new TextComponentTranslation("unlocked.toast"),
+							new TextComponentTranslation(!stack.isEmpty() && stack.getItem() instanceof ItemRecipeBook
+									? stack.getItem().getRegistryName().getResourcePath() + ".title"
+									: "THIS IS NOT BOOK!")));
+			return;
+		case 3:
+			mc.displayGuiScreen(new GuiBook(((ItemGuide) stack.getItem()).data));
 			return;
 		}
 
@@ -345,6 +413,10 @@ public class ClientProxy extends CommonProxy {
 		switch (type) {
 		case BLOOD:
 			return new ParticleBlood.Factory();
+		case VOMIT:
+			return new ParticleVomit.Factory();
+		default:
+			break;
 		}
 		return null;
 	}
@@ -353,5 +425,42 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public int getParticleLevel() {
 		return Math.abs(Minecraft.getMinecraft().gameSettings.particleSetting - 2);
+	}
+
+	@Override
+	public void setSkyRenderer(World world) {
+		world.provider.setSkyRenderer(new SkyRenderer(Minecraft.getMinecraft().renderGlobal));
+	}
+
+	@Override
+	public void setCloudRenderer(World world) {
+		world.provider.setCloudRenderer(new CloudRenderer(Minecraft.getMinecraft().renderGlobal));
+	}
+
+	@Override
+	public void playLoudSound(ResourceLocation resource, float volume, BlockPos blockPosIn, SoundCategory category) {
+		ISound isound = (ISound) mapSoundPositions.get(blockPosIn);
+		if (isound != null) {
+			Minecraft.getMinecraft().getSoundHandler().stopSound(isound);
+			mapSoundPositions.remove(blockPosIn);
+		}
+
+		if (resource != null) {
+			PositionedLoudSound positionedsoundrecord = new PositionedLoudSound(resource, volume, 1.0F, false, 0,
+					ISound.AttenuationType.LINEAR, (float) blockPosIn.getX(), (float) blockPosIn.getY(),
+					(float) blockPosIn.getZ(), category);
+			mapSoundPositions.put(blockPosIn, positionedsoundrecord);
+			Minecraft.getMinecraft().getSoundHandler().playSound(positionedsoundrecord);
+		}
+	}
+
+	@Override
+	public void stopLoudSound(BlockPos blockPosIn) {
+		ISound is = mapSoundPositions.get(blockPosIn);
+		if (is != null) {
+			Minecraft.getMinecraft().getSoundHandler().stopSound(is);
+			mapSoundPositions.remove(is);
+		}
+
 	}
 }

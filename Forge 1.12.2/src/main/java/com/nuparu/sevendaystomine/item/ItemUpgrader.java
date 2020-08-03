@@ -222,7 +222,20 @@ public class ItemUpgrader extends ItemQualityTool {
 	}
 
 	public void onUpdate(ItemStack itemstack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-
+		if (itemstack.getTagCompound() == null) {
+			
+			Calendar calendar = Calendar.getInstance();
+			Date date = calendar.getTime();
+			String pattern = "yyyy/MM/dd/HH/mm/ss/SSS";
+			SimpleDateFormat f = new SimpleDateFormat(pattern);
+			
+			itemstack.setTagCompound(new NBTTagCompound());
+			itemstack.getTagCompound().setInteger("X", 0);
+			itemstack.getTagCompound().setInteger("Y", 0);
+			itemstack.getTagCompound().setInteger("Z", 0);
+			itemstack.getTagCompound().setFloat("Percent", 0F);
+			itemstack.getTagCompound().setString("ID", entityIn.getUniqueID() + "" + f.format(date));
+		}
 		if (isSelected) {
 
 			RayTraceResult ray = rayTrace(entityIn, 5, 1);

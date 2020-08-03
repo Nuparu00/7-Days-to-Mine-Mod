@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
 
+@Deprecated
 public class WorkbenchCraftingManager {
 
 	private static ArrayList<IRecipe> recipes = new ArrayList<IRecipe>();
@@ -29,9 +30,9 @@ public class WorkbenchCraftingManager {
 	}
 
 	public static void addRecipes() {
-		//addRecipe(new RecipesScraps());
+		/*
 		addShapedRecipe(new ResourceLocation("minecraft:recipe"), new ResourceLocation("group"),
-				new ItemStack(ModBlocks.REBAR_FRAME), "ppp", "pbp", "ppp", 'b', Items.BOOK, 'p', Items.PAPER);
+				new ItemStack(ModBlocks.REBAR_FRAME), "ppp", "pbp", "ppp", 'b', Items.BOOK, 'p', Items.PAPER);*/
 	}
 
 	public static void addShapedRecipe(ResourceLocation name, ResourceLocation group, @Nonnull ItemStack output,

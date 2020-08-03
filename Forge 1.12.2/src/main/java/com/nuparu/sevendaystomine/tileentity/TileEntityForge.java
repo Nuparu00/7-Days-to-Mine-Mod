@@ -8,6 +8,7 @@ import com.nuparu.sevendaystomine.block.BlockForge;
 import com.nuparu.sevendaystomine.inventory.ContainerForge;
 import com.nuparu.sevendaystomine.item.crafting.forge.ForgeRecipeManager;
 import com.nuparu.sevendaystomine.item.crafting.forge.IForgeRecipe;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -30,6 +31,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
@@ -38,16 +40,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityForge extends TileEntityLockable implements ITickable, ISidedInventory {
+public class TileEntityForge extends TileEntityLockableLoot implements ITickable, ISidedInventory {
 
-	public enum slotEnum {
+	public enum EnumSlots {
 		INPUT_SLOT, INPUT_SLOT2, INPUT_SLOT3, INPUT_SLOT4, OUTPUT_SLOT, FUEL_SLOT, MOLD_SLOT
 	}
 
-	private static final int[] slotsTop = new int[] { slotEnum.INPUT_SLOT.ordinal(), slotEnum.INPUT_SLOT2.ordinal(),
-			slotEnum.INPUT_SLOT3.ordinal(), slotEnum.INPUT_SLOT4.ordinal() };
-	private static final int[] slotsBottom = new int[] { slotEnum.OUTPUT_SLOT.ordinal() };
-	private static final int[] slotsSides = new int[] { slotEnum.MOLD_SLOT.ordinal(), slotEnum.FUEL_SLOT.ordinal() };
+	private static final int[] slotsTop = new int[] { EnumSlots.INPUT_SLOT.ordinal(), EnumSlots.INPUT_SLOT2.ordinal(),
+			EnumSlots.INPUT_SLOT3.ordinal(), EnumSlots.INPUT_SLOT4.ordinal() };
+	private static final int[] slotsBottom = new int[] { EnumSlots.OUTPUT_SLOT.ordinal() };
+	private static final int[] slotsSides = new int[] { EnumSlots.MOLD_SLOT.ordinal(), EnumSlots.FUEL_SLOT.ordinal() };
 
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(7, ItemStack.EMPTY);
 	private int burnTime;
@@ -72,7 +74,7 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 		}
 
 		if (!this.world.isRemote) {
-			ItemStack itemstack = this.inventory.get(slotEnum.FUEL_SLOT.ordinal());
+			ItemStack itemstack = this.inventory.get(EnumSlots.FUEL_SLOT.ordinal());
 			if (this.isBurning()) {
 				AxisAlignedBB AABB = new AxisAlignedBB(pos.getX() + 0.2, pos.getY(), pos.getZ() + 0.2, pos.getX() + 0.8,
 						pos.getY() + 0.8, pos.getZ() + 0.8);
@@ -85,7 +87,7 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 			}
 			if (this.isBurning() || hasMold() && hasFuel() && !isInputEmpty()) {
 				if (!this.isBurning() && this.canSmelt()) {
-					this.burnTime = getItemBurnTime(itemstack);
+					this.burnTime = Utils.getItemBurnTime(itemstack);
 					this.currentItemBurnTime = this.burnTime;
 
 					if (this.isBurning()) {
@@ -97,7 +99,7 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 
 							if (itemstack.isEmpty()) {
 								ItemStack item1 = item.getContainerItem(itemstack);
-								this.inventory.set(slotEnum.FUEL_SLOT.ordinal(), item1);
+								this.inventory.set(EnumSlots.FUEL_SLOT.ordinal(), item1);
 							}
 						}
 					}
@@ -176,14 +178,15 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 			if (ItemStack.areItemsEqual(getMoldSlot(), recipeToUse.getMold())) {
 
 				if (currentOutput.isEmpty()) {
-					setInventorySlotContents(slotEnum.OUTPUT_SLOT.ordinal(), recipeToUse.getOutput(this));
+					System.out.println("FECK " + recipeToUse.getOutput(this));
+					setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), recipeToUse.getOutput(this));
 
 				} else {
 					if (ItemStack.areItemsEqual(currentOutput, recipeToUse.getOutput(this)) && currentOutput.getCount()
 							+ recipeToUse.getOutput(this).getCount() <= getInventoryStackLimit()) {
 
 						currentOutput.grow(recipeToUse.getOutput(this).getCount());
-						setInventorySlotContents(slotEnum.OUTPUT_SLOT.ordinal(), currentOutput);
+						setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), currentOutput);
 					}
 				}
 				consumeInput(recipeToUse);
@@ -196,26 +199,26 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 	}
 
 	public boolean isInputEmpty() {
-		return (getStackInSlot(slotEnum.INPUT_SLOT.ordinal()).isEmpty()
-				&& getStackInSlot(slotEnum.INPUT_SLOT2.ordinal()).isEmpty()
-				&& getStackInSlot(slotEnum.INPUT_SLOT3.ordinal()).isEmpty()
-				&& getStackInSlot(slotEnum.INPUT_SLOT4.ordinal()).isEmpty());
+		return (getStackInSlot(EnumSlots.INPUT_SLOT.ordinal()).isEmpty()
+				&& getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal()).isEmpty()
+				&& getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal()).isEmpty()
+				&& getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal()).isEmpty());
 	}
 
 	public boolean hasMold() {
-		return !getStackInSlot(slotEnum.MOLD_SLOT.ordinal()).isEmpty();
+		return !getStackInSlot(EnumSlots.MOLD_SLOT.ordinal()).isEmpty();
 	}
 
 	public boolean hasFuel() {
-		return !getStackInSlot(slotEnum.FUEL_SLOT.ordinal()).isEmpty();
+		return !getStackInSlot(EnumSlots.FUEL_SLOT.ordinal()).isEmpty();
 	}
 
 	public ItemStack getOutputSlot() {
-		return getStackInSlot(slotEnum.OUTPUT_SLOT.ordinal());
+		return getStackInSlot(EnumSlots.OUTPUT_SLOT.ordinal());
 	}
 
 	public ItemStack getMoldSlot() {
-		return getStackInSlot(slotEnum.MOLD_SLOT.ordinal());
+		return getStackInSlot(EnumSlots.MOLD_SLOT.ordinal());
 	}
 
 	public void readFromNBT(NBTTagCompound compound) {
@@ -225,7 +228,7 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 		this.burnTime = compound.getInteger("BurnTime");
 		this.cookTime = compound.getInteger("CookTime");
 		this.totalCookTime = compound.getInteger("CookTimeTotal");
-		this.currentItemBurnTime = getItemBurnTime(this.inventory.get(1));
+		this.currentItemBurnTime = Utils.getItemBurnTime(this.inventory.get(1));
 
 		if (compound.hasKey("CustomName", 8)) {
 			this.customName = compound.getString("CustomName");
@@ -258,23 +261,28 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 	public NonNullList<ItemStack> getInventory() {
 		return this.inventory;
 	}
+	
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return inventory;
+	}
 
 	public List<ItemStack> getActiveInventory() {
 		List<ItemStack> list = new ArrayList<ItemStack>();
-		list.add(getStackInSlot(slotEnum.INPUT_SLOT.ordinal()));
-		list.add(getStackInSlot(slotEnum.INPUT_SLOT2.ordinal()));
-		list.add(getStackInSlot(slotEnum.INPUT_SLOT3.ordinal()));
-		list.add(getStackInSlot(slotEnum.INPUT_SLOT4.ordinal()));
+		list.add(getStackInSlot(EnumSlots.INPUT_SLOT.ordinal()));
+		list.add(getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal()));
+		list.add(getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal()));
+		list.add(getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal()));
 		return list;
 	}
 
 	public ItemStack[][] getActiveInventoryAsArray() {
 		ItemStack[][] array = new ItemStack[2][2];
 
-		array[0][0] = getStackInSlot(slotEnum.INPUT_SLOT.ordinal());
-		array[0][1] = getStackInSlot(slotEnum.INPUT_SLOT2.ordinal());
-		array[1][0] = getStackInSlot(slotEnum.INPUT_SLOT3.ordinal());
-		array[1][1] = getStackInSlot(slotEnum.INPUT_SLOT4.ordinal());
+		array[0][0] = getStackInSlot(EnumSlots.INPUT_SLOT.ordinal());
+		array[0][1] = getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal());
+		array[1][0] = getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal());
+		array[1][1] = getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal());
 
 		return array;
 	}
@@ -353,7 +361,7 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return (index != slotEnum.OUTPUT_SLOT.ordinal());
+		return (index != EnumSlots.OUTPUT_SLOT.ordinal());
 	}
 
 	@Override
@@ -429,7 +437,7 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
-		return side == EnumFacing.DOWN ? slotsBottom : (side == EnumFacing.UP ? slotsTop : slotsSides);
+		return new int[0];
 	}
 
 	@Override
@@ -439,12 +447,8 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		if (direction == EnumFacing.DOWN && index == 1) {
-			Item item = stack.getItem();
-			if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
-				return false;
-			}
-
+		if (index <= EnumSlots.INPUT_SLOT4.ordinal()) {
+			return false;
 		}
 
 		return true;
@@ -459,63 +463,8 @@ public class TileEntityForge extends TileEntityLockable implements ITickable, IS
 		return this.burnTime > 0;
 	}
 
-	public static int getItemBurnTime(ItemStack stack) {
-		if (stack.isEmpty()) {
-			return 0;
-		} else {
-			int burnTime = net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(stack);
-			if (burnTime >= 0)
-				return burnTime;
-			Item item = stack.getItem();
-
-			if (item == Item.getItemFromBlock(Blocks.WOODEN_SLAB)) {
-				return 150;
-			} else if (item == Item.getItemFromBlock(Blocks.WOOL)) {
-				return 100;
-			} else if (item == Item.getItemFromBlock(Blocks.CARPET)) {
-				return 67;
-			} else if (item == Item.getItemFromBlock(Blocks.LADDER)) {
-				return 300;
-			} else if (item == Item.getItemFromBlock(Blocks.WOODEN_BUTTON)) {
-				return 100;
-			} else if (Block.getBlockFromItem(item).getDefaultState().getMaterial() == Material.WOOD) {
-				return 300;
-			} else if (item == Item.getItemFromBlock(Blocks.COAL_BLOCK)) {
-				return 16000;
-			} else if (item instanceof ItemTool && "WOOD".equals(((ItemTool) item).getToolMaterialName())) {
-				return 200;
-			} else if (item instanceof ItemSword && "WOOD".equals(((ItemSword) item).getToolMaterialName())) {
-				return 200;
-			} else if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe) item).getMaterialName())) {
-				return 200;
-			} else if (item == Items.STICK) {
-				return 100;
-			} else if (item != Items.BOW && item != Items.FISHING_ROD) {
-				if (item == Items.SIGN) {
-					return 200;
-				} else if (item == Items.COAL) {
-					return 1600;
-				} else if (item == Items.LAVA_BUCKET) {
-					return 20000;
-				} else if (item != Item.getItemFromBlock(Blocks.SAPLING) && item != Items.BOWL) {
-					if (item == Items.BLAZE_ROD) {
-						return 2400;
-					} else if (item instanceof ItemDoor && item != Items.IRON_DOOR) {
-						return 200;
-					} else {
-						return item instanceof ItemBoat ? 400 : 0;
-					}
-				} else {
-					return 100;
-				}
-			} else {
-				return 300;
-			}
-		}
-	}
-
 	public static boolean isItemFuel(ItemStack stack) {
-		return getItemBurnTime(stack) > 0;
+		return Utils.getItemBurnTime(stack) > 0;
 	}
 
 }

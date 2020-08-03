@@ -13,6 +13,8 @@ public class DamageSources {
 	public static DamageSource alcoholPoison = new DamageSource("alcoholPoison").setDifficultyScaled().setDamageIsAbsolute()
 			.setDamageBypassesArmor();
 	public static DamageSource bleeding = new DamageSource("bleeding").setDifficultyScaled().setDamageIsAbsolute().setDamageBypassesArmor();
+	public static DamageSource blade = new DamageSource("blade").setDifficultyScaled().setDamageIsAbsolute();
+	public static DamageSource infection = new DamageSource("infection").setDifficultyScaled().setDamageIsAbsolute();
 
 	
 	public static EntityDamageShot causeShotDamage(Entity source, Entity transmitter) {

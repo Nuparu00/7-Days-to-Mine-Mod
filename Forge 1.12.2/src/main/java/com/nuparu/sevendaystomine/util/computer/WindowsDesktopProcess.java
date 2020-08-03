@@ -20,6 +20,7 @@ import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncIconMessage;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.util.client.Animations;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
@@ -39,8 +40,15 @@ public class WindowsDesktopProcess extends DesktopProcess {
 	public final ResourceLocation WIN_10_BGR_DEF = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/backgrounds/bgr_win10.png");
 	@SideOnly(Side.CLIENT)
+	public final ResourceLocation WIN_7_BGR_DEF = new ResourceLocation(SevenDaysToMine.MODID,
+			"textures/backgrounds/bgr_win7.png");
+	@SideOnly(Side.CLIENT)
 	public final ResourceLocation WIN_10_START = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/apps/win10_start.png");
+	
+	@SideOnly(Side.CLIENT)
+	public final ResourceLocation WIN_7_START = new ResourceLocation(SevenDaysToMine.MODID,
+			"textures/apps/win7_start.png");
 	@SideOnly(Side.CLIENT)
 	public final ResourceLocation WIN_10_SHUTDOWN = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/apps/win10_shutdown.png");
@@ -71,20 +79,34 @@ public class WindowsDesktopProcess extends DesktopProcess {
 	public void clientInit() {
 		super.clientInit();
 		ScaledResolution sr = new ScaledResolution(Screen.mc);
+		ResourceLocation start;
+		ColorRGBA hover;
+		switch (computerTE.getSystem()) {
+		default:
+		case NONE:
+		case WIN10:
+			start = WIN_10_START;
+			hover = new ColorRGBA(0.3, 0.7, 0.95);
+			break;
+		case WIN7:
+			start = WIN_7_START;
+			hover = new ColorRGBA(0.8,0.8,0.8);
+			break;
+		}
 		TexturedButton button = new TexturedButton((sr.getScaledWidth() / 2) - (screen.xSize / 2),
 				(sr.getScaledHeight() / 2) + (screen.ySize / 2) - (screen.ySize * 0.1), screen.ySize * 0.1,
-				screen.ySize * 0.1, screen, "", WIN_10_START, 0);
+				screen.ySize * 0.1, screen, "", start, 0);
 		button.textNormal = 0xffffff;
 		button.normal = new ColorRGBA(1, 1, 1);
-		button.hovered = new ColorRGBA(0.3, 0.7, 0.95);
+		button.hovered = hover;
 		button.setFontSize(0.7);
 		button.setProcess(this);
 		button.setZLevel(1);
 		elements.add(button);
 
+		double i = screen.ySize * 0.05;
 		TexturedButton button1 = new TexturedButton((sr.getScaledWidth() / 2) - (screen.xSize / 2),
-				(sr.getScaledHeight() / 2) + (screen.ySize / 2) - (1.5 * screen.ySize * 0.1) - 2, screen.ySize * 0.05,
-				screen.ySize * 0.05, screen, "", WIN_10_SHUTDOWN, 1) {
+				(sr.getScaledHeight() / 2) + (screen.ySize / 2) - (1.5 * screen.ySize * 0.1) - 2,i,i, screen, "", WIN_10_SHUTDOWN, 1) {
 
 			@Override
 			public boolean isDisabled() {
@@ -110,6 +132,15 @@ public class WindowsDesktopProcess extends DesktopProcess {
 		Iterator<DesktopShortcut> it = shortcuts.iterator();
 		while (it.hasNext()) {
 			it.next().update();
+		}
+		Iterator<DesktopShortcut> it2 = shortcuts.iterator();
+		while (it2.hasNext()) {
+			it2.next().update();
+		}
+		
+		Iterator<TaskbarButton> it3 = taskbarIcons.iterator();
+		while (it3.hasNext()) {
+			it3.next().update();
 		}
 	}
 
@@ -149,12 +180,21 @@ public class WindowsDesktopProcess extends DesktopProcess {
 	@SideOnly(Side.CLIENT)
 	public void renderBackground(float partialTicks) {
 		ScaledResolution sr = new ScaledResolution(Screen.mc);
-		RenderUtils.drawTexturedRect(WIN_10_BGR_DEF, (sr.getScaledWidth() / 2) - (screen.xSize / 2),
+		ResourceLocation bgr;
+		switch (computerTE.getSystem()) {
+		default:
+		case NONE:
+			bgr = WIN_10_BGR_DEF;break;
+		case WIN10:
+			bgr = WIN_10_BGR_DEF;break;
+		case WIN7:
+			bgr = WIN_7_BGR_DEF;break;
+		}
+		RenderUtils.drawTexturedRect(bgr, (sr.getScaledWidth() / 2) - (screen.xSize / 2),
 				(sr.getScaledHeight() / 2) - (screen.ySize / 2), 0, 0, screen.xSize, screen.ySize, screen.xSize,
 				screen.ySize, 1, 0);
 	}
 
-	@SuppressWarnings("unchecked")
 	@SideOnly(Side.CLIENT)
 	public void renderTaskbar(float partialTicks) {
 		ScaledResolution sr = new ScaledResolution(Screen.mc);
@@ -214,7 +254,7 @@ public class WindowsDesktopProcess extends DesktopProcess {
 
 		element1.setX((sr.getScaledWidth() / 2) - (screen.xSize / 2));
 		element1.setY((sr.getScaledHeight() / 2) + (screen.ySize / 2) - (1.5 * screen.ySize * 0.1) - 2);
-		element1.setWidth(screen.ySize * 0.5);
+		element1.setWidth(screen.ySize * 0.05);
 		element1.setHeight(screen.ySize * 0.05);
 
 		refreshDesktop();
@@ -276,8 +316,7 @@ public class WindowsDesktopProcess extends DesktopProcess {
 		}
 		if (buttonId == 1) {
 			this.shutdown = true;
-			NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-			PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+			sync("shutdown");
 			return;
 		}
 	}
@@ -322,6 +361,7 @@ public class WindowsDesktopProcess extends DesktopProcess {
 				TaskbarButton tb = new TaskbarButton((sr.getScaledWidth() / 2) - (screen.xSize / 2) + (screen.ySize*0.1*(i)),
 						(sr.getScaledHeight() / 2) + (screen.ySize / 2) - (screen.ySize * 0.1), screen.ySize*0.1,
 						screen.ySize * 0.1,this.getScreen(),(WindowedProcess)process);
+				tb.setProcess(this);
 				tb.setZLevel(5);
 				this.taskbarIcons.add(tb);
 			}
@@ -389,6 +429,11 @@ public class WindowsDesktopProcess extends DesktopProcess {
 		Iterator<DesktopShortcut> it = shortcuts.iterator();
 		while (it.hasNext()) {
 			it.next().mouseClicked(mouseX, mouseY, mouseButton);
+		}
+		
+		Iterator<TaskbarButton> it2 = taskbarIcons.iterator();
+		while (it2.hasNext()) {
+			it2.next().mouseClicked(mouseX, mouseY, mouseButton);
 		}
 	}
 	

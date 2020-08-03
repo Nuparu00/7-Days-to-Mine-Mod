@@ -33,23 +33,11 @@ public class BlockEnergyPole extends BlockTileProvider<TileEntityEnergyPole> {
 
 	public BlockEnergyPole() {
 		super(Material.WOOD);
-		this.setSoundType(SoundType.WOOD);
-		this.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = worldIn.getTileEntity(pos);
-		if (te != null && te instanceof IVoltage) {
-			if (playerIn.isSneaking()) {
-				System.out.println(((IVoltage) te).getVoltageStored() + " J");
-			}
-
-		}
-
-		return false;
+		setSoundType(SoundType.WOOD);
+		setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
+		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setHardness(1);
+		setResistance(2);
 	}
 
 	@Override

@@ -29,6 +29,8 @@ public class BlockWoodenDoor extends BlockDoorBase implements IUpgradeable {
 
 	public BlockWoodenDoor() {
 		super(Material.WOOD);
+		this.setHardness(1.7F);
+		this.setResistance(3.0F);
 	}
 
 	@Override

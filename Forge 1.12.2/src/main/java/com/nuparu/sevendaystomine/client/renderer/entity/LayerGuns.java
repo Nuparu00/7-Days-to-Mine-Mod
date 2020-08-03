@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.client.renderer.entity;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.events.HumanResponseEvent;
 import com.nuparu.sevendaystomine.events.RenderHolsteredItemEvent;
+import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemClub;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.item.ItemQualitySword;
@@ -83,7 +84,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 					if (item instanceof ItemStoneShovel) {
 						GlStateManager.translate(-0.225, 0.25, 0.16);
 						GlStateManager.scale(0.875, 0.875, 0.875);
-					} else if (item instanceof ItemQualityTool) {
+					} else if (item == ModItems.IRON_AXE || item == ModItems.WRENCH || item instanceof ItemStoneAxe) {
 						GlStateManager.translate(-0.225, 0.25, 0.16);
 						GlStateManager.rotate(-90, 0, 1, 0);
 					} else {

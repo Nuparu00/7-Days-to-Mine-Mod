@@ -24,6 +24,8 @@ public class BlockRadiator extends BlockHorizontalBase implements IScrapable{
 		super(Material.IRON);
 		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+		setHardness(1.5F);
+		setResistance(1.0F);
 	}
 
 	@Override

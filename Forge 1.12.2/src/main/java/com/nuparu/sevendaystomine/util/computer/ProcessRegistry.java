@@ -56,5 +56,6 @@ public class ProcessRegistry {
 		registerProcess(WindowsLoginProcess.class,"windows_login_process");
 		registerProcess(ShellProcess.class,"shell_process");
 		registerProcess(NotesProcess.class,"notes_process");
+		registerProcess(CCTVProcess.class,"cctv_process");
 	}
 }

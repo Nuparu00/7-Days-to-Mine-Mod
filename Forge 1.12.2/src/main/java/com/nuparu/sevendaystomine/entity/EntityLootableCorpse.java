@@ -127,6 +127,7 @@ public class EntityLootableCorpse extends Entity {
 		}
 		onEntity = compound.getBoolean("onEntity");
 		age = compound.getLong("age");
+		health = compound.getInteger("health");
 	}
 
 	@Override
@@ -138,6 +139,7 @@ public class EntityLootableCorpse extends Entity {
 		compound.setTag("originalEntity", getOriginalNBT());
 		compound.setBoolean("onEntity", onEntity);
 		compound.setLong("age", age);
+		compound.setInteger("health", health);
 		return compound;
 	}
 

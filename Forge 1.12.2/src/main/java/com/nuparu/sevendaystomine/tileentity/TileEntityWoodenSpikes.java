@@ -27,6 +27,7 @@ public class TileEntityWoodenSpikes extends TileEntity{
 	}
 
 	public void dealDamage(int damage) {
+		if(world.isRemote) return;
 		health-=damage;
 		if(health <= 0) {
 			BlockWoodenSpikes.degradeBlock(pos, world);

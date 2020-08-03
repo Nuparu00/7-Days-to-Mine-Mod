@@ -41,8 +41,8 @@ public class BlockGarbage extends BlockTileProvider<TileEntityGarbage> {
 	public BlockGarbage() {
 		super(Material.WOOD);
 		setSoundType(SoundType.CLOTH);
-		this.setHardness(5.0F);
-		this.setResistance(5.0F);
+		this.setHardness(1.0F);
+		this.setResistance(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 

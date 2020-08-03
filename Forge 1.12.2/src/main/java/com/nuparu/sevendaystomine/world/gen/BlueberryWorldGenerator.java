@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class BlueberryWorldGenerator implements IWorldGenerator {
 
+	WorldGenerator generator = new WorldGenBlueberry();
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
@@ -37,10 +38,9 @@ public class BlueberryWorldGenerator implements IWorldGenerator {
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
-		if(world.getWorldType()==WorldType.FLAT) {
+		if (world.getWorldType() == WorldType.FLAT) {
 			return;
 		}
-		WorldGenerator generator = new WorldGenBlueberry();
 		int MIN = 0;
 		int MAX = 8;
 		int num = MIN + rand.nextInt(MAX - MIN);
@@ -54,17 +54,6 @@ public class BlueberryWorldGenerator implements IWorldGenerator {
 
 	private void generateEnd(World world, Random rand, int blockX, int blockZ) {
 
-	}
-
-	public static int getGroundFromAbove(World world, int x, int z) {
-		int y = 255;
-		boolean foundGround = false;
-		while (!foundGround && y-- >= 0) {
-			Block blockAt = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-			foundGround = blockAt == Blocks.DIRT || blockAt == Blocks.GRASS;
-		}
-
-		return y;
 	}
 
 }

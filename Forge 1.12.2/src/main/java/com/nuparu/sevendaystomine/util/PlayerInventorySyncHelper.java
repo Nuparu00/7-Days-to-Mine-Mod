@@ -3,6 +3,8 @@ package com.nuparu.sevendaystomine.util;
 import java.util.HashMap;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.capability.CapabilityHelper;
+import com.nuparu.sevendaystomine.capability.ExtendedInventory;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SyncInventoryMessage;
@@ -25,6 +27,7 @@ public class PlayerInventorySyncHelper {
 
 	public static HashMap<String, ItemCache> itemsCache = new HashMap<String, ItemCache>();
 
+	// Map of players and their inventories
 	public static HashMap<String, InventoryCache> inventoryCache = new HashMap<String, InventoryCache>();
 
 	@Mod.EventBusSubscriber(modid = SevenDaysToMine.MODID)
@@ -35,35 +38,54 @@ public class PlayerInventorySyncHelper {
 				if (ModConfig.players.renderPlayerInventory == true) {
 					if (event.getEntityLiving() instanceof EntityPlayer) {
 						EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+						ItemStack[] inventory = new ItemStack[player.inventory.mainInventory.size()];
+						inventory = player.inventory.mainInventory.toArray(inventory);
+						ItemStack currentItem = player.inventory.getCurrentItem();
+						ItemStack backpack = ItemStack.EMPTY;
+						ExtendedInventory inv = (ExtendedInventory) CapabilityHelper.getExtendedInventory(player);
+
+						if (inv != null) {
+							backpack = inv.getStackInSlot(0);
+						}
+
 						if (inventoryCache.containsKey(player.getName())) {
-							ItemStack[] inventory = new ItemStack[player.inventory.mainInventory.size()];
-							inventory = player.inventory.mainInventory.toArray(inventory);
-							ItemStack currentItem = player.inventory.getCurrentItem();
 							InventoryCache cache = inventoryCache.get(player.getName());
 							if (areInventoriesEqual(inventory, cache.inventory)
 									&& ItemStack.areItemStacksEqual(currentItem, cache.currentItem)
+									&& ItemStack.areItemStacksEqual(backpack, cache.backpack)
 									&& player.inventory.currentItem == cache.index) {
 								return;
 							}
 
 							ItemCache items = new ItemCache();
+
 							items.selectCorrectItems(inventory.clone(), currentItem, player.inventory.currentItem);
+							items.backpack = backpack;
+
 							EntityTracker tracker = ((WorldServer) player.world).getEntityTracker();
 							SyncInventoryMessage message = new SyncInventoryMessage(items, player.getName());
 							for (EntityPlayer entityPlayer : tracker.getTrackingPlayers(player)) {
 								PacketManager.syncInventory.sendTo(message, (EntityPlayerMP) entityPlayer);
 							}
 							PacketManager.syncInventory.sendTo(message, (EntityPlayerMP) player);
-							inventoryCache.put(player.getName(),
-									new InventoryCache(inventory.clone(), currentItem, player.inventory.currentItem));
+							inventoryCache.put(player.getName(), new InventoryCache(inventory.clone(), currentItem,
+									backpack, player.inventory.currentItem));
 
 						} else {
-							ItemStack[] inventory = new ItemStack[player.inventory.mainInventory.size()];
-							inventory = player.inventory.mainInventory.toArray(inventory);
-							ItemStack currentItem = player.inventory.getCurrentItem();
+
+							InventoryCache cache = inventoryCache.get(player.getName());
+							if (areInventoriesEqual(inventory, cache.inventory)
+									&& ItemStack.areItemStacksEqual(currentItem, cache.currentItem)
+									&& ItemStack.areItemStacksEqual(backpack, cache.backpack)
+									&& player.inventory.currentItem == cache.index) {
+								return;
+							}
 
 							ItemCache items = new ItemCache();
+
 							items.selectCorrectItems(inventory.clone(), currentItem, player.inventory.currentItem);
+							items.backpack = backpack;
+
 							EntityTracker tracker = ((WorldServer) player.world).getEntityTracker();
 							SyncInventoryMessage message = new SyncInventoryMessage(items, player.getName());
 							for (EntityPlayer entityPlayer : tracker.getTrackingPlayers(player)) {
@@ -71,8 +93,8 @@ public class PlayerInventorySyncHelper {
 							}
 							PacketManager.syncInventory.sendTo(message, (EntityPlayerMP) player);
 
-							inventoryCache.put(player.getName(),
-									new InventoryCache(inventory.clone(), currentItem, player.inventory.currentItem));
+							inventoryCache.put(player.getName(), new InventoryCache(inventory.clone(), currentItem,
+									backpack, player.inventory.currentItem));
 						}
 					}
 				}
@@ -85,34 +107,48 @@ public class PlayerInventorySyncHelper {
 				if (ModConfig.players.renderPlayerInventory == true) {
 					if (event.getEntity() instanceof EntityPlayer) {
 						EntityPlayer player = (EntityPlayer) event.getEntity();
+
+						ItemStack[] inventory = new ItemStack[player.inventory.mainInventory.size()];
+						inventory = player.inventory.mainInventory.toArray(inventory);
+						ItemStack currentItem = player.inventory.getCurrentItem();
+						ItemStack backpack = ItemStack.EMPTY;
+						ExtendedInventory inv = (ExtendedInventory) CapabilityHelper.getExtendedInventory(player);
+
+						if (inv != null) {
+							backpack = inv.getStackInSlot(0);
+						}
+
 						if (inventoryCache.containsKey(player.getName())) {
-							ItemStack[] inventory = new ItemStack[player.inventory.mainInventory.size()];
-							inventory = player.inventory.mainInventory.toArray(inventory);
-							ItemStack currentItem = player.inventory.getCurrentItem();
+
 							InventoryCache cache = inventoryCache.get(player.getName());
 
 							if (areInventoriesEqual(inventory, cache.inventory)
 									&& ItemStack.areItemStacksEqual(currentItem, cache.currentItem)
+									&& ItemStack.areItemStacksEqual(backpack, cache.backpack)
 									&& player.inventory.currentItem == cache.index) {
 								return;
 							}
+
 							ItemCache items = new ItemCache();
+
 							items.selectCorrectItems(inventory.clone(), currentItem, player.inventory.currentItem);
+							items.backpack = backpack;
+
 							EntityTracker tracker = ((WorldServer) player.world).getEntityTracker();
 							SyncInventoryMessage message = new SyncInventoryMessage(items, player.getName());
 							for (EntityPlayer entityPlayer : tracker.getTrackingPlayers(player)) {
 								PacketManager.syncInventory.sendTo(message, (EntityPlayerMP) entityPlayer);
 							}
 							PacketManager.syncInventory.sendTo(message, (EntityPlayerMP) player);
-							inventoryCache.put(player.getName(),
-									new InventoryCache(inventory.clone(), currentItem, player.inventory.currentItem));
+							inventoryCache.put(player.getName(), new InventoryCache(inventory.clone(), currentItem,
+									backpack, player.inventory.currentItem));
 
 						} else {
-							ItemStack[] inventory = new ItemStack[player.inventory.mainInventory.size()];
-							inventory = player.inventory.mainInventory.toArray(inventory);
-							ItemStack currentItem = player.inventory.getCurrentItem();
+
 							ItemCache items = new ItemCache();
+
 							items.selectCorrectItems(inventory.clone(), currentItem, player.inventory.currentItem);
+							items.backpack = backpack;
 							EntityTracker tracker = ((WorldServer) player.world).getEntityTracker();
 							SyncInventoryMessage message = new SyncInventoryMessage(items, player.getName());
 							for (EntityPlayer entityPlayer : tracker.getTrackingPlayers(player)) {
@@ -120,8 +156,8 @@ public class PlayerInventorySyncHelper {
 							}
 							PacketManager.syncInventory.sendTo(message, (EntityPlayerMP) player);
 
-							inventoryCache.put(player.getName(),
-									new InventoryCache(inventory.clone(), currentItem, player.inventory.currentItem));
+							inventoryCache.put(player.getName(), new InventoryCache(inventory.clone(), currentItem,
+									backpack, player.inventory.currentItem));
 						}
 					}
 				}
@@ -139,7 +175,12 @@ public class PlayerInventorySyncHelper {
 						inventory = player.inventory.mainInventory.toArray(inventory);
 						ItemStack currentItem = player.inventory.getCurrentItem();
 						ItemCache items = new ItemCache();
+						ExtendedInventory inv = (ExtendedInventory) CapabilityHelper.getExtendedInventory(player);
+
 						items.selectCorrectItems(inventory.clone(), currentItem, player.inventory.currentItem);
+						if (inv != null) {
+							items.backpack = inv.getStackInSlot(0);
+						}
 						SyncInventoryMessage message = new SyncInventoryMessage(items, player.getName());
 						PacketManager.syncInventory.sendTo(message, (EntityPlayerMP) trackingPlayer);
 
@@ -153,13 +194,13 @@ public class PlayerInventorySyncHelper {
 				return false;
 			}
 			for (int i = 0; i < a.length; i++) {
-				if(a[i] == null && b[i] != null) {
+				if (a[i] == null && b[i] != null) {
 					return false;
 				}
-				if(a[i] != null && b[i] == null) {
+				if (a[i] != null && b[i] == null) {
 					return false;
 				}
-				if(a[i] == null && b[i] == null) {
+				if (a[i] == null && b[i] == null) {
 					return true;
 				}
 				if (!ItemStack.areItemStacksEqual(a[i], b[i])) {

@@ -188,7 +188,6 @@ public class Button implements IScreenElement {
 
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-		
 		if (isHovered(mouseX, mouseY) && !isDisabled()) {
 			tickingProcess.onButtonPressed(this, mouseButton);
 		}

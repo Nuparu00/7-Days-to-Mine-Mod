@@ -280,12 +280,10 @@ public class CreateAccountProcess extends TickingProcess {
 		if (buttonId == 0) {
 			if (page == 0) {
 				page = 1;
-				NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-				PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+				sync("page");
 			} else {
 				page = 2;
-				NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-				PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+				sync("page");
 			}
 		}
 		if (buttonId == 1) {
@@ -299,10 +297,7 @@ public class CreateAccountProcess extends TickingProcess {
 				this.password = p.getContentText();
 				this.hint = h.getContentText();
 
-				if (!username.isEmpty()) {
-					NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-					PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
-				}
+				sync("completed", "username", "password","hint");
 			}
 		}
 	}

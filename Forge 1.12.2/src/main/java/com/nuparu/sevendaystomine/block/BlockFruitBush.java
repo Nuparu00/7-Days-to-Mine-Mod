@@ -47,10 +47,11 @@ public class BlockFruitBush extends net.minecraft.block.BlockBush implements IGr
 	public BlockFruitBush() {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
 		this.setTickRandomly(true);
-		this.setHardness(0.0F);
 		this.setSoundType(SoundType.PLANT);
 		this.disableStats();
 		this.setCreativeTab((CreativeTabs) null);
+		setHardness(0.1f);
+		setResistance(0.2f);
 	}
 	
 	@Override
@@ -128,8 +129,8 @@ public class BlockFruitBush extends net.minecraft.block.BlockBush implements IGr
 		return false;
 	}
 
-	protected boolean canSustainBush(IBlockState state) {
-		return state.getBlock() == Blocks.FARMLAND;
+	public boolean canSustainBush(IBlockState state) {
+		return state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT;
 	}
 
 	protected PropertyInteger getAgeProperty() {

@@ -23,7 +23,7 @@ public class BlockTrafficLight extends BlockHorizontalBase {
 	public BlockTrafficLight() {
 		super(Material.ROCK);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		this.setHardness(2);
+		this.setHardness(1);
 		this.setResistance(1.5F);
 	}
 

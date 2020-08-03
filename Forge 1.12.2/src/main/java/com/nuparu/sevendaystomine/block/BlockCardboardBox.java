@@ -34,7 +34,7 @@ public class BlockCardboardBox extends BlockTileProvider<TileEntityCardboard> {
 
 	public BlockCardboardBox() {
 		super(Material.WOOD);
-		setHardness(2.0F);
+		setHardness(0.5F);
 		setResistance(2.0F);
 		setHarvestLevel("axe", 0);
 		setSoundType(SoundType.CLOTH);

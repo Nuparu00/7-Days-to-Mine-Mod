@@ -1,0 +1,20 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "SSSSS",
+    "S   S",
+    "S   S",
+    "S   S",
+    "SSSSS"
+  ],
+  "key": {
+    "S": {
+      "item": "sevendaystomine:iron_pipe"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:rebarframe",
+    "count":4
+  },
+  "recipe": "concrete"
+}

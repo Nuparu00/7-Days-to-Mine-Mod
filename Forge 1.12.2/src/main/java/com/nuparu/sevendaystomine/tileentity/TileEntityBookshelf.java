@@ -12,12 +12,13 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityBookshelf extends TileEntityLockable implements ISidedInventory {
+public class TileEntityBookshelf extends TileEntityLockableLoot implements ISidedInventory {
 
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(9, ItemStack.EMPTY);
 	private String customName;
@@ -197,5 +198,10 @@ public class TileEntityBookshelf extends TileEntityLockable implements ISidedInv
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return (oldState.getBlock() != newState.getBlock())
 				|| oldState.getValue(BlockBookshelfEnhanced.FACING) != newState.getValue(BlockBookshelfEnhanced.FACING);
+	}
+
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return this.inventory;
 	}
 }

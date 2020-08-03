@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.item.ItemGun;
+import com.nuparu.sevendaystomine.proxy.ClientProxy;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -28,7 +29,7 @@ public class GuiGun {
 			"textures/gui/guncrosshair.png");
 
 	public static final Minecraft mc = Minecraft.getMinecraft();
-	
+
 	private double posPrev = 0;
 	private double pos = 0;
 
@@ -80,7 +81,7 @@ public class GuiGun {
 				return;
 			}
 			if ((nbt_main == null || !nbt_main.hasKey("Ammo") || !nbt_main.hasKey("Capacity"))
-					&& (nbt_sec== null || !nbt_sec.hasKey("Ammo") || !nbt_sec.hasKey("Capacity"))) {
+					&& (nbt_sec == null || !nbt_sec.hasKey("Ammo") || !nbt_sec.hasKey("Capacity"))) {
 				pos = 0;
 				return;
 			}
@@ -114,42 +115,52 @@ public class GuiGun {
 				mc.fontRenderer.drawString(text, 0, 0, color_sec);
 			}
 
-			double gunCross = Utils.getCrosshairSpread(player);
-			float vel = (float) (Math.abs(player.motionX) + Math.abs(player.motionZ))*0.5f;
+			if ((main.isEmpty() || gun_main.getFOVFactor(main) != 1)
+					&& (main.isEmpty() || gun_main.getFOVFactor(main) != 1)
+					&& mc.gameSettings.keyBindAttack.isKeyDown())
+				return;
 
-			pos = gunCross * (float) (vel) * 7.5f + gunCross;
-			if(player.isSneaking()) {
-				pos*=0.75f;
+			double gunCross = Utils.getCrosshairSpread(player);
+			float vel = (float) (Math.abs(player.motionX) + Math.abs(player.motionZ)) * 0.5f;
+
+			pos = gunCross * (float) (0.75 + 3.14 * vel);
+			if (player.isSneaking()) {
+				pos *= 0.75f;
 			}
 
 			mc.renderEngine.bindTexture(CROSSHAIR_TEX);
 
-			/*if (player.fallDistance > 0) {
-				pos *= 1.1f;
-			}*/
+			/*
+			 * if (player.fallDistance > 0) { pos *= 1.1f; }
+			 */
 
-			/*if (player.rotationYaw != player.prevRotationYaw || player.rotationPitch != player.prevRotationPitch) {
-				pos += pos * ((Utils.angularDistance(player.rotationYaw, player.prevRotationYaw)
-						+ Utils.angularDistance(player.rotationPitch, player.prevRotationPitch) * 10));
-			}*/
+			/*
+			 * if (player.rotationYaw != player.prevRotationYaw || player.rotationPitch !=
+			 * player.prevRotationPitch) { pos += pos *
+			 * ((Utils.angularDistance(player.rotationYaw, player.prevRotationYaw) +
+			 * Utils.angularDistance(player.rotationPitch, player.prevRotationPitch) * 10));
+			 * }
+			 */
 
-			double alpha = 1f-(vel)*3.3f;
-			
+			double alpha = 1f - (vel) * 3.3f;
+
 			double finalPos = MathUtils.lerp(posPrev, pos, event.getPartialTicks());
 
 			GlStateManager.pushMatrix();
 			GL11.glColor4d(1d, 1d, 1d, alpha);
 			GlStateManager.enableBlend();
-			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            GlStateManager.enableAlpha();
+			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
+					GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
+					GlStateManager.DestFactor.ZERO);
+			GlStateManager.enableAlpha();
 			// LEFT
-			mc.ingameGUI.drawTexturedModalRect((int)(posX - 13 / 2 - (finalPos)), posY - 2, 0, 14, 13, 4);
+			mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 - (finalPos)), posY - 2, 0, 14, 13, 4);
 			// RIGHT
-			mc.ingameGUI.drawTexturedModalRect((int)(posX - 13 / 2 + (finalPos)), posY - 2, 19, 14, 13, 4);
+			mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 + (finalPos)), posY - 2, 19, 14, 13, 4);
 			// TOP
-			mc.ingameGUI.drawTexturedModalRect(posX - 2,(int)( posY - 13 / 2 - (finalPos)), 14, 0, 4, 13);
+			mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 - (finalPos)), 14, 0, 4, 13);
 			// DOVVN
-			mc.ingameGUI.drawTexturedModalRect(posX - 2,(int)( posY - 13 / 2 + (finalPos)), 14, 19, 4, 13);
+			mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 + (finalPos)), 14, 19, 4, 13);
 			GlStateManager.disableAlpha();
 			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();

@@ -30,7 +30,7 @@ public class WindowsLoginProcess extends TickingProcess {
 	public WindowsLoginProcess() {
 
 	}
-	
+
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		NBTTagCompound nbt2 = super.writeToNBT(nbt);
 		nbt2.setString("password", password);
@@ -40,10 +40,14 @@ public class WindowsLoginProcess extends TickingProcess {
 
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		this.password = nbt.getString("password");
-		this.completed = nbt.getBoolean("completed");
+		if (nbt.hasKey("password")) {
+			this.password = nbt.getString("password");
+		}
+		if (nbt.hasKey("completed")) {
+			this.completed = nbt.getBoolean("completed");
+		}
 	}
-	
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -53,19 +57,18 @@ public class WindowsLoginProcess extends TickingProcess {
 		}
 		if (completed) {
 
-				if (computerTE != null && computerTE.verifyPassword(this.password)) {
-					computerTE.onLogin(this);
-				} else {
-					completed = false;
-					password = "";
-				}
-				computerTE.markDirty();
-				computerTE.killProcess(this);
+			if (computerTE != null && computerTE.verifyPassword(this.password)) {
+				computerTE.onLogin(this);
+			} else {
+				completed = false;
+				password = "";
 			}
-		
+			computerTE.markDirty();
+			computerTE.killProcess(this);
+		}
 
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void clientInit() {
@@ -150,8 +153,7 @@ public class WindowsLoginProcess extends TickingProcess {
 				TextField p = (TextField) elements.get(0);
 				this.password = p.getContentText();
 				this.completed = true;
-				NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-				PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+				sync("password", "completed");
 				p.setContentText("");
 				this.completed = false;
 

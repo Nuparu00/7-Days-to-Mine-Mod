@@ -1,8 +1,7 @@
 package com.nuparu.sevendaystomine.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -12,8 +11,31 @@ public class Noise {
 	private BlockPos pos;
 	private World world;
 	
-	private SoundEvent name;
-    private SoundCategory category;
     private float volume;
     private float pitch;
+    
+    public Noise(Entity entity, BlockPos pos, World world,float volume, float pitch) {
+    	this.entity = entity;
+    	this.pos = pos;
+    	this.world = world;
+    	this.volume = volume;
+    	this.pitch = pitch;
+    }
+    
+    public Entity getEntity() {
+    	return entity;
+    }
+    public BlockPos getPos() {
+    	return pos;
+    }
+    public World getWorld() {
+    	return world;
+    }
+    public float getVolume() {
+    	return volume;
+    }
+    public float getPitch() {
+    	return pitch;
+    }
+    
 }

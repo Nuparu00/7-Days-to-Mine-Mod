@@ -239,7 +239,11 @@ public class ItemQualitySword extends Item implements IQuality {
 	}
 
 	public double getAttackDamageModified(ItemStack stack) {
-		return this.attackDamage + (this.attackDamage * (getQuality(stack) / 500f));
+		return this.attackDamage * (1+((float)getQuality(stack) / (float)ItemQuality.MAX_QUALITY));
+	}
+	
+	public double getAttackSpeedModified(ItemStack stack) {
+		return this.speed / (1+((float)getQuality(stack) / (float)ItemQuality.MAX_QUALITY));
 	}
 
 	@Override
@@ -250,7 +254,7 @@ public class ItemQualitySword extends Item implements IQuality {
 		if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
 		{
 			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", getAttackDamageModified(stack), 0));
-			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", speed, 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", getAttackSpeedModified(stack), 0));
 		}
 
 		return multimap;
@@ -258,6 +262,27 @@ public class ItemQualitySword extends Item implements IQuality {
 
 	public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player) {
 		return false;
+	}
+	
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		switch (getQualityTierFromStack(stack)) {
+		case FLAWLESS:
+			return 0xA300A3;
+		case GREAT:
+			return 0x4545CC;
+		case FINE:
+			return 0x37A337;
+		case GOOD:
+			return 0xB2B23C;
+		case POOR:
+			return 0xF09900;
+		case FAULTY:
+			return 0x89713C;
+		case NONE:
+		default:
+			return super.getRGBDurabilityForDisplay(stack);
+		}
 	}
 
 }

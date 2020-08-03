@@ -6,6 +6,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.entity.EntityAirdrop;
+import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
@@ -17,18 +19,76 @@ import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
 import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
+import com.nuparu.sevendaystomine.entity.EntityProjectileVomit;
 import com.nuparu.sevendaystomine.entity.EntityReanimatedCorpse;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
+import com.nuparu.sevendaystomine.entity.EntityZombieCrawler;
+import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
 import com.nuparu.sevendaystomine.events.TickHandler;
+import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.crafting.campfire.CampfireRecipeManager;
 import com.nuparu.sevendaystomine.item.crafting.chemistry.ChemistryRecipeManager;
 import com.nuparu.sevendaystomine.item.crafting.forge.ForgeRecipeManager;
-import com.nuparu.sevendaystomine.item.crafting.workbench.WorkbenchCraftingManager;
+import com.nuparu.sevendaystomine.loot.function.RandomQualityFunction;
+import com.nuparu.sevendaystomine.tileentity.TileEntityAirplaneRotor;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBackpack;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBatteryStation;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignSlave;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBirdNest;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBookshelf;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCampfire;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCarMaster;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCarSlave;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCardboard;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCashRegister;
+import com.nuparu.sevendaystomine.tileentity.TileEntityChemistryStation;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCodeSafe;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCombustionGenerator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCorpse;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCupboard;
+import com.nuparu.sevendaystomine.tileentity.TileEntityDresser;
+import com.nuparu.sevendaystomine.tileentity.TileEntityEnergyPole;
+import com.nuparu.sevendaystomine.tileentity.TileEntityEnergySwitch;
+import com.nuparu.sevendaystomine.tileentity.TileEntityFileCabinet;
+import com.nuparu.sevendaystomine.tileentity.TileEntityFlag;
+import com.nuparu.sevendaystomine.tileentity.TileEntityForge;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGarbage;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGlobe;
+import com.nuparu.sevendaystomine.tileentity.TileEntityKeySafe;
+import com.nuparu.sevendaystomine.tileentity.TileEntityLamp;
+import com.nuparu.sevendaystomine.tileentity.TileEntityMailBox;
+import com.nuparu.sevendaystomine.tileentity.TileEntityMedicalCabinet;
+import com.nuparu.sevendaystomine.tileentity.TileEntityMicrowave;
+import com.nuparu.sevendaystomine.tileentity.TileEntityMonitor;
+import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
+import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
+import com.nuparu.sevendaystomine.tileentity.TileEntityRadio;
+import com.nuparu.sevendaystomine.tileentity.TileEntityRefrigerator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityScreenProjector;
+import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
+import com.nuparu.sevendaystomine.tileentity.TileEntitySolarPanel;
+import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTable;
+import com.nuparu.sevendaystomine.tileentity.TileEntityThermometer;
+import com.nuparu.sevendaystomine.tileentity.TileEntityToilet;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTorch;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTrashBin;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTrashCan;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurretBase;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWallClock;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWheels;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWindTurbine;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenLogSpike;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenSpikes;
 import com.nuparu.sevendaystomine.util.ConfigHandler;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.VersionChecker;
@@ -36,18 +96,29 @@ import com.nuparu.sevendaystomine.util.computer.ApplicationRegistry;
 import com.nuparu.sevendaystomine.util.computer.ProcessRegistry;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -55,7 +126,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class CommonProxy {
 
 	private static VersionChecker versionChecker = new VersionChecker();
-	
+
 	public static ScriptEngineManager mgr;
 	public static ScriptEngine engine;
 	public static StringWriter sw;
@@ -67,30 +138,38 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigHandler.loadConfig(event);
 		TickHandler.init(Side.SERVER);
-		
+
 		mgr = new ScriptEngineManager(null);
 		engine = mgr.getEngineByName("javascript");
 		sw = new StringWriter();
 		engine.getContext().setWriter(sw);
+
+		registerLootTables();
 	}
 
 	public void init(FMLInitializationEvent event) {
 		versionChecker = new VersionChecker();
-		Thread versionCheckThread = new Thread(versionChecker, "7D2M - Version Check");
-		versionCheckThread.start();
 
 		ProcessRegistry.INSTANCE.register();
 		ApplicationRegistry.INSTANCE.register();
 		DialoguesRegistry.INSTANCE.register();
 
-		WorkbenchCraftingManager.addRecipes();
-
 		new CampfireRecipeManager();
 		new ForgeRecipeManager();
 		new ChemistryRecipeManager();
+
+		registerOreDictionary();
+		registerTileEntities();
+		registerEntities();
+		ModBiomes.init();
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
+
+		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+		EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 	}
 
 	public void serverStarting(FMLServerStartingEvent event) {
@@ -124,29 +203,122 @@ public class CommonProxy {
 		OreDictionary.registerOre("oreMercury", ModBlocks.ORE_CINNABAR);
 	}
 
+	public void registerTileEntities() {
+		registerTileEntity(TileEntityCampfire.class, "campfire");
+		registerTileEntity(TileEntityForge.class, "forge");
+		registerTileEntity(TileEntityKeySafe.class, "key_safe");
+		registerTileEntity(TileEntityCodeSafe.class, "code_safe");
+		registerTileEntity(TileEntityCardboard.class, "cardboard");
+		registerTileEntity(TileEntityCupboard.class, "cupboard");
+		registerTileEntity(TileEntityTorch.class, "torch");
+		registerTileEntity(TileEntityGarbage.class, "garbage");
+		registerTileEntity(TileEntityBookshelf.class, "bookshelf");
+		registerTileEntity(TileEntityTable.class, "table");
+		registerTileEntity(TileEntityMedicalCabinet.class, "medical_cabinet");
+		registerTileEntity(TileEntityMailBox.class, "mail_box");
+		registerTileEntity(TileEntityBirdNest.class, "bird_nest");
+		registerTileEntity(TileEntityTrashCan.class, "trash_can");
+		registerTileEntity(TileEntitySleepingBag.class, "sleeping_bag");
+		registerTileEntity(TileEntityCarMaster.class, "car_master");
+		registerTileEntity(TileEntityCarSlave.class, "car_slave");
+		registerTileEntity(TileEntityComputer.class, "computer");
+		registerTileEntity(TileEntityMonitor.class, "monitor");
+		registerTileEntity(TileEntityWallClock.class, "wall_clock");
+		registerTileEntity(TileEntityFlag.class, "flag");
+		registerTileEntity(TileEntityToilet.class, "toilet");
+		registerTileEntity(TileEntityMicrowave.class, "microwave");
+		registerTileEntity(TileEntityRefrigerator.class, "refrigerator");
+		registerTileEntity(TileEntityBackpack.class, "backpack");
+		registerTileEntity(TileEntityOldChest.class, "old_chest");
+		registerTileEntity(TileEntityCorpse.class, "corpse");
+		registerTileEntity(TileEntityChemistryStation.class, "chemistry_station");
+		registerTileEntity(TileEntityGasGenerator.class, "gas_generator");
+		registerTileEntity(TileEntityEnergyPole.class, "energy_pole");
+		registerTileEntity(TileEntityLamp.class, "lamp");
+		registerTileEntity(TileEntityStreetSign.class, "street_sign");
+		registerTileEntity(TileEntityPhoto.class, "photo");
+		registerTileEntity(TileEntityScreenProjector.class, "screen_projector");
+		registerTileEntity(TileEntityDresser.class, "dresser");
+		registerTileEntity(TileEntityBigSignMaster.class, "big_sign_master");
+		registerTileEntity(TileEntityBigSignSlave.class, "big_sign_slave");
+		registerTileEntity(TileEntityTrashBin.class, "trash_bin");
+		registerTileEntity(TileEntityWheels.class, "wheels");
+		registerTileEntity(TileEntityWoodenSpikes.class, "wooden_spikes");
+		registerTileEntity(TileEntityAirplaneRotor.class, "airplane_rotor");
+		registerTileEntity(TileEntitySolarPanel.class, "solar_panel");
+		registerTileEntity(TileEntityWindTurbine.class, "wind_turbine");
+		registerTileEntity(TileEntityBatteryStation.class, "battery_station");
+		registerTileEntity(TileEntityCombustionGenerator.class, "combustion_generator");
+		registerTileEntity(TileEntityEnergySwitch.class, "energy_switch");
+		registerTileEntity(TileEntityThermometer.class, "thermometer");
+		registerTileEntity(TileEntityTurretBase.class, "turret_base");
+		registerTileEntity(TileEntityWoodenLogSpike.class, "wooden_log_spike");
+		registerTileEntity(TileEntityFileCabinet.class, "file_cabinet");
+		registerTileEntity(TileEntityCashRegister.class, "cash_register");
+		registerTileEntity(TileEntityCamera.class, "camera");
+		registerTileEntity(TileEntityRadio.class, "radio");
+		registerTileEntity(TileEntityGlobe.class, "globe");
+	}
+	
+	public void registerTileEntity(Class<? extends TileEntity> te, String name) {
+		GameRegistry.registerTileEntity(te, new ResourceLocation(SevenDaysToMine.MODID, name));
+	}
+
 	private static int entityID = 0;
 
+	@SuppressWarnings("unchecked")
 	public void registerEntities() {
 		registerEntity(EntityShot.class, "shot", 128, 1, true);
 		registerEntity(EntityMountableBlock.class, "mountable_block", 64, 20, false);
-		registerEntity(EntityReanimatedCorpse.class, "reanimated_corpse", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityReanimatedCorpse.class, "reanimated_corpse", 96, 2, true, 0xffffff, 0xffffff);
 		registerEntity(EntityLootableCorpse.class, "lootable_corpse", 64, 2, true);
-		registerEntity(EntityBurntZombie.class, "burnt_zombie", 64, 2, true, 0xffffff, 0xffffff);
-		registerEntity(EntityFrigidHunter.class, "frigid_hunter", 64, 2, true, 0xffffff, 0xffffff);
-		registerEntity(EntityFrostbittenWorker.class, "frostbitten_worker", 64, 2, true, 0xffffff, 0xffffff);
-		registerEntity(EntityFrozenLumberjack.class, "frozen_lumberjack", 64, 2, true, 0xffffff, 0xffffff);
-		registerEntity(EntityZombieSoldier.class, "zombie_soldier", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityBurntZombie.class, "burnt_zombie", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityFrigidHunter.class, "frigid_hunter", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityFrostbittenWorker.class, "frostbitten_worker", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityFrozenLumberjack.class, "frozen_lumberjack", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityZombieSoldier.class, "zombie_soldier", 96, 2, true, 0xffffff, 0xffffff);
 		registerEntity(EntitySurvivor.class, "survivor", 64, 1, true, 0xffffff, 0xffffff);
 		registerEntity(EntityMinibike.class, "minibike", 64, 1, true);
-		registerEntity(EntityBloatedZombie.class, "bloated_zombie", 64, 2, true, 0xffffff, 0xffffff);
-		registerEntity(EntityInfectedSurvivor.class, "infected_survivor", 64, 2, true, 0xffffff, 0xffffff);
-		registerEntity(EntitySpiderZombie.class, "spider_zombie", 64, 2, true, 0xffffff, 0xffffff);
-		registerEntity(EntityPlaguedNurse.class, "plagued_nurse", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityBloatedZombie.class, "bloated_zombie", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityInfectedSurvivor.class, "infected_survivor", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntitySpiderZombie.class, "spider_zombie", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityPlaguedNurse.class, "plagued_nurse", 96, 2, true, 0xffffff, 0xffffff);
 		registerEntity(EntityBlindZombie.class, "blind_zombie", 64, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityZombieCrawler.class, "zombie_crawler", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityBandit.class, "bandit", 64, 1, true, 0xffffff, 0xffffff);
+		registerEntity(EntityAirdrop.class, "airdrop", 512, 1, true);
+		registerEntity(EntityZombiePoliceman.class, "zombie_policeman", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityProjectileVomit.class, "projectile_vomit", 128, 1, true);
+		/*
+		 * addEntitySpawn(EntityReanimatedCorpse.class, 1000, 1, 7,
+		 * EnumCreatureType.MONSTER, Utils.combine(BiomeDictionary.getBiomes(Type.LUSH),
+		 * BiomeDictionary.getBiomes(Type.COLD), BiomeDictionary.getBiomes(Type.DRY),
+		 * BiomeDictionary.getBiomes(Type.HOT), BiomeDictionary.getBiomes(Type.DEAD),
+		 * BiomeDictionary.getBiomes(Type.WASTELAND),
+		 * BiomeDictionary.getBiomes(Type.PLAINS),
+		 * BiomeDictionary.getBiomes(Type.CONIFEROUS),
+		 * BiomeDictionary.getBiomes(Type.SWAMP), BiomeDictionary.getBiomes(Type.HILLS),
+		 * BiomeDictionary.getBiomes(Type.SNOWY)).stream().toArray(Biome[]::new));
+		 */
+
+		addEntitySpawn(EntityReanimatedCorpse.class, 100, 3, 7, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+
+		addEntitySpawn(EntityBloatedZombie.class, 100, 1, 7, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+
+		addEntitySpawn(EntityPlaguedNurse.class, 100, 3, 7, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+
+		addEntitySpawn(EntityZombieCrawler.class, 100, 2, 7, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+
+		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+		EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 	}
 
-	
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void registerEntity(ResourceLocation res, Class clazz, String name, int trackingRange, int updateFrequency,
 			boolean tracking, int primaryColor, int secondaryColor) {
@@ -154,7 +326,7 @@ public class CommonProxy {
 		EntityRegistry.registerModEntity(res, clazz, name, entityID, SevenDaysToMine.instance, trackingRange,
 				updateFrequency, tracking, primaryColor, secondaryColor);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void registerEntity(ResourceLocation res, Class clazz, String name, int trackingRange, int updateFrequency,
 			boolean tracking) {
@@ -168,11 +340,23 @@ public class CommonProxy {
 		this.registerEntity(new ResourceLocation(SevenDaysToMine.MODID + ":" + name), clazz, name, trackingRange,
 				updateFrequency, tracking);
 	}
-	
+
 	@SuppressWarnings("rawtypes")
-	public void registerEntity(Class clazz, String name, int trackingRange, int updateFrequency, boolean tracking, int primaryColor, int secondaryColor) {
+	public void registerEntity(Class clazz, String name, int trackingRange, int updateFrequency, boolean tracking,
+			int primaryColor, int secondaryColor) {
 		this.registerEntity(new ResourceLocation(SevenDaysToMine.MODID + ":" + name), clazz, name, trackingRange,
 				updateFrequency, tracking, primaryColor, secondaryColor);
+	}
+
+	public void addEntitySpawn(Class<? extends EntityLiving> clazz, int weight, int min, int max, EnumCreatureType type,
+			Biome... biomes) {
+		EntityRegistry.addSpawn(clazz, weight, min, max, type, biomes);
+	}
+
+	public void registerLootTables() {
+		LootFunctionManager.registerFunction(new RandomQualityFunction.Serializer());
+
+		LootTableList.register(new ResourceLocation(SevenDaysToMine.MODID, "airdrop"));
 	}
 
 	public void openClientSideGui(int id, int x, int y, int z) {
@@ -198,12 +382,30 @@ public class CommonProxy {
 	public void onGunStop(int useCount) {
 
 	}
-	
-	public void spawnParticle(World world, EnumModParticleType type, double x, double y, double z, double xMotion, double yMotion, double zMotion) {
-		
+
+	public void spawnParticle(World world, EnumModParticleType type, double x, double y, double z, double xMotion,
+			double yMotion, double zMotion) {
+
 	}
-	
+
 	public int getParticleLevel() {
 		return -1;
+	}
+
+	public void setSkyRenderer(World world) {
+
+	}
+
+	public void setCloudRenderer(World world) {
+
+	}
+	
+	public void playLoudSound(ResourceLocation resource,float volume, BlockPos blockPosIn, SoundCategory category) {
+
+	}
+
+	public void stopLoudSound(BlockPos blockPosIn) {
+
+
 	}
 }
