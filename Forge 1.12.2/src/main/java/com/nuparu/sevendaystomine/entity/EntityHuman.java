@@ -180,6 +180,7 @@ public abstract class EntityHuman extends EntityCreature {
 		}
 		return compound;
 	}
+	
 
 	@SideOnly(Side.CLIENT)
 	public float getBedOrientationInDegrees() {

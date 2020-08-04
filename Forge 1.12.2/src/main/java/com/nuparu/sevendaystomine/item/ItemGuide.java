@@ -31,7 +31,7 @@ public class ItemGuide extends Item {
 	
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack stack = playerIn.getHeldItem(handIn);
-		SevenDaysToMine.proxy.openClientOnlyGui(3, stack);
+		playerIn.openGui(SevenDaysToMine.instance, 22, worldIn, (int)playerIn.posX, (int)playerIn.posY, (int)playerIn.posZ);
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 	}
 	

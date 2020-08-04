@@ -1,0 +1,19 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "W",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "W": {
+      "item": "sevendaystomine:wire"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:energy_pole"
+  },
+  "recipe": "electricity"
+}

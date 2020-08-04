@@ -116,6 +116,13 @@ public class SevenDaysToMine {
 		} else {
 			ModFluids.GASOLINE = FluidRegistry.getFluid(ModFluids.GASOLINE.getName());
 		}
+
+		if (!FluidRegistry.isFluidRegistered(ModFluids.MERCURY)) {
+			FluidRegistry.registerFluid(ModFluids.MERCURY);
+			FluidRegistry.addBucketForFluid(ModFluids.MERCURY);
+		} else {
+			ModFluids.MERCURY = FluidRegistry.getFluid(ModFluids.MERCURY.getName());
+		}
 	}
 
 	// CREATIVE TABS
@@ -253,7 +260,8 @@ public class SevenDaysToMine {
 			ModBlocks.FILE_CABINET, ModBlocks.CASH_REGISTER, ModBlocks.CAMERA, ModBlocks.BURNT_LOG,
 			ModBlocks.BURNT_PLANKS, ModBlocks.BURNT_FRAME, ModBlocks.DRY_GROUND, ModBlocks.BURNT_PLANKS_STAIRS,
 			ModBlocks.BURNT_PLANKS_SLAB, ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE,
-			ModBlocks.BURNT_CHAIR, ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE };
+			ModBlocks.BURNT_CHAIR, ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE,
+			ModBlocks.MERCURY, ModBlocks.SEPARATOR };
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -296,7 +304,8 @@ public class SevenDaysToMine {
 			ModItems.SCRAP_BOOTS, ModItems.SCRAP_CHESTPLATE, ModItems.SCRAP_HELMET, ModItems.SCRAP_LEGGINGS,
 			ModItems.SNIPER_RIFLE, ModItems.SHOTGUN, ModItems.SHOTGUN_SAWED_OFF, ModItems.BELLOWS, ModItems.BOOK_AMMO,
 			ModItems.BULLET_TIP_MOLD, ModItems.BULLET_CASING_MOLD, ModItems.TEN_MM_BULLET, ModItems.BOOK_COMPUTERS,
-			ModItems.BOOK_CONCRETE, ModItems.CEMENT_MOLD, ModItems.BOOK_ELECTRICITY};
+			ModItems.BOOK_CONCRETE, ModItems.CEMENT_MOLD, ModItems.BOOK_ELECTRICITY, ModItems.MAGNET,
+			ModItems.PHOTO_CELL, ModItems.BOOK_CHEMISTRY };
 
 	@SuppressWarnings("deprecation")
 	@EventHandler

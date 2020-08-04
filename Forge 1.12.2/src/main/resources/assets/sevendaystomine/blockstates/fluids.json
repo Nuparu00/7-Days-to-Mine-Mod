@@ -10,6 +10,13 @@
 					"fluid": "gasoline"
 				}
 			}
+		],
+		"mercury": [
+			{
+				"custom": {
+					"fluid": "mercury"
+				}
+			}
 		]
 	}
 }

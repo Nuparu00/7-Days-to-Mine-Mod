@@ -129,5 +129,12 @@
       "sounds":[  
          "sevendaystomine:recipe_unlocked"
       ]
+   },
+   "shotgun.shot":{  
+      "category":"player",
+      "subtitle":"sdtm.subtitle.shotgun.shot",
+      "sounds":[  
+         "sevendaystomine:shotgun.shot"
+      ]
    }   
 }

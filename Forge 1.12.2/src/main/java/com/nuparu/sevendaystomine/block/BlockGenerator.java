@@ -1,6 +1,8 @@
 package com.nuparu.sevendaystomine.block;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBatteryStation;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCombustionGenerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
 import com.nuparu.sevendaystomine.util.ITemperature;
 
@@ -10,6 +12,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -17,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -86,7 +90,7 @@ public class BlockGenerator extends BlockTileProvider<TileEntityGasGenerator> {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if (tileentity instanceof TileEntityGasGenerator) {
-				((TileEntityGasGenerator) tileentity).setCustomInventoryName(stack.getDisplayName());
+				((TileEntityGasGenerator) tileentity).setDisplayName(stack.getDisplayName());
 			}
 		}
 	}
@@ -96,8 +100,10 @@ public class BlockGenerator extends BlockTileProvider<TileEntityGasGenerator> {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
 		if (tileentity instanceof TileEntityGasGenerator) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityGasGenerator) tileentity);
-			worldIn.updateComparatorOutputLevel(pos, this);
+			NonNullList<ItemStack> drops = ((TileEntityGasGenerator) tileentity).getDrops();
+			for (ItemStack stack : drops) {
+				worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack));
+			}
 		}
 
 		super.breakBlock(worldIn, pos, state);

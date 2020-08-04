@@ -54,8 +54,6 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 
 			if (!itemstack.isEmpty()) {
 				Item item = itemstack.getItem();
-				if (item == null)
-					continue;
 				if (item instanceof IScrapable) {
 
 					IScrapable scrap = (IScrapable) item;
@@ -85,6 +83,8 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 						return false;
 					weight+= scrapable.getWeight();
 					mat = scrapable.getMaterial();
+				}else {
+					return false;
 				}
 			}
 		}

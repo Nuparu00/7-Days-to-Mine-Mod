@@ -41,9 +41,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings({ "deprecation", "unused" })
 public class ItemGun extends Item implements IQuality {
 
-	private String shotSound = null;
-	private String drySound = null;
-	private String reloadSound = null;
+	private SoundEvent shotSound = null;
+	private SoundEvent drySound = null;
+	private SoundEvent reloadSound = null;
 
 	private int maxAmmo = 0;
 	private float fullDamage = 0f;
@@ -63,25 +63,7 @@ public class ItemGun extends Item implements IQuality {
 	private EnumLength length;
 	private EnumWield wield;
 
-	public ItemGun(String shotSound, String drySound, String reloadSound, int maxAmmo, float fullDamage, float speed,
-			float recoil, float counterDef, float cross, int reloadTime, int delay, EnumGun gunType,
-			EnumLength gunLength, EnumWield gunWield) {
-		this.shotSound = shotSound;
-		this.drySound = drySound;
-		this.reloadSound = reloadSound;
-		this.maxAmmo = maxAmmo;
-		this.fullDamage = fullDamage;
-		this.speed = speed;
-		this.recoil = recoil;
-		this.counterDef = counterDef;
-		this.cross = cross;
-		this.spread = cross * 3.14f;
-		this.reloadTime = reloadTime;
-		this.delay = delay;
-		this.type = gunType;
-		this.length = gunLength;
-		this.wield = gunWield;
-
+	public ItemGun() {
 		this.setCreativeTab(CreativeTabs.COMBAT);
 		this.maxStackSize = 1;
 		this.setFull3D();
@@ -93,15 +75,15 @@ public class ItemGun extends Item implements IQuality {
 	}
 
 	public SoundEvent getReloadSound() {
-		return SoundHelper.getSoundByName(reloadSound);
+		return reloadSound;
 	}
 
 	public SoundEvent getShotSound() {
-		return SoundHelper.getSoundByName(shotSound);
+		return shotSound;
 	}
 
 	public SoundEvent getDrySound() {
-		return SoundHelper.getSoundByName(drySound);
+		return drySound;
 	}
 
 	public float getSpeed() {
@@ -146,8 +128,8 @@ public class ItemGun extends Item implements IQuality {
 	}
 
 	public void recoil(EntityPlayer entity) {
-		entity.rotationPitch -= recoil;
-		entity.rotationPitch += recoil * 0.2F;
+		entity.rotationPitch -= getRecoil();
+		entity.rotationPitch += getRecoil() * 0.2F;
 	}
 
 	public float getFinalDamage(ItemStack stack) {
@@ -193,7 +175,7 @@ public class ItemGun extends Item implements IQuality {
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
 		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT),
 				ItemQuality.MAX_QUALITY));
-		itemstack.getTagCompound().setInteger("Capacity", maxAmmo);
+		itemstack.getTagCompound().setInteger("Capacity", getMaxAmmo());
 		itemstack.getTagCompound().setInteger("Ammo", 0);
 		itemstack.getTagCompound().setInteger("ReloadTime", 90000);
 		itemstack.getTagCompound().setBoolean("Reloading", false);
@@ -242,7 +224,7 @@ public class ItemGun extends Item implements IQuality {
 						(int) (int) Math.min(
 								Math.max(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT), 1),
 								ItemQuality.MAX_QUALITY));
-				stack.getTagCompound().setInteger("Capacity", maxAmmo);
+				stack.getTagCompound().setInteger("Capacity", getMaxAmmo());
 				stack.getTagCompound().setInteger("Ammo", 0);
 				stack.getTagCompound().setInteger("ReloadTime", 90000);
 				stack.getTagCompound().setBoolean("Reloading", false);
@@ -270,7 +252,7 @@ public class ItemGun extends Item implements IQuality {
 		 * ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack); }
 		 */
 
-		if ((wield == EnumWield.TWO_HAND && !playerIn.getHeldItem(getOtherHand(handIn)).isEmpty())) {
+		if ((getWield() == EnumWield.TWO_HAND && !playerIn.getHeldItem(getOtherHand(handIn)).isEmpty())) {
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
 		}
 		if (itemstack.isEmpty() || itemstack.getTagCompound() == null) {
@@ -310,13 +292,13 @@ public class ItemGun extends Item implements IQuality {
 				itemstack.getTagCompound().setInteger("Ammo", ammo - 1);
 			}
 
-			itemstack.getTagCompound().setLong("NextFire", worldIn.getTotalWorldTime() + delay);
+			itemstack.getTagCompound().setLong("NextFire", worldIn.getTotalWorldTime() + getDelay());
 
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
 		} else {
 			worldIn.playSound(null, new BlockPos(playerIn), getDrySound(), SoundCategory.PLAYERS, 0.3F,
 					1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1f * 0.5F);
-			itemstack.getTagCompound().setLong("NextFire", worldIn.getTotalWorldTime() + (delay / 2));
+			itemstack.getTagCompound().setLong("NextFire", worldIn.getTotalWorldTime() + (getDelay() / 2));
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
 	}
@@ -350,7 +332,7 @@ public class ItemGun extends Item implements IQuality {
 
 	public double getCross(EntityPlayer player, EnumHand hand) {
 		float mult = 1;
-
+		
 		if (Utils.isPlayerDualWielding(player)) {
 			mult += 0.11f;
 		} else if (!player.getHeldItem(getOtherHand(hand)).isEmpty()) {
@@ -424,6 +406,71 @@ public class ItemGun extends Item implements IQuality {
 
 	public void setProjectiles(int projectiles) {
 		this.projectiles = projectiles;
+	}
+
+	public void setFullDamage(float fullDamage) {
+		this.fullDamage = fullDamage;
+	}
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
+	public void setRecoil(float recoil) {
+		this.recoil = recoil;
+	}
+
+	public float getCounterDef() {
+		return counterDef;
+	}
+
+	public void setCounterDef(float counterDef) {
+		this.counterDef = counterDef;
+	}
+
+	public void setReloadTime(int reloadTime) {
+		this.reloadTime = reloadTime;
+	}
+
+	public void setCross(float cross) {
+		this.spread = cross * 3.14f;
+		this.cross = cross;
+	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
+	public void setType(EnumGun type) {
+		this.type = type;
+	}
+
+	public void setLength(EnumLength length) {
+		this.length = length;
+	}
+
+	public void setWield(EnumWield wield) {
+		this.wield = wield;
+	}
+
+	public void setShotSound(SoundEvent shotSound) {
+		this.shotSound = shotSound;
+	}
+
+	public void setReloadSound(SoundEvent reloadSound) {
+		this.reloadSound = reloadSound;
+	}
+
+	public void setDrySound(SoundEvent drySound) {
+		this.drySound = drySound;
+	}
+
+	public void setMaxAmmo(int maxAmmo) {
+		this.maxAmmo = maxAmmo;
 	}
 
 	public static enum EnumGun {

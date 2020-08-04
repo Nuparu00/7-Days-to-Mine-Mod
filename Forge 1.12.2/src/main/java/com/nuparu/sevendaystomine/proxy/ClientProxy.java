@@ -320,7 +320,7 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	void initKeybindings() {
-		keyBindings = new KeyBinding[4];
+		keyBindings = new KeyBinding[3];
 		keyBindings[0] = new KeyBinding("key.reload.desc", Keyboard.KEY_R, "key.sevendaystomine.category");
 		keyBindings[1] = new KeyBinding("key.accelerate.desc", Keyboard.KEY_W, "key.sevendaystomine.category");
 		keyBindings[2] = new KeyBinding("key.brakes.desc", Keyboard.KEY_SPACE, "key.sevendaystomine.category");

@@ -121,7 +121,7 @@ container.corpse=Corpse
 container.workbench=Workbench
 container.chemistry=Chemistry
 container.generator.gas=Gas Generator
-container.generator.combustion=Combustion Generator
+container.generator.combustion=Coal Generator
 container.projector=Screen Projector
 container.dresser=Dresser
 container.trash_bin=Trash Bin
@@ -158,6 +158,10 @@ book_computers.title=Null Pointer
 book_computers.desc=Program everything from a microwave to a deadly turret.
 book_concrete.title=Set In Concrete
 book_concrete.desc=Mixing and pouring concrete that lasts.
+book_electricity.title=High Voltage
+book_electricity.desc=Getting power at any cost
+book_chemistry.title=No ReAcTiON
+book_chemistry.desc=Nobelium, Rhenium, Actinium, Titanium, Oxygen, Nitrogen
 
 #Books
 book.contents=Contents
@@ -269,6 +273,29 @@ book_concrete.reinforcing.1=Reinforced concrete is the strongest block (exlcudin
 book_concrete.reinforcing.2=Grab some construction tool, like a stone axe, clawhammer, wrench,etc.. , and some wood planks and punch it until it is not filed with wood on sides. Get some concrete mix and fill the block with it. Now just give it some time to drying.
 book_concrete.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
 book_concrete.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+book_electricity.subtitle=Getting power at any cost
+book_electricity.author=Maxmilian Vyroubal
+book_electricity.contents.1=1. Coal Generator
+book_electricity.contents.2=2. Wind & Solar Panels
+book_electricity.contents.3=3. Gas Generator
+book_electricity.contents.4=4. Conductors
+book_electricity.contents.5=5. Consumers
+book_electricity.coal.1=Coal Generator is the simplest (and also dirtiest) way of generating electricity. It generates a decent voltage by burning coal (though wood could work too). It is prone to overheating.
+book_electricity.wind.1=Cleaner ways of obtaining electricity offer wind turbines and solar panels. A wind turbine is a device that converts
+book_electricity.wind.2=the energy of wind into electricity. The output depends on the actual weather and the height above bedrock.
+book_electricity.solar.1=A solar panel is made of photovoltaic solar cells. That means that solar panels convert the energy of light into electricity.
+book_electricity.solar.2=Cons of this energy source is that it is... too much dependent on the sun. The power output changes during the day and can be severely affected by clouds.
+book_electricity.gas.1=Gas Generator is basically a more efficient (and somewhat cleaner) version of the Coal Generator. The big difference is that it can not use solid fuel like coal. Instead, it needs gasoline.
+book_electricity.conductors.1=Conductors are what allows the flow of electrical current from one device to another. Usually, they are a system of wires and poles, though control and storage elements like switches and battery stations are possible too.
+book_electricity.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_electricity.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+
+book_chemistry.subtitle=Nobelium, Rhenium, Actinium, Titanium, Oxygen, Nitrogen
+book_chemistry.author=Maxmilian Vyroubal
+book_chemistry.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_chemistry.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
 
 #Creative Tabs
 
@@ -442,9 +469,11 @@ item.bronze_shovel.name=Bronze Shovel
 item.iron_shovel.name=Iron Shovel
 item.steel_shovel.name=Steel Shovel
 item.book_forging.name=Recipe Book
+item.book_electricity.name=Recipe Book
 item.book_ammo.name=Recipe Book
 item.book_computers.name=Recipe Book
 item.book_concrete.name=Recipe Book
+item.book_chemistry.name=Recipe Book
 item.iron_pipe.name=Iron Pipe
 item.scrap_pickaxe.name=Scrap Pickaxe
 item.scrap_shovel.name=Scrap Shovel
@@ -476,6 +505,8 @@ item.bullet_casing_mold.name=Bullet Casing Mold
 item.bullet_10mm=10mm Bullet
 item.cement_mold.name=Cement Mold
 item.sniper_rifle.name=Sniper Rifle
+item.magnet.name=Magnet
+item.photo_cell.name=Photovoltaic Cell
 
 #Blocks
 
@@ -688,13 +719,12 @@ tile.sedan_yellow.name=Yellow Sedan
 tile.sedan_white.name=White Sedan
 tile.sedan_black.name=Black Sedan
 
-tile.airplane_rotor.name=Airplane Engine
 tile.solar_panel.name=Solar Panel
 tile.wind_turbine.name=Wind Turbine
 tile.airplane_rotor.name=Airplane Engine
-tile.battery_station.name=Airplane Engine
+tile.battery_station.name=Battery Station
 tile.energy_switch.name=Energy Switch
-tile.generator_combustion.name=Energy Switch
+tile.generator_combustion.name=Coal Generator
 tile.thermometer.name=Thermometer
 
 tile.brick_block_mossy.name=Mossy Bricks
@@ -714,6 +744,7 @@ tile.burnt_chair.name=Burnt Chair
 tile.stone_brick_stairs_mossy.name=Mossy Stone Brick Stairs
 
 tile.radio.name=Radio
+tile.separator.name=Separator
 
 #Sound Subtitles
 
@@ -734,6 +765,7 @@ sdtm.subtitle.hunting_rifle.reload=Hunting Rifle Reload
 sdtm.subtitle.white_noise=White Noise
 sdtm.subtitle.emergency_alert_system=Emergency Alert System
 sdtm.subtitle.recipe_unlocked=Recipe Unlocked
+sdtm.subtitle.shotgun.shot=Shotgun Shot
 
 #Keybinding
 key.sevendaystomine.category=7 Days to Mine
@@ -798,8 +830,7 @@ entity.projectile_vomit.name=Projectile Vomit
 
 #Fluids
 fluid.gasoline=Gasoline
-
-
+fluid.mercury=Mercury
 
 
 

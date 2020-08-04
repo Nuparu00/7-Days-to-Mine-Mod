@@ -355,6 +355,7 @@ public class ModItems {
 	public static final Item BOOK_COMPUTERS = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/computers.json"),"computers").setRegistryName("book_computers").setUnlocalizedName("book_computers");
 	public static final Item BOOK_CONCRETE = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/concrete.json"),"concrete").setRegistryName("book_concrete").setUnlocalizedName("book_concrete");
 	public static final Item BOOK_ELECTRICITY = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/electricity.json"),"electricity").setRegistryName("book_electricity").setUnlocalizedName("book_electricity");
+	public static final Item BOOK_CHEMISTRY = new ItemRecipeBook(new ResourceLocation(SevenDaysToMine.MODID,"data/books/chemistry.json"),"chemistry").setRegistryName("book_chemistry").setUnlocalizedName("book_chemistry");
 	
 	public static final Item MICROPHONE = new Item().setRegistryName("microphone").setUnlocalizedName("microphone");
 	public static final Item BULLET_TIP = new ItemScrapable(EnumMaterial.LEAD,1).setRegistryName("bullet_tip").setUnlocalizedName("bullet_tip").setCreativeTab(SevenDaysToMine.TAB_FORGING);
@@ -384,5 +385,7 @@ public class ModItems {
 	public static final Item SHOTGUN_SAWED_OFF = new ItemShotgunShort().setRegistryName("shotgun_short").setUnlocalizedName("shotgun_short");
 	
 	public static final Item BELLOWS = new Item().setMaxStackSize(1).setCreativeTab(SevenDaysToMine.TAB_FORGING).setRegistryName("bellows").setUnlocalizedName("bellows");
+	public static final Item MAGNET = new Item().setMaxStackSize(16).setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setRegistryName("magnet").setUnlocalizedName("magnet");
+	public static final Item PHOTO_CELL = new Item().setMaxStackSize(16).setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setRegistryName("photo_cell").setUnlocalizedName("photo_cell");
 
 }

@@ -1,0 +1,26 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "III",
+    "SFS",
+    "SWS"
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "I": {
+      "item": "sevendaystomine:ironingot"
+    },
+    "S": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "W": {
+      "item": "sevendaystomine:wire"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:generator_combustion"
+  },
+  "recipe": "electricity"
+}

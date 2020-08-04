@@ -94,7 +94,10 @@ public class RecipeWorkbenchShaped extends ShapedRecipes {
 		EntityPlayer player = null;
 		Container c = ObfuscationReflectionHelper.getPrivateValue(InventoryCrafting.class, inv, "field_70465_c");
 
-		if (c instanceof ContainerWorkbench) {
+		if (c instanceof com.nuparu.sevendaystomine.inventory.ContainerWorkbench) {
+			com.nuparu.sevendaystomine.inventory.ContainerWorkbench container = (com.nuparu.sevendaystomine.inventory.ContainerWorkbench) c;
+			player = container.player;
+		} else if (c instanceof ContainerWorkbench) {
 			ContainerWorkbench container = (ContainerWorkbench) (c);
 			SlotCrafting slot = (SlotCrafting) container.getSlot(0);
 			player = (EntityPlayer) (ObfuscationReflectionHelper.getPrivateValue(SlotCrafting.class, slot,

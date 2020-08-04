@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
-import com.nuparu.sevendaystomine.inventory.ContainerGasGenerator;
+import com.nuparu.sevendaystomine.inventory.ContainerGenerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGeneratorBase;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -31,10 +32,9 @@ public class GuiGasGenerator extends GuiContainer {
 
 	int fluidHeight = 0;
 
-	public GuiGasGenerator(InventoryPlayer playerInventory, IInventory tileEntity) {
-		super(new ContainerGasGenerator(playerInventory, tileEntity));
-		this.playerInventory = playerInventory;
-		this.tileEntity = (TileEntityGasGenerator) tileEntity;
+	public GuiGasGenerator(ContainerGenerator container) {
+		super(container);
+		this.tileEntity = (TileEntityGasGenerator) container.callbacks;
 	}
 
 	@Override
@@ -46,8 +46,7 @@ public class GuiGasGenerator extends GuiContainer {
 				tooltip.add(tileEntity.getTank().getFluidAmount() + "mB");
 				drawHoveringText(tooltip, mouseX, mouseY);
 			}
-		}
-		else {
+		} else {
 			this.renderHoveredToolTip(mouseX, mouseY);
 		}
 
@@ -57,8 +56,10 @@ public class GuiGasGenerator extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = tileEntity.getDisplayName().getUnformattedText();
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-		fontRenderer.drawString(I18n.format("gui.electricity.voltage") + tileEntity.getPowerPerUpdate() + "J", 55, 44, 4210752);
-		fontRenderer.drawString(I18n.format("gui.electricity.stored")  + tileEntity.getVoltageStored() + "/" + tileEntity.getCapacity() + "J", 55, 54, 4210752);
+		fontRenderer.drawString(I18n.format("gui.electricity.voltage") + tileEntity.getPowerPerUpdate() + "J", 55, 44,
+				4210752);
+		fontRenderer.drawString(I18n.format("gui.electricity.stored") + tileEntity.getVoltageStored() + "/"
+				+ tileEntity.getCapacity() + "J", 55, 54, 4210752);
 		mc.getTextureManager().bindTexture(resourceLocation);
 		drawTexturedModalRect(9, 8, 176, 31, 14, 71);
 		drawTexturedModalRect(30 + (int) (tileEntity.getTemperature() * 138), 32, 190, 31, 6, 8);
@@ -72,7 +73,7 @@ public class GuiGasGenerator extends GuiContainer {
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;
 		drawTexturedModalRect(marginHorizontal, marginVertical, 0, 0, xSize, ySize);
-		if (TileEntityGasGenerator.isBurning(tileEntity)) {
+		if (tileEntity.isBurning()) {
 			int k = this.getBurnLeftScaled(13);
 			this.drawTexturedModalRect(marginHorizontal + 30, marginVertical + 45 + 12 - k, 176, 12 - k, 14, k + 1);
 		}
@@ -131,12 +132,12 @@ public class GuiGasGenerator extends GuiContainer {
 	}
 
 	private int getBurnLeftScaled(int pixels) {
-		int i = this.tileEntity.getField(1);
+		int i = this.tileEntity.getCurrentBurnTime();
 		if (i == 0) {
 			i = 200;
 		}
 
-		return this.tileEntity.getField(0) * pixels / i;
+		return this.tileEntity.getBurnTime() * pixels / i;
 	}
 
 }

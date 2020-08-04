@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.block;
 
 import javax.annotation.Nullable;
 
+import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
 
 import net.minecraft.block.Block;
@@ -54,6 +55,7 @@ public class BlockChestOld extends BlockTileProvider<TileEntityOldChest> {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		setHardness(2.1f);
 		setResistance(3f);
+		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 
 	}
 	

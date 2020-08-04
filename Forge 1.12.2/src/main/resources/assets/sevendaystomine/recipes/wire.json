@@ -1,0 +1,13 @@
+{
+   "type":"sevendaystomine:crafting_locked_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:copperingot"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:wire",
+      "count":4
+   },
+  "recipe": "electricity"
+}

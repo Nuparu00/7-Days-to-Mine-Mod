@@ -3,9 +3,16 @@ package com.nuparu.sevendaystomine.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.nuparu.sevendaystomine.electricity.ElectricConnection;
 import com.nuparu.sevendaystomine.electricity.EnumDeviceType;
 import com.nuparu.sevendaystomine.electricity.IVoltage;
+import com.nuparu.sevendaystomine.inventory.ContainerGenerator;
+import com.nuparu.sevendaystomine.inventory.container.ContainerBatteryStation;
+import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
+import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
+import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 import com.nuparu.sevendaystomine.util.ITemperature;
 import com.nuparu.sevendaystomine.util.ModConstants;
 
@@ -27,21 +34,23 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 
-public abstract class TileEntityGeneratorBase extends TileEntityLockableLoot
-		implements ISidedInventory, IVoltage, ITemperature, ITickable {
+public abstract class TileEntityGeneratorBase extends TileEntityItemHandler<ItemHandlerNameable> implements IVoltage, ITemperature, ITickable {
 
-	protected NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
-	protected String customName;
 
 	protected List<ElectricConnection> inputs = new ArrayList<ElectricConnection>();
 	protected List<ElectricConnection> outputs = new ArrayList<ElectricConnection>();
 
 	protected int burnTime;
-	protected int currentBurnTime;
+	private int currentBurnTime;
 	protected int cookTime;
 	protected int totalCookTime;
 
@@ -58,6 +67,7 @@ public abstract class TileEntityGeneratorBase extends TileEntityLockableLoot
 	public TileEntityGeneratorBase() {
 
 	}
+	
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
@@ -79,12 +89,6 @@ public abstract class TileEntityGeneratorBase extends TileEntityLockableLoot
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		this.inventory = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
-		ItemStackHelper.loadAllItems(compound, this.inventory);
-
-		if (compound.hasKey("CustomName", 8)) {
-			this.customName = compound.getString("CustomName");
-		}
 
 		isBurning = compound.getBoolean("isBurning");
 		temperature = compound.getDouble("temperature");
@@ -120,11 +124,6 @@ public abstract class TileEntityGeneratorBase extends TileEntityLockableLoot
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		ItemStackHelper.saveAllItems(compound, this.inventory);
-
-		if (this.hasCustomName()) {
-			compound.setString("CustomName", this.customName);
-		}
 
 		compound.setBoolean("isBurning", isBurning);
 		compound.setDouble("temperature", temperature);
@@ -173,60 +172,6 @@ public abstract class TileEntityGeneratorBase extends TileEntityLockableLoot
 		return count;
 	}
 
-
-	@Override
-	public int getSizeInventory() {
-		return this.inventory.size();
-	}
-
-	public NonNullList<ItemStack> getInventory() {
-		return this.inventory;
-	}
-	
-	@Override
-	protected NonNullList<ItemStack> getItems() {
-		return inventory;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		for (ItemStack itemstack : this.inventory) {
-			if (!itemstack.isEmpty()) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		return this.inventory.get(index);
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		return ItemStackHelper.getAndSplit(this.inventory, index, count);
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		return ItemStackHelper.getAndRemove(this.inventory, index);
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
-		this.inventory.set(index, stack);
-		if (stack.getCount() > this.getInventoryStackLimit()) {
-			stack.setCount(this.getInventoryStackLimit());
-		}
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer player) {
 		if (this.world.getTileEntity(this.pos) != this) {
@@ -237,58 +182,6 @@ public abstract class TileEntityGeneratorBase extends TileEntityLockableLoot
 		}
 	}
 
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return true;
-	}
-
-	@Override
-	public void clear() {
-		this.inventory.clear();
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return this.customName != null && !this.customName.isEmpty();
-	}
-
-	public void setCustomInventoryName(String name) {
-		this.customName = name;
-	}
-
-	@Override
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-		return null;
-	}
-
-
-	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
-		if(side==EnumFacing.UP) {
-			return new int[] {0};
-		}
-		return new int[]{};
-	}
-
-	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-		return false;
-	}
-
-	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		return false;
-	}
 
 	@Override
 	public void setTemperature(double temperature) {
@@ -408,51 +301,6 @@ public abstract class TileEntityGeneratorBase extends TileEntityLockableLoot
 		return this.burnTime > 0;
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static boolean isBurning(IInventory inv) {
-		return inv.getField(0) > 0;
-	}
-
-	@Override
-	public int getField(int id) {
-		switch (id) {
-		case 0:
-			return this.burnTime;
-		case 1:
-			return this.currentBurnTime;
-		case 2:
-			return this.cookTime;
-		case 3:
-			return this.totalCookTime;
-		default:
-			return 0;
-		}
-
-	}
-
-	@Override
-	public void setField(int id, int value) {
-		switch (id) {
-		case 0:
-			this.burnTime = value;
-			break;
-		case 1:
-			this.currentBurnTime = value;
-			break;
-		case 2:
-			this.cookTime = value;
-			break;
-		case 3:
-			this.totalCookTime = value;
-		}
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 4;
-	}
-
 	@Override
 	public long getCapacity() {
 		return this.capacity;
@@ -499,4 +347,24 @@ public abstract class TileEntityGeneratorBase extends TileEntityLockableLoot
 	public boolean isPassive() {
 		return false;
 	}
+
+	public int getCurrentBurnTime() {
+		return currentBurnTime;
+	}
+	
+	public int getBurnTime() {
+		return burnTime;
+	}
+	
+	public void setDisplayName(String displayName) {
+		inventory.setDisplayName(new TextComponentString(displayName));
+	}
+	
+	@Override
+	@Nullable
+    public ITextComponent getDisplayName()
+    {
+        return inventory.getDisplayName();
+    }
+	
 }

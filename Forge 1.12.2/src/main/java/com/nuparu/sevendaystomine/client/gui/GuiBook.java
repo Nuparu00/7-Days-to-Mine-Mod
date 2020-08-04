@@ -59,6 +59,7 @@ public class GuiBook extends GuiScreen {
 			return;
 		}
 		Page page = data.pages.get(pageIndex);
+		if(page == null || page.res == null) return;
 		mc.getTextureManager().bindTexture(page.res);
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;

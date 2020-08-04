@@ -353,6 +353,8 @@ public class ModBlocks {
 			.setRegistryName("generator_combustion").setUnlocalizedName("generator_combustion");
 	public static final Block GASOLINE = new BlockGasoline(ModFluids.GASOLINE, Material.WATER)
 			.setRegistryName("gasoline").setUnlocalizedName("gasoline");
+	public static final Block MERCURY = new BlockMercury(ModFluids.MERCURY, Material.WATER)
+			.setRegistryName("mercury").setUnlocalizedName("mercury");
 	public static final Block ENERGY_POLE = new BlockEnergyPole().setRegistryName("energy_pole")
 			.setUnlocalizedName("energy_pole");
 	public static final Block ENERGY_SWITCH = new BlockEnergySwitch().setRegistryName("energy_switch")
@@ -471,5 +473,7 @@ public class ModBlocks {
 			.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
 	public static final Block GLOBE = new BlockGlobe().setRegistryName("globe").setUnlocalizedName("globe")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	
+	public static final Block SEPARATOR = new BlockSeparator().setRegistryName("separator").setUnlocalizedName("separator");
 
 }

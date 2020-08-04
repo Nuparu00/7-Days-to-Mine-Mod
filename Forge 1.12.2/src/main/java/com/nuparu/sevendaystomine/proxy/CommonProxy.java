@@ -74,6 +74,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
 import com.nuparu.sevendaystomine.tileentity.TileEntityRadio;
 import com.nuparu.sevendaystomine.tileentity.TileEntityRefrigerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityScreenProjector;
+import com.nuparu.sevendaystomine.tileentity.TileEntitySeparator;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySolarPanel;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
@@ -96,6 +97,8 @@ import com.nuparu.sevendaystomine.util.computer.ApplicationRegistry;
 import com.nuparu.sevendaystomine.util.computer.ProcessRegistry;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -170,6 +173,7 @@ public class CommonProxy {
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 		EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+
 	}
 
 	public void serverStarting(FMLServerStartingEvent event) {
@@ -258,6 +262,7 @@ public class CommonProxy {
 		registerTileEntity(TileEntityCamera.class, "camera");
 		registerTileEntity(TileEntityRadio.class, "radio");
 		registerTileEntity(TileEntityGlobe.class, "globe");
+		registerTileEntity(TileEntitySeparator.class, "separator");
 	}
 	
 	public void registerTileEntity(Class<? extends TileEntity> te, String name) {

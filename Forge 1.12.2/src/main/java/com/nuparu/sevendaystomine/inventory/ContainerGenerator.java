@@ -1,5 +1,9 @@
 package com.nuparu.sevendaystomine.inventory;
 
+import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGeneratorBase;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -7,28 +11,30 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerGasGenerator extends Container {
+public class ContainerGenerator extends Container {
 
-	public final IInventory tileEntity;
-	
-	public ContainerGasGenerator(InventoryPlayer playerInventory, final IInventory tileEntity) {
-		this.tileEntity = tileEntity;
-		if (tileEntity instanceof TileEntity) {
+	public final TileEntityGeneratorBase tileEntity;
+	public final IContainerCallbacks callbacks;
 
-			this.addSlotToContainer(new Slot(tileEntity, 0, 29, 60));
+	public ContainerGenerator(IItemHandlerNameable playerInventoryWrapper, ItemStackHandler inventory,
+			EntityPlayer player,IContainerCallbacks containerCallbacks) {
+		tileEntity = (TileEntityGeneratorBase)containerCallbacks;
+		callbacks = containerCallbacks;
+		callbacks.onContainerOpened(player);
+		this.addSlotToContainer(new SlotItemHandler(inventory, 0, 29, 60));
 
-			for (int i = 0; i < 3; ++i) {
-				for (int j = 0; j < 9; ++j) {
-					this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-				}
+		for (int i = 0; i < 3; ++i) {
+			for (int j = 0; j < 9; ++j) {
+				this.addSlotToContainer(
+						new SlotItemHandler(playerInventoryWrapper, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
+		}
 
-			for (int k = 0; k < 9; ++k) {
-				this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 142));
-			}
-		} else {
-			throw new IllegalArgumentException("Passed IInventory is not instance of TileEntity!");
+		for (int k = 0; k < 9; ++k) {
+			this.addSlotToContainer(new SlotItemHandler(playerInventoryWrapper, k, 8 + k * 18, 142));
 		}
 	}
 

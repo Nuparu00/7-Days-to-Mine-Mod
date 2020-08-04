@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.util;
 
 import com.nuparu.sevendaystomine.capability.ExtendedInventoryProvider;
+import com.nuparu.sevendaystomine.client.gui.GuiBook;
 import com.nuparu.sevendaystomine.client.gui.GuiCodeSafeLocked;
 import com.nuparu.sevendaystomine.client.gui.GuiDialogue;
 import com.nuparu.sevendaystomine.client.gui.GuiKeySafeLocked;
@@ -32,7 +33,7 @@ import com.nuparu.sevendaystomine.inventory.ContainerCampfire;
 import com.nuparu.sevendaystomine.inventory.ContainerChemistryStation;
 import com.nuparu.sevendaystomine.inventory.ContainerComputer;
 import com.nuparu.sevendaystomine.inventory.ContainerForge;
-import com.nuparu.sevendaystomine.inventory.ContainerGasGenerator;
+import com.nuparu.sevendaystomine.inventory.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.ContainerLootableCorpse;
 import com.nuparu.sevendaystomine.inventory.ContainerMonitor;
 import com.nuparu.sevendaystomine.inventory.ContainerProjector;
@@ -44,6 +45,7 @@ import com.nuparu.sevendaystomine.inventory.container.ContainerBackpack;
 import com.nuparu.sevendaystomine.inventory.container.ContainerMinibike;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
+import com.nuparu.sevendaystomine.item.ItemGuide;
 import com.nuparu.sevendaystomine.tileentity.TileEntityItemHandler;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMonitor;
 
@@ -63,6 +65,10 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+
+		ItemStack stack = player.getHeldItemMainhand();
+		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+
 		if (ID == 9) {
 			Entity entity = world.getEntityByID(y);
 			if (entity != null && entity instanceof EntityLootableCorpse) {
@@ -73,9 +79,6 @@ public class GuiHandler implements IGuiHandler {
 		if (ID == 11) {
 			return new ContainerWorkbench(player, world, new BlockPos(x, y, z));
 		}
-		if (ID == 15) {
-			return null;
-		}
 		if (ID == 17) {
 			Entity entity = world.getEntityByID(y);
 			if (entity != null && entity instanceof EntityMinibike) {
@@ -84,7 +87,6 @@ public class GuiHandler implements IGuiHandler {
 			}
 		}
 		if (ID == 18) {
-			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem() == ModItems.BACKPACK) {
 				final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player
 						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
@@ -101,47 +103,50 @@ public class GuiHandler implements IGuiHandler {
 				return new ContainerAirdrop(player.inventory, airdrop);
 			}
 		}
-		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-		if (tileEntity != null) {
-			switch (ID) {
-			case 0:
-				return new ContainerCampfire(player.inventory, (IInventory) tileEntity);
-			case 1:
-				return new ContainerForge(player.inventory, (IInventory) tileEntity);
-			case 2:
-				return new ContainerSafe(player.inventory, (IInventory) tileEntity);
-			case 3:
-				return null;
-			case 4:
-				return null;
-			case 5:
-				return new ContainerSmall(player.inventory, (IInventory) tileEntity);
-			case 6:
-				return new ContainerBig(player.inventory, (IInventory) tileEntity);
-			case 7:
-				return new ContainerComputer(player.inventory, (IInventory) tileEntity);
-			case 8:
-				return new ContainerMonitor(player, (TileEntityMonitor) tileEntity);
-			case 10:
-				return new ContainerTiny(player.inventory, (IInventory) tileEntity);
-			case 12:
-				return new ContainerChemistryStation(player.inventory, (IInventory) tileEntity);
-			case 13:
-				return new ContainerGasGenerator(player.inventory, (IInventory) tileEntity);
-			case 14:
-				return new ContainerProjector(player.inventory, (IInventory) tileEntity);
-			case 16:
-				if (tileEntity instanceof TileEntityItemHandler) {
-					return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-				}
-			case 19:
-				if (tileEntity instanceof TileEntityItemHandler) {
-					return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-				}
-			case 20:
-				return new ContainerGasGenerator(player.inventory, (IInventory) tileEntity);
+		switch (ID) {
+		case 0:
+			return new ContainerCampfire(player.inventory, (IInventory) tileEntity);
+		case 1:
+			return new ContainerForge(player.inventory, (IInventory) tileEntity);
+		case 2:
+			return new ContainerSafe(player.inventory, (IInventory) tileEntity);
+		case 3:
+			return null;
+		case 4:
+			return null;
+		case 5:
+			return new ContainerSmall(player.inventory, (IInventory) tileEntity);
+		case 6:
+			return new ContainerBig(player.inventory, (IInventory) tileEntity);
+		case 7:
+			return new ContainerComputer(player.inventory, (IInventory) tileEntity);
+		case 8:
+			return new ContainerMonitor(player, (TileEntityMonitor) tileEntity);
+		case 10:
+			return new ContainerTiny(player.inventory, (IInventory) tileEntity);
+		case 12:
+			return new ContainerChemistryStation(player.inventory, (IInventory) tileEntity);
+		case 13:
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
 			}
-
+			return new ContainerProjector(player.inventory, (IInventory) tileEntity);
+		case 15:
+			return null;
+		case 16:
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+			}
+		case 19:
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+			}
+		case 20:
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+			}
+		case 22:
+			return null;
 		}
 
 		return null;
@@ -150,6 +155,10 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+
+		ItemStack stack = player.getHeldItemMainhand();
+		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+
 		if (ID == 9) {
 			Entity entity = world.getEntityByID(y);
 			if (entity != null && entity instanceof EntityLootableCorpse) {
@@ -175,7 +184,6 @@ public class GuiHandler implements IGuiHandler {
 			}
 		}
 		if (ID == 18) {
-			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem() == ModItems.BACKPACK) {
 				final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player
 						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
@@ -196,57 +204,65 @@ public class GuiHandler implements IGuiHandler {
 						new ContainerAirdrop(player.inventory, airdrop));
 			}
 		}
-		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-		if (tileEntity != null) {
-			switch (ID) {
-			case 0:
-				return new GuiCampfire(player.inventory, (IInventory) tileEntity);
-			case 1:
-				return new GuiForge(player.inventory, (IInventory) tileEntity);
-			case 2:
-				return new GuiSafeUnlocked(player.inventory, (IInventory) tileEntity,
-						new ContainerSafe(player.inventory, (IInventory) tileEntity));
-			case 3:
-				return new GuiCodeSafeLocked(tileEntity, new BlockPos(x, y, z));
-			case 4:
-				return new GuiKeySafeLocked(tileEntity, new BlockPos(x, y, z));
-			case 5:
-				return new GuiContainerSmallOld(player.inventory, (IInventory) tileEntity,
-						new ContainerSmall(player.inventory, (IInventory) tileEntity));
-			case 6:
-				return new GuiContainerBig(player.inventory, (IInventory) tileEntity,
-						new ContainerBig(player.inventory, (IInventory) tileEntity));
-			case 7:
-				return new GuiComputer(player.inventory, (IInventory) tileEntity);
-			case 8:
-				return new GuiMonitor(player, (TileEntityMonitor) tileEntity);
-			case 10:
-				return new GuiContainerTiny(player.inventory, (IInventory) tileEntity,
-						new ContainerTiny(player.inventory, (IInventory) tileEntity));
-			case 12:
-				return new GuiChemistryStation(player.inventory, (IInventory) tileEntity);
-			case 13:
-				return new GuiGasGenerator(player.inventory, (IInventory) tileEntity);
-			case 14:
-				return new GuiProjector(player.inventory, (IInventory) tileEntity,
-						new ContainerProjector(player.inventory, (IInventory) tileEntity));
-			case 16:
-				if (tileEntity instanceof TileEntityItemHandler) {
 
-					return new com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerSmall(
-							(com.nuparu.sevendaystomine.inventory.container.ContainerSmall) ((TileEntityItemHandler<?>) tileEntity)
-									.createContainer(player));
+		switch (ID) {
+		case 0:
+			return new GuiCampfire(player.inventory, (IInventory) tileEntity);
+		case 1:
+			return new GuiForge(player.inventory, (IInventory) tileEntity);
+		case 2:
+			return new GuiSafeUnlocked(player.inventory, (IInventory) tileEntity,
+					new ContainerSafe(player.inventory, (IInventory) tileEntity));
+		case 3:
+			return new GuiCodeSafeLocked(tileEntity, new BlockPos(x, y, z));
+		case 4:
+			return new GuiKeySafeLocked(tileEntity, new BlockPos(x, y, z));
+		case 5:
+			return new GuiContainerSmallOld(player.inventory, (IInventory) tileEntity,
+					new ContainerSmall(player.inventory, (IInventory) tileEntity));
+		case 6:
+			return new GuiContainerBig(player.inventory, (IInventory) tileEntity,
+					new ContainerBig(player.inventory, (IInventory) tileEntity));
+		case 7:
+			return new GuiComputer(player.inventory, (IInventory) tileEntity);
+		case 8:
+			return new GuiMonitor(player, (TileEntityMonitor) tileEntity);
+		case 10:
+			return new GuiContainerTiny(player.inventory, (IInventory) tileEntity,
+					new ContainerTiny(player.inventory, (IInventory) tileEntity));
+		case 12:
+			return new GuiChemistryStation(player.inventory, (IInventory) tileEntity);
+		case 13:
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return new GuiGasGenerator(
+						(ContainerGenerator) ((TileEntityItemHandler<?>) tileEntity)
+						.createContainer(player));
 				}
-			case 19:
-				if (tileEntity instanceof TileEntityItemHandler) {
+		case 14:
+			return new GuiProjector(player.inventory, (IInventory) tileEntity,
+					new ContainerProjector(player.inventory, (IInventory) tileEntity));
+		case 16:
+			if (tileEntity instanceof TileEntityItemHandler) {
 
-					return new com.nuparu.sevendaystomine.client.gui.inventory.GuiBatteryStation(
-							(com.nuparu.sevendaystomine.inventory.container.ContainerBatteryStation) ((TileEntityItemHandler<?>) tileEntity)
-									.createContainer(player));
-				}
-			case 20:
-				return new GuiCombustionGenerator(player.inventory, (IInventory) tileEntity);
+				return new com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerSmall(
+						(com.nuparu.sevendaystomine.inventory.container.ContainerSmall) ((TileEntityItemHandler<?>) tileEntity)
+								.createContainer(player));
 			}
+		case 19:
+			if (tileEntity instanceof TileEntityItemHandler) {
+
+				return new com.nuparu.sevendaystomine.client.gui.inventory.GuiBatteryStation(
+						(com.nuparu.sevendaystomine.inventory.container.ContainerBatteryStation) ((TileEntityItemHandler<?>) tileEntity)
+								.createContainer(player));
+			}
+		case 20:
+			if (tileEntity instanceof TileEntityItemHandler) {
+			return new GuiCombustionGenerator(
+					(ContainerGenerator) ((TileEntityItemHandler<?>) tileEntity)
+					.createContainer(player));
+			}
+		case 22:
+			return new GuiBook(((ItemGuide) stack.getItem()).data);
 		}
 
 		return null;
