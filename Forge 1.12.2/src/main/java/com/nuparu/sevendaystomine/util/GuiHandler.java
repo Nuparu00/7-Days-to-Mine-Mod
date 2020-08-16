@@ -21,6 +21,7 @@ import com.nuparu.sevendaystomine.client.gui.inventory.GuiGasGenerator;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiMinibike;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiProjector;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiSafeUnlocked;
+import com.nuparu.sevendaystomine.client.gui.inventory.GuiSeparator;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiWorkbench;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.entity.EntityHuman;
@@ -33,7 +34,6 @@ import com.nuparu.sevendaystomine.inventory.ContainerCampfire;
 import com.nuparu.sevendaystomine.inventory.ContainerChemistryStation;
 import com.nuparu.sevendaystomine.inventory.ContainerComputer;
 import com.nuparu.sevendaystomine.inventory.ContainerForge;
-import com.nuparu.sevendaystomine.inventory.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.ContainerLootableCorpse;
 import com.nuparu.sevendaystomine.inventory.ContainerMonitor;
 import com.nuparu.sevendaystomine.inventory.ContainerProjector;
@@ -42,7 +42,9 @@ import com.nuparu.sevendaystomine.inventory.ContainerSmall;
 import com.nuparu.sevendaystomine.inventory.ContainerTiny;
 import com.nuparu.sevendaystomine.inventory.ContainerWorkbench;
 import com.nuparu.sevendaystomine.inventory.container.ContainerBackpack;
+import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.container.ContainerMinibike;
+import com.nuparu.sevendaystomine.inventory.container.ContainerSeparator;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 import com.nuparu.sevendaystomine.item.ItemGuide;
@@ -147,6 +149,10 @@ public class GuiHandler implements IGuiHandler {
 			}
 		case 22:
 			return null;
+		case 23:
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+			}
 		}
 
 		return null;
@@ -235,9 +241,8 @@ public class GuiHandler implements IGuiHandler {
 		case 13:
 			if (tileEntity instanceof TileEntityItemHandler) {
 				return new GuiGasGenerator(
-						(ContainerGenerator) ((TileEntityItemHandler<?>) tileEntity)
-						.createContainer(player));
-				}
+						(ContainerGenerator) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
+			}
 		case 14:
 			return new GuiProjector(player.inventory, (IInventory) tileEntity,
 					new ContainerProjector(player.inventory, (IInventory) tileEntity));
@@ -257,14 +262,19 @@ public class GuiHandler implements IGuiHandler {
 			}
 		case 20:
 			if (tileEntity instanceof TileEntityItemHandler) {
-			return new GuiCombustionGenerator(
-					(ContainerGenerator) ((TileEntityItemHandler<?>) tileEntity)
-					.createContainer(player));
+				return new GuiCombustionGenerator(
+						(ContainerGenerator) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
 			}
 		case 22:
 			return new GuiBook(((ItemGuide) stack.getItem()).data);
-		}
 
+		case 23:
+			if (tileEntity instanceof TileEntityItemHandler) {
+
+				return new GuiSeparator(
+						(ContainerSeparator) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
+			}
+		}
 		return null;
 	}
 

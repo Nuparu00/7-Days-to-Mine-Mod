@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.electricity.ElectricConnection;
 import com.nuparu.sevendaystomine.electricity.IVoltage;
-import com.nuparu.sevendaystomine.inventory.ContainerGenerator;
+import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;

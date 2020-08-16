@@ -1,28 +1,28 @@
 {  
    "upgrade_wood":{  
       "category":"block",
-      "subtitle":"sdtm.subtitle.upgrade_wood",
+      "subtitle":"subtitle.upgrade_wood",
       "sounds":[  
          "sevendaystomine:sdtm.upgrade_wood"
       ]
    },
    "campfire_crackling":{  
       "category":"block",
-      "subtitle":"sdtm.subtitle.campfire_crackling",
+      "subtitle":"subtitle.campfire_crackling",
       "sounds":[  
          "sevendaystomine:sdtm.campfire_crackling"
       ]
    },
    "heartbeat":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.heartbeat",
+      "subtitle":"subtitle.heartbeat",
       "sounds":[  
          "sevendaystomine:sdtm.heartbeat"
       ]
    },
    "main_menu_00":{  
       "category":"music",
-      "subtitle":"sdtm.subtitle.menu_00",
+      "subtitle":"subtitle.menu_00",
       "sounds":[  
          {  
             "name":"sevendaystomine:sdtm.menu_00",
@@ -32,7 +32,7 @@
    },
    "main_menu_01":{  
       "category":"music",
-      "subtitle":"sdtm.subtitle.menu_01",
+      "subtitle":"subtitle.menu_01",
       "sounds":[  
          {  
             "name":"sevendaystomine:sdtm.menu_01",
@@ -42,70 +42,70 @@
    },
    "pistol.shot":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.pistol.shot",
+      "subtitle":"subtitle.pistol.shot",
       "sounds":[  
          "sevendaystomine:sdtm.pistol.shot"
       ]
    },
    "pistol.dryshot":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.pistol.dryshot",
+      "subtitle":"subtitle.pistol.dryshot",
       "sounds":[  
          "sevendaystomine:sdtm.pistol.dryshot"
       ]
    },
    "pistol.reload":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.pistol.reload",
+      "subtitle":"subtitle.pistol.reload",
       "sounds":[  
          "sevendaystomine:sdtm.pistol.reload"
       ]
    },
    "ak47.shot":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.ak47.shot",
+      "subtitle":"subtitle.ak47.shot",
       "sounds":[  
          "sevendaystomine:sdtm.ak47.shot"
       ]
    },
    "ak47.reload":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.ak47.reload",
+      "subtitle":"subtitle.ak47.reload",
       "sounds":[  
          "sevendaystomine:sdtm.ak47.reload"
       ]
    },
    "door.locked":{  
       "category":"block",
-      "subtitle":"sdtm.subtitle.door.locked",
+      "subtitle":"subtitle.door.locked",
       "sounds":[  
          "sevendaystomine:sdtm.door.locked"
       ]
    },
    "camera.take":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.camera.take",
+      "subtitle":"subtitle.camera.take",
       "sounds":[  
          "sevendaystomine:sdtm.camera.take"
       ]
    },
    "hunting_rifle.shot":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.hunting_rifle.shot",
+      "subtitle":"subtitle.hunting_rifle.shot",
       "sounds":[  
          "sevendaystomine:sdtm.hunting_rifle.shot"
       ]
    },
    "hunting_rifle.reload":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.hunting_rifle.reload",
+      "subtitle":"subtitle.hunting_rifle.reload",
       "sounds":[  
          "sevendaystomine:sdtm.hunting_rifle.reload"
       ]
    },
    "white_noise":{  
       "category":"record",
-      "subtitle":"sdtm.subtitle.white_noise",
+      "subtitle":"subtitle.white_noise",
       "sounds":[  
          {  
             "name":"sevendaystomine:white_noise",
@@ -115,7 +115,7 @@
    },
    "emergency_alert_system":{  
       "category":"record",
-      "subtitle":"sdtm.subtitle.emergency_alert_system",
+      "subtitle":"subtitle.emergency_alert_system",
       "sounds":[  
          {  
             "name":"sevendaystomine:emergency_alert_system",
@@ -125,16 +125,30 @@
    },
    "recipe_unlocked":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.recipe_unlocked",
+      "subtitle":"subtitle.recipe_unlocked",
       "sounds":[  
          "sevendaystomine:recipe_unlocked"
       ]
    },
    "shotgun.shot":{  
       "category":"player",
-      "subtitle":"sdtm.subtitle.shotgun.shot",
+      "subtitle":"subtitle.shotgun.shot",
       "sounds":[  
          "sevendaystomine:shotgun.shot"
       ]
-   }   
+   },
+   "mp5.shot":{  
+      "category":"player",
+      "subtitle":"subtitle.mp5.shot",
+      "sounds":[  
+         "sevendaystomine:mp5.shot"
+      ]
+   }   ,
+   "flamethrower.shot":{  
+      "category":"player",
+      "subtitle":"subtitle.flamethrower.shot",
+      "sounds":[  
+         "sevendaystomine:flamethrower.shot"
+      ]
+   }      
 }

@@ -1,0 +1,31 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "WWW",
+    "SCH",
+    "III"
+  ],
+  "key": {
+    "W": {
+      "item": "sevendaystomine:woodplank"
+    }, 
+    "S": {
+      "item": "sevendaystomine:screwdriver",
+      "data": 32767
+    }, 
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "H": {
+      "item": "sevendaystomine:clawhammer",
+      "data": 32767
+    },
+    "I": {
+      "item": "sevendaystomine:ironingot"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:workbench"
+  },
+  "recipe": "metalworking"
+}

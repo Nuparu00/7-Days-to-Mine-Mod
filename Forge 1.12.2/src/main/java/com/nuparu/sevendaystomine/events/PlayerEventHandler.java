@@ -18,10 +18,12 @@ import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.IQuality;
 import com.nuparu.sevendaystomine.item.ItemBackpack;
+import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
 
+import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,6 +45,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -158,8 +161,6 @@ public class PlayerEventHandler {
 		if (!(event.getEntityLiving() instanceof EntityPlayer))
 			return;
 		final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-		if (player.world.isRemote)
-			return;
 		IItemHandlerExtended extendedInv = CapabilityHelper.getExtendedInventory(player);
 		for (int i = 0; i < extendedInv.getSlots(); i++) {
 			ItemStack stack = extendedInv.getStackInSlot(i);
@@ -172,7 +173,7 @@ public class PlayerEventHandler {
 	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
-		if (player.world.isRemote || event.getHand() == EnumHand.OFF_HAND)
+		if (event.getHand() == EnumHand.OFF_HAND)
 			return;
 
 		ItemStack stack = player.getHeldItemMainhand();
@@ -192,19 +193,34 @@ public class PlayerEventHandler {
 		if (ray != null)
 
 			if (ray.typeOfHit == RayTraceResult.Type.BLOCK) {
+				boolean flag = false;
 				BlockPos blockpos = ray.getBlockPos();
-				if (world.getBlockState(blockpos).getMaterial() == Material.WATER) {
-
-					ep.addThirst(35);
-					ep.addStamina(20);
-					player.removePotionEffect(Potions.thirst);
+				IBlockState state = world.getBlockState(blockpos);
+				if (state.getMaterial() == Material.WATER) {
+					flag = true;
+				} else if (state.getBlock() instanceof BlockCauldron) {
+					int level = state.getValue(BlockCauldron.LEVEL);
+					if (level > 0) {
+						flag = true;
+						if (!world.isRemote) {
+							world.setBlockState(blockpos, state.withProperty(BlockCauldron.LEVEL, level - 1));
+						}
+					}
+				}
+				if (flag) {
 					world.playSound(player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_DRINK,
 							SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.1F + 0.9F, false);
-					if (world.rand.nextInt(10) == 0) {
-						PotionEffect effect = new PotionEffect(Potions.dysentery, world.rand.nextInt(4000) + 18000, 4,
-								false, false);
-						effect.setCurativeItems(new ArrayList<ItemStack>());
-						player.addPotionEffect(effect);
+					if (!world.isRemote) {
+						ep.addThirst(35);
+						ep.addStamina(20);
+						player.removePotionEffect(Potions.thirst);
+
+						if (world.rand.nextInt(10) == 0) {
+							PotionEffect effect = new PotionEffect(Potions.dysentery, world.rand.nextInt(4000) + 18000,
+									4, false, false);
+							effect.setCurativeItems(new ArrayList<ItemStack>());
+							player.addPotionEffect(effect);
+						}
 					}
 				}
 			}
@@ -253,7 +269,7 @@ public class PlayerEventHandler {
 	}
 
 	@SubscribeEvent
-	public void playerLoggedIn(PlayerLoggedInEvent event) {
+	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		final EntityPlayer player = event.player;
 		final ItemStack stack = new ItemStack(ModItems.SURVIVAL_GUIDE);
 		final NBTTagCompound entityData = player.getEntityData();
@@ -271,4 +287,23 @@ public class PlayerEventHandler {
 		}
 	}
 
+	@SubscribeEvent
+	public void onAnvilUpdate(AnvilUpdateEvent event) {
+		ItemStack left = event.getLeft();
+		ItemStack right = event.getRight();
+
+		if (left.getItem() instanceof IQuality && right.getItem() == left.getItem()) {
+			ItemStack stack = left.copy();
+			int l = ItemQuality.getQualityForStack(left);
+			int r = ItemQuality.getQualityForStack(right);
+			ItemQuality.setQualityForStack(stack, Math.max(l, r) + 6);
+			l = left.getItemDamage();
+			r = right.getItemDamage();
+			int m = r < l ? right.getMaxDamage() : left.getMaxDamage();
+			stack.setItemDamage(Math.max(l, r) - (m - Math.min(l, r)));
+			event.setOutput(stack);
+			event.setCost(1);
+			event.setMaterialCost(1);
+		}
+	}
 }

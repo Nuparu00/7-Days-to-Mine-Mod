@@ -91,7 +91,7 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	public float wheelAngle;
 	public float wheelAnglePrev;
 	private float deltaRotation;
-	
+
 	public static final float MAX_FUEL = 5000;
 
 	public EntityMinibike(World world) {
@@ -99,6 +99,17 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		this.setSize(0.8F, 0.75F);
 		this.stepHeight = 1.25f;
 		initInventory();
+	}
+
+	public EntityMinibike(World worldIn, double x, double y, double z) {
+		this(worldIn);
+		this.setPosition(x, y, z);
+		this.motionX = 0.0D;
+		this.motionY = 0.0D;
+		this.motionZ = 0.0D;
+		this.prevPosX = x;
+		this.prevPosY = y;
+		this.prevPosZ = z;
 	}
 
 	protected void initInventory() {

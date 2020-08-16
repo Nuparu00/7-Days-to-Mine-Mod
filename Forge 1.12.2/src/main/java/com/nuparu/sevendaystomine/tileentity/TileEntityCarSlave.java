@@ -91,7 +91,7 @@ public class TileEntityCarSlave extends TileEntityCar implements ITickable {
 	}
 
 	public TileEntityCarMaster getMaster() {
-		if (this.masterTE == null) {
+		if (this.masterTE == null && masterPos != null) {
 			TileEntity TE = world.getTileEntity(masterPos);
 			if (TE instanceof TileEntityCarMaster) {
 				this.masterTE = (TileEntityCarMaster) TE;

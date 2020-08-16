@@ -1,10 +1,12 @@
 package com.nuparu.sevendaystomine.block;
 
+import java.util.List;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBatteryStation;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCombustionGenerator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -113,6 +115,19 @@ public class BlockCombustionGenerator extends BlockTileProvider<TileEntityCombus
 		}
 
 		super.breakBlock(worldIn, pos, state);
+	}
+	
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		final NonNullList<ItemStack> drops = NonNullList.create();
+		super.getDrops(drops, world, pos, state, fortune);
+
+		final TileEntityCombustionGenerator tileEntity = getTileEntity(world, pos);
+		if (tileEntity != null) {
+			drops.addAll(tileEntity.getDrops());
+		}
+
+		return drops;
 	}
 	
 	@SideOnly(Side.CLIENT)

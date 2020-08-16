@@ -56,8 +56,10 @@ public class ItemGun extends Item implements IQuality {
 	private float spread = 10f;
 	private int reloadTime = 1500;
 	private int delay = 0;
+	private float fovFactor = 1;
 
 	private int projectiles = 1;
+	private int shots = 1;
 
 	private EnumGun type;
 	private EnumLength length;
@@ -243,7 +245,6 @@ public class ItemGun extends Item implements IQuality {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 
 		/*
@@ -269,12 +270,12 @@ public class ItemGun extends Item implements IQuality {
 
 		int ammo = nbt.getInteger("Ammo");
 		boolean flag = playerIn.isCreative();
+		
 		if (ammo > 0 || flag) {
-			float velocity = getSpeed() * (getQuality(itemstack) / 5f);
+
+			float velocity = getSpeed() * (1f + ((float) getQuality(itemstack) / (float) ItemQuality.MAX_QUALITY));
 			for (int i = 0; i < projectiles; i++) {
-				EntityShot shot = new EntityShot(worldIn, playerIn, velocity, ((float) getSpread(playerIn, handIn)
-						* (float) (Math.abs(playerIn.motionX) + Math.abs(playerIn.motionY) + Math.abs(playerIn.motionZ))
-						* 5f) / (playerIn.isSneaking() ? 4 : 3));
+				EntityShot shot = new EntityShot(worldIn, playerIn, velocity, ((float) getSpread(playerIn, handIn) / (playerIn.isSneaking() ? 1.5f : 1f)));
 				if (!worldIn.isRemote) {
 					shot.setDamage(getFinalDamage(itemstack));
 					worldIn.spawnEntity(shot);
@@ -284,9 +285,8 @@ public class ItemGun extends Item implements IQuality {
 			worldIn.playSound(null, new BlockPos(playerIn), getShotSound(), SoundCategory.PLAYERS, getShotSoundVolume(),
 					getShotSoundPitch());
 			playerIn.swingArm(handIn);
-			if (worldIn.isRemote) {
-				SevenDaysToMine.proxy.addRecoil(getRecoil(), playerIn);
-			}
+
+			SevenDaysToMine.proxy.addRecoil(getRecoil(), playerIn);
 
 			if (!flag) {
 				itemstack.getTagCompound().setInteger("Ammo", ammo - 1);
@@ -313,7 +313,7 @@ public class ItemGun extends Item implements IQuality {
 
 	public double getSpread(EntityPlayer player, EnumHand hand) {
 
-		float mult = 1;
+		float mult = 0.15f;
 
 		if (Utils.isPlayerDualWielding(player)) {
 			mult += 0.11f;
@@ -326,13 +326,13 @@ public class ItemGun extends Item implements IQuality {
 
 		double spread_local = spread * mult * (1d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)));
 		return (spread_local
-				* (double) (Math.abs(player.motionX) + Math.abs(player.motionY) + Math.abs(player.motionZ)))
+				* (((double) (Math.abs(player.motionX) + Math.abs(player.motionY) + Math.abs(player.motionZ)))))
 				/ (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack) + 1d);
 	}
 
 	public double getCross(EntityPlayer player, EnumHand hand) {
 		float mult = 1;
-		
+
 		if (Utils.isPlayerDualWielding(player)) {
 			mult += 0.11f;
 		} else if (!player.getHeldItem(getOtherHand(hand)).isEmpty()) {
@@ -397,80 +397,114 @@ public class ItemGun extends Item implements IQuality {
 	}
 
 	public float getFOVFactor(ItemStack stack) {
-		return 1.0f;
+		return fovFactor;
+	}
+
+	public ItemGun setFOVFactor(float factor) {
+		fovFactor = factor;
+		return this;
 	}
 
 	public int getProjectiles() {
 		return projectiles;
 	}
 
-	public void setProjectiles(int projectiles) {
+	public ItemGun setProjectiles(int projectiles) {
 		this.projectiles = projectiles;
+		return this;
 	}
 
-	public void setFullDamage(float fullDamage) {
+	public ItemGun setFullDamage(float fullDamage) {
 		this.fullDamage = fullDamage;
+		return this;
 	}
 
-	public void setSpeed(float speed) {
+	public ItemGun setSpeed(float speed) {
 		this.speed = speed;
+		return this;
 	}
 
-	public void setRecoil(float recoil) {
+	public ItemGun setRecoil(float recoil) {
 		this.recoil = recoil;
+		return this;
 	}
 
 	public float getCounterDef() {
 		return counterDef;
 	}
 
-	public void setCounterDef(float counterDef) {
+	/*
+	 * Not really sure what this actually does. Just keep it at 0
+	 */
+	public ItemGun setCounterDef(float counterDef) {
 		this.counterDef = counterDef;
+		return this;
 	}
 
-	public void setReloadTime(int reloadTime) {
+	public ItemGun setReloadTime(int reloadTime) {
 		this.reloadTime = reloadTime;
+		return this;
 	}
 
-	public void setCross(float cross) {
+	public ItemGun setCross(float cross) {
 		this.spread = cross * 3.14f;
 		this.cross = cross;
+		return this;
 	}
 
 	public int getDelay() {
 		return delay;
 	}
 
-	public void setDelay(int delay) {
+	/*
+	 * Sets delay between shots?
+	 */
+	public ItemGun setDelay(int delay) {
 		this.delay = delay;
+		return this;
 	}
 
-	public void setType(EnumGun type) {
+	public ItemGun setType(EnumGun type) {
 		this.type = type;
+		return this;
 	}
 
-	public void setLength(EnumLength length) {
+	public ItemGun setLength(EnumLength length) {
 		this.length = length;
+		return this;
 	}
 
-	public void setWield(EnumWield wield) {
+	public ItemGun setWield(EnumWield wield) {
 		this.wield = wield;
+		return this;
 	}
 
-	public void setShotSound(SoundEvent shotSound) {
+	public ItemGun setShotSound(SoundEvent shotSound) {
 		this.shotSound = shotSound;
+		return this;
 	}
 
-	public void setReloadSound(SoundEvent reloadSound) {
+	public ItemGun setReloadSound(SoundEvent reloadSound) {
 		this.reloadSound = reloadSound;
+		return this;
 	}
 
-	public void setDrySound(SoundEvent drySound) {
+	public ItemGun setDrySound(SoundEvent drySound) {
 		this.drySound = drySound;
+		return this;
 	}
 
-	public void setMaxAmmo(int maxAmmo) {
+	public ItemGun setMaxAmmo(int maxAmmo) {
 		this.maxAmmo = maxAmmo;
+		return this;
+	}
+	
+	public void setShotsPerAmmo(int shots) {
+		this.shots = shots;
+	}
+	
+	public int getShotsPerAmmo() {
+		return this.shots;
 	}
 
 	public static enum EnumGun {

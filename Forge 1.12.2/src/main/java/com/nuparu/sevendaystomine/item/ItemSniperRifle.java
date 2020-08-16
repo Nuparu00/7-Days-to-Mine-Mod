@@ -18,7 +18,8 @@ public class ItemSniperRifle extends ItemGun {
 		this.setCounterDef(0);
 		this.setCross(15);
 		this.setReloadTime(1500);
-		this.setDelay(2);
+		this.setDelay(20);
+		this.setFOVFactor(10f);
 		this.setType(EnumGun.RIFLE);
 		this.setLength(EnumLength.LONG);
 		this.setWield(EnumWield.TWO_HAND);
@@ -29,10 +30,6 @@ public class ItemSniperRifle extends ItemGun {
 		return ModItems.SEVEN_MM_BULLET;
 	}
 	
-	@Override
-	public float getFOVFactor(ItemStack stack) {
-		return 10f;
-	}
 	@Override
 	public SoundEvent getReloadSound() {
 		return SoundHelper.AK47_RELOAD;

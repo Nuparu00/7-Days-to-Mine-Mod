@@ -1,0 +1,22 @@
+{
+   "type":"sevendaystomine:crafting_locked_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:ironingot"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:book_metalworking",
+      "count":1
+   },
+  "recipe": "metalworking"
+}

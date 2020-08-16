@@ -64,7 +64,6 @@ public abstract class EntityHuman extends EntityCreature {
 	public EntityHuman(World worldIn) {
 		super(worldIn);
 		this.setSize(0.6F, 1.95F);
-		this.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(ModItems.PISTOL));
 	}
 
 	@Override

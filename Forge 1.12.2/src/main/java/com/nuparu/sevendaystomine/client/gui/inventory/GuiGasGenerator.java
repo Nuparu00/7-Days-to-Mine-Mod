@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
-import com.nuparu.sevendaystomine.inventory.ContainerGenerator;
+import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGeneratorBase;
 

@@ -34,6 +34,7 @@ import com.nuparu.sevendaystomine.client.renderer.entity.RenderShot;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirdropFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBlindZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBloatedZombieFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderFlameFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderHumanFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderInfectedSurvivorFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderMinibikeFactory;
@@ -65,6 +66,7 @@ import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
+import com.nuparu.sevendaystomine.entity.EntityFlame;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
 import com.nuparu.sevendaystomine.entity.EntityFrostbittenWorker;
 import com.nuparu.sevendaystomine.entity.EntityFrozenLumberjack;
@@ -267,6 +269,8 @@ public class ClientProxy extends CommonProxy {
 				RenderZombiePolicemanFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityProjectileVomit.class,
 				RenderProjectileVomitFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFlame.class,
+				RenderFlameFactory.INSTANCE);
 	}
 
 	/*

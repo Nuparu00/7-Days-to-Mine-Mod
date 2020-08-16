@@ -46,10 +46,14 @@ public class GuiBook extends GuiScreen {
 	GuiNextButton buttonPreviousPage;
 
 	public GuiBook(ResourceLocation res) {
-		this.data = BookDataParser.INSTANCE.getBookDataFromResource(res);
-		if (data == null) {
-			Utils.getLogger().error("No book data found for" + res.toString());
-			Minecraft.getMinecraft().currentScreen = null;
+		try {
+			this.data = BookDataParser.INSTANCE.getBookDataFromResource(res);
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (data == null) {
+				Utils.getLogger().error("No book data found for" + res.toString());
+				Minecraft.getMinecraft().currentScreen = null;
+			}
 		}
 	}
 
@@ -59,7 +63,8 @@ public class GuiBook extends GuiScreen {
 			return;
 		}
 		Page page = data.pages.get(pageIndex);
-		if(page == null || page.res == null) return;
+		if (page == null || page.res == null)
+			return;
 		mc.getTextureManager().bindTexture(page.res);
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;
@@ -178,7 +183,9 @@ public class GuiBook extends GuiScreen {
 				marginVertical + 160, true, this));
 		buttonList.add(buttonPreviousPage = new GuiNextButton(2, offsetFromScreenLeft + 10, marginVertical + 160, false,
 				this));
-
+		
+		buttonNextPage.enabled = false;
+		buttonPreviousPage.enabled = false;
 	}
 
 	@Override

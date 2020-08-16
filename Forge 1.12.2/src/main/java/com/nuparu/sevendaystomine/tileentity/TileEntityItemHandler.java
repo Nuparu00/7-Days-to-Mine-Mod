@@ -54,4 +54,8 @@ public abstract class TileEntityItemHandler<INVENTORY extends IItemHandler & INB
 
 		return super.getCapability(capability, facing);
 	}
+	
+	public <INVENTORY extends IItemHandler & INBTSerializable<NBTTagCompound>> INVENTORY getInventory(){
+		return (INVENTORY) inventory;
+	}
 }

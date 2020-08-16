@@ -1,5 +1,6 @@
-package com.nuparu.sevendaystomine.inventory;
+package com.nuparu.sevendaystomine.inventory.container;
 
+import com.nuparu.sevendaystomine.inventory.IContainerCallbacks;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGeneratorBase;

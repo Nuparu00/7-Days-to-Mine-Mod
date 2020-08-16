@@ -58,7 +58,10 @@ public class SoundHelper {
 	public static final SoundEvent RECIPE_UNLOCKED = Utils.Null();
 	@ObjectHolder("shotgun.shot")
 	public static final SoundEvent SHOTGUN_SHOT = Utils.Null();
-	
+	@ObjectHolder("mp5.shot")
+	public static final SoundEvent MP5_SHOT = Utils.Null();
+	@ObjectHolder("flamethrower.shot")
+	public static final SoundEvent FLAMETHROWER_SHOT = Utils.Null();
 	
 	private static List<SoundEvent> sounds = new ArrayList<SoundEvent>();
 	
@@ -85,7 +88,9 @@ public class SoundHelper {
 					createSoundEvent("white_noise"),
 					createSoundEvent("emergency_alert_system"),
 					createSoundEvent("recipe_unlocked"),
-					createSoundEvent("shotgun.shot")
+					createSoundEvent("shotgun.shot"),
+					createSoundEvent("mp5.shot"),
+					createSoundEvent("flamethrower.shot")
 			};
 
 			event.getRegistry().registerAll(soundEvents);

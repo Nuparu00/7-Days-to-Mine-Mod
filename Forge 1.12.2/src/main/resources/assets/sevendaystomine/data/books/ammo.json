@@ -279,7 +279,7 @@
         }
       ],
 	  "crafting": [
-{
+        {
           "x": 16,
           "y": 10,
           "z": 0,
@@ -300,7 +300,7 @@
       "res": "sevendaystomine:textures/gui/books/ammo_base.png",
       "texts": [
         {
-          "x": 64,
+          "x": 186,
           "y": 70,
           "z": 0,
           "text": "book_ammo.title",
@@ -311,7 +311,7 @@
 		  "formatting" : ["UNDERLINE"]
         },
 		{
-          "x": 64,
+          "x": 186,
           "y": 85,
           "z": 0,
 		  "width" : 110,
@@ -322,7 +322,7 @@
 		  "scale" : 1
         },
 		{
-          "x": 16,
+          "x": 138,
           "y": 115,
           "z": 0,
 		  "width" : 110,
@@ -333,9 +333,15 @@
 		  "scale" : 0.9
         }
       ],
-	  "crafting": [
+      "crafting": [
         {
           "x": 16,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:bullet_magnum"
+        },
+        {
+          "x": 138,
           "y": 10,
           "z": 0,
           "recipe": "sevendaystomine:book_ammo"

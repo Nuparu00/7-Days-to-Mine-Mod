@@ -1,5 +1,7 @@
 package com.nuparu.sevendaystomine.client.renderer.entity;
 
+import org.lwjgl.opengl.GL11;
+
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.events.HumanResponseEvent;
 import com.nuparu.sevendaystomine.events.RenderHolsteredItemEvent;
@@ -93,7 +95,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 					Event event = new RenderHolsteredItemEvent(player, cache.longItem,
 							RenderHolsteredItemEvent.EnumType.BACK);
 					if (!MinecraftForge.EVENT_BUS.post(event)) {
-						mc.getRenderItem().renderItem(cache.longItem, player, ItemCameraTransforms.TransformType.NONE,
+						mc.getRenderItem().renderItem(cache.longItem, player, ItemCameraTransforms.TransformType.HEAD,
 								false);
 					}
 					GlStateManager.popMatrix();
@@ -163,7 +165,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 							RenderHolsteredItemEvent.EnumType.RIGHT_HIP);
 					if (!MinecraftForge.EVENT_BUS.post(event)) {
 						mc.getRenderItem().renderItem(cache.shortItem_R, player,
-								ItemCameraTransforms.TransformType.NONE, false);
+								ItemCameraTransforms.TransformType.HEAD, false);
 					}
 					GlStateManager.popMatrix();
 				}
@@ -232,7 +234,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 							RenderHolsteredItemEvent.EnumType.LEFT_HIP);
 					if (!MinecraftForge.EVENT_BUS.post(event)) {
 						mc.getRenderItem().renderItem(cache.shortItem_L, player,
-								ItemCameraTransforms.TransformType.NONE, false);
+								ItemCameraTransforms.TransformType.HEAD, false);
 					}
 					GlStateManager.popMatrix();
 				}

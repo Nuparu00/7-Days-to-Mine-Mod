@@ -364,7 +364,13 @@ public class TickHandler {
 	public static void handleExtendedPlayer(EntityPlayer player, World world, IExtendedPlayer extendedPlayer) {
 		if (world.isRemote)
 			return;
-
+		
+		if(world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			extendedPlayer.setThirst(1000);
+			extendedPlayer.setStamina(1000);
+			return;
+		}
+		
 		if (world.rand.nextInt(25) == 0) {
 			extendedPlayer.consumeThirst((int) 1);
 		}

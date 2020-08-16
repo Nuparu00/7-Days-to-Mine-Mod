@@ -140,7 +140,7 @@ public class BookData {
 				workbench = j > 3 || k > 3;
 
 				addIngredient(Ingredient.fromStacks(rec.getRecipeOutput()), workbench ? 175 : 85,
-						(int) (1 + 18 * (Math.ceil(j / 2f) - 1)));
+						(int) (1 + 18 * (Math.ceil((workbench ? 5 : 3) / 2f) - 1)));
 
 				for (int i1 = 0; i1 < j; ++i1) {
 					for (int j1 = 0; j1 < k; ++j1) {

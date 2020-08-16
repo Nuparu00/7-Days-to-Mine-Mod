@@ -17,7 +17,7 @@ public class ItemPistol extends ItemGun {
 		this.setCounterDef(0);
 		this.setCross(20);
 		this.setReloadTime(1900);
-		this.setDelay(10);
+		this.setDelay(6);
 		this.setType(EnumGun.PISTOL);
 		this.setLength(EnumLength.SHORT);
 		this.setWield(EnumWield.DUAL);

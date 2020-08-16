@@ -264,9 +264,7 @@ public class EntityShot extends Entity implements IProjectile {
 
 		if (entity != null) {
 
-			float f = MathHelper
-					.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-			int i = MathHelper.ceil((double) f * this.damage);
+			int i = MathHelper.ceil(this.damage);
 
 			DamageSource damagesource = null;
 
@@ -280,7 +278,7 @@ public class EntityShot extends Entity implements IProjectile {
 				entity.setFire(5);
 			}
 
-			if (entity.attackEntityFrom(damagesource, (float) i)) {
+			if (!this.world.isRemote && entity.attackEntityFrom(damagesource, (float) i)) {
 				if (entity instanceof EntityLivingBase) {
 					EntityLivingBase entitylivingbase = (EntityLivingBase) entity;
 					if (this.knockbackStrength > 0) {

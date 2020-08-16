@@ -92,7 +92,7 @@ public class ModBlocks {
 			.setUnlocalizedName("OreZinc").setHardness(2.2F).setResistance(5.0F);
 	public static final Block ORE_LEAD = new BlockOre(EnumMaterial.LEAD).setRegistryName("OreLead")
 			.setUnlocalizedName("OreLead").setHardness(3F).setResistance(5.0F);
-	public static final Block ORE_POTASSIUM = new BlockOre(EnumMaterial.POTASSIUM).setRegistryName("OrePotassium")
+	public static final Block ORE_POTASSIUM = new BlockPotassiumOre().setRegistryName("OrePotassium")
 			.setUnlocalizedName("OrePotassium").setHardness(1.8F).setResistance(5.0F);
 	public static final Block ORE_CINNABAR = new BlockOre(EnumMaterial.MERCURY).setRegistryName("OreCinnabar")
 			.setUnlocalizedName("OreCinnabar").setHardness(2.2F).setResistance(5.0F);

@@ -1,7 +1,7 @@
 package com.nuparu.sevendaystomine.client.gui.inventory;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
-import com.nuparu.sevendaystomine.inventory.ContainerGenerator;
+import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGeneratorBase;
 
 import net.minecraft.client.gui.inventory.GuiContainer;

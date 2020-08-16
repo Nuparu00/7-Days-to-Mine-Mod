@@ -11,6 +11,7 @@ import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
+import com.nuparu.sevendaystomine.entity.EntityFlame;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
 import com.nuparu.sevendaystomine.entity.EntityFrostbittenWorker;
 import com.nuparu.sevendaystomine.entity.EntityFrozenLumberjack;
@@ -21,6 +22,7 @@ import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
 import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
 import com.nuparu.sevendaystomine.entity.EntityProjectileVomit;
 import com.nuparu.sevendaystomine.entity.EntityReanimatedCorpse;
+import com.nuparu.sevendaystomine.entity.EntityRocket;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
@@ -34,6 +36,7 @@ import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.crafting.campfire.CampfireRecipeManager;
 import com.nuparu.sevendaystomine.item.crafting.chemistry.ChemistryRecipeManager;
 import com.nuparu.sevendaystomine.item.crafting.forge.ForgeRecipeManager;
+import com.nuparu.sevendaystomine.item.crafting.separator.SeparatorRecipeManager;
 import com.nuparu.sevendaystomine.loot.function.RandomQualityFunction;
 import com.nuparu.sevendaystomine.tileentity.TileEntityAirplaneRotor;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBackpack;
@@ -160,7 +163,8 @@ public class CommonProxy {
 		new CampfireRecipeManager();
 		new ForgeRecipeManager();
 		new ChemistryRecipeManager();
-
+		new SeparatorRecipeManager();
+		
 		registerOreDictionary();
 		registerTileEntities();
 		registerEntities();
@@ -270,7 +274,7 @@ public class CommonProxy {
 	}
 
 	private static int entityID = 0;
-
+	
 	@SuppressWarnings("unchecked")
 	public void registerEntities() {
 		registerEntity(EntityShot.class, "shot", 128, 1, true);
@@ -294,6 +298,8 @@ public class CommonProxy {
 		registerEntity(EntityAirdrop.class, "airdrop", 512, 1, true);
 		registerEntity(EntityZombiePoliceman.class, "zombie_policeman", 96, 2, true, 0xffffff, 0xffffff);
 		registerEntity(EntityProjectileVomit.class, "projectile_vomit", 128, 1, true);
+		registerEntity(EntityFlame.class, "flame", 128, 1, true);
+		registerEntity(EntityRocket.class, "rocket", 128, 1, true);
 		/*
 		 * addEntitySpawn(EntityReanimatedCorpse.class, 1000, 1, 7,
 		 * EnumCreatureType.MONSTER, Utils.combine(BiomeDictionary.getBiomes(Type.LUSH),

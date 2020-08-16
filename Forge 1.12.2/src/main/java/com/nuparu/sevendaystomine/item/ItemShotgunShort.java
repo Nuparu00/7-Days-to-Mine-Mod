@@ -12,20 +12,20 @@ public class ItemShotgunShort extends ItemGun {
 		super();
 		this.setMaxAmmo(4);
 		this.setProjectiles(10);
-		this.setFullDamage(20);
-		this.setSpeed(8);
+		this.setFullDamage(85);
+		this.setSpeed(1);
 		this.setRecoil(4.2f);
 		this.setCounterDef(0);
 		this.setCross(35);
 		this.setReloadTime(1500);
-		this.setDelay(2);
+		this.setDelay(10);
 		this.setType(EnumGun.SHOTGUN);
 		this.setLength(EnumLength.LONG);
 		this.setWield(EnumWield.TWO_HAND);
 	}
 	
 	public Item getBullet() {
-		return ModItems.SEVEN_MM_BULLET;
+		return ModItems.SHOTGUN_SHELL;
 	}
 	
 	@Override

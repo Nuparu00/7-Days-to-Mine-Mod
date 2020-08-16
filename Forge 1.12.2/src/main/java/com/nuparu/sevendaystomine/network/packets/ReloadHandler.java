@@ -27,6 +27,7 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 	ItemStack stack = null;
 	ItemStack stackBullet = null;
 	Item bulletItem = null;
+	ItemGun gun = null;
 
 	@Override
 	public ReloadMessage onMessage(ReloadMessage message, MessageContext ctx) {
@@ -39,23 +40,18 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 
 		Item item = stack.getItem();
 		if (item instanceof ItemGun) {
-			ItemGun gun = (ItemGun) item;
+			gun = (ItemGun) item;
 			stackBullet = getBullet(player.inventory, stack);
 			if (!stackBullet.isEmpty()) {
 				bulletItem = gun.getBullet();
 				SoundEvent reloadSound = gun.getReloadSound();
-				// player.playSound(reloadSound, 1.0F, 1.0F / 1 * 0.4F + 1.2F + 1 * 0.5F);
 				world.playSound(null, new BlockPos(player), reloadSound, SoundCategory.PLAYERS, 1F, 1F);
-				/*
-				 * if (stack.getTagCompound().getBoolean("Reloading") == false) {
-				 * stack.getTagCompound().setBoolean("Reloading", true);
-				 */
+
 				int reloadTime = gun.getReloadTime(stack);
 				stack.getTagCompound().setLong("NextFire",
 						world.getTotalWorldTime() + (long) Math.ceil((reloadTime / 1000d) * 20));
 				task = new MyTask(this);
 				timer.schedule(task, reloadTime, 1000);
-				// }
 			}
 		}
 		return null;
@@ -65,10 +61,12 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 		if (stackBullet != null && stack.getTagCompound().hasKey("Capacity") && stack.getTagCompound().hasKey("Ammo")) {
 
 			stack.getTagCompound().setBoolean("Reloading", false);
-			int toReload = stack.getTagCompound().getInteger("Capacity") - stack.getTagCompound().getInteger("Ammo");
+			int toReload = (int) Math.ceil(
+					(double) (stack.getTagCompound().getInteger("Capacity") - stack.getTagCompound().getInteger("Ammo"))
+							/ (double) gun.getShotsPerAmmo());
 			int reload = Math.min(toReload, Utils.getItemCount(player.inventory, bulletItem));
 
-			stack.getTagCompound().setInteger("Ammo", stack.getTagCompound().getInteger("Ammo") + reload);
+			stack.getTagCompound().setInteger("Ammo", stack.getTagCompound().getInteger("Ammo") + reload * gun.getShotsPerAmmo());
 			player.inventory.clearMatchingItems(stackBullet.getItem(), -1, reload, null);
 		}
 	}

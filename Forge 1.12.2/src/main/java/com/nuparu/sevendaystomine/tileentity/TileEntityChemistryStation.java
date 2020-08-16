@@ -70,19 +70,8 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 		if (this.isBurning()) {
 			--this.burnTime;
 		}
-
 		if (!this.world.isRemote) {
 			ItemStack itemstack = this.inventory.get(EnumSlots.FUEL_SLOT.ordinal());
-			if (this.isBurning()) {
-				AxisAlignedBB AABB = new AxisAlignedBB(pos.getX() + 0.2, pos.getY(), pos.getZ() + 0.2, pos.getX() + 0.8,
-						pos.getY() + 0.8, pos.getZ() + 0.8);
-				List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, AABB);
-				for (EntityLivingBase entity : list) {
-					if (world.rand.nextInt(4) == 0) {
-						entity.setFire(5 + world.rand.nextInt(5));
-					}
-				}
-			}
 			if (this.isBurning() || hasFuel() && !isInputEmpty()) {
 				if (!this.isBurning() && this.canSmelt()) {
 					this.burnTime = getItemBurnTime(itemstack);
@@ -100,12 +89,12 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 								this.inventory.set(EnumSlots.FUEL_SLOT.ordinal(), item1);
 							}
 						}
+						this.totalCookTime = this.getCookTime(null);
 					}
 				}
 
 				if (this.isBurning() && this.canSmelt()) {
 					++this.cookTime;
-
 					if (this.cookTime == this.totalCookTime) {
 						this.cookTime = 0;
 						this.totalCookTime = this.getCookTime(null);

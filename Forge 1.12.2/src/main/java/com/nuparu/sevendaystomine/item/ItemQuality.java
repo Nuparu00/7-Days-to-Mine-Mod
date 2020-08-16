@@ -107,6 +107,19 @@ public class ItemQuality extends Item implements IQuality {
 
 		return stack;
 	}
+	
+	/*
+	 * Static version of ItemQuality#getQuality(), should replace the non-static one in the future
+	 */
+	public static int getQualityForStack(ItemStack stack) {
+		NBTTagCompound nbt = stack.getTagCompound();
+		if (nbt != null) {
+			if (nbt.hasKey("Quality")) {
+				return nbt.getInteger("Quality");
+			}
+		}
+		return 0;
+	}
 
 	public static boolean hasQualityTag(ItemStack stack) {
 		return stack.getTagCompound() == null ? false : stack.getTagCompound().hasKey("Quality", Constants.NBT.TAG_INT);

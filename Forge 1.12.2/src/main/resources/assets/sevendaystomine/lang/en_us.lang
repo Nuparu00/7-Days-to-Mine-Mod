@@ -128,6 +128,7 @@ container.trash_bin=Trash Bin
 container.car=Car
 container.file_cabinet=File Cabinet
 container.cash_register=Cash Register
+container.separator=Electrolytic Cell
 
 gui.warning=WARNING
 mod.new.update=Your 7 Days to Mine version is outdated!
@@ -162,6 +163,16 @@ book_electricity.title=High Voltage
 book_electricity.desc=Getting power at any cost
 book_chemistry.title=No ReAcTiON
 book_chemistry.desc=Nobelium, Rhenium, Actinium, Titanium, Oxygen, Nitrogen
+book_metalworking.title=Metalworking
+book_metalworking.desc=Metalworking and Mechanics for beginners
+book_pistol.title=Pistol Manual
+book_pistol.desc=Assembly, shooting, dying
+book_minibike.title=Minibikes for Dumbshits
+book_minibike.desc=Even a total dumbshit can build a minibike.
+book_shotgun.title=Shotgun
+book_sniper.title=Sniper Rifle
+book_magnum.title=.44 Magnum
+
 
 #Books
 book.contents=Contents
@@ -294,8 +305,46 @@ book_electricity.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights re
 
 book_chemistry.subtitle=Nobelium, Rhenium, Actinium, Titanium, Oxygen, Nitrogen
 book_chemistry.author=Maxmilian Vyroubal
+book_chemistry.contents.1=1. Chemistry Station
+book_chemistry.contents.2=2. Chemical Reactions
+book_chemistry.contents.3=3. Electrolysis
+book_chemistry.contents.4=4. Separation
+book_chemistry.chemistry.1=Chemistry station consists of a fractional flask, Liebig condenser, several test-tubes, and a beaker. The purpose of the station is to create a new material, from several others.
+book_chemistry.electrolysis.1=Electrolysis is a method for producing specific reactions, that would not otherwise happen. A common use is a separation. The electric current goes through a solution and positive cations move towards
+book_chemistry.electrolysis.2=a cathode, meanwhile, negative anions move towards an anode.
 book_chemistry.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
 book_chemistry.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+book_metalworking.subtitle=Metalworking and Mechanics for beginners
+book_metalworking.author=Maxmilian Vyroubal
+book_metalworking.contents.1=1. Workbench
+book_metalworking.workbench.1=Workbench allows you to make more complex things than a Crafting Table. Because of its more advanced tools (like a clamp), you can craft practically almost anything from tools to machines.
+book_metalworking.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_metalworking.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+book_pistol.subtitle=Assembly, shooting, dying
+book_pistol.author=Maxmilian Vyroubal
+book_pistol.contents.1=1. Assembly
+book_pistol.contents.2=2. Ammunition
+book_pistol.contents.3=3. Shooting
+book_pistol.assembly.1=If you are reading this book, you are interested in having a pistol or you even already have one. First of all, you should have some imagination about how to take care of the pistol. The pistol is made out of several parts.
+book_pistol.ammo.1=The pistol has a capacity of 15 rounds. It uses standard NATO 9x19mm bullets. You can find out more about these in our Ammunition Nation book.
+book_pistol.shooting.1=It is not recommended to use this gun as a prop or a toy because this gun is intended for a fast use (in means that if you have ammo - you can shoot, there aren't any safety switches).
+book_pistol.shooting.2=Make sure that you have enough ammo in your gun. Then you can shoot. The pistol has relatively small recoil, compared to some other guns, however, be aware the recoil is still existing.
+book_pistol.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_pistol.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
+book_minibike.subtitle=Even a total dumbshit can build a minibike.
+book_minibike.author=Maxmilian Vyroubal
+book_minibike.contents.1=1. Chassis
+book_minibike.contents.2=2. Handlebars
+book_minibike.contents.3=3. Seat
+book_minibike.contents.4=4. Assembly
+book_minibike.assembly.1=In order to assemble the minibike, you need several parts, like the engine, battery, wheels, handlebars, and seat. While some of the parts you could craft by yourself, some of them you just have to buy. 
+book_minibike.assembly.2=When you have all the parts, place the chassis on the ground and put the parts to their places.
+book_minibike.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
+book_minibike.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
+
 
 #Creative Tabs
 
@@ -474,6 +523,9 @@ item.book_ammo.name=Recipe Book
 item.book_computers.name=Recipe Book
 item.book_concrete.name=Recipe Book
 item.book_chemistry.name=Recipe Book
+item.book_metalworking.name=Recipe Book
+item.book_pistol.name=Recipe Book
+item.book_minibike.name=Recipe Book
 item.iron_pipe.name=Iron Pipe
 item.scrap_pickaxe.name=Scrap Pickaxe
 item.scrap_shovel.name=Scrap Shovel
@@ -507,6 +559,32 @@ item.cement_mold.name=Cement Mold
 item.sniper_rifle.name=Sniper Rifle
 item.magnet.name=Magnet
 item.photo_cell.name=Photovoltaic Cell
+item.potassium.name=Potassium Nitrate
+item.gas_canister.nmae=Gas Can
+item.shotgun_receiver.name=Shotgun Receiver
+item.shotgun_parts.name=Shotgun Parts
+item.shotgun_stock.name=Shotgun Stock
+item.shotgun_stock_short.name=Shotgun Short Stock
+item.shotgun_barrel.name=Shotgun Barrel
+item.shotgun_barrel_short.name=Shotgun Short Barrel
+item.book_shotgun.name=Blueprint
+item.book_sniper.name=Blueprint
+item.book_magnum.name=Blueprint
+item.book_mp5.name=Blueprint
+item.bullet_magnum.name=.44 Magnum Bullet
+item.magnum_frame.name=.44 Magnum Frame
+item.magnum_grip.name=.44 Magnum Grip
+item.magnum_cylinder.name=.44 Magnum Cylinder
+item.magnum.name=.44 Magnum
+item.magnum_scoped.name=Scoped .44 Magnum
+item.mp5.name=MP5
+item.flamethrower.name=Flamethrower
+item.rpg.name=RPG
+item.m4.name=M4
+item.mp5_stock.name=MP5 Stock
+item.mp5_barrel.name=MP5 Barrel
+item.mp5_trigger.name=MP5 Trigger
+item.shotgun_shell.name=Shotgun Shell
 
 #Blocks
 
@@ -744,28 +822,30 @@ tile.burnt_chair.name=Burnt Chair
 tile.stone_brick_stairs_mossy.name=Mossy Stone Brick Stairs
 
 tile.radio.name=Radio
-tile.separator.name=Separator
+tile.separator.name=Electrolytic Cell
 
 #Sound Subtitles
 
-sdtm.subtitle.upgrade_wood=Upgrade Wood
-sdtm.subtitle.campfire_crackling=Campfire Crackling
-sdtm.subtitle.heartbeat=Heartbeat
-sdtm.subtitle.menu_00=Menu Music
-sdtm.subtitle.menu_01=Menu Music
-sdtm.subtitle.pistol.shot=Pistol Shot
-sdtm.subtitle.pistol.dryshot=Pistol Dry Shot
-sdtm.subtitle.pistol.reload=Pistol Reload
-sdtm.subtitle.ak47.shot=AK-47 Shot
-sdtm.subtitle.ak47.reload=AK-47 Reload
-sdtm.subtitle.door.locked=Locked Door
-sdtm.subtitle.camera.take=Camera Take
-sdtm.subtitle.hunting_rifle.shot=Hunting Rifle Shot
-sdtm.subtitle.hunting_rifle.reload=Hunting Rifle Reload
-sdtm.subtitle.white_noise=White Noise
-sdtm.subtitle.emergency_alert_system=Emergency Alert System
-sdtm.subtitle.recipe_unlocked=Recipe Unlocked
-sdtm.subtitle.shotgun.shot=Shotgun Shot
+subtitle.upgrade_wood=Upgrade Wood
+subtitle.campfire_crackling=Campfire Crackling
+subtitle.heartbeat=Heartbeat
+subtitle.menu_00=Menu Music
+subtitle.menu_01=Menu Music
+subtitle.pistol.shot=Pistol Shot
+subtitle.pistol.dryshot=Pistol Dry Shot
+subtitle.pistol.reload=Pistol Reload
+subtitle.ak47.shot=AK-47 Shot
+subtitle.ak47.reload=AK-47 Reload
+subtitle.door.locked=Locked Door
+subtitle.camera.take=Camera Take
+subtitle.hunting_rifle.shot=Hunting Rifle Shot
+subtitle.hunting_rifle.reload=Hunting Rifle Reload
+subtitle.white_noise=White Noise
+subtitle.emergency_alert_system=Emergency Alert System
+subtitle.recipe_unlocked=Recipe Unlocked
+subtitle.shotgun.shot=Shotgun Shot
+subtitle.mp5.shot=MP5 Shot
+subtitle.flamethrower.shot=Flamethrower Shot
 
 #Keybinding
 key.sevendaystomine.category=7 Days to Mine
