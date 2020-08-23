@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import com.nuparu.sevendaystomine.client.gui.GuiMonitor;
+import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
-import com.nuparu.sevendaystomine.util.computer.TickingProcess;
-import com.nuparu.sevendaystomine.util.computer.WindowedProcess;
+import com.nuparu.sevendaystomine.util.computer.process.TickingProcess;
+import com.nuparu.sevendaystomine.util.computer.process.WindowedProcess;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -29,6 +30,7 @@ public class Screen {
 	public Screen(GuiMonitor gui) {
 		this.gui = gui;
 		screen = this;
+		gui.setFocused(true);
 	}
 
 	public void setScale(ScaledResolution sr) {
@@ -105,7 +107,7 @@ public class Screen {
 
 	public void drawDefaultScreen() {
 		ScaledResolution sr = new ScaledResolution(mc);
-		RenderUtils.drawColoredRect(new ColorRGBA(0, 0, 0), (sr.getScaledWidth() / 2) - (xSize / 2),
+		RenderUtils.drawColoredRect(new ColorRGBA(0d, 0d, 0d), (sr.getScaledWidth() / 2) - (xSize / 2),
 				(sr.getScaledHeight() / 2) - (ySize / 2), xSize, ySize, 0);
 	}
 
@@ -166,10 +168,21 @@ public class Screen {
 	}
 
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+		ScaledResolution sr = new ScaledResolution(mc);
+
+		double width = (xSize * 1.05625d);
+		double height = (ySize * 1.1d);
+
+		double x = (sr.getScaledWidth() / 2) - (width / 2);
+		double y = (sr.getScaledHeight() / 2) - (height / 2);
+
+		gui.setFocused(Utils.isInArea(mouseX, mouseY, x, y, width, height));
+
 		if (gui.shouldDisplayAnything()) {
 			for (TickingProcess process : gui.getComputer().getProcessesList()) {
 				process.mouseClicked(mouseX, mouseY, mouseButton);
 			}
 		}
+
 	}
 }

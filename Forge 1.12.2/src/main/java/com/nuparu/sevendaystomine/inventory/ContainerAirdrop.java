@@ -23,7 +23,7 @@ public class ContainerAirdrop extends Container {
 		this.entity = entity;
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 3; ++j) {
-				this.addSlotToContainer(new SlotItemHandler(inventory, j + i * 3, 8 + (j + 3) * 18, 18 + i * 18));
+				this.addSlotToContainer(new SlotItemHandler(inventory, j + i * 3, 8 + (j + 3) * 18, 17 + i * 18));
 			}
 		}
 

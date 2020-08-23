@@ -3,7 +3,7 @@ package com.nuparu.sevendaystomine.network.packets;
 import java.util.UUID;
 
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
-import com.nuparu.sevendaystomine.util.computer.TickingProcess;
+import com.nuparu.sevendaystomine.util.computer.process.TickingProcess;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

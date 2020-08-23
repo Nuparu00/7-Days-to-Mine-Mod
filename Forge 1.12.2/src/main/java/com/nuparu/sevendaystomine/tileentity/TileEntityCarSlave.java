@@ -90,6 +90,7 @@ public class TileEntityCarSlave extends TileEntityCar implements ITickable {
 		markDirty();
 	}
 
+	@Override
 	public TileEntityCarMaster getMaster() {
 		if (this.masterTE == null && masterPos != null) {
 			TileEntity TE = world.getTileEntity(masterPos);

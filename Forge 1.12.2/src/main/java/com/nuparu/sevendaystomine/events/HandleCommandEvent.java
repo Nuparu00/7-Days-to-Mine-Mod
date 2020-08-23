@@ -1,7 +1,7 @@
 package com.nuparu.sevendaystomine.events;
 
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
-import com.nuparu.sevendaystomine.util.computer.ShellProcess;
+import com.nuparu.sevendaystomine.util.computer.process.ShellProcess;
 
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.relauncher.Side;

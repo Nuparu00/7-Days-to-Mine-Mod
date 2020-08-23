@@ -8,7 +8,7 @@ import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
-import com.nuparu.sevendaystomine.util.computer.TickingProcess;
+import com.nuparu.sevendaystomine.util.computer.process.TickingProcess;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -39,7 +39,7 @@ public class Button implements IScreenElement {
 	public ColorRGBA hovered = new ColorRGBA(0.9, 0.9, 0.9);
 	public ColorRGBA pressed = new ColorRGBA(0.6, 0.6, 0.6);
 
-	public ColorRGBA borderColor = new ColorRGBA(0, 0, 0);
+	public ColorRGBA borderColor = new ColorRGBA(0d, 0d, 0d);
 
 	public boolean border = true;
 	public boolean background = true;

@@ -7,7 +7,7 @@ import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
-import com.nuparu.sevendaystomine.util.computer.TickingProcess;
+import com.nuparu.sevendaystomine.util.computer.process.TickingProcess;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -56,8 +56,8 @@ public class TextField implements IScreenElement {
 	protected TickingProcess process;
 	private FontRenderer fontRenderer;
 
-	public ColorRGBA backgroundColor = new ColorRGBA(1, 1, 1);
-	public ColorRGBA cursorColor = new ColorRGBA(0, 0, 1);
+	public ColorRGBA backgroundColor = new ColorRGBA(1d, 1d, 1d);
+	public ColorRGBA cursorColor = new ColorRGBA(0d, 0d, 1d);
 
 	public TextField(double x, double y, double width, double height, Screen screen) {
 		this.x = x;

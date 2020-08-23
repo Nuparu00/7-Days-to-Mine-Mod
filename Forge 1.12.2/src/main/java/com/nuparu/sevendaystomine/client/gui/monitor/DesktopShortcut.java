@@ -8,10 +8,10 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
-import com.nuparu.sevendaystomine.util.computer.Application;
-import com.nuparu.sevendaystomine.util.computer.TickingProcess;
-import com.nuparu.sevendaystomine.util.computer.WindowedProcess;
-import com.nuparu.sevendaystomine.util.computer.WindowsDesktopProcess;
+import com.nuparu.sevendaystomine.util.computer.application.Application;
+import com.nuparu.sevendaystomine.util.computer.process.TickingProcess;
+import com.nuparu.sevendaystomine.util.computer.process.WindowedProcess;
+import com.nuparu.sevendaystomine.util.computer.process.WindowsDesktopProcess;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -124,7 +124,8 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 	public void render(float partialTicks) {
 		if (isDisabled() == false && isVisible() && app != null) {
 			GL11.glPushMatrix();
-			RenderUtils.drawTexturedRect(app.ICON, new ColorRGBA(1, 1, 1), x + 2, y + 2, 0, 0, width - 4, height - 4,
+			GlStateManager.color(1,1,1);
+			RenderUtils.drawTexturedRect(app.ICON, new ColorRGBA(1d, 1d, 1d), x + 2, y + 2, 0, 0, width - 4, height - 4,
 					width - 4, height - 4, 1, zLevel + 1);
 
 			int textColor = 0xffffff;
@@ -152,6 +153,7 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 		if (isHovered(screen.mouseX, screen.mouseY) && isDragged == false
 				&& WindowedProcess.isDesktopVisible(screen.mouseX, screen.mouseY, process.getTE())) {
 			GL11.glPushMatrix();
+			GlStateManager.color(1,1,1);
 			RenderUtils.drawColoredRect(new ColorRGBA(1, 1, 1), screen.mouseX, screen.mouseY,
 					fontRenderer.getStringWidth(app.getLocalizedDesc()), 9, zLevel + 2);
 			GL11.glTranslatef(0, 0, zLevel + 3);

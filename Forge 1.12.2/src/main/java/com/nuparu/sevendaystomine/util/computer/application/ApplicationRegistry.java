@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.application;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -47,5 +47,6 @@ public class ApplicationRegistry {
 		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/notes.png"),"notes"),"notes");
 		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/cctv.png"),"cctv"),"cctv");
 		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/explorer.png"),"explorer"),"explorer");
+		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/transit.png"),"transit"),"transit");
 	}
 }

@@ -1,0 +1,64 @@
+{
+    "pools": [
+        {
+            "name": "toilet",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:paper"
+                },
+                {
+                    "type": "item",
+                    "weight": 40,
+                    "name": "sevendaystomine:cloth"
+                },
+                {
+                    "type": "item",
+                    "weight": 25,
+                    "name": "sevendaystomine:emptyjar"
+                },
+                {
+                    "type": "item",
+                    "weight": 25,
+                    "name": "sevendaystomine:emptycan"
+                },
+                {
+                    "type": "item",
+                    "weight": 20,
+                    "name": "minecraft:rotten_flesh"
+                },
+                {
+                    "type": "item",
+                    "weight": 25,
+                    "name": "sevendaystomine:bottledmurkywater"
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:pistol",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:diamond"
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:cent"
+                },
+                {
+                    "type": "empty",
+                    "weight": 100
+                }
+            ]
+        }
+    ]
+}

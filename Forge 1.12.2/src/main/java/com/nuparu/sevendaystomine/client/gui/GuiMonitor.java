@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.client.gui;
 
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
@@ -73,6 +74,7 @@ public class GuiMonitor extends GuiScreen {
 
 	@Override
 	public void initGui() {
+		Keyboard.enableRepeatEvents(true);
 		screen.setScale(new ScaledResolution(Minecraft.getMinecraft()));
 	}
 

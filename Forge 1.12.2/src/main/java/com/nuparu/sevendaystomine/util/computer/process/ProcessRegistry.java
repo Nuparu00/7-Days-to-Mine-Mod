@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.process;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -57,5 +57,6 @@ public class ProcessRegistry {
 		registerProcess(ShellProcess.class,"shell_process");
 		registerProcess(NotesProcess.class,"notes_process");
 		registerProcess(CCTVProcess.class,"cctv_process");
+		registerProcess(TransitProcess.class,"transit_process");
 	}
 }

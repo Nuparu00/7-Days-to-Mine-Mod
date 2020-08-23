@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.process;
 
 import org.lwjgl.opengl.GL11;
 

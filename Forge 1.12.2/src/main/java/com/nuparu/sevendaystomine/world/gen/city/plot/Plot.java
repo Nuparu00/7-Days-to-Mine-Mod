@@ -68,7 +68,7 @@ public class Plot {
 		
 		BlockPos pos = start.offset(street.facing, street.facing.getAxis() == EnumFacing.Axis.Z ? zSize : xSize);
 
-		building.generate(street.world, new BlockPos(pos.getX(),Math.min(pos.getY(), end.getY()),pos.getZ()), street.facing, mirror);
+		building.generate(street.world, new BlockPos(pos.getX(),Math.min(pos.getY(), end.getY())+1,pos.getZ()), street.facing, mirror);
 	}
 
 	public boolean intersects(Plot plot) {

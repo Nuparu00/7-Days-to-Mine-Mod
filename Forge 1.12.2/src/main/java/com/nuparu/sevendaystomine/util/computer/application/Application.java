@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.application;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;

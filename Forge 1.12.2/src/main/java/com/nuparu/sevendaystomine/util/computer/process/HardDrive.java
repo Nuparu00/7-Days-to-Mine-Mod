@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.process;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
+import com.nuparu.sevendaystomine.util.computer.application.Application;
+import com.nuparu.sevendaystomine.util.computer.application.ApplicationRegistry;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +29,8 @@ public class HardDrive {
 		desktopIcons.put(new double[] { 0.1, 0.1 }, ApplicationRegistry.INSTANCE.getByString("shell"));
 		desktopIcons.put(new double[] { 0.1, 64 }, ApplicationRegistry.INSTANCE.getByString("notes"));
 		desktopIcons.put(new double[] { 0.1, 32 }, ApplicationRegistry.INSTANCE.getByString("cctv"));
-		desktopIcons.put(new double[] { 0.1, 96 }, ApplicationRegistry.INSTANCE.getByString("explorer"));
+		desktopIcons.put(new double[] { 20, 0.1 }, ApplicationRegistry.INSTANCE.getByString("explorer"));
+		desktopIcons.put(new double[] { 20, 32 }, ApplicationRegistry.INSTANCE.getByString("transit"));
 	}
 
 	@SuppressWarnings("unchecked")

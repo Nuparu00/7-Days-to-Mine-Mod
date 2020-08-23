@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.util;
 
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -93,8 +94,8 @@ public class ItemUtils {
 		}
 		return slots;
 	}
-	
-	public static void fillWithLoot(ItemStackHandler inv, ResourceLocation res, World world, Random rand) {
+
+	public static void fillWithLoot(IInventory inv, ResourceLocation res, World world, Random rand) {
 		if(world.isRemote) return;
 		LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(res);
 	    LootContext context = new LootContext.Builder((WorldServer)world).build();
@@ -112,13 +113,13 @@ public class ItemUtils {
         	if(stack.isEmpty()) continue;
         	
         	int slot = slots.remove(slots.size()-1);
-        	ItemStack rest = inv.insertItem(slot, stack, false);
+        	inv.setInventorySlotContents(slot, stack);
         }
 	}
 	
-	public static List<Integer> getRandomEmptySlots(ItemStackHandler inv, Random rand){
+	public static List<Integer> getRandomEmptySlots(IInventory inv, Random rand){
 		final List<Integer> slots = new ArrayList<Integer>();
-		for(int i = 0; i < inv.getSlots();i++) {
+		for(int i = 0; i < inv.getSizeInventory() ;i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if(stack.isEmpty()) {
 				slots.add(i);

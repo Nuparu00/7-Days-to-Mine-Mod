@@ -12,7 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityCar extends TileEntityLockableLoot {
+public abstract class TileEntityCar extends TileEntityLockableLoot {
 
 	public TileEntityCar() {
 
@@ -128,5 +128,7 @@ public class TileEntityCar extends TileEntityLockableLoot {
 	protected NonNullList<ItemStack> getItems() {
 		return null;
 	}
+	
+	public abstract TileEntityCarMaster getMaster();
 
 }

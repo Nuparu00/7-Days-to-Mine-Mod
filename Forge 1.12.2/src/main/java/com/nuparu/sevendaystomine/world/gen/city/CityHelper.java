@@ -3,7 +3,6 @@ package com.nuparu.sevendaystomine.world.gen.city;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -11,17 +10,18 @@ import org.apache.commons.io.IOUtils;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockCar;
+import com.nuparu.sevendaystomine.init.ModLootTables;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCarMaster;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.building.Building;
-import com.nuparu.sevendaystomine.world.gen.city.building.BuildingApartment;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingApartmentDark;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingBrickHouse;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingChurch;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingGasStation;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingGrayHouse;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingOvergrownHouse;
-import com.nuparu.sevendaystomine.world.gen.prefab.Prefab;
-import com.nuparu.sevendaystomine.world.gen.prefab.PrefabParser;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -83,20 +83,26 @@ public class CityHelper {
 		if (car.canBePlaced(world, pos, facing)) {
 			car.generate(world, pos, facing, true, null);
 		}
+		TileEntity te = world.getTileEntity(pos);
+		if(te instanceof TileEntityCarMaster) {
+			TileEntityCarMaster master = (TileEntityCarMaster)te;
+			master.setLootTable(ModLootTables.SEDAN, world.rand.nextLong());
+			master.fillWithLoot(null);
+		}
 	}
 
 	public static void loadBuildings() {
 		// buildings.add(new BuildingOvergrownHouse(new
 		// ResourceLocation(SevenDaysToMine.MODID,"overgrown_house")));
 		
-		buildings.add(new BuildingApartment(new ResourceLocation(SevenDaysToMine.MODID, "apartment"),50));
-		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house"),45));
-		buildings.add(new BuildingApartmentDark(new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_bottom"),50));
-		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "gray_house"),20));
-		buildings.add(new BuildingGasStation(new ResourceLocation(SevenDaysToMine.MODID, "gas_station_0"),2));
-		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "overgrown_house"),20));
-		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "water_tower"),1));
-		buildings.add(new BuildingChurch(new ResourceLocation(SevenDaysToMine.MODID, "church_front"),20));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartment"),50,-1));
+		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house"),45,-2));
+		buildings.add(new BuildingApartmentDark(new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_bottom"),50,-1));
+		buildings.add(new BuildingGrayHouse(new ResourceLocation(SevenDaysToMine.MODID, "gray_house"),20,-1));
+		buildings.add(new BuildingGasStation(new ResourceLocation(SevenDaysToMine.MODID, "gas_station_0"),1));
+		buildings.add(new BuildingOvergrownHouse(new ResourceLocation(SevenDaysToMine.MODID, "overgrown_house"),20,-1));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "water_tower"),1));
+		buildings.add(new BuildingChurch(new ResourceLocation(SevenDaysToMine.MODID, "church_front"),20,-1));
 	}
 
 	public static Building getRandomBuilding(Random rand) {

@@ -24,13 +24,16 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-public class BuildingChurch extends BuildingApartment {
+public class BuildingChurch extends Building {
 
 	private ResourceLocation BACK = new ResourceLocation(SevenDaysToMine.MODID, "church_back");
 	private ResourceLocation TOP = new ResourceLocation(SevenDaysToMine.MODID, "church_top");
 
 	public BuildingChurch(ResourceLocation res, int weight) {
-		super(res, weight);
+		this(res, weight,0);
+	}
+	public BuildingChurch(ResourceLocation res, int weight, int yOffset) {
+		super(res, weight,yOffset);
 	}
 
 	@Override
@@ -46,12 +49,12 @@ public class BuildingChurch extends BuildingApartment {
 				return;
 			}
 			Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
-
+			pos = pos.up(yOffset);
+			
 			PlacementSettings placementsettings = (new PlacementSettings())
 					.setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot).setIgnoreEntities(false)
 					.setChunk((ChunkPos) null).setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
 
-			template.getDataBlocks(pos, placementsettings);
 			template.addBlocksToWorld(world, pos, placementsettings);
 
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
@@ -65,7 +68,6 @@ public class BuildingChurch extends BuildingApartment {
 				return;
 			}
 			BlockPos pos2 = pos.offset(facing.rotateY(), mirror ? size.getZ() : -size.getZ());
-			template.getDataBlocks(pos2, placementsettings);
 			template.addBlocksToWorld(world, pos2, placementsettings);
 
 			map = template.getDataBlocks(pos2, placementsettings);
@@ -79,7 +81,6 @@ public class BuildingChurch extends BuildingApartment {
 				return;
 			}
 			BlockPos pos3 = pos.up(32);
-			template.getDataBlocks(pos3, placementsettings);
 			template.addBlocksToWorld(world, pos3, placementsettings);
 
 			map = template.getDataBlocks(pos3, placementsettings);

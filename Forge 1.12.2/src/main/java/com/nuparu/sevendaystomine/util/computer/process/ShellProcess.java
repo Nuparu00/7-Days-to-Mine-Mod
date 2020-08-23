@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.process;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +18,7 @@ import com.nuparu.sevendaystomine.proxy.CommonProxy;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
+import com.nuparu.sevendaystomine.util.computer.application.ApplicationRegistry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -63,7 +64,7 @@ public class ShellProcess extends WindowedProcess {
 	@SideOnly(Side.CLIENT)
 	public void render(float partialTicks) {
 		super.render(partialTicks);
-		drawWindow(getTitle(), new ColorRGBA(0, 0, 0), new ColorRGBA(0.8, 0.8, 0.8));
+		drawWindow(getTitle(), new ColorRGBA(0d, 0d, 0d), new ColorRGBA(0.8, 0.8, 0.8));
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(0, 0, offsetRelativeZ(2));
 		ArrayList<String> strings = new ArrayList<String>();
@@ -121,7 +122,7 @@ public class ShellProcess extends WindowedProcess {
 			field.setProcess(this);
 			field.enabledColor = 0xffffff;
 			field.backgroundColor = new ColorRGBA(0, 0, 0, 0);
-			field.cursorColor = new ColorRGBA(1, 1, 1);
+			field.cursorColor = new ColorRGBA(1d, 1d, 1d);
 			field.setZLevel(zLevel + 1);
 			field.setContentText(input);
 			elements.add(field);

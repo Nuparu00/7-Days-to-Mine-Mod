@@ -24,7 +24,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-public class BuildingApartmentDark extends BuildingApartment {
+public class BuildingApartmentDark extends Building{
 
 	private ResourceLocation[] mid_odd = new ResourceLocation[] {
 			new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_mid_a1"),
@@ -38,9 +38,12 @@ public class BuildingApartmentDark extends BuildingApartment {
 			new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_top2") };
 	private ResourceLocation[] roof = new ResourceLocation[] {
 			new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_roof") };
-
+	
 	public BuildingApartmentDark(ResourceLocation res, int weight) {
-		super(res, weight);
+		this(res, weight,0);
+	}
+	public BuildingApartmentDark(ResourceLocation res, int weight, int yOffset) {
+		super(res, weight,yOffset);
 	}
 	@Override
 	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
@@ -53,16 +56,14 @@ public class BuildingApartmentDark extends BuildingApartment {
 			if (template == null) {
 				return;
 			}
-
 			Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
-
-			pos = pos.down();
-
+			pos = pos.up(yOffset);
+			
+			
 			PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot)
 					.setIgnoreEntities(false).setChunk((ChunkPos) null).setReplacedBlock((Block) null)
 					.setIgnoreStructureBlock(false);
 
-			template.getDataBlocks(pos, placementsettings);
 			template.addBlocksToWorld(world, pos, placementsettings);
 
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
@@ -98,7 +99,6 @@ public class BuildingApartmentDark extends BuildingApartment {
 					i = segments-2;
 					continue;
 				}
-				template.getDataBlocks(pos, placementsettings);
 				template.addBlocksToWorld(world, pos, placementsettings);
 				map = template.getDataBlocks(pos, placementsettings);
 

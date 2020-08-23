@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.process;
 
 import java.awt.Cursor;
 import java.util.ArrayList;
@@ -15,6 +15,8 @@ import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
+import com.nuparu.sevendaystomine.util.computer.application.Application;
+import com.nuparu.sevendaystomine.util.computer.application.ApplicationRegistry;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
@@ -287,6 +289,8 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 			this.x = Screen.screen.localXToGlobal(0);
 			this.y = Screen.screen.localYToGlobal(0);
 			this.maximized = !this.maximized;
+			initWindow();
+			sync("x","y","width","height","old_height","old_width","maximized","minimized");
 			
 		} else if (buttonId == -2) {
 			setMinimized(true);
@@ -325,9 +329,9 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-		if (isMinimized())
+		if (isMinimized() || maximized)
 			return;
-		if (clickedMouseButton == 0 && isFocused() && !maximized && Utils.isInArea(mouseX, mouseY, x, y,
+		if (clickedMouseButton == 0 && isFocused() && Utils.isInArea(mouseX, mouseY, x, y,
 				width - 3 * (Screen.screen.ySize * title_bar_height), Screen.screen.ySize * title_bar_height)) {
 			if (isDragged == false) {
 				isDragged = true;
@@ -344,6 +348,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	@SideOnly(Side.CLIENT)
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		boolean focusPrev = isFocused;
+		System.out.println(isFocused);
 		if (isNotHidden(mouseX, mouseY)) {
 
 			if (Utils.isInArea(mouseX, mouseY, x, y, width - 3 * (Screen.screen.ySize * title_bar_height),

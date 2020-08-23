@@ -44,6 +44,7 @@ import com.nuparu.sevendaystomine.item.ItemMold;
 import com.nuparu.sevendaystomine.item.ItemMurkyWater;
 import com.nuparu.sevendaystomine.item.ItemPhoto;
 import com.nuparu.sevendaystomine.item.ItemPistol;
+import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.item.ItemQualityAxe;
 import com.nuparu.sevendaystomine.item.ItemQualityPickaxe;
 import com.nuparu.sevendaystomine.item.ItemQualityScrapable;
@@ -539,4 +540,5 @@ public class ModItems {
 	
 	public static final Item GAS_CANISTER = new ItemScrap(EnumMaterial.GASOLINE).setMaxStackSize(64)
 			.setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("gas_canister").setUnlocalizedName("gas_canister");
+	public static final Item AUGER_BLADE = new ItemQuality().setMaxStackSize(1).setCreativeTab(SevenDaysToMine.TAB_FORGING).setRegistryName("auger_blade").setUnlocalizedName("auger_blade");
 }

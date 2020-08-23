@@ -33,6 +33,7 @@ import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.item.crafting.campfire.CampfireRecipeManager;
 import com.nuparu.sevendaystomine.item.crafting.chemistry.ChemistryRecipeManager;
 import com.nuparu.sevendaystomine.item.crafting.forge.ForgeRecipeManager;
@@ -96,8 +97,8 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenSpikes;
 import com.nuparu.sevendaystomine.util.ConfigHandler;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.VersionChecker;
-import com.nuparu.sevendaystomine.util.computer.ApplicationRegistry;
-import com.nuparu.sevendaystomine.util.computer.ProcessRegistry;
+import com.nuparu.sevendaystomine.util.computer.application.ApplicationRegistry;
+import com.nuparu.sevendaystomine.util.computer.process.ProcessRegistry;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
 import net.minecraft.client.Minecraft;
@@ -366,8 +367,23 @@ public class CommonProxy {
 
 	public void registerLootTables() {
 		LootFunctionManager.registerFunction(new RandomQualityFunction.Serializer());
-
-		LootTableList.register(new ResourceLocation(SevenDaysToMine.MODID, "airdrop"));
+		
+		LootTableList.register(ModLootTables.AIRDROP);
+		LootTableList.register(ModLootTables.DRESSER);
+		LootTableList.register(ModLootTables.FRIDGE);
+		LootTableList.register(ModLootTables.CARDBOARD);
+		LootTableList.register(ModLootTables.TRASH);
+		LootTableList.register(ModLootTables.TOILET);
+		LootTableList.register(ModLootTables.SINK);
+		LootTableList.register(ModLootTables.FILE_CABINET);
+		LootTableList.register(ModLootTables.CUPBOARD);
+		LootTableList.register(ModLootTables.SEDAN);
+		LootTableList.register(ModLootTables.BOOKSHELF_COMMON);
+		LootTableList.register(ModLootTables.MICROWAVE);
+		LootTableList.register(ModLootTables.FURNACE);
+		LootTableList.register(ModLootTables.MEDICAL_CABINET);
+		LootTableList.register(ModLootTables.BACKPACK);
+		LootTableList.register(ModLootTables.WRITING_TABLE);
 	}
 
 	public void openClientSideGui(int id, int x, int y, int z) {

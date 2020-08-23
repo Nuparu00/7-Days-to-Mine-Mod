@@ -182,4 +182,9 @@ public class TileEntityCarMaster extends TileEntityCar implements ISidedInventor
 	protected NonNullList<ItemStack> getItems() {
 		return inventory;
 	}
+	
+	@Override
+	public TileEntityCarMaster getMaster() {
+		return this;
+	}
 }

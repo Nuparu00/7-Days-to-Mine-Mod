@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.process;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -185,8 +185,7 @@ public abstract class TickingProcess {
 	public void sync(String... fields) {
 		NBTTagCompound nbt = new NBTTagCompound();
 		for (String s : fields) {
-			System.out.println(s);
-			Class<?> clazz = this.getClass();
+						Class<?> clazz = this.getClass();
 			Field f = null;
 			while (f == null && clazz != null) // stop when we got field or reached top of class hierarchy
 			{
@@ -275,7 +274,7 @@ public abstract class TickingProcess {
 		nbt.setString(ProcessRegistry.RES_KEY, ProcessRegistry.INSTANCE.getResByClass(this.getClass()).toString());
 		if (computerTE != null && nbt != null) {
 			PacketManager.syncProcess.sendToServer(new SyncProcessMessage(computerTE.getPos(), nbt));
-			System.out.println(nbt.toString());
+			//System.out.println(nbt.toString());
 		}
 	}
 }

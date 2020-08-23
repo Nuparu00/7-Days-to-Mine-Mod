@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.process;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
+import com.nuparu.sevendaystomine.util.computer.application.ApplicationRegistry;
 
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,7 +42,7 @@ public class CCTVProcess extends WindowedProcess {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void render(float partialTicks) {
-		drawWindow(getTitle(), new ColorRGBA(0, 0, 0), new ColorRGBA(0.8, 0.8, 0.8));
+		drawWindow(getTitle(), new ColorRGBA(0d, 0d, 0d), new ColorRGBA(0.8, 0.8, 0.8));
 		ScaledResolution r = new ScaledResolution(Screen.mc);
 		int scale = r.getScaleFactor();
 

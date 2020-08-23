@@ -24,12 +24,15 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
-public class BuildingGasStation extends BuildingApartment {
+public class BuildingGasStation extends Building {
 
 	private ResourceLocation REST = new ResourceLocation(SevenDaysToMine.MODID, "gas_station_1");
 
 	public BuildingGasStation(ResourceLocation res, int weight) {
-		super(res, weight);
+		this(res, weight,0);
+	}
+	public BuildingGasStation(ResourceLocation res, int weight, int yOffset) {
+		super(res, weight,yOffset);
 	}
 
 	@Override
@@ -45,12 +48,12 @@ public class BuildingGasStation extends BuildingApartment {
 			}
 
 			Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
-
+			pos = pos.up(yOffset);
+			
 			PlacementSettings placementsettings = (new PlacementSettings())
 					.setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot).setIgnoreEntities(false)
 					.setChunk((ChunkPos) null).setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
 
-			template.getDataBlocks(pos, placementsettings);
 			template.addBlocksToWorld(world, pos, placementsettings);
 
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
@@ -64,7 +67,6 @@ public class BuildingGasStation extends BuildingApartment {
 				return;
 			}
 			pos = pos.offset(facing, -size.getX());
-			template.getDataBlocks(pos, placementsettings);
 			template.addBlocksToWorld(world, pos, placementsettings);
 
 			map = template.getDataBlocks(pos, placementsettings);

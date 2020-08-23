@@ -34,7 +34,7 @@ public class City {
 	protected HashMap<Integer, String> streetNamesZ = Maps.newHashMap();
 
 	// 256 takes roughly 43 seconds ; 128 takes around 17 seconds
-	public static final int MAX_ROADS = 32;
+	public static final int MAX_ROADS = 24;
 
 	public int roads_limit;
 
@@ -59,7 +59,7 @@ public class City {
 
 		this.world = world;
 		this.rand = world.rand;
-		this.rand = new Random(0);
+		//this.rand = new Random(0);
 		this.unclaimedStreetNames = new ArrayList<String>(CityHelper.streets);
 		this.name = CityHelper.getRandomCityName(this.rand);
 		this.roads_limit = MathUtils.getIntInRange(rand, 8, MAX_ROADS);

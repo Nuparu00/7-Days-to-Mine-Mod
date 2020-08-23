@@ -26,6 +26,13 @@ public class ColorRGBA {
 		this.B = b;
 		this.A = 1;
 	}
+	
+	public ColorRGBA(int r, int g, int b) {
+		this.R = r/255d;
+		this.G = g/255d;
+		this.B = b/255d;
+		this.A = 1;
+	}
 
 	public ColorRGBA darken(double delta) {
 

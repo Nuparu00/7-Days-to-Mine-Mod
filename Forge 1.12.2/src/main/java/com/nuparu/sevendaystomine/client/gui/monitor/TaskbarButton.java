@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
-import com.nuparu.sevendaystomine.util.computer.WindowedProcess;
+import com.nuparu.sevendaystomine.util.computer.process.WindowedProcess;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,8 +23,8 @@ public class TaskbarButton extends Button {
 		if (process.getApp() != null) {
 			this.text = process.getApp().getLocalizedName();
 		}
-		this.hovered = new ColorRGBA(1, 1, 1);
-		this.normal = new ColorRGBA(1, 1, 1);
+		this.hovered = new ColorRGBA(1d, 1d, 1d);
+		this.normal = new ColorRGBA(1d, 1d, 1d);
 	}
 
 	@Override

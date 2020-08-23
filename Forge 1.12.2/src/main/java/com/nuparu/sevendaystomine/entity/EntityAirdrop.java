@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.inventory.itemhandler.AirdropInventoryHandler;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.ItemUtils;
@@ -60,7 +61,7 @@ public class EntityAirdrop extends Entity {
 		this.setSize(1, 1);
 		this.inventory = new AirdropInventoryHandler(getInventorySize(), this);
 		this.setHealth(40);
-	    ItemUtils.fillWithLoot(inventory, new ResourceLocation(SevenDaysToMine.MODID,"airdrop"), world, rand);
+		ItemUtils.fillWithLoot(inventory, ModLootTables.AIRDROP, world, rand);
 	}
 
 	public EntityAirdrop(World worldIn, double x, double y, double z) {
@@ -81,7 +82,7 @@ public class EntityAirdrop extends Entity {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		this.age++;
-		
+
 		if (this.age >= 48000) {
 			this.setDead();
 		}
@@ -110,6 +111,9 @@ public class EntityAirdrop extends Entity {
 		if (getLanded() && getSmokeTime() > 0) {
 			for (int i = 0; i < world.rand.nextInt(4) + 1; i++) {
 				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY + height, this.posZ,
+						MathUtils.getFloatInRange(-0.1f, 0.1f), MathUtils.getFloatInRange(0.2f, 0.5f),
+						MathUtils.getFloatInRange(-0.1f, 0.1f));
+				world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY + height, this.posZ,
 						MathUtils.getFloatInRange(-0.1f, 0.1f), MathUtils.getFloatInRange(0.2f, 0.5f),
 						MathUtils.getFloatInRange(-0.1f, 0.1f));
 			}

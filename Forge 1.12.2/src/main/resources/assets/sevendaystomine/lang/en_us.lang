@@ -172,7 +172,7 @@ book_minibike.desc=Even a total dumbshit can build a minibike.
 book_shotgun.title=Shotgun
 book_sniper.title=Sniper Rifle
 book_magnum.title=.44 Magnum
-
+book_mp5.title=MP5
 
 #Books
 book.contents=Contents
@@ -378,6 +378,8 @@ item.BottledCoffee.name=Coffee
 item.JarOfHoney.name=Jar of Honey
 item.CannedMurkyWater.name=Canned Murky Water
 item.CannedWater.name=Canned Water
+item.CannedBeef.name=Cann of Beef
+item.CannedLamb.name=Cann of Lamb
 item.CannedCatFood.name=Can of Cat Food
 item.CannedDogFood.name=Can of Dog Food
 item.CannedHam.name=Can of Ham
@@ -560,7 +562,7 @@ item.sniper_rifle.name=Sniper Rifle
 item.magnet.name=Magnet
 item.photo_cell.name=Photovoltaic Cell
 item.potassium.name=Potassium Nitrate
-item.gas_canister.nmae=Gas Can
+item.gas_canister.name=Gas Can
 item.shotgun_receiver.name=Shotgun Receiver
 item.shotgun_parts.name=Shotgun Parts
 item.shotgun_stock.name=Shotgun Stock
@@ -585,6 +587,7 @@ item.mp5_stock.name=MP5 Stock
 item.mp5_barrel.name=MP5 Barrel
 item.mp5_trigger.name=MP5 Trigger
 item.shotgun_shell.name=Shotgun Shell
+item.auger_blade.name=Auger Blade
 
 #Blocks
 

@@ -25,7 +25,7 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class ItemClothing extends ItemArmor implements ISpecialArmor {
+public abstract class ItemClothing extends ItemArmor implements ISpecialArmor, IScrapable {
 
 	public ResourceLocation texture;
 	public ResourceLocation overlay;
@@ -33,6 +33,9 @@ public abstract class ItemClothing extends ItemArmor implements ISpecialArmor {
 	public boolean isDyeable = false;
 	public boolean hasOverlay = false;
 	public int defaultColor = 16777215;
+	
+	private EnumMaterial material = EnumMaterial.CLOTH;
+	private int weight = 2;
 
 	public ItemClothing(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
@@ -170,6 +173,26 @@ public abstract class ItemClothing extends ItemArmor implements ISpecialArmor {
 			model = new ModelPlayer(0.35f,false);
 		}
 		return model;
+	}
+	
+	public void setMaterial(EnumMaterial mat) {
+		material = mat;
+	}
+
+	public EnumMaterial getMaterial() {
+		return material;
+	}
+
+	public void setWeight(int newWeight) {
+		weight = newWeight;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public boolean canBeScraped() {
+		return true;
 	}
 
 }

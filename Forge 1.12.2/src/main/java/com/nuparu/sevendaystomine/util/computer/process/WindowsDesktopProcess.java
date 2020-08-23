@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.computer;
+package com.nuparu.sevendaystomine.util.computer.process;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,6 +23,8 @@ import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.client.Animations;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
+import com.nuparu.sevendaystomine.util.computer.application.Application;
+import com.nuparu.sevendaystomine.util.computer.application.ApplicationRegistry;
 
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -97,7 +99,7 @@ public class WindowsDesktopProcess extends DesktopProcess {
 				(sr.getScaledHeight() / 2) + (screen.ySize / 2) - (screen.ySize * 0.1), screen.ySize * 0.1,
 				screen.ySize * 0.1, screen, "", start, 0);
 		button.textNormal = 0xffffff;
-		button.normal = new ColorRGBA(1, 1, 1);
+		button.normal = new ColorRGBA(1d, 1d, 1d);
 		button.hovered = hover;
 		button.setFontSize(0.7);
 		button.setProcess(this);
@@ -115,7 +117,7 @@ public class WindowsDesktopProcess extends DesktopProcess {
 
 		};
 		button1.textNormal = 0xffffff;
-		button1.normal = new ColorRGBA(1, 1, 1);
+		button1.normal = new ColorRGBA(1d, 1d, 1d);
 		button1.hovered = new ColorRGBA(0.3, 0.7, 0.95);
 		button1.setFontSize(0.7);
 		button1.setProcess(this);

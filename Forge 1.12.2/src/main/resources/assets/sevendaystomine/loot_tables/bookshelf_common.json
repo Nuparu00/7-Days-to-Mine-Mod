@@ -1,0 +1,87 @@
+{
+    "pools": [
+        {
+        	"name" : "common",
+            "rolls": {
+                "min": 1,
+                "max": 4
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 55,
+                    "name": "minecraft:paper"
+                },
+                {
+                    "type": "item",
+                    "weight": 50,
+                    "name": "minecraft:book"
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:survival_guide"
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:book_forging"
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "sevendaystomine:book_ammo"
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:book_computers"
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:book_concrete"
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:book_electricity"
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:book_chemistry"
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:book_metalworking"
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:book_pistol"
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "sevendaystomine:book_minibike"
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "minecraft:writable_book"
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "minecraft:map"
+                },
+                {
+                    "type": "empty",
+                    "weight": 500
+                }
+            ]
+        }
+    ]
+}
