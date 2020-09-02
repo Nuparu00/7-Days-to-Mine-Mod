@@ -3,14 +3,21 @@ package com.nuparu.sevendaystomine.world.gen.city.building;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.nuparu.sevendaystomine.block.BlockBookshelfEnhanced;
+import com.nuparu.sevendaystomine.block.BlockChestOld;
 import com.nuparu.sevendaystomine.block.BlockCupboard;
 import com.nuparu.sevendaystomine.block.BlockGarbage;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
+import com.nuparu.sevendaystomine.block.BlockTrashCan;
+import com.nuparu.sevendaystomine.block.BlockWheels;
+import com.nuparu.sevendaystomine.block.BlockWritingTable;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBackpack;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBirdNest;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBookshelf;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCardboard;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCashRegister;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCorpse;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCupboard;
 import com.nuparu.sevendaystomine.tileentity.TileEntityDresser;
@@ -18,16 +25,19 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityFileCabinet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGarbage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMedicalCabinet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMicrowave;
+import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
 import com.nuparu.sevendaystomine.tileentity.TileEntityRefrigerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTable;
 import com.nuparu.sevendaystomine.tileentity.TileEntityToilet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTrashBin;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTrashCan;
 import com.nuparu.sevendaystomine.util.ItemUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.BlockHopper;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
@@ -50,6 +60,7 @@ public class Building {
 	public ResourceLocation res;
 	public int weight;
 	public int yOffset = 0;
+	public IBlockState pedestalState;
 
 	public Building(ResourceLocation res, int weight) {
 		this(res, weight, 0);
@@ -59,6 +70,13 @@ public class Building {
 		this.res = res;
 		this.weight = weight;
 		this.yOffset = yOffset;
+	}
+
+	public Building(ResourceLocation res, int weight, int yOffset, IBlockState pedestalState) {
+		this.res = res;
+		this.weight = weight;
+		this.yOffset = yOffset;
+		this.pedestalState = pedestalState;
 	}
 
 	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
@@ -82,36 +100,45 @@ public class Building {
 					.setChunk((ChunkPos) null).setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
 
 			template.addBlocksToWorld(world, pos, placementsettings);
-
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
 			}
+			generatePedestal(world, pos, template, facing, mirror);
 		}
 	}
 
 	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data) {
 		Rotation rot = Utils.facingToRotation(facing);
-		IBlockState state = null;
 		// To mkaing it so pos == position of the structure block
 		switch (data) {
 		case "garbage": {
-			world.setBlockState(pos, ModBlocks.GARBAGE.getDefaultState().withProperty(BlockGarbage.FACING,
-					EnumFacing.getHorizontal(world.rand.nextInt(4))));
-			TileEntityGarbage te = (TileEntityGarbage) world.getTileEntity(pos);
-			ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.TRASH, world, world.rand);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			if (world.rand.nextBoolean()) {
+				world.setBlockState(pos, ModBlocks.GARBAGE.getDefaultState().withProperty(BlockGarbage.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityGarbage te = (TileEntityGarbage) world.getTileEntity(pos);
+				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.TRASH, world, world.rand);
+			}
 			break;
 		}
 		case "cobweb": {
-			world.setBlockState(pos, Blocks.WEB.getDefaultState());
+			IBlockState state = Blocks.AIR.getDefaultState();
+			if (world.rand.nextBoolean()) {
+				state = Blocks.WEB.getDefaultState();
+			}
+			world.setBlockState(pos, state);
 			break;
 		}
 		case "cardboard": {
-			world.setBlockState(pos, ModBlocks.CARDBOARD_BOX.getDefaultState().withProperty(BlockGarbage.FACING,
-					EnumFacing.getHorizontal(world.rand.nextInt(4))));
-			TileEntityCardboard te = (TileEntityCardboard) world.getTileEntity(pos);
-			te.setLootTable(ModLootTables.CARDBOARD, world.rand.nextLong());
-			te.fillWithLoot(null);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			if (world.rand.nextInt(5) == 0) {
+				world.setBlockState(pos, ModBlocks.CARDBOARD_BOX.getDefaultState().withProperty(BlockGarbage.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityCardboard te = (TileEntityCardboard) world.getTileEntity(pos);
+				te.setLootTable(ModLootTables.CARDBOARD, world.rand.nextLong());
+				te.fillWithLoot(null);
+			}
 			break;
 		}
 		case "writing_table": {
@@ -121,11 +148,27 @@ public class Building {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			break;
 		}
+		case "writing_table_bottom": {
+			TileEntityTable te = (TileEntityTable) world.getTileEntity(pos.up());
+			te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
+			te.fillWithLoot(null);
+			world.setBlockState(pos,
+					world.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockWritingTable.FACING))));
+			break;
+		}
 		case "backpack": {
 			world.setBlockState(pos, ModBlocks.BACKPACK_NORMAL.getDefaultState().withProperty(BlockGarbage.FACING,
 					EnumFacing.getHorizontal(world.rand.nextInt(4))));
 			TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
 			te.setLootTable(ModLootTables.BACKPACK, world.rand.nextLong());
+			te.fillWithLoot(null);
+			break;
+		}
+		case "medical_backpack": {
+			world.setBlockState(pos, ModBlocks.BACKPACK_MEDICAL.getDefaultState().withProperty(BlockGarbage.FACING,
+					EnumFacing.getHorizontal(world.rand.nextInt(4))));
+			TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
+			te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
 			te.fillWithLoot(null);
 			break;
 		}
@@ -208,8 +251,7 @@ public class Building {
 		case "furnace": {
 			TileEntityFurnace te = (TileEntityFurnace) world.getTileEntity(pos.down());
 			ItemUtils.fillWithLoot(te, ModLootTables.FURNACE, world, world.rand);
-			world.setBlockState(pos,
-					world.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockFurnace.FACING))));
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			break;
 		}
 		case "bookshelf": {
@@ -219,11 +261,32 @@ public class Building {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			break;
 		}
+		case "bookshelf_bottom": {
+			TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.up());
+			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+			te.fillWithLoot(null);
+			world.setBlockState(pos, world
+					.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockBookshelfEnhanced.FACING))));
+			break;
+		}
 		case "bookshelves": {
 			TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
 			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
 			te.fillWithLoot(null);
 			te = (TileEntityBookshelf) world.getTileEntity(pos.down(2));
+			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+			te.fillWithLoot(null);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			break;
+		}
+		case "bookshelf_tall": {
+			TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
+			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+			te.fillWithLoot(null);
+			te = (TileEntityBookshelf) world.getTileEntity(pos.down(2));
+			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+			te.fillWithLoot(null);
+			te = (TileEntityBookshelf) world.getTileEntity(pos.down(3));
 			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
 			te.fillWithLoot(null);
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -266,6 +329,60 @@ public class Building {
 			te.fillWithLoot(null);
 			break;
 		}
+		case "nest": {
+			world.setBlockState(pos, ModBlocks.BIRD_NEST.getDefaultState());
+			TileEntityBirdNest te = (TileEntityBirdNest) world.getTileEntity(pos);
+			te.setLootTable(ModLootTables.NEST, world.rand.nextLong());
+			te.fillWithLoot(null);
+			break;
+		}
+		case "wheels": {
+			IBlockState state = Blocks.AIR.getDefaultState();
+			if (world.rand.nextInt(40) == 0) {
+				state = ModBlocks.WHEELS.getDefaultState().withProperty(BlockWheels.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4)));
+			}
+			world.setBlockState(pos, state);
+			break;
+		}
+		case "cooking_pot": {
+			IBlockState state = Blocks.AIR.getDefaultState();
+			if (world.rand.nextInt(20) == 0) {
+				state = ModBlocks.COOKING_POT.getDefaultState().withProperty(BlockWheels.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4)));
+			}
+			world.setBlockState(pos, state);
+			break;
+		}
+		case "shower_drain": {
+			TileEntityHopper te = (TileEntityHopper) world.getTileEntity(pos.down());
+			te.setLootTable(ModLootTables.SHOWER_DRAIN, world.rand.nextLong());
+			te.fillWithLoot(null);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			break;
+		}
+		case "trash_can": {
+			world.setBlockState(pos, ModBlocks.TRASH_CAN.getDefaultState().withProperty(BlockTrashCan.FACING,
+					EnumFacing.getHorizontal(world.rand.nextInt(4))));
+			TileEntityTrashCan te = (TileEntityTrashCan) world.getTileEntity(pos);
+			te.setLootTable(ModLootTables.TRASH, world.rand.nextLong());
+			te.fillWithLoot(null);
+			break;
+		}
+		case "cash_register": {
+			TileEntityCashRegister te = (TileEntityCashRegister) world.getTileEntity(pos.down());
+			ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.CASH_REGISTER, world, world.rand);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			break;
+		}
+		case "old_chest": {
+			world.setBlockState(pos, ModBlocks.CHEST_OLD.getDefaultState().withProperty(BlockChestOld.FACING,
+					EnumFacing.getHorizontal(world.rand.nextInt(4))));
+			TileEntityOldChest te = (TileEntityOldChest) world.getTileEntity(pos);
+			te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
+			te.fillWithLoot(null);
+			break;
+		}
 		}
 	}
 
@@ -283,5 +400,52 @@ public class Building {
 			return template.transformedSize(rot);
 		}
 		return BlockPos.ORIGIN;
+	}
+
+	public void generatePedestal(World world, BlockPos pos, Template template, EnumFacing facing, boolean mirror) {
+		Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
+		BlockPos size = template.transformedSize(rot);
+		for (int i = 0; i < size.getX(); i++) {
+			for (int j = 0; j < size.getZ(); j++) {
+				int x = i;
+				int z = j;
+				/*
+				 * if (facing == EnumFacing.EAST && !mirror) { x = -x; z = -z; } else if (facing
+				 * == EnumFacing.EAST && mirror) { x = -x; } else if (facing == EnumFacing.WEST
+				 * && mirror) { z = -z; } else if (facing == EnumFacing.NORTH && !mirror) { x =
+				 * -x; } else if (facing == EnumFacing.SOUTH && !mirror) { z = -z; } else if
+				 * (facing == EnumFacing.SOUTH && mirror) { x = -x; z = -z; }
+				 */
+
+				if (mirror) {
+					if (facing == EnumFacing.EAST || facing == EnumFacing.SOUTH) {
+						x = -x;
+					}
+					if (facing == EnumFacing.WEST || facing == EnumFacing.SOUTH) {
+						z = -z;
+					}
+				} else {
+					if (facing == EnumFacing.NORTH || facing == EnumFacing.EAST) {
+						x = -x;
+					}
+					if (facing == EnumFacing.SOUTH || facing == EnumFacing.EAST) {
+						z = -z;
+					}
+				}
+
+				BlockPos pos2 = pos.add(x, -1, z);
+				IBlockState newState = pedestalState != null ? pedestalState : world.getBlockState(pos2.up());
+				if (world.getBlockState(pos2.up()).getMaterial().isSolid()) {
+					for (; pos2.getY() > 0; pos2 = pos2.down()) {
+
+						IBlockState state = world.getBlockState(pos2);
+						if (Utils.isSolid(world, pos2, state))
+							break;
+
+						world.setBlockState(pos2, newState);
+					}
+				}
+			}
+		}
 	}
 }

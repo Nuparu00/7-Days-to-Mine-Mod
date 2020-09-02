@@ -71,7 +71,7 @@ public class BuildingApartmentDark extends Building{
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
 			}
-
+			generatePedestal(world, pos, template, facing, mirror);
 			int segments = world.rand.nextInt(7) + 2;
 
 			for (int i = 0; i < segments; i++) {

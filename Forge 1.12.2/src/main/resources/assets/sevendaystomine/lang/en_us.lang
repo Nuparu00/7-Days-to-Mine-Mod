@@ -61,6 +61,7 @@ computer.install=Installing %s...
 computer.turn.on=Turning on...
 computer.turn.off=Turning off...
 voltmeter.message=This block has voltage of %1$sV.
+airdrop.message=Airdrop has been dropped around X:%1$s Z:%2$s.
 
 #Computer Text
 computer.win10.product_key=It's time to enter the product key
@@ -80,7 +81,9 @@ computer.app.notes.desc=Yellow sticky notes
 computer.app.cctv=MineSpy
 computer.app.cctv.desc=MineSpy
 computer.app.cctv.no.camera=NO CAMERA CONNECTED
-computer.app.explorer=MineNet Explorer
+computer.app.explorer=MineNet Explorer 11
+computer.app.desc=Recommended MineNet Explorer
+computer.app.transit=Transit IDE
 
 #Status Effects
 
@@ -910,6 +913,8 @@ entity.zombie_crawler.name=Zombie Crawler
 entity.airdrop.name=Airdrop
 entity.zombie_policeman.name=Zombie Policeman
 entity.projectile_vomit.name=Projectile Vomit
+entity.zombie_wolf.name=Zombie Wolf
+entity.zombie_pig.name=Zombie Pig
 
 #Fluids
 fluid.gasoline=Gasoline

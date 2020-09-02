@@ -24,6 +24,8 @@ import com.nuparu.sevendaystomine.network.packets.ReloadHandler;
 import com.nuparu.sevendaystomine.network.packets.ReloadMessage;
 import com.nuparu.sevendaystomine.network.packets.SafeCodeHandler;
 import com.nuparu.sevendaystomine.network.packets.SafeCodeMessage;
+import com.nuparu.sevendaystomine.network.packets.SaveDataHandler;
+import com.nuparu.sevendaystomine.network.packets.SaveDataMessage;
 import com.nuparu.sevendaystomine.network.packets.StartProcessHandler;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncIconHandler;
@@ -63,6 +65,7 @@ public class PacketManager {
 	public static SimpleNetworkWrapper syncThrottle;
 	public static SimpleNetworkWrapper killProcess;
 	public static SimpleNetworkWrapper syncProcess;
+	public static SimpleNetworkWrapper saveData;
 
 	private static int discriminator = 0;
 
@@ -121,21 +124,22 @@ public class PacketManager {
 		syncInventory = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncInventory");
 		syncInventory.registerMessage(new SyncInventoryHandler(), SyncInventoryMessage.class, discriminator++,
 				Side.CLIENT);
-		
+
 		controllableKeyUpdate = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:controls");
-		controllableKeyUpdate.registerMessage(new ControllableKeyUpdateHandler(), ControllableKeyUpdateMessage.class, discriminator++,
-				Side.SERVER);
-		
+		controllableKeyUpdate.registerMessage(new ControllableKeyUpdateHandler(), ControllableKeyUpdateMessage.class,
+				discriminator++, Side.SERVER);
+
 		syncThrottle = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncThrottle");
 		syncThrottle.registerMessage(new SyncThrottleHandler(), SyncThrottleMessage.class, discriminator++,
 				Side.SERVER);
 
 		killProcess = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:killProcess");
-		killProcess.registerMessage(new KillProcessHandler(), KillProcessMessage.class, discriminator++,
-				Side.SERVER);
-		
+		killProcess.registerMessage(new KillProcessHandler(), KillProcessMessage.class, discriminator++, Side.SERVER);
+
 		syncProcess = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncProcess");
-		syncProcess.registerMessage(new SyncProcessHandler(), SyncProcessMessage.class, discriminator++,
-				Side.SERVER);
+		syncProcess.registerMessage(new SyncProcessHandler(), SyncProcessMessage.class, discriminator++, Side.SERVER);
+
+		saveData = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:saveData");
+		saveData.registerMessage(new SaveDataHandler(), SaveDataMessage.class, discriminator++, Side.SERVER);
 	}
 }

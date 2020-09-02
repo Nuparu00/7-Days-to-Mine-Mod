@@ -12,6 +12,8 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.world.gen.city.building.Building;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingSupermarket;
 import com.nuparu.sevendaystomine.world.gen.city.plot.Plot;
 import com.nuparu.sevendaystomine.world.gen.prefab.Prefab;
 
@@ -89,7 +91,8 @@ public class Street {
 				if (canBranch || f == facing) {
 					BlockPos blockpos = end.offset(f, Street.LENGTH - 1);
 					Biome biome = world.getBiome(blockpos);
-					if (biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN || biome == Biomes.OCEAN)
+					if (biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN || biome == Biomes.OCEAN
+							|| biome.getHeightVariation() > 0.15f)
 						continue;
 					int height = Utils.getTopSolidGroundHeight(blockpos, world);
 					int deltaHeight = Math.abs(end.getY() - height);
@@ -205,7 +208,10 @@ public class Street {
 		i = 0;
 		while (i < (canBranch ? LENGTH - 10 : LENGTH)) {
 			// HAVE TO FIND IF ANY OTHER BUILDING FITS
-			Plot plot = new Plot(this, 0, CityHelper.getRandomBuilding(world.rand), true, pos);
+			Building building = CityHelper.getRandomBuilding(world.rand);
+			if (building instanceof BuildingSupermarket)
+				continue;
+			Plot plot = new Plot(this, 0, building, true, pos);
 
 			if (facing.getAxis() == EnumFacing.Axis.X) {
 				i += plot.xSize + 1;
@@ -243,13 +249,11 @@ public class Street {
 					return;
 				}
 			}
-			if (facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
-				return;
-			}
+
 			int r = (int) Math.ceil(thickness / 2);
 			for (int i = 1; i < r + pavement + 1; i++) {
 				for (int j = 1; j < r + pavement + 1; j++) {
-					BlockPos pos = end.offset(facing, i).offset(facing.rotateY(), j);
+					BlockPos pos = end.offset(facing.rotateYCCW(), i).offset(facing, j);
 					IBlockState state = Blocks.STONEBRICK.getDefaultState();
 					if (i <= r && j <= r) {
 						state = ModBlocks.ASPHALT.getDefaultState();
@@ -271,6 +275,7 @@ public class Street {
 
 	}
 
+	// To-do: Clean this, fix the random stonebrick near crossing
 	public void generateAsphaltAndSidewalk() {
 		int roofBlocks = 0;
 
@@ -379,16 +384,11 @@ public class Street {
 
 					boolean flag2 = false;
 
-					if (block2 == ModBlocks.ASPHALT) {
-						flag2 = true;
-					} else if (block2 == Blocks.CONCRETE) {
-						flag2 = true;
-					} else if (block2 == Blocks.STONEBRICK) {
-						flag2 = true;
-					} else if (block2 == Blocks.STONE_SLAB) {
+					if (block2 == ModBlocks.ASPHALT || block2 == Blocks.CONCRETE || block2 == Blocks.CONCRETE
+							|| block2 == Blocks.STONEBRICK || block2 == Blocks.STONE_SLAB
+							|| block2 == ModBlocks.DEAD_MOSSY_BRICK) {
 						flag2 = true;
 					}
-
 					if (flag2) {
 						flag = true;
 						if (block.getBlock() != Blocks.STONEBRICK && block.getBlock() != Blocks.STONE_SLAB) {

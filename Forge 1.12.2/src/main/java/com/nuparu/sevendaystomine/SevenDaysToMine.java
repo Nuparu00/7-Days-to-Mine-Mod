@@ -41,17 +41,18 @@ import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.proxy.CommonProxy;
 import com.nuparu.sevendaystomine.util.GuiHandler;
 import com.nuparu.sevendaystomine.util.VanillaManager;
+import com.nuparu.sevendaystomine.world.MiscSavedData;
+import com.nuparu.sevendaystomine.world.WorldTypeOverworld;
 import com.nuparu.sevendaystomine.world.gen.BlueberryWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.CityWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.CornWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.GoldenrodWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.OreWorldGenerator;
-import com.nuparu.sevendaystomine.world.gen.RoadWorldGenerator;
+import com.nuparu.sevendaystomine.world.gen.RoadDecoratorWorldGen;
 import com.nuparu.sevendaystomine.world.gen.SmallFeatureWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.StructureGenerator;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
-import com.nuparu.sevendaystomine.world.gen.structure.MapGenCity;
-import com.nuparu.sevendaystomine.world.gen.structure.StructureCityPieces;
+import com.nuparu.sevendaystomine.world.gen.city.CitySavedData;
 import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 
 import net.minecraft.block.Block;
@@ -64,6 +65,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
@@ -103,10 +105,14 @@ public class SevenDaysToMine {
 
 	public static BreakSavedData breakSavedData;
 	public static HordeSavedData hordeSavedData;
+	public static CitySavedData citySavedData;
+	public static MiscSavedData miscSavedData;
 
 	public static HashMap<ChunkPos, Integer> ticketList;
 	public static Ticket chunkLoaderTicket;
 
+	public static final WorldType DEFAULT_WORLD = (new WorldTypeOverworld("overworld"));
+	
 	static {
 		// DataSerializers.registerSerializer(Utils.DIALOGUES);
 		FluidRegistry.enableUniversalBucket();
@@ -261,7 +267,7 @@ public class SevenDaysToMine {
 			ModBlocks.BURNT_PLANKS, ModBlocks.BURNT_FRAME, ModBlocks.DRY_GROUND, ModBlocks.BURNT_PLANKS_STAIRS,
 			ModBlocks.BURNT_PLANKS_SLAB, ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE,
 			ModBlocks.BURNT_CHAIR, ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE,
-			ModBlocks.MERCURY, ModBlocks.SEPARATOR };
+			ModBlocks.MERCURY, ModBlocks.SEPARATOR, ModBlocks.TURRET_ADVANCED};
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -335,8 +341,7 @@ public class SevenDaysToMine {
 		MinecraftForge.EVENT_BUS.register(new WorldEventHandler());
 		MinecraftForge.EVENT_BUS.register(new TickHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
-
-		MinecraftForge.TERRAIN_GEN_BUS.register(new TerrainGenEventHandler());
+		MinecraftForge.EVENT_BUS.register(new TerrainGenEventHandler());
 		// Alters Vanilla
 		VanillaManager.modifyVanilla();
 		// Loads repairs
@@ -350,18 +355,14 @@ public class SevenDaysToMine {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-
-		GameRegistry.registerWorldGenerator(new RoadWorldGenerator(), Integer.MIN_VALUE);
-		GameRegistry.registerWorldGenerator(new CityWorldGenerator(), Integer.MIN_VALUE);
+		
+		GameRegistry.registerWorldGenerator(new RoadDecoratorWorldGen(), Integer.MIN_VALUE);
 		GameRegistry.registerWorldGenerator(new StructureGenerator(), 0);
 		GameRegistry.registerWorldGenerator(new OreWorldGenerator(), 1);
 		GameRegistry.registerWorldGenerator(new SmallFeatureWorldGenerator(), 2);
 		GameRegistry.registerWorldGenerator(new GoldenrodWorldGenerator(), 18);
 		GameRegistry.registerWorldGenerator(new CornWorldGenerator(), 19);
 		GameRegistry.registerWorldGenerator(new BlueberryWorldGenerator(), 20);
-
-		MapGenStructureIO.registerStructure(MapGenCity.Start.class, MODID + ":city");
-		StructureCityPieces.registerVillagePieces();
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		CityHelper.loadBuildings();

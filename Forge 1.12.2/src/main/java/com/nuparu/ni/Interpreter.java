@@ -10,8 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import com.nuparu.ni.exception.EvaluationErrorException;
 import com.nuparu.ni.exception.TypeMismatchException;
 import com.nuparu.ni.exception.VariableNotFoundException;
+import com.nuparu.sevendaystomine.computer.process.TransitProcess;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Tree;
+import com.nuparu.sevendaystomine.util.Utils;
 
 //Ni to Java Interpreter
 public class Interpreter {
@@ -67,6 +69,10 @@ public class Interpreter {
 			case "else":
 				tokens.add(new Token(EnumTokenType.KEYWORD, word));
 				break;
+			case "print":
+			case "save":
+				tokens.add(new Token(EnumTokenType.METHOD, word));
+				break;
 			case "{":
 			case "}":
 				tokens.add(new Token(EnumTokenType.BRACKET, word));
@@ -113,8 +119,17 @@ public class Interpreter {
 			// token.value);
 			if (root.getData().type == EnumTokenType.START) {
 				if (token.type == EnumTokenType.TYPE || token.type == EnumTokenType.IDENTIFIER
-						|| token.type == EnumTokenType.KEYWORD) {
+						|| token.type == EnumTokenType.KEYWORD || token.type == EnumTokenType.METHOD || token.type == EnumTokenType.BRACKET) {
 					root = root.addChild(token);
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+
+						while (root.getData().type != EnumTokenType.START) {
+							root = root.getParent();
+						}
+
+					}
 					continue;
 				}
 			}
@@ -122,7 +137,17 @@ public class Interpreter {
 			else if (root.getData().type == EnumTokenType.TYPE) {
 				if (token.type == EnumTokenType.IDENTIFIER) {
 					root = root.addChild(token);
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+
+						while (root.getData().type != EnumTokenType.START) {
+							root = root.getParent();
+						}
+
+					}
 					continue;
+					
 				}
 			}
 
@@ -130,9 +155,10 @@ public class Interpreter {
 				if (token.type == EnumTokenType.OPERATOR || token.type == EnumTokenType.PARENTHESES
 						|| token.type == EnumTokenType.SEMICOLON) {
 					root = root.addChild(token);
-					if (token.type == EnumTokenType.SEMICOLON) {
-						while (root.getData().type != EnumTokenType.START
-								&& root.getData().type != EnumTokenType.BRACKET) {
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+						while (root.getData().type != EnumTokenType.START) {
 							root = root.getParent();
 						}
 					}
@@ -145,9 +171,10 @@ public class Interpreter {
 						|| token.type == EnumTokenType.PARENTHESES || token.type == EnumTokenType.OPERATOR
 						|| token.type == EnumTokenType.SEMICOLON) {
 					root = root.addChild(token);
-					if (token.type == EnumTokenType.SEMICOLON) {
-						while (root.getData().type != EnumTokenType.START
-								&& root.getData().type != EnumTokenType.BRACKET) {
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+						while (root.getData().type != EnumTokenType.START) {
 							root = root.getParent();
 						}
 					}
@@ -160,9 +187,10 @@ public class Interpreter {
 						|| token.type == EnumTokenType.SEMICOLON || token.type == EnumTokenType.BRACKET
 						|| token.type == EnumTokenType.OPERATOR || token.type == EnumTokenType.PARENTHESES) {
 					root = root.addChild(token);
-					if (token.type == EnumTokenType.SEMICOLON) {
-						while (root.getData().type != EnumTokenType.START
-								&& root.getData().type != EnumTokenType.BRACKET) {
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+						while (root.getData().type != EnumTokenType.START) {
 							root = root.getParent();
 						}
 					}
@@ -172,12 +200,14 @@ public class Interpreter {
 
 			else if (root.getData().type == EnumTokenType.BRACKET) {
 				if (token.type == EnumTokenType.IDENTIFIER || token.type == EnumTokenType.VALUE
-						|| token.type == EnumTokenType.SEMICOLON || token.type == EnumTokenType.PARENTHESES
-						|| token.type == EnumTokenType.BRACKET) {
+						|| token.type == EnumTokenType.TYPE || token.type == EnumTokenType.SEMICOLON
+						|| token.type == EnumTokenType.PARENTHESES || token.type == EnumTokenType.BRACKET
+						|| token.type == EnumTokenType.KEYWORD || token.type == EnumTokenType.METHOD) {
 					root = root.addChild(token);
-					if (token.type == EnumTokenType.SEMICOLON) {
-						while (root.getData().type != EnumTokenType.START
-								&& root.getData().type != EnumTokenType.BRACKET) {
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+						while (root.getData().type != EnumTokenType.START) {
 							root = root.getParent();
 						}
 					}
@@ -189,17 +219,31 @@ public class Interpreter {
 				if (token.type == EnumTokenType.OPERATOR || token.type == EnumTokenType.PARENTHESES
 						|| token.type == EnumTokenType.SEMICOLON) {
 					root = root.addChild(token);
-					if (token.type == EnumTokenType.SEMICOLON) {
-						while (root.getData().type != EnumTokenType.START
-								&& root.getData().type != EnumTokenType.BRACKET) {
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+
+						while (root.getData().type != EnumTokenType.START) {
 							root = root.getParent();
 						}
+
 					}
 					continue;
 				}
 			} else if (root.getData().type == EnumTokenType.SEMICOLON) {
-				if (token.type == EnumTokenType.IDENTIFIER || token.type == EnumTokenType.TYPE) {
+				if (token.type == EnumTokenType.IDENTIFIER || token.type == EnumTokenType.TYPE
+						|| token.type == EnumTokenType.KEYWORD || token.type == EnumTokenType.METHOD
+						|| token.type == EnumTokenType.BRACKET) {
 					root = root.addChild(token);
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+
+						while (root.getData().type != EnumTokenType.START) {
+							root = root.getParent();
+						}
+
+					}
 					continue;
 				}
 			}
@@ -207,6 +251,29 @@ public class Interpreter {
 			else if (root.getData().type == EnumTokenType.KEYWORD) {
 				if (token.type == EnumTokenType.PARENTHESES || token.type == EnumTokenType.BRACKET) {
 					root = root.addChild(token);
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+
+						while (root.getData().type != EnumTokenType.START) {
+							root = root.getParent();
+						}
+
+					}
+					continue;
+				}
+			} else if (root.getData().type == EnumTokenType.METHOD) {
+				if (token.type == EnumTokenType.PARENTHESES) {
+					root = root.addChild(token);
+					if (token.type == EnumTokenType.SEMICOLON
+							|| (token.type == EnumTokenType.BRACKET && token.value.equals("}"))) {
+						root = root.getParent();
+
+						while (root.getData().type != EnumTokenType.START) {
+							root = root.getParent();
+						}
+
+					}
 					continue;
 				}
 			}
@@ -219,100 +286,199 @@ public class Interpreter {
 
 	}
 
-	public static CodeBlock read(Tree<Token> tree, CodeBlock parent) {
+	public static CodeBlock read(Tree<Token> tree, CodeBlock parent, TransitProcess process) {
 		if (tree == null)
 			return null;
 
+		int level = 0;
+
 		CodeBlock codeBlock = new CodeBlock();
 		codeBlock.parent = parent;
-		if (codeBlock != null) {
-			for (int i = 0; i < tree.getChildren().size(); i++) {
-				Tree<Token> t = tree.getChildren().get(i);
-				EnumTokenType type = t.getData().type;
-				switch (type) {
-				case TYPE: {
-					// data type
-					String dataType = (String) t.getData().value;
-					if (t.isLeaf())
-						break;
-					// name
-					Tree<Token> t2 = t.getChildren().get(0);
-					if (t2.getData().type != EnumTokenType.IDENTIFIER)
-						break;
-					String name = (String) t2.getData().value;
-					// optional value
-					if (t2.isLeaf())
-						break;
-					codeBlock.addVariable(name, dataType);
-					Tree<Token> t3 = t2.getChildren().get(0);
-					if (t3.getData().type == EnumTokenType.SEMICOLON) {
-						break;
-					}
-					if (t3.getData().type != EnumTokenType.OPERATOR || !t3.getData().value.equals("=") || t3.isLeaf())
-						break;
-					Statement statement = readStatement(t3.getChildren().get(0), codeBlock, 0);
-					if (statement != null) {
-						Value result;
-						try {
-							result = statement.evaluate();
-							codeBlock.setVariableValue(name, result.getRealValue());
-						} catch (EvaluationErrorException | VariableNotFoundException | TypeMismatchException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				case IDENTIFIER: {
-					// name
-					String name = (String) t.getData().value;
-					// value
-					if (t.isLeaf())
-						break;
-					Tree<Token> t2 = t.getChildren().get(0);
-					if (t2.getData().type != EnumTokenType.OPERATOR || !t2.getData().value.equals("=") || t2.isLeaf())
-						break;
-					Statement statement = readStatement(t2.getChildren().get(0), codeBlock, 0);
-					if (statement != null) {
-						Value result;
-						try {
-							result = statement.evaluate();
-							codeBlock.setVariableValue(name, result.getRealValue());
-						} catch (EvaluationErrorException | VariableNotFoundException | TypeMismatchException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				case KEYWORD: {
-					String keyword = (String) t.getData().value;
 
-					if (keyword.equals("if")) {
-						if (t.isLeaf())
-							break;
-						Tree<Token> t2 = t.getChildren().get(0);
-						Condition c = readCondition(t2, codeBlock);
-						try {
-							Value value = c.evaluate();
-							if (value.isBoolean() && (Boolean) value.getRealValue() == true) {
-								while (t2.getData().type != EnumTokenType.BRACKET || !t2.getData().value.equals("{")) {
-									System.out.println("FUJKY " + t2.getData().value + " " + t2.getData().type + " " + (t2.getData().type != EnumTokenType.BRACKET) + " " + (!t2.getData().value.equals("{")));
-									if (t2.isLeaf()) {
-										System.out.println("FUJ");
-										return null;
-									}
-									t2 = t2.getChildren().get(0);
-								}
-								CodeBlock block = read(t2, codeBlock);
+		for (int i = 0; i < tree.getChildren().size(); i++) {
+			Tree<Token> t = tree.getChildren().get(i);
+			EnumTokenType type = t.getData().type;
+			String value = t.getData().value;
+
+			switch (type) {
+
+			default:
+			case START: {
+				break;
+			}
+
+			case BRACKET: {
+				break;
+			}
+
+			case PARENTHESES: {
+				break;
+			}
+
+			case TYPE: {
+				if (t.isLeaf())
+					return codeBlock;
+
+				Tree<Token> name = t.getChildren().get(0);
+				if (name.isLeaf() || name.getData() == null || name.getData().type != EnumTokenType.IDENTIFIER) {
+					codeBlock.print("Expected an indentifier, but did not find any");
+					return codeBlock;
+				}
+				String identifier = (String) name.getData().value;
+
+				codeBlock.addVariable(identifier, value);
+
+				Tree<Token> ending = name.getChildren().get(0);
+				if (ending.getData() == null) {
+					codeBlock.print("Expected ; or = but did not find any");
+					return codeBlock;
+				}
+				if (ending.getData().type == EnumTokenType.SEMICOLON)
+					break;
+
+				if (ending.isLeaf() || ending.getData().type != EnumTokenType.OPERATOR || ending.getData().value == null
+						|| !ending.getData().value.equals("=")) {
+					codeBlock.print("Expected =, but did not find any");
+					return codeBlock;
+				}
+				Statement statement = readStatement(ending.getChildren().get(0), codeBlock, 0);
+				if (statement != null) {
+					Value result;
+					try {
+						result = statement.evaluate();
+						codeBlock.setVariableValue(identifier, result.getRealValue());
+					} catch (EvaluationErrorException | VariableNotFoundException | TypeMismatchException e) {
+						e.printStackTrace();
+						codeBlock.print("An error occured: " + e.toString());
+					}
+				}
+				break;
+
+			}
+
+			case IDENTIFIER: {
+
+				if (t.isLeaf())
+					return codeBlock;
+				Tree<Token> ending = t.getChildren().get(0);
+				if (ending.getData() == null) {
+					codeBlock.print("Expected = but did not find any");
+					return codeBlock;
+				}
+
+				if (ending.isLeaf() || ending.getData().type != EnumTokenType.OPERATOR || ending.getData().value == null
+						|| !ending.getData().value.equals("=")) {
+					codeBlock.print("Expected =, but did not find any");
+					return codeBlock;
+				}
+
+				Statement statement = readStatement(ending.getChildren().get(0), codeBlock, 0);
+				if (statement != null) {
+					Value result;
+					try {
+						result = statement.evaluate();
+						codeBlock.setVariableValue(value, result.getRealValue());
+					} catch (EvaluationErrorException | VariableNotFoundException | TypeMismatchException e) {
+						e.printStackTrace();
+						codeBlock.print("An error occured: " + e.toString());
+					}
+				}
+				break;
+			}
+
+			case KEYWORD: {
+				switch (value) {
+				default:
+					break;
+				case "if": {
+					if (t.isLeaf())
+						return codeBlock;
+					Tree<Token> bracket = t.getChildren().get(0);
+					if (bracket.isLeaf())
+						return codeBlock;
+					if (bracket.getData().type != EnumTokenType.PARENTHESES || !bracket.getData().value.equals("(")) {
+						codeBlock.print("Expected (, but did not find any");
+						return codeBlock;
+					}
+					Condition condition = readCondition(bracket.getChildren().get(0), codeBlock);
+
+					try {
+						Value result = condition.evaluate();
+						if (!result.isBoolean()) {
+							codeBlock.print("Expected boolean, found " + result.type);
+						}
+
+						Tree<Token> start = bracket;
+						while (start.getData().type != EnumTokenType.BRACKET || !start.getData().value.equals("{")) {
+							if (start.isLeaf()) {
+								codeBlock.print("Expected \"{\", but did not find any");
+								return codeBlock;
 							}
-						} catch (EvaluationErrorException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (TypeMismatchException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							start = start.getChildren().get(0);
 						}
 
+						if (!(Boolean) result.getRealValue()) {
+							break;
+						}
+						CodeBlock codeBlock2 = read(start, codeBlock, process);
+						break;
+
+					} catch (EvaluationErrorException | TypeMismatchException e) {
+						e.printStackTrace();
+						codeBlock.print("An error occured: " + e.toString());
 					}
 				}
 				}
+				break;
+			}
+
+			case METHOD: {
+				switch (value) {
+				default:
+					break;
+				case "print": {
+					if (t.isLeaf())
+						return codeBlock;
+					Tree<Token> bracket = t.getChildren().get(0);
+					if (bracket.isLeaf())
+						return codeBlock;
+					if (bracket.getData().type != EnumTokenType.PARENTHESES || !bracket.getData().value.equals("(")) {
+						codeBlock.print("Expected \"(\", but did not find any");
+					}
+					Statement statement = readStatement(bracket.getChildren().get(0), codeBlock, 0);
+					try {
+						Value result = statement.evaluate();
+						codeBlock.print(result.getRealValue().toString());
+					} catch (EvaluationErrorException e) {
+						e.printStackTrace();
+						codeBlock.print("An error occured: " + e.toString());
+					}
+					break;
+				}
+				case "save": {
+					if (t.isLeaf())
+						return codeBlock;
+					Tree<Token> bracket = t.getChildren().get(0);
+					if (bracket.isLeaf())
+						return codeBlock;
+					if (bracket.getData().type != EnumTokenType.PARENTHESES || !bracket.getData().value.equals("(")) {
+						codeBlock.print("Expected \"(\", but did not find any");
+					}
+					Statement statement = readStatement(bracket.getChildren().get(0), codeBlock, 0);
+					try {
+						Value result = statement.evaluate();
+						process.saveToDevice(result.getRealValue().toString());
+						codeBlock.print("Attempting to save " + result.getRealValue().toString());
+					} catch (EvaluationErrorException e) {
+						e.printStackTrace();
+						codeBlock.print("An error occured: " + e.toString());
+					}
+					break;
+				}
+				}
+				break;
+			}
+
 			}
 		}
 
@@ -325,49 +491,52 @@ public class Interpreter {
 	public static Statement readStatement(Tree<Token> tree, CodeBlock codeBlock, int initLvl) {
 		int level = initLvl;
 		Statement statement = new Statement();
-		int id = MathUtils.getIntInRange(0, Integer.MAX_VALUE-1);
+		int id = MathUtils.getIntInRange(0, Integer.MAX_VALUE - 1);
 
+		int i = 0;
 		while (!tree.isLeaf()) {
 			EnumTokenType type = tree.getData().type;
 			Object value = tree.getData().value;
-			
-			System.out.println(value.toString() + " " + id);
-
+			System.out.println(tree.getData().toString());
 			if (type == EnumTokenType.IDENTIFIER) {
-				statement.addValue(codeBlock.getVariable((String) tree.getData().value));
+				Variable var = codeBlock.getVariable((String) tree.getData().value);
+				statement.addValue(var);
 			} else if (type == EnumTokenType.VALUE) {
 				statement.addValue(tree.getData().value);
 			} else if (tree.getData().type == EnumTokenType.OPERATOR) {
 				statement.addOperator(new Operator(tree.getData().type, (String) tree.getData().value));
 			} else if (type == EnumTokenType.PARENTHESES) {
 				if (value.equals("(")) {
-					statement.addStatement(readStatement(tree.getChildren().get(0), codeBlock, level));
-					tree = tree.getChildren().get(0);
-					while (!tree.isLeaf() && level != initLvl) {
-						tree = tree.getChildren().get(0);
-						type = tree.getData().type;
-						value = tree.getData().value;
-
-						if (type == EnumTokenType.PARENTHESES) {
-							if (value.equals("(")) {
-								level++;
-							} else if (value.equals(")")) {
-								level--;
+					statement.addStatement(readStatement(tree.getChildren().get(0), codeBlock, level + 1));
+					int l = level + 1;
+					Tree<Token> tree2 = tree;
+					while (!tree2.isLeaf()) {
+						tree2 = tree2.getChildren().get(0);
+						EnumTokenType type2 = tree2.getData().type;
+						Object value2 = tree2.getData().value;
+						if (type2 == EnumTokenType.PARENTHESES) {
+							if (value2.equals("(")) {
+								l++;
+							} else if (value2.equals(")")) {
+								l--;
+								if (l <= level) {
+									break;
+								}
 							}
 						}
 					}
-					if (tree.isLeaf()) {
-						return statement;
-					}
-				} else if (value.equals(")")) {
-
-					if (level == initLvl) {
-						return statement;
-					}
+					tree = tree2;
+					tree.print("-", true);
+				}
+				if (value.equals(")")) {
+					break;
 				}
 			}
 
-			tree = tree.getChildren().get(0);
+			if (!tree.isLeaf()) {
+				tree = tree.getChildren().get(0);
+			}
+			i++;
 		}
 		return statement;
 	}

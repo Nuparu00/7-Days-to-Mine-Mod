@@ -14,6 +14,8 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.config.ModConfig;
+import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.DamageSources;
@@ -21,7 +23,9 @@ import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.OpenSimplexNoise;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
+import com.nuparu.sevendaystomine.world.MiscSavedData;
 import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
+import com.nuparu.sevendaystomine.world.horde.ZombieWoflHorde;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -38,8 +42,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -122,53 +129,45 @@ public class TickHandler {
 
 	}
 
-	/*OpenSimplexNoise noise = new OpenSimplexNoise();
-
-	int update = 1;
-	int updatePrev = 0;
-
-	int WIDTH = 512;
-	int HEIGHT = 512;
-	double FEATURE_SIZE = 12;
-
-	BufferedImage image;
-	DynamicTexture tex;
-	ResourceLocation rl;*/
+	/*
+	 * OpenSimplexNoise noise = new OpenSimplexNoise();
+	 * 
+	 * int update = 1; int updatePrev = 0;
+	 * 
+	 * int WIDTH = 512; int HEIGHT = 512; double FEATURE_SIZE = 12;
+	 * 
+	 * BufferedImage image; DynamicTexture tex; ResourceLocation rl;
+	 */
 
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onRenderTick(TickEvent.RenderTickEvent event) {
-		/*update = 7;
-		FEATURE_SIZE = 32;
-		if (update != updatePrev) {
-			image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-
-			for (int y = 0; y < HEIGHT; y++) {
-				for (int x = 0; x < WIDTH; x++) {
-					double q1 = noise.eval(x / FEATURE_SIZE, y / FEATURE_SIZE, 0.0);
-					double q2 = noise.eval(x / FEATURE_SIZE + 1.3, y / FEATURE_SIZE + 0.7, 0.0);
-
-					double r1 = noise.eval(x / FEATURE_SIZE + 1 * q1 + 1.7, y / FEATURE_SIZE + 1 * q2 + 9.2, 0.0);
-					double r2 = noise.eval(x / FEATURE_SIZE + 1 * q1 + 8.3, y / FEATURE_SIZE + 1 * q2 + 2.8, 0.0);
-
-					double value = Math.abs(noise.eval(x / FEATURE_SIZE + 2 * q1, y / FEATURE_SIZE + 2 * q2, MathUtils.getDoubleInRange(0, 0)));
-					if (value < 0.05) {
-						value = -1;
-					}
-
-					int rgb = 0x010101 * (int) ((value + 1) * 127.5);
-					image.setRGB(x, y, rgb);
-				}
-			}
-
-			tex = new DynamicTexture(image);
-			rl = mc.getTextureManager().getDynamicTextureLocation(SevenDaysToMine.MODID + ":noise", tex);
-			updatePrev = update;
-		}
-		GL11.glPushMatrix();
-		RenderUtils.drawTexturedRect(rl, 0, 0, 0, 0, 256, 256, 256, 256, 1, 1);
-		GL11.glPopMatrix();*/
+		/*
+		 * update = 7; FEATURE_SIZE = 32; if (update != updatePrev) { image = new
+		 * BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		 * 
+		 * for (int y = 0; y < HEIGHT; y++) { for (int x = 0; x < WIDTH; x++) { double
+		 * q1 = noise.eval(x / FEATURE_SIZE, y / FEATURE_SIZE, 0.0); double q2 =
+		 * noise.eval(x / FEATURE_SIZE + 1.3, y / FEATURE_SIZE + 0.7, 0.0);
+		 * 
+		 * double r1 = noise.eval(x / FEATURE_SIZE + 1 * q1 + 1.7, y / FEATURE_SIZE + 1
+		 * * q2 + 9.2, 0.0); double r2 = noise.eval(x / FEATURE_SIZE + 1 * q1 + 8.3, y /
+		 * FEATURE_SIZE + 1 * q2 + 2.8, 0.0);
+		 * 
+		 * double value = Math.abs(noise.eval(x / FEATURE_SIZE + 2 * q1, y /
+		 * FEATURE_SIZE + 2 * q2, MathUtils.getDoubleInRange(0, 0))); if (value < 0.05)
+		 * { value = -1; }
+		 * 
+		 * int rgb = 0x010101 * (int) ((value + 1) * 127.5); image.setRGB(x, y, rgb); }
+		 * }
+		 * 
+		 * tex = new DynamicTexture(image); rl =
+		 * mc.getTextureManager().getDynamicTextureLocation(SevenDaysToMine.MODID +
+		 * ":noise", tex); updatePrev = update; } GL11.glPushMatrix();
+		 * RenderUtils.drawTexturedRect(rl, 0, 0, 0, 0, 256, 256, 256, 256, 1, 1);
+		 * GL11.glPopMatrix();
+		 */
 
 		EntityPlayer player = mc.player;
 		if (player != null) {
@@ -275,6 +274,30 @@ public class TickHandler {
 	}
 
 	@SubscribeEvent
+	public void onWorldTick(TickEvent.WorldTickEvent event) {
+		World world = event.world;
+		if (world == null || world.isRemote || ModConfig.world.airdropFrequency <= 0)
+			return;
+
+		long time = world.getWorldTime() % 24000;
+		MiscSavedData miscData = MiscSavedData.get(world);
+
+		if (time >= 6000 && miscData.getLastAirdrop() != Utils.getDay(world) && Utils.getDay(world) % ModConfig.world.airdropFrequency == 0) {
+			MinecraftServer server = Utils.getServer();
+			if (server == null)
+				return;
+			BlockPos pos = Utils.getAirdropPos(world);
+			server.getPlayerList().sendMessage(new TextComponentTranslation("airdrop.message",
+					pos.getX() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1),
+					pos.getZ() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1)));
+			EntityAirdrop e = new EntityAirdrop(world, pos);
+			world.spawnEntity(e);
+			miscData.setLastAirdrop(Utils.getDay(world));
+		}
+
+	}
+
+	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		EntityPlayer player = event.player;
 		if (player == null)
@@ -288,20 +311,32 @@ public class TickHandler {
 				handleExtendedPlayer(player, world, extendedPlayer);
 			}
 			IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
+			long time = world.getWorldTime() % 24000;
 			if (Utils.isBloodmoon(world)) {
-				long time = world.getWorldTime() % 24000;
+
 				if (player instanceof EntityPlayerMP && !world.isRemote
 						&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 13000 && time < 23000) {
 
-					if (!iep.getBloodmoon()) {
+					if (!iep.hasHorde()) {
 						BloodmoonHorde horde = new BloodmoonHorde(new BlockPos(player), world, player);
 						horde.addTarget((EntityPlayerMP) player);
 						horde.start();
-						iep.setBloodmoon(true);
+						iep.setHorde(true);
 					}
 				}
-			} else if (iep.getBloodmoon()) {
-				iep.setBloodmoon(false);
+			} else if (Utils.isWolfHorde(world)) {
+				if (player instanceof EntityPlayerMP && !world.isRemote
+						&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 1000 && time < 1060) {
+
+					if (!iep.hasHorde()) {
+						ZombieWoflHorde horde = new ZombieWoflHorde(new BlockPos(player), world, player);
+						horde.addTarget((EntityPlayerMP) player);
+						horde.start();
+						iep.setHorde(true);
+					}
+				}
+			} else if (iep.hasHorde()) {
+				iep.setHorde(false);
 			}
 		}
 		if (extendedPlayer.isInfected()) {
@@ -364,13 +399,13 @@ public class TickHandler {
 	public static void handleExtendedPlayer(EntityPlayer player, World world, IExtendedPlayer extendedPlayer) {
 		if (world.isRemote)
 			return;
-		
-		if(world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			extendedPlayer.setThirst(1000);
 			extendedPlayer.setStamina(1000);
 			return;
 		}
-		
+
 		if (world.rand.nextInt(25) == 0) {
 			extendedPlayer.consumeThirst((int) 1);
 		}

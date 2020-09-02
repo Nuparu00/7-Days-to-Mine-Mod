@@ -62,6 +62,7 @@ public class BuildingChurch extends Building {
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
 			}
+			generatePedestal(world, pos, template, facing, mirror);
 			BlockPos size = template.getSize();
 			template = templatemanager.getTemplate(minecraftserver, BACK);
 			if (template == null) {
@@ -75,7 +76,7 @@ public class BuildingChurch extends Building {
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
 			}
-			
+			generatePedestal(world, pos, template, facing, mirror);
 			template = templatemanager.getTemplate(minecraftserver, TOP);
 			if (template == null) {
 				return;
@@ -112,4 +113,6 @@ public class BuildingChurch extends Building {
 		}
 		return BlockPos.ORIGIN;
 	}
+	
+	
 }

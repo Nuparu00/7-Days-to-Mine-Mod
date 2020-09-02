@@ -1,5 +1,7 @@
 package com.nuparu.sevendaystomine.world.horde;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +22,7 @@ public class HordeSavedData extends WorldSavedData {
 
 	protected List<Horde> hordes = new ArrayList<Horde>();
 	protected int dim = Integer.MIN_VALUE;
-	
+
 	public HordeSavedData() {
 		super(DATA_NAME);
 	}
@@ -41,10 +43,24 @@ public class HordeSavedData extends WorldSavedData {
 			NBTTagList list = compound.getTagList("hordes", Constants.NBT.TAG_COMPOUND);
 			for (int i = 0; i < list.tagCount(); i++) {
 				NBTTagCompound nbt = list.getCompoundTagAt(i);
+				if (!nbt.hasKey("class"))
+					continue;
+				String className = nbt.getString("class");
 
-				BloodmoonHorde horde = new BloodmoonHorde(world);
-				horde.readFromNBT(nbt);
-				hordes.add(horde);
+				Class<?> clazz;
+				try {
+					clazz = Class.forName(className);
+
+					if (clazz == null)
+						continue;
+					Constructor<?> constructor = clazz.getConstructor(World.class);
+					Horde horde = (Horde) constructor.newInstance(world);
+					horde.readFromNBT(nbt);
+					hordes.add(horde);
+				} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
+						| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -69,16 +85,16 @@ public class HordeSavedData extends WorldSavedData {
 		}
 		markDirty();
 	}
-	
+
 	public Horde getHordeByUUID(UUID uuid) {
 		for (Horde horde : hordes) {
-			if(horde.uuid.equals(uuid)) {
+			if (horde.uuid.equals(uuid)) {
 				return horde;
 			}
 		}
 		return null;
 	}
-	
+
 	public void removeHorde(Horde horde) {
 		if (hordes.contains(horde)) {
 			hordes.remove(horde);
@@ -86,7 +102,7 @@ public class HordeSavedData extends WorldSavedData {
 			markDirty();
 		}
 	}
-	
+
 	public void clear() {
 		for (Horde horde : hordes) {
 			horde.onRemove();

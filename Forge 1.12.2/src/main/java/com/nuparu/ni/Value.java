@@ -61,10 +61,10 @@ public class Value implements IChainable {
 		}
 		return null;
 	}
-	
+
 	public Value opposite() {
 		if (isInt()) {
-			return new Value(-(int)getRealValue());
+			return new Value(-(int) getRealValue());
 		}
 
 		if (isBoolean()) {
@@ -93,7 +93,7 @@ public class Value implements IChainable {
 		if (type == EnumValueType.BOOL) {
 			return (boolean) value;
 		}
-		if (type == EnumValueType.VAR) {
+		if (type == EnumValueType.VAR && value != null) {
 			Variable var = (Variable) value;
 			return var.getValue();
 		}
@@ -111,14 +111,14 @@ public class Value implements IChainable {
 	public boolean isBoolean() {
 		return getRealValue() instanceof Boolean;
 	}
-	
+
 	public boolean isNumerical() {
 		return isInt();
 	}
 
 	@Override
 	public String toString() {
-		return "[Value=" + getRealValue().toString() + ", " + type + "]";
+		return "[Value=" + (getRealValue() != null ? getRealValue().toString() : "null") + ", " + type + "]";
 	}
 
 	public enum EnumValueType {
@@ -134,9 +134,10 @@ public class Value implements IChainable {
 	public boolean hasValue() {
 		return true;
 	}
-	
+
 	public boolean equals(Value other) {
-		if(this.type != other.type) return false;
+		if (this.type != other.type)
+			return false;
 		return value.equals(other.value);
 	}
 }

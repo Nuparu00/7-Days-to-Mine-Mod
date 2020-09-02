@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
+import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.City;
 
@@ -17,6 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
@@ -51,12 +53,11 @@ public class CommandAirdrop extends CommandBase {
 	public int getRequiredPermissionLevel() {
 		return 4;
 	}
-	
+
 	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender)
-    {
-        return true;
-    }
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+		return true;
+	}
 
 	@Override
 	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) {
@@ -66,7 +67,9 @@ public class CommandAirdrop extends CommandBase {
 			return;
 		if (args.length == 0) {
 			BlockPos pos = Utils.getAirdropPos(world);
-			sender.sendMessage(new TextComponentString(pos.toString()));
+			sender.sendMessage(new TextComponentTranslation("airdrop.message",
+					pos.getX() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1),
+					pos.getZ() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1)));
 			EntityAirdrop e = new EntityAirdrop(world, pos);
 			world.spawnEntity(e);
 		}

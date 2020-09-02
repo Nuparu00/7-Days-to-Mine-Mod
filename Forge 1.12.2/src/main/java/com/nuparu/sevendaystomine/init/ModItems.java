@@ -124,7 +124,7 @@ public class ModItems {
 	public static final Item CLAWHAMMER = new ItemUpgrader(SevenDaysToMine.IRON_TOOLS).setEffectiveness(0.5f)
 			.setLength(EnumLength.SHORT).setRegistryName("Clawhammer").setUnlocalizedName("Clawhammer");
 	public static final Item WRENCH = new ItemUpgrader(SevenDaysToMine.IRON_TOOLS).setEffectiveness(0.33334f)
-			.setRegistryName("Wrench").setUnlocalizedName("Wrench");
+			.setLength(EnumLength.SHORT).setRegistryName("Wrench").setUnlocalizedName("Wrench");
 	public static final Item KITCHEN_KNIFE = new ItemQualitySword(SevenDaysToMine.IRON_TOOLS, EnumLength.SHORT)
 			.setRegistryName("KitchenKnife").setUnlocalizedName("KitchenKnife");
 	public static final Item ARMY_KNIFE = new ItemQualitySword(SevenDaysToMine.ARMY_TOOLS, EnumLength.SHORT)
@@ -139,12 +139,14 @@ public class ModItems {
 	public static final Item HUNTING_RIFLE = new ItemHuntingRifle().setRegistryName("hunting_rifle")
 			.setUnlocalizedName("hunting_rifle");
 	public static final Item MAGNUM = new ItemMagnum().setRegistryName("magnum").setUnlocalizedName("magnum");
-	public static final Item MAGNUM_SCOPED = new ItemMagnum().setFOVFactor(2.5f).setRegistryName("magnum_scoped").setUnlocalizedName("magnum_scoped");
-	public static final Item FLAMETHROWER = new ItemFlamethrower().setRegistryName("flamethrower").setUnlocalizedName("flamethrower");
+	public static final Item MAGNUM_SCOPED = new ItemMagnum().setFOVFactor(2.5f).setRegistryName("magnum_scoped")
+			.setUnlocalizedName("magnum_scoped");
+	public static final Item FLAMETHROWER = new ItemFlamethrower().setRegistryName("flamethrower")
+			.setUnlocalizedName("flamethrower");
 	public static final Item MP5 = new ItemMP5().setRegistryName("mp5").setUnlocalizedName("mp5");
 	public static final Item RPG = new ItemRPG().setRegistryName("rpg").setUnlocalizedName("rpg");
 	public static final Item M4 = new ItemAK47().setRegistryName("m4").setUnlocalizedName("m4");
-	
+
 	public static final Item COOKING_GRILL = new ItemScrapable(EnumMaterial.IRON).setRegistryName("CookingGrill")
 			.setUnlocalizedName("CookingGrill").setMaxStackSize(1);
 
@@ -254,11 +256,11 @@ public class ModItems {
 			.setUnlocalizedName("SevenMMBullet").setCreativeTab(CreativeTabs.COMBAT);
 	public static final Item TEN_MM_BULLET = new Item().setRegistryName("bullet_10mm").setUnlocalizedName("bullet_10mm")
 			.setCreativeTab(CreativeTabs.COMBAT);
-	public static final Item MAGNUM_BULLET = new Item().setRegistryName("bullet_magnum").setUnlocalizedName("bullet_magnum")
-			.setCreativeTab(CreativeTabs.COMBAT);
-	public static final Item SHOTGUN_SHELL = new Item().setRegistryName("shotgun_shell").setUnlocalizedName("shotgun_shell")
-			.setCreativeTab(CreativeTabs.COMBAT);
-	
+	public static final Item MAGNUM_BULLET = new Item().setRegistryName("bullet_magnum")
+			.setUnlocalizedName("bullet_magnum").setCreativeTab(CreativeTabs.COMBAT);
+	public static final Item SHOTGUN_SHELL = new Item().setRegistryName("shotgun_shell")
+			.setUnlocalizedName("shotgun_shell").setCreativeTab(CreativeTabs.COMBAT);
+
 	public static final Item FRIDGE = new ItemRefrigerator().setRegistryName("FridgeItem").setUnlocalizedName("Fridge")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	public static final Item SLEEPING_BAG = new ItemSleepingBag().setRegistryName("SleepingBagItem")
@@ -373,9 +375,8 @@ public class ModItems {
 	public static final Item MINIBIKE_HANDLES = new ItemQualityScrapable(EnumMaterial.IRON, 4)
 			.setRegistryName("minibike_handles").setUnlocalizedName("minibike_handles")
 			.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
-	public static final Item MINIBIKE_CHASSIS = new ItemMinibikeChassis()
-			.setRegistryName("minibike_chassis").setUnlocalizedName("minibike_chassis")
-			.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
+	public static final Item MINIBIKE_CHASSIS = new ItemMinibikeChassis().setRegistryName("minibike_chassis")
+			.setUnlocalizedName("minibike_chassis").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
 
 	public static final Item FIBER_CHESTPLATE = new ItemArmorBase(SevenDaysToMine.FIBER, 0, EntityEquipmentSlot.CHEST,
 			"fiber_chestplate");
@@ -464,7 +465,7 @@ public class ModItems {
 	public static final Item BOOK_MINIBIKE = new ItemRecipeBook(
 			new ResourceLocation(SevenDaysToMine.MODID, "data/books/minibike.json"), "minibike")
 					.setRegistryName("book_minibike").setUnlocalizedName("book_minibike");
-	
+
 	public static final Item SHOTGUN_SCHEMATICS = new ItemBlueprint(
 			new ResourceLocation(SevenDaysToMine.MODID, "data/books/shotgun.json"), "shotgun")
 					.setRegistryName("book_shotgun").setUnlocalizedName("book_shotgun");
@@ -475,8 +476,8 @@ public class ModItems {
 			new ResourceLocation(SevenDaysToMine.MODID, "data/books/magnum.json"), "magnum")
 					.setRegistryName("book_magnum").setUnlocalizedName("book_magnum");
 	public static final Item MP5_SCHEMATICS = new ItemBlueprint(
-			new ResourceLocation(SevenDaysToMine.MODID, "data/books/mp5.json"), "mp5")
-					.setRegistryName("book_mp5").setUnlocalizedName("book_mp5");
+			new ResourceLocation(SevenDaysToMine.MODID, "data/books/mp5.json"), "mp5").setRegistryName("book_mp5")
+					.setUnlocalizedName("book_mp5");
 
 	public static final Item MICROPHONE = new Item().setRegistryName("microphone").setUnlocalizedName("microphone");
 	public static final Item BULLET_TIP = new ItemScrapable(EnumMaterial.LEAD, 1).setRegistryName("bullet_tip")
@@ -498,7 +499,7 @@ public class ModItems {
 	public static Item SNIPER_RIFLE_SCOPE = new ItemGunPart("sniper_rifle_scope");
 	public static Item SNIPER_RIFLE_PARTS = new ItemGunPart("sniper_rifle_parts");
 	public static Item SNIPER_RIFLE_STOCK = new ItemGunPart("sniper_rifle_stock");
-	
+
 	public static Item SHOTGUN_RECEIVER = new ItemGunPart("shotgun_receiver");
 	public static Item SHOTGUN_STOCK = new ItemGunPart("shotgun_stock");
 	public static Item SHOTGUN_STOCK_SHORT = new ItemGunPart("shotgun_stock_short");
@@ -537,8 +538,11 @@ public class ModItems {
 			.setRegistryName("photo_cell").setUnlocalizedName("photo_cell");
 	public static final Item POTASSIUM = new ItemScrap(EnumMaterial.POTASSIUM).setMaxStackSize(64)
 			.setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("potassium").setUnlocalizedName("potassium");
-	
+
 	public static final Item GAS_CANISTER = new ItemScrap(EnumMaterial.GASOLINE).setMaxStackSize(64)
-			.setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("gas_canister").setUnlocalizedName("gas_canister");
-	public static final Item AUGER_BLADE = new ItemQuality().setMaxStackSize(1).setCreativeTab(SevenDaysToMine.TAB_FORGING).setRegistryName("auger_blade").setUnlocalizedName("auger_blade");
+			.setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("gas_canister")
+			.setUnlocalizedName("gas_canister");
+	public static final Item AUGER_BLADE = new ItemQuality().setMaxStackSize(1)
+			.setCreativeTab(SevenDaysToMine.TAB_FORGING).setRegistryName("auger_blade")
+			.setUnlocalizedName("auger_blade");
 }

@@ -32,6 +32,7 @@ import com.nuparu.sevendaystomine.client.renderer.entity.RenderPlayerEnhanced;
 import com.nuparu.sevendaystomine.client.renderer.entity.RenderReanimatedCorpse;
 import com.nuparu.sevendaystomine.client.renderer.entity.RenderShot;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirdropFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirplaneFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBlindZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBloatedZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFlameFactory;
@@ -42,8 +43,10 @@ import com.nuparu.sevendaystomine.client.renderer.factory.RenderPlaguedNurseFact
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderProjectileVomitFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderSpiderZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieCrawlerFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombiePigFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombiePolicemanFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieSoldierFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieWolfFactory;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityAirplaneRotorRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityBigSignRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCameraRenderer;
@@ -55,6 +58,7 @@ import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySedanRend
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySleepingBagRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySolarPanelRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityStreetSignRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityTurretAdvancedRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityTurretBaseRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWallClockRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWindTurbineRenderer;
@@ -62,6 +66,7 @@ import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWoodenLog
 import com.nuparu.sevendaystomine.client.sound.PositionedLoudSound;
 import com.nuparu.sevendaystomine.client.toast.NotificationToast;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
+import com.nuparu.sevendaystomine.entity.EntityAirplane;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
@@ -81,8 +86,10 @@ import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieCrawler;
+import com.nuparu.sevendaystomine.entity.EntityZombiePig;
 import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
+import com.nuparu.sevendaystomine.entity.EntityZombieWolf;
 import com.nuparu.sevendaystomine.events.ClientEventHandler;
 import com.nuparu.sevendaystomine.events.KeyEventHandler;
 import com.nuparu.sevendaystomine.events.RenderEventHandler;
@@ -103,7 +110,9 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySolarPanel;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurretAdvanced;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTurretBase;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurret;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWallClock;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWindTurbine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenLogSpike;
@@ -131,7 +140,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.OBJLoader;
@@ -269,8 +277,10 @@ public class ClientProxy extends CommonProxy {
 				RenderZombiePolicemanFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityProjectileVomit.class,
 				RenderProjectileVomitFactory.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntityFlame.class,
-				RenderFlameFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFlame.class, RenderFlameFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityZombieWolf.class, RenderZombieWolfFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityZombiePig.class, RenderZombiePigFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityAirplane.class, RenderAirplaneFactory.INSTANCE);
 	}
 
 	/*
@@ -312,6 +322,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarPanel.class, new TileEntitySolarPanelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindTurbine.class, new TileEntityWindTurbineRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurretBase.class, new TileEntityTurretBaseRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurretAdvanced.class, new TileEntityTurretAdvancedRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWoodenLogSpike.class,
 				new TileEntityWoodenLogSpikeRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCamera.class, new TileEntityCameraRenderer());

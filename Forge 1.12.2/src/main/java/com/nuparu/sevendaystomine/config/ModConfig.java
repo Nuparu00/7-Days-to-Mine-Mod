@@ -13,10 +13,18 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 public class ModConfig {
 
 	public static CategoryPlayer players = new CategoryPlayer();
+	public static CategoryWorld world = new CategoryWorld();
 
 	public static class CategoryPlayer {
 		@Config.Comment("Cotrols rendering of player's items (weapons, tools).")
 		public boolean renderPlayerInventory = true;
+	}
+	
+	public static class CategoryWorld {
+		@Config.Comment("How many days between individual bloodmoons (0 = disabled)")
+		public int bloodmoonFrequency = 7;
+		@Config.Comment("How many days between individual bloodmoons (0 = disabled)")
+		public int airdropFrequency = 3;
 	}
 
 	@Mod.EventBusSubscriber(modid = SevenDaysToMine.MODID)

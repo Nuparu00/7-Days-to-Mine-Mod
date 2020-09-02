@@ -22,6 +22,8 @@ import com.nuparu.sevendaystomine.client.gui.inventory.GuiMinibike;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiProjector;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiSafeUnlocked;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiSeparator;
+import com.nuparu.sevendaystomine.client.gui.inventory.GuiTurretAdvanced;
+import com.nuparu.sevendaystomine.client.gui.inventory.GuiTurretBase;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiWorkbench;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.entity.EntityHuman;
@@ -45,6 +47,8 @@ import com.nuparu.sevendaystomine.inventory.container.ContainerBackpack;
 import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.container.ContainerMinibike;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSeparator;
+import com.nuparu.sevendaystomine.inventory.container.ContainerTurretAdvanced;
+import com.nuparu.sevendaystomine.inventory.container.ContainerTurretBase;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 import com.nuparu.sevendaystomine.item.ItemGuide;
@@ -150,6 +154,14 @@ public class GuiHandler implements IGuiHandler {
 		case 22:
 			return null;
 		case 23:
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+			}
+		case 24:
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+			}
+		case 25:
 			if (tileEntity instanceof TileEntityItemHandler) {
 				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
 			}
@@ -273,6 +285,18 @@ public class GuiHandler implements IGuiHandler {
 
 				return new GuiSeparator(
 						(ContainerSeparator) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
+			}
+		case 24:
+			if (tileEntity instanceof TileEntityItemHandler) {
+
+				return new GuiTurretBase(
+						(ContainerTurretBase) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
+			}
+		case 25:
+			if (tileEntity instanceof TileEntityItemHandler) {
+
+				return new GuiTurretAdvanced(
+						(ContainerTurretAdvanced) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
 			}
 		}
 		return null;

@@ -77,27 +77,6 @@ public class Plot {
 
 		return aabb.intersects(aabb2);
 	}
-	
-	//Generates a diagonal of the building shape (rectangle) for debug purposes
-	public void generateDiagonal() {
-		int minX = Math.min(start.getX(), end.getX());
-		int minZ = Math.min(start.getZ(), end.getZ());
-
-		int maxX = Math.max(start.getX(), end.getX());
-		int maxZ = Math.max(start.getZ(), end.getZ());
-
-		Vec3d dif = new Vec3d(maxX - minX, 0, maxZ - minZ);
-		Vec3d vec = dif.scale(1d / dif.lengthVector());
-
-		for (double d = 0; d < dif.lengthVector(); d++) {
-			Vec3d vec2 = vec.scale(d);
-			city.world.setBlockState(new BlockPos(minX + vec2.x, 50, minZ + vec2.z),
-					Blocks.IRON_BLOCK.getDefaultState());
-		}
-		city.world.setBlockState(new BlockPos(minX, 50, minZ), Blocks.REDSTONE_BLOCK.getDefaultState());
-		city.world.setBlockState(new BlockPos(maxX, 50, maxZ), Blocks.GOLD_BLOCK.getDefaultState());
-
-	}
 
 	public BlockPos getMin() {
 		return new BlockPos(Math.min(start.getX(), end.getX()), 0, Math.min(start.getZ(), end.getZ()));

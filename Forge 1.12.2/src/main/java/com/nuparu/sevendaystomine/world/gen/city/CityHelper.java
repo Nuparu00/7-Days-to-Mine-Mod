@@ -14,13 +14,19 @@ import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCarMaster;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.building.Building;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingApartmentBig;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingApartmentDark;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingBrickHouse;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingChurch;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingGasStation;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingGrayHouse;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingHospital;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingOffice;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingOvergrownHouse;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingSupermarket;
 
+import net.minecraft.block.BlockStone;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -84,8 +90,8 @@ public class CityHelper {
 			car.generate(world, pos, facing, true, null);
 		}
 		TileEntity te = world.getTileEntity(pos);
-		if(te instanceof TileEntityCarMaster) {
-			TileEntityCarMaster master = (TileEntityCarMaster)te;
+		if (te instanceof TileEntityCarMaster) {
+			TileEntityCarMaster master = (TileEntityCarMaster) te;
 			master.setLootTable(ModLootTables.SEDAN, world.rand.nextLong());
 			master.fillWithLoot(null);
 		}
@@ -94,30 +100,46 @@ public class CityHelper {
 	public static void loadBuildings() {
 		// buildings.add(new BuildingOvergrownHouse(new
 		// ResourceLocation(SevenDaysToMine.MODID,"overgrown_house")));
-		
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartment"),50,-1));
-		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house"),45,-2));
-		buildings.add(new BuildingApartmentDark(new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_bottom"),50,-1));
-		buildings.add(new BuildingGrayHouse(new ResourceLocation(SevenDaysToMine.MODID, "gray_house"),20,-1));
-		buildings.add(new BuildingGasStation(new ResourceLocation(SevenDaysToMine.MODID, "gas_station_0"),1));
-		buildings.add(new BuildingOvergrownHouse(new ResourceLocation(SevenDaysToMine.MODID, "overgrown_house"),20,-1));
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "water_tower"),1));
-		buildings.add(new BuildingChurch(new ResourceLocation(SevenDaysToMine.MODID, "church_front"),20,-1));
+
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartment"), 50, -1,
+				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE_SMOOTH)));
+
+		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house"), 45, -2));
+		buildings.add(new BuildingApartmentDark(new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_bottom"),
+				50, -1));
+		buildings.add(new BuildingGrayHouse(new ResourceLocation(SevenDaysToMine.MODID, "gray_house"), 20, -1));
+		buildings.add(new BuildingGasStation(new ResourceLocation(SevenDaysToMine.MODID, "gas_station_1"), 20, -1));
+		buildings.add(
+				new BuildingOvergrownHouse(new ResourceLocation(SevenDaysToMine.MODID, "overgrown_house"), 20, -1));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "water_tower"), 1));
+		buildings.add(new BuildingChurch(new ResourceLocation(SevenDaysToMine.MODID, "church_front"), 10, -1));
+		buildings.add(new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_0"),
+				new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_1"), 20, -1));
+		buildings
+				.add(new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_undamaged_0"),
+						new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_undamaged_1"), 20, -1));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartments_ruins_overgrown"), 20, -1));
+		buildings.add(new BuildingHospital(new ResourceLocation(SevenDaysToMine.MODID, "hospital_front_left"), 8, -1));
+		buildings.add(new BuildingOffice(new ResourceLocation(SevenDaysToMine.MODID, "office_building_right"), 10, -1));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "menu_house"), 20, -4));
+		buildings
+				.add(new BuildingSupermarket(new ResourceLocation(SevenDaysToMine.MODID, "supermarket_right"), 20, -1));
+
 	}
 
 	public static Building getRandomBuilding(Random rand) {
 		int total = 0;
-		for(Building building : buildings) {
-			total+=building.weight;
+		for (Building building : buildings) {
+			total += building.weight;
 		}
 		int i = rand.nextInt(total);
-		for(Building building : buildings) {
-			i-=building.weight;
-			if(i <= 0) {
+		for (Building building : buildings) {
+			i -= building.weight;
+			if (i <= 0) {
 				return building;
 			}
 		}
-		//Failsafe
+		// Failsafe
 		return buildings.get(rand.nextInt(buildings.size()));
 	}
 

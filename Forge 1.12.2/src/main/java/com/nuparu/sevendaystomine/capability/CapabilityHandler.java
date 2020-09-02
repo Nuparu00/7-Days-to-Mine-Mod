@@ -60,7 +60,7 @@ public class CapabilityHandler
 			for(String s : oldExtendedPlayer.getRecipes()) {
 				extendedPlayer.unlockRecipe(s);
 			}
-			extendedPlayer.setBloodmoon(oldExtendedPlayer.getBloodmoon());
+			extendedPlayer.setHorde(oldExtendedPlayer.hasHorde());
 		}
 
 	}

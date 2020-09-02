@@ -12,7 +12,8 @@ public enum EnumTokenType {
 	PARENTHESES("parentheses",0xbbbbbb),
 	BRACKET("bracket",0xbbbbbb),
 	VALUE("value",0xffff00),
-	SEMICOLON("semicolon",0xbbbbbb);
+	SEMICOLON("semicolon",0xbbbbbb),
+	METHOD("method",0x6FCF21);
 	
 	String name;
 	int color;

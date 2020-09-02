@@ -6,7 +6,10 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
+import com.nuparu.sevendaystomine.computer.process.ProcessRegistry;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
+import com.nuparu.sevendaystomine.entity.EntityAirplane;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
@@ -27,8 +30,10 @@ import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieCrawler;
+import com.nuparu.sevendaystomine.entity.EntityZombiePig;
 import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
+import com.nuparu.sevendaystomine.entity.EntityZombieWolf;
 import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -88,7 +93,9 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityToilet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTorch;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTrashBin;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTrashCan;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurretAdvanced;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTurretBase;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurret;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWallClock;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWheels;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWindTurbine;
@@ -96,9 +103,8 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenLogSpike;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenSpikes;
 import com.nuparu.sevendaystomine.util.ConfigHandler;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
+import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.VersionChecker;
-import com.nuparu.sevendaystomine.util.computer.application.ApplicationRegistry;
-import com.nuparu.sevendaystomine.util.computer.process.ProcessRegistry;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
 import net.minecraft.client.Minecraft;
@@ -118,6 +124,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -165,7 +172,7 @@ public class CommonProxy {
 		new ForgeRecipeManager();
 		new ChemistryRecipeManager();
 		new SeparatorRecipeManager();
-		
+
 		registerOreDictionary();
 		registerTileEntities();
 		registerEntities();
@@ -268,14 +275,15 @@ public class CommonProxy {
 		registerTileEntity(TileEntityRadio.class, "radio");
 		registerTileEntity(TileEntityGlobe.class, "globe");
 		registerTileEntity(TileEntitySeparator.class, "separator");
+		registerTileEntity(TileEntityTurretAdvanced.class, "turret_advanced");
 	}
-	
+
 	public void registerTileEntity(Class<? extends TileEntity> te, String name) {
 		GameRegistry.registerTileEntity(te, new ResourceLocation(SevenDaysToMine.MODID, name));
 	}
 
 	private static int entityID = 0;
-	
+
 	@SuppressWarnings("unchecked")
 	public void registerEntities() {
 		registerEntity(EntityShot.class, "shot", 128, 1, true);
@@ -301,6 +309,9 @@ public class CommonProxy {
 		registerEntity(EntityProjectileVomit.class, "projectile_vomit", 128, 1, true);
 		registerEntity(EntityFlame.class, "flame", 128, 1, true);
 		registerEntity(EntityRocket.class, "rocket", 128, 1, true);
+		registerEntity(EntityZombieWolf.class, "zombie_wolf", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityZombiePig.class, "zombie_pig", 96, 2, true, 0xffffff, 0xffffff);
+		registerEntity(EntityAirplane.class, "airplane", 96, 2, true);
 		/*
 		 * addEntitySpawn(EntityReanimatedCorpse.class, 1000, 1, 7,
 		 * EnumCreatureType.MONSTER, Utils.combine(BiomeDictionary.getBiomes(Type.LUSH),
@@ -313,17 +324,20 @@ public class CommonProxy {
 		 * BiomeDictionary.getBiomes(Type.SNOWY)).stream().toArray(Biome[]::new));
 		 */
 
-		addEntitySpawn(EntityReanimatedCorpse.class, 100, 3, 7, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityReanimatedCorpse.class, 70, 3, 7, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityBloatedZombie.class, 100, 1, 7, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityBloatedZombie.class, 70, 1, 7, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityPlaguedNurse.class, 100, 3, 7, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityPlaguedNurse.class, 60, 3, 7, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityZombieCrawler.class, 100, 2, 7, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityZombieCrawler.class, 50, 2, 9, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+		addEntitySpawn(EntityZombiePig.class, 20, 1, 3, EnumCreatureType.MONSTER,
+				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST)).stream().toArray(Biome[]::new));
 
 		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
@@ -367,7 +381,7 @@ public class CommonProxy {
 
 	public void registerLootTables() {
 		LootFunctionManager.registerFunction(new RandomQualityFunction.Serializer());
-		
+
 		LootTableList.register(ModLootTables.AIRDROP);
 		LootTableList.register(ModLootTables.DRESSER);
 		LootTableList.register(ModLootTables.FRIDGE);
@@ -384,6 +398,9 @@ public class CommonProxy {
 		LootTableList.register(ModLootTables.MEDICAL_CABINET);
 		LootTableList.register(ModLootTables.BACKPACK);
 		LootTableList.register(ModLootTables.WRITING_TABLE);
+		LootTableList.register(ModLootTables.SHOWER_DRAIN);
+		LootTableList.register(ModLootTables.NEST);
+		LootTableList.register(ModLootTables.CASH_REGISTER);
 	}
 
 	public void openClientSideGui(int id, int x, int y, int z) {
@@ -426,13 +443,12 @@ public class CommonProxy {
 	public void setCloudRenderer(World world) {
 
 	}
-	
-	public void playLoudSound(ResourceLocation resource,float volume, BlockPos blockPosIn, SoundCategory category) {
+
+	public void playLoudSound(ResourceLocation resource, float volume, BlockPos blockPosIn, SoundCategory category) {
 
 	}
 
 	public void stopLoudSound(BlockPos blockPosIn) {
-
 
 	}
 }

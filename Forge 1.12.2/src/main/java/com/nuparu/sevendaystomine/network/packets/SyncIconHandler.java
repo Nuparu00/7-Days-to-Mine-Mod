@@ -1,7 +1,7 @@
 package com.nuparu.sevendaystomine.network.packets;
 
+import com.nuparu.sevendaystomine.computer.process.WindowsDesktopProcess.IconPosUpdate;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
-import com.nuparu.sevendaystomine.util.computer.process.WindowsDesktopProcess.IconPosUpdate;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

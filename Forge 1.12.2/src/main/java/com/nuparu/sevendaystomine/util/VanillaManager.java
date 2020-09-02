@@ -128,8 +128,6 @@ public class VanillaManager {
 		RecipeManager.removeRecipe(net.minecraft.init.Items.GOLD_INGOT);
 		RecipeManager.removeRecipe(net.minecraft.init.Blocks.IRON_BLOCK);
 		RecipeManager.removeRecipe(net.minecraft.init.Blocks.GOLD_BLOCK);
-		RecipeManager.removeItem(net.minecraft.init.Items.IRON_NUGGET);
-		RecipeManager.removeItem(net.minecraft.init.Items.GOLD_NUGGET);
 	}
 
 	public static void addVanillaBlockUpgrades() {
@@ -210,6 +208,8 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.COBBLESTONE,EnumMaterial.STONE).setWeight(7));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.FLINT,EnumMaterial.STONE).setWeight(1));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.COAL,EnumMaterial.CARBON).setWeight(1));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.IRON_NUGGET,EnumMaterial.IRON).setWeight(1));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.GOLD_NUGGET,EnumMaterial.GOLD).setWeight(1));
 	}
 	
 	public static VanillaScrapableItem getVanillaScrapable(Item item) {

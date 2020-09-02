@@ -3,11 +3,13 @@ package com.nuparu.ni;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
 import com.nuparu.ni.Value.EnumValueType;
 import com.nuparu.ni.exception.EvaluationErrorException;
+import com.nuparu.sevendaystomine.util.Utils;
 
 public class Statement implements IChainable {
 
@@ -48,6 +50,7 @@ public class Statement implements IChainable {
 	@SuppressWarnings("unchecked")
 	@Nullable
 	public Value evaluate() throws EvaluationErrorException {
+
 		// Gradually modified chain
 		ArrayList<IChainable> modified = (ArrayList<IChainable>) chain.clone();
 
@@ -104,7 +107,7 @@ public class Statement implements IChainable {
 			}
 		}
 
-		System.out.println(toString(modified));
+		//System.out.println(toString(modified));
 
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
@@ -151,7 +154,7 @@ public class Statement implements IChainable {
 			}
 		}
 
-		System.out.println(toString(modified));
+		//System.out.println(toString(modified));
 
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
@@ -179,7 +182,7 @@ public class Statement implements IChainable {
 			}
 		}
 
-		System.out.println(toString(modified));
+		//System.out.println(toString(modified));
 
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
@@ -194,9 +197,6 @@ public class Statement implements IChainable {
 					throw new EvaluationErrorException(this, ic);
 				}
 
-				if (!next.evaluate().isNumerical() && !next.evaluate().isBoolean()) {
-					throw new EvaluationErrorException(this, ic);
-				}
 				Value result = next.evaluate();
 
 				// We have to navigate back to the previous elements
@@ -273,18 +273,33 @@ public class Statement implements IChainable {
 				}
 				return value;
 			}
+			if (value.isString()) {
+				
+				for (int i = 1; i < modified.size(); i++) {
+
+					if (!modified.get(i).hasValue()) {
+						throw new EvaluationErrorException(this, modified.get(i));
+					}
+					Value other = modified.get(i).evaluate();
+					if (!other.isString()) {
+						other = new Value(other.getRealValue().toString());
+					}
+					value = value.add(other);
+				}
+				return value;
+			}
 		}
 		throw new EvaluationErrorException(this);
 	}
 
 	public String toString() {
-		String s = "{";
+		String s = "{ ";
 		for (int i = 0; i < chain.size(); i++) {
 			IChainable ic = chain.get(i);
 			// if(ic instanceof Statement) continue;
 			s += " " + ic.toString();
 		}
-		s += "}";
+		s += " }";
 		return s;
 	}
 

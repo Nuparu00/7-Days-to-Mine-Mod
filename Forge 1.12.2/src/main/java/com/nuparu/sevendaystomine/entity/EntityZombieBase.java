@@ -270,4 +270,16 @@ public class EntityZombieBase extends EntityMob {
 	protected boolean isValidLightLevel() {
 		return true;
 	}
+
+	public Vec3d corpseRotation() {
+		return Vec3d.ZERO;
+	}
+	
+	public Vec3d corpseTranslation() {
+		return Vec3d.ZERO;
+	}
+	
+	public boolean customCoprseTransform() {
+		return false;
+	}
 }

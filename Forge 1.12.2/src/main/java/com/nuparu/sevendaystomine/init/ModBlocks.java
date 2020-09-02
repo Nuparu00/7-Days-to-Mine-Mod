@@ -425,6 +425,8 @@ public class ModBlocks {
 
 	public static final Block TURRET_BASE = new BlockTurretBase().setRegistryName("turret_base")
 			.setUnlocalizedName("turret_base");
+	public static final Block TURRET_ADVANCED = new BlockTurretAdvanced().setRegistryName("turret_advanced")
+			.setUnlocalizedName("turret_advanced");
 
 	public static final Block OAK_LOG_SPIKE = new BlockWoodenLogSpike().setRegistryName("oak_log_spike")
 			.setUnlocalizedName("oak_log_spike");
@@ -441,9 +443,9 @@ public class ModBlocks {
 
 	public static final Block SANDBAGS = new BlockSandbags().setRegistryName("sandbags").setUnlocalizedName("sandbags");
 	public static final Block FILE_CABINET = new BlockFileCabinet().setRegistryName("file_cabinet")
-			.setUnlocalizedName("file_cabinet");
+			.setUnlocalizedName("file_cabinet").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	public static final Block CASH_REGISTER = new BlockCashRegister().setRegistryName("cash_register")
-			.setUnlocalizedName("cash_register");
+			.setUnlocalizedName("cash_register").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	public static final Block CAMERA = new BlockCamera().setRegistryName("camera").setUnlocalizedName("camera");
 
 	public static final Block BURNT_LOG = new BlockBurntLog().setRegistryName("burnt_log")

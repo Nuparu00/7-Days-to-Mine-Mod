@@ -22,4 +22,7 @@ public class ModLootTables {
 	public static final ResourceLocation MEDICAL_CABINET = new ResourceLocation(SevenDaysToMine.MODID,"medical_cabinet");
 	public static final ResourceLocation BACKPACK = new ResourceLocation(SevenDaysToMine.MODID,"backpack");
 	public static final ResourceLocation WRITING_TABLE = new ResourceLocation(SevenDaysToMine.MODID,"writing_table");
+	public static final ResourceLocation SHOWER_DRAIN = new ResourceLocation(SevenDaysToMine.MODID,"shower_drain");
+	public static final ResourceLocation NEST = new ResourceLocation(SevenDaysToMine.MODID,"nest");
+	public static final ResourceLocation CASH_REGISTER = new ResourceLocation(SevenDaysToMine.MODID,"cash_register");
 }

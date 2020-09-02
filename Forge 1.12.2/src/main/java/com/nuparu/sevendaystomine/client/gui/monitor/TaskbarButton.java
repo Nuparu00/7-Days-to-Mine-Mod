@@ -3,9 +3,9 @@ package com.nuparu.sevendaystomine.client.gui.monitor;
 import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
+import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
-import com.nuparu.sevendaystomine.util.computer.process.WindowedProcess;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;

@@ -4,12 +4,12 @@
         	"name" : "rare",
             "rolls": {
                 "min": 0,
-                "max": 2
+                "max": 1
             },
             "entries": [
                 {
                     "type": "item",
-                    "weight": 15,
+                    "weight": 10,
                     "name": "sevendaystomine:wrench",
 					"functions": [
                         {

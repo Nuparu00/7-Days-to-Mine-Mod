@@ -78,6 +78,7 @@ public class EntityAirdrop extends Entity {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
+		
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;

@@ -3,9 +3,9 @@ package com.nuparu.ni;
 public class Token {
 
 	public EnumTokenType type = EnumTokenType.NONE;
-	public Object value;
+	public String value;
 
-	public Token(EnumTokenType type, Object value) {
+	public Token(EnumTokenType type, String value) {
 		this.type = type;
 		this.value = value;
 	}

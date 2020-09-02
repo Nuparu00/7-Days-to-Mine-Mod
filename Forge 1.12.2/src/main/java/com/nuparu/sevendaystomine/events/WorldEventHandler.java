@@ -13,6 +13,8 @@ import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.util.DamageSources;
 import com.nuparu.sevendaystomine.util.VanillaManager;
 import com.nuparu.sevendaystomine.util.VanillaManager.VanillaBlockUpgrade;
+import com.nuparu.sevendaystomine.world.MiscSavedData;
+import com.nuparu.sevendaystomine.world.gen.city.CitySavedData;
 import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 
 import net.minecraft.block.Block;
@@ -197,6 +199,24 @@ public class WorldEventHandler {
 				world.getPerWorldStorage().setData(HordeSavedData.DATA_NAME, SevenDaysToMine.hordeSavedData);
 			} else {
 				SevenDaysToMine.hordeSavedData = horde_data;
+			}
+
+			CitySavedData city_data = ((CitySavedData) world.getPerWorldStorage().getOrLoadData(CitySavedData.class,
+					CitySavedData.DATA_NAME));
+			if (horde_data == null) {
+				SevenDaysToMine.citySavedData = new CitySavedData();
+				world.getPerWorldStorage().setData(CitySavedData.DATA_NAME, SevenDaysToMine.citySavedData);
+			} else {
+				SevenDaysToMine.citySavedData = city_data;
+			}
+
+			MiscSavedData misc_data = ((MiscSavedData) world.getPerWorldStorage().getOrLoadData(MiscSavedData.class,
+					MiscSavedData.DATA_NAME));
+			if (misc_data == null) {
+				SevenDaysToMine.miscSavedData = new MiscSavedData();
+				world.getPerWorldStorage().setData(MiscSavedData.DATA_NAME, SevenDaysToMine.miscSavedData);
+			} else {
+				SevenDaysToMine.miscSavedData = misc_data;
 			}
 
 		} else {

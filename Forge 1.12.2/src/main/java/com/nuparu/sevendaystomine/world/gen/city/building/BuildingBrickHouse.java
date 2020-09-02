@@ -85,6 +85,7 @@ public class BuildingBrickHouse extends Building {
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), variant);
 			}
+			generatePedestal(world, pos, template, facing, mirror);
 		}
 	}
 

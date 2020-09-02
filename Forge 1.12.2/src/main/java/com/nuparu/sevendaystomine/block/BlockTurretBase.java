@@ -3,7 +3,11 @@ package com.nuparu.sevendaystomine.block;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurretAdvanced;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTurretBase;
+import com.nuparu.sevendaystomine.tileentity.TileEntityBackpack;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCombustionGenerator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurret;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.EnumPushReaction;
@@ -17,6 +21,7 @@ import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -32,12 +37,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTurretBase extends BlockTileProvider<TileEntityTurretBase> {
 
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	
 	public BlockTurretBase() {
 		super(Material.IRON);
 		setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
-		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setDefaultState(this.blockState.getBaseState().withProperty(BlockHorizontalBase.FACING, EnumFacing.NORTH));
 		setHardness(3);
 		setResistance(7);
 	}
@@ -51,7 +54,6 @@ public class BlockTurretBase extends BlockTileProvider<TileEntityTurretBase> {
 	public TileEntityTurretBase createTileEntity(World world, IBlockState state) {
 		return new TileEntityTurretBase();
 	}
-	
 
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
@@ -67,24 +69,25 @@ public class BlockTurretBase extends BlockTileProvider<TileEntityTurretBase> {
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	 public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-    }
-	
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	}
+
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing) state.getValue(FACING)));
+		return state.withProperty(BlockHorizontalBase.FACING,
+				rot.rotate((EnumFacing) state.getValue(BlockHorizontalBase.FACING)));
 	}
 
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-		return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(FACING)));
+		return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(BlockHorizontalBase.FACING)));
 	}
 
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY,
 			float hitZ, int meta, EntityLivingBase placer) {
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		return this.getDefaultState().withProperty(BlockHorizontalBase.FACING,
+				placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
@@ -95,9 +98,9 @@ public class BlockTurretBase extends BlockTileProvider<TileEntityTurretBase> {
 			facing = EnumFacing.NORTH;
 		}
 
-		return getDefaultState().withProperty(FACING, facing);
+		return getDefaultState().withProperty(BlockHorizontalBase.FACING, facing);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasCustomStateMapper() {
@@ -107,28 +110,41 @@ public class BlockTurretBase extends BlockTileProvider<TileEntityTurretBase> {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IStateMapper getStateMapper() {
-		return new StateMap.Builder().ignore(FACING).build();
+		return new StateMap.Builder().ignore(BlockHorizontalBase.FACING).build();
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(playerIn.isSneaking()) return false;
-        TileEntity te = worldIn.getTileEntity(pos);
-        if(te instanceof TileEntityTurretBase && playerIn.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
-        
-        	return true;
-        }
-		return false;
+		if (playerIn.isSneaking())
+			return false;
+		TileEntity te = worldIn.getTileEntity(pos);
+		if (te != null && te instanceof TileEntityTurret) {
+			playerIn.openGui(SevenDaysToMine.instance, 24, worldIn, pos.getX(), pos.getY(), pos.getZ());
+
+		}
+		return true;
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
+		if (stack.hasDisplayName()) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+
+			if (tileentity instanceof TileEntityTurret) {
+				((TileEntityTurretBase) tileentity).setDisplayName(stack.getDisplayName());
+			}
+		}
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing) state.getValue(FACING)).getIndex();
+		return ((EnumFacing) state.getValue(BlockHorizontalBase.FACING)).getIndex();
 	}
 
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, new IProperty[] { BlockHorizontalBase.FACING });
 	}
 
 }

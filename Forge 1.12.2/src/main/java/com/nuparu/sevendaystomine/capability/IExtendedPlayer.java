@@ -58,8 +58,8 @@ public interface IExtendedPlayer {
 
 	public void onStartedTracking(EntityPlayer tracker);
 	
-	public boolean getBloodmoon();
+	public boolean hasHorde();
 	
-	public void setBloodmoon(boolean state);
+	public void setHorde(boolean state);
 
 }

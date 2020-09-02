@@ -200,12 +200,12 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	@Override
-	public boolean getBloodmoon() {
+	public boolean hasHorde() {
 		return bloodmoon;
 	}
 
 	@Override
-	public void setBloodmoon(boolean state) {
+	public void setHorde(boolean state) {
 		bloodmoon = state;
 		onDataChanged();
 	}

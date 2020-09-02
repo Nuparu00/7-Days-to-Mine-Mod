@@ -29,6 +29,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -299,6 +300,7 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
+	
 
 	@Override
 	@SideOnly(Side.CLIENT)

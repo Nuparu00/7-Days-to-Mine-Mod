@@ -81,10 +81,11 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500);
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
+		range.setBaseValue(64.0D);
+		speed.setBaseValue(0.15D);
+		attack.setBaseValue(7.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500D);
+		armor.setBaseValue(3.0D);
 	}
 
 	@Override

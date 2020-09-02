@@ -15,6 +15,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockSedan extends BlockCar {
 
+	
 	public BlockSedan() {
 		super(new byte[][][] { { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } },
 				{ { 0, 0, 0 }, { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 }, { 0, 0, 0 } } });
@@ -23,6 +24,9 @@ public class BlockSedan extends BlockCar {
 		setResistance(5.0F);
 	}
 
+	/*
+	 * Have to cache this somewhere someday so we do not have to chec kall the blocks and tileentites each tick
+	 */
 	@Override
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
@@ -124,8 +128,10 @@ public class BlockSedan extends BlockCar {
 				}
 			}
 		}
-		return new AxisAlignedBB(width > 0 ? 0 : -width, 0, length > 0 ? 0 : -length, width > 0 ? width : 1, height,
+		AxisAlignedBB aabb = new AxisAlignedBB(width > 0 ? 0 : -width, 0, length > 0 ? 0 : -length, width > 0 ? width : 1, height,
 				length > 0 ? length : 1);
+		
+		return aabb;
 	}
 
 	@SuppressWarnings("deprecation")

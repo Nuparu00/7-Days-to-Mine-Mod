@@ -39,6 +39,7 @@ import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.item.ItemGun.EnumWield;
@@ -78,6 +79,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -341,6 +343,16 @@ public class Utils {
 		return blockpos != null ? blockpos.getY() : -1;
 	}
 
+	public static boolean isSolid(World world, BlockPos pos, IBlockState state) {
+		Material material = state.getMaterial();
+		Block block = state.getBlock();
+		if (!material.isLiquid() && state.isFullCube() && material.blocksMovement()
+				&& !block.isLeaves(state, world, pos) && !block.isFoliage(world, pos) && material != Material.SNOW) {
+			return true;
+		}
+		return false;
+	}
+
 	public static float lerp(float a, float b, float f) {
 		return (a * (1.0f - f)) + (b * f);
 	}
@@ -353,10 +365,10 @@ public class Utils {
 		if (hardness <= 0) {
 			return false;
 		}
-		if(block.isAir(state, world, pos)) {
+		if (block.isAir(state, world, pos)) {
 			return false;
 		}
-		if(block instanceof IFluidBlock || block instanceof BlockLiquid) {
+		if (block instanceof IFluidBlock || block instanceof BlockLiquid) {
 			return false;
 		}
 		if (hardness == 0) {
@@ -625,7 +637,11 @@ public class Utils {
 	}
 
 	public static boolean isBloodmoon(World world) {
-		return Utils.getDay(world) % 7 == 0;
+		return ModConfig.world.bloodmoonFrequency > 0 && Utils.getDay(world) % ModConfig.world.bloodmoonFrequency == 0;
+	}
+
+	public static boolean isWolfHorde(World world) {
+		return Utils.getDay(world) % 5 == 0;
 	}
 
 	public static int getItemBurnTime(ItemStack stack) {
@@ -702,6 +718,40 @@ public class Utils {
 				(double) zSum / players.size() + (world.rand.nextDouble() * 512) - 256);
 	}
 
+	public static BlockPos getAirDropStartPoint(World world, BlockPos centerPoint) {
+		List<EntityPlayer> players = world.playerEntities;
+		if (players.size() == 0)
+			return null;
+
+		BlockPos theMostDistant = null;
+		double lastDistance = Double.MAX_VALUE;
+		if (players.size() == 1) {
+			EntityPlayer player = players.get(0);
+			theMostDistant = new BlockPos(player.posX + (world.rand.nextDouble() * 256) - 128, 255,
+					player.posZ + (world.rand.nextDouble() * 256) - 128);
+			lastDistance = centerPoint.distanceSq(theMostDistant);
+		}
+
+		if (theMostDistant == null) {
+			for (EntityPlayer player : players) {
+				BlockPos bp = new BlockPos(player.posX, 255, player.posZ);
+				double dist = bp.distanceSq(centerPoint);
+				if (dist < lastDistance) {
+					lastDistance = dist;
+					theMostDistant = bp;
+				}
+			}
+		}
+		double x = 0;
+		double z = 0;
+		double d = (double) (lastDistance + 32) / lastDistance;
+
+		x = ((1 - d) * centerPoint.getX()) + (d * theMostDistant.getX());
+		z = ((1 - d) * centerPoint.getZ()) + (d * theMostDistant.getY());
+		return new BlockPos(x, 255, z);
+
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T> Set<T> combine(Set<T>... sets) {
 		return Stream.of(sets).flatMap(Set::stream).collect(Collectors.toSet());
@@ -726,5 +776,24 @@ public class Utils {
 			}
 		}
 		return count;
+	}
+
+	public static void generateDiagonal(World world, BlockPos start, BlockPos end) {
+		int minX = Math.min(start.getX(), end.getX());
+		int minZ = Math.min(start.getZ(), end.getZ());
+
+		int maxX = Math.max(start.getX(), end.getX());
+		int maxZ = Math.max(start.getZ(), end.getZ());
+
+		Vec3d dif = new Vec3d(maxX - minX, 0, maxZ - minZ);
+		Vec3d vec = dif.scale(1d / dif.lengthVector());
+
+		for (double d = 0; d < dif.lengthVector(); d++) {
+			Vec3d vec2 = vec.scale(d);
+			world.setBlockState(new BlockPos(minX + vec2.x, 50, minZ + vec2.z), Blocks.IRON_BLOCK.getDefaultState());
+		}
+		world.setBlockState(new BlockPos(minX, 50, minZ), Blocks.REDSTONE_BLOCK.getDefaultState());
+		world.setBlockState(new BlockPos(maxX, 50, maxZ), Blocks.GOLD_BLOCK.getDefaultState());
+
 	}
 }

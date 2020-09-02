@@ -10,19 +10,19 @@ import java.util.List;
 import java.util.UUID;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.computer.process.BootingProcess;
+import com.nuparu.sevendaystomine.computer.process.CreateAccountProcess;
+import com.nuparu.sevendaystomine.computer.process.DesktopProcess;
+import com.nuparu.sevendaystomine.computer.process.HardDrive;
+import com.nuparu.sevendaystomine.computer.process.ProcessRegistry;
+import com.nuparu.sevendaystomine.computer.process.TickingProcess;
+import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
+import com.nuparu.sevendaystomine.computer.process.WindowsDesktopProcess;
+import com.nuparu.sevendaystomine.computer.process.WindowsLoginProcess;
 import com.nuparu.sevendaystomine.electricity.network.INetwork;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SyncTileEntityMessage;
-import com.nuparu.sevendaystomine.util.computer.process.BootingProcess;
-import com.nuparu.sevendaystomine.util.computer.process.CreateAccountProcess;
-import com.nuparu.sevendaystomine.util.computer.process.DesktopProcess;
-import com.nuparu.sevendaystomine.util.computer.process.HardDrive;
-import com.nuparu.sevendaystomine.util.computer.process.ProcessRegistry;
-import com.nuparu.sevendaystomine.util.computer.process.TickingProcess;
-import com.nuparu.sevendaystomine.util.computer.process.WindowedProcess;
-import com.nuparu.sevendaystomine.util.computer.process.WindowsDesktopProcess;
-import com.nuparu.sevendaystomine.util.computer.process.WindowsLoginProcess;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

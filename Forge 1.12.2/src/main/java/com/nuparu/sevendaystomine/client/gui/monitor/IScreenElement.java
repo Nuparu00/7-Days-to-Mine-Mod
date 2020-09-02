@@ -1,6 +1,6 @@
 package com.nuparu.sevendaystomine.client.gui.monitor;
 
-import com.nuparu.sevendaystomine.util.computer.process.TickingProcess;
+import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 
 public interface IScreenElement {
 	public void setZLevel(int zLevel);

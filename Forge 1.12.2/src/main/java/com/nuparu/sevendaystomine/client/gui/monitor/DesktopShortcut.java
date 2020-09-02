@@ -5,13 +5,13 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.computer.application.Application;
+import com.nuparu.sevendaystomine.computer.process.TickingProcess;
+import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
+import com.nuparu.sevendaystomine.computer.process.WindowsDesktopProcess;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
-import com.nuparu.sevendaystomine.util.computer.application.Application;
-import com.nuparu.sevendaystomine.util.computer.process.TickingProcess;
-import com.nuparu.sevendaystomine.util.computer.process.WindowedProcess;
-import com.nuparu.sevendaystomine.util.computer.process.WindowsDesktopProcess;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -154,7 +154,7 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 				&& WindowedProcess.isDesktopVisible(screen.mouseX, screen.mouseY, process.getTE())) {
 			GL11.glPushMatrix();
 			GlStateManager.color(1,1,1);
-			RenderUtils.drawColoredRect(new ColorRGBA(1, 1, 1), screen.mouseX, screen.mouseY,
+			RenderUtils.drawColoredRect(new ColorRGBA(1d, 1d, 1d), screen.mouseX, screen.mouseY,
 					fontRenderer.getStringWidth(app.getLocalizedDesc()), 9, zLevel + 2);
 			GL11.glTranslatef(0, 0, zLevel + 3);
 			RenderUtils.drawString(app.getLocalizedDesc(), screen.mouseX, screen.mouseY, 0x000000);
