@@ -477,5 +477,7 @@ public class ModBlocks {
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	
 	public static final Block SEPARATOR = new BlockSeparator().setRegistryName("separator").setUnlocalizedName("separator");
+	public static final Block RAZOR_WIRE = new BlockRazorWire().setRegistryName("razor_wire").setUnlocalizedName("razor_wire");
+	public static final Block STAND = new BlockStand().setRegistryName("stand").setUnlocalizedName("stand");
 
 }

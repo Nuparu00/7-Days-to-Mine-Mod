@@ -112,7 +112,7 @@ public class SevenDaysToMine {
 	public static Ticket chunkLoaderTicket;
 
 	public static final WorldType DEFAULT_WORLD = (new WorldTypeOverworld("overworld"));
-	
+
 	static {
 		// DataSerializers.registerSerializer(Utils.DIALOGUES);
 		FluidRegistry.enableUniversalBucket();
@@ -267,7 +267,7 @@ public class SevenDaysToMine {
 			ModBlocks.BURNT_PLANKS, ModBlocks.BURNT_FRAME, ModBlocks.DRY_GROUND, ModBlocks.BURNT_PLANKS_STAIRS,
 			ModBlocks.BURNT_PLANKS_SLAB, ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE,
 			ModBlocks.BURNT_CHAIR, ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE,
-			ModBlocks.MERCURY, ModBlocks.SEPARATOR, ModBlocks.TURRET_ADVANCED};
+			ModBlocks.MERCURY, ModBlocks.SEPARATOR, ModBlocks.TURRET_ADVANCED, ModBlocks.RAZOR_WIRE, ModBlocks.STAND };
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -318,7 +318,7 @@ public class SevenDaysToMine {
 			ModItems.MAGNUM_SCOPED, ModItems.FLAMETHROWER, ModItems.MP5, ModItems.RPG, ModItems.M4,
 			ModItems.MAGNUM_BULLET, ModItems.MAGNUM_FRAME, ModItems.MAGNUM_CYLINDER, ModItems.MAGNUM_GRIP,
 			ModItems.MAGNUM_SCHEMATICS, ModItems.MP5_BARREL, ModItems.MP5_STOCK, ModItems.MP5_TRIGGER,
-			ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL, ModItems.AUGER_BLADE};
+			ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL, ModItems.AUGER_BLADE, ModItems.NIGHT_VISION_DEVICE};
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
@@ -355,7 +355,7 @@ public class SevenDaysToMine {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		
+
 		GameRegistry.registerWorldGenerator(new RoadDecoratorWorldGen(), Integer.MIN_VALUE);
 		GameRegistry.registerWorldGenerator(new StructureGenerator(), 0);
 		GameRegistry.registerWorldGenerator(new OreWorldGenerator(), 1);

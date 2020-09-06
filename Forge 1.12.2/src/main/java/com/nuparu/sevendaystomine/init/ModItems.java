@@ -42,6 +42,7 @@ import com.nuparu.sevendaystomine.item.ItemMagnum;
 import com.nuparu.sevendaystomine.item.ItemMinibikeChassis;
 import com.nuparu.sevendaystomine.item.ItemMold;
 import com.nuparu.sevendaystomine.item.ItemMurkyWater;
+import com.nuparu.sevendaystomine.item.ItemNightVisionDevice;
 import com.nuparu.sevendaystomine.item.ItemPhoto;
 import com.nuparu.sevendaystomine.item.ItemPistol;
 import com.nuparu.sevendaystomine.item.ItemQuality;
@@ -545,4 +546,8 @@ public class ModItems {
 	public static final Item AUGER_BLADE = new ItemQuality().setMaxStackSize(1)
 			.setCreativeTab(SevenDaysToMine.TAB_FORGING).setRegistryName("auger_blade")
 			.setUnlocalizedName("auger_blade");
+
+	public static final Item NIGHT_VISION_DEVICE = new ItemNightVisionDevice(SevenDaysToMine.SCRAP_ARMOR, 0,
+			EntityEquipmentSlot.HEAD).setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT)
+					.setRegistryName("night_vision_device").setUnlocalizedName("night_vision_device");
 }

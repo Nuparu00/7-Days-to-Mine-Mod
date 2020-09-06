@@ -259,7 +259,7 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 		Vec3d rayEnd = position.add(new Vec3d(rotation.x * distance, rotation.y * distance, rotation.z * distance));
 		Vec3d finalVec = null;
 
-		RayTraceResult mop = worldIn.rayTraceBlocks(position, rayEnd, false, true, true);
+		RayTraceResult mop = worldIn.rayTraceBlocks(position, rayEnd, false, false, true);
 		RayTraceResult result = null;
 		Entity pointedEntity = null;
 		float f = 1.0F;

@@ -20,6 +20,14 @@ public class Statement implements IChainable {
 	}
 
 	public void addValue(Object value) {
+		if (value instanceof Integer) {
+			chain.add(new Value(EnumValueType.INT, value));
+			return;
+		}
+		if (value instanceof Boolean) {
+			chain.add(new Value(EnumValueType.BOOL, value));
+			return;
+		}
 		if (value instanceof String) {
 			String s = (String) value;
 			if (s.equals("true") || s.equals("false")) {
@@ -36,7 +44,7 @@ public class Statement implements IChainable {
 	}
 
 	public void addValue(Variable var) {
-		chain.add(new Value(EnumValueType.VAR, var));
+		//chain.add(new Value(EnumValueType.VAR, var));
 	}
 
 	public void addStatement(Statement statement) {
@@ -235,6 +243,136 @@ public class Statement implements IChainable {
 				}
 
 				Value result = new Value(prev.evaluate().equals(next.evaluate()));
+
+				// We have to navigate back to the previous elements
+				it.remove();
+				it.previous();
+				it.set(result);
+				it.previous();
+				it.remove();
+			}
+		}
+		
+		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
+			int index = it.nextIndex();
+			IChainable ic = it.next();
+			if (ic instanceof Operator && ((Operator) ic).value.equals("!=")) {
+				// previous got us 1? index back, we have to call previous() thrice and next()
+				// twice!
+				IChainable prev = it.previous();
+				if (!it.hasPrevious()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				prev = it.previous();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				IChainable next = it.next();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				next = it.next();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				next = it.next();
+				if (!prev.hasValue() || !next.hasValue()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+
+				Value result = new Value(!prev.evaluate().equals(next.evaluate()));
+
+				// We have to navigate back to the previous elements
+				it.remove();
+				it.previous();
+				it.set(result);
+				it.previous();
+				it.remove();
+			}
+		}
+		
+		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
+			int index = it.nextIndex();
+			IChainable ic = it.next();
+			if (ic instanceof Operator && ((Operator) ic).value.equals("<")) {
+				// previous got us 1? index back, we have to call previous() thrice and next()
+				// twice!
+				IChainable prev = it.previous();
+				if (!it.hasPrevious()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				prev = it.previous();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				IChainable next = it.next();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				next = it.next();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				next = it.next();
+				if (!prev.hasValue() || !next.hasValue()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				
+				Value valuePrev = prev.evaluate();
+				if(valuePrev == null || !valuePrev.isNumerical()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				Value valueNext = next.evaluate();
+				if(valueNext == null || !valueNext.isNumerical()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				Value result = new Value(prev.evaluate().isLessThan(next.evaluate()));
+
+				// We have to navigate back to the previous elements
+				it.remove();
+				it.previous();
+				it.set(result);
+				it.previous();
+				it.remove();
+			}
+		}
+		
+		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
+			int index = it.nextIndex();
+			IChainable ic = it.next();
+			if (ic instanceof Operator && ((Operator) ic).value.equals(">")) {
+				// previous got us 1? index back, we have to call previous() thrice and next()
+				// twice!
+				IChainable prev = it.previous();
+				if (!it.hasPrevious()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				prev = it.previous();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				IChainable next = it.next();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				next = it.next();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				next = it.next();
+				if (!prev.hasValue() || !next.hasValue()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				
+				Value valuePrev = prev.evaluate();
+				if(valuePrev == null || !valuePrev.isNumerical()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				Value valueNext = next.evaluate();
+				if(valueNext == null || !valueNext.isNumerical()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				Value result = new Value(prev.evaluate().isMoreThan(next.evaluate()));
 
 				// We have to navigate back to the previous elements
 				it.remove();

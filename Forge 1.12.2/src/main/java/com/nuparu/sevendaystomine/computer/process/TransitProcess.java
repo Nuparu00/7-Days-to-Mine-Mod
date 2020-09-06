@@ -47,11 +47,13 @@ public class TransitProcess extends WindowedProcess {
 
 	private String text = "";
 	private String prevText = "";
-	private List<String> output = new ArrayList<String>();
+	private List<ITextComponent> output = new ArrayList<ITextComponent>();
 	private int cursorPosition;
 	private int selectionEnd;
 
 	private int lineScrollOffset;
+
+	public ShellProcess shellProcess = null;
 
 	@SideOnly(Side.CLIENT)
 	private ColorRGBA cursorColor = new ColorRGBA(255, 255, 255);
@@ -172,22 +174,21 @@ public class TransitProcess extends WindowedProcess {
 			String[] array = itextcomponent2.getUnformattedText()
 					.split(String.format(Interpreter.WITH_DELIMITER, Interpreter.REGEX));
 			ArrayList<String> words = (ArrayList<String>) Arrays.stream(array).collect(Collectors.toList());
-			int pointer = 0;
 
-			// x+previous width
+			int pointer = 0;
 			double xx = left + 25;
 			for (int i = 0; i < words.size(); i++) {
 				String word = words.get(i);
 				int color = 0xbbbbbb;
-				for (int j = pointer; j < tokens.size(); j++) {
-					Token token = tokens.get(j);
-					// System.out.println(word + "|" + token.value);
-					if (token.value instanceof String && word.trim().equals(token.value)) {
-						color = token.type.getColor();
-						pointer = j;
-						break;
-					} else if (i > 0 && words.get(i - 1).equals("\"")) {
-						color = EnumTokenType.VALUE.getColor();
+				if (!word.trim().isEmpty()) {
+					for (int j = pointer; j < tokens.size(); j++) {
+						Token token = tokens.get(j);
+						// System.out.println(word + "|" + token.value);
+						if (token.value instanceof String && word.trim().equals(token.value)) {
+							color = token.type.getColor();
+							pointer = j;
+							break;
+						}
 					}
 				}
 
@@ -223,8 +224,8 @@ public class TransitProcess extends WindowedProcess {
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(0, 0, offsetRelativeZ(2));
-		for (int i = 0; i < output.size(); i++) {
-			String out = output.get(i);
+		for (int i = 0; i < getOutput().size(); i++) {
+			String out = getOutput().get(i).getFormattedText();
 			RenderUtils.drawString(out, left, y + height * (0.75) + Screen.mc.fontRenderer.FONT_HEIGHT * i + 2,
 					0xEBEBEB);
 		}
@@ -295,9 +296,15 @@ public class TransitProcess extends WindowedProcess {
 			Tree<Token> tree = Interpreter.parse(tokens);
 			if (tree != null) {
 				tree.print("-", true);
-				output.clear();
-				CodeBlock block = Interpreter.read(tree, null, this);
-				output = block.output;
+				TransitProcess process = this;
+				getOutput().clear();
+				new Thread() {
+					@Override
+					public void run() {
+						CodeBlock block = Interpreter.read(tree, null, process);
+					}
+				}.start();
+
 			}
 			break;
 		}
@@ -419,5 +426,9 @@ public class TransitProcess extends WindowedProcess {
 
 	public void saveToDevice(String data) {
 		PacketManager.saveData.sendToServer(new SaveDataMessage(data, computerTE.getPos()));
+	}
+
+	public List<ITextComponent> getOutput() {
+		return output;
 	}
 }

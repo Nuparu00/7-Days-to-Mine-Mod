@@ -7,7 +7,7 @@ import com.nuparu.ni.Variable;
 public class TypeMismatchException extends Exception {
 
 	public TypeMismatchException(Variable var, Object value) {
-		super("The variable type of " + var.name + " can not store given value " + value);
+		super("The variable" + var.name + " type of " + var.type + " can not store given value " + value);
 	}
 	
 	public TypeMismatchException(Value value) {

@@ -31,16 +31,20 @@ public class Value implements IChainable {
 
 	public Value add(Value other) {
 		if (isInt() && other.isInt()) {
+			System.out.println("FFFF");
 			return new Value((int) getRealValue() + (int) other.getRealValue());
 		}
-		if (isString() && other.isString()) {
-			return new Value((String) getRealValue() + (String) other.getRealValue());
+		if (isString() || other.isString()) {
+			System.out.println("GGGG");
+			return new Value(getRealValue().toString() + other.getRealValue().toString());
 		}
 
 		if (isBoolean() && other.isBoolean()) {
+			System.out.println("CCCC");
 			return new Value((boolean) getRealValue() || (boolean) other.getRealValue());
 		} else {
-			return new Value((String) getRealValue() + (String) other.getRealValue());
+			System.out.println("EEEEE");
+			return new Value(getRealValue().toString() + other.getRealValue().toString());
 		}
 	}
 
@@ -93,23 +97,19 @@ public class Value implements IChainable {
 		if (type == EnumValueType.BOOL) {
 			return (boolean) value;
 		}
-		if (type == EnumValueType.VAR && value != null) {
-			Variable var = (Variable) value;
-			return var.getValue();
-		}
 		return value;
 	}
 
 	public boolean isString() {
-		return getRealValue() instanceof String;
+		return type == EnumValueType.STRING || (getRealValue() instanceof String);
 	}
 
 	public boolean isInt() {
-		return getRealValue() instanceof Integer;
+		return type == EnumValueType.INT || (getRealValue() instanceof Integer);
 	}
 
 	public boolean isBoolean() {
-		return getRealValue() instanceof Boolean;
+		return type == EnumValueType.BOOL && (getRealValue() instanceof Boolean);
 	}
 
 	public boolean isNumerical() {
@@ -122,7 +122,22 @@ public class Value implements IChainable {
 	}
 
 	public enum EnumValueType {
-		INT, STRING, BOOL, VAR
+		INT("int"), STRING("string"), BOOL("bool");
+
+		String name;
+
+		EnumValueType(String type) {
+			this.name = type;
+		}
+
+		public static EnumValueType getByType(String s) {
+			for (EnumValueType t : EnumValueType.values()) {
+				if (t.name.equals(s))
+					return t;
+			}
+			return null;
+		}
+
 	}
 
 	@Override
@@ -136,8 +151,20 @@ public class Value implements IChainable {
 	}
 
 	public boolean equals(Value other) {
-		if (this.type != other.type)
+		return getRealValue().equals(other.getRealValue());
+	}
+
+	public boolean isLessThan(Value other) {
+		if (!isNumerical() || !other.isNumerical())
 			return false;
-		return value.equals(other.value);
+
+		return (int) getRealValue() < (int) other.getRealValue();
+	}
+
+	public boolean isMoreThan(Value other) {
+		if (!isNumerical() || !other.isNumerical())
+			return false;
+
+		return (int) getRealValue() > (int) other.getRealValue();
 	}
 }

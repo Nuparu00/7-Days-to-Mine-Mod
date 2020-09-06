@@ -826,9 +826,10 @@ tile.burnt_planks_slab_double.name=Double Burnt Planks Slab
 tile.burnt_planks_fence.name=Burnt Planks Fence
 tile.burnt_chair.name=Burnt Chair
 tile.stone_brick_stairs_mossy.name=Mossy Stone Brick Stairs
-
 tile.radio.name=Radio
 tile.separator.name=Electrolytic Cell
+tile.razor_wire.name=Razor Wire
+tile.stand.name=Stand
 
 #Sound Subtitles
 
