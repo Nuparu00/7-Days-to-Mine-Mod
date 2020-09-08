@@ -75,10 +75,10 @@ public class City {
 		if (!world.isRemote) {
 			Utils.getLogger().info(this.name + " generated at " + start.getX() + " " + start.getZ() + " within "
 					+ (System.currentTimeMillis() - timeStamp) + "ms with " + streets.size() + " streets");
-			Utils.getServer().getPlayerList()
+			/*Utils.getServer().getPlayerList()
 					.sendMessage(new TextComponentString(TextFormatting.GREEN + this.name + " generated at "
 							+ start.getX() + " " + start.getZ() + " within " + (System.currentTimeMillis() - timeStamp)
-							+ "ms with " + streets.size() + " streets"));
+							+ "ms with " + streets.size() + " streets"));*/
 		}
 	}
 

@@ -17,6 +17,7 @@ import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.item.ItemNightVisionDevice;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.DamageSources;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -39,6 +40,7 @@ import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -143,50 +145,16 @@ public class TickHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onRenderTick(TickEvent.RenderTickEvent event) {
-		/*
-		 * update = 7; FEATURE_SIZE = 32; if (update != updatePrev) { image = new
-		 * BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		 * 
-		 * for (int y = 0; y < HEIGHT; y++) { for (int x = 0; x < WIDTH; x++) { double
-		 * q1 = noise.eval(x / FEATURE_SIZE, y / FEATURE_SIZE, 0.0); double q2 =
-		 * noise.eval(x / FEATURE_SIZE + 1.3, y / FEATURE_SIZE + 0.7, 0.0);
-		 * 
-		 * double r1 = noise.eval(x / FEATURE_SIZE + 1 * q1 + 1.7, y / FEATURE_SIZE + 1
-		 * * q2 + 9.2, 0.0); double r2 = noise.eval(x / FEATURE_SIZE + 1 * q1 + 8.3, y /
-		 * FEATURE_SIZE + 1 * q2 + 2.8, 0.0);
-		 * 
-		 * double value = Math.abs(noise.eval(x / FEATURE_SIZE + 2 * q1, y /
-		 * FEATURE_SIZE + 2 * q2, MathUtils.getDoubleInRange(0, 0))); if (value < 0.05)
-		 * { value = -1; }
-		 * 
-		 * int rgb = 0x010101 * (int) ((value + 1) * 127.5); image.setRGB(x, y, rgb); }
-		 * }
-		 * 
-		 * tex = new DynamicTexture(image); rl =
-		 * mc.getTextureManager().getDynamicTextureLocation(SevenDaysToMine.MODID +
-		 * ":noise", tex); updatePrev = update; } GL11.glPushMatrix();
-		 * RenderUtils.drawTexturedRect(rl, 0, 0, 0, 0, 256, 256, 256, 256, 1, 1);
-		 * GL11.glPopMatrix();
-		 */
-
 		EntityPlayer player = mc.player;
 		if (player != null) {
 
 			EntityRenderer entityRenderer = mc.entityRenderer;
 
-			if (!player.isCreative() && !player.isSpectator()) {
+			if (!player.isSpectator()) {
 				if (player.isPotionActive(Potions.bleeding)) {
 					if (entityRenderer.getShaderGroup() == null || !entityRenderer.getShaderGroup().getShaderGroupName()
 							.equals(bleedShaderRes.toString())) {
-						try {
-							f_loadShader.invoke(Minecraft.getMinecraft().entityRenderer, bleedShaderRes);
-						} catch (IllegalAccessException e) {
-							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-						} catch (InvocationTargetException e) {
-							e.printStackTrace();
-						}
+						entityRenderer.loadShader(bleedShaderRes);
 						++beat;
 						if (entityRenderer.getShaderGroup() != null && entityRenderer.getShaderGroup()
 								.getShaderGroupName().equals(bleedShaderRes.toString())) {
@@ -207,27 +175,33 @@ public class TickHandler {
 							&& entityRenderer.getShaderGroup().getShaderGroupName().equals(bleedShaderRes.toString())) {
 						entityRenderer.stopUseShader();
 					}
-					if (player.isPotionActive(Potions.drunk)) {
-						if (entityRenderer.getShaderGroup() == null || !entityRenderer.getShaderGroup()
-								.getShaderGroupName().equals(drunkShaderRes.toString())) {
-							try {
-								f_loadShader.invoke(entityRenderer, drunkShaderRes);
-							} catch (IllegalAccessException e) {
-								e.printStackTrace();
-							} catch (IllegalArgumentException e) {
-								e.printStackTrace();
-							} catch (InvocationTargetException e) {
-								e.printStackTrace();
-							}
+				}
+				if (player.isPotionActive(Potions.drunk) || player.isPotionActive(Potions.alcoholPoison)) {
+					if (entityRenderer.getShaderGroup() == null || !entityRenderer.getShaderGroup().getShaderGroupName()
+							.equals(drunkShaderRes.toString())) {
+						entityRenderer.loadShader(drunkShaderRes);
 
-						}
-					} else {
-						if (entityRenderer.getShaderGroup() != null && entityRenderer.getShaderGroup()
-								.getShaderGroupName().equals(drunkShaderRes.toString())) {
-							entityRenderer.stopUseShader();
-						}
+					}
+				} else {
+					if (entityRenderer.getShaderGroup() != null
+							&& entityRenderer.getShaderGroup().getShaderGroupName().equals(drunkShaderRes.toString())) {
+						entityRenderer.stopUseShader();
 					}
 				}
+				if (!player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty() && player
+						.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof ItemNightVisionDevice) {
+					if (entityRenderer.getShaderGroup() == null || !entityRenderer.getShaderGroup().getShaderGroupName()
+							.equals(nightShaderRes.toString())) {
+						entityRenderer.loadShader(nightShaderRes);
+
+					}
+				} else {
+					if (entityRenderer.getShaderGroup() != null
+							&& entityRenderer.getShaderGroup().getShaderGroupName().equals(nightShaderRes.toString())) {
+						entityRenderer.stopUseShader();
+					}
+				}
+
 			} else {
 				if (entityRenderer.getShaderGroup() != null
 						&& entityRenderer.getShaderGroup().getShaderGroupName().equals(bleedShaderRes.toString())) {
@@ -235,6 +209,10 @@ public class TickHandler {
 				}
 				if (entityRenderer.getShaderGroup() != null
 						&& entityRenderer.getShaderGroup().getShaderGroupName().equals(drunkShaderRes.toString())) {
+					entityRenderer.stopUseShader();
+				}
+				if (entityRenderer.getShaderGroup() != null
+						&& entityRenderer.getShaderGroup().getShaderGroupName().equals(nightShaderRes.toString())) {
 					entityRenderer.stopUseShader();
 				}
 			}
@@ -282,7 +260,8 @@ public class TickHandler {
 		long time = world.getWorldTime() % 24000;
 		MiscSavedData miscData = MiscSavedData.get(world);
 
-		if (time >= 6000 && miscData.getLastAirdrop() != Utils.getDay(world) && Utils.getDay(world) % ModConfig.world.airdropFrequency == 0) {
+		if (time >= 6000 && miscData.getLastAirdrop() != Utils.getDay(world)
+				&& Utils.getDay(world) % ModConfig.world.airdropFrequency == 0) {
 			MinecraftServer server = Utils.getServer();
 			if (server == null)
 				return;

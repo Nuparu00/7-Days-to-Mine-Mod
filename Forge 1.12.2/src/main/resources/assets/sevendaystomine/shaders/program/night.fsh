@@ -44,10 +44,10 @@ void main()
 	float intentisy = dot(color.rgb, proportions);
  
 	// adjust contrast
-	intentisy = clamp(1.75 * (intentisy - 0.5) + 0.5, 0.0, 1.0);
+	intentisy = clamp(1.4 * (intentisy - 0.5) + 0.5, 0.0, 1.0);
 
 		float green = clamp(intentisy / 0.8, 0.0, 1.0);
-        vec3 OutColor = vec3(0, green, 0);
+    vec3 OutColor = vec3(0.03, green*1.25+0.1, 0.03);
 	    
 	
 	

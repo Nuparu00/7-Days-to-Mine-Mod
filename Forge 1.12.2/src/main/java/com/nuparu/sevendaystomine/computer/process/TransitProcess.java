@@ -301,7 +301,12 @@ public class TransitProcess extends WindowedProcess {
 				new Thread() {
 					@Override
 					public void run() {
+						try {
 						CodeBlock block = Interpreter.read(tree, null, process);
+						}
+						catch(Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}.start();
 

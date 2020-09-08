@@ -8,6 +8,7 @@ import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SafeCodeMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCodeSafe;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -129,6 +130,10 @@ public class GuiCodeSafeLocked extends GuiScreen {
 				toAdd = -toAdd;
 			}
 			PacketManager.safeCodeUpdate.sendToServer(new SafeCodeMessage(pos,toAdd));
+			TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
+			if(te != null && te instanceof TileEntityCodeSafe) {
+				safe = (TileEntityCodeSafe)te;
+			}
 		}
 	}
 

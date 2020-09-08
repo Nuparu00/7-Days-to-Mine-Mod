@@ -21,6 +21,10 @@ public class Value implements IChainable {
 		this(EnumValueType.INT, value);
 	}
 
+	public Value(double value) {
+		this(EnumValueType.DOUBLE, value);
+	}
+
 	public Value(String value) {
 		this(EnumValueType.STRING, value);
 	}
@@ -28,38 +32,101 @@ public class Value implements IChainable {
 	public Value(boolean value) {
 		this(EnumValueType.BOOL, value);
 	}
+	
+	public Value(float value) {
+		this(EnumValueType.FLOAT, value);
+	}
+	
+	public Value(long value) {
+		this(EnumValueType.LONG, value);
+	}
 
+	public Value(short value) {
+		this(EnumValueType.SHORT, value);
+	}
+	
+	public Value(byte value) {
+		this(EnumValueType.BYTE, value);
+	}
+	
+	
 	public Value add(Value other) {
-		if (isInt() && other.isInt()) {
-			System.out.println("FFFF");
-			return new Value((int) getRealValue() + (int) other.getRealValue());
+		if (isNumerical() && other.isNumerical()) {
+			if (isDouble()) {
+				return new Value((double) getRealValue() + (double) other.asDouble().getRealValue());
+			}
+			if (isFloat()) {
+				return new Value((float) getRealValue() + (float) other.asFloat().getRealValue());
+			}
+			if (isLong()) {
+				return new Value((long) getRealValue() + (long) other.asLong().getRealValue());
+			}
+			if (isShort()) {
+				return new Value((short) getRealValue() + (short) other.asShort().getRealValue());
+			}
+			if (isInt()) {
+				return new Value((int) getRealValue() + (int) other.asInt().getRealValue());
+			}
+			if (isByte()) {
+				return new Value((byte) getRealValue() + (byte) other.asByte().getRealValue());
+			}
 		}
 		if (isString() || other.isString()) {
-			System.out.println("GGGG");
 			return new Value(getRealValue().toString() + other.getRealValue().toString());
 		}
 
 		if (isBoolean() && other.isBoolean()) {
-			System.out.println("CCCC");
 			return new Value((boolean) getRealValue() || (boolean) other.getRealValue());
 		} else {
-			System.out.println("EEEEE");
 			return new Value(getRealValue().toString() + other.getRealValue().toString());
 		}
 	}
 
 	public Value substract(Value other) {
-		if (isInt() && other.isInt()) {
-			return new Value((int) getRealValue() - (int) other.getRealValue());
+		if (isNumerical() && other.isNumerical()) {
+			if (isDouble()) {
+				return new Value((double) getRealValue() - (double) other.asDouble().getRealValue());
+			}
+			if (isFloat()) {
+				return new Value((float) getRealValue() - (float) other.asFloat().getRealValue());
+			}
+			if (isLong()) {
+				return new Value((long) getRealValue() - (long) other.asLong().getRealValue());
+			}
+			if (isShort()) {
+				return new Value((short) getRealValue() - (short) other.asShort().getRealValue());
+			}
+			if (isInt()) {
+				return new Value((int) getRealValue() - (int) other.asInt().getRealValue());
+			}
+			if (isByte()) {
+				return new Value((byte) getRealValue() - (byte) other.asByte().getRealValue());
+			}
 		}
 		return null;
 	}
 
 	public Value multiply(Value other) {
-		if (isInt() && other.isInt()) {
-			return new Value((int) getRealValue() * (int) other.getRealValue());
+		if (isNumerical() && other.isNumerical()) {
+			if (isDouble()) {
+				return new Value((double) getRealValue() * (double) other.asDouble().getRealValue());
+			}
+			if (isFloat()) {
+				return new Value((float) getRealValue() * (float) other.asFloat().getRealValue());
+			}
+			if (isLong()) {
+				return new Value((long) getRealValue() * (long) other.asLong().getRealValue());
+			}
+			if (isShort()) {
+				return new Value((short) getRealValue() * (short) other.asShort().getRealValue());
+			}
+			if (isInt()) {
+				return new Value((int) getRealValue() * (int) other.asInt().getRealValue());
+			}
+			if (isByte()) {
+				return new Value((byte) getRealValue() * (byte) other.asByte().getRealValue());
+			}
 		}
-
 		if (isBoolean() && other.isBoolean()) {
 			return new Value((boolean) getRealValue() && (boolean) other.getRealValue());
 		}
@@ -67,8 +134,25 @@ public class Value implements IChainable {
 	}
 
 	public Value opposite() {
-		if (isInt()) {
-			return new Value(-(int) getRealValue());
+		if (isNumerical()) {
+			if (isDouble()) {
+				return new Value(-(double) getRealValue());
+			}
+			if (isFloat()) {
+				return new Value(-(float) getRealValue());
+			}
+			if (isLong()) {
+				return new Value(-(long) getRealValue());
+			}
+			if (isShort()) {
+				return new Value(-(short) getRealValue());
+			}
+			if (isInt()) {
+				return new Value(-(int) getRealValue());
+			}
+			if (isByte()) {
+				return new Value(-(byte) getRealValue());
+			}
 		}
 
 		if (isBoolean()) {
@@ -78,8 +162,25 @@ public class Value implements IChainable {
 	}
 
 	public Value divide(Value other) {
-		if (isInt() && other.isInt()) {
-			return new Value((int) ((int) getRealValue() / (int) other.getRealValue()));
+		if (isNumerical() && other.isNumerical()) {
+			if (isDouble()) {
+				return new Value((double) getRealValue() / (double) other.getRealValue());
+			}
+			if (isFloat()) {
+				return new Value((float) getRealValue() / (float) other.getRealValue());
+			}
+			if (isLong()) {
+				return new Value((long) getRealValue() / (long) other.getRealValue());
+			}
+			if (isShort()) {
+				return new Value((short) getRealValue() / (short) other.getRealValue());
+			}
+			if (isInt()) {
+				return new Value((int) getRealValue() / (int) other.getRealValue());
+			}
+			if (isByte()) {
+				return new Value((byte) getRealValue() / (byte) other.getRealValue());
+			}
 		}
 		return null;
 	}
@@ -92,10 +193,43 @@ public class Value implements IChainable {
 			return (String) value;
 		}
 		if (type == EnumValueType.INT) {
+			if(value instanceof Number) {
+				return ((Number)value).intValue();
+			}
 			return (int) value;
 		}
 		if (type == EnumValueType.BOOL) {
 			return (boolean) value;
+		}
+		if (type == EnumValueType.DOUBLE) {
+			if(value instanceof Number) {
+				return ((Number)value).doubleValue();
+			}
+			return (double) value;
+		}
+		if (type == EnumValueType.FLOAT) {
+			if(value instanceof Number) {
+				return ((Number)value).floatValue();
+			}
+			return (float) value;
+		}
+		if (type == EnumValueType.LONG) {
+			if(value instanceof Number) {
+				return ((Number)value).longValue();
+			}
+			return (long) value;
+		}
+		if (type == EnumValueType.SHORT) {
+			if(value instanceof Number) {
+				return ((Number)value).shortValue();
+			}
+			return (short) value;
+		}
+		if (type == EnumValueType.BYTE) {
+			if(value instanceof Number) {
+				return ((Number)value).byteValue();
+			}
+			return (byte) value;
 		}
 		return value;
 	}
@@ -112,17 +246,79 @@ public class Value implements IChainable {
 		return type == EnumValueType.BOOL && (getRealValue() instanceof Boolean);
 	}
 
+	public boolean isDouble() {
+		return type == EnumValueType.DOUBLE || (getRealValue() instanceof Double);
+	}
+	
+	public boolean isFloat() {
+		return type == EnumValueType.FLOAT || (getRealValue() instanceof Float);
+	}
+	
+	public boolean isLong() {
+		return type == EnumValueType.LONG || (getRealValue() instanceof Long);
+	}
+	
+	public boolean isShort() {
+		return type == EnumValueType.LONG || (getRealValue() instanceof Short);
+	}
+	
+	public boolean isByte() {
+		return type == EnumValueType.LONG || (getRealValue() instanceof Byte);
+	}
+
 	public boolean isNumerical() {
-		return isInt();
+		return isInt() || isDouble() || isFloat() || isLong() || isShort() || isByte();
+	}
+	
+	public Value asDouble() {
+		if(value instanceof Number) {
+			return new Value(((Number)value).doubleValue());
+		}
+		return this;
+	}
+	
+	public Value asInt() {
+		if(value instanceof Number) {
+			return new Value(((Number)value).intValue());
+		}
+		return this;
+	}
+	
+	public Value asFloat() {
+		if(value instanceof Number) {
+			return new Value(((Number)value).floatValue());
+		}
+		return this;
+	}
+	
+	public Value asLong() {
+		if(value instanceof Number) {
+			return new Value(((Number)value).longValue());
+		}
+		return this;
+	}
+	
+	public Value asShort() {
+		if(value instanceof Number) {
+			return new Value(((Number)value).shortValue());
+		}
+		return this;
+	}
+	
+	public Value asByte() {
+		if(value instanceof Number) {
+			return new Value(((Number)value).byteValue());
+		}
+		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "[Value=" + (getRealValue() != null ? getRealValue().toString() : "null") + ", " + type + "]";
+		return "[Value=" + (getRealValue() != null ? getRealValue().toString() : "null") + ", " + type + " , real_type=" + (value != null ? value.getClass().getCanonicalName() : "null")+"]";
 	}
 
 	public enum EnumValueType {
-		INT("int"), STRING("string"), BOOL("bool");
+		INT("int"), STRING("string"), BOOL("bool"), DOUBLE("double"), FLOAT("float"), LONG("long"), BYTE("byte"), SHORT("short");
 
 		String name;
 

@@ -13,11 +13,13 @@ import com.nuparu.sevendaystomine.item.ItemAuger;
 import com.nuparu.sevendaystomine.item.ItemBackpack;
 import com.nuparu.sevendaystomine.item.ItemBandage;
 import com.nuparu.sevendaystomine.item.ItemBattery;
+import com.nuparu.sevendaystomine.item.ItemBeret;
 import com.nuparu.sevendaystomine.item.ItemBloodBag;
 import com.nuparu.sevendaystomine.item.ItemBloodDrawKit;
 import com.nuparu.sevendaystomine.item.ItemBlueprint;
 import com.nuparu.sevendaystomine.item.ItemCannedFood;
 import com.nuparu.sevendaystomine.item.ItemChainsaw;
+import com.nuparu.sevendaystomine.item.ItemChristmasHat;
 import com.nuparu.sevendaystomine.item.ItemCircuit;
 import com.nuparu.sevendaystomine.item.ItemClothingChest;
 import com.nuparu.sevendaystomine.item.ItemClothingLegs;
@@ -550,4 +552,12 @@ public class ModItems {
 	public static final Item NIGHT_VISION_DEVICE = new ItemNightVisionDevice(SevenDaysToMine.SCRAP_ARMOR, 0,
 			EntityEquipmentSlot.HEAD).setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT)
 					.setRegistryName("night_vision_device").setUnlocalizedName("night_vision_device");
+	
+	public static final Item CHRISTMAS_HAT = new ItemChristmasHat(SevenDaysToMine.FIBER, 0,
+			EntityEquipmentSlot.HEAD).setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT)
+					.setRegistryName("christmas_hat").setUnlocalizedName("christmas_hat");
+	
+	public static final Item BERET = new ItemBeret(SevenDaysToMine.FIBER, 0,
+			EntityEquipmentSlot.HEAD).setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT)
+					.setRegistryName("beret").setUnlocalizedName("beret");
 }

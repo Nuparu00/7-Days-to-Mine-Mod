@@ -20,8 +20,28 @@ public class Statement implements IChainable {
 	}
 
 	public void addValue(Object value) {
+		if (value instanceof Double) {
+			chain.add(new Value(EnumValueType.DOUBLE, value));
+			return;
+		}
+		if (value instanceof Float) {
+			chain.add(new Value(EnumValueType.FLOAT, value));
+			return;
+		}
+		if (value instanceof Long) {
+			chain.add(new Value(EnumValueType.LONG, value));
+			return;
+		}
 		if (value instanceof Integer) {
 			chain.add(new Value(EnumValueType.INT, value));
+			return;
+		}
+		if (value instanceof Short) {
+			chain.add(new Value(EnumValueType.SHORT, value));
+			return;
+		}
+		if (value instanceof Byte) {
+			chain.add(new Value(EnumValueType.BYTE, value));
 			return;
 		}
 		if (value instanceof Boolean) {
@@ -35,16 +55,21 @@ public class Statement implements IChainable {
 				return;
 			}
 			try {
-				int i = Integer.parseInt(s);
-				chain.add(new Value(EnumValueType.INT, i));
+				long l = Long.parseLong(s);
+				chain.add(new Value(EnumValueType.LONG, l));
 			} catch (Exception e) {
-				chain.add(new Value(EnumValueType.STRING, s));
+				try {
+					int i = Integer.parseInt(s);
+					chain.add(new Value(EnumValueType.INT, i));
+				} catch (Exception e2) {
+					chain.add(new Value(EnumValueType.STRING, s));
+				}
 			}
 		}
 	}
 
 	public void addValue(Variable var) {
-		//chain.add(new Value(EnumValueType.VAR, var));
+		// chain.add(new Value(EnumValueType.VAR, var));
 	}
 
 	public void addStatement(Statement statement) {
@@ -115,7 +140,7 @@ public class Statement implements IChainable {
 			}
 		}
 
-		//System.out.println(toString(modified));
+		// System.out.println(toString(modified));
 
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
@@ -162,7 +187,7 @@ public class Statement implements IChainable {
 			}
 		}
 
-		//System.out.println(toString(modified));
+		// System.out.println(toString(modified));
 
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
@@ -190,7 +215,7 @@ public class Statement implements IChainable {
 			}
 		}
 
-		//System.out.println(toString(modified));
+		// System.out.println(toString(modified));
 
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
@@ -213,8 +238,7 @@ public class Statement implements IChainable {
 				it.set(result);
 			}
 		}
-		
-		
+
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
 			IChainable ic = it.next();
@@ -252,7 +276,7 @@ public class Statement implements IChainable {
 				it.remove();
 			}
 		}
-		
+
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
 			IChainable ic = it.next();
@@ -290,7 +314,7 @@ public class Statement implements IChainable {
 				it.remove();
 			}
 		}
-		
+
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
 			IChainable ic = it.next();
@@ -317,13 +341,13 @@ public class Statement implements IChainable {
 				if (!prev.hasValue() || !next.hasValue()) {
 					throw new EvaluationErrorException(this, ic);
 				}
-				
+
 				Value valuePrev = prev.evaluate();
-				if(valuePrev == null || !valuePrev.isNumerical()) {
+				if (valuePrev == null || !valuePrev.isNumerical()) {
 					throw new EvaluationErrorException(this, ic);
 				}
 				Value valueNext = next.evaluate();
-				if(valueNext == null || !valueNext.isNumerical()) {
+				if (valueNext == null || !valueNext.isNumerical()) {
 					throw new EvaluationErrorException(this, ic);
 				}
 				Value result = new Value(prev.evaluate().isLessThan(next.evaluate()));
@@ -336,7 +360,7 @@ public class Statement implements IChainable {
 				it.remove();
 			}
 		}
-		
+
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
 			int index = it.nextIndex();
 			IChainable ic = it.next();
@@ -363,13 +387,13 @@ public class Statement implements IChainable {
 				if (!prev.hasValue() || !next.hasValue()) {
 					throw new EvaluationErrorException(this, ic);
 				}
-				
+
 				Value valuePrev = prev.evaluate();
-				if(valuePrev == null || !valuePrev.isNumerical()) {
+				if (valuePrev == null || !valuePrev.isNumerical()) {
 					throw new EvaluationErrorException(this, ic);
 				}
 				Value valueNext = next.evaluate();
-				if(valueNext == null || !valueNext.isNumerical()) {
+				if (valueNext == null || !valueNext.isNumerical()) {
 					throw new EvaluationErrorException(this, ic);
 				}
 				Value result = new Value(prev.evaluate().isMoreThan(next.evaluate()));
@@ -412,7 +436,7 @@ public class Statement implements IChainable {
 				return value;
 			}
 			if (value.isString()) {
-				
+
 				for (int i = 1; i < modified.size(); i++) {
 
 					if (!modified.get(i).hasValue()) {
@@ -445,6 +469,8 @@ public class Statement implements IChainable {
 		String s = "{";
 		for (int i = 0; i < chain.size(); i++) {
 			IChainable ic = chain.get(i);
+			if (ic == null)
+				continue;
 			s += " " + ic.toString();
 		}
 		s += "}";

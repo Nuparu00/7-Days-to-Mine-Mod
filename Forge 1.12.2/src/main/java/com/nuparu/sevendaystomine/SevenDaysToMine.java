@@ -318,7 +318,8 @@ public class SevenDaysToMine {
 			ModItems.MAGNUM_SCOPED, ModItems.FLAMETHROWER, ModItems.MP5, ModItems.RPG, ModItems.M4,
 			ModItems.MAGNUM_BULLET, ModItems.MAGNUM_FRAME, ModItems.MAGNUM_CYLINDER, ModItems.MAGNUM_GRIP,
 			ModItems.MAGNUM_SCHEMATICS, ModItems.MP5_BARREL, ModItems.MP5_STOCK, ModItems.MP5_TRIGGER,
-			ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL, ModItems.AUGER_BLADE, ModItems.NIGHT_VISION_DEVICE};
+			ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL, ModItems.AUGER_BLADE, ModItems.NIGHT_VISION_DEVICE,
+			ModItems.CHRISTMAS_HAT, ModItems.BERET };
 
 	@SuppressWarnings("deprecation")
 	@EventHandler

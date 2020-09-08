@@ -95,6 +95,7 @@ import com.nuparu.sevendaystomine.events.KeyEventHandler;
 import com.nuparu.sevendaystomine.events.RenderEventHandler;
 import com.nuparu.sevendaystomine.events.TextureStitcherEventHandler;
 import com.nuparu.sevendaystomine.events.TickHandler;
+import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemClothing;
 import com.nuparu.sevendaystomine.item.ItemGuide;
@@ -134,6 +135,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -142,6 +144,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -281,6 +284,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombieWolf.class, RenderZombieWolfFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombiePig.class, RenderZombiePigFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityAirplane.class, RenderAirplaneFactory.INSTANCE);
+		
 	}
 
 	/*
@@ -308,6 +312,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(clazz, renderer);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void registerTileEntityRenderers() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySleepingBag.class, new TileEntitySleepingBagRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWallClock.class, new TileEntityWallClockRenderer());

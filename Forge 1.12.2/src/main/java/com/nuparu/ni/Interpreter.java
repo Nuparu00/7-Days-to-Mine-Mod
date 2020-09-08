@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.nuparu.ni.exception.EvaluationErrorException;
 import com.nuparu.ni.exception.TypeMismatchException;
@@ -32,7 +33,7 @@ public class Interpreter {
 			String word = words[i].trim();
 			if (word.isEmpty())
 				continue;
-			if (StringUtils.isNumeric(word) || word.equals("true") || word.equals("false")) {
+			if (NumberUtils.isCreatable(word) || word.equals("true") || word.equals("false")) {
 				tokens.add(new Token(EnumTokenType.VALUE, word));
 				continue;
 			}
@@ -64,6 +65,10 @@ public class Interpreter {
 			case "char":
 			case "double":
 			case "boolean":
+			case "float":
+			case "long":
+			case "short":
+			case "byte":
 				tokens.add(new Token(EnumTokenType.TYPE, word));
 				break;
 			case "for":
@@ -761,7 +766,7 @@ public class Interpreter {
 							break;
 						}
 
-						statement.addValue((int)Math.pow((int) base.getRealValue(), (int) exp.getRealValue()));
+						statement.addValue((double)Math.pow((double) base.asDouble().getRealValue(), (double) exp.asDouble().getRealValue()));
 
 					} catch (EvaluationErrorException e) {
 						e.printStackTrace();
@@ -819,7 +824,7 @@ public class Interpreter {
 						}
 						if (bracket.getData().type == EnumTokenType.PARENTHESES
 								&& bracket.getData().value.equals(")")) {
-							statement.addValue((int)Math.sqrt((int)base.getRealValue()));
+							statement.addValue((double)Math.sqrt((double)base.asDouble().getRealValue()));
 							break;
 						}
 

@@ -114,8 +114,8 @@
 			"scale": [0.7, 0.7, 0.7]
 		},
 		"head": {
-			"rotation": [180, 0, 0],
-			"translation": [0, 17, 0]
+			"rotation": [0, 0, 0],
+			"translation": [0, 0, 0]
 		},
 		"fixed": {
 			"rotation": [0, 90, 0],
