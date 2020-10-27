@@ -24,7 +24,7 @@ public class ItemRPG extends ItemGun {
 	public ItemRPG() {
 		super();
 		this.setMaxAmmo(1);
-		this.setFullDamage(120f);
+		this.setFullDamage(60f);
 		this.setSpeed(1f);
 		this.setRecoil(14f);
 		this.setCounterDef(0);

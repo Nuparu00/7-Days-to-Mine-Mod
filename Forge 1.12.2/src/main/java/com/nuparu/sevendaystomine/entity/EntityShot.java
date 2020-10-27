@@ -50,6 +50,8 @@ public class EntityShot extends Entity implements IProjectile {
 			});
 
 	protected boolean inGround;
+	private boolean explosive;
+	private boolean sparking;
 	public Entity shootingEntity;
 	private int ticksInAir;
 	private double damage;
@@ -150,6 +152,9 @@ public class EntityShot extends Entity implements IProjectile {
 		if (compound.hasKey("shooterName", Constants.NBT.TAG_STRING)) {
 			setShooterName(compound.getString("shooterName"));
 		}
+		if (compound.hasKey("explosive")) {
+			explosive = compound.getBoolean("explosive");
+		}
 	}
 
 	@Override
@@ -159,7 +164,7 @@ public class EntityShot extends Entity implements IProjectile {
 		if (getShooterName() != null) {
 			compound.setString("shooterName", getShooterName());
 		}
-
+		compound.setBoolean("explosive", explosive);
 	}
 
 	public void onUpdate() {
@@ -263,7 +268,6 @@ public class EntityShot extends Entity implements IProjectile {
 		Entity entity = raytraceResultIn.entityHit;
 
 		if (entity != null) {
-
 			int i = MathHelper.ceil(this.damage);
 
 			DamageSource damagesource = null;
@@ -274,10 +278,13 @@ public class EntityShot extends Entity implements IProjectile {
 				damagesource = DamageSources.causeShotDamage(this, this.getShooter());
 			}
 
-			if (this.isBurning() && !(entity instanceof EntityEnderman)) {
-				entity.setFire(5);
+			if ((this.isBurning() || sparking) && !(entity instanceof EntityEnderman)) {
+				entity.setFire(10);
 			}
 
+			if(explosive && !world.isRemote) {
+				world.newExplosion(this, entity.posX,entity.posY, entity.posZ, 1.2f, sparking, true);
+			}
 			if (!this.world.isRemote && entity.attackEntityFrom(damagesource, (float) i)) {
 				if (entity instanceof EntityLivingBase) {
 					EntityLivingBase entitylivingbase = (EntityLivingBase) entity;
@@ -350,6 +357,9 @@ public class EntityShot extends Entity implements IProjectile {
 				}
 			}
 		}
+		if(explosive && !world.isRemote) {
+			world.newExplosion(this, posX+motionX, posY+motionY, posZ+motionZ, 0.8f, sparking, true);
+		}
 		this.setDead();
 	}
 
@@ -392,6 +402,23 @@ public class EntityShot extends Entity implements IProjectile {
 	public void setDamage(double damageIn) {
 		this.damage = damageIn;
 	}
+	
+	public void setExplosive(boolean explosive) {
+		this.explosive = explosive;
+	}
+	
+	public void setSparking(boolean sparking) {
+		this.sparking = sparking;
+	}
+	
+	public boolean getExplosive() {
+		return explosive;
+	}
+	
+	public boolean getSparking() {
+		return sparking;
+	}
+
 
 	public double getDamage() {
 		return this.damage;

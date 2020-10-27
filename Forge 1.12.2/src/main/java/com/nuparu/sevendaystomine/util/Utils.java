@@ -46,9 +46,11 @@ import com.nuparu.sevendaystomine.item.ItemGun.EnumWield;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.dialogue.Dialogues;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
+import com.nuparu.sevendaystomine.world.gen.RoadDecoratorWorldGen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -62,6 +64,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBoat;
 import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
@@ -83,7 +86,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.storage.MapData;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -295,7 +301,11 @@ public class Utils {
 		return drops;
 	}
 
-	public static BlockPos getTopSolidGroundBlock(BlockPos pos, World world) {
+	public static BlockPos getTopGroundBlock(BlockPos pos, World world, boolean solid) {
+		return getTopGroundBlock(pos,world,solid,true);
+	}
+	
+	public static BlockPos getTopGroundBlock(BlockPos pos, World world, boolean solid, boolean ignoreFoliage) {
 		Chunk chunk = world.getChunkFromBlockCoords(pos);
 		BlockPos blockpos;
 		BlockPos blockpos1;
@@ -307,11 +317,17 @@ public class Utils {
 			Block block = state.getBlock();
 			Material material = state.getMaterial();
 
-			if (material.isLiquid()) {
+			if (solid && material.isLiquid()) {
+				blockpos = blockpos1;
 				break;
 			}
-			if (state.isFullCube() && material.blocksMovement() && !block.isLeaves(state, world, blockpos1)
-					&& !block.isFoliage(world, blockpos1) && material != Material.SNOW) {
+			if (solid && state.isFullCube() && material.blocksMovement() && (!ignoreFoliage || (!block.isLeaves(state, world, blockpos1)
+					&& !block.isFoliage(world, blockpos1))) && material != Material.SNOW) {
+				blockpos = blockpos1;
+				break;
+			}
+			else if(material != Material.AIR) {
+				blockpos = blockpos1;
 				break;
 			}
 		}
@@ -494,7 +510,7 @@ public class Utils {
 	}
 
 	public static boolean compareBlockPos(BlockPos a, BlockPos b) {
-		return a.getX() == b.getX() && a.getY() == b.getY() && a.getZ() == b.getZ();
+		return a != null && b != null && a.getX() == b.getX() && a.getY() == b.getY() && a.getZ() == b.getZ();
 	}
 
 	public static TextFormatting dyeColorToTextFormatting(EnumDyeColor color) {
@@ -639,6 +655,10 @@ public class Utils {
 	public static boolean isBloodmoon(World world) {
 		return ModConfig.world.bloodmoonFrequency > 0 && Utils.getDay(world) % ModConfig.world.bloodmoonFrequency == 0;
 	}
+	
+	public static boolean isBloodmoon(int day) {
+		return ModConfig.world.bloodmoonFrequency > 0 && day % ModConfig.world.bloodmoonFrequency == 0;
+	}
 
 	public static boolean isWolfHorde(World world) {
 		return Utils.getDay(world) % 5 == 0;
@@ -752,6 +772,7 @@ public class Utils {
 
 	}
 
+	@SafeVarargs
 	@SuppressWarnings("unchecked")
 	public static <T> Set<T> combine(Set<T>... sets) {
 		return Stream.of(sets).flatMap(Set::stream).collect(Collectors.toSet());
@@ -778,22 +799,147 @@ public class Utils {
 		return count;
 	}
 
-	public static void generateDiagonal(World world, BlockPos start, BlockPos end) {
-		int minX = Math.min(start.getX(), end.getX());
-		int minZ = Math.min(start.getZ(), end.getZ());
+	public static void renderBiomePreviewMap(World worldIn, ItemStack map)
+    {
+        if (map.getItem() instanceof ItemMap)
+        {
+            MapData mapdata = ((ItemMap) map.getItem()).getMapData(map, worldIn);
 
-		int maxX = Math.max(start.getX(), end.getX());
-		int maxZ = Math.max(start.getZ(), end.getZ());
+            if (mapdata != null)
+            {
+                if (worldIn.provider.getDimension() == mapdata.dimension)
+                {
+                    int i = 1 << mapdata.scale;
+                    int j = mapdata.xCenter;
+                    int k = mapdata.zCenter;
+                    
+                    
+                    int x = (j / i - 64) * i;
+                    int z = (k / i - 64) * i;
+                    
+                    Biome[] abiome = worldIn.getBiomeProvider().getBiomes((Biome[])null, x, z , 128 * i, 128 * i, false);
 
-		Vec3d dif = new Vec3d(maxX - minX, 0, maxZ - minZ);
-		Vec3d vec = dif.scale(1d / dif.lengthVector());
+                    for (int l = 0; l < 128; ++l)
+                    {
+                        for (int i1 = 0; i1 < 128; ++i1)
+                        {
+                            int j1 = l * i;
+                            int k1 = i1 * i;
+                            Biome biome = abiome[j1 + k1 * 128 * i];
+                            MapColor mapcolor = MapColor.AIR;
+                            
+                            if(j1 % 64 == 0 || k1 % 64 == 0) {
+                            	mapcolor = MapColor.BLACK;
+                            }
+                            
+                            int l1 = 3;
+                            int i2 = 8;
 
-		for (double d = 0; d < dif.lengthVector(); d++) {
-			Vec3d vec2 = vec.scale(d);
-			world.setBlockState(new BlockPos(minX + vec2.x, 50, minZ + vec2.z), Blocks.IRON_BLOCK.getDefaultState());
-		}
-		world.setBlockState(new BlockPos(minX, 50, minZ), Blocks.REDSTONE_BLOCK.getDefaultState());
-		world.setBlockState(new BlockPos(maxX, 50, maxZ), Blocks.GOLD_BLOCK.getDefaultState());
+                            if (l > 0 && i1 > 0 && l < 127 && i1 < 127)
+                            {
+                                if (abiome[(l - 1) * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F)
+                                {
+                                    --i2;
+                                }
 
-	}
+                                if (abiome[(l - 1) * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F)
+                                {
+                                    --i2;
+                                }
+
+                                if (abiome[(l - 1) * i + i1 * i * 128 * i].getBaseHeight() >= 0.0F)
+                                {
+                                    --i2;
+                                }
+
+                                if (abiome[(l + 1) * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F)
+                                {
+                                    --i2;
+                                }
+
+                                if (abiome[(l + 1) * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F)
+                                {
+                                    --i2;
+                                }
+
+                                if (abiome[(l + 1) * i + i1 * i * 128 * i].getBaseHeight() >= 0.0F)
+                                {
+                                    --i2;
+                                }
+
+                                if (abiome[l * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F)
+                                {
+                                    --i2;
+                                }
+
+                                if (abiome[l * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F)
+                                {
+                                    --i2;
+                                }
+
+                                if (biome.getBaseHeight() < 0.0F)
+                                {
+                                    mapcolor = MapColor.ADOBE;
+
+                                    if (i2 > 7 && i1 % 2 == 0)
+                                    {
+                                        l1 = (l + (int)(MathHelper.sin((float)i1 + 0.0F) * 7.0F)) / 8 % 5;
+
+                                        if (l1 == 3)
+                                        {
+                                            l1 = 1;
+                                        }
+                                        else if (l1 == 4)
+                                        {
+                                            l1 = 0;
+                                        }
+                                    }
+                                    else if (i2 > 7)
+                                    {
+                                        mapcolor = MapColor.AIR;
+                                    }
+                                    else if (i2 > 5)
+                                    {
+                                        l1 = 1;
+                                    }
+                                    else if (i2 > 3)
+                                    {
+                                        l1 = 0;
+                                    }
+                                    else if (i2 > 1)
+                                    {
+                                        l1 = 0;
+                                    }
+                                }
+                                else if (i2 > 0)
+                                {
+                                    mapcolor = MapColor.BROWN;
+
+                                    if (i2 > 3)
+                                    {
+                                        l1 = 1;
+                                    }
+                                    else
+                                    {
+                                        l1 = 3;
+                                    }
+                                }
+                            }
+                            
+                            if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN) && Math.abs(RoadDecoratorWorldGen.getNoiseValue(x + j1, z + k1,0)) < 0.005d) {
+                            	mapcolor = MapColor.BROWN_STAINED_HARDENED_CLAY;
+                            }
+                                 
+
+                            if (mapcolor != MapColor.AIR)
+                            {
+                                mapdata.colors[l + i1 * 128] = (byte)(mapcolor.colorIndex * 4 + l1);
+                                mapdata.updateMapData(l, i1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -11,12 +11,14 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
 import com.nuparu.sevendaystomine.item.ItemNightVisionDevice;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.DamageSources;
@@ -46,6 +48,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -131,16 +134,6 @@ public class TickHandler {
 
 	}
 
-	/*
-	 * OpenSimplexNoise noise = new OpenSimplexNoise();
-	 * 
-	 * int update = 1; int updatePrev = 0;
-	 * 
-	 * int WIDTH = 512; int HEIGHT = 512; double FEATURE_SIZE = 12;
-	 * 
-	 * BufferedImage image; DynamicTexture tex; ResourceLocation rl;
-	 */
-
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
@@ -216,38 +209,6 @@ public class TickHandler {
 					entityRenderer.stopUseShader();
 				}
 			}
-
-			/*
-			 * if (f_MOON_PHASES_TEXTURES != null) { if (Utils.getDay(player.world) % 7 ==
-			 * 0) {
-			 * 
-			 * try { if (!bloodmoon || ((ResourceLocation)
-			 * (f_MOON_PHASES_TEXTURES.get(null))) .compareTo(bloodmoon_texture) != 0) {
-			 * 
-			 * System.out.println(((ResourceLocation)
-			 * (f_MOON_PHASES_TEXTURES.get(null))).toString()); System.out.println("AAAA " +
-			 * bloodmoon); TickHandler.f_MOON_PHASES_TEXTURES.setAccessible(true);
-			 * FieldUtils.writeStaticField(f_MOON_PHASES_TEXTURES, bloodmoon_texture, true);
-			 * FieldUtils.removeFinalModifier(TickHandler.f_MOON_PHASES_TEXTURES);
-			 * TickHandler.f_MOON_PHASES_TEXTURES.set(null, bloodmoon_texture); bloodmoon =
-			 * true; } } catch (IllegalArgumentException | IllegalAccessException |
-			 * SecurityException e) { e.printStackTrace(); } } else {
-			 * 
-			 * try {
-			 * 
-			 * if (bloodmoon || ((ResourceLocation) (f_MOON_PHASES_TEXTURES.get(null)))
-			 * .compareTo(default_moon_texture) != 0) {
-			 * System.out.println(((ResourceLocation)
-			 * (f_MOON_PHASES_TEXTURES.get(null))).toString()); System.out.println("BBBB " +
-			 * bloodmoon); TickHandler.f_MOON_PHASES_TEXTURES.setAccessible(true);
-			 * FieldUtils.removeFinalModifier(TickHandler.f_MOON_PHASES_TEXTURES);
-			 * TickHandler.f_MOON_PHASES_TEXTURES.set(null, default_moon_texture); bloodmoon
-			 * = false;
-			 * 
-			 * } } catch (IllegalArgumentException | IllegalAccessException |
-			 * SecurityException e) { e.printStackTrace(); } } }
-			 */
-
 		}
 	}
 
@@ -285,37 +246,39 @@ public class TickHandler {
 		World world = player.world;
 
 		IExtendedPlayer extendedPlayer = CapabilityHelper.getExtendedPlayer(player);
-		if (!player.isCreative() && !player.isSpectator()) {
+		if (player instanceof EntityPlayerMP && !player.isCreative() && !player.isSpectator()) {
 			if (world.getGameRules().getBoolean("handleThirst")) {
 				handleExtendedPlayer(player, world, extendedPlayer);
 			}
 			IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
+			EntityPlayerMP playerMP = (EntityPlayerMP)player;
 			long time = world.getWorldTime() % 24000;
-			if (Utils.isBloodmoon(world)) {
+			if (Utils.isBloodmoon(world) && !world.isRemote
+					&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 13000 && time < 23000) {
 
-				if (player instanceof EntityPlayerMP && !world.isRemote
-						&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 13000 && time < 23000) {
-
-					if (!iep.hasHorde()) {
-						BloodmoonHorde horde = new BloodmoonHorde(new BlockPos(player), world, player);
-						horde.addTarget((EntityPlayerMP) player);
-						horde.start();
-						iep.setHorde(true);
-					}
+				if (!iep.hasHorde()) {
+					BloodmoonHorde horde = new BloodmoonHorde(new BlockPos(playerMP), world, playerMP);
+					horde.addTarget(playerMP);
+					horde.start();
+					iep.setHorde(true);
 				}
-			} else if (Utils.isWolfHorde(world)) {
-				if (player instanceof EntityPlayerMP && !world.isRemote
-						&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 1000 && time < 1060) {
 
-					if (!iep.hasHorde()) {
-						ZombieWoflHorde horde = new ZombieWoflHorde(new BlockPos(player), world, player);
-						horde.addTarget((EntityPlayerMP) player);
-						horde.start();
-						iep.setHorde(true);
-					}
+			} else if (Utils.isWolfHorde(world) && !world.isRemote
+					&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 1000 && time < 1060) {
+
+				if (!iep.hasHorde()) {
+					ZombieWoflHorde horde = new ZombieWoflHorde(new BlockPos(player), world, player);
+					horde.addTarget(playerMP);
+					horde.start();
+					iep.setHorde(true);
+
 				}
 			} else if (iep.hasHorde()) {
 				iep.setHorde(false);
+			}
+
+			if (Utils.isBloodmoon(Utils.getDay(world) - 1) && time < 1000) {
+				ModTriggers.BLOODMOON_SURVIVAL.trigger(playerMP);
 			}
 		}
 		if (extendedPlayer.isInfected()) {

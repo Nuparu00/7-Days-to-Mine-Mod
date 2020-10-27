@@ -83,22 +83,22 @@ public class BuildingGrayHouse extends Building {
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
 
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), variant);
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(),mirror, variant);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
 		}
 	}
 
-	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data,
+	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror,
 			BlockPlanks.EnumType variant) {
 		switch (data) {
 		case "sedan": {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			CityHelper.placeRandomCar(world, pos, facing.rotateY());
+			CityHelper.placeRandomCar(world, pos, facing.rotateY(), world.rand);
 			break;
 		}
 		default:
-			super.handleDataBlock(world, facing, pos, data);
+			super.handleDataBlock(world, facing, pos, data, mirror);
 		}
 	}
 }

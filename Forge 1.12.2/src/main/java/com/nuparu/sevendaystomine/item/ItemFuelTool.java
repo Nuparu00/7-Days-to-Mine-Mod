@@ -39,15 +39,18 @@ public class ItemFuelTool extends ItemQualityTool {
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
 		super.onCreated(itemstack, world, player);
+		initNBT(itemstack);
+
+	}
+	
+	public void initNBT(ItemStack itemstack) {
 		if (itemstack.getTagCompound() == null) {
 			itemstack.setTagCompound(new NBTTagCompound());
-
 		}
 		itemstack.getTagCompound().setFloat("FuelMax", 1000.0F);
 		itemstack.getTagCompound().setFloat("FuelCurrent", 0.0F);
 		itemstack.getTagCompound().setInteger("ReloadTime", 0);
 		itemstack.getTagCompound().setBoolean("Reloading", false);
-
 	}
 
 	@Override

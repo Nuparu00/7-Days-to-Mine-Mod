@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
@@ -46,22 +47,26 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttackMob {
 	private final EntityAIAttackRanged rangedAttack = new EntityAIAttackRanged(this, 1.0D, 20, 15.0F);
+	private final EntityAIAttackMelee attackOnCollide = new EntityAIAttackMelee(this, 1.2D, false);
 
 	@Nullable
 	private EntityPlayer buyingPlayer;
 
 	public EntityBandit(World worldIn) {
 		super(worldIn);
+		setCombatTask();
 	}
 
 	@Override
@@ -88,7 +93,17 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 	}
 
 	public void setCombatTask() {
-		this.tasks.addTask(1, this.rangedAttack);
+		if (this.world != null && !this.world.isRemote) {
+			this.tasks.removeTask(this.attackOnCollide);
+			this.tasks.removeTask(this.rangedAttack);
+			ItemStack itemstack = this.getHeldItemMainhand();
+
+			if (itemstack.getItem() instanceof ItemGun) {
+				this.tasks.addTask(4, this.rangedAttack);
+			} else {
+				this.tasks.addTask(4, this.attackOnCollide);
+			}
+		}
 	}
 
 	@Override
@@ -97,6 +112,8 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 		this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
 		this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
+		this.targetTasks.addTask(2,
+				new EntityAINearestAttackableTarget<EntitySurvivor>(this, EntitySurvivor.class, true));
 		this.targetTasks.addTask(2,
 				new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
 		this.targetTasks.addTask(2,
@@ -147,21 +164,27 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		ItemStack stack = ItemStack.EMPTY;
 		stack = new ItemStack(ModItems.PISTOL);
+
+		if(rand.nextInt(10) == 0) {
+			stack = new ItemStack(ModItems.SHOTGUN);
+		}
+		else if(rand.nextInt(10) == 0) {
+			stack = new ItemStack(ModItems.MP5);
+		}
 		
 		ItemQuality.setQualityForStack(stack, MathUtils.getIntInRange(rand, 50, 300));
-		
+
 		this.setHeldItem(EnumHand.MAIN_HAND, stack);
 	}
-	
+
 	@Nullable
 	@Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
-    {
-        livingdata = super.onInitialSpawn(difficulty, livingdata);
-        this.setEquipmentBasedOnDifficulty(difficulty);
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+		livingdata = super.onInitialSpawn(difficulty, livingdata);
+		this.setEquipmentBasedOnDifficulty(difficulty);
 		this.setCombatTask();
-        return livingdata;
-    }
+		return livingdata;
+	}
 
 	@Override
 	public boolean canTalkTo(EntityPlayer player) {
@@ -173,20 +196,22 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 		if (!this.getHeldItemMainhand().isEmpty()) {
 			if (this.getHeldItemMainhand().getItem() instanceof ItemGun) {
 				ItemGun gun = (ItemGun) this.getHeldItemMainhand().getItem();
-				EntityShot shot = new EntityShot(this.world, this);
-				double d0 = target.posX - this.posX;
-				double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - shot.posY;
-				double d2 = target.posZ - this.posZ;
-				double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-				shot.setDamage(gun.getFinalDamage(getHeldItemMainhand()));
+				for (int i = 0; i < gun.getProjectiles(); i++) {
+					EntityShot shot = new EntityShot(this.world, this);
+					double d0 = target.posX - this.posX;
+					double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - shot.posY;
+					double d2 = target.posZ - this.posZ;
+					double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
+					shot.setDamage(gun.getFinalDamage(getHeldItemMainhand()));
 
-				shot.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F,
-						(float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
+					shot.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F,
+							(float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
+					if (!this.world.isRemote) {
+						this.world.spawnEntity(shot);
+					}
+				}
 				this.playSound(gun.getShotSound(), gun.getShotSoundVolume(), gun.getShotSoundPitch());
 				this.swingArm(EnumHand.MAIN_HAND);
-				if (!this.world.isRemote) {
-					this.world.spawnEntity(shot);
-				}
 			}
 		}
 	}
@@ -195,6 +220,12 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 	public void setSwingingArms(boolean swingingArms) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setCombatTask();
 	}
 
 }

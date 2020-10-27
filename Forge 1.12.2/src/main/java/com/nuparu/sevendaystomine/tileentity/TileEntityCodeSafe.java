@@ -2,12 +2,20 @@ package com.nuparu.sevendaystomine.tileentity;
 
 import java.util.Random;
 
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.block.BlockCodeSafe;
+import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.inventory.ContainerSafe;
+import com.nuparu.sevendaystomine.inventory.container.ContainerSmall;
+import com.nuparu.sevendaystomine.inventory.container.ContainerTurretBase;
+import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
+import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
+import com.nuparu.sevendaystomine.item.ItemStethoscope;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ItemStackHelper;
@@ -15,9 +23,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class TileEntityCodeSafe extends TileEntitySafe {
 
@@ -73,6 +86,8 @@ public class TileEntityCodeSafe extends TileEntitySafe {
 	}
 
 	public void unlock() {
+		world.playSound(null, pos, SoundHelper.SAFE_UNLOCK, SoundCategory.BLOCKS, 0.9f + world.rand.nextFloat() / 4f,
+				0.9f + world.rand.nextFloat() / 4f);
 		locked = false;
 		markDirty();
 		BlockCodeSafe.setState(locked, world, pos);
@@ -84,36 +99,10 @@ public class TileEntityCodeSafe extends TileEntitySafe {
 		BlockCodeSafe.setState(locked, world, pos);
 
 	}
-	
+
 	public void setInit(boolean init) {
 		this.init = init;
 		markDirty();
-	}
-
-	@Override
-	public int getField(int id) {
-		if (id == 0) {
-			return locked == false ? 0 : 1;
-		}
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-		if (id == 0 && (value == 0 || value == 1)) {
-			locked = value == 0 ? false : true;
-			markDirty();
-		}
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 1;
-	}
-
-	@Override
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-		return new ContainerSafe(playerInventory, this);
 	}
 
 	public int getSelectedCode() {
@@ -128,7 +117,7 @@ public class TileEntityCodeSafe extends TileEntitySafe {
 		this.selectedCode = code;
 		markDirty();
 	}
-	
+
 	public void setCorrectCode(int code) {
 		this.correctCode = code;
 		markDirty();
@@ -160,5 +149,37 @@ public class TileEntityCodeSafe extends TileEntitySafe {
 		return nbt;
 	}
 
+	/*
+	 * 0 = units, 2 = hundreds,...
+	 */
+	private int tryToGetDigit(EntityPlayer player, int digit) {
+		if (!isUsableByPlayer(player))
+			return -1;
+		if (!(player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemStethoscope))
+			return -1;
+
+		return (int) ((correctCode / Math.pow(10, digit)) % 10);
+	}
+
+	public int testDigit(EntityPlayer player, int guess, int numPos) {
+		int digit = tryToGetDigit(player, numPos);
+		return digit < guess ? 1 : (digit > guess ? -1 : 0);
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Container createContainer(EntityPlayer player) {
+		final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player
+				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+		final IItemHandlerNameable playerInventoryWrapper = new NameableCombinedInvWrapper(player.inventory,
+				playerInventory);
+
+		return new ContainerSmall(playerInventoryWrapper, inventory, player, this);
+	}
 
 }

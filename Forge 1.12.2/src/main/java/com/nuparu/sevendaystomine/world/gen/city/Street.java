@@ -209,8 +209,9 @@ public class Street {
 		while (i < (canBranch ? LENGTH - 10 : LENGTH)) {
 			// HAVE TO FIND IF ANY OTHER BUILDING FITS
 			Building building = CityHelper.getRandomBuilding(world.rand);
-			if (building instanceof BuildingSupermarket)
+			if (!building.canBeMirrored) {
 				continue;
+			}
 			Plot plot = new Plot(this, 0, building, true, pos);
 
 			if (facing.getAxis() == EnumFacing.Axis.X) {
@@ -300,6 +301,10 @@ public class Street {
 				BlockPos road = pos.up(y);
 
 				IBlockState block = ModBlocks.ASPHALT.getDefaultState();
+				
+				if(city.rand.nextInt(20) == 0) {
+					block = world.getBiome(pos).topBlock;
+				}
 
 				int cross = 0;
 				if (endCrossing == null) {
@@ -574,7 +579,7 @@ public class Street {
 						if (city.rand.nextInt(4) == 0) {
 							facing2 = EnumFacing.getHorizontal(city.rand.nextInt(4));
 						}
-						CityHelper.placeRandomCar(world, pos2, facing2);
+						CityHelper.placeRandomCar(world, pos2, facing2, city.rand);
 					}
 				}
 

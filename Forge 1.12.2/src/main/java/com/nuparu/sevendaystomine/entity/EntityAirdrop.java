@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.inventory.itemhandler.AirdropInventoryHandler;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
@@ -16,6 +17,7 @@ import com.nuparu.sevendaystomine.util.dialogue.Dialogues;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -241,6 +243,9 @@ public class EntityAirdrop extends Entity {
 
 		if (!player.isSneaking()) {
 			player.openGui(SevenDaysToMine.instance, 21, this.world, (int) 0, (int) this.getEntityId(), (int) 0);
+		}
+		if(player instanceof EntityPlayerMP) {
+			ModTriggers.AIRDROP_INTERACT.trigger((EntityPlayerMP)player);
 		}
 		return true;
 	}

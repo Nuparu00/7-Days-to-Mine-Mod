@@ -62,7 +62,7 @@ public class BuildingOffice extends Building {
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
 
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(),mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
 			BlockPos size = template.getSize();
@@ -77,7 +77,7 @@ public class BuildingOffice extends Building {
 			map = template.getDataBlocks(pos, placementsettings);
 
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(),mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
 		}
@@ -89,24 +89,24 @@ public class BuildingOffice extends Building {
 	}
 
 	@Override
-	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data) {
+	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror) {
 		switch (data) {
 		case "sedan_v": {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			if (world.rand.nextBoolean()) {
-				CityHelper.placeRandomCar(world, pos, facing.rotateY());
+				CityHelper.placeRandomCar(world, pos, facing.rotateY(), world.rand);
 			}
 			break;
 		}
 		case "sedan_h": {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			if (world.rand.nextBoolean()) {
-				CityHelper.placeRandomCar(world, pos, facing);
+				CityHelper.placeRandomCar(world, pos, facing, world.rand);
 			}
 			break;
 		}
 		default:
-			super.handleDataBlock(world, facing, pos, data);
+			super.handleDataBlock(world, facing, pos, data,mirror);
 		}
 	}
 }

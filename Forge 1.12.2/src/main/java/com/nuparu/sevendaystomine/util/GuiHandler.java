@@ -115,9 +115,13 @@ public class GuiHandler implements IGuiHandler {
 		case 1:
 			return new ContainerForge(player.inventory, (IInventory) tileEntity);
 		case 2:
-			return new ContainerSafe(player.inventory, (IInventory) tileEntity);
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+			}
 		case 3:
-			return null;
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+			}
 		case 4:
 			return null;
 		case 5:
@@ -229,8 +233,11 @@ public class GuiHandler implements IGuiHandler {
 		case 1:
 			return new GuiForge(player.inventory, (IInventory) tileEntity);
 		case 2:
-			return new GuiSafeUnlocked(player.inventory, (IInventory) tileEntity,
-					new ContainerSafe(player.inventory, (IInventory) tileEntity));
+			if (tileEntity instanceof TileEntityItemHandler) {
+				return new com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerSmall(
+						(com.nuparu.sevendaystomine.inventory.container.ContainerSmall) ((TileEntityItemHandler<?>) tileEntity)
+								.createContainer(player));
+			}
 		case 3:
 			return new GuiCodeSafeLocked(tileEntity, new BlockPos(x, y, z));
 		case 4:

@@ -4,6 +4,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SyncTileEntityMessage;
+import com.nuparu.sevendaystomine.tileentity.TileEntityFileCabinet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityKeySafe;
 
 import net.minecraft.block.BlockHorizontal;
@@ -13,6 +14,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryHelper;
@@ -22,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -143,7 +146,10 @@ public class BlockKeySafe extends BlockSafe<TileEntityKeySafe> {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if (tileentity instanceof TileEntityKeySafe) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityKeySafe) tileentity);
+				NonNullList<ItemStack> drops = ((TileEntityKeySafe) tileentity).getDrops();
+				for (ItemStack stack : drops) {
+					worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack));
+				}
 				worldIn.updateComparatorOutputLevel(pos, this);
 			}
 		}

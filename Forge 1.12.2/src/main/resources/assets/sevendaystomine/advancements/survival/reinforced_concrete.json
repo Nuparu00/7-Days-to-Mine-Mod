@@ -11,18 +11,14 @@
       }
    },
    "rewards":{
-      "experience": 10
+      "experience":10
    },
-   "parent": "sevendaystomine:survival/wooden_frame",
+   "parent":"sevendaystomine:survival/workbench",
    "criteria":{
       "has_block":{
-         "trigger":"minecraft:inventory_changed",
+         "trigger":"upgrade_block",
          "conditions":{
-            "items":[
-               {
-                  "item":"sevendaystomine:reinforcedconcrete"
-               }
-            ]
+            "block":"sevendaystomine:reinforcedconcretewet"
          }
       }
    },

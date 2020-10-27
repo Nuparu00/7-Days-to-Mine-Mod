@@ -111,7 +111,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 	private int mX = 0;
 	private int mY = 0;
 
-	private boolean bday = true;
+	private boolean bday = false;
 
 	public GuiMainMenuEnhanced() {
 		this.openGLWarning2 = MORE_INFO_TEXT;

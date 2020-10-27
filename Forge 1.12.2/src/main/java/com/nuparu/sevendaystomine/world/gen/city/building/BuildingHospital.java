@@ -66,7 +66,7 @@ public class BuildingHospital extends Building {
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
 
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
 			BlockPos size = template.getSize();
@@ -81,7 +81,7 @@ public class BuildingHospital extends Building {
 			map = template.getDataBlocks(pos, placementsettings);
 
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
 			template = templatemanager.getTemplate(minecraftserver, BACK_LEFT);
@@ -94,7 +94,7 @@ public class BuildingHospital extends Building {
 			map = template.getDataBlocks(pos, placementsettings);
 
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
 			template = templatemanager.getTemplate(minecraftserver, BACK_RIGHT);
@@ -107,7 +107,7 @@ public class BuildingHospital extends Building {
 			map = template.getDataBlocks(pos, placementsettings);
 
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
 
@@ -120,7 +120,7 @@ public class BuildingHospital extends Building {
 	}
 
 	@Override
-	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data) {
+	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror) {
 		switch (data) {
 		case "chemistry_station": {
 			IBlockState state = Blocks.AIR.getDefaultState();
@@ -136,7 +136,7 @@ public class BuildingHospital extends Building {
 			break;
 		}
 		default:
-			super.handleDataBlock(world, facing, pos, data);
+			super.handleDataBlock(world, facing, pos, data, mirror);
 		}
 	}
 }

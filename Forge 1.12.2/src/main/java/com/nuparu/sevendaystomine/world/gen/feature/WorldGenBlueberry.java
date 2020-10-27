@@ -32,6 +32,8 @@ public class WorldGenBlueberry extends WorldGenerator {
 		BlockPos blockpos = new BlockPos(pos.getX(), y, pos.getZ());
 		IBlockState stateToReplace = worldIn.getBlockState(blockpos);
 		Block toReplace = stateToReplace.getBlock();
+		
+		if(toReplace != Blocks.AIR) return false;
 
 		IBlockState underState = worldIn.getBlockState(blockpos.down());
 

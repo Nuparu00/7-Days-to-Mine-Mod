@@ -19,7 +19,7 @@ public class EntityZombieCrawler extends EntityZombieBase {
 		range.setBaseValue(56.0D);
 		speed.setBaseValue(0.125D);
 		attack.setBaseValue(3.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4D);
 		armor.setBaseValue(0.0D);
 	}
 }

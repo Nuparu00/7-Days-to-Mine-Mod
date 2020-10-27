@@ -26,7 +26,7 @@ public class PotionAlcoholPoison extends PotionBase {
 		if (entityLivingBaseIn.world.getDifficulty() == EnumDifficulty.PEACEFUL)
 			return;
 		if (entityLivingBaseIn.world.rand.nextInt(10) == 0) {
-			entityLivingBaseIn.attackEntityFrom(DamageSources.alcoholPoison, 1);
+			entityLivingBaseIn.attackEntityFrom(DamageSources.mercuryPoison, 1);
 
 		}
 	}

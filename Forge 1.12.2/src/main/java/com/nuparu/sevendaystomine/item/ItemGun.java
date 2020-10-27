@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Multimap;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.entity.EntityShot;
@@ -20,6 +21,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -177,6 +179,13 @@ public class ItemGun extends Item implements IQuality {
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
 		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT),
 				ItemQuality.MAX_QUALITY));
+		initNBT(itemstack);
+	}
+	
+	public void initNBT(ItemStack itemstack) {
+		if (itemstack.getTagCompound() == null) {
+			itemstack.setTagCompound(new NBTTagCompound());
+		}
 		itemstack.getTagCompound().setInteger("Capacity", getMaxAmmo());
 		itemstack.getTagCompound().setInteger("Ammo", 0);
 		itemstack.getTagCompound().setInteger("ReloadTime", 90000);
@@ -274,8 +283,15 @@ public class ItemGun extends Item implements IQuality {
 		if (ammo > 0 || flag) {
 
 			float velocity = getSpeed() * (1f + ((float) getQuality(itemstack) / (float) ItemQuality.MAX_QUALITY));
+			boolean explosive = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.explosive, itemstack) != 0;
+			boolean sparking = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.sparking, itemstack) != 0;
+			if(sparking && explosive && (playerIn instanceof EntityPlayerMP) && itemstack.getItem() instanceof ItemShotgun) {
+				ModTriggers.GUN_INTERACT.trigger((EntityPlayerMP)playerIn);
+			}
 			for (int i = 0; i < projectiles; i++) {
 				EntityShot shot = new EntityShot(worldIn, playerIn, velocity, ((float) getSpread(playerIn, handIn) / (playerIn.isSneaking() ? 1.5f : 1f)));
+				shot.setExplosive(explosive);
+				shot.setSparking(sparking);
 				if (!worldIn.isRemote) {
 					shot.setDamage(getFinalDamage(itemstack));
 					worldIn.spawnEntity(shot);
@@ -395,6 +411,18 @@ public class ItemGun extends Item implements IQuality {
 			return super.getRGBDurabilityForDisplay(stack);
 		}
 	}
+	
+	@Override
+	public int getItemEnchantability()
+    {
+        return 15;
+    }
+	
+	@Override
+	public boolean isEnchantable(ItemStack stack)
+    {
+        return true;
+    }
 
 	public float getFOVFactor(ItemStack stack) {
 		return fovFactor;

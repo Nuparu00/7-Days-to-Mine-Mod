@@ -7,13 +7,15 @@ import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class LayerClothing implements LayerRenderer<EntityPlayer> {
+public class LayerClothing implements LayerRenderer<EntityLivingBase> {
 	private final RenderPlayer playerRenderer;
 
 	ModelPlayer armorModel;
@@ -26,24 +28,29 @@ public class LayerClothing implements LayerRenderer<EntityPlayer> {
 		this.playerRenderer = defaultModel;
 	}
 
-	public void doRenderLayer(EntityPlayer entity, float limbSwing, float limbSwingAmount, float partialTicks,
+	public void doRenderLayer(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks,
 			float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		renderArmorPiece(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, 0);
-		renderArmorPiece(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, 1);
-		renderArmorPiece(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, 2);
-		renderArmorPiece(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, 3);
+		this.renderArmorLayer(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch,
+				scale, EntityEquipmentSlot.CHEST);
+		this.renderArmorLayer(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch,
+				scale, EntityEquipmentSlot.LEGS);
+		this.renderArmorLayer(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch,
+				scale, EntityEquipmentSlot.FEET);
+		this.renderArmorLayer(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch,
+				scale, EntityEquipmentSlot.HEAD);
 	}
 
-	public void renderArmorPiece(EntityPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount,
-			float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, int slot) {
-		EntityPlayer player = (EntityPlayer) entitylivingbaseIn;
-		ItemStack stack = player.inventory.armorItemInSlot(slot);
+	private void renderArmorLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount,
+			float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale,
+			EntityEquipmentSlot slotIn) {
+		ItemStack stack = entityLivingBaseIn.getItemStackFromSlot(slotIn);
+
 		if (!stack.isEmpty() && stack.getItem() instanceof ItemClothing) {
 			ItemClothing item = (ItemClothing) stack.getItem();
-			armorModel = item.getModel(player,stack);
+			armorModel = item.getModel(null, stack);
 			ModelPlayer defaultModel = (ModelPlayer) this.playerRenderer.getMainModel();
 			armorModel.setModelAttributes(defaultModel);
-			armorModel.setLivingAnimations(player, limbSwing, limbSwingAmount, partialTicks);
+			armorModel.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
 			this.playerRenderer.bindTexture(item.texture);
 			int c = item.getColor(stack);
 			if (c != -1) // Allow this for anything, not only cloth.
@@ -52,17 +59,17 @@ public class LayerClothing implements LayerRenderer<EntityPlayer> {
 				float g = (float) (c >> 8 & 255) / 255.0F;
 				float b = (float) (c & 255) / 255.0F;
 				GlStateManager.color(this.colorR * r, this.colorG * g, this.colorB * b, this.alpha);
-				armorModel.render(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch,
+				armorModel.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch,
 						scale + item.scale);
 			} else { // Non-colored
 				GlStateManager.color(this.colorR, this.colorG, this.colorB, this.alpha);
-				armorModel.render(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch,
+				armorModel.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch,
 						scale + item.scale);
 			}
 			if (item.hasOverlay) {
 				this.playerRenderer.bindTexture(item.overlay);
 				GlStateManager.color(this.colorR, this.colorG, this.colorB, this.alpha);
-				armorModel.render(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch,
+				armorModel.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch,
 						scale + item.scale);
 
 			}

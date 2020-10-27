@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorBase extends ItemArmor implements IQuality{
-	public static final UUID[] ARMOR_MODIFIERS = new UUID[] {UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")};
+	public static final UUID[] ARMOR_MODIFIERS = new UUID[] {UUID.fromString("ed70b160-0ade-11eb-adc1-0242ac120002"), UUID.fromString("ed70b3c2-0ade-11eb-adc1-0242ac120002"), UUID.fromString("ed70b598-0ade-11eb-adc1-0242ac120002"), UUID.fromString("ed70b67e-0ade-11eb-adc1-0242ac120002")};
 	
 	public ItemArmorBase(ArmorMaterial materialIn, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn, String name) {
 		super(materialIn, renderIndexIn, equipmentSlotIn);
@@ -113,6 +113,7 @@ public class ItemArmorBase extends ItemArmor implements IQuality{
 		}
 	}
 	
+	@Override
 	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
 		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 
@@ -136,7 +137,7 @@ public class ItemArmorBase extends ItemArmor implements IQuality{
 	@Override
 	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack)
 	{
-		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 		if (slot == this.armorType)
         {
             multimap.put(SharedMonsterAttributes.ARMOR.getName(), new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor modifier", getDamageReduction(stack), 0));

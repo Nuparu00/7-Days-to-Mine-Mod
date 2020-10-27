@@ -1,6 +1,8 @@
 package com.nuparu.sevendaystomine.inventory;
 
+import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySafe;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTurret;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -8,35 +10,36 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerSafe extends Container {
 
-	public final IInventory tileEntity;
+	public final TileEntitySafe tileEntity;
+	public final IContainerCallbacks callbacks;
 	
-	public ContainerSafe(InventoryPlayer playerInventory, final IInventory tileEntity) {
-		this.tileEntity = tileEntity;
-		if(tileEntity instanceof TileEntitySafe) {
-			TileEntitySafe safe = (TileEntitySafe)tileEntity;
+	public ContainerSafe(IItemHandlerNameable playerInventoryWrapper, ItemStackHandler inventory,
+			EntityPlayer player, IContainerCallbacks containerCallbacks) {
+		tileEntity = (TileEntitySafe) containerCallbacks;
+		callbacks = containerCallbacks;
+		callbacks.onContainerOpened(player);
 			
 			for (int i = 0; i < 3; ++i) {
 				for (int j = 0; j < 3; ++j) {
-					this.addSlotToContainer(new Slot(tileEntity, j + i * 3, 8 + (j + 3) * 18, 18 + i * 18));
+					this.addSlotToContainer(new SlotItemHandler(inventory, j + i * 3, 8 + (j + 3) * 18, 18 + i * 18));
 				}
 			}
 			
 			for (int i = 0; i < 3; ++i) {
 				for (int j = 0; j < 9; ++j) {
-					this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 86 + i * 18));
+					this.addSlotToContainer(new SlotItemHandler(playerInventoryWrapper, j + i * 9 + 9, 8 + j * 18, 86 + i * 18));
 				}
 			}
 
 			for (int k = 0; k < 9; ++k) {
-				this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 144));
+				this.addSlotToContainer(new SlotItemHandler(playerInventoryWrapper, k, 8 + k * 18, 144));
 			}
-		}
-		else {
-			throw new IllegalArgumentException("Passed IInventory is not instance of TileEntitySafe!");
-		}
+
 	}
 
 	@Override

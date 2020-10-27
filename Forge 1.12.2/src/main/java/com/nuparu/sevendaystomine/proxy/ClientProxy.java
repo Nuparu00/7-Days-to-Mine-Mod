@@ -2,12 +2,14 @@ package com.nuparu.sevendaystomine.proxy;
 
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Maps;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.gui.GuiBook;
+import com.nuparu.sevendaystomine.client.gui.GuiCodeSafeLocked;
 import com.nuparu.sevendaystomine.client.gui.GuiGun;
 import com.nuparu.sevendaystomine.client.gui.GuiMp3;
 import com.nuparu.sevendaystomine.client.gui.GuiPhoto;
@@ -129,11 +131,14 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -186,6 +191,7 @@ public class ClientProxy extends CommonProxy {
 		registerRenderers();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
@@ -199,10 +205,9 @@ public class ClientProxy extends CommonProxy {
 
 		// Tries to inject our own RenderPlayer
 		f_skinMap = ObfuscationReflectionHelper.findField(RenderManager.class, "field_178636_l");
+		RenderManager rm = FMLClientHandler.instance().getClient().getRenderManager();
 
 		try {
-			RenderManager rm = FMLClientHandler.instance().getClient().getRenderManager();
-			@SuppressWarnings("unchecked")
 			Map<String, RenderPlayer> skinMap = (Map<String, RenderPlayer>) f_skinMap.get(rm);
 			skinMap.put("default", new RenderPlayerEnhanced(rm, false, skinMap.get("default")));
 			skinMap.put("slim", new RenderPlayerEnhanced(rm, true, skinMap.get("slim")));
@@ -235,6 +240,13 @@ public class ClientProxy extends CommonProxy {
 				return tintIndex > 0 ? -1 : ((ItemArmor) stack.getItem()).getColor(stack);
 			}
 		}, clothes);
+
+		for (Entry<Class<? extends Entity>, Render<? extends Entity>> entry : rm.entityRenderMap.entrySet()) {
+			if (entry.getKey() == EntityArmorStand.class) {
+				Render<? extends Entity> render = entry.getValue();
+				((RenderLivingBase) render).addLayer(new LayerClothing(defaultModel));
+			}
+		}
 	}
 
 	@Override
@@ -284,7 +296,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombieWolf.class, RenderZombieWolfFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombiePig.class, RenderZombiePigFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityAirplane.class, RenderAirplaneFactory.INSTANCE);
-		
+
 	}
 
 	/*
@@ -327,7 +339,8 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarPanel.class, new TileEntitySolarPanelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindTurbine.class, new TileEntityWindTurbineRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurretBase.class, new TileEntityTurretBaseRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurretAdvanced.class, new TileEntityTurretAdvancedRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurretAdvanced.class,
+				new TileEntityTurretAdvancedRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWoodenLogSpike.class,
 				new TileEntityWoodenLogSpikeRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCamera.class, new TileEntityCameraRenderer());
@@ -352,11 +365,17 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void openClientSideGui(int id, int x, int y, int z) {
-		EntityPlayer player = Minecraft.getMinecraft().player;
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.player;
 		if (player == null) {
 			return;
 		}
-		player.openGui(SevenDaysToMine.instance, id, player.world, x, y, z);
+		TileEntity te = player.world.getTileEntity(new BlockPos(x, y, z));
+		switch (id) {
+		case 0:
+			mc.displayGuiScreen(new GuiCodeSafeLocked(te, new BlockPos(x, y, z)));
+			return;
+		}
 	}
 
 	@Override
@@ -458,7 +477,11 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void playLoudSound(ResourceLocation resource, float volume, BlockPos blockPosIn, SoundCategory category) {
+	public void playLoudSound(World world, ResourceLocation resource, float volume, BlockPos blockPosIn,
+			SoundCategory category) {
+		super.playLoudSound(world, resource, volume, blockPosIn, category);
+		if (Minecraft.getMinecraft().world == null || Minecraft.getMinecraft().world != world)
+			return;
 		ISound isound = (ISound) mapSoundPositions.get(blockPosIn);
 		if (isound != null) {
 			Minecraft.getMinecraft().getSoundHandler().stopSound(isound);

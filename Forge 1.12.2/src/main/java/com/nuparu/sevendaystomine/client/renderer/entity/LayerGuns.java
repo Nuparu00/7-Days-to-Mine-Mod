@@ -25,6 +25,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
@@ -86,9 +87,9 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 					if (item instanceof ItemStoneShovel) {
 						GlStateManager.translate(-0.225, 0.25, 0.16);
 						GlStateManager.scale(0.875, 0.875, 0.875);
-					} else if (item == ModItems.IRON_AXE || item == ModItems.WRENCH || item instanceof ItemStoneAxe) {
-						GlStateManager.translate(-0.225, 0.25, 0.16);
-						GlStateManager.rotate(-90, 0, 1, 0);
+					} else if (item instanceof ItemTool) {
+						GlStateManager.translate(0.75, 0.45, -0.2825);
+						GlStateManager.rotate(90, 0, 0, 1);
 					} else {
 						GlStateManager.translate(0, 0.2, 0.16);
 					}

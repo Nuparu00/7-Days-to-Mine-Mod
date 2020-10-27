@@ -1,0 +1,40 @@
+{
+   "display":{
+      "icon":{
+         "item":"sevendaystomine:antibiotics"
+      },
+      "title":{
+         "translate":"advancements.cured.title"
+      },
+      "description":{
+         "translate":"advancements.cured.description"
+      },
+      "frame":"challenge"
+   },
+   "rewards":{
+      "experience":50
+   },
+   "parent":"sevendaystomine:survival/chemistry_station",
+   "criteria":{
+      "survived":{
+         "trigger":"minecraft:consume_item",
+         "conditions":{
+            "item":{
+               "item":"sevendaystomine:antibiotics"
+            },
+            "player":{
+               "effects":{
+                  "sevendaystomine:infection":{
+                     
+                  }
+               }
+            }
+         }
+      }
+   },
+   "requirements":[
+      [
+         "survived"
+      ]
+   ]
+}

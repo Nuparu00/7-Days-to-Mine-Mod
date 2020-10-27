@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CG",
+    "S "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "C": {
+      "item": "sevendaystomine:cloth"
+    },
+    "G": {
+      "item": "sevendaystomine:gas_canister"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:torchlit"
+  }
+}

@@ -14,7 +14,7 @@ public class EntityBloatedZombie extends EntityBipedalZombie {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100);
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
 	}
 

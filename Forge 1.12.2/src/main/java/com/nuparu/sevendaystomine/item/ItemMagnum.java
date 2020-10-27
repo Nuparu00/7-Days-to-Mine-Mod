@@ -11,7 +11,7 @@ public class ItemMagnum extends ItemGun {
 	public ItemMagnum() {
 		super();
 		this.setMaxAmmo(6);
-		this.setFullDamage(130F);
+		this.setFullDamage(90F);
 		this.setSpeed(18f);
 		this.setRecoil(2.76f);
 		this.setCounterDef(0);

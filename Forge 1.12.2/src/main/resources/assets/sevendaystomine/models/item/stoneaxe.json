@@ -404,8 +404,8 @@
 		},
 		"head": {
 			"scale": [1, 1, 1],
-			"rotation": [-119, 0, 0],
-			"translation": [0, 11.5, 0]
+			"rotation": [90, -45, 90],
+			"translation": [-2, 14, 7.5]
 		},
 		"firstperson": {
 			"rotation": [0, 318, 0],

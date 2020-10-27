@@ -11,7 +11,7 @@ public class ItemAK47 extends ItemGun {
 	public ItemAK47() {
 		super();
 		this.setMaxAmmo(30);
-		this.setFullDamage(256f);
+		this.setFullDamage(128f);
 		this.setSpeed(28f);
 		this.setRecoil(3f);
 		this.setCounterDef(0);

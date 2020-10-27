@@ -354,13 +354,59 @@ public class Value implements IChainable {
 		if (!isNumerical() || !other.isNumerical())
 			return false;
 
-		return (int) getRealValue() < (int) other.getRealValue();
+		if(isLong() || other.isLong()) {
+			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+		}
+		
+		if(isDouble() || other.isDouble()) {
+			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+		}
+		
+		if(isFloat() || other.isFloat()) {
+			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+		}
+		
+		if(isInt() || other.isInt()) {
+			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+		}
+		
+		if(isShort() || other.isShort()) {
+			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+		}
+		
+		if(isByte() || other.isByte()) {
+			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+		}
+		return false;
 	}
 
 	public boolean isMoreThan(Value other) {
 		if (!isNumerical() || !other.isNumerical())
 			return false;
 
-		return (int) getRealValue() > (int) other.getRealValue();
+		if(isLong() || other.isLong()) {
+			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+		}
+		
+		if(isDouble() || other.isDouble()) {
+			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+		}
+		
+		if(isFloat() || other.isFloat()) {
+			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+		}
+		
+		if(isInt() || other.isInt()) {
+			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+		}
+		
+		if(isShort() || other.isShort()) {
+			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+		}
+		
+		if(isByte() || other.isByte()) {
+			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+		}
+		return false;
 	}
 }

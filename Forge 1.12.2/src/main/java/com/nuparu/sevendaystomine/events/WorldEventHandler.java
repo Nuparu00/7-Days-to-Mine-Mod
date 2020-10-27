@@ -292,6 +292,22 @@ public class WorldEventHandler {
 	}
 
 	@SubscribeEvent
+	public void onPlayLoundSoundAtEntity(LoudSoundEvent event) {
+		System.out.println("DDDSDSDSD");
+		if (event.pos != null) {
+				float range = event.volume * 6.4f;
+				AxisAlignedBB aabb = new AxisAlignedBB(event.pos).grow(range, range / 2, range);
+				List<Entity> entities = event.world.getEntitiesWithinAABB(Entity.class, aabb);
+				for (Entity e : entities) {
+					if (e instanceof INoiseListener) {
+						INoiseListener noiseListener = (INoiseListener) e;
+						noiseListener.addNoise(new Noise(null, event.pos, event.world, event.volume,1));
+					}
+				}
+		}
+	}
+
+	@SubscribeEvent
 	public void onPotentialSpawns(EntityJoinWorldEvent event) {
 		/*
 		 * Entity entity = event.getEntity(); if(entity == null ||

@@ -12,6 +12,8 @@ public class DamageSources {
 	public static DamageSource sharpGlass = new DamageSource("sharpGlass").setDamageIsAbsolute();
 	public static DamageSource alcoholPoison = new DamageSource("alcoholPoison").setDifficultyScaled().setDamageIsAbsolute()
 			.setDamageBypassesArmor();
+	public static DamageSource mercuryPoison = new DamageSource("mercury_poisoning").setDifficultyScaled().setDamageIsAbsolute()
+			.setDamageBypassesArmor();
 	public static DamageSource bleeding = new DamageSource("bleeding").setDifficultyScaled().setDamageIsAbsolute().setDamageBypassesArmor();
 	public static DamageSource blade = new DamageSource("blade").setDifficultyScaled().setDamageIsAbsolute();
 	public static DamageSource infection = new DamageSource("infection").setDifficultyScaled().setDamageIsAbsolute();

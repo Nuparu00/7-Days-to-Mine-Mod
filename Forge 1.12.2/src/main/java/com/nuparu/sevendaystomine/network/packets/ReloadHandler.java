@@ -34,9 +34,9 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 		player = ctx.getServerHandler().player;
 		world = player.world;
 		stack = player.getHeldItemMainhand();
-
 		if (stack == null || stack.isEmpty())
 			return null;
+
 
 		Item item = stack.getItem();
 		if (item instanceof ItemGun) {
@@ -46,6 +46,7 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 				bulletItem = gun.getBullet();
 				SoundEvent reloadSound = gun.getReloadSound();
 				world.playSound(null, new BlockPos(player), reloadSound, SoundCategory.PLAYERS, 1F, 1F);
+
 
 				int reloadTime = gun.getReloadTime(stack);
 				stack.getTagCompound().setLong("NextFire",

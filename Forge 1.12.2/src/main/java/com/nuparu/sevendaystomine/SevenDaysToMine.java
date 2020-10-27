@@ -23,6 +23,7 @@ import com.nuparu.sevendaystomine.command.CommandAirdrop;
 import com.nuparu.sevendaystomine.command.CommandGenerateCity;
 import com.nuparu.sevendaystomine.command.CommandGetBlockBreak;
 import com.nuparu.sevendaystomine.command.CommandInfect;
+import com.nuparu.sevendaystomine.command.CommandLocateModded;
 import com.nuparu.sevendaystomine.command.CommandPlaceLegacyPrefab;
 import com.nuparu.sevendaystomine.command.CommandPlacePrefab;
 import com.nuparu.sevendaystomine.command.CommandSavePrefab;
@@ -36,6 +37,8 @@ import com.nuparu.sevendaystomine.events.WorldEventHandler;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModFluids;
 import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.inventory.ContainerPlayerExtended;
+import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
 import com.nuparu.sevendaystomine.item.crafting.RecipeManager;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.proxy.CommonProxy;
@@ -58,6 +61,7 @@ import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -205,7 +209,7 @@ public class SevenDaysToMine {
 	public static final ItemArmor.ArmorMaterial FIBER = EnumHelper.addArmorMaterial("fiber", "sevendaystomine:fiber",
 			10, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 	public static final ItemArmor.ArmorMaterial STEEL_ARMOR = EnumHelper.addArmorMaterial("steel",
-			"sevendaystomine:steel", 25, new int[] { 3, 4, 3, 2 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+			"sevendaystomine:steel", 25, new int[] { 3, 5, 2, 2 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
 	public static final ItemArmor.ArmorMaterial LEATHER_IRON_ARMOR = EnumHelper.addArmorMaterial("leather_iron",
 			"sevendaystomine:leather_iron", 12, new int[] { 2, 3, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
 
@@ -244,30 +248,31 @@ public class SevenDaysToMine {
 			ModBlocks.ANDESITE_BRICKS_MOSSY, ModBlocks.DIORITE_BRICKS_MOSSY, ModBlocks.GRANITE_BRICKS_MOSSY,
 			ModBlocks.COMPUTER, ModBlocks.MONITOR_OFF, ModBlocks.MONITOR_MAC, ModBlocks.MONITOR_LINUX,
 			ModBlocks.MONITOR_WIN98, ModBlocks.MONITOR_WINXP, ModBlocks.MONITOR_WIN7, ModBlocks.MONITOR_WIN8,
-			ModBlocks.MONITOR_WIN10/* , ModBlocks.WALL_CLOCK */, ModBlocks.LOCKED_DOOR, ModBlocks.BOARDS,
-			ModBlocks.TOILET, ModBlocks.FLAG, ModBlocks.MICROWAVE, ModBlocks.SINK_FAUCET, ModBlocks.METAL_LADDER,
-			ModBlocks.RADIATOR, ModBlocks.DARK_BRICKS, ModBlocks.CINDER, ModBlocks.BACKPACK_NORMAL,
-			ModBlocks.BACKPACK_ARMY, ModBlocks.BACKPACK_MEDICAL, ModBlocks.CHEST_OLD, ModBlocks.TV_BROKEN,
-			ModBlocks.SHOWER_HEAD, ModBlocks.CORPSE_00, ModBlocks.CORPSE_01, ModBlocks.SKELETON,
-			ModBlocks.SKELETON_SITTING, ModBlocks.WORKBENCH, ModBlocks.CHEMISTRY_STATION, ModBlocks.CHAIR_OAK,
-			ModBlocks.CHAIR_BIRCH, ModBlocks.CHAIR_SPRUCE, ModBlocks.CHAIR_JUNGLE, ModBlocks.CHAIR_ACACIA,
-			ModBlocks.CHAIR_BIG_OAK, ModBlocks.TABLE_OAK, ModBlocks.TABLE_BIRCH, ModBlocks.TABLE_SPRUCE,
-			ModBlocks.TABLE_JUNGLE, ModBlocks.TABLE_ACACIA, ModBlocks.TABLE_BIG_OAK, ModBlocks.GENERATOR_GAS,
-			ModBlocks.GASOLINE, ModBlocks.ENERGY_POLE, ModBlocks.LAMP, ModBlocks.STREET_SIGN_WALL,
-			ModBlocks.STREET_SIGN, ModBlocks.PHOTO, ModBlocks.SCREEN_PROJECTOR, ModBlocks.DRESSER,
-			ModBlocks.BIG_SIGN_MASTER, ModBlocks.BIG_SIGN_SLAVE, ModBlocks.SOFA_BLACK, ModBlocks.SOFA_WHITE,
-			ModBlocks.SOFA_RED, ModBlocks.SOFA_GREEN, ModBlocks.SOFA_BLUE, ModBlocks.SOFA_BROWN, ModBlocks.SOFA_PINK,
-			ModBlocks.SOFA_YELLOW, ModBlocks.TRASH_BIN, ModBlocks.WHEELS, ModBlocks.LARGE_ROCK, ModBlocks.WOODEN_SPIKES,
-			ModBlocks.WOODEN_SPIKES_BLOODED, ModBlocks.WOODEN_SPIKES_BROKEN, ModBlocks.AIRPLANE_ROTOR,
-			ModBlocks.SOLAR_PANEL, ModBlocks.WIND_TURBINE, ModBlocks.BATTERY_STATION, ModBlocks.GENERATOR_COMBUSTION,
-			ModBlocks.ENERGY_SWITCH, ModBlocks.THERMOMETER, ModBlocks.BRICK_MOSSY, ModBlocks.DARK_BRICKS_MOSSY,
-			ModBlocks.TURRET_BASE, ModBlocks.OAK_LOG_SPIKE, ModBlocks.BIRCH_LOG_SPIKE, ModBlocks.SPRUCE_LOG_SPIKE,
-			ModBlocks.JUNGLE_LOG_SPIKE, ModBlocks.ACACIA_LOG_SPIKE, ModBlocks.DARK_OAK_LOG_SPIKE, ModBlocks.SANDBAGS,
-			ModBlocks.FILE_CABINET, ModBlocks.CASH_REGISTER, ModBlocks.CAMERA, ModBlocks.BURNT_LOG,
-			ModBlocks.BURNT_PLANKS, ModBlocks.BURNT_FRAME, ModBlocks.DRY_GROUND, ModBlocks.BURNT_PLANKS_STAIRS,
-			ModBlocks.BURNT_PLANKS_SLAB, ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE,
-			ModBlocks.BURNT_CHAIR, ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE,
-			ModBlocks.MERCURY, ModBlocks.SEPARATOR, ModBlocks.TURRET_ADVANCED, ModBlocks.RAZOR_WIRE, ModBlocks.STAND };
+			ModBlocks.MONITOR_WIN10, ModBlocks.LOCKED_DOOR, ModBlocks.BOARDS, ModBlocks.TOILET, ModBlocks.FLAG,
+			ModBlocks.MICROWAVE, ModBlocks.SINK_FAUCET, ModBlocks.METAL_LADDER, ModBlocks.RADIATOR,
+			ModBlocks.DARK_BRICKS, ModBlocks.CINDER, ModBlocks.BACKPACK_NORMAL, ModBlocks.BACKPACK_ARMY,
+			ModBlocks.BACKPACK_MEDICAL, ModBlocks.CHEST_OLD, ModBlocks.TV_BROKEN, ModBlocks.SHOWER_HEAD,
+			ModBlocks.CORPSE_00, ModBlocks.CORPSE_01, ModBlocks.SKELETON, ModBlocks.SKELETON_SITTING,
+			ModBlocks.WORKBENCH, ModBlocks.CHEMISTRY_STATION, ModBlocks.CHAIR_OAK, ModBlocks.CHAIR_BIRCH,
+			ModBlocks.CHAIR_SPRUCE, ModBlocks.CHAIR_JUNGLE, ModBlocks.CHAIR_ACACIA, ModBlocks.CHAIR_BIG_OAK,
+			ModBlocks.TABLE_OAK, ModBlocks.TABLE_BIRCH, ModBlocks.TABLE_SPRUCE, ModBlocks.TABLE_JUNGLE,
+			ModBlocks.TABLE_ACACIA, ModBlocks.TABLE_BIG_OAK, ModBlocks.GENERATOR_GAS, ModBlocks.GASOLINE,
+			ModBlocks.ENERGY_POLE, ModBlocks.LAMP, ModBlocks.STREET_SIGN_WALL, ModBlocks.STREET_SIGN, ModBlocks.PHOTO,
+			ModBlocks.SCREEN_PROJECTOR, ModBlocks.DRESSER, ModBlocks.BIG_SIGN_MASTER, ModBlocks.BIG_SIGN_SLAVE,
+			ModBlocks.SOFA_BLACK, ModBlocks.SOFA_WHITE, ModBlocks.SOFA_RED, ModBlocks.SOFA_GREEN, ModBlocks.SOFA_BLUE,
+			ModBlocks.SOFA_BROWN, ModBlocks.SOFA_PINK, ModBlocks.SOFA_YELLOW, ModBlocks.TRASH_BIN, ModBlocks.WHEELS,
+			ModBlocks.LARGE_ROCK, ModBlocks.WOODEN_SPIKES, ModBlocks.WOODEN_SPIKES_BLOODED,
+			ModBlocks.WOODEN_SPIKES_BROKEN, ModBlocks.AIRPLANE_ROTOR, ModBlocks.SOLAR_PANEL, ModBlocks.WIND_TURBINE,
+			ModBlocks.BATTERY_STATION, ModBlocks.GENERATOR_COMBUSTION, ModBlocks.ENERGY_SWITCH, ModBlocks.THERMOMETER,
+			ModBlocks.BRICK_MOSSY, ModBlocks.DARK_BRICKS_MOSSY, ModBlocks.TURRET_BASE, ModBlocks.OAK_LOG_SPIKE,
+			ModBlocks.BIRCH_LOG_SPIKE, ModBlocks.SPRUCE_LOG_SPIKE, ModBlocks.JUNGLE_LOG_SPIKE,
+			ModBlocks.ACACIA_LOG_SPIKE, ModBlocks.DARK_OAK_LOG_SPIKE, ModBlocks.SANDBAGS, ModBlocks.FILE_CABINET,
+			ModBlocks.CASH_REGISTER, ModBlocks.CAMERA, ModBlocks.BURNT_LOG, ModBlocks.BURNT_PLANKS,
+			ModBlocks.BURNT_FRAME, ModBlocks.DRY_GROUND, ModBlocks.BURNT_PLANKS_STAIRS, ModBlocks.BURNT_PLANKS_SLAB,
+			ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE, ModBlocks.BURNT_CHAIR,
+			ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE, ModBlocks.MERCURY,
+			ModBlocks.SEPARATOR, ModBlocks.TURRET_ADVANCED, ModBlocks.RAZOR_WIRE, ModBlocks.STAND, ModBlocks.LANDMINE,
+			ModBlocks.SIRENE };
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -319,7 +324,7 @@ public class SevenDaysToMine {
 			ModItems.MAGNUM_BULLET, ModItems.MAGNUM_FRAME, ModItems.MAGNUM_CYLINDER, ModItems.MAGNUM_GRIP,
 			ModItems.MAGNUM_SCHEMATICS, ModItems.MP5_BARREL, ModItems.MP5_STOCK, ModItems.MP5_TRIGGER,
 			ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL, ModItems.AUGER_BLADE, ModItems.NIGHT_VISION_DEVICE,
-			ModItems.CHRISTMAS_HAT, ModItems.BERET };
+			ModItems.CHRISTMAS_HAT, ModItems.BERET, ModItems.STETHOSCOPE, ModItems.BLOODMOON};
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
@@ -394,6 +399,7 @@ public class SevenDaysToMine {
 		event.registerServerCommand(new CommandPlaceLegacyPrefab());
 		event.registerServerCommand(new CommandAirdrop());
 		event.registerServerCommand(new CommandInfect());
+		event.registerServerCommand(new CommandLocateModded());
 
 		proxy.serverStarting(event);
 

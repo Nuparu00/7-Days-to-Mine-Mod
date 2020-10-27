@@ -161,8 +161,8 @@
 			"scale": [0.95, 0.95, 0.95]
 		},
 		"head": {
-			"rotation": [-130, 0, 0],
-			"translation": [0, 13, 0]
+			"rotation": [0, 0, 0],
+			"translation": [0, 2, 0]
 		},
 		"firstperson": {
 			"rotation": [0, 318, 0],

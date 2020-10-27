@@ -100,7 +100,7 @@ public class ZombieWoflHorde extends Horde {
 
 	@Override
 	public void start() {
-		BlockPos pos = Utils.getTopSolidGroundBlock(getSpawn(), world);
+		BlockPos pos = Utils.getTopGroundBlock(getSpawn(), world, true);
 		zombies.clear();
 		for (int i = 0; i < MathUtils.getIntInRange(7, 10); i++) {
 			HordeEntry entry = getHordeEntry(world.rand);

@@ -136,7 +136,7 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(700);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25);
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(1.0D);
 	}
 

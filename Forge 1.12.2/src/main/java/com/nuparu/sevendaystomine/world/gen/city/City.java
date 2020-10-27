@@ -34,7 +34,7 @@ public class City {
 	protected HashMap<Integer, String> streetNamesZ = Maps.newHashMap();
 
 	
-	public static final int MAX_ROADS = 16;
+	public static final int MAX_ROADS = 10;
 
 	public int roads_limit;
 
@@ -58,10 +58,10 @@ public class City {
 		this.start = new BlockPos(this.start.getX() + 8, height, this.start.getZ() + 8);
 
 		this.world = world;
-		this.rand = world.rand;
+		this.rand = new Random(world.getSeed() + (start.getX()/16) - (start.getZ()/16));
 		this.unclaimedStreetNames = new ArrayList<String>(CityHelper.streets);
 		this.name = CityHelper.getRandomCityName(this.rand);
-		this.roads_limit = MathUtils.getIntInRange(rand, 8, MAX_ROADS);
+		this.roads_limit = MathUtils.getIntInRange(rand, MAX_ROADS/2, MAX_ROADS);
 		CitySavedData.get(world).addCity(start);
 	}
 
@@ -92,7 +92,7 @@ public class City {
 	}
 
 	public void prepareStreets() {
-		BlockPos bp_start = Utils.getTopSolidGroundBlock(start, world);
+		BlockPos bp_start = Utils.getTopGroundBlock(start, world, true);
 		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
 			if (getStreetsCount() < this.roads_limit) {
 				BlockPos blockpos = bp_start.offset(facing, Street.LENGTH - 1);

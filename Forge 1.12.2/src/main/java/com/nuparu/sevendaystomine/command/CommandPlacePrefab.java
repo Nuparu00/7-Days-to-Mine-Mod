@@ -51,11 +51,7 @@ public class CommandPlacePrefab extends CommandBase {
 			return;
 		}*/
 		
-		int x = Integer.parseInt(args[0]);
-		int y = Integer.parseInt(args[1]);
-		int z = Integer.parseInt(args[2]);
-		
-		final BlockPos pos = new BlockPos(x,y,z);
+		BlockPos pos = parseBlockPos(sender, args, 0, true);
 		
 		String name = args[3];
 		boolean generateAir = Boolean.parseBoolean(args[4]);

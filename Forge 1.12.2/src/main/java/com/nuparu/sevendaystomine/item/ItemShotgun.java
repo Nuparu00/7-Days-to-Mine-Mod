@@ -12,7 +12,7 @@ public class ItemShotgun extends ItemGun {
 		super();
 		this.setMaxAmmo(4);
 		this.setProjectiles(10);
-		this.setFullDamage(120);
+		this.setFullDamage(60);
 		this.setSpeed(1);
 		this.setRecoil(4);
 		this.setCounterDef(0);

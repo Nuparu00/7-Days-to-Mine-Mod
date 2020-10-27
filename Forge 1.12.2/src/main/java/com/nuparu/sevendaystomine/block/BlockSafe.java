@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.block;
 
 import com.nuparu.sevendaystomine.tileentity.TileEntitySafe;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +21,7 @@ public abstract class BlockSafe<TE extends TileEntitySafe> extends BlockTileProv
 		setHardness(6.0F);
 		setResistance(15.0F);
 		setHarvestLevel("pickaxe", 2);
+		setSoundType(SoundType.ANVIL);
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public abstract class BlockSafe<TE extends TileEntitySafe> extends BlockTileProv
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if (tileentity instanceof TileEntitySafe) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntitySafe) tileentity);
+				//InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntitySafe) tileentity);
 				worldIn.updateComparatorOutputLevel(pos, this);
 			}
 		}

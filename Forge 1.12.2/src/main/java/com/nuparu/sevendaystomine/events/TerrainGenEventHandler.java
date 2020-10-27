@@ -63,7 +63,7 @@ public class TerrainGenEventHandler {
 								break;
 							} else if (event.getRand().nextInt(400) == 0) {
 								CityHelper.placeRandomCar(world, pos.up(),
-										EnumFacing.HORIZONTALS[event.getRand().nextInt(4)]);
+										EnumFacing.HORIZONTALS[event.getRand().nextInt(4)],event.getRand());
 								break;
 							} else if (event.getRand().nextInt(1024) == 0) {
 								Biome biome = world.getBiome(pos);

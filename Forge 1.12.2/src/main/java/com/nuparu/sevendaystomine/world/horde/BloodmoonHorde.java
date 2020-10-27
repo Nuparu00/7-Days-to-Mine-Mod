@@ -49,7 +49,10 @@ public class BloodmoonHorde extends Horde {
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "plagued_nurse"), 8));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 4));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_soldier"), 6));
-
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zobie"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 4));
+		
 		if (center != null) {
 			Biome biome = world.getBiome(center);
 			if (biome.isSnowyBiome()) {
@@ -63,7 +66,7 @@ public class BloodmoonHorde extends Horde {
 	public BloodmoonHorde(BlockPos center, World world, EntityPlayer player) {
 		super(center, world);
 		this.player = player;
-		this.waves = MathUtils.getIntInRange(8, 10);
+		this.waves = MathUtils.getIntInRange(8, 14);
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 10));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "bloated_zombie"), 6));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "infected_survivor"), 10));
@@ -71,6 +74,9 @@ public class BloodmoonHorde extends Horde {
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "plagued_nurse"), 8));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 4));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_soldier"), 6));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zobie"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 4));
 
 		Biome biome = world.getBiome(center);
 		if (biome.isSnowyBiome()) {
@@ -128,7 +134,8 @@ public class BloodmoonHorde extends Horde {
 
 	@Override
 	public void start() {
-		BlockPos pos = Utils.getTopSolidGroundBlock(getSpawn(), world);
+		if(player == null) return;
+		BlockPos pos = Utils.getTopGroundBlock(getSpawn(), world, true);
 		zombies.clear();
 		for (int i = 0; i < MathUtils.getIntInRange(7, 10); i++) {
 			HordeEntry entry = getHordeEntry(world.rand);

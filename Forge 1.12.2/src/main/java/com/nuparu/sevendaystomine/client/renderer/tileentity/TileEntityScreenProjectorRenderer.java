@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.block.BlockPhoto;
+import com.nuparu.sevendaystomine.block.BlockScreenProjector;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.PhotoRequestMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
@@ -80,15 +81,18 @@ public class TileEntityScreenProjectorRenderer extends TileEntitySpecialRenderer
 			World world = te.getWorld();
 
 			BlockPos imagePos = te.getPos();
-			EnumFacing facing = world.getBlockState(te.getPos()).getValue(BlockHorizontalBase.FACING).getOpposite();
+			IBlockState blockState = world.getBlockState(te.getPos());
+			Block block = blockState.getBlock();
+			if(!(block instanceof BlockScreenProjector)) return;
+			EnumFacing facing = blockState.getValue(BlockHorizontalBase.FACING).getOpposite();
 
 			int distance = 0;
 			for (int i = 1; i < 16; i++) {
 				BlockPos pos = imagePos.offset(facing, i);
 				IBlockState state = world.getBlockState(pos);
-				Block block = state.getBlock();
+				Block block2 = state.getBlock();
 
-				if (!block.isReplaceable(world, pos) && state.getMaterial().blocksMovement() && block != Blocks.AIR) {
+				if (!block2.isReplaceable(world, pos) && state.getMaterial().blocksMovement() && block2 != Blocks.AIR) {
 					imagePos = pos;
 					distance = i;
 					break;

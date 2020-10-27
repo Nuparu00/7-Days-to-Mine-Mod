@@ -25,4 +25,6 @@ public class ModLootTables {
 	public static final ResourceLocation SHOWER_DRAIN = new ResourceLocation(SevenDaysToMine.MODID,"shower_drain");
 	public static final ResourceLocation NEST = new ResourceLocation(SevenDaysToMine.MODID,"nest");
 	public static final ResourceLocation CASH_REGISTER = new ResourceLocation(SevenDaysToMine.MODID,"cash_register");
+	public static final ResourceLocation ZOMBIE_GENERIC = new ResourceLocation(SevenDaysToMine.MODID,"zombie_generic");
+	public static final ResourceLocation CODE_SAFE = new ResourceLocation(SevenDaysToMine.MODID,"code_safe");
 }

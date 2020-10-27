@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
 import com.nuparu.sevendaystomine.world.horde.Horde;
 import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -29,12 +30,14 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -96,7 +99,7 @@ public class EntityZombieBase extends EntityMob {
 		range.setBaseValue(64.0D);
 		speed.setBaseValue(0.175D);
 		attack.setBaseValue(4.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50D);
 		armor.setBaseValue(0.0D);
 	}
 
@@ -282,4 +285,29 @@ public class EntityZombieBase extends EntityMob {
 	public boolean customCoprseTransform() {
 		return false;
 	}
+	
+	protected SoundEvent getAmbientSound()
+    {
+        return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    {
+        return SoundEvents.ENTITY_ZOMBIE_HURT;
+    }
+
+    protected SoundEvent getDeathSound()
+    {
+        return SoundEvents.ENTITY_ZOMBIE_DEATH;
+    }
+
+    protected SoundEvent getStepSound()
+    {
+        return SoundEvents.ENTITY_ZOMBIE_STEP;
+    }
+
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
 }

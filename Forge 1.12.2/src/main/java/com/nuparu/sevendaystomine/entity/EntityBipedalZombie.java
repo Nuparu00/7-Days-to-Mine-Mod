@@ -1,5 +1,8 @@
 package com.nuparu.sevendaystomine.entity;
 
+import com.nuparu.sevendaystomine.init.ModLootTables;
+import com.nuparu.sevendaystomine.util.ItemUtils;
+
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -17,6 +20,7 @@ public class EntityBipedalZombie extends EntityZombieBase {
 		lootable.setPosition(posX, posY, posZ);
 		isDead = true;
 		if (!world.isRemote) {
+			ItemUtils.fillWithLoot(lootable.getInventory(), ModLootTables.ZOMBIE_GENERIC, world, rand);
 			world.spawnEntity(lootable);
 		}
 	}

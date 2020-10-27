@@ -60,15 +60,15 @@ public class Plot {
 		end = start.offset(street.facing, street.facing.getAxis() == EnumFacing.Axis.Z ? zSize : xSize).offset(
 				mirror ? street.facing.rotateY() : street.facing.rotateYCCW(),
 				street.facing.getAxis() == EnumFacing.Axis.X ? zSize : xSize);
-		this.end = Utils.getTopSolidGroundBlock(end,street.world);
+		this.end = Utils.getTopGroundBlock(end, street.world, true);
 	}
 
 	public void generate() {
 
-		
 		BlockPos pos = start.offset(street.facing, street.facing.getAxis() == EnumFacing.Axis.Z ? zSize : xSize);
 
-		building.generate(street.world, new BlockPos(pos.getX(),Math.min(pos.getY(), end.getY())+1,pos.getZ()), street.facing, mirror);
+		building.generate(street.world, new BlockPos(pos.getX(), Math.min(pos.getY(), end.getY()) + 1, pos.getZ()),
+				street.facing, mirror);
 	}
 
 	public boolean intersects(Plot plot) {

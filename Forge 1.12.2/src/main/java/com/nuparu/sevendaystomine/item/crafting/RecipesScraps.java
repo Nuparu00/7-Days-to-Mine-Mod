@@ -42,13 +42,13 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 	 * Used to check if a recipe matches current crafting inventory
 	 */
 	public boolean matches(InventoryCrafting inv, World worldIn) {
-		if(matchesAnyOtherRecipe(inv,worldIn)) {
+		if (matchesAnyOtherRecipe(inv, worldIn)) {
 			return false;
 		}
-		
+
 		this.resultItem = ItemStack.EMPTY;
-        EnumMaterial mat = EnumMaterial.NONE;
-        int weight = 0;
+		EnumMaterial mat = EnumMaterial.NONE;
+		int weight = 0;
 		for (int k1 = 0; k1 < inv.getSizeInventory(); ++k1) {
 			ItemStack itemstack = inv.getStackInSlot(k1);
 
@@ -64,9 +64,10 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 						return false;
 					weight += scrap.getWeight();
 					mat = scrap.getMaterial();
-				} else if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() != null && ((ItemBlock)item).getBlock() instanceof IScrapable) {
+				} else if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() != null
+						&& ((ItemBlock) item).getBlock() instanceof IScrapable) {
 
-					IScrapable scrap = (IScrapable)((ItemBlock)item).getBlock();
+					IScrapable scrap = (IScrapable) ((ItemBlock) item).getBlock();
 
 					if (!scrap.canBeScraped())
 						return false;
@@ -74,21 +75,22 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 						return false;
 					weight += scrap.getWeight();
 					mat = scrap.getMaterial();
-				}
-				else if(VanillaManager.getVanillaScrapable(item) != null) {
+				} else if (VanillaManager.getVanillaScrapable(item) != null) {
 					VanillaManager.VanillaScrapableItem scrapable = VanillaManager.getVanillaScrapable(item);
 					if (!scrapable.canBeScraped())
 						return false;
 					if (scrapable.getMaterial() != mat && mat != EnumMaterial.NONE)
 						return false;
-					weight+= scrapable.getWeight();
+					weight += scrapable.getWeight();
 					mat = scrapable.getMaterial();
-				}else {
+				} else {
 					return false;
 				}
 			}
 		}
-		resultItem = new ItemStack(ItemUtils.INSTANCE.getScrapResult(mat),weight);
+		if (weight == 0)
+			return false;
+		resultItem = new ItemStack(ItemUtils.INSTANCE.getScrapResult(mat), (int) Math.ceil(weight / 2f));
 		if (!this.resultItem.isEmpty()) {
 
 			return true;
@@ -125,13 +127,13 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 		}
 		return nonnulllist;
 	}
-	
+
 	public boolean matchesAnyOtherRecipe(InventoryCrafting inv, World worldIn) {
 		Iterator<IRecipe> recipes = CraftingManager.REGISTRY.iterator();
-		while(recipes.hasNext()) {
+		while (recipes.hasNext()) {
 			IRecipe recipe = recipes.next();
-			if(!(recipe instanceof RecipesScraps)) {
-				if(recipe.matches(inv, worldIn)) {
+			if (!(recipe instanceof RecipesScraps)) {
+				if (recipe.matches(inv, worldIn)) {
 					return true;
 				}
 			}

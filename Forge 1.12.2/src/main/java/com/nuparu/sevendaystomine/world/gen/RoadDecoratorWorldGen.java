@@ -39,7 +39,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class RoadDecoratorWorldGen implements IWorldGenerator {
 
-	private SimplexNoise noise;
+	private static SimplexNoise noise;
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
@@ -92,13 +92,13 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 								}
 								break;
 							} else if (rand.nextInt(300) == 0) {
-								CityHelper.placeRandomCar(world, pos.up(), EnumFacing.HORIZONTALS[rand.nextInt(4)]);
+								CityHelper.placeRandomCar(world, pos.up(), EnumFacing.HORIZONTALS[rand.nextInt(4)],rand);
 								break;
 							} else if (rand.nextInt(1024) == 0) {
 								Biome biome = world.getBiome(pos);
 								if (biome.getHeightVariation() > 0.2)
 									continue;
-								if (!CitySavedData.get(world).isCityNearby(pos, 1048576)) {
+								if (!CitySavedData.get(world).isCityNearby(pos, 2250000)) {
 									City city = new City(world, pos);
 									city.startCityGen();
 									return;
@@ -115,7 +115,8 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 
 	}
 
-	public double getNoiseValue(int x, int y, int z) {
+	public static double getNoiseValue(int x, int y, int z) {
+		if(noise == null) return 0;
 		double q1 = noise.getNoise(x, y, z);
 		/*
 		 * double q2 = noise.getNoise(x + 1.3, y + 0.7, 0.0);

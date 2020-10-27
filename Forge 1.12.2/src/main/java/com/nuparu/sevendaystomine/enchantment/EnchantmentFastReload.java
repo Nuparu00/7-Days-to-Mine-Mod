@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 public class EnchantmentFastReload extends Enchantment {
 
 	protected EnchantmentFastReload() {
-		super(Rarity.RARE, EnumEnchantmentType.WEAPON,
+		super(Rarity.COMMON, ModEnchantments.GUNS,
 				new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND, EntityEquipmentSlot.OFFHAND });
 		setRegistryName(SevenDaysToMine.MODID, "fast_reload");
 		setName("fast_reload");
@@ -26,4 +26,16 @@ public class EnchantmentFastReload extends Enchantment {
 	public boolean canApply(ItemStack stack) {
 		return stack.getItem() instanceof ItemGun;
 	}
+	
+	@Override
+	public int getMinEnchantability(int enchantmentLevel)
+    {
+        return 1 + 10 * (enchantmentLevel - 1);
+    }
+	
+	@Override
+	public int getMaxEnchantability(int enchantmentLevel)
+    {
+        return super.getMinEnchantability(enchantmentLevel) + 50;
+    }
 }

@@ -1,6 +1,9 @@
 package com.nuparu.sevendaystomine.tileentity;
 
 import com.nuparu.sevendaystomine.inventory.ContainerSafe;
+import com.nuparu.sevendaystomine.inventory.container.ContainerSmall;
+import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
+import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,7 +12,11 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class TileEntityKeySafe extends TileEntitySafe {
 
@@ -98,8 +105,18 @@ public class TileEntityKeySafe extends TileEntitySafe {
 	}
 	
 	@Override
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-		return new ContainerSafe(playerInventory, this);
+	public Container createContainer(EntityPlayer player) {
+		final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player
+				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+		final IItemHandlerNameable playerInventoryWrapper = new NameableCombinedInvWrapper(player.inventory,
+				playerInventory);
+
+		return new ContainerSmall(playerInventoryWrapper, inventory, player, this);
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return null;
 	}
 
 }

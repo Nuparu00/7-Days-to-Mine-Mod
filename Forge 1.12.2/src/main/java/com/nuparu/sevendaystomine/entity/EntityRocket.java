@@ -271,15 +271,18 @@ public class EntityRocket extends Entity implements IProjectile {
 	}
 
 	protected void onHit(RayTraceResult raytraceResultIn) {
-		if (raytraceResultIn.typeOfHit == RayTraceResult.Type.BLOCK && raytraceResultIn.entityHit == null) {
-			if (!world.isRemote) {
-				if (raytraceResultIn.entityHit != null) {
-					System.out.println(raytraceResultIn.entityHit.toString());
-				}
-				world.newExplosion(this, posX, posY, posZ, 2.8f, true, true);
+		Entity entity = raytraceResultIn.entityHit;
+
+		if (entity != null) {
+			if(!world.isRemote) {
+				world.newExplosion(this, entity.posX,entity.posY, entity.posZ, 5.2f, true, true);
 			}
-			this.setDead();
+		} else {
+			if (!this.world.isRemote) {
+				world.newExplosion(this, posX+motionX, posY+motionY, posZ+motionZ, 5.2f, true, true);
+			}
 		}
+		this.setDead();
 	}
 
 	protected void shotHit(EntityLivingBase living) {

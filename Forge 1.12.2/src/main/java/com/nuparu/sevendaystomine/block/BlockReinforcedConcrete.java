@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.block;
 
+import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 
 import net.minecraft.block.material.Material;
@@ -21,6 +22,7 @@ public class BlockReinforcedConcrete extends BlockBase {
 		setHardness(10.0F);
 		setResistance(30.0F);
 		setHarvestLevel("pickaxe", 3);
+		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PHASE, Integer.valueOf(0)));
 	}
 
@@ -44,7 +46,9 @@ public class BlockReinforcedConcrete extends BlockBase {
 	}
 	
 	public boolean tryToRemove(World world, BlockPos pos) {
-		if(world.getBlockState(pos).getValue(PHASE) == 0){
+		IBlockState state = world.getBlockState(pos);
+		if(!(state.getBlock() instanceof BlockReinforcedConcrete)) return true;
+		if(state.getValue(PHASE) == 0){
 			world.setBlockState(pos, ModBlocks.REINFORCED_CONCRETE.getDefaultState().withProperty(PHASE , 1));
 			 return false;
 			}

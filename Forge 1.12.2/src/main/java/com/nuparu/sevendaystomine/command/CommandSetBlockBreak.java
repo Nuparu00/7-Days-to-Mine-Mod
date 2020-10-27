@@ -6,7 +6,9 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class CommandSetBlockBreak extends CommandBase {
 	}
 
 	@Override
-	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) {
+	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) throws CommandException {
 		final World world = sender.getEntityWorld();
 
 		if (world.isRemote) {
@@ -64,7 +66,7 @@ public class CommandSetBlockBreak extends CommandBase {
 				return;
 			}
 
-			BreakSavedData.get(world).setBreakData(new BlockPos(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2])),
+			BreakSavedData.get(world).setBreakData(parseBlockPos(sender, args, 0, true),
 					Integer.parseInt(args[3]), Float.parseFloat(args[4]));
 		}
 	}

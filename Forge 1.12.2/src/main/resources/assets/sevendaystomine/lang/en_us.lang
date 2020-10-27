@@ -53,6 +53,9 @@ death.attack.shot.entity.unknown=%1$s was shot.
 death.attack.infection.player=%1$s died due to infection while fighting %2$s.
 death.attack.infection=%1$s died due to infection.
 
+death.attack.mercury_poisoning.player=%1$s has died of mercury poisoning while fighting %2$s.
+death.attack.mercury_poisoning=%1$s has died of mercury poisoning.
+
 #Chat Messages
 
 upgrade.missing=You need %1$s to upgrade %2$s.
@@ -62,6 +65,9 @@ computer.turn.on=Turning on...
 computer.turn.off=Turning off...
 voltmeter.message=This block has voltage of %1$sV.
 airdrop.message=Airdrop has been dropped around X:%1$s Z:%2$s.
+safe.code.less=The digit number %1$s is less than %2$s.
+safe.code.equal=The digit number %1$s is %2$s.
+safe.code.greater=The digit number %1$s is greater than %2$s.
 
 #Computer Text
 computer.win10.product_key=It's time to enter the product key
@@ -91,16 +97,19 @@ effect.thirst=Thirst
 effect.dysentery=Dysentery
 effect.alcoholbuzz=Alcohol Buzz
 effect.drunk=Drunk
-effect.alcoholpoison=Alcohol Poison
+effect.alcoholpoison=Alcohol Poisoning
 effect.caffeinebuzz=Caffeine Buzz
 effect.bleeding=Bleeding
 effect.infection=Infection
 effect.broken_leg=Broken Leg
+effect.mercury_poisoning=Mercury Poisoning
 
 #Enchantments
 
 enchantment.fast_reload=Fast Reload
 enchantment.marksman=Marksman
+enchantment.explosive=Explosive
+enchantment.sparking=Sparking
 
 #GUI
 
@@ -151,6 +160,9 @@ gui.electricity.stored=Stored:
 unlocked.toast=Recipes Unlocked!
 
 horde.bloodmoon.name=Bloodmoon Horde
+
+generator.overworld=Default (7D2M)
+generator.default=Default (Vanilla)
 
 book_forging.title=Forge Ahead
 book_forging.desc=Blacksmithing, Metalworks and more
@@ -381,8 +393,8 @@ item.BottledCoffee.name=Coffee
 item.JarOfHoney.name=Jar of Honey
 item.CannedMurkyWater.name=Canned Murky Water
 item.CannedWater.name=Canned Water
-item.CannedBeef.name=Cann of Beef
-item.CannedLamb.name=Cann of Lamb
+item.CannedBeef.name=Can of Beef
+item.CannedLamb.name=Can of Lamb
 item.CannedCatFood.name=Can of Cat Food
 item.CannedDogFood.name=Can of Dog Food
 item.CannedHam.name=Can of Ham
@@ -591,6 +603,7 @@ item.mp5_barrel.name=MP5 Barrel
 item.mp5_trigger.name=MP5 Trigger
 item.shotgun_shell.name=Shotgun Shell
 item.auger_blade.name=Auger Blade
+item.stethoscope.name=Stethoscope
 
 #Blocks
 
@@ -830,6 +843,7 @@ tile.radio.name=Radio
 tile.separator.name=Electrolytic Cell
 tile.razor_wire.name=Razor Wire
 tile.stand.name=Stand
+tile.landmine.name=Landmine
 
 #Sound Subtitles
 
@@ -853,6 +867,7 @@ subtitle.recipe_unlocked=Recipe Unlocked
 subtitle.shotgun.shot=Shotgun Shot
 subtitle.mp5.shot=MP5 Shot
 subtitle.flamethrower.shot=Flamethrower Shot
+subtitle.safe.unlock.shot=Safe Unlock
 
 #Keybinding
 key.sevendaystomine.category=7 Days to Mine
@@ -882,7 +897,7 @@ advancements.spikedclub.title=Illegal Modification
 advancements.spikedclub.description=Make a Spiked Club!
 advancements.wooden_frame.title=Construction I
 advancements.wooden_frame.description=Craft a wooden frame!
-advancements.reinforcedconcrete.title=Construction III
+advancements.reinforcedconcrete.title=Construction II
 advancements.reinforcedconcrete.description=Craft a reinforced concrete!
 advancements.campfire.title=Only YOU Can Start Forest Fires
 advancements.campfire.description=Craft a campfire!
@@ -890,8 +905,30 @@ advancements.forge.title=Metallurgy I
 advancements.forge.description=Craft a forge!
 advancements.sleeping_bag.title=Rolling Bed
 advancements.sleeping_bag.description=Well.. it's a bedroll.
-
-
+advancements.days.title=7 Days to Die
+advancements.weeks.title=7 Weeks to Die
+advancements.months.title=7 Months to Die
+advancements.days.description=Survive your first Bloodmoon
+advancements.weeks.description=Survive the 7th Bloodmoon
+advancements.months.description=Survive the 28th Bloodmoon
+advancements.automation.title=Automation
+advancements.automation.description=Craft a turret
+advancements.different.title=I'm Different
+advancements.different.description=I'm Different
+advancements.cured.title=-1 Days to Die
+advancements.cured.description=Cure your infection
+advancements.workbench.title=Metalworking
+advancements.workbench.description=Craft a Workbench.
+advancements.shotgun.title=Pocket Rocket Launcher
+advancements.shotgun.description=Craft a Workbench.
+advancements.policeman.title=Police Brutality
+advancements.policeman.description=Kill a Zombie Policeman in close range combat
+advancements.wired.title=Wired
+advancements.chemistry_station.title=Back to School
+advancements.steelworking.title=Acquire Better Hardware
+advancements.steelworking.description=AGet a steel ingot
+advancements.steel_pickaxe.title=Pick of Steel
+advancements.steel_pickaxe.description=Craft a steel pickaxe
 #Entities
 entity.reanimated_corpse.name=Reanimated Corpse
 entity.burnt_zombie.name=Burnt Zombie

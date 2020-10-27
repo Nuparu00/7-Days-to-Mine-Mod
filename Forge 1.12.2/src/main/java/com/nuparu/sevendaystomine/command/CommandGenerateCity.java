@@ -10,7 +10,9 @@ import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.world.gen.city.City;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -51,13 +53,13 @@ public class CommandGenerateCity extends CommandBase {
 	}
 
 	@Override
-	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) {
+	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) throws CommandException {
 		final World world = sender.getEntityWorld();
 
 		if (world.isRemote) {
 		} else {
 			if(args.length == 3) {
-				BlockPos blockPos = new BlockPos(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+				BlockPos blockPos = parseBlockPos(sender, args, 0, true);
 				City city = new City(world,blockPos);
 				city.startCityGen();
 			}

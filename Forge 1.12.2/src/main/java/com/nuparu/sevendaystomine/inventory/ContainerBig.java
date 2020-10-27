@@ -51,10 +51,10 @@ public class ContainerBig extends Container {
 			itemstack = itemstack1.copy();
 
 			if (index < 36) {
-				if (!this.mergeItemStack(itemstack1, 9, this.inventorySlots.size(), true)) {
+				if (!this.mergeItemStack(itemstack1, 36, this.inventorySlots.size(), true)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!this.mergeItemStack(itemstack1, 0, 9, false)) {
+			} else if (!this.mergeItemStack(itemstack1, 0, 36, false)) {
 				return ItemStack.EMPTY;
 			}
 

@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 public class EnchantmentMarksman extends Enchantment {
 
 	protected EnchantmentMarksman() {
-		super(Rarity.RARE, EnumEnchantmentType.WEAPON,
+		super(Rarity.UNCOMMON, ModEnchantments.GUNS,
 				new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND, EntityEquipmentSlot.OFFHAND });
 		setRegistryName(SevenDaysToMine.MODID, "marksman");
 		setName("marksman");
@@ -21,4 +21,16 @@ public class EnchantmentMarksman extends Enchantment {
 	public boolean canApply(ItemStack stack) {
 		return stack.getItem() instanceof ItemGun;
 	}
+	
+	@Override
+	public int getMinEnchantability(int enchantmentLevel)
+    {
+        return 1 + 10 * (enchantmentLevel - 1);
+    }
+	
+	@Override
+	public int getMaxEnchantability(int enchantmentLevel)
+    {
+        return super.getMinEnchantability(enchantmentLevel) + 50;
+    }
 }

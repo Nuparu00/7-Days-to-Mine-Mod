@@ -37,7 +37,7 @@ public class EntityZombiePig extends EntityZombieBase {
 		range.setBaseValue(32.0D);
 		speed.setBaseValue(0.19D);
 		attack.setBaseValue(3.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(160D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(45D);
 		armor.setBaseValue(0.0D);
 	}
 

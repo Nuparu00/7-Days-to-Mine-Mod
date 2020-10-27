@@ -675,8 +675,8 @@ public class Interpreter {
 							flag = true;
 							break;
 						}
-						statement.addValue(MathUtils.getIntInRange(new Random(), (int) min.getRealValue(),
-								(int) max.getRealValue()));
+						statement.addValue(MathUtils.getIntInRange(new Random(), (int)min.asInt().getRealValue(),
+								(int)max.asInt().getRealValue()));
 
 					} catch (EvaluationErrorException e) {
 						e.printStackTrace();

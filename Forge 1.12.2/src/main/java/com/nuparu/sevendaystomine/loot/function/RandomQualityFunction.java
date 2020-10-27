@@ -7,6 +7,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.item.IQuality;
+import com.nuparu.sevendaystomine.item.ItemFuelTool;
+import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.util.MathUtils;
 
@@ -31,6 +33,13 @@ public class RandomQualityFunction extends LootFunction {
 
 		IQuality quality = (IQuality) item;
 		quality.setQuality(stack, MathUtils.getIntInRange(100, 400));
+
+		if (item instanceof ItemGun) {
+			((ItemGun) item).initNBT(stack);
+		} else if (item instanceof ItemFuelTool) {
+			((ItemFuelTool) item).initNBT(stack);
+		}
+
 		return stack;
 	}
 

@@ -16,6 +16,8 @@ import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.inventory.ContainerPlayerExtended;
+import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
 import com.nuparu.sevendaystomine.item.IQuality;
 import com.nuparu.sevendaystomine.item.ItemBackpack;
 import com.nuparu.sevendaystomine.item.ItemQuality;
@@ -31,6 +33,7 @@ import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -87,13 +90,6 @@ public class PlayerEventHandler {
 	 */
 
 	@SubscribeEvent
-	public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
-		if (event.getEntityLiving() instanceof EntityPlayer) {
-
-		}
-	}
-
-	@SubscribeEvent
 	public void onBlockPlaced(PlayerInteractEvent.RightClickBlock event) {
 
 		BlockPos pos = event.getPos().offset(event.getFace());
@@ -108,7 +104,7 @@ public class PlayerEventHandler {
 		}
 
 	}
-
+/*
 	@SubscribeEvent
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		if (!(event.getEntity() instanceof EntityPlayer)) {
@@ -116,11 +112,13 @@ public class PlayerEventHandler {
 		}
 		final EntityPlayer player = (EntityPlayer) event.getEntity();
 
-		IItemHandler extendedInv = player.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, null);
+		player.inventory = new InventoryPlayerExtended(player);
+		player.inventoryContainer = new ContainerPlayerExtended(player.inventory, !player.world.isRemote, player);
 		Container container = player.inventoryContainer;
+		Slot slotBackpack = new Slot(player.inventory, 41, 77, 44) {
 
-		Slot slotBackpack = new SlotItemHandler(extendedInv, 0, 77, 44) {
 			@Nullable
+
 			@SideOnly(Side.CLIENT)
 			public String getSlotTexture() {
 				return SevenDaysToMine.MODID + ":items/empty_backpack_slot";
@@ -139,10 +137,10 @@ public class PlayerEventHandler {
 		Slot slot2 = new SlotItemHandler(extendedInv, 2, 77, 8);
 		addSlot(slotBackpack, container);
 
-		// addSlot(slot1, container);
-		// addSlot(slot2, container);
+		addSlot(slot1, container);
+		addSlot(slot2, container);
 
-	}
+	}*/
 
 	public void addSlot(Slot slot, Container container) {
 		try {
@@ -162,6 +160,7 @@ public class PlayerEventHandler {
 			return;
 		final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 		IItemHandlerExtended extendedInv = CapabilityHelper.getExtendedInventory(player);
+		if(extendedInv == null) return;
 		for (int i = 0; i < extendedInv.getSlots(); i++) {
 			ItemStack stack = extendedInv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
@@ -171,7 +170,7 @@ public class PlayerEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
 		EntityPlayer player = event.getEntityPlayer();
 		if (event.getHand() == EnumHand.OFF_HAND)
 			return;
@@ -304,6 +303,18 @@ public class PlayerEventHandler {
 			event.setOutput(stack);
 			event.setCost(1);
 			event.setMaterialCost(1);
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerClone(PlayerEvent.Clone event) {
+
+		EntityPlayer original = event.getOriginal();
+		EntityPlayer clone = event.getEntityPlayer();
+
+		if (original.inventory instanceof InventoryPlayerExtended
+				&& clone.inventory instanceof InventoryPlayerExtended) {
+			((InventoryPlayerExtended) original.inventory).copy((InventoryPlayerExtended) clone.inventory);
 		}
 	}
 }

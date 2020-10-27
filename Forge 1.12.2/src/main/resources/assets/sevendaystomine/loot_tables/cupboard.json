@@ -10,212 +10,77 @@
                 {
                     "type": "item",
                     "weight": 3,
-                    "name": "sevendaystomine:cannedbeef",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedbeef"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:cannedcatfood",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedcatfood"
                 },
                 {
                     "type": "item",
                     "weight": 3,
-                    "name": "sevendaystomine:cannedchicken",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedchicken"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:cannedchili",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedchili"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:canneddogfood",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:canneddogfood"
                 },
                 {
                     "type": "item",
                     "weight": 3,
-                    "name": "sevendaystomine:cannedham",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedham"
                 },
                 {
                     "type": "item",
                     "weight": 3,
-                    "name": "sevendaystomine:cannedlamb",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedlamb"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:cannedmiso",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedmiso"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:cannedpasta",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedpasta"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:cannedpears",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedpears"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:cannedpeas",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedpeas"
                 },
                 {
                     "type": "item",
                     "weight": 3,
-                    "name": "sevendaystomine:cannedsalmon",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedsalmon"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:cannedsoup",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedsoup"
                 },
                 {
                     "type": "item",
                     "weight": 3,
-                    "name": "sevendaystomine:cannedstock",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedstock"
                 },
                 {
                     "type": "item",
                     "weight": 4,
-                    "name": "sevendaystomine:cannedtuna",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        }
-                    ]
+                    "name": "sevendaystomine:cannedtuna"
                 },
                 {
                     "type": "item",

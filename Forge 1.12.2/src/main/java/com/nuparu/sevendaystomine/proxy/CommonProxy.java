@@ -1,11 +1,14 @@
 package com.nuparu.sevendaystomine.proxy;
 
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.computer.process.ProcessRegistry;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
@@ -34,6 +37,8 @@ import com.nuparu.sevendaystomine.entity.EntityZombiePig;
 import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
 import com.nuparu.sevendaystomine.entity.EntityZombieWolf;
+import com.nuparu.sevendaystomine.events.LoudSoundEvent;
+import com.nuparu.sevendaystomine.events.MobBreakEvent;
 import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -84,6 +89,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityRadio;
 import com.nuparu.sevendaystomine.tileentity.TileEntityRefrigerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityScreenProjector;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySeparator;
+import com.nuparu.sevendaystomine.tileentity.TileEntitySirene;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySolarPanel;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
@@ -107,9 +113,12 @@ import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.VersionChecker;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
@@ -125,6 +134,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -133,6 +144,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -177,6 +189,19 @@ public class CommonProxy {
 		registerTileEntities();
 		registerEntities();
 		ModBiomes.init();
+
+		// Registers advancement criteria
+		Method method = ObfuscationReflectionHelper.findMethod(CriteriaTriggers.class, "func_192118_a",ICriterionTrigger.class,
+				ICriterionTrigger.class);
+		method.setAccessible(true);
+
+		for (int i = 0; i < ModTriggers.TRIGGER_ARRAY.length; i++) {
+				try {
+					method.invoke(null, ModTriggers.TRIGGER_ARRAY[i]);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+				}
+		}
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
@@ -276,6 +301,7 @@ public class CommonProxy {
 		registerTileEntity(TileEntityGlobe.class, "globe");
 		registerTileEntity(TileEntitySeparator.class, "separator");
 		registerTileEntity(TileEntityTurretAdvanced.class, "turret_advanced");
+		registerTileEntity(TileEntitySirene.class, "sirene");
 	}
 
 	public void registerTileEntity(Class<? extends TileEntity> te, String name) {
@@ -401,6 +427,7 @@ public class CommonProxy {
 		LootTableList.register(ModLootTables.SHOWER_DRAIN);
 		LootTableList.register(ModLootTables.NEST);
 		LootTableList.register(ModLootTables.CASH_REGISTER);
+		LootTableList.register(ModLootTables.ZOMBIE_GENERIC);
 	}
 
 	public void openClientSideGui(int id, int x, int y, int z) {
@@ -444,8 +471,9 @@ public class CommonProxy {
 
 	}
 
-	public void playLoudSound(ResourceLocation resource, float volume, BlockPos blockPosIn, SoundCategory category) {
-
+	public void playLoudSound(World world, ResourceLocation resource, float volume, BlockPos blockPosIn,
+			SoundCategory category) {
+		MinecraftForge.EVENT_BUS.post(new LoudSoundEvent(world, blockPosIn, resource, volume, category));
 	}
 
 	public void stopLoudSound(BlockPos blockPosIn) {

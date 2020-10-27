@@ -52,6 +52,7 @@ import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraft.world.gen.structure.StructureOceanMonument;
 import net.minecraft.world.gen.structure.WoodlandMansion;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.items.IItemHandler;
 
 /*
@@ -227,14 +228,14 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 						Biome biome = biomesIn[j + i * 16];
 						IBlockState state = primer.getBlockState(i, k, j);
 						Block block = state.getBlock();
-						if (biome.getTempCategory() == Biome.TempCategory.OCEAN) {
-							continue;
-						}
+						
+						if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN) ||BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) continue;
+						
+						if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.RIVER) && rand.nextInt(4096) == 0) { break;}
 						if (block == Blocks.STONE) {
 							primer.setBlockState(i, k, j, ModBlocks.ASPHALT.getDefaultState());
 							break;
-						} else if (k == 63 && block == Blocks.AIR && !(biome instanceof BiomeOcean)
-								&& !(biome instanceof BiomeBeach) && !(biome instanceof BiomeStoneBeach)) {
+						} else if (k == 63 && block == Blocks.AIR) {
 							primer.setBlockState(i, k + 1, j, ModBlocks.ASPHALT.getDefaultState());
 							if (value < 0.001d && rand.nextInt(10) == 0) {
 								for (int k2 = k; k2 > 0; --k2) {
@@ -284,7 +285,9 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 		this.setBlocksInChunk(x, z, chunkprimer);
 		this.biomesForGeneration = this.world.getBiomeProvider().getBiomes(this.biomesForGeneration, x * 16, z * 16, 16,
 				16);
-		this.generateRoads(x, z, chunkprimer, this.biomesForGeneration);
+		if (this.mapFeaturesEnabled) {
+			this.generateRoads(x, z, chunkprimer, this.biomesForGeneration);
+		}
 		this.replaceBiomeBlocks(x, z, chunkprimer, this.biomesForGeneration);
 
 		this.replaceBiomeBlocks(x, z, chunkprimer, this.biomesForGeneration);

@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.block.IUpgradeable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
@@ -22,6 +23,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,13 +52,11 @@ public class ItemUpgrader extends ItemQualityTool {
 	public ItemUpgrader(Item.ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
 		super(materialIn, effectiveBlocksIn);
 	}
-	
+
 	public ItemUpgrader(Item.ToolMaterial materialIn) {
 		this(materialIn, com.google.common.collect.Sets.newHashSet(new Block[] {}));
 	}
-	
-	
-	
+
 	public ItemUpgrader setEffectiveness(float effect) {
 		this.effect = effect;
 		return this;
@@ -118,10 +118,10 @@ public class ItemUpgrader extends ItemQualityTool {
 					}
 				}
 			}
-		} else if (block instanceof IUpgradeable && ((IUpgradeable) block).getResult(worldIn,pos) != null) {
+		} else if (block instanceof IUpgradeable && ((IUpgradeable) block).getResult(worldIn, pos) != null) {
 			IUpgradeable upgradeable = ((IUpgradeable) block);
 			ItemStack[] itemStacks = upgradeable.getItems();
-			
+
 			if (hasItemStacks(playerIn, block, itemStacks) || playerIn.isCreative()) {
 				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundHelper.UPGRADE_WOOD,
 						SoundCategory.BLOCKS, MathUtils.getFloatInRange(0.5f, 0.75f),
@@ -130,7 +130,10 @@ public class ItemUpgrader extends ItemQualityTool {
 				playerIn.swingArm(hand);
 				if (itemstack.getTagCompound().getFloat("Percent") >= 1F) {
 					upgradeable.onUpgrade(worldIn, pos, state);
-					worldIn.setBlockState(pos, upgradeable.getResult(worldIn,pos), 3);
+					worldIn.setBlockState(pos, upgradeable.getResult(worldIn, pos), 3);
+					if (!worldIn.isRemote) {
+						ModTriggers.BLOCK_UPGRADE.trigger((EntityPlayerMP) playerIn, state);
+					}
 					itemstack.getTagCompound().setFloat("Percent", 0F);
 					if (!playerIn.isCreative()) {
 						removeItemStacks(playerIn.inventory, itemStacks);
@@ -148,6 +151,9 @@ public class ItemUpgrader extends ItemQualityTool {
 				playerIn.swingArm(hand);
 				if (itemstack.getTagCompound().getFloat("Percent") >= 1F) {
 					worldIn.setBlockState(pos, upgrade.getResult(), 3);
+					if (!worldIn.isRemote) {
+						ModTriggers.BLOCK_UPGRADE.trigger((EntityPlayerMP) playerIn, state);
+					}
 					itemstack.getTagCompound().setFloat("Percent", 0F);
 					if (!playerIn.isCreative()) {
 						removeItemStacks(playerIn.inventory, itemStacks);
@@ -173,7 +179,7 @@ public class ItemUpgrader extends ItemQualityTool {
 	public boolean hasItemStacks(EntityPlayer player, Block block, ItemStack[] itemStacks) {
 		for (ItemStack itemStack : itemStacks) {
 			if (!hasItemStack(player, block, itemStack)) {
-				if (!player.world.isRemote  && !player.isCreative() && !player.isSpectator()) {
+				if (!player.world.isRemote && !player.isCreative() && !player.isSpectator()) {
 					player.sendMessage(new TextComponentTranslation("upgrade.missing",
 							SevenDaysToMine.proxy.localize((itemStack.getItem().getUnlocalizedName() + ".name")),
 							SevenDaysToMine.proxy.localize(block.getUnlocalizedName() + ".name")));
@@ -223,12 +229,12 @@ public class ItemUpgrader extends ItemQualityTool {
 
 	public void onUpdate(ItemStack itemstack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		if (itemstack.getTagCompound() == null) {
-			
+
 			Calendar calendar = Calendar.getInstance();
 			Date date = calendar.getTime();
 			String pattern = "yyyy/MM/dd/HH/mm/ss/SSS";
 			SimpleDateFormat f = new SimpleDateFormat(pattern);
-			
+
 			itemstack.setTagCompound(new NBTTagCompound());
 			itemstack.getTagCompound().setInteger("X", 0);
 			itemstack.getTagCompound().setInteger("Y", 0);

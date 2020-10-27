@@ -56,6 +56,11 @@ public class Statement implements IChainable {
 			}
 			try {
 				long l = Long.parseLong(s);
+				if(Math.abs(l) <= Integer.MAX_VALUE) {
+					int i = Integer.parseInt(s);
+					chain.add(new Value(EnumValueType.INT, i));
+					return;
+				}
 				chain.add(new Value(EnumValueType.LONG, l));
 			} catch (Exception e) {
 				try {

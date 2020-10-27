@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.block.BlockMercury;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -28,14 +29,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LivingEventHandler {
+	
+	@SubscribeEvent
+	public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
+			EntityLivingBase livingEntity = event.getEntityLiving();
+			World world = livingEntity.world;
+			if(livingEntity.getHealth() < livingEntity.getMaxHealth() && world.getBlockState(new BlockPos(livingEntity)).getBlock() instanceof BlockMercury) {
+				livingEntity.addPotionEffect(new PotionEffect(Potions.mercuryPoison,240));
+			}
+	}
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)

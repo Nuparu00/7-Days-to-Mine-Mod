@@ -27,6 +27,8 @@ public class WorldGenBush extends WorldGenerator {
 		IBlockState stateToReplace = worldIn.getBlockState(blockpos);
 		Block toReplace = stateToReplace.getBlock();
 		
+		if(toReplace != Blocks.AIR) return false;
+		
 		IBlockState underState = worldIn.getBlockState(blockpos.down());
 		
 		if(biome.topBlock.getBlock() == underState.getBlock() &&  stateToReplace.getMaterial().isReplaceable()

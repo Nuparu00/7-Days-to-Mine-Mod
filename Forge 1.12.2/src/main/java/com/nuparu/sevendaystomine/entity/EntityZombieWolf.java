@@ -47,7 +47,7 @@ public class EntityZombieWolf extends EntityZombieBase {
 		range.setBaseValue(64.0D);
 		speed.setBaseValue(0.25000001192092896D);
 		attack.setBaseValue(4.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60D);
 		armor.setBaseValue(0.0D);
 	}
 

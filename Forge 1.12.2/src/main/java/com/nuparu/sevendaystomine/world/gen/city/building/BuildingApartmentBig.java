@@ -60,7 +60,7 @@ public class BuildingApartmentBig extends Building{
 
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
 			
@@ -74,7 +74,7 @@ public class BuildingApartmentBig extends Building{
 
 			map = template.getDataBlocks(pos, placementsettings);
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue());
+				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 		}
 	}

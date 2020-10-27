@@ -75,6 +75,8 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 		this.targetTasks.addTask(3,
 				new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, false));
 		this.targetTasks.addTask(3,
+				new EntityAINearestAttackableTarget<EntityHuman>(this, EntityHuman.class, false));
+		this.targetTasks.addTask(3,
 				new EntityAINearestAttackableTarget<EntityIronGolem>(this, EntityIronGolem.class, false));
 	}
 
@@ -84,7 +86,7 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 		range.setBaseValue(64.0D);
 		speed.setBaseValue(0.15D);
 		attack.setBaseValue(7.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(500D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(125D);
 		armor.setBaseValue(3.0D);
 	}
 

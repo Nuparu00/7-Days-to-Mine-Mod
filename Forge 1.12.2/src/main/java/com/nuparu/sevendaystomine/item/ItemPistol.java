@@ -11,7 +11,7 @@ public class ItemPistol extends ItemGun {
 	public ItemPistol() {
 		super();
 		this.setMaxAmmo(15);
-		this.setFullDamage(48.15162342F);
+		this.setFullDamage(60F);
 		this.setSpeed(14f);
 		this.setRecoil(0.61f);
 		this.setCounterDef(0);

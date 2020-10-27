@@ -27,7 +27,7 @@ public class PotionThirst extends PotionBase {
 				extendedPlayer.consumeStamina(2);
 			}
 		}
-		if (entityLivingBaseIn.world.getDifficulty() != EnumDifficulty.PEACEFUL)
+		if (entityLivingBaseIn.world.getDifficulty() == EnumDifficulty.PEACEFUL)
 			return;
 		if (entityLivingBaseIn.world.rand.nextInt(15) == 0) {
 			entityLivingBaseIn.attackEntityFrom(DamageSources.thirst, 2);

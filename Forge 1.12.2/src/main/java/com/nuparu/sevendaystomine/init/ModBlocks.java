@@ -105,7 +105,7 @@ public class ModBlocks {
 			.setRegistryName("ReinforcedConcreteWet").setUnlocalizedName("ReinforcedConcreteWet");
 	public static final Block REINFORCED_CONCRETE = new BlockReinforcedConcrete().setRegistryName("ReinforcedConcrete")
 			.setUnlocalizedName("ReinforcedConcrete");
-	public static final Block ASPHALT = new BlockBase(Material.ROCK).setRegistryName("Asphalt")
+	public static final Block ASPHALT = new BlockBase(Material.ROCK, MapColor.BLACK).setRegistryName("Asphalt")
 			.setUnlocalizedName("Asphalt").setHardness(7.0F).setResistance(15.0F)
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 
@@ -479,5 +479,7 @@ public class ModBlocks {
 	public static final Block SEPARATOR = new BlockSeparator().setRegistryName("separator").setUnlocalizedName("separator");
 	public static final Block RAZOR_WIRE = new BlockRazorWire().setRegistryName("razor_wire").setUnlocalizedName("razor_wire");
 	public static final Block STAND = new BlockStand().setRegistryName("stand").setUnlocalizedName("stand");
+	public static final Block LANDMINE = new BlockLandmine().setRegistryName("landmine").setUnlocalizedName("landmine").setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
+	public static final Block SIRENE = new BlockSirene().setRegistryName("sirene").setUnlocalizedName("sirene").setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
 
 }

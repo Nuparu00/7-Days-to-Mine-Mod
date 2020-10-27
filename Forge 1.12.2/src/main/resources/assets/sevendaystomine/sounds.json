@@ -150,5 +150,22 @@
       "sounds":[  
          "sevendaystomine:flamethrower.shot"
       ]
-   }      
+   }   ,
+   "sirene":{  
+      "category":"record",
+      "subtitle":"subtitle.sirene",
+      "sounds":[  
+         {  
+            "name":"sevendaystomine:sirene",
+            "stream":true
+         }
+      ]
+   }   ,
+   "safe.unlock":{  
+      "category":"block",
+      "subtitle":"subtitle.safe.unlock",
+      "sounds":[  
+         "sevendaystomine:safe.unlock"
+      ]
+   }
 }

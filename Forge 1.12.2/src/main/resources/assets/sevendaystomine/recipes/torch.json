@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FG",
+    "S "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "F": {
+      "item": "sevendaystomine:plantfiber"
+    },
+    "G": {
+      "item": "sevendaystomine:gas_canister"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:torchlit"
+  }
+}

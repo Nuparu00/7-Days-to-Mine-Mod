@@ -22,7 +22,7 @@ public class CitySavedData extends WorldSavedData {
 
 	protected int dim = Integer.MIN_VALUE;
 
-	public List<Long> cities = new ArrayList<Long>();
+	private List<Long> cities = new ArrayList<Long>();
 
 	public CitySavedData() {
 		super(DATA_NAME);
@@ -64,10 +64,10 @@ public class CitySavedData extends WorldSavedData {
 
 	public void addCity(BlockPos pos) {
 		this.cities.add(pos.toLong());
-		this.setDirty(true);
+		markDirty();
 	}
 
-	public boolean isCityNearby(BlockPos pos, int distanceSq) {
+	public boolean isCityNearby(BlockPos pos, long distanceSq) {
 		for (Long l : cities) {
 			if (pos.distanceSq(BlockPos.fromLong(l)) <= distanceSq) {
 				return true;
@@ -87,6 +87,10 @@ public class CitySavedData extends WorldSavedData {
 			return data;
 		}
 		return null;
+	}
+	
+	public List<Long> getCities(){
+		return new ArrayList<Long>(cities);
 	}
 
 }

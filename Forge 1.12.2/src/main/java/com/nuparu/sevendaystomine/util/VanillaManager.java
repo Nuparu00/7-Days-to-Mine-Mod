@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
@@ -105,12 +106,28 @@ public class VanillaManager {
 		Blocks.IRON_BARS.setResistance(10F);
 		Blocks.CLAY.setResistance(1F);
 		Blocks.CONCRETE.setResistance(20F);*/
+		
+		Items.PORKCHOP.setMaxStackSize(1);
+		Items.COOKED_PORKCHOP.setMaxStackSize(1);
+		Items.BEEF.setMaxStackSize(1);
+		Items.COOKED_BEEF.setMaxStackSize(1);
+		Items.APPLE.setMaxStackSize(1);;
+		Items.BREAD.setMaxStackSize(1);
+		Items.GOLDEN_APPLE.setMaxStackSize(1);
+		Items.FISH.setMaxStackSize(1);
+		Items.COOKED_FISH.setMaxStackSize(1);
+		Items.CHICKEN.setMaxStackSize(1);
+		Items.COOKED_CHICKEN.setMaxStackSize(1);
+		Items.RABBIT.setMaxStackSize(1);
+		Items.COOKED_RABBIT.setMaxStackSize(1);
+		Items.MUTTON.setMaxStackSize(1);
+		Items.COOKED_MUTTON.setMaxStackSize(1);
+		Items.ROTTEN_FLESH.setMaxStackSize(1);
 	}
 
 	public static void removeVanillaRecipes() {
 		RecipeManager.removeRecipe(Blocks.FURNACE);
 		RecipeManager.removeRecipe(Blocks.PLANKS);
-		RecipeManager.removeRecipe(Blocks.TORCH);
 		RecipeManager.removeRecipe(Blocks.IRON_BARS);
 		RecipeManager.removeRecipe(Blocks.IRON_TRAPDOOR);
 		RecipeManager.removeRecipe(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
@@ -208,8 +225,8 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.COBBLESTONE,EnumMaterial.STONE).setWeight(7));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.FLINT,EnumMaterial.STONE).setWeight(1));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.COAL,EnumMaterial.CARBON).setWeight(1));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.IRON_NUGGET,EnumMaterial.IRON).setWeight(1));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.GOLD_NUGGET,EnumMaterial.GOLD).setWeight(1));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.IRON_NUGGET,EnumMaterial.IRON).setWeight(0));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.GOLD_NUGGET,EnumMaterial.GOLD).setWeight(0));
 	}
 	
 	public static VanillaScrapableItem getVanillaScrapable(Item item) {

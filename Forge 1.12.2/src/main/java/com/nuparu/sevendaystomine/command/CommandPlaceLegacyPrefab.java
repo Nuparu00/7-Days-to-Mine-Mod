@@ -60,10 +60,7 @@ public class CommandPlaceLegacyPrefab extends CommandBase {
 		String name = args[3];
 		File file = new File("./resources/prefabs/" + name + ".prfb");
 		file.getParentFile().mkdirs();
-		int x = Integer.parseInt(args[0]);
-		int y = Integer.parseInt(args[1]);
-		int z = Integer.parseInt(args[2]);
-		BlockPos pos = new BlockPos(x, y, z);
+		BlockPos pos = parseBlockPos(sender, args, 0, true);
 		boolean shouldContainAir = Boolean.parseBoolean(args[4]);
 		float rotation = 0f;
 		long startTime = 0l;

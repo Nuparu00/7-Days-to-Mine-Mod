@@ -66,7 +66,7 @@ public class PacketManager {
 	public static SimpleNetworkWrapper killProcess;
 	public static SimpleNetworkWrapper syncProcess;
 	public static SimpleNetworkWrapper saveData;
-
+	
 	private static int discriminator = 0;
 
 	public PacketManager() {
