@@ -32,11 +32,11 @@ public class Value implements IChainable {
 	public Value(boolean value) {
 		this(EnumValueType.BOOL, value);
 	}
-	
+
 	public Value(float value) {
 		this(EnumValueType.FLOAT, value);
 	}
-	
+
 	public Value(long value) {
 		this(EnumValueType.LONG, value);
 	}
@@ -44,12 +44,11 @@ public class Value implements IChainable {
 	public Value(short value) {
 		this(EnumValueType.SHORT, value);
 	}
-	
+
 	public Value(byte value) {
 		this(EnumValueType.BYTE, value);
 	}
-	
-	
+
 	public Value add(Value other) {
 		if (isNumerical() && other.isNumerical()) {
 			if (isDouble()) {
@@ -188,13 +187,17 @@ public class Value implements IChainable {
 	@Nullable
 	public Object getRealValue() {
 		String s = "";
+		
+		if(value == null) {
+			return "null";
+		}
 
 		if (type == EnumValueType.STRING) {
 			return (String) value;
 		}
 		if (type == EnumValueType.INT) {
-			if(value instanceof Number) {
-				return ((Number)value).intValue();
+			if (value instanceof Number) {
+				return ((Number) value).intValue();
 			}
 			return (int) value;
 		}
@@ -202,32 +205,32 @@ public class Value implements IChainable {
 			return (boolean) value;
 		}
 		if (type == EnumValueType.DOUBLE) {
-			if(value instanceof Number) {
-				return ((Number)value).doubleValue();
+			if (value instanceof Number) {
+				return ((Number) value).doubleValue();
 			}
 			return (double) value;
 		}
 		if (type == EnumValueType.FLOAT) {
-			if(value instanceof Number) {
-				return ((Number)value).floatValue();
+			if (value instanceof Number) {
+				return ((Number) value).floatValue();
 			}
 			return (float) value;
 		}
 		if (type == EnumValueType.LONG) {
-			if(value instanceof Number) {
-				return ((Number)value).longValue();
+			if (value instanceof Number) {
+				return ((Number) value).longValue();
 			}
 			return (long) value;
 		}
 		if (type == EnumValueType.SHORT) {
-			if(value instanceof Number) {
-				return ((Number)value).shortValue();
+			if (value instanceof Number) {
+				return ((Number) value).shortValue();
 			}
 			return (short) value;
 		}
 		if (type == EnumValueType.BYTE) {
-			if(value instanceof Number) {
-				return ((Number)value).byteValue();
+			if (value instanceof Number) {
+				return ((Number) value).byteValue();
 			}
 			return (byte) value;
 		}
@@ -249,19 +252,19 @@ public class Value implements IChainable {
 	public boolean isDouble() {
 		return type == EnumValueType.DOUBLE || (getRealValue() instanceof Double);
 	}
-	
+
 	public boolean isFloat() {
 		return type == EnumValueType.FLOAT || (getRealValue() instanceof Float);
 	}
-	
+
 	public boolean isLong() {
 		return type == EnumValueType.LONG || (getRealValue() instanceof Long);
 	}
-	
+
 	public boolean isShort() {
 		return type == EnumValueType.LONG || (getRealValue() instanceof Short);
 	}
-	
+
 	public boolean isByte() {
 		return type == EnumValueType.LONG || (getRealValue() instanceof Byte);
 	}
@@ -269,61 +272,74 @@ public class Value implements IChainable {
 	public boolean isNumerical() {
 		return isInt() || isDouble() || isFloat() || isLong() || isShort() || isByte();
 	}
-	
+
 	public Value asDouble() {
-		if(value instanceof Number) {
-			return new Value(((Number)value).doubleValue());
+		if (value instanceof Number) {
+			return new Value(((Number) value).doubleValue());
 		}
 		return this;
 	}
-	
+
 	public Value asInt() {
-		if(value instanceof Number) {
-			return new Value(((Number)value).intValue());
+		if (value instanceof Number) {
+			return new Value(((Number) value).intValue());
 		}
 		return this;
 	}
-	
+
 	public Value asFloat() {
-		if(value instanceof Number) {
-			return new Value(((Number)value).floatValue());
+		if (value instanceof Number) {
+			return new Value(((Number) value).floatValue());
 		}
 		return this;
 	}
-	
+
 	public Value asLong() {
-		if(value instanceof Number) {
-			return new Value(((Number)value).longValue());
+		if (value instanceof Number) {
+			return new Value(((Number) value).longValue());
 		}
 		return this;
 	}
-	
+
 	public Value asShort() {
-		if(value instanceof Number) {
-			return new Value(((Number)value).shortValue());
+		if (value instanceof Number) {
+			return new Value(((Number) value).shortValue());
 		}
 		return this;
 	}
-	
+
 	public Value asByte() {
-		if(value instanceof Number) {
-			return new Value(((Number)value).byteValue());
+		if (value instanceof Number) {
+			return new Value(((Number) value).byteValue());
 		}
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "[Value=" + (getRealValue() != null ? getRealValue().toString() : "null") + ", " + type + " , real_type=" + (value != null ? value.getClass().getCanonicalName() : "null")+"]";
+		return "[Value=" + (getRealValue() != null ? getRealValue().toString() : "null") + ", " + type + " , real_type="
+				+ (value != null ? value.getClass().getCanonicalName() : "null") + "]";
 	}
 
 	public enum EnumValueType {
-		INT("int"), STRING("string"), BOOL("bool"), DOUBLE("double"), FLOAT("float"), LONG("long"), BYTE("byte"), SHORT("short");
+
+		/*
+		 * NUMERICAL and OBJECT are only intended as argument "wildcards" and should not really veer be used as a real value type
+		 */
+		
+		INT("int", true), STRING("string"), BOOL("bool"), DOUBLE("double", true), FLOAT("float", true),
+		LONG("long", true), BYTE("byte", true), SHORT("short", true), OBJECT("object"), NUMERICAL("numerical", true);
 
 		String name;
+		boolean numerical = false;
 
 		EnumValueType(String type) {
 			this.name = type;
+		}
+
+		EnumValueType(String type, boolean numerical) {
+			this.name = type;
+			this.numerical = numerical;
 		}
 
 		public static EnumValueType getByType(String s) {
@@ -332,6 +348,10 @@ public class Value implements IChainable {
 					return t;
 			}
 			return null;
+		}
+
+		public boolean isNumerical() {
+			return numerical;
 		}
 
 	}
@@ -354,28 +374,28 @@ public class Value implements IChainable {
 		if (!isNumerical() || !other.isNumerical())
 			return false;
 
-		if(isLong() || other.isLong()) {
-			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+		if (isLong() || other.isLong()) {
+			return (long) this.asLong().getRealValue() < (long) other.asLong().getRealValue();
 		}
-		
-		if(isDouble() || other.isDouble()) {
-			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+
+		if (isDouble() || other.isDouble()) {
+			return (long) this.asLong().getRealValue() < (long) other.asLong().getRealValue();
 		}
-		
-		if(isFloat() || other.isFloat()) {
-			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+
+		if (isFloat() || other.isFloat()) {
+			return (long) this.asLong().getRealValue() < (long) other.asLong().getRealValue();
 		}
-		
-		if(isInt() || other.isInt()) {
-			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+
+		if (isInt() || other.isInt()) {
+			return (long) this.asLong().getRealValue() < (long) other.asLong().getRealValue();
 		}
-		
-		if(isShort() || other.isShort()) {
-			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+
+		if (isShort() || other.isShort()) {
+			return (long) this.asLong().getRealValue() < (long) other.asLong().getRealValue();
 		}
-		
-		if(isByte() || other.isByte()) {
-			return (long)this.asLong().getRealValue() < (long)other.asLong().getRealValue();
+
+		if (isByte() || other.isByte()) {
+			return (long) this.asLong().getRealValue() < (long) other.asLong().getRealValue();
 		}
 		return false;
 	}
@@ -384,28 +404,28 @@ public class Value implements IChainable {
 		if (!isNumerical() || !other.isNumerical())
 			return false;
 
-		if(isLong() || other.isLong()) {
-			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+		if (isLong() || other.isLong()) {
+			return (long) this.asLong().getRealValue() > (long) other.asLong().getRealValue();
 		}
-		
-		if(isDouble() || other.isDouble()) {
-			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+
+		if (isDouble() || other.isDouble()) {
+			return (long) this.asLong().getRealValue() > (long) other.asLong().getRealValue();
 		}
-		
-		if(isFloat() || other.isFloat()) {
-			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+
+		if (isFloat() || other.isFloat()) {
+			return (long) this.asLong().getRealValue() > (long) other.asLong().getRealValue();
 		}
-		
-		if(isInt() || other.isInt()) {
-			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+
+		if (isInt() || other.isInt()) {
+			return (long) this.asLong().getRealValue() > (long) other.asLong().getRealValue();
 		}
-		
-		if(isShort() || other.isShort()) {
-			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+
+		if (isShort() || other.isShort()) {
+			return (long) this.asLong().getRealValue() > (long) other.asLong().getRealValue();
 		}
-		
-		if(isByte() || other.isByte()) {
-			return (long)this.asLong().getRealValue() > (long)other.asLong().getRealValue();
+
+		if (isByte() || other.isByte()) {
+			return (long) this.asLong().getRealValue() > (long) other.asLong().getRealValue();
 		}
 		return false;
 	}

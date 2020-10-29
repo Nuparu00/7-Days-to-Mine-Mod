@@ -66,8 +66,11 @@ public class Plot {
 	public void generate() {
 
 		BlockPos pos = start.offset(street.facing, street.facing.getAxis() == EnumFacing.Axis.Z ? zSize : xSize);
+		int yStart = start.getY();
+		int yEnd = end.getY();
+		
 
-		building.generate(street.world, new BlockPos(pos.getX(), Math.min(pos.getY(), end.getY()) + 1, pos.getZ()),
+		building.generate(street.world, new BlockPos(pos.getX(), MathUtils.lerp(yStart, yEnd, 0.5f), pos.getZ()),
 				street.facing, mirror);
 	}
 

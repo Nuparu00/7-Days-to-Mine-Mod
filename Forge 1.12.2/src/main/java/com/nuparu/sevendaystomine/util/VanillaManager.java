@@ -222,8 +222,8 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.GOLD_BLOCK,EnumMaterial.GOLD).setWeight(54));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.STONE,EnumMaterial.STONE).setWeight(9));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.GRAVEL,EnumMaterial.STONE).setWeight(4));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.COBBLESTONE,EnumMaterial.STONE).setWeight(7));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.FLINT,EnumMaterial.STONE).setWeight(1));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.COBBLESTONE,EnumMaterial.STONE).setWeight(6));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.FLINT,EnumMaterial.STONE).setWeight(2));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.COAL,EnumMaterial.CARBON).setWeight(1));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.IRON_NUGGET,EnumMaterial.IRON).setWeight(0));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.GOLD_NUGGET,EnumMaterial.GOLD).setWeight(0));

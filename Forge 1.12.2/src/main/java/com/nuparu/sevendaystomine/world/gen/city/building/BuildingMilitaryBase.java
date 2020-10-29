@@ -65,7 +65,7 @@ public class BuildingMilitaryBase extends Building {
 			}
 
 			Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
-			pos = pos.up(yOffset).offset(facing, 4);
+			pos = pos.up(yOffset);
 
 			PlacementSettings placementsettings = (new PlacementSettings())
 					.setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot).setIgnoreEntities(false)
@@ -84,7 +84,7 @@ public class BuildingMilitaryBase extends Building {
 			if (template == null) {
 				return;
 			}
-			pos = pos.offset(facing, mirror ? 22 : -22);
+			pos = pos.offset(facing, -22);
 			template.addBlocksToWorld(world, pos, placementsettings);
 			map = template.getDataBlocks(pos, placementsettings);
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
@@ -108,7 +108,7 @@ public class BuildingMilitaryBase extends Building {
 			if (template == null) {
 				return;
 			}
-			pos = pos.offset(facing, mirror ? -22 : 22);
+			pos = pos.offset(facing, 22);
 			template.addBlocksToWorld(world, pos, placementsettings);
 			map = template.getDataBlocks(pos, placementsettings);
 			for (Entry<BlockPos, String> entry : map.entrySet()) {

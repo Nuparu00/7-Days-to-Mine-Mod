@@ -1,8 +1,10 @@
 package com.nuparu.sevendaystomine.computer.process;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.script.ScriptException;
 
@@ -27,6 +29,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
@@ -268,6 +271,9 @@ public class ShellProcess extends WindowedProcess {
 		case "help":
 			help();
 			return "";
+		case "connections":
+			connections();
+			return "";
 		case "ipconfig":
 			ipconfig();
 			return "";
@@ -288,6 +294,7 @@ public class ShellProcess extends WindowedProcess {
 		addTextToLog("IPCONFIG Displays all current TCP/IP network configuration values.");
 		addTextToLog("COMPUTE Computes a JavaScript code.");
 		addTextToLog("RUN Runs a program.");
+		addTextToLog("CONNECTIONS Prints all connected devices.");
 		addTextToLog("DISCONNECTALL Disconnets all connected devices.");
 	}
 
@@ -320,6 +327,15 @@ public class ShellProcess extends WindowedProcess {
 			addTextToLog("F");
 		} else {
 			addTextToLog("\"" + words[1] + "\" is not recognized as a program.");
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void connections() {
+		List<BlockPos> connections = this.computerTE.getConnections();
+		for (BlockPos connection : connections) {
+			addTextToLog(connection.getX() + "/" + connection.getY() + "/" + connection.getZ() + " " + new BigDecimal(connection.getDistance(this.computerTE.getPos().getX(),
+					this.computerTE.getPos().getY(), this.computerTE.getPos().getZ())).setScale(3,BigDecimal.ROUND_HALF_UP).toString() +" m");
 		}
 	}
 }

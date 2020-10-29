@@ -7,6 +7,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
+import com.nuparu.sevendaystomine.world.gen.city.EnumCityType;
 import com.nuparu.sevendaystomine.world.gen.city.Street;
 
 import net.minecraft.block.Block;
@@ -34,6 +35,7 @@ public class BuildingChurch extends Building {
 	}
 	public BuildingChurch(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight,yOffset);
+		setAllowedCityTypes(EnumCityType.URBAN, EnumCityType.RURAL);
 	}
 
 	@Override

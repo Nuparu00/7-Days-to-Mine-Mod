@@ -110,12 +110,14 @@ public class BlockTurretAdvanced extends BlockTileProvider<TileEntityTurretAdvan
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (playerIn.isSneaking())
-			return false;
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te != null && te instanceof TileEntityTurret) {
-			playerIn.openGui(SevenDaysToMine.instance, 25, worldIn, pos.getX(), pos.getY(), pos.getZ());
-
+			TileEntityTurret turret = (TileEntityTurret) te;
+			if (playerIn.isSneaking()) {
+				turret.switchOn();
+			} else {
+				playerIn.openGui(SevenDaysToMine.instance, 25, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			}
 		}
 		return true;
 	}
@@ -131,7 +133,7 @@ public class BlockTurretAdvanced extends BlockTileProvider<TileEntityTurretAdvan
 			}
 		}
 	}
-	
+
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return ((EnumFacing) state.getValue(BlockHorizontalBase.FACING)).getIndex();

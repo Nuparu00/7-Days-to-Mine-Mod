@@ -1,0 +1,22 @@
+{
+  "type": "sevendaystomine:crafting_quality_shaped",
+  "pattern": [
+    "IIF",
+    "ISF",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+      "item": "sevendaystomine:scrapiron"
+    },
+    "F": {
+      "item": "sevendaystomine:plantfiber"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:scrap_axe"
+  }
+}

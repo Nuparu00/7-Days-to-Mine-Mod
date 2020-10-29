@@ -18,7 +18,11 @@ import com.nuparu.sevendaystomine.network.packets.PlayerCapabilitySyncMessage;
 import net.minecraft.entity.EntityTracker;
 
 public class ExtendedPlayer implements IExtendedPlayer {
-
+	
+	public static final int INFECTION_STAGE_TWO_START = 48000;
+	public static final int INFECTION_STAGE_THREE_START = 96000;
+	public static final int INFECTION_STAGE_FOUR_START = 144000;
+	
 	int maxThirst = 780;
 	int maxStamina = 780;
 

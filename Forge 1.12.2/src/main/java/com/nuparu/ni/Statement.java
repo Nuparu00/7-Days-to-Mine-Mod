@@ -92,7 +92,7 @@ public class Statement implements IChainable {
 		// Gradually modified chain
 		ArrayList<IChainable> modified = (ArrayList<IChainable>) chain.clone();
 
-		System.out.println(toString(modified));
+		//System.out.println(toString(modified));
 
 		// Multiplication
 		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
@@ -456,6 +456,7 @@ public class Statement implements IChainable {
 				return value;
 			}
 		}
+		System.out.println(toString(modified));
 		throw new EvaluationErrorException(this);
 	}
 

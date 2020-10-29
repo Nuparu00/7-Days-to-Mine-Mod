@@ -25,6 +25,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityTrashBin;
 import com.nuparu.sevendaystomine.util.ItemUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
+import com.nuparu.sevendaystomine.world.gen.city.EnumCityType;
 import com.nuparu.sevendaystomine.world.gen.city.Street;
 
 import net.minecraft.block.Block;
@@ -55,6 +56,7 @@ public class BuildingOvergrownHouse extends Building {
 
 	public BuildingOvergrownHouse(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight, yOffset);
+		setAllowedCityTypes(EnumCityType.URBAN, EnumCityType.RURAL);
 	}
 
 	@Override
@@ -100,5 +102,9 @@ public class BuildingOvergrownHouse extends Building {
 		default:
 			super.handleDataBlock(world, facing, pos, data, mirror);
 		}
+	}
+	@Override
+	public BlockPos getDimensions(World world, EnumFacing facing) {
+		return super.getDimensions(world, facing).add(2,0,2);
 	}
 }

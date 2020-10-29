@@ -20,7 +20,19 @@
          "sevendaystomine:acacia_planks_frame",
          "sevendaystomine:darkoak_planks_frame",
          "sevendaystomine:campfire",
-         "sevendaystomine:sleeping_bag"
+         "sevendaystomine:sleeping_bag",
+         "sevendaystomine:oak_stairs",
+         "sevendaystomine:spruce_stairs",
+         "sevendaystomine:birch_stairs",
+         "sevendaystomine:jungle_stairs",
+         "sevendaystomine:acacia_stairs",
+         "sevendaystomine:dark_oak_stairs",
+         "sevendaystomine:oak_slab",
+         "sevendaystomine:spruce_slab",
+         "sevendaystomine:birch_slab",
+         "sevendaystomine:jungle_slab",
+         "sevendaystomine:acacia_slab",
+         "sevendaystomine:dark_oak_slab"
       ],
       "experience":1
    },

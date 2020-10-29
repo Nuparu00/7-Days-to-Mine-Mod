@@ -161,6 +161,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe {
 		Iterator<ItemStack> itInv = listInv.iterator();
 
 		int multiplier = Integer.MAX_VALUE;
+		
 
 		while (itIng.hasNext()) {
 			MaterialStackWrapper ingWrapper = itIng.next();
@@ -190,7 +191,6 @@ public class ForgeRecipeMaterial implements IForgeRecipe {
 						break;
 					}
 				}else if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() != null && ((ItemBlock)item).getBlock() instanceof IScrapable) {
-
 					IScrapable scrapable = (IScrapable)((ItemBlock)item).getBlock();
 					if (enumMat != scrapable.getMaterial())
 						continue;
@@ -233,7 +233,10 @@ public class ForgeRecipeMaterial implements IForgeRecipe {
 				multiplier = i;
 			}
 		}
-
+		if(multiplier < 1) {
+			System.out.println("Multiplier less than 1, setting back to 1");
+			multiplier = 1;
+		}
 		return multiplier;
 	}
 

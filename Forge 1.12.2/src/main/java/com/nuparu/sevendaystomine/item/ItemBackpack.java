@@ -19,6 +19,7 @@ public class ItemBackpack extends Item {
 
 	public ItemBackpack() {
 		this.setMaxStackSize(1);
+		this.setCreativeTab(SevenDaysToMine.TAB_CLOTHING);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.block.BlockCodeSafe;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
+import com.nuparu.sevendaystomine.world.gen.city.EnumCityType;
 import com.nuparu.sevendaystomine.world.gen.city.Street;
 
 import net.minecraft.block.Block;
@@ -47,6 +48,7 @@ public class BuildingPoliceStation extends Building {
 	public BuildingPoliceStation(int weight, int yOffset) {
 		super(null, weight, yOffset);
 		canBeMirrored = false;
+		setAllowedCityTypes(EnumCityType.URBAN, EnumCityType.RURAL);
 	}
 
 	@Override

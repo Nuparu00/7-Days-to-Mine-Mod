@@ -18,6 +18,7 @@ import com.nuparu.sevendaystomine.world.gen.city.building.BuildingApartmentBig;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingApartmentDark;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingBrickHouse;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingChurch;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingFarm;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingGasStation;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingGrayHouse;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingHospital;
@@ -104,7 +105,7 @@ public class CityHelper {
 		// ResourceLocation(SevenDaysToMine.MODID,"overgrown_house")));
 
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartment"), 40, -1,
-				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE_SMOOTH)));
+				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE_SMOOTH)).setAllowedCityTypes(EnumCityType.URBAN));
 		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house"), 40, -2));
 		buildings.add(new BuildingApartmentDark(new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_bottom"),
 				50, -1));
@@ -112,16 +113,17 @@ public class CityHelper {
 		buildings.add(new BuildingGasStation(new ResourceLocation(SevenDaysToMine.MODID, "gas_station_1"), 10, -1));
 		buildings.add(
 				new BuildingOvergrownHouse(new ResourceLocation(SevenDaysToMine.MODID, "overgrown_house"), 20, -1));
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "water_tower"), 1));
-		buildings.add(new BuildingChurch(new ResourceLocation(SevenDaysToMine.MODID, "church_front"), 10, -1));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "water_tower"), 3).setAllowedCityTypes(EnumCityType.RURAL));
+		buildings.add(new BuildingFarm(new ResourceLocation(SevenDaysToMine.MODID, "farm"), 30,0, Blocks.STONE.getDefaultState()).setAllowedCityTypes(EnumCityType.RURAL));
+		buildings.add(new BuildingChurch(new ResourceLocation(SevenDaysToMine.MODID, "church_front"), 5, -1));
 		buildings.add(new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_0"),
 				new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_1"), 20, -1));
 		buildings.add(new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_undamaged_0"),
 						new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_undamaged_1"), 20, -1));
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartments_ruins_overgrown"), 20, -1));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartments_ruins_overgrown"), 20, -1).setAllowedCityTypes(EnumCityType.URBAN));
 		buildings.add(new BuildingHospital(new ResourceLocation(SevenDaysToMine.MODID, "hospital_front_left"), 4, -1));
 		buildings.add(new BuildingOffice(new ResourceLocation(SevenDaysToMine.MODID, "office_building_right"), 10, -1));
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "menu_house"), 20, -4));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "menu_house"), 20, -4).setAllowedCityTypes(EnumCityType.RURAL, EnumCityType.URBAN));
 		buildings.add(new BuildingSupermarket(new ResourceLocation(SevenDaysToMine.MODID, "supermarket_right"), 30, -1));
 		buildings.add(new BuildingPoliceStation(30, 0));
 	}

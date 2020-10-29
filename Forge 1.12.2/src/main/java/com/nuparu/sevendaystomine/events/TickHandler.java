@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
+import com.nuparu.sevendaystomine.capability.ExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.config.ModConfig;
@@ -251,10 +252,10 @@ public class TickHandler {
 				handleExtendedPlayer(player, world, extendedPlayer);
 			}
 			IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
-			EntityPlayerMP playerMP = (EntityPlayerMP)player;
+			EntityPlayerMP playerMP = (EntityPlayerMP) player;
 			long time = world.getWorldTime() % 24000;
-			if (Utils.isBloodmoon(world) && !world.isRemote
-					&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 13000 && time < 23000) {
+			if (Utils.isBloodmoon(world) && !world.isRemote && world.getDifficulty() != EnumDifficulty.PEACEFUL
+					&& time > 13000 && time < 23000) {
 
 				if (!iep.hasHorde()) {
 					BloodmoonHorde horde = new BloodmoonHorde(new BlockPos(playerMP), world, playerMP);
@@ -263,8 +264,8 @@ public class TickHandler {
 					iep.setHorde(true);
 				}
 
-			} else if (Utils.isWolfHorde(world) && !world.isRemote
-					&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 1000 && time < 1060) {
+			} else if (Utils.isWolfHorde(world) && !world.isRemote && world.getDifficulty() != EnumDifficulty.PEACEFUL
+					&& time > 1000 && time < 1060) {
 
 				if (!iep.hasHorde()) {
 					ZombieWoflHorde horde = new ZombieWoflHorde(new BlockPos(player), world, player);
@@ -284,13 +285,21 @@ public class TickHandler {
 		if (extendedPlayer.isInfected()) {
 			int time = extendedPlayer.getInfectionTime();
 			extendedPlayer.setInfectionTime(time + 1);
-			if (time >= 48000 && time < 96000 && (player.getActivePotionEffect(Potions.infection) == null)) {
+			PotionEffect effect = player.getActivePotionEffect(Potions.infection);
+			
+			if (time < ExtendedPlayer.INFECTION_STAGE_TWO_START && (effect == null || effect.getAmplifier() != 0)) {
+				player.addPotionEffect(new PotionEffect(Potions.infection, 24000));
+			}
+			if (time >= ExtendedPlayer.INFECTION_STAGE_TWO_START && time < ExtendedPlayer.INFECTION_STAGE_THREE_START
+					&& (effect == null || effect.getAmplifier() != 1)) {
 				player.addPotionEffect(new PotionEffect(Potions.infection, 24000, 1));
 			}
-			if (time >= 96000 && time < 144000 && (player.getActivePotionEffect(Potions.infection) == null)) {
+			if (time >= ExtendedPlayer.INFECTION_STAGE_THREE_START && time < ExtendedPlayer.INFECTION_STAGE_FOUR_START
+					&& (effect == null || effect.getAmplifier() != 2)) {
 				player.addPotionEffect(new PotionEffect(Potions.infection, 24000, 2));
 			}
-			if (time >= 144000 && (player.getActivePotionEffect(Potions.infection) == null)) {
+			if (time >= ExtendedPlayer.INFECTION_STAGE_FOUR_START
+					&& (player.getActivePotionEffect(Potions.infection) == null)) {
 				player.attackEntityFrom(DamageSources.infection, 1);
 
 			}

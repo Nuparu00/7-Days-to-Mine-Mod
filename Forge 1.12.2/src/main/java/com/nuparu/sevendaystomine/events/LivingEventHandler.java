@@ -6,9 +6,11 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockMercury;
+import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.MathUtils;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -60,16 +62,22 @@ public class LivingEventHandler {
 		if (entity.getIsInvulnerable()) {
 			return;
 		}
-
+		if (amount < 2)
+			return;
+		
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (player.isCreative() || player.isSpectator()) {
 				return;
 			}
+			if(source.getTrueSource() != null && source.getTrueSource() instanceof EntityZombieBase) {
+				if(world.rand.nextInt(20) == 0) {
+					Utils.infectPlayer(player, 0);
+				}
+			}
 		}
 
-		if (amount < 2)
-			return;
+		
 
 		if (source == DamageSource.DROWN || source == DamageSource.FALL || source == DamageSource.HOT_FLOOR
 				|| source == DamageSource.ON_FIRE || source == DamageSource.OUT_OF_WORLD
@@ -110,7 +118,7 @@ public class LivingEventHandler {
 			if (event.getDistance() > 4
 					&& living.world.rand.nextFloat() * (Math.max(256 - (event.getDistance() * 25), 0)) <= 1) {
 				PotionEffect effect = new PotionEffect(Potions.brokenLeg,
-						(int) (MathUtils.getFloatInRange(0.5f, 1.5f) * (500 * event.getDistance())), 1, false, false);
+						(int) (MathUtils.getFloatInRange(0.5f, 1.5f) * (500 * event.getDistance())), 0, false, false);
 				effect.setCurativeItems(new ArrayList<ItemStack>());
 				living.addPotionEffect(effect);
 			}

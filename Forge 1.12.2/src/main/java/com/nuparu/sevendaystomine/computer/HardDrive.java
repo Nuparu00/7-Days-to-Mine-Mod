@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.computer.process;
+package com.nuparu.sevendaystomine.computer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,9 @@ import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 
 public class HardDrive {
 
@@ -21,6 +23,7 @@ public class HardDrive {
 
 	public ArrayList<Application> applications = new ArrayList<Application>();
 	public ConcurrentHashMap<double[], Application> desktopIcons = new ConcurrentHashMap<double[], Application>();
+	public ConcurrentHashMap<double[], File> files = new ConcurrentHashMap<double[], File>();
 
 	private boolean bussy = false;
 
@@ -46,7 +49,7 @@ public class HardDrive {
 			nbt.setTag("applications", apps);
 		}
 		if (desktopIcons != null) {
-			NBTTagCompound icons = new NBTTagCompound();
+			NBTTagList icons = new NBTTagList();
 			int i = 0;
 			bussy = true;
 			Iterator<Entry<double[], Application>> it = desktopIcons.entrySet().iterator();
@@ -63,11 +66,10 @@ public class HardDrive {
 				icon.setDouble("x", coords[0]);
 				icon.setDouble("y", coords[1]);
 				icon.setString("app", ApplicationRegistry.INSTANCE.getResByApp(app).toString());
-				icons.setTag("icon" + i, icon);
+				icons.appendTag(icon);
 				++i;
 			}
 			bussy = false;
-			icons.setInteger("count", i);
 			nbt.setTag("icons", icons);
 		}
 
@@ -95,21 +97,16 @@ public class HardDrive {
 		}
 		desktopIcons.clear();
 		if (nbt.hasKey("icons")) {
-			NBTTagCompound icons = nbt.getCompoundTag("icons");
-			if (icons.hasKey("count")) {
-				int count = icons.getInteger("count");
-				if (count > 0) {
-					for (int i = 0; i < count; i++) {
-						NBTTagCompound icon = icons.getCompoundTag("icon" + i);
-						double x = icon.getDouble("x");
-						double y = icon.getDouble("y");
-						String s = icon.getString("app");
-						ResourceLocation res = new ResourceLocation(s);
-						Application app = ApplicationRegistry.INSTANCE.getByRes(res);
-						if (app != null) {
-							desktopIcons.put(new double[] { x, y }, app);
-						}
-					}
+			NBTTagList icons = nbt.getTagList("icons", Constants.NBT.TAG_COMPOUND);
+			for (int i = 0; i < icons.tagCount(); i++) {
+				NBTTagCompound icon = icons.getCompoundTagAt(i);
+				double x = icon.getDouble("x");
+				double y = icon.getDouble("y");
+				String s = icon.getString("app");
+				ResourceLocation res = new ResourceLocation(s);
+				Application app = ApplicationRegistry.INSTANCE.getByRes(res);
+				if (app != null) {
+					desktopIcons.put(new double[] { x, y }, app);
 				}
 			}
 		}

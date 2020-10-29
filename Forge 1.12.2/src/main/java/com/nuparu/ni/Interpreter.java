@@ -13,6 +13,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import com.nuparu.ni.exception.EvaluationErrorException;
 import com.nuparu.ni.exception.TypeMismatchException;
 import com.nuparu.ni.exception.VariableNotFoundException;
+import com.nuparu.ni.methods.Method;
+import com.nuparu.ni.methods.Methods;
 import com.nuparu.sevendaystomine.computer.process.TransitProcess;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Tree;
@@ -77,13 +79,6 @@ public class Interpreter {
 			case "else":
 				tokens.add(new Token(EnumTokenType.KEYWORD, word));
 				break;
-			case "print":
-			case "save":
-			case "random":
-			case "pow":
-			case "sqrt":
-				tokens.add(new Token(EnumTokenType.METHOD, word));
-				break;
 			case "{":
 			case "}":
 				tokens.add(new Token(EnumTokenType.BRACKET, word));
@@ -113,7 +108,12 @@ public class Interpreter {
 				tokens.add(new Token(EnumTokenType.COMMA, word));
 				break;
 			default:
+				if (i < words.length - 1 && (words[i + 1].equals("(")) && Methods.getByName(word) != null) {
+					tokens.add(new Token(EnumTokenType.METHOD, word));
+					break;
+				}
 				tokens.add(new Token(EnumTokenType.IDENTIFIER, word));
+				break;
 			}
 		}
 
@@ -492,54 +492,13 @@ public class Interpreter {
 			}
 
 			case METHOD: {
-				switch (value) {
-				default:
-					break;
-				case "print": {
-					if (t.isLeaf())
-						return codeBlock;
-					Tree<Token> bracket = t.getChildren().get(0);
-					if (bracket.isLeaf())
-						return codeBlock;
-					if (bracket.getData().type != EnumTokenType.PARENTHESES || !bracket.getData().value.equals("(")) {
-						codeBlock.printError("Expected \"(\", but did not find any");
+				Method method = Methods.getByName(value);
+				try {
+					if (method.isValid(t, codeBlock)) {
+						method.trigger(t, codeBlock);
 					}
-					Statement statement = readStatement(bracket.getChildren().get(0), codeBlock, 0);
-					if (statement == null) {
-						codeBlock.printError("Null Statement");
-						break;
-					}
-					try {
-						Value result = statement.evaluate();
-						codeBlock.print(result.getRealValue().toString());
-					} catch (EvaluationErrorException e) {
-						e.printStackTrace();
-						codeBlock.printError("An error occured: " + e.toString());
-					}
-					break;
-				}
-				case "save": {
-					if (t.isLeaf())
-						return codeBlock;
-					Tree<Token> bracket = t.getChildren().get(0);
-					if (bracket.isLeaf())
-						return codeBlock;
-					if (bracket.getData().type != EnumTokenType.PARENTHESES || !bracket.getData().value.equals("(")) {
-						codeBlock.printError("Expected \"(\", but did not find any");
-					}
-					Statement statement = readStatement(bracket.getChildren().get(0), codeBlock, 0);
-					codeBlock.print("Attempting to save...");
-					try {
-						Value result = statement.evaluate();
-						process.saveToDevice(result.getRealValue().toString());
-						codeBlock.printSuccess("Successfully saved " + result.getRealValue().toString());
-
-					} catch (EvaluationErrorException e) {
-						e.printStackTrace();
-						codeBlock.printError("An error occured: " + e.toString());
-					}
-					break;
-				}
+				} catch (EvaluationErrorException e) {
+					e.printStackTrace();
 				}
 				break;
 			}
@@ -577,266 +536,38 @@ public class Interpreter {
 				break;
 			}
 
+			// To do: Make methods abstract
 			case METHOD: {
-				switch (value) {
-				case "random": {
-					if (tree.isLeaf()) {
-						flag = true;
-						break;
+				System.out.println("FECK THIS SHITE");
+				Method method = Methods.getByName(value);
+				try {
+					boolean valid = method.isValid(tree, codeBlock);
+					if (valid) {
+						Value val = method.trigger(tree, codeBlock);
+						if (val != null) {
+							statement.addValue(val);
+						}
 					}
-					Tree<Token> bracket = tree.getChildren().get(0);
-					if (bracket.isLeaf()) {
-						flag = true;
-						codeBlock.printError("Expected \"(\", but did not find any");
-						break;
-					}
-					if (bracket.getData() == null || bracket.getData().type != EnumTokenType.PARENTHESES
-							|| !bracket.getData().value.equals("(")) {
-						codeBlock.printError("Expected \"(\", but did not find any");
-						flag = true;
-						break;
-					}
-					Statement arg0 = readStatement(bracket.getChildren().get(0), codeBlock, 0);
-					try {
-						Value min = arg0.evaluate();
-						if (!min.isNumerical()) {
-							codeBlock.printError("Expected a number, but did not find any");
-							flag = true;
-							break;
-						}
-						while (!bracket.isLeaf()
-								&& (bracket.getData().type != EnumTokenType.PARENTHESES
-										|| !bracket.getData().value.equals(")"))
-								&& (bracket.getData().type != EnumTokenType.COMMA)) {
-							bracket = bracket.getChildren().get(0);
-						}
-						if (bracket.isLeaf()) {
-							flag = true;
-							break;
-						}
-
-						if ((bracket.getData().type != EnumTokenType.PARENTHESES
-								|| !bracket.getData().value.equals(")"))
-								&& (bracket.getData().type != EnumTokenType.COMMA)) {
-							codeBlock.printError("Expected \")\" or \",\", but did not find any");
-							flag = true;
-							break;
-						}
-						tree = bracket;
-						if (bracket.isLeaf()) {
-							flag = true;
-							break;
-						}
-						if (bracket.getData().type == EnumTokenType.PARENTHESES
-								&& bracket.getData().value.equals(")")) {
-							statement.addValue(new Random().nextInt((int) min.getRealValue()));
-							break;
-						}
-
-						if (bracket.getData().type != EnumTokenType.COMMA) {
-							codeBlock.printError("Expected \",\", but did not find any");
-							flag = true;
-							break;
-						}
-
-						Tree<Token> ending = bracket.getChildren().get(0);
-						if (ending.isLeaf()) {
-							flag = true;
-							break;
-						}
-
-						Statement arg1 = readStatement(ending, codeBlock, 0);
-
-						Value max = arg1.evaluate();
-						if (!max.isNumerical()) {
-							codeBlock.printError("Expected a number, but did not find any");
-							flag = true;
-							break;
-						}
-						while (!ending.isLeaf()
-								&& (ending.getData().type != EnumTokenType.PARENTHESES
-										|| !ending.getData().value.equals(")"))
-								&& (ending.getData().type != EnumTokenType.COMMA)) {
-							ending = ending.getChildren().get(0);
-						}
-						if (ending.isLeaf()) {
-							flag = true;
-							break;
-						}
-
-						if ((ending.getData().type != EnumTokenType.PARENTHESES
-								|| !ending.getData().value.equals(")"))) {
-							codeBlock.printError("Expected \")\", but did not find any");
-							flag = true;
-							break;
-						}
-						tree = ending;
-						if (ending.isLeaf()) {
-							flag = true;
-							break;
-						}
-						statement.addValue(MathUtils.getIntInRange(new Random(), (int)min.asInt().getRealValue(),
-								(int)max.asInt().getRealValue()));
-
-					} catch (EvaluationErrorException e) {
-						e.printStackTrace();
-						codeBlock.printError("An error occured: " + e.toString());
-					}
-
-					break;
+				} catch (EvaluationErrorException e) {
+					e.printStackTrace();
 				}
 
-				case "pow": {
-					if (tree.isLeaf()) {
-						flag = true;
-						break;
+				int brackets = 0;
+				while (!tree.isLeaf()) {
+					tree = tree.getChildren().get(0);
+					Token data = tree.getData();
+					if (data.type == EnumTokenType.PARENTHESES) {
+						if (data.value.equals("(")) {
+							brackets++;
+						} else if (data.value.equals(")")) {
+							brackets--;
+							if (brackets == 0) {
+								break;
+							}
+						}
 					}
-					Tree<Token> bracket = tree.getChildren().get(0);
-					if (bracket.isLeaf()) {
-						flag = true;
-						codeBlock.printError("Expected \"(\", but did not find any");
-						break;
-					}
-					if (bracket.getData() == null || bracket.getData().type != EnumTokenType.PARENTHESES
-							|| !bracket.getData().value.equals("(")) {
-						codeBlock.printError("Expected \"(\", but did not find any");
-						flag = true;
-						break;
-					}
-
-
-					Statement arg0 = readStatement(bracket.getChildren().get(0), codeBlock, 0);
-					try {
-						Value base = arg0.evaluate();
-						if (!base.isNumerical()) {
-							codeBlock.printError("Expected a number, but did not find any");
-							flag = true;
-							break;
-						}
-						while (!bracket.isLeaf() && bracket.getData().type != EnumTokenType.COMMA) {
-							bracket = bracket.getChildren().get(0);
-						}
-						if (bracket.isLeaf()) {
-							flag = true;
-							break;
-						}
-
-						if (bracket.getData().type != EnumTokenType.COMMA) {
-							codeBlock.printError("Expected \",\", but did not find any");
-							flag = true;
-							break;
-						}
-						if (bracket.isLeaf()) {
-							codeBlock.printError("Expected a value, but did not find any");
-							flag = true;
-							break;
-						}
-						Tree<Token> ending = bracket.getChildren().get(0);
-						if (ending.isLeaf()) {
-							flag = true;
-							break;
-						}
-
-						Statement arg1 = readStatement(ending, codeBlock, 0);
-
-						Value exp = arg1.evaluate();
-						if (!exp.isNumerical()) {
-							codeBlock.printError("Expected a number, but did not find any");
-							flag = true;
-							break;
-						}
-						while (!ending.isLeaf() && (ending.getData().type != EnumTokenType.PARENTHESES
-								|| !ending.getData().value.equals(")"))) {
-							ending = ending.getChildren().get(0);
-						}
-						if (ending.isLeaf()) {
-							flag = true;
-							break;
-						}
-
-						if ((ending.getData().type != EnumTokenType.PARENTHESES
-								|| !ending.getData().value.equals(")"))) {
-							codeBlock.printError("Expected \")\", but did not find any");
-							flag = true;
-							break;
-						}
-						tree = ending;
-						if (ending.isLeaf()) {
-							flag = true;
-							break;
-						}
-
-						statement.addValue((double)Math.pow((double) base.asDouble().getRealValue(), (double) exp.asDouble().getRealValue()));
-
-					} catch (EvaluationErrorException e) {
-						e.printStackTrace();
-						codeBlock.printError("An error occured: " + e.toString());
-					}
-
-					break;
-				}
-				
-				case "sqrt": {
-					if (tree.isLeaf()) {
-						flag = true;
-						break;
-					}
-					Tree<Token> bracket = tree.getChildren().get(0);
-					if (bracket.isLeaf()) {
-						flag = true;
-						codeBlock.printError("Expected \"(\", but did not find any");
-						break;
-					}
-					if (bracket.getData() == null || bracket.getData().type != EnumTokenType.PARENTHESES
-							|| !bracket.getData().value.equals("(")) {
-						codeBlock.printError("Expected \"(\", but did not find any");
-						flag = true;
-						break;
-					}
-					Statement arg0 = readStatement(bracket.getChildren().get(0), codeBlock, 0);
-					try {
-						Value base = arg0.evaluate();
-						if (!base.isNumerical()) {
-							codeBlock.printError("Expected a number, but did not find any");
-							flag = true;
-							break;
-						}
-						while (!bracket.isLeaf()
-								&& (bracket.getData().type != EnumTokenType.PARENTHESES
-										|| !bracket.getData().value.equals(")"))) {
-							bracket = bracket.getChildren().get(0);
-						}
-						if (bracket.isLeaf()) {
-							flag = true;
-							break;
-						}
-
-						if (!bracket.isLeaf() && bracket.getData().type != EnumTokenType.PARENTHESES
-								|| !bracket.getData().value.equals(")")) {
-							codeBlock.printError("Expected \")\", but did not find any");
-							flag = true;
-							break;
-						}
-						tree = bracket;
-						if (bracket.isLeaf()) {
-							flag = true;
-							break;
-						}
-						if (bracket.getData().type == EnumTokenType.PARENTHESES
-								&& bracket.getData().value.equals(")")) {
-							statement.addValue((double)Math.sqrt((double)base.asDouble().getRealValue()));
-							break;
-						}
-
-					} catch (EvaluationErrorException e) {
-						e.printStackTrace();
-						codeBlock.printError("An error occured: " + e.toString());
-					}
-
-					break;
 				}
 
-				}
 				break;
 			}
 

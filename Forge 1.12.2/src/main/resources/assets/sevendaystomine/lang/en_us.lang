@@ -87,9 +87,11 @@ computer.app.notes.desc=Yellow sticky notes
 computer.app.cctv=MineSpy
 computer.app.cctv.desc=MineSpy
 computer.app.cctv.no.camera=NO CAMERA CONNECTED
+computer.app.cctv.no.signal=NO SIGNAL
 computer.app.explorer=MineNet Explorer 11
 computer.app.desc=Recommended MineNet Explorer
 computer.app.transit=Transit IDE
+computer.app.transit.desc=IDE for Ni developers
 
 #Status Effects
 
@@ -545,6 +547,7 @@ item.book_pistol.name=Recipe Book
 item.book_minibike.name=Recipe Book
 item.iron_pipe.name=Iron Pipe
 item.scrap_pickaxe.name=Scrap Pickaxe
+item.scrap_axe.name=Scrap Axe
 item.scrap_shovel.name=Scrap Shovel
 item.circuit.name=Circuit
 item.survival_guide.name=Survival Guide
@@ -916,7 +919,7 @@ advancements.automation.description=Craft a turret
 advancements.different.title=I'm Different
 advancements.different.description=I'm Different
 advancements.cured.title=-1 Days to Die
-advancements.cured.description=Cure your infection
+advancements.cured.description=Cure Stage III infection
 advancements.workbench.title=Metalworking
 advancements.workbench.description=Craft a Workbench.
 advancements.shotgun.title=Pocket Rocket Launcher

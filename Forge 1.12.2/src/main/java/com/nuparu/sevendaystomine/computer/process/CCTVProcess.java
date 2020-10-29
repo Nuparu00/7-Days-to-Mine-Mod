@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
+import com.nuparu.sevendaystomine.entity.EntityCameraView;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
 import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
@@ -49,19 +50,34 @@ public class CCTVProcess extends WindowedProcess {
 		GL11.glPushMatrix();
 		int yy = Screen.mc.displayHeight - (int) Math.round(y * scale) - (int) Math.round(height * scale);
 		if (cameras.size() > camera && cameras.get(camera) != null) {
-			RenderUtils.renderView(Screen.mc, cameras.get(camera).getCameraView(screen.gui.player),
-					(int) Math.round(width * scale),
-					(int) Math.round((height - (Screen.screen.ySize * title_bar_height)) * scale),
-					Screen.mc.displayWidth, Screen.mc.displayHeight, (int) Math.round(x * scale), yy, -2000);
+			EntityCameraView view = cameras.get(camera).getCameraView(screen.gui.player);
+			if (view != null) {
+				RenderUtils.renderView(Screen.mc, view, (int) Math.round(width * scale),
+						(int) Math.round((height - (Screen.screen.ySize * title_bar_height)) * scale),
+						Screen.mc.displayWidth, Screen.mc.displayHeight, (int) Math.round(x * scale), yy, -2000);
+				GL11.glPopMatrix();
+			}
+			else if(isNotHidden((int) (x + width / 2), (int) (y + (Screen.screen.ySize * title_bar_height) + 2))) {
+				GL11.glPopMatrix();
+				GL11.glPushMatrix();
+				GL11.glTranslated(0, 0, 10);
+			GL11.glTranslated(x + width / 2, y + (Screen.screen.ySize * title_bar_height) + 2, 0);
+			GL11.glScaled(0.75, 0.75, 1);
+			RenderUtils.drawCenteredString(SevenDaysToMine.proxy.localize("computer.app.cctv.no.signal"), 0, 0,
+					0xffffff, true);
+			GL11.glPopMatrix();
+			}
 		}
-		GL11.glPopMatrix();
+
 		super.render(partialTicks);
 		GL11.glPushMatrix();
 		GL11.glTranslated(0, 0, 10);
-		if (cameras.size() > camera && isNotHidden((int)(x + 1), (int)(y + (Screen.screen.ySize * title_bar_height) + 2))) {
+		if (cameras.size() > camera
+				&& isNotHidden((int) (x + 1), (int) (y + (Screen.screen.ySize * title_bar_height) + 2))) {
 			RenderUtils.drawString(cameras.get(camera).getCustomName(), x + 1,
 					y + (Screen.screen.ySize * title_bar_height) + 2, 0xffffff, true);
-		} else if (cameras.isEmpty() && isNotHidden((int)(x + width / 2), (int)(y + (Screen.screen.ySize * title_bar_height) + 2))) {
+		} else if (cameras.isEmpty()
+				&& isNotHidden((int) (x + width / 2), (int) (y + (Screen.screen.ySize * title_bar_height) + 2))) {
 			GL11.glTranslated(x + width / 2, y + (Screen.screen.ySize * title_bar_height) + 2, 0);
 			GL11.glScaled(0.75, 0.75, 1);
 			RenderUtils.drawCenteredString(SevenDaysToMine.proxy.localize("computer.app.cctv.no.camera"), 0, 0,
@@ -94,10 +110,11 @@ public class CCTVProcess extends WindowedProcess {
 			}
 		}
 
-		button1 = new Button(x + 1, y + height - 16, 10, 10, Screen.screen, "<<", 1){
+		button1 = new Button(x + 1, y + height - 16, 10, 10, Screen.screen, "<<", 1) {
 			@Override
 			public boolean isVisible() {
-				return this.tickingProcess != null && ((WindowedProcess)this.tickingProcess).isNotHidden((int)this.x, (int)this.y);
+				return this.tickingProcess != null
+						&& ((WindowedProcess) this.tickingProcess).isNotHidden((int) this.x, (int) this.y);
 			}
 		};
 		button1.background = false;
@@ -111,7 +128,8 @@ public class CCTVProcess extends WindowedProcess {
 		button2 = new Button(x + width - 11, y + height - 16, 10, 10, Screen.screen, ">>", 2) {
 			@Override
 			public boolean isVisible() {
-				return this.tickingProcess != null && ((WindowedProcess)this.tickingProcess).isNotHidden((int)this.x, (int)this.y);
+				return this.tickingProcess != null
+						&& ((WindowedProcess) this.tickingProcess).isNotHidden((int) this.x, (int) this.y);
 			}
 		};
 		button2.background = false;
@@ -166,7 +184,8 @@ public class CCTVProcess extends WindowedProcess {
 	@SideOnly(Side.CLIENT)
 	public void onButtonPressed(Button button, int mouseButton) {
 		super.onButtonPressed(button, mouseButton);
-		if(isMinimized()) return;
+		if (isMinimized())
+			return;
 		int buttonId = button.ID;
 		if (buttonId == 1) {
 			if (camera - 1 < 0) {

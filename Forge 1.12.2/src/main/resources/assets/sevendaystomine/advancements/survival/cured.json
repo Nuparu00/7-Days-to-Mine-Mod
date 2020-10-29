@@ -17,19 +17,7 @@
    "parent":"sevendaystomine:survival/chemistry_station",
    "criteria":{
       "survived":{
-         "trigger":"minecraft:consume_item",
-         "conditions":{
-            "item":{
-               "item":"sevendaystomine:antibiotics"
-            },
-            "player":{
-               "effects":{
-                  "sevendaystomine:infection":{
-                     
-                  }
-               }
-            }
-         }
+         "trigger":"cure"
       }
    },
    "requirements":[

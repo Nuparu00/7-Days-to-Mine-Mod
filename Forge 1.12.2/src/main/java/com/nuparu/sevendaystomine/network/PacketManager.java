@@ -26,6 +26,8 @@ import com.nuparu.sevendaystomine.network.packets.SafeCodeHandler;
 import com.nuparu.sevendaystomine.network.packets.SafeCodeMessage;
 import com.nuparu.sevendaystomine.network.packets.SaveDataHandler;
 import com.nuparu.sevendaystomine.network.packets.SaveDataMessage;
+import com.nuparu.sevendaystomine.network.packets.SendPacketHandler;
+import com.nuparu.sevendaystomine.network.packets.SendPacketMessage;
 import com.nuparu.sevendaystomine.network.packets.StartProcessHandler;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncIconHandler;
@@ -66,7 +68,10 @@ public class PacketManager {
 	public static SimpleNetworkWrapper killProcess;
 	public static SimpleNetworkWrapper syncProcess;
 	public static SimpleNetworkWrapper saveData;
-	
+	// This is packet for INetwork - does have nothing to do with actual
+	// server-client packets!!!
+	public static SimpleNetworkWrapper sendPacket;
+
 	private static int discriminator = 0;
 
 	public PacketManager() {
@@ -141,5 +146,8 @@ public class PacketManager {
 
 		saveData = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:saveData");
 		saveData.registerMessage(new SaveDataHandler(), SaveDataMessage.class, discriminator++, Side.SERVER);
+
+		sendPacket = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:sendPacket");
+		sendPacket.registerMessage(new SendPacketHandler(), SendPacketMessage.class, discriminator++, Side.SERVER);
 	}
 }

@@ -779,9 +779,6 @@ public class Utils {
 	}
 
 	public static void infectPlayer(EntityPlayer player, int time) {
-		if (player.getActivePotionEffect(Potions.infection) == null) {
-			player.addPotionEffect(new PotionEffect(Potions.infection, 24000));
-		}
 		IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
 		if (!iep.isInfected()) {
 			iep.setInfectionTime(time);

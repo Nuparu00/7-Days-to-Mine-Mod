@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import com.nuparu.sevendaystomine.block.BlockAsphalt;
 import com.nuparu.sevendaystomine.block.BlockCar;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -18,6 +19,7 @@ import com.nuparu.sevendaystomine.world.gen.city.plot.Plot;
 import com.nuparu.sevendaystomine.world.gen.prefab.Prefab;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockHopper;
@@ -87,7 +89,7 @@ public class Street {
 
 	public void tryToContinueStreets() {
 		for (EnumFacing f : EnumFacing.HORIZONTALS) {
-			if (f != facing.getOpposite() && city.getStreetsCount() < city.roads_limit) {
+			if (f != facing.getOpposite() && city.getStreetsCount() < city.roadsLimit) {
 				if (canBranch || f == facing) {
 					BlockPos blockpos = end.offset(f, Street.LENGTH - 1);
 					Biome biome = world.getBiome(blockpos);
@@ -140,52 +142,15 @@ public class Street {
 			return;
 		EnumFacing f = (facing == EnumFacing.EAST || facing == EnumFacing.WEST) ? facing.rotateY()
 				: facing.rotateYCCW();
-		/*
-		 * Prefab prefab =
-		 * CityHelper.prefabs.get(world.rand.nextInt(CityHelper.prefabs.size()));
-		 * EnumFacing f = (facing == EnumFacing.EAST || facing == EnumFacing.WEST) ?
-		 * facing.rotateY() : facing.rotateYCCW();
-		 * 
-		 * int checkA = Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2)
-		 * + (prefab.getWidth() / 2)).offset(f, (thickness / 2) + pavement + (f ==
-		 * EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world); int checkB =
-		 * Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) -
-		 * (prefab.getWidth() / 2)).offset(f, (thickness / 2) + pavement + (f ==
-		 * EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), world); int checkC =
-		 * Utils.getTopSolidGroundHeight(start.offset(facing, (LENGTH / 2) +
-		 * (prefab.getWidth() / 2)).offset(f, (thickness / 2) + pavement +
-		 * prefab.getLength() + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 :
-		 * 0)), world); int checkD = Utils.getTopSolidGroundHeight(start.offset(facing,
-		 * (LENGTH / 2) - (prefab.getWidth() / 2)).offset(f, (thickness / 2) + pavement
-		 * + prefab.getLength() + (f == EnumFacing.NORTH || f == EnumFacing.EAST ? 1 :
-		 * 0)), world);
-		 * 
-		 * BlockPos pos = start.offset(facing, (LENGTH / 2) + (prefab.getWidth() /
-		 * 2)).offset((f == EnumFacing.NORTH || f == EnumFacing.SOUTH ? f.getOpposite()
-		 * : f), (thickness / 2) + pavement + (f == EnumFacing.NORTH || f ==
-		 * EnumFacing.EAST ? 1 : 0));
-		 * 
-		 * prefab.generate(world, new BlockPos(pos.getX(), (checkA + checkB + checkC +
-		 * checkD) / 4, pos.getZ()), f, true);
-		 */
-		// if(facing.getAxis() == EnumFacing.Axis.X) {
-		/*
-		 * CityHelper.buildings.get(world.rand.nextInt(CityHelper.buildings.size())).
-		 * generate(world, start.offset(f, (thickness / 2) + pavement + (f ==
-		 * EnumFacing.NORTH || f == EnumFacing.EAST ? 1 : 0)), facing);
-		 */
-		/*
-		 * CityHelper.buildings.get(world.rand.nextInt(CityHelper.buildings.size())).
-		 * generate(world, start, facing, false); if (canBranch) {
-		 * CityHelper.buildings.get(world.rand.nextInt(CityHelper.buildings.size())).
-		 * generate(world, start, facing, true); }
-		 */
+
 		BlockPos pos = start;
-		// if(facing.getAxisDirection()==EnumFacing.AxisDirection.POSITIVE)return;
-		// if(facing!=EnumFacing.NORTH)return;
+		Biome biome = world.getBiome(pos);
 		int i = 0;
 		while (i < (canBranch ? LENGTH - 10 : LENGTH)) {
-			Plot plot = new Plot(this, 0, CityHelper.getRandomBuilding(world.rand), false, pos);
+			Building building = CityHelper.getRandomBuilding(world.rand);
+			if(building.allowedCityTypes != null && !building.allowedCityTypes.contains(city.type)) continue;
+			if(building.allowedBiomes != null && !building.allowedBiomes.isEmpty() && !building.allowedBiomes.contains(biome)) continue;
+			Plot plot = new Plot(this, 0, building, false, pos);
 
 			if (facing.getAxis() == EnumFacing.Axis.X) {
 				i += plot.xSize + 1;
@@ -207,8 +172,9 @@ public class Street {
 		pos = start;
 		i = 0;
 		while (i < (canBranch ? LENGTH - 10 : LENGTH)) {
-			// HAVE TO FIND IF ANY OTHER BUILDING FITS
 			Building building = CityHelper.getRandomBuilding(world.rand);
+			if(building.allowedCityTypes != null && !building.allowedCityTypes.contains(city.type)) continue;
+			if(building.allowedBiomes != null && !building.allowedBiomes.isEmpty() && !building.allowedBiomes.contains(biome)) continue;
 			if (!building.canBeMirrored) {
 				continue;
 			}
@@ -278,6 +244,8 @@ public class Street {
 
 	// To-do: Clean this, fix the random stonebrick near crossing
 	public void generateAsphaltAndSidewalk() {
+		int cross = city.getStreetsAtCrossingCount(end, (thickness + pavement + 2) / 2);
+
 		int roofBlocks = 0;
 
 		int startHeight = Utils.getTopSolidGroundHeight(start, world) - 1;
@@ -293,127 +261,21 @@ public class Street {
 			for (int t = 0; t < thickness + (pavement * 2); t++) {
 
 				int offset = t - (thickness + (pavement * 2) / 2) + 4;
-				if (facing == EnumFacing.NORTH || facing == EnumFacing.WEST) {
+				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i)
+						.offset(facing.rotateY(), offset).up(y);
+				IBlockState originalState = world.getBlockState(pos);
+				Block originalBLock = originalState.getBlock();
 
-				}
-				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i).offset(facing.rotateY(),
-						offset);
-				BlockPos road = pos.up(y);
+				IBlockState stateUnder = world.getBlockState(pos.down());
+				Block blockUnder = stateUnder.getBlock();
 
-				IBlockState block = ModBlocks.ASPHALT.getDefaultState();
-				
-				if(city.rand.nextInt(20) == 0) {
-					block = world.getBiome(pos).topBlock;
-				}
+				if (originalBLock == Blocks.CONCRETE || blockUnder == Blocks.CONCRETE
+						|| BlockAsphalt.isCityAsphalt(stateUnder))
+					continue;
 
-				int cross = 0;
-				if (endCrossing == null) {
-					cross = city.getStreetsAtCrossingCount(end, 4);
-				} else {
-					cross = endCrossing.getStreetsCont();
-				}
-
-				int tt = t - ((int) Math.ceil(pavement / 2));
-
-				// Makes the blocks more diverse
-				if ((t < pavement || t >= thickness + pavement)) {
-					if (world.rand.nextInt() < 3) {
-						block = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
-								BlockStoneBrick.EnumType.CRACKED);
-					} else if (world.rand.nextInt() < 2) {
-						block = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT,
-								BlockStoneSlab.EnumType.SMOOTHBRICK);
-					} else {
-						Biome biome = world.getBiome(pos);
-						if (biome.getTemperature(pos) > 0.5 && world.rand.nextInt() < 2) {
-							if (biome.getRainfall() > 0.1) {
-								block = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
-										BlockStoneBrick.EnumType.MOSSY);
-							} else {
-								block = ModBlocks.DEAD_MOSSY_BRICK.getDefaultState();
-							}
-						} else {
-							block = Blocks.STONEBRICK.getDefaultState();
-						}
-
-					}
-
-				} /*
-					 * else if (!canBranch && (i == 5 || i == 6) && (tt == 7 || tt == 5 || tt == 3)
-					 * && cross > 1) { block = Blocks.CONCRETE.getDefaultState(); } else if
-					 * (canBranch && (i == LENGTH - (thickness - 0) || i == LENGTH - (thickness -
-					 * 1)) && (tt == 7 || tt == 5 || tt == 3) && cross > 1) { block =
-					 * Blocks.CONCRETE.getDefaultState(); }
-					 */
-
-				// Makes room above the road - except when there is a tree
-				for (int air = y + 1; air < y + 6; air++) {
-					BlockPos pos2 = pos.up(air);
-					IBlockState state = world.getBlockState(pos2);
-					Block block2 = state.getBlock();
-					if (block2 == ModBlocks.ASPHALT) {
-						block = ModBlocks.ASPHALT.getDefaultState();
-					} else if (block2 == Blocks.CONCRETE) {
-						block = Blocks.CONCRETE.getDefaultState();
-					}
-					if (block2 != Blocks.AIR && !(block2 instanceof BlockLog) && !(block2 instanceof BlockLeaves)) {
-						world.setBlockState(pos2, Blocks.AIR.getDefaultState());
-						if (air == y + 5) {
-							roofBlocks++;
-						}
-					}
-
-					// Handles fixing of floating trees
-
-					BlockPos pos3 = pos2.up();
-					IBlockState state2 = world.getBlockState(pos3);
-					Block block3 = state2.getBlock();
-					if (block3 instanceof BlockLog && state2.getValue(BlockLog.LOG_AXIS) == BlockLog.EnumAxis.Y) {
-						IBlockState state3 = world.getBlockState(pos3.down());
-						while (state3.getBlock().isReplaceable(world, pos3.down())) {
-							world.setBlockState(pos3.down(), state2);
-							pos3 = pos3.down();
-							state3 = world.getBlockState(pos3.down());
-						}
-						break;
-					}
-				}
-
-				boolean flag = false;
-
-				// Places the road?
-				for (int air = y; air > y - 6; air--) {
-					BlockPos pos2 = pos.up(air);
-					IBlockState state = world.getBlockState(pos2);
-					Block block2 = state.getBlock();
-
-					boolean flag2 = false;
-
-					if (block2 == ModBlocks.ASPHALT || block2 == Blocks.CONCRETE || block2 == Blocks.CONCRETE
-							|| block2 == Blocks.STONEBRICK || block2 == Blocks.STONE_SLAB
-							|| block2 == ModBlocks.DEAD_MOSSY_BRICK) {
-						flag2 = true;
-					}
-					if (flag2) {
-						flag = true;
-						if (block.getBlock() != Blocks.STONEBRICK && block.getBlock() != Blocks.STONE_SLAB) {
-							world.setBlockState(pos2, block);
-						}
-						break;
-					}
-				}
-
-				if (i >= 0 && i <= LENGTH && !flag) {
-
-					Block block2 = world.getBlockState(road).getBlock();
-					if (block2 != ModBlocks.ASPHALT && block2 != Blocks.CONCRETE || (block == Blocks.CONCRETE)) {
-						world.setBlockState(road, block);
-						world.setBlockState(road.down(), Blocks.STONE.getDefaultState());
-					}
-				}
-
+				// Columns
 				if ((offset >= -1 && offset <= 1) && ((i % 12 == 0) || (i % 12 == 11) || (i % 12 == 1))) {
-					BlockPos pos2 = road.down(2);
+					BlockPos pos2 = pos.down(2);
 					while (world.getBlockState(pos2).getBlock().isReplaceable(world, pos2)) {
 						world.setBlockState(pos2, Blocks.CONCRETE.getDefaultState().withProperty(BlockColored.COLOR,
 								EnumDyeColor.SILVER));
@@ -421,6 +283,70 @@ public class Street {
 					}
 
 				}
+
+				IBlockState stateToPlace = ModBlocks.ASPHALT.getDefaultState().withProperty(BlockAsphalt.CITY, true);
+
+				// Zebras
+				if (cross > 1 && (i == 6 || i == 7) && t % 2 == 0) {
+					stateToPlace = Blocks.CONCRETE.getDefaultState();
+				}
+
+				// Sidewalk
+				if ((t < pavement || t >= thickness + pavement) && !BlockAsphalt.isCityAsphalt(originalState)) {
+					stateToPlace = Blocks.STONEBRICK.getDefaultState();
+					// Diversify
+					if (world.rand.nextInt() < 3) {
+						stateToPlace = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
+								BlockStoneBrick.EnumType.CRACKED);
+					} else if (world.rand.nextInt() < 2) {
+						stateToPlace = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT,
+								BlockStoneSlab.EnumType.SMOOTHBRICK);
+					} else {
+						Biome biome = world.getBiome(pos);
+						if (biome.getTemperature(pos) > 0.5 && world.rand.nextInt() < 2) {
+							if (biome.getRainfall() > 0.1) {
+								stateToPlace = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
+										BlockStoneBrick.EnumType.MOSSY);
+							} else {
+								stateToPlace = ModBlocks.DEAD_MOSSY_BRICK.getDefaultState();
+							}
+						} else {
+							stateToPlace = Blocks.STONEBRICK.getDefaultState();
+						}
+
+					}
+				}
+
+				// Removed blocks above the orad -- tunnels
+				for (int air = 1; air < 6; air++) {
+					BlockPos pos2 = pos.up(air);
+					IBlockState state = world.getBlockState(pos2);
+					Block block2 = state.getBlock();
+					// Keeps trees in
+					if (block2 instanceof BlockLog || block2 instanceof BlockLeaves || block2 instanceof BlockAir)
+						continue;
+					world.setBlockToAir(pos2);
+					if (BlockAsphalt.isCityAsphalt(state) || block2 == Blocks.CONCRETE) {
+						stateToPlace = state;
+					}
+					IBlockState aboveState = world.getBlockState(pos2.up());
+					if (aboveState.getBlock() instanceof BlockLog
+							&& aboveState.getValue(BlockLog.LOG_AXIS) == BlockLog.EnumAxis.Y) {
+						BlockPos pos3 = pos2;
+						IBlockState state3 = world.getBlockState(pos3.down());
+						while (state3.getBlock().isReplaceable(world, pos3)) {
+							world.setBlockState(pos3, aboveState);
+							pos3 = pos3.down();
+							state3 = world.getBlockState(pos3);
+						}
+					} else if (air == 5 && aboveState.getBlock() != Blocks.AIR) {
+						roofBlocks++;
+					}
+
+				}
+
+				world.setBlockState(pos, stateToPlace);
+				world.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
 			}
 		}
 		if (roofBlocks >= ((thickness + 2 * pavement) * LENGTH) / 4) {
@@ -536,7 +462,7 @@ public class Street {
 						}
 					}
 
-					if (i < LENGTH - (halfThickness + pavement) && (i + 5) % 8 == 0) {
+					if (i < LENGTH - (halfThickness + pavement) && (i + 5) % (city.type == EnumCityType.RURAL ? 16 : 8) == 0) {
 						if (t == 0) {
 							generateStreetLamp(pos.up(y + 1), false);
 						} else if (t == thickness + (pavement * 2) - 1) {
@@ -552,7 +478,7 @@ public class Street {
 							generateTrafficLight(pos.up(y + 1));
 						}
 					}
-					if (i > halfThickness + pavement && (i - halfThickness) % 8 == 0) {
+					if (i > halfThickness + pavement && (i - halfThickness) % (city.type == EnumCityType.RURAL ? 16 : 8) == 0) {
 						if (t == 0) {
 							generateStreetLamp(pos.up(y + 1), false);
 						} else if (t == thickness + (pavement * 2) - 1) {

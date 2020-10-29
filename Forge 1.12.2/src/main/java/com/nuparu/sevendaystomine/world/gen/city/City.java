@@ -9,6 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.google.common.collect.Maps;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.plot.Plot;
@@ -33,10 +34,7 @@ public class City {
 	protected HashMap<Integer, String> streetNamesX = Maps.newHashMap();
 	protected HashMap<Integer, String> streetNamesZ = Maps.newHashMap();
 
-	
-	public static final int MAX_ROADS = 10;
-
-	public int roads_limit;
+	public int roadsLimit;
 
 	private boolean allStreetsFound = false;
 	protected List<String> unclaimedStreetNames = null;
@@ -44,6 +42,8 @@ public class City {
 	protected Random rand;
 
 	public String name = "Genericville";
+	public EnumCityType type = EnumCityType.RURAL;
+
 	public int population;
 
 	public City() {
@@ -58,11 +58,14 @@ public class City {
 		this.start = new BlockPos(this.start.getX() + 8, height, this.start.getZ() + 8);
 
 		this.world = world;
-		this.rand = new Random(world.getSeed() + (start.getX()/16) - (start.getZ()/16));
+		this.rand = new Random(world.getSeed() + (start.getX() / 16) - (start.getZ() / 16));
 		this.unclaimedStreetNames = new ArrayList<String>(CityHelper.streets);
 		this.name = CityHelper.getRandomCityName(this.rand);
-		this.roads_limit = MathUtils.getIntInRange(rand, MAX_ROADS/2, MAX_ROADS);
+		this.roadsLimit = MathUtils.getIntInRange(rand, 8, Math.max(8, ModConfig.world.maxCitySize));
 		CitySavedData.get(world).addCity(start);
+		if (type == EnumCityType.RURAL) {
+			roadsLimit = Math.round(roadsLimit * 0.75f);
+		}
 	}
 
 	public void startCityGen() {
@@ -70,15 +73,11 @@ public class City {
 		if (!areAllStreetsFound()) {
 			prepareStreets();
 		}
-		this.population = this.roads_limit * (MathUtils.getIntInRange(rand, 2048, 8192));
+		this.population = this.roadsLimit * (MathUtils.getIntInRange(rand, 512, 5120));
 		generate();
 		if (!world.isRemote) {
 			Utils.getLogger().info(this.name + " generated at " + start.getX() + " " + start.getZ() + " within "
 					+ (System.currentTimeMillis() - timeStamp) + "ms with " + streets.size() + " streets");
-			/*Utils.getServer().getPlayerList()
-					.sendMessage(new TextComponentString(TextFormatting.GREEN + this.name + " generated at "
-							+ start.getX() + " " + start.getZ() + " within " + (System.currentTimeMillis() - timeStamp)
-							+ "ms with " + streets.size() + " streets"));*/
 		}
 	}
 
@@ -94,7 +93,7 @@ public class City {
 	public void prepareStreets() {
 		BlockPos bp_start = Utils.getTopGroundBlock(start, world, true);
 		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-			if (getStreetsCount() < this.roads_limit) {
+			if (getStreetsCount() < this.roadsLimit) {
 				BlockPos blockpos = bp_start.offset(facing, Street.LENGTH - 1);
 				Biome biome = world.getBiome(blockpos);
 				if (biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN || biome == Biomes.OCEAN)
@@ -144,9 +143,10 @@ public class City {
 		for (Street street : streets) {
 			street.checkEnding();
 		}
-
-		for (Street street : streets) {
-			street.generateSewers();
+		if (type.sewers) {
+			for (Street street : streets) {
+				street.generateSewers();
+			}
 		}
 
 		for (Street street : streets) {
@@ -197,8 +197,8 @@ public class City {
 
 	public int getStreetsAtCrossingCount(BlockPos pos, int tolerance) {
 		Iterable<BlockPos> poses = BlockPos.getAllInBox(
-				pos.offset(EnumFacing.NORTH, tolerance).offset(EnumFacing.WEST, tolerance).down(1),
-				pos.offset(EnumFacing.SOUTH, tolerance).offset(EnumFacing.EAST, tolerance).up(1));
+				pos.offset(EnumFacing.NORTH, tolerance).offset(EnumFacing.WEST, tolerance).down(5),
+				pos.offset(EnumFacing.SOUTH, tolerance).offset(EnumFacing.EAST, tolerance).up(5));
 		Crossing crossing = new Crossing(this);
 		int i = 0;
 		for (Street street : streets) {

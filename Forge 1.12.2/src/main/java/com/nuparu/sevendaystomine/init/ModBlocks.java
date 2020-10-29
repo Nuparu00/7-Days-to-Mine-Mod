@@ -105,9 +105,7 @@ public class ModBlocks {
 			.setRegistryName("ReinforcedConcreteWet").setUnlocalizedName("ReinforcedConcreteWet");
 	public static final Block REINFORCED_CONCRETE = new BlockReinforcedConcrete().setRegistryName("ReinforcedConcrete")
 			.setUnlocalizedName("ReinforcedConcrete");
-	public static final Block ASPHALT = new BlockBase(Material.ROCK, MapColor.BLACK).setRegistryName("Asphalt")
-			.setUnlocalizedName("Asphalt").setHardness(7.0F).setResistance(15.0F)
-			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	public static final Block ASPHALT = new BlockAsphalt().setRegistryName("Asphalt").setUnlocalizedName("Asphalt");
 
 	public static final Block CODE_SAFE = new BlockCodeSafe().setRegistryName("CodeSafe")
 			.setUnlocalizedName("CodeSafe");
@@ -353,8 +351,8 @@ public class ModBlocks {
 			.setRegistryName("generator_combustion").setUnlocalizedName("generator_combustion");
 	public static final Block GASOLINE = new BlockGasoline(ModFluids.GASOLINE, Material.WATER)
 			.setRegistryName("gasoline").setUnlocalizedName("gasoline");
-	public static final Block MERCURY = new BlockMercury(ModFluids.MERCURY, Material.WATER)
-			.setRegistryName("mercury").setUnlocalizedName("mercury");
+	public static final Block MERCURY = new BlockMercury(ModFluids.MERCURY, Material.WATER).setRegistryName("mercury")
+			.setUnlocalizedName("mercury");
 	public static final Block ENERGY_POLE = new BlockEnergyPole().setRegistryName("energy_pole")
 			.setUnlocalizedName("energy_pole");
 	public static final Block ENERGY_SWITCH = new BlockEnergySwitch().setRegistryName("energy_switch")
@@ -475,11 +473,15 @@ public class ModBlocks {
 			.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
 	public static final Block GLOBE = new BlockGlobe().setRegistryName("globe").setUnlocalizedName("globe")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-	
-	public static final Block SEPARATOR = new BlockSeparator().setRegistryName("separator").setUnlocalizedName("separator");
-	public static final Block RAZOR_WIRE = new BlockRazorWire().setRegistryName("razor_wire").setUnlocalizedName("razor_wire");
+
+	public static final Block SEPARATOR = new BlockSeparator().setRegistryName("separator")
+			.setUnlocalizedName("separator");
+	public static final Block RAZOR_WIRE = new BlockRazorWire().setRegistryName("razor_wire")
+			.setUnlocalizedName("razor_wire");
 	public static final Block STAND = new BlockStand().setRegistryName("stand").setUnlocalizedName("stand");
-	public static final Block LANDMINE = new BlockLandmine().setRegistryName("landmine").setUnlocalizedName("landmine").setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
-	public static final Block SIRENE = new BlockSirene().setRegistryName("sirene").setUnlocalizedName("sirene").setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
+	public static final Block LANDMINE = new BlockLandmine().setRegistryName("landmine").setUnlocalizedName("landmine")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
+	public static final Block SIRENE = new BlockSirene().setRegistryName("sirene").setUnlocalizedName("sirene")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
 
 }

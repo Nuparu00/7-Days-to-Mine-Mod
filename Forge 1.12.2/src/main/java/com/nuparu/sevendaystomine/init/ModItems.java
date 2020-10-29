@@ -35,6 +35,7 @@ import com.nuparu.sevendaystomine.item.ItemFirstAidKit;
 import com.nuparu.sevendaystomine.item.ItemFlamethrower;
 import com.nuparu.sevendaystomine.item.ItemGuide;
 import com.nuparu.sevendaystomine.item.ItemGunPart;
+import com.nuparu.sevendaystomine.item.ItemHoney;
 import com.nuparu.sevendaystomine.item.ItemHuntingRifle;
 import com.nuparu.sevendaystomine.item.ItemInstallDisc;
 import com.nuparu.sevendaystomine.item.ItemLinkTool;
@@ -164,7 +165,7 @@ public class ModItems {
 			.setUnlocalizedName("GoldenrodTea").setContainerItem(EMPTY_JAR);
 	public static final Item BOTTLED_COFFEE = new ItemCoffeeDrink(0, 300, 150).setRegistryName("BottledCoffee")
 			.setUnlocalizedName("BottledCoffee").setContainerItem(EMPTY_JAR);
-	public static final Item JAR_OF_HONEY = new ItemDrink(5, 0, 300, 150).setRegistryName("JarOfHoney")
+	public static final Item JAR_OF_HONEY = new ItemHoney().setRegistryName("JarOfHoney")
 			.setUnlocalizedName("JarOfHoney").setContainerItem(EMPTY_JAR);
 	public static final Item CANNED_MURKY_WATER = new ItemMurkyWater(0, 250, 0).setRegistryName("CannedMurkyWater")
 			.setUnlocalizedName("CannedMurkyWater").setContainerItem(EMPTY_CAN);
@@ -415,6 +416,8 @@ public class ModItems {
 			.setRegistryName("bronze_axe").setUnlocalizedName("bronze_axe");
 	public static final Item IRON_AXE = new ItemQualityAxe(SevenDaysToMine.IRON_TOOLS, -2.8).setRegistryName("iron_axe")
 			.setUnlocalizedName("iron_axe");
+	public static final Item SCRAP_AXE = new ItemQualityAxe(SevenDaysToMine.SCRAP_TOOLS, -2.8)
+			.setRegistryName("scrap_axe").setUnlocalizedName("scrap_axe");
 	public static final Item STEEL_AXE = new ItemQualityAxe(SevenDaysToMine.STEEL_TOOLS, -2.8)
 			.setRegistryName("steel_axe").setUnlocalizedName("steel_axe");
 

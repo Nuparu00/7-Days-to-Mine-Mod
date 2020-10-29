@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.UUID;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.computer.HardDrive;
 import com.nuparu.sevendaystomine.computer.process.BootingProcess;
 import com.nuparu.sevendaystomine.computer.process.CreateAccountProcess;
 import com.nuparu.sevendaystomine.computer.process.DesktopProcess;
-import com.nuparu.sevendaystomine.computer.process.HardDrive;
 import com.nuparu.sevendaystomine.computer.process.ProcessRegistry;
 import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
@@ -652,6 +652,11 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 	@Override
 	public BlockPos getPosition() {
 		return this.getPos();
+	}
+	
+	@Override
+	public void sendPacket(String packet, INetwork from, EntityPlayer playerFrom) {
+		
 	}
 
 }

@@ -26,13 +26,12 @@ public class TileEntityCamera extends TileEntity implements ITickable, INetwork 
 	private ArrayList<BlockPos> network = new ArrayList<BlockPos>();
 	private ArrayList<EntityPlayer> viewers = new ArrayList<EntityPlayer>();
 	private String customName;
-
-	public static TileEntityCamera TEST;
+	private boolean on = true;
+	private boolean rotating = false;
 
 	private EntityCameraView cameraView;
 
 	public TileEntityCamera() {
-		TEST = this;
 	}
 
 	@Override
@@ -68,6 +67,8 @@ public class TileEntityCamera extends TileEntity implements ITickable, INetwork 
 			list.appendTag(new NBTTagLong(net.toLong()));
 		}
 		compound.setTag("network", list);
+		compound.setBoolean("on", on);
+		compound.setBoolean("rotating", rotating);
 
 		return compound;
 	}
@@ -87,6 +88,8 @@ public class TileEntityCamera extends TileEntity implements ITickable, INetwork 
 				network.add(blockPos);
 			}
 		}
+		this.on = compound.getBoolean("on");
+		this.rotating = compound.getBoolean("rotating");
 	}
 
 	@Override
@@ -119,10 +122,13 @@ public class TileEntityCamera extends TileEntity implements ITickable, INetwork 
 	}
 
 	public EntityCameraView getCameraView(EntityPlayer player) {
-		viewers.add(player);
-		cameraView.prevRotationYaw = cameraView.rotationYaw;
-		cameraView.rotationYaw = cameraView.initRotation + getHeadRotation() * cameraView.direction;
-		return cameraView;
+		if (on) {
+			viewers.add(player);
+			cameraView.prevRotationYaw = cameraView.rotationYaw;
+			cameraView.rotationYaw = cameraView.initRotation + getHeadRotation() * cameraView.direction;
+			return cameraView;
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -158,8 +164,8 @@ public class TileEntityCamera extends TileEntity implements ITickable, INetwork 
 	public void disconnectAll() {
 		for (BlockPos pos : getConnections()) {
 			TileEntity te = world.getTileEntity(pos);
-			if(te instanceof INetwork) {
-				((INetwork)te).disconnect(this);
+			if (te instanceof INetwork) {
+				((INetwork) te).disconnect(this);
 			}
 		}
 	}
@@ -167,6 +173,30 @@ public class TileEntityCamera extends TileEntity implements ITickable, INetwork 
 	@Override
 	public BlockPos getPosition() {
 		return this.getPos();
+	}
+	
+	public void setOn(boolean on) {
+		this.on = on;
+		world.markBlockRangeForRenderUpdate(pos, pos);
+		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+		world.scheduleBlockUpdate(pos,this.getBlockType(),0,0);
+		markDirty();
+	}
+
+	public boolean isOn() {
+		return on;
+	}
+
+	public boolean switchOn() {
+		setOn(!isOn());
+		return on;
+	}
+
+	@Override
+	public void sendPacket(String packet, INetwork from, EntityPlayer playerFrom) {
+		switch(packet) {
+		case "switch" : switchOn(); break;
+		}
 	}
 
 }

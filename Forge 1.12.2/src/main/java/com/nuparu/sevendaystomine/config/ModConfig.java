@@ -25,6 +25,8 @@ public class ModConfig {
 		public int bloodmoonFrequency = 7;
 		@Config.Comment("How many days between individual bloodmoons (0 = disabled)")
 		public int airdropFrequency = 3;
+		@Config.Comment("How many streets can a city have")
+		public int maxCitySize = 14;
 	}
 
 	@Mod.EventBusSubscriber(modid = SevenDaysToMine.MODID)

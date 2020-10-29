@@ -64,7 +64,7 @@ private static ForgeRecipeManager INSTANCE;
 		ingotbrass2.put(EnumMaterial.ZINC,2);
 		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.INGOT_BRASS),new ItemStack(ModItems.MOLD_INGOT),ingotbrass2));
 		HashMap<EnumMaterial,Integer> ingotsteel2 = new HashMap<EnumMaterial,Integer>();
-		ingotsteel2.put(EnumMaterial.STEEL,4);
+		ingotsteel2.put(EnumMaterial.IRON,4);
 		ingotsteel2.put(EnumMaterial.CARBON,2);
 		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.INGOT_STEEL),new ItemStack(ModItems.MOLD_INGOT),ingotsteel2));
 		HashMap<EnumMaterial,Integer> cement = new HashMap<EnumMaterial,Integer>();

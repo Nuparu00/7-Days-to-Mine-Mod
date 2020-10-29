@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.tileentity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.block.BlockTurretBase;
+import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.electricity.network.INetwork;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSmall;
@@ -23,12 +26,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -44,7 +51,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandlerNameable> implements ITickable {
+public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandlerNameable>
+		implements ITickable, INetwork {
+
+	private ArrayList<BlockPos> network = new ArrayList<BlockPos>();
 
 	public static final double VIEW_DISTANCE = 16;
 	public static final ITextComponent DEFAULT_NAME = new TextComponentTranslation("container.turret");
@@ -58,6 +68,7 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 	public int memory = 0;
 	public int maxDelay = 5;
 	public int delay = 0;
+	private boolean on = false;
 
 	public Entity target;
 	public AITurretTarget targetAI;
@@ -116,6 +127,17 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 
 		this.maxDelay = compound.getInteger("maxDelay");
 		this.delay = compound.getInteger("delay");
+		this.on = compound.getBoolean("on");
+
+		if (world != null) {
+			network.clear();
+			NBTTagList list = compound.getTagList("network", Constants.NBT.TAG_LONG);
+			for (int i = 0; i < list.tagCount(); ++i) {
+				NBTTagLong nbt = (NBTTagLong) list.get(i);
+				BlockPos blockPos = BlockPos.fromLong(nbt.getLong());
+				network.add(blockPos);
+			}
+		}
 	}
 
 	@Override
@@ -133,58 +155,64 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 
 		compound.setInteger("maxDelay", maxDelay);
 		compound.setInteger("delay", delay);
+		compound.setBoolean("on", on);
+		NBTTagList list = new NBTTagList();
+		for (BlockPos net : getConnections()) {
+			list.appendTag(new NBTTagLong(net.toLong()));
+		}
+		compound.setTag("network", list);
 
 		return compound;
 	}
 
 	@Override
 	public void update() {
-
-		if (this.world.getBlockState(this.pos).getBlock() instanceof BlockTurretBase) {
-			facing = (EnumFacing) this.world.getBlockState(this.pos).getValue(BlockHorizontalBase.FACING);
-		}
 		this.headRotationPrev = this.headRotation;
-		if (target == null) {
-			if (headRotationMaximumReached == 1) {
-				headRotation += 1;
-			}
-			if (headRotationMaximumReached == 0) {
-				headRotation -= 1;
-			}
-			if (headRotation >= 180) {
-				headRotationMaximumReached = 0;
-			}
-			if (headRotation <= -180) {
-				headRotationMaximumReached = 1;
-			}
-		} else {
-
-			if (target.isDead) {
-				target = null;
-			} else {
-				rotateTowards();
-				if (delay == maxDelay && !world.isRemote) {
-					shootAI.updateAITask();
-					delay = 0;
-				}
-			}
-		}
-
-		RayTraceResult ray = rayTrace(this.world, VIEW_DISTANCE);
-
-		if (ray != null && ray.typeOfHit == RayTraceResult.Type.ENTITY) {
-			targetAI.setTarget(ray.entityHit);
-		}
-		/*
-		 * else { world.setBlockState(new
-		 * BlockPos(ray.hitVec.x,ray.hitVec.y-2,ray.hitVec.z),
-		 * Blocks.BEDROCK.getDefaultState()); }
-		 */
-		targetAI.updateAITask();
 		if (delay < maxDelay) {
 			delay++;
 		}
+		if (on) {
+			if (this.world.getBlockState(this.pos).getBlock() instanceof BlockTurretBase) {
+				facing = (EnumFacing) this.world.getBlockState(this.pos).getValue(BlockHorizontalBase.FACING);
+			}
+			if (target == null) {
+				if (headRotationMaximumReached == 1) {
+					headRotation += 1;
+				}
+				if (headRotationMaximumReached == 0) {
+					headRotation -= 1;
+				}
+				if (headRotation >= 180) {
+					headRotationMaximumReached = 0;
+				}
+				if (headRotation <= -180) {
+					headRotationMaximumReached = 1;
+				}
+			} else {
 
+				if (target.isDead) {
+					target = null;
+				} else {
+					rotateTowards();
+					if (delay == maxDelay && !world.isRemote) {
+						shootAI.updateAITask();
+						delay = 0;
+					}
+				}
+			}
+
+			RayTraceResult ray = rayTrace(this.world, VIEW_DISTANCE);
+
+			if (ray != null && ray.typeOfHit == RayTraceResult.Type.ENTITY) {
+				targetAI.setTarget(ray.entityHit);
+			}
+			/*
+			 * else { world.setBlockState(new
+			 * BlockPos(ray.hitVec.x,ray.hitVec.y-2,ray.hitVec.z),
+			 * Blocks.BEDROCK.getDefaultState()); }
+			 */
+			targetAI.updateAITask();
+		}
 	}
 
 	public void rotateTowards() {
@@ -244,7 +272,8 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 
 	public Vec3d getHeadPosition() {
 		Vec3d rot = getHeadRotation();
-		return new Vec3d(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5).add(new Vec3d(rot.x * 0.7, rot.y * 0.7, rot.z * 0.7));
+		return new Vec3d(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5)
+				.add(new Vec3d(rot.x * 0.7, rot.y * 0.7, rot.z * 0.7));
 	}
 
 	public Vec3d getHeadRotation() {
@@ -428,17 +457,25 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 				Vec3d entityPosition = new Vec3d(target.posX, target.posY, target.posZ);
 
 				Vec3d neededRotation = entityPosition.subtract(position);
-				float currentYaw = te.getYaw(rotation);
-				float neededYaw = te.getYaw(neededRotation);
+				float currentYaw = TileEntityTurret.getYaw(rotation);
+				float neededYaw = TileEntityTurret.getYaw(neededRotation);
 
 				float difference = currentYaw - neededYaw;
 				float absDiff = Math.abs(difference);
 
 				if (absDiff <= 16) {
-					shoot(getHeadPosition(), currentYaw + 90, 0f);
-					te.consumeAmmo(1);
+					shoot();
 				}
 
+			}
+		}
+		
+		public void shoot() {
+			if(te.hasAmmo() && te.delay == te.maxDelay) {
+				float currentYaw = TileEntityTurret.getYaw(getHeadRotation());
+				shoot(getHeadPosition(), currentYaw + 90, 0f);
+				te.consumeAmmo(1);
+				te.delay = 0;
 			}
 		}
 
@@ -449,6 +486,7 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 			if (!te.getWorld().isRemote) {
 				te.getWorld().spawnEntity(shot);
 			}
+			world.playSound(null, te.pos, SoundHelper.AK47_SHOT, SoundCategory.BLOCKS, 0.3f, 1.0F / (te.world.rand.nextFloat() * 0.4F + 1.2F) + 1f * 0.5F);
 			te.getWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x, pos.y - 0.2, pos.z, 0.0D, 0.075D, 0.0D,
 					new int[0]);
 			te.getWorld().spawnParticle(EnumParticleTypes.FLAME, pos.x, pos.y - 0.2, pos.z, 0.0D, 0.0D, 0.0D,
@@ -509,6 +547,79 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 			net.minecraft.network.play.server.SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
 		world.notifyBlockUpdate(pos, Blocks.AIR.getDefaultState(), world.getBlockState(pos), 1);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BlockPos> getConnections() {
+		return (List<BlockPos>) network.clone();
+	}
+
+	@Override
+	public void connectTo(INetwork toConnect) {
+		if (!isConnectedTo(toConnect)) {
+			network.add(toConnect.getPosition());
+			toConnect.connectTo(this);
+			markDirty();
+		}
+	}
+
+	@Override
+	public void disconnect(INetwork toDisconnect) {
+		if (isConnectedTo(toDisconnect)) {
+			network.remove(toDisconnect.getPosition());
+			toDisconnect.disconnect(this);
+			markDirty();
+		}
+	}
+
+	@Override
+	public boolean isConnectedTo(INetwork net) {
+		return network.contains(net.getPosition());
+	}
+
+	@Override
+	public void disconnectAll() {
+		for (BlockPos pos : getConnections()) {
+			TileEntity te = world.getTileEntity(pos);
+			if (te instanceof INetwork) {
+				((INetwork) te).disconnect(this);
+			}
+		}
+	}
+
+	@Override
+	public BlockPos getPosition() {
+		return this.getPos();
+	}
+
+	public void setOn(boolean on) {
+		this.on = on;
+		world.markBlockRangeForRenderUpdate(pos, pos);
+		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+		world.scheduleBlockUpdate(pos,this.getBlockType(),0,0);
+		markDirty();
+	}
+
+	public boolean isOn() {
+		return on;
+	}
+
+	public boolean switchOn() {
+		setOn(!isOn());
+		return on;
+	}
+
+	@Override
+	public void sendPacket(String packet, INetwork from, EntityPlayer playerFrom) {
+		switch (packet) {
+		case "switch":
+			switchOn();
+			break;
+		case "shoot":
+			this.shootAI.shoot();
+			break;
+		}
 	}
 
 }

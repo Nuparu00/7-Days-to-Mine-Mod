@@ -7,6 +7,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
+import com.nuparu.sevendaystomine.world.gen.city.EnumCityType;
 import com.nuparu.sevendaystomine.world.gen.city.Street;
 
 import net.minecraft.block.Block;
@@ -36,6 +37,7 @@ public class BuildingGasStation extends Building {
 	public BuildingGasStation(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight, yOffset);
 		this.pedestalState = Blocks.STONE.getDefaultState();
+		setAllowedCityTypes(EnumCityType.URBAN);
 	}
 
 	@Override

@@ -1,7 +1,10 @@
 package com.nuparu.sevendaystomine.world.gen.city.building;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.nuparu.sevendaystomine.block.BlockBookshelfEnhanced;
 import com.nuparu.sevendaystomine.block.BlockChestOld;
@@ -38,6 +41,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityTrashBin;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTrashCan;
 import com.nuparu.sevendaystomine.util.ItemUtils;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.world.gen.city.EnumCityType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
@@ -72,16 +76,18 @@ public class Building {
 	public int yOffset = 0;
 	public boolean canBeMirrored = true;
 	public IBlockState pedestalState;
-	
-	public Biome[] allowedBiomes;
+	public boolean hasPedestal = true;
+
+	public Set<Biome> allowedBiomes;
 	public Block[] allowedBlocks;
+	public Set<EnumCityType> allowedCityTypes;
 
 	public Building(ResourceLocation res, int weight) {
 		this(res, weight, 0);
 	}
 
 	public Building(ResourceLocation res, int weight, int yOffset) {
-		this(res,weight,yOffset,null);
+		this(res, weight, yOffset, null);
 	}
 
 	public Building(ResourceLocation res, int weight, int yOffset, IBlockState pedestalState) {
@@ -123,340 +129,342 @@ public class Building {
 	}
 
 	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror) {
-		try{
-		Rotation rot = Utils.facingToRotation(facing);
-		// To mkaing it so pos == position of the structure block
-		switch (data) {
-		case "garbage": {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			if (world.rand.nextBoolean()) {
-				world.setBlockState(pos, ModBlocks.GARBAGE.getDefaultState().withProperty(BlockGarbage.FACING,
-						EnumFacing.getHorizontal(world.rand.nextInt(4))));
-				TileEntityGarbage te = (TileEntityGarbage) world.getTileEntity(pos);
-				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.TRASH, world, world.rand);
+		try {
+			Rotation rot = Utils.facingToRotation(facing);
+			// To mkaing it so pos == position of the structure block
+			switch (data) {
+			case "garbage": {
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				if (world.rand.nextBoolean()) {
+					world.setBlockState(pos, ModBlocks.GARBAGE.getDefaultState().withProperty(BlockGarbage.FACING,
+							EnumFacing.getHorizontal(world.rand.nextInt(4))));
+					TileEntityGarbage te = (TileEntityGarbage) world.getTileEntity(pos);
+					ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.TRASH, world, world.rand);
+				}
+				break;
 			}
-			break;
-		}
-		case "cobweb": {
-			IBlockState state = Blocks.AIR.getDefaultState();
-			if (world.rand.nextBoolean()) {
-				state = Blocks.WEB.getDefaultState();
+			case "cobweb": {
+				IBlockState state = Blocks.AIR.getDefaultState();
+				if (world.rand.nextBoolean()) {
+					state = Blocks.WEB.getDefaultState();
+				}
+				world.setBlockState(pos, state);
+				break;
 			}
-			world.setBlockState(pos, state);
-			break;
-		}
-		case "cardboard": {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			if (world.rand.nextInt(5) == 0) {
-				world.setBlockState(pos, ModBlocks.CARDBOARD_BOX.getDefaultState().withProperty(BlockGarbage.FACING,
-						EnumFacing.getHorizontal(world.rand.nextInt(4))));
-				TileEntityCardboard te = (TileEntityCardboard) world.getTileEntity(pos);
+			case "cardboard": {
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				if (world.rand.nextInt(5) == 0) {
+					world.setBlockState(pos, ModBlocks.CARDBOARD_BOX.getDefaultState().withProperty(BlockGarbage.FACING,
+							EnumFacing.getHorizontal(world.rand.nextInt(4))));
+					TileEntityCardboard te = (TileEntityCardboard) world.getTileEntity(pos);
+					te.setLootTable(ModLootTables.CARDBOARD, world.rand.nextLong());
+					te.fillWithLoot(null);
+				}
+				break;
+			}
+			case "writing_table": {
+				TileEntityTable te = (TileEntityTable) world.getTileEntity(pos.down());
 				te.setLootTable(ModLootTables.CARDBOARD, world.rand.nextLong());
 				te.fillWithLoot(null);
-			}
-			break;
-		}
-		case "writing_table": {
-			TileEntityTable te = (TileEntityTable) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.CARDBOARD, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "writing_table_bottom": {
-			TileEntityTable te = (TileEntityTable) world.getTileEntity(pos.up());
-			te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos,
-					world.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockWritingTable.FACING))));
-			break;
-		}
-		case "backpack": {
-			world.setBlockState(pos, ModBlocks.BACKPACK_NORMAL.getDefaultState().withProperty(BlockGarbage.FACING,
-					EnumFacing.getHorizontal(world.rand.nextInt(4))));
-			TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
-			te.setLootTable(ModLootTables.BACKPACK, world.rand.nextLong());
-			te.fillWithLoot(null);
-			break;
-		}
-		case "medical_backpack": {
-			world.setBlockState(pos, ModBlocks.BACKPACK_MEDICAL.getDefaultState().withProperty(BlockGarbage.FACING,
-					EnumFacing.getHorizontal(world.rand.nextInt(4))));
-			TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
-			te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
-			te.fillWithLoot(null);
-			break;
-		}
-		case "cupboard": {
-			TileEntityCupboard te = (TileEntityCupboard) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "cupboard_bottom": {
-			TileEntityCupboard te = (TileEntityCupboard) world.getTileEntity(pos.up());
-			te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos,
-					world.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockCupboard.FACING))));
-			break;
-		}
-		case "cupboard_microwave_bottom": {
-			TileEntityCupboard te = (TileEntityCupboard) world.getTileEntity(pos.up());
-			te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
-			te.fillWithLoot(null);
-			TileEntityMicrowave te2 = (TileEntityMicrowave) world.getTileEntity(pos.up(2));
-			te2.setLootTable(ModLootTables.MICROWAVE, world.rand.nextLong());
-			te2.fillWithLoot(null);
-			world.setBlockState(pos,
-					world.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockCupboard.FACING))));
-			break;
-		}
-		case "fridge": {
-			TileEntityRefrigerator te = (TileEntityRefrigerator) world.getTileEntity(pos.down());
-			if(te == null) break;
-			te.setLootTable(ModLootTables.FRIDGE, world.rand.nextLong());
-			te.fillWithLoot(null);
-			te = (TileEntityRefrigerator) world.getTileEntity(pos.down(2));
-			te.setLootTable(ModLootTables.FRIDGE, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "bin": {
-			TileEntityTrashBin te = (TileEntityTrashBin) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.TRASH, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "dresser": {
-			TileEntityDresser te = (TileEntityDresser) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.DRESSER, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "dresser_tall": {
-			TileEntityDresser te = (TileEntityDresser) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.DRESSER, world.rand.nextLong());
-			te.fillWithLoot(null);
-			te = (TileEntityDresser) world.getTileEntity(pos.down(2));
-			te.setLootTable(ModLootTables.DRESSER, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "toilet": {
-			TileEntityToilet te = (TileEntityToilet) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.TOILET, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "sink_bottom": {
-			TileEntityHopper te = (TileEntityHopper) world.getTileEntity(pos.up());
-			te.setLootTable(ModLootTables.SINK, world.rand.nextLong());
-			te.fillWithLoot(null);
-			IBlockState hopper = world.getBlockState(pos.up());
-			world.setBlockState(pos,
-					world.getBlockState(pos.offset(hopper.getValue(BlockHopper.FACING).getOpposite())));
-			break;
-		}
-		case "furnace": {
-			TileEntityFurnace te = (TileEntityFurnace) world.getTileEntity(pos.down());
-			ItemUtils.fillWithLoot(te, ModLootTables.FURNACE, world, world.rand);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "bookshelf": {
-			TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "bookshelf_bottom": {
-			TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.up());
-			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, world
-					.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockBookshelfEnhanced.FACING))));
-			break;
-		}
-		case "bookshelves": {
-			TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
-			te.fillWithLoot(null);
-			te = (TileEntityBookshelf) world.getTileEntity(pos.down(2));
-			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "bookshelf_tall": {
-			TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
-			te.fillWithLoot(null);
-			te = (TileEntityBookshelf) world.getTileEntity(pos.down(2));
-			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
-			te.fillWithLoot(null);
-			te = (TileEntityBookshelf) world.getTileEntity(pos.down(3));
-			te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "file_cabinet": {
-			TileEntityFileCabinet te = (TileEntityFileCabinet) world.getTileEntity(pos.down());
-			ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.FILE_CABINET, world, world.rand);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "file_cabinet_tall": {
-			TileEntityFileCabinet te = (TileEntityFileCabinet) world.getTileEntity(pos.down());
-			ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.FILE_CABINET, world, world.rand);
-			te = (TileEntityFileCabinet) world.getTileEntity(pos.down(2));
-			ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.FILE_CABINET, world, world.rand);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "microwave": {
-			TileEntityMicrowave te = (TileEntityMicrowave) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.MICROWAVE, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "medical_cabinet": {
-			TileEntityMedicalCabinet te = (TileEntityMedicalCabinet) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "corpse": {
-			world.setBlockState(pos,
-					(world.rand.nextBoolean() ? ModBlocks.CORPSE_00 : ModBlocks.CORPSE_01).getDefaultState()
-							.withProperty(BlockHorizontalBase.FACING, EnumFacing.getHorizontal(world.rand.nextInt(4))));
-			TileEntityCorpse te = (TileEntityCorpse) world.getTileEntity(pos);
-			te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
-			te.fillWithLoot(null);
-			break;
-		}
-		case "nest": {
-			world.setBlockState(pos, ModBlocks.BIRD_NEST.getDefaultState());
-			TileEntityBirdNest te = (TileEntityBirdNest) world.getTileEntity(pos);
-			te.setLootTable(ModLootTables.NEST, world.rand.nextLong());
-			te.fillWithLoot(null);
-			break;
-		}
-		case "wheels": {
-			IBlockState state = Blocks.AIR.getDefaultState();
-			if (world.rand.nextInt(40) == 0) {
-				state = ModBlocks.WHEELS.getDefaultState().withProperty(BlockWheels.FACING,
-						EnumFacing.getHorizontal(world.rand.nextInt(4)));
-			}
-			world.setBlockState(pos, state);
-			break;
-		}
-		case "cooking_pot": {
-			IBlockState state = Blocks.AIR.getDefaultState();
-			if (world.rand.nextInt(20) == 0) {
-				state = ModBlocks.COOKING_POT.getDefaultState().withProperty(BlockWheels.FACING,
-						EnumFacing.getHorizontal(world.rand.nextInt(4)));
-			}
-			world.setBlockState(pos, state);
-			break;
-		}
-		case "shower_drain": {
-			TileEntityHopper te = (TileEntityHopper) world.getTileEntity(pos.down());
-			te.setLootTable(ModLootTables.SHOWER_DRAIN, world.rand.nextLong());
-			te.fillWithLoot(null);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "trash_can": {
-			world.setBlockState(pos, ModBlocks.TRASH_CAN.getDefaultState().withProperty(BlockTrashCan.FACING,
-					EnumFacing.getHorizontal(world.rand.nextInt(4))));
-			TileEntityTrashCan te = (TileEntityTrashCan) world.getTileEntity(pos);
-			te.setLootTable(ModLootTables.TRASH, world.rand.nextLong());
-			te.fillWithLoot(null);
-			break;
-		}
-		case "cash_register": {
-			TileEntityCashRegister te = (TileEntityCashRegister) world.getTileEntity(pos.down());
-			ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.CASH_REGISTER, world, world.rand);
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			break;
-		}
-		case "old_chest": {
-			world.setBlockState(pos, ModBlocks.CHEST_OLD.getDefaultState().withProperty(BlockChestOld.FACING,
-					EnumFacing.getHorizontal(world.rand.nextInt(4))));
-			TileEntityOldChest te = (TileEntityOldChest) world.getTileEntity(pos);
-			te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
-			te.fillWithLoot(null);
-			break;
-		}
-		case "bandit": {
-			 EntityBandit bandit = new EntityBandit(world);
-			 bandit.enablePersistence();
-			 bandit.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
-			 bandit.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(bandit)), (IEntityLivingData)null);
-			 world.spawnEntity(bandit);
-			 world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
-			break;
-		}
-		case "blind_zombie": {
-			 EntityBlindZombie zombie = new EntityBlindZombie(world);
-			 zombie.enablePersistence();
-			 zombie.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
-			 zombie.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(zombie)), (IEntityLivingData)null);
-			 world.spawnEntity(zombie);
-			 world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
-			break;
-		}
-		case "zombie_soldier": {
-			 EntityZombieSoldier zombie = new EntityZombieSoldier(world);
-			 zombie.enablePersistence();
-			 zombie.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
-			 zombie.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(zombie)), (IEntityLivingData)null);
-			 world.spawnEntity(zombie);
-			 world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
-			break;
-		}
-		case "military_backpack": {
-			world.setBlockState(pos, ModBlocks.BACKPACK_ARMY.getDefaultState().withProperty(BlockGarbage.FACING,
-					EnumFacing.getHorizontal(world.rand.nextInt(4))));
-			TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
-			te.setLootTable(ModLootTables.BACKPACK, world.rand.nextLong());
-			te.fillWithLoot(null);
-			break;
-		}
-		case "code_safe": {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			IBlockState furnaceState = world.getBlockState(pos.down());
-			world.setBlockState(pos.down(), Blocks.AIR.getDefaultState());
-			if (furnaceState.getBlock() != Blocks.FURNACE)
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				break;
-			world.setBlockState(pos.down(), ModBlocks.CODE_SAFE.getDefaultState().withProperty(BlockCodeSafe.FACING,
-					furnaceState.getValue(BlockFurnace.FACING)));
-			TileEntityCodeSafe te = (TileEntityCodeSafe) world.getTileEntity(pos.down());
-			ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.CODE_SAFE, world, world.rand);
-			break;
-		}
-		}
-		}
-		catch(Exception e) {
+			}
+			case "writing_table_bottom": {
+				TileEntityTable te = (TileEntityTable) world.getTileEntity(pos.up());
+				te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, world
+						.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockWritingTable.FACING))));
+				break;
+			}
+			case "backpack": {
+				world.setBlockState(pos, ModBlocks.BACKPACK_NORMAL.getDefaultState().withProperty(BlockGarbage.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
+				te.setLootTable(ModLootTables.BACKPACK, world.rand.nextLong());
+				te.fillWithLoot(null);
+				break;
+			}
+			case "medical_backpack": {
+				world.setBlockState(pos, ModBlocks.BACKPACK_MEDICAL.getDefaultState().withProperty(BlockGarbage.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
+				te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
+				te.fillWithLoot(null);
+				break;
+			}
+			case "cupboard": {
+				TileEntityCupboard te = (TileEntityCupboard) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "cupboard_bottom": {
+				TileEntityCupboard te = (TileEntityCupboard) world.getTileEntity(pos.up());
+				te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos,
+						world.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockCupboard.FACING))));
+				break;
+			}
+			case "cupboard_microwave_bottom": {
+				TileEntityCupboard te = (TileEntityCupboard) world.getTileEntity(pos.up());
+				te.setLootTable(ModLootTables.CUPBOARD, world.rand.nextLong());
+				te.fillWithLoot(null);
+				TileEntityMicrowave te2 = (TileEntityMicrowave) world.getTileEntity(pos.up(2));
+				te2.setLootTable(ModLootTables.MICROWAVE, world.rand.nextLong());
+				te2.fillWithLoot(null);
+				world.setBlockState(pos,
+						world.getBlockState(pos.offset(world.getBlockState(pos.up()).getValue(BlockCupboard.FACING))));
+				break;
+			}
+			case "fridge": {
+				TileEntityRefrigerator te = (TileEntityRefrigerator) world.getTileEntity(pos.down());
+				if (te == null)
+					break;
+				te.setLootTable(ModLootTables.FRIDGE, world.rand.nextLong());
+				te.fillWithLoot(null);
+				te = (TileEntityRefrigerator) world.getTileEntity(pos.down(2));
+				te.setLootTable(ModLootTables.FRIDGE, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "bin": {
+				TileEntityTrashBin te = (TileEntityTrashBin) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.TRASH, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "dresser": {
+				TileEntityDresser te = (TileEntityDresser) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.DRESSER, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "dresser_tall": {
+				TileEntityDresser te = (TileEntityDresser) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.DRESSER, world.rand.nextLong());
+				te.fillWithLoot(null);
+				te = (TileEntityDresser) world.getTileEntity(pos.down(2));
+				te.setLootTable(ModLootTables.DRESSER, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "toilet": {
+				TileEntityToilet te = (TileEntityToilet) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.TOILET, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "sink_bottom": {
+				TileEntityHopper te = (TileEntityHopper) world.getTileEntity(pos.up());
+				te.setLootTable(ModLootTables.SINK, world.rand.nextLong());
+				te.fillWithLoot(null);
+				IBlockState hopper = world.getBlockState(pos.up());
+				world.setBlockState(pos,
+						world.getBlockState(pos.offset(hopper.getValue(BlockHopper.FACING).getOpposite())));
+				break;
+			}
+			case "furnace": {
+				TileEntityFurnace te = (TileEntityFurnace) world.getTileEntity(pos.down());
+				ItemUtils.fillWithLoot(te, ModLootTables.FURNACE, world, world.rand);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "bookshelf": {
+				TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "bookshelf_bottom": {
+				TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.up());
+				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, world.getBlockState(
+						pos.offset(world.getBlockState(pos.up()).getValue(BlockBookshelfEnhanced.FACING))));
+				break;
+			}
+			case "bookshelves": {
+				TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.fillWithLoot(null);
+				te = (TileEntityBookshelf) world.getTileEntity(pos.down(2));
+				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "bookshelf_tall": {
+				TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.fillWithLoot(null);
+				te = (TileEntityBookshelf) world.getTileEntity(pos.down(2));
+				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.fillWithLoot(null);
+				te = (TileEntityBookshelf) world.getTileEntity(pos.down(3));
+				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "file_cabinet": {
+				TileEntityFileCabinet te = (TileEntityFileCabinet) world.getTileEntity(pos.down());
+				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.FILE_CABINET, world, world.rand);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "file_cabinet_tall": {
+				TileEntityFileCabinet te = (TileEntityFileCabinet) world.getTileEntity(pos.down());
+				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.FILE_CABINET, world, world.rand);
+				te = (TileEntityFileCabinet) world.getTileEntity(pos.down(2));
+				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.FILE_CABINET, world, world.rand);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "microwave": {
+				TileEntityMicrowave te = (TileEntityMicrowave) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.MICROWAVE, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "medical_cabinet": {
+				TileEntityMedicalCabinet te = (TileEntityMedicalCabinet) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "corpse": {
+				world.setBlockState(pos,
+						(world.rand.nextBoolean() ? ModBlocks.CORPSE_00 : ModBlocks.CORPSE_01).getDefaultState()
+								.withProperty(BlockHorizontalBase.FACING,
+										EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityCorpse te = (TileEntityCorpse) world.getTileEntity(pos);
+				te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
+				te.fillWithLoot(null);
+				break;
+			}
+			case "nest": {
+				world.setBlockState(pos, ModBlocks.BIRD_NEST.getDefaultState());
+				TileEntityBirdNest te = (TileEntityBirdNest) world.getTileEntity(pos);
+				te.setLootTable(ModLootTables.NEST, world.rand.nextLong());
+				te.fillWithLoot(null);
+				break;
+			}
+			case "wheels": {
+				IBlockState state = Blocks.AIR.getDefaultState();
+				if (world.rand.nextInt(40) == 0) {
+					state = ModBlocks.WHEELS.getDefaultState().withProperty(BlockWheels.FACING,
+							EnumFacing.getHorizontal(world.rand.nextInt(4)));
+				}
+				world.setBlockState(pos, state);
+				break;
+			}
+			case "cooking_pot": {
+				IBlockState state = Blocks.AIR.getDefaultState();
+				if (world.rand.nextInt(20) == 0) {
+					state = ModBlocks.COOKING_POT.getDefaultState().withProperty(BlockWheels.FACING,
+							EnumFacing.getHorizontal(world.rand.nextInt(4)));
+				}
+				world.setBlockState(pos, state);
+				break;
+			}
+			case "shower_drain": {
+				TileEntityHopper te = (TileEntityHopper) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.SHOWER_DRAIN, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "trash_can": {
+				world.setBlockState(pos, ModBlocks.TRASH_CAN.getDefaultState().withProperty(BlockTrashCan.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityTrashCan te = (TileEntityTrashCan) world.getTileEntity(pos);
+				te.setLootTable(ModLootTables.TRASH, world.rand.nextLong());
+				te.fillWithLoot(null);
+				break;
+			}
+			case "cash_register": {
+				TileEntityCashRegister te = (TileEntityCashRegister) world.getTileEntity(pos.down());
+				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.CASH_REGISTER, world,
+						world.rand);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "old_chest": {
+				world.setBlockState(pos, ModBlocks.CHEST_OLD.getDefaultState().withProperty(BlockChestOld.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityOldChest te = (TileEntityOldChest) world.getTileEntity(pos);
+				te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
+				te.fillWithLoot(null);
+				break;
+			}
+			case "bandit": {
+				EntityBandit bandit = new EntityBandit(world);
+				bandit.enablePersistence();
+				bandit.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+				bandit.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(bandit)), (IEntityLivingData) null);
+				world.spawnEntity(bandit);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+				break;
+			}
+			case "blind_zombie": {
+				EntityBlindZombie zombie = new EntityBlindZombie(world);
+				zombie.enablePersistence();
+				zombie.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+				zombie.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(zombie)), (IEntityLivingData) null);
+				world.spawnEntity(zombie);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+				break;
+			}
+			case "zombie_soldier": {
+				EntityZombieSoldier zombie = new EntityZombieSoldier(world);
+				zombie.enablePersistence();
+				zombie.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+				zombie.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(zombie)), (IEntityLivingData) null);
+				world.spawnEntity(zombie);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+				break;
+			}
+			case "military_backpack": {
+				world.setBlockState(pos, ModBlocks.BACKPACK_ARMY.getDefaultState().withProperty(BlockGarbage.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
+				te.setLootTable(ModLootTables.BACKPACK, world.rand.nextLong());
+				te.fillWithLoot(null);
+				break;
+			}
+			case "code_safe": {
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				IBlockState furnaceState = world.getBlockState(pos.down());
+				world.setBlockState(pos.down(), Blocks.AIR.getDefaultState());
+				if (furnaceState.getBlock() != Blocks.FURNACE)
+					break;
+				world.setBlockState(pos.down(), ModBlocks.CODE_SAFE.getDefaultState().withProperty(BlockCodeSafe.FACING,
+						furnaceState.getValue(BlockFurnace.FACING)));
+				TileEntityCodeSafe te = (TileEntityCodeSafe) world.getTileEntity(pos.down());
+				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.CODE_SAFE, world, world.rand);
+				break;
+			}
+			}
+		} catch (Exception e) {
 			Utils.getLogger().warn(pos.toString());
 			e.printStackTrace();
 		}
 	}
 
 	/*
-	 * Dimensions of the building, necessary for city buildings.
-	 * Scattered buildings do not require overriding this, though it is encouraged.
+	 * Dimensions of the building, necessary for city buildings. Scattered buildings
+	 * do not require overriding this, though it is encouraged.
 	 */
 	public BlockPos getDimensions(World world, EnumFacing facing) {
 		if (!world.isRemote) {
@@ -475,9 +483,13 @@ public class Building {
 	}
 
 	/*
-	 * Generates a pedestal under the structure with the shape of the bottom most layer of the structure. Uses either the bottom most blockstate of the structure proper
+	 * Generates a pedestal under the structure with the shape of the bottom most
+	 * layer of the structure. Uses either the bottom most blockstate of the
+	 * structure proper
 	 */
 	public void generatePedestal(World world, BlockPos pos, Template template, EnumFacing facing, boolean mirror) {
+		if (!hasPedestal)
+			return;
 		Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
 		BlockPos size = template.transformedSize(rot);
 		for (int i = 0; i < size.getX(); i++) {
@@ -516,14 +528,29 @@ public class Building {
 			}
 		}
 	}
-	
-	public Building setAllowedBiomes(Biome...biomes) {
-		this.allowedBiomes = biomes;
+
+	public Building setAllowedBiomes(Biome... biomes) {
+		this.allowedBiomes = new HashSet<Biome>(Arrays.asList(biomes));
 		return this;
 	}
-	
-	public Building setAllowedBlocks(Block...blocks) {
+
+	public Building setAllowedBlocks(Block... blocks) {
 		this.allowedBlocks = blocks;
+		return this;
+	}
+
+	public Building setAllowedCityTypes(EnumCityType... types) {
+		this.allowedCityTypes = new HashSet<EnumCityType>(Arrays.asList(types));
+		return this;
+	}
+
+	public Building setPedestal(IBlockState pedestal) {
+		this.pedestalState = pedestal;
+		return this;
+	}
+
+	public Building setHasPedestal(boolean hasPedestal) {
+		this.hasPedestal = hasPedestal;
 		return this;
 	}
 }

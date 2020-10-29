@@ -19,6 +19,7 @@ import com.nuparu.sevendaystomine.world.gen.city.building.Building;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingAirplane;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingCargoShip;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingFactory;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingHelicopter;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingMilitaryBase;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingWindTurbine;
 import com.nuparu.sevendaystomine.world.gen.feature.WorldGenLookoutBurnt;
@@ -72,12 +73,11 @@ public class StructureGenerator implements IWorldGenerator {
 									BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH))
 							.stream().toArray(Biome[]::new))
 					.setAllowedBlocks(Blocks.GRASS);
-	Building MILITARY_BASE = new BuildingMilitaryBase(0,-3).setAllowedBiomes(Utils
-							.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-									BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-									BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH))
-							.stream().toArray(Biome[]::new))
-					.setAllowedBlocks(Blocks.GRASS);
+	Building MILITARY_BASE = new BuildingMilitaryBase(0, -3)
+			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+			.setAllowedBlocks(Blocks.GRASS);
 
 	Building RUINED_HOUSE_2 = (new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruined_house_2"), 400))
 			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
@@ -105,17 +105,28 @@ public class StructureGenerator implements IWorldGenerator {
 									BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 									BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH))
 							.stream().toArray(Biome[]::new));
+	Building HELICOPTER = new BuildingHelicopter(new ResourceLocation(SevenDaysToMine.MODID, "helicopter"), 0, -4)
+			.setHasPedestal(false)
+			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new));
 	Building OBSERVATORY = (new Building(new ResourceLocation(SevenDaysToMine.MODID, "observatory"), 400))
 			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
 					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
 			.setAllowedBlocks(Blocks.GRASS);;
 
-	Building WIND_TURBINE = (new BuildingWindTurbine(400,0, ModBlocks.MARBLE.getDefaultState()))
+	Building WIND_TURBINE = (new BuildingWindTurbine(400, 0, ModBlocks.MARBLE.getDefaultState()))
 			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
 					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
 			.setAllowedBlocks(Blocks.GRASS);;
+
+	Building WELL_BUNKER = (new Building(new ResourceLocation(SevenDaysToMine.MODID, "well_bunker"), 400, -15))
+			.setHasPedestal(false)
+			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new));
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
@@ -164,11 +175,11 @@ public class StructureGenerator implements IWorldGenerator {
 			return;
 		}
 
-		if (generateStructure(BANDIT_CAMP, world, rand, blockX, blockZ, 1200)) {
+		if (generateStructure(BANDIT_CAMP, world, rand, blockX, blockZ, 1400)) {
 			return;
 		}
-		
-		if (generateStructure(MILITARY_BASE, world, rand, blockX, blockZ, 700)) {
+
+		if (generateStructure(MILITARY_BASE, world, rand, blockX, blockZ, 2500)) {
 			return;
 		}
 
@@ -192,14 +203,22 @@ public class StructureGenerator implements IWorldGenerator {
 			return;
 		}
 
-		if (generateStructure(AIRPLANE, world, rand, blockX, blockZ, 2000)) {
+		if (generateStructure(AIRPLANE, world, rand, blockX, blockZ, 22200)) {
 			return;
 		}
 
-		if (generateStructure(OBSERVATORY, world, rand, blockX, blockZ, 2600)) {
+		if (generateStructure(HELICOPTER, world, rand, blockX, blockZ, 1200)) {
 			return;
 		}
 		
+		if (generateStructure(WELL_BUNKER, world, rand, blockX, blockZ, 2000)) {
+			return;
+		}
+
+		if (generateStructure(OBSERVATORY, world, rand, blockX, blockZ, 3000)) {
+			return;
+		}
+
 		if (generateStructure(WIND_TURBINE, world, rand, blockX, blockZ, 1000)) {
 			return;
 		}
@@ -222,8 +241,7 @@ public class StructureGenerator implements IWorldGenerator {
 				|| Arrays.asList(building.allowedBlocks).contains(world.getBlockState(pos).getBlock())) {
 
 			Biome biome = world.provider.getBiomeForCoords(pos);
-			if (building.allowedBiomes == null || building.allowedBiomes.length == 0
-					|| Arrays.asList(building.allowedBiomes).contains(biome)) {
+			if (building.allowedBiomes == null || building.allowedBiomes.isEmpty()|| building.allowedBiomes.contains(biome)) {
 				building.generate(world, pos, EnumFacing.getHorizontal(rand.nextInt(4)), rand.nextBoolean());
 				return true;
 			}

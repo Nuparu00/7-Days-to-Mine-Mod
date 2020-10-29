@@ -15,10 +15,12 @@ import com.nuparu.ni.Interpreter;
 import com.nuparu.ni.Token;
 import com.nuparu.sevendaystomine.client.gui.monitor.IScreenElement;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
+import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.TextField;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SaveDataMessage;
+import com.nuparu.sevendaystomine.network.packets.SendPacketMessage;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncProcessMessage;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -36,6 +38,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -72,6 +75,11 @@ public class TransitProcess extends WindowedProcess {
 	@SideOnly(Side.CLIENT)
 	List<Token> tokens = new ArrayList<Token>();
 
+	@SideOnly(Side.CLIENT)
+	Button runButton;
+	@SideOnly(Side.CLIENT)
+	Button buildButton;
+
 	public TransitProcess() {
 		super();
 	}
@@ -93,6 +101,28 @@ public class TransitProcess extends WindowedProcess {
 		keywords.put("for", 0xCC6C1D);
 		keywords.put("if", 0xCC6C1D);
 		tokens = Interpreter.tokenize(text);
+
+		runButton = new Button(x, y + height * (0.75) - 10, 40, 10, Screen.screen, "Run", 1);
+		runButton.background = true;
+		runButton.border = false;
+		runButton.textNormal = 0xffffff;
+		runButton.normal = new ColorRGBA(90, 90, 90);
+		runButton.hovered = new ColorRGBA(120, 120, 120);
+		runButton.setZLevel(20);
+		runButton.setFontSize(0.7);
+		runButton.setProcess(this);
+		elements.add(runButton);
+
+		buildButton = new Button(x + 45, y + height * (0.75) - 10, 40, 10, Screen.screen, "Build", 2);
+		buildButton.background = true;
+		buildButton.border = false;
+		buildButton.textNormal = 0xffffff;
+		buildButton.normal = new ColorRGBA(90, 90, 90);
+		buildButton.hovered = new ColorRGBA(120, 120, 120);
+		buildButton.setZLevel(20);
+		buildButton.setFontSize(0.7);
+		buildButton.setProcess(this);
+		elements.add(buildButton);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -109,6 +139,36 @@ public class TransitProcess extends WindowedProcess {
 				sync();
 			}
 		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void initWindow() {
+		super.initWindow();
+
+		if (runButton != null) {
+			runButton.setX(x);
+			runButton.setY(y + height * (0.75) - 10);
+		}
+		if (buildButton != null) {
+			buildButton.setX(x + 45);
+			buildButton.setY(y + height * (0.75) - 10);
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onButtonPressed(Button button, int mouseButton) {
+		super.onButtonPressed(button, mouseButton);
+		if (isMinimized())
+			return;
+		int buttonId = button.ID;
+		switch (buttonId) {
+		case 1:
+			run();
+			break;
+		}
+
 	}
 
 	@Override
@@ -152,7 +212,7 @@ public class TransitProcess extends WindowedProcess {
 		GL11.glPushMatrix();
 		// Cuts content outside the window
 		RenderUtils.glScissor(Screen.mc, x, y + Screen.screen.ySize * title_bar_height + 2, width,
-				(height * 0.75) - Screen.screen.ySize * title_bar_height - 2);
+				(height * 0.75) - Screen.screen.ySize * title_bar_height - 2 - 10);
 		GlStateManager.translate(0, -(scrollProgress * Screen.mc.fontRenderer.FONT_HEIGHT), 0);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
@@ -293,24 +353,7 @@ public class TransitProcess extends WindowedProcess {
 			break;
 		}
 		case 15: {
-			Tree<Token> tree = Interpreter.parse(tokens);
-			if (tree != null) {
-				tree.print("-", true);
-				TransitProcess process = this;
-				getOutput().clear();
-				new Thread() {
-					@Override
-					public void run() {
-						try {
-						CodeBlock block = Interpreter.read(tree, null, process);
-						}
-						catch(Exception e) {
-							e.printStackTrace();
-						}
-					}
-				}.start();
-
-			}
+			run();
 			break;
 		}
 		case 28:
@@ -347,6 +390,27 @@ public class TransitProcess extends WindowedProcess {
 		// System.out.println(tokens.size() + " " + tokens.toString());
 	}
 
+	// Runs the written code
+	public void run() {
+		Tree<Token> tree = Interpreter.parse(tokens);
+		if (tree != null) {
+			// tree.print("-", true);
+			TransitProcess process = this;
+			getOutput().clear();
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+						CodeBlock block = Interpreter.read(tree, null, process);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}.start();
+
+		}
+	}
+
 	public void setCursorPosition(int pos) {
 		this.cursorPosition = pos;
 		int i = this.text.length();
@@ -376,7 +440,8 @@ public class TransitProcess extends WindowedProcess {
 		double top = y + 2 + (Screen.screen.ySize * title_bar_height);
 
 		if (this.isFocused()) {
-			if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
+			if (mouseX >= x && mouseX <= x + width && mouseY >= y
+					&& mouseY <= y + (height * 0.75) - Screen.screen.ySize * title_bar_height - 2 - 10) {
 				this.isFocused = true;
 
 				// position of Mouse from top left corner of the text area
@@ -429,8 +494,14 @@ public class TransitProcess extends WindowedProcess {
 		GL11.glPopMatrix();
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void saveToDevice(String data) {
 		PacketManager.saveData.sendToServer(new SaveDataMessage(data, computerTE.getPos()));
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void sendPacket(String packet, BlockPos to) {
+		PacketManager.sendPacket.sendToServer(new SendPacketMessage(computerTE.getPos(), to, packet));
 	}
 
 	public List<ITextComponent> getOutput() {

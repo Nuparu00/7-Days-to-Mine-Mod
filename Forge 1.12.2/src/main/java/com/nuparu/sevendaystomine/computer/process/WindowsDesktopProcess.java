@@ -16,6 +16,7 @@ import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.client.gui.monitor.TaskbarButton;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.TexturedButton;
+import com.nuparu.sevendaystomine.computer.HardDrive;
 import com.nuparu.sevendaystomine.computer.application.Application;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.network.PacketManager;
