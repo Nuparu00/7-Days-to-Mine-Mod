@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.Maps;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

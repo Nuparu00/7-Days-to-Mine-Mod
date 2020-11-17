@@ -1,8 +1,15 @@
 package com.nuparu.sevendaystomine.capability;
 
+import java.util.Iterator;
+
 import com.nuparu.sevendaystomine.world.gen.city.City;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.util.Constants;
 
 public class ExtendedChunk implements IExtendedChunk {
 
@@ -11,7 +18,7 @@ public class ExtendedChunk implements IExtendedChunk {
 	@Override
 	public void readNBT(NBTTagCompound nbt) {
 		if (nbt.hasKey("city")) {
-			if(this.city== null) {
+			if (this.city == null) {
 				this.city = new City();
 			}
 			this.city.readNBT((NBTTagCompound) nbt.getTag("city"));
@@ -35,7 +42,6 @@ public class ExtendedChunk implements IExtendedChunk {
 
 	@Override
 	public void onDataChanged() {
-		// TODO Auto-generated method stub
 
 	}
 

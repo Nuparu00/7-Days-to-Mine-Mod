@@ -9,7 +9,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityTorch extends TileEntity implements ITickable {
-	public int temp = 12000;
+	public int temp = 22000;
 
 	public TileEntityTorch() {
 

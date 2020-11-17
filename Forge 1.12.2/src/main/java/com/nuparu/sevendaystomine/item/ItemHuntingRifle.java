@@ -18,9 +18,11 @@ public class ItemHuntingRifle extends ItemGun {
 		this.setCross(16);
 		this.setReloadTime(500);
 		this.setDelay(2);
+		setFOVFactor(1.38f);
 		this.setType(EnumGun.RIFLE);
 		this.setLength(EnumLength.LONG);
 		this.setWield(EnumWield.TWO_HAND);
+		this.setAimPosition(-0.43, 0.1, 0);
 	}
 
 	@Override

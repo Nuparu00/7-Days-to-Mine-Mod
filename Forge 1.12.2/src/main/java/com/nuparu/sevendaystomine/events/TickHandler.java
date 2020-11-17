@@ -216,7 +216,8 @@ public class TickHandler {
 	@SubscribeEvent
 	public void onWorldTick(TickEvent.WorldTickEvent event) {
 		World world = event.world;
-		if (world == null || world.isRemote || ModConfig.world.airdropFrequency <= 0)
+		if (world == null || world.provider.getDimension() != 0 || world.isRemote
+				|| ModConfig.world.airdropFrequency <= 0 || event.phase != TickEvent.Phase.START)
 			return;
 
 		long time = world.getWorldTime() % 24000;
@@ -225,15 +226,17 @@ public class TickHandler {
 		if (time >= 6000 && miscData.getLastAirdrop() != Utils.getDay(world)
 				&& Utils.getDay(world) % ModConfig.world.airdropFrequency == 0) {
 			MinecraftServer server = Utils.getServer();
-			if (server == null)
+			if (server == null || server.getPlayerList().getCurrentPlayerCount() == 0)
 				return;
+			miscData.setLastAirdrop(Utils.getDay(world));
 			BlockPos pos = Utils.getAirdropPos(world);
+
+			EntityAirdrop e = new EntityAirdrop(world, world.getSpawnPoint().up(255));
+			world.spawnEntity(e);
+			e.setPosition(pos.getX(), pos.getY(), pos.getZ());
 			server.getPlayerList().sendMessage(new TextComponentTranslation("airdrop.message",
 					pos.getX() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1),
 					pos.getZ() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1)));
-			EntityAirdrop e = new EntityAirdrop(world, pos);
-			world.spawnEntity(e);
-			miscData.setLastAirdrop(Utils.getDay(world));
 		}
 
 	}
@@ -286,7 +289,7 @@ public class TickHandler {
 			int time = extendedPlayer.getInfectionTime();
 			extendedPlayer.setInfectionTime(time + 1);
 			PotionEffect effect = player.getActivePotionEffect(Potions.infection);
-			
+
 			if (time < ExtendedPlayer.INFECTION_STAGE_TWO_START && (effect == null || effect.getAmplifier() != 0)) {
 				player.addPotionEffect(new PotionEffect(Potions.infection, 24000));
 			}
@@ -335,14 +338,14 @@ public class TickHandler {
 
 			if (recoil > 0) {
 				recoil *= 0.8F;
-			}
-			player.rotationPitch -= recoil / 2;
-			if (useCount < 25) {
-				antiRecoil += recoil / 2;
-				player.rotationPitch += antiRecoil * 0.1F;
-			}
-			antiRecoil *= 0.8F;
 
+				player.rotationPitch -= recoil / 2;
+				if (useCount < 25) {
+					antiRecoil += recoil / 2;
+					player.rotationPitch += antiRecoil * 0.1F;
+				}
+				antiRecoil *= 0.8F;
+			}
 		}
 
 	}

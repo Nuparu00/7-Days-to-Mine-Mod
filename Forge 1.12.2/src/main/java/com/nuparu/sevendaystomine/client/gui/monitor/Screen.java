@@ -6,13 +6,16 @@ import java.util.Comparator;
 import com.nuparu.sevendaystomine.client.gui.GuiMonitor;
 import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class Screen {
 	private ArrayList<IScreenElement> elements = new ArrayList<IScreenElement>();
 
@@ -85,7 +88,8 @@ public class Screen {
 
 	public void update() {
 		if (gui.shouldDisplayAnything() && gui.getComputer() != null) {
-			for (TickingProcess process : gui.getComputer().getProcessesList()) {
+			ArrayList<TickingProcess> processesClone = new ArrayList<TickingProcess>(gui.getComputer().getProcessesList());
+			for (TickingProcess process : processesClone) {
 				if (process != null) {
 					process.clientTick();
 				}

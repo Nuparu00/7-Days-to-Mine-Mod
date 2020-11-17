@@ -167,5 +167,12 @@
       "sounds":[  
          "sevendaystomine:safe.unlock"
       ]
+   },
+   "entity.human.hurt":{  
+      "category":"neutral",
+      "subtitle":"subtitle.entity.human.hurt",
+      "sounds":[  
+         "sevendaystomine:human_hurt"
+      ]
    }
 }

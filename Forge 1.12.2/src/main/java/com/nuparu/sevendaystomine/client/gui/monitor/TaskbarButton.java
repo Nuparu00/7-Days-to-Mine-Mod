@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
 import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.renderer.GlStateManager;

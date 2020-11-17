@@ -9,7 +9,7 @@ import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.TextField;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.gui.ScaledResolution;

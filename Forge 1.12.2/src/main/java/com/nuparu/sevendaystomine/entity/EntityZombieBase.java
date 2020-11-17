@@ -54,10 +54,10 @@ public class EntityZombieBase extends EntityMob {
 	public final static UUID BLOODMOON_DAMAGE_BOOST_ID = UUID.fromString("dc7572f6-d05f-4df6-afee-7fa78046ec54");
 	public final static UUID BLOODMOON_ARMOR_BOOST_ID = UUID.fromString("b859cf4a-b7cd-486f-9b59-ebabfdd0985e");
 
-	IAttributeInstance speed;
-	IAttributeInstance range;
-	IAttributeInstance attack;
-	IAttributeInstance armor;
+	public IAttributeInstance speed;
+	public IAttributeInstance range;
+	public IAttributeInstance attack;
+	public IAttributeInstance armor;
 
 	public Horde horde;
 
@@ -82,8 +82,8 @@ public class EntityZombieBase extends EntityMob {
 		this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] { EntityPigZombie.class }));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, false));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, true));
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
 	}
 

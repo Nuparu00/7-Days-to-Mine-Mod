@@ -1,17 +1,22 @@
 package com.nuparu.sevendaystomine.events;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockMercury;
+import com.nuparu.sevendaystomine.entity.EntityHuman;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
@@ -31,24 +36,28 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LivingEventHandler {
-	
+
 	@SubscribeEvent
 	public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
-			EntityLivingBase livingEntity = event.getEntityLiving();
-			World world = livingEntity.world;
-			if(livingEntity.getHealth() < livingEntity.getMaxHealth() && world.getBlockState(new BlockPos(livingEntity)).getBlock() instanceof BlockMercury) {
-				livingEntity.addPotionEffect(new PotionEffect(Potions.mercuryPoison,240));
-			}
+		EntityLivingBase livingEntity = event.getEntityLiving();
+		World world = livingEntity.world;
+		if (livingEntity.getHealth() < livingEntity.getMaxHealth()
+				&& world.getBlockState(new BlockPos(livingEntity)).getBlock() instanceof BlockMercury) {
+			livingEntity.addPotionEffect(new PotionEffect(Potions.mercuryPoison, 240));
+		}
 	}
 
 	@SubscribeEvent
@@ -64,20 +73,18 @@ public class LivingEventHandler {
 		}
 		if (amount < 2)
 			return;
-		
+
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (player.isCreative() || player.isSpectator()) {
 				return;
 			}
-			if(source.getTrueSource() != null && source.getTrueSource() instanceof EntityZombieBase) {
-				if(world.rand.nextInt(20) == 0) {
+			if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityZombieBase) {
+				if (world.rand.nextInt(20) == 0) {
 					Utils.infectPlayer(player, 0);
 				}
 			}
 		}
-
-		
 
 		if (source == DamageSource.DROWN || source == DamageSource.FALL || source == DamageSource.HOT_FLOOR
 				|| source == DamageSource.ON_FIRE || source == DamageSource.OUT_OF_WORLD
@@ -125,4 +132,22 @@ public class LivingEventHandler {
 		}
 
 	}
+
+	@SubscribeEvent
+	public void onEntityHurt(LivingHurtEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
+		if (living instanceof EntityPlayer || living instanceof EntityHuman) {
+			World world = living.world;
+			List<EntityZombieBase> list = world.getEntitiesWithinAABB(EntityZombieBase.class,
+					new AxisAlignedBB(living.posX, living.posY, living.posZ, living.posX + 1, living.posY + 1,
+							living.posZ + 1).grow(16, 16, 16));
+			for (EntityZombieBase zombie : list) {
+				if (zombie.getAttackTarget() == null) {
+					zombie.setAttackTarget(living);
+				}
+			}
+		}
+
+	}
+
 }

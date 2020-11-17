@@ -12,8 +12,8 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.entity.EntityHuman;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.DialogueSelectionMessage;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 import com.nuparu.sevendaystomine.util.dialogue.Dialogue;
 import com.nuparu.sevendaystomine.util.dialogue.DialogueTree;
@@ -49,11 +49,14 @@ public class GuiDialogue extends GuiScreen {
 		Dialogues dialogues = entity.getDialogues();
 		String currentTree = entity.getCurrentDialogue();
 		DialogueTree tree = dialogues.getTreeByName(currentTree);
-		
+		if (tree == null) {
+			System.out.println(currentTree + " " + dialogues.toString());
+			return;
+		}
 		ArrayList<Dialogue> options = tree.getOptions();
-		for(int i = 0; i < options.size(); i++) {
+		for (int i = 0; i < options.size(); i++) {
 			Dialogue dialogue = options.get(i);
-			addDialogueButton(i,dialogue.getUnloclaizedName());
+			addDialogueButton(i, dialogue.getUnloclaizedName());
 		}
 	}
 
@@ -63,7 +66,7 @@ public class GuiDialogue extends GuiScreen {
 	public void addDialogueButton(int id, String text) {
 		int rectLeft = (this.width / 4);
 		int rectRight = (this.width / 4) * 3;
-		int rectTop = Math.round(this.height /2f);
+		int rectTop = Math.round(this.height / 2f);
 
 		int x = rectLeft + 5;
 		int y = 0;
@@ -87,13 +90,13 @@ public class GuiDialogue extends GuiScreen {
 
 		int rectLeft = Math.round(this.width / 4f);
 		int rectRight = Math.round(this.width / 4f * 3f);
-		int rectTop = Math.round(this.height /2f);
+		int rectTop = Math.round(this.height / 2f);
 		int rectBottom = Math.round(this.height - 40 - (this.height / 10f));
-		
+
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(rectLeft, rectTop - 15, 0);
 		GlStateManager.scale(1.5, 1.5, 1.5);
-		this.drawString(fontRenderer, entity.getName(), 0, 0, STYLING_COLOR);
+		this.drawString(fontRenderer, entity.getDisplayName().getFormattedText(), 0, 0, STYLING_COLOR);
 		GlStateManager.popMatrix();
 
 		this.drawGradientRect(rectLeft, rectTop, rectRight, rectBottom, -1072689136, -804253680);
@@ -104,12 +107,11 @@ public class GuiDialogue extends GuiScreen {
 
 		double ratio = (double) mc.displayWidth / (double) width;
 
-		//CUTS ALL TEXT OUTSIDE OF THE RECT
-		GL11.glScissor((int) Math.round(rectLeft * ratio), (int) Math.round((39+(this.height / 10f)) * ratio),
-				(int) Math.round((rectRight - rectLeft) * ratio),
-				(int) Math.round((getContentRectHeight()) * ratio));
+		// CUTS ALL TEXT OUTSIDE OF THE RECT
+		GL11.glScissor((int) Math.round(rectLeft * ratio), (int) Math.round((39 + (this.height / 10f)) * ratio),
+				(int) Math.round((rectRight - rectLeft) * ratio), (int) Math.round((getContentRectHeight()) * ratio));
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-		//RenderUtils.drawColoredRect(new ColorRGBA(1,1,1), 0, 0, 2000, 2000, 0);
+		// RenderUtils.drawColoredRect(new ColorRGBA(1,1,1), 0, 0, 2000, 2000, 0);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 		GL11.glPopMatrix();
@@ -157,17 +159,16 @@ public class GuiDialogue extends GuiScreen {
 	}
 
 	public int getContentRectHeight() {
-		return Math.round((this.height - 40 - (this.height / 10f))-(this.height /2f));
+		return Math.round((this.height - 40 - (this.height / 10f)) - (this.height / 2f));
 	}
-	
+
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException
-    {
-		if(button instanceof GuiDialogueOption) {
-			GuiDialogueOption option = (GuiDialogueOption)button;
-			PacketManager.dialogueSelection.sendToServer(new DialogueSelectionMessage(option.dialogueName,entity));
+	protected void actionPerformed(GuiButton button) throws IOException {
+		if (button instanceof GuiDialogueOption) {
+			GuiDialogueOption option = (GuiDialogueOption) button;
+			PacketManager.dialogueSelection.sendToServer(new DialogueSelectionMessage(option.dialogueName, entity));
 		}
-    }
+	}
 
 	public class GuiDialogueOption extends GuiButton {
 
@@ -184,7 +185,7 @@ public class GuiDialogue extends GuiScreen {
 
 		protected int deltaX = 0;
 		protected int deltaY = 0;
-		
+
 		public final String dialogueName;
 
 		public GuiDialogueOption(int buttonId, int x, int y, int widthIn, String dialogueName, GuiDialogue gui) {
@@ -192,12 +193,12 @@ public class GuiDialogue extends GuiScreen {
 			this.gui = gui;
 			this.defaultX = x;
 			this.defaultY = y;
-			
+
 			this.dialogueName = dialogueName;
 
-			String text = SevenDaysToMine.proxy.localize(dialogueName+".text");
+			String text = SevenDaysToMine.proxy.localize(dialogueName + ".text");
 
-			//SPLITS THE TEXT TO FIT THE RECT WITHOUT BREAKING WORDS
+			// SPLITS THE TEXT TO FIT THE RECT WITHOUT BREAKING WORDS
 			if (mc.fontRenderer.getStringWidth(text) <= widthIn) {
 				lines.add(text);
 			} else {
@@ -218,7 +219,6 @@ public class GuiDialogue extends GuiScreen {
 									}
 								}
 							}
-							
 
 							lines.add(text.substring(0, i).trim());
 							text = text.substring(i);
@@ -236,7 +236,7 @@ public class GuiDialogue extends GuiScreen {
 
 			rectLeft = Math.round(gui.width / 4f);
 			rectRight = Math.round(gui.width / 4f * 3f);
-			rectTop = Math.round(gui.height /2f);
+			rectTop = Math.round(gui.height / 2f);
 			rectBottom = Math.round(gui.height - 40 - (gui.height / 10f));
 
 		}
@@ -250,7 +250,7 @@ public class GuiDialogue extends GuiScreen {
 
 				int rectLeft = Math.round(gui.width / 4f);
 				int rectRight = Math.round(gui.width / 4f * 3f);
-				int rectTop = Math.round(gui.height /2f);
+				int rectTop = Math.round(gui.height / 2f);
 
 				this.hovered = (mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width
 						&& mouseY < this.y + this.height)

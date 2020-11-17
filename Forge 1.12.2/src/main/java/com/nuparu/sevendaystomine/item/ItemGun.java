@@ -11,21 +11,27 @@ import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.events.TickHandler;
+import com.nuparu.sevendaystomine.network.PacketManager;
+import com.nuparu.sevendaystomine.network.packets.ApplyRecoilMessage;
 import com.nuparu.sevendaystomine.util.Utils;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -34,6 +40,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -59,6 +66,7 @@ public class ItemGun extends Item implements IQuality {
 	private int reloadTime = 1500;
 	private int delay = 0;
 	private float fovFactor = 1;
+	private boolean scoped = false;
 
 	private int projectiles = 1;
 	private int shots = 1;
@@ -66,6 +74,7 @@ public class ItemGun extends Item implements IQuality {
 	private EnumGun type;
 	private EnumLength length;
 	private EnumWield wield;
+	private Vec3d aimPosition = new Vec3d(0,0,0);
 
 	public ItemGun() {
 		this.setCreativeTab(CreativeTabs.COMBAT);
@@ -131,11 +140,6 @@ public class ItemGun extends Item implements IQuality {
 		return wield;
 	}
 
-	public void recoil(EntityPlayer entity) {
-		entity.rotationPitch -= getRecoil();
-		entity.rotationPitch += getRecoil() * 0.2F;
-	}
-
 	public float getFinalDamage(ItemStack stack) {
 		if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun)) {
 			return getFullDamage();
@@ -181,7 +185,7 @@ public class ItemGun extends Item implements IQuality {
 				ItemQuality.MAX_QUALITY));
 		initNBT(itemstack);
 	}
-	
+
 	public void initNBT(ItemStack itemstack) {
 		if (itemstack.getTagCompound() == null) {
 			itemstack.setTagCompound(new NBTTagCompound());
@@ -279,17 +283,19 @@ public class ItemGun extends Item implements IQuality {
 
 		int ammo = nbt.getInteger("Ammo");
 		boolean flag = playerIn.isCreative();
-		
+
 		if (ammo > 0 || flag) {
 
 			float velocity = getSpeed() * (1f + ((float) getQuality(itemstack) / (float) ItemQuality.MAX_QUALITY));
 			boolean explosive = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.explosive, itemstack) != 0;
 			boolean sparking = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.sparking, itemstack) != 0;
-			if(sparking && explosive && (playerIn instanceof EntityPlayerMP) && itemstack.getItem() instanceof ItemShotgun) {
-				ModTriggers.GUN_INTERACT.trigger((EntityPlayerMP)playerIn);
+			if (sparking && explosive && (playerIn instanceof EntityPlayerMP)
+					&& itemstack.getItem() instanceof ItemShotgun) {
+				ModTriggers.GUN_INTERACT.trigger((EntityPlayerMP) playerIn);
 			}
 			for (int i = 0; i < projectiles; i++) {
-				EntityShot shot = new EntityShot(worldIn, playerIn, velocity, ((float) getSpread(playerIn, handIn) / (playerIn.isSneaking() ? 1.5f : 1f)));
+				EntityShot shot = new EntityShot(worldIn, playerIn, velocity,
+						((float) getSpread(playerIn, handIn) / (playerIn.isSneaking() ? 1.5f : 1f)));
 				shot.setExplosive(explosive);
 				shot.setSparking(sparking);
 				if (!worldIn.isRemote) {
@@ -302,8 +308,10 @@ public class ItemGun extends Item implements IQuality {
 					getShotSoundPitch());
 			playerIn.swingArm(handIn);
 
-			SevenDaysToMine.proxy.addRecoil(getRecoil(), playerIn);
-
+			// SevenDaysToMine.proxy.addRecoil(getRecoil(), playerIn);
+			if (playerIn instanceof EntityPlayerMP) {
+				PacketManager.applyRecoil.sendTo(new ApplyRecoilMessage(getRecoil()), (EntityPlayerMP) playerIn);
+			}
 			if (!flag) {
 				itemstack.getTagCompound().setInteger("Ammo", ammo - 1);
 			}
@@ -311,7 +319,9 @@ public class ItemGun extends Item implements IQuality {
 			itemstack.getTagCompound().setLong("NextFire", worldIn.getTotalWorldTime() + getDelay());
 
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
-		} else {
+		} else
+
+		{
 			worldIn.playSound(null, new BlockPos(playerIn), getDrySound(), SoundCategory.PLAYERS, 0.3F,
 					1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1f * 0.5F);
 			itemstack.getTagCompound().setLong("NextFire", worldIn.getTotalWorldTime() + (getDelay() / 2));
@@ -340,7 +350,7 @@ public class ItemGun extends Item implements IQuality {
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		double spread_local = spread * mult * (1d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)));
+		double spread_local = spread * mult * (1.2d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)));
 		return (spread_local
 				* (((double) (Math.abs(player.motionX) + Math.abs(player.motionY) + Math.abs(player.motionZ)))))
 				/ (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack) + 1d);
@@ -358,7 +368,7 @@ public class ItemGun extends Item implements IQuality {
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		return (spread * mult * (1d - ((double) quality / (ItemQuality.MAX_QUALITY + 1))))
+		return (spread * mult * (1.2d - ((double) quality / (ItemQuality.MAX_QUALITY + 1))*0.9))
 				/ (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack) + 1d);
 	}
 
@@ -411,18 +421,16 @@ public class ItemGun extends Item implements IQuality {
 			return super.getRGBDurabilityForDisplay(stack);
 		}
 	}
-	
+
 	@Override
-	public int getItemEnchantability()
-    {
-        return 15;
-    }
-	
+	public int getItemEnchantability() {
+		return 15;
+	}
+
 	@Override
-	public boolean isEnchantable(ItemStack stack)
-    {
-        return true;
-    }
+	public boolean isEnchantable(ItemStack stack) {
+		return true;
+	}
 
 	public float getFOVFactor(ItemStack stack) {
 		return fovFactor;
@@ -430,6 +438,15 @@ public class ItemGun extends Item implements IQuality {
 
 	public ItemGun setFOVFactor(float factor) {
 		fovFactor = factor;
+		return this;
+	}
+
+	public boolean getScoped() {
+		return this.scoped;
+	}
+
+	public ItemGun setScoped(boolean scoped) {
+		this.scoped = scoped;
 		return this;
 	}
 
@@ -526,13 +543,46 @@ public class ItemGun extends Item implements IQuality {
 		this.maxAmmo = maxAmmo;
 		return this;
 	}
-	
+
 	public void setShotsPerAmmo(int shots) {
 		this.shots = shots;
 	}
-	
+
 	public int getShotsPerAmmo() {
 		return this.shots;
+	}
+
+	public Vec3d getAimPosition() {
+		return this.aimPosition;
+	}
+
+	public ItemGun setAimPosition(Vec3d aimPosition) {
+		this.aimPosition = aimPosition;
+		return this;
+	}
+
+	public ItemGun setAimPosition(double x, double y, double z) {
+		return setAimPosition(new Vec3d(x, y, z));
+	}
+
+	@Override
+	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+		return true;
+	}
+
+	@Override
+	public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player) {
+		return false;
+	}
+
+	@Override
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+		return 0;
+	}
+
+	@Override
+	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+		return true;
 	}
 
 	public static enum EnumGun {

@@ -10,6 +10,7 @@ import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.util.MathUtils;
+import com.nuparu.sevendaystomine.util.dialogue.Dialogues;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
 import net.minecraft.entity.EntityLiving;
@@ -17,6 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
@@ -73,8 +75,8 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 	protected void entityInit() {
 		super.entityInit();
 		// setDialogues(DialoguesRegistry.INSTANCE.getByName("test.dialogues"));
-		this.setDialogues(DialoguesRegistry.INSTANCE.getByName("survivor.generic"));
-		this.setCurrentDialogue("survivor.generic.a");
+		this.setDialogues(Dialogues.EMPTY);
+		this.setCurrentDialogue("");
 		this.setSex(this.rand.nextInt(2) == 0 ? EnumSex.MALE.getName() : EnumSex.FEMALE.getName());
 		if (this.getSexAsEnum() == EnumSex.MALE) {
 			this.setTexture(SevenDaysToMine.MODID + ":textures/entity/human/bandit_soldier_male.png");
@@ -115,9 +117,20 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 		this.targetTasks.addTask(2,
 				new EntityAINearestAttackableTarget<EntitySurvivor>(this, EntitySurvivor.class, true));
 		this.targetTasks.addTask(2,
+				new EntityAINearestAttackableTarget<EntitySoldier>(this, EntitySoldier.class, true));
+		this.targetTasks.addTask(2,
 				new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
 		this.targetTasks.addTask(2,
 				new EntityAINearestAttackableTarget<EntityZombieBase>(this, EntityZombieBase.class, true));
+	}
+	
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25000000149011612D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30D);
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2D);
 	}
 
 	@Override

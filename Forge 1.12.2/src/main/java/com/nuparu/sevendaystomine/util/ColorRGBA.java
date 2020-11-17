@@ -1,11 +1,9 @@
-package com.nuparu.sevendaystomine.util.client;
-
-import com.nuparu.sevendaystomine.util.MathUtils;
+package com.nuparu.sevendaystomine.util;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+
 public class ColorRGBA {
 
 	public double R;

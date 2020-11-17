@@ -8,6 +8,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.entity.EntityHuman.EnumSex;
+import com.nuparu.sevendaystomine.network.PacketManager;
+import com.nuparu.sevendaystomine.network.packets.BulletImpactMessage;
 import com.nuparu.sevendaystomine.util.DamageSources;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -282,8 +284,8 @@ public class EntityShot extends Entity implements IProjectile {
 				entity.setFire(10);
 			}
 
-			if(explosive && !world.isRemote) {
-				world.newExplosion(this, entity.posX,entity.posY, entity.posZ, 1.2f, sparking, true);
+			if (explosive && !world.isRemote) {
+				world.newExplosion(this, entity.posX, entity.posY, entity.posZ, 1.2f, sparking, true);
 			}
 			if (!this.world.isRemote && entity.attackEntityFrom(damagesource, (float) i)) {
 				if (entity instanceof EntityLivingBase) {
@@ -348,17 +350,25 @@ public class EntityShot extends Entity implements IProjectile {
 				if (iblockstate.getMaterial() != Material.AIR) {
 					block.onEntityCollidedWithBlock(this.world, blockpos, iblockstate, this);
 				}
-				this.world.playEvent(2001, blockpos, Block.getStateId(iblockstate));
+				// this.world.playEvent(2001, blockpos, Block.getStateId(iblockstate));
+
 				if (iblockstate.getMaterial() == Material.GLASS) {
 					this.world.destroyBlock(blockpos, false);
 				} else {
-					Utils.damageBlock(world, blockpos, (float)(damage / iblockstate.getBlockHardness(world, blockpos)) * BLOCK_DAMAGE_BASE, true);
+					if (!Utils.damageBlock(world, blockpos,
+							(float) (damage / iblockstate.getBlockHardness(world, blockpos)) * BLOCK_DAMAGE_BASE,
+							true)) {
+						PacketManager.bulletImpact.sendToDimension(
+								new BulletImpactMessage(posX, posY, posZ, motionX, motionY, motionZ, blockpos),
+								world.provider.getDimension());
+					}
 
 				}
 			}
+
 		}
-		if(explosive && !world.isRemote) {
-			world.newExplosion(this, posX+motionX, posY+motionY, posZ+motionZ, 0.8f, sparking, true);
+		if (explosive && !world.isRemote) {
+			world.newExplosion(this, posX + motionX, posY + motionY, posZ + motionZ, 0.8f, sparking, true);
 		}
 		this.setDead();
 	}
@@ -402,23 +412,22 @@ public class EntityShot extends Entity implements IProjectile {
 	public void setDamage(double damageIn) {
 		this.damage = damageIn;
 	}
-	
+
 	public void setExplosive(boolean explosive) {
 		this.explosive = explosive;
 	}
-	
+
 	public void setSparking(boolean sparking) {
 		this.sparking = sparking;
 	}
-	
+
 	public boolean getExplosive() {
 		return explosive;
 	}
-	
+
 	public boolean getSparking() {
 		return sparking;
 	}
-
 
 	public double getDamage() {
 		return this.damage;

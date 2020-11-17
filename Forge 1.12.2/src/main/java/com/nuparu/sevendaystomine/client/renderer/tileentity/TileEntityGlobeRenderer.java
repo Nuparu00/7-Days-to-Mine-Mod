@@ -85,17 +85,15 @@ public class TileEntityGlobeRenderer extends TileEntitySpecialRenderer<TileEntit
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
 		modelPole.render();
 		GL11.glTranslatef(0.0F, 0.0F, -0.625F);
-		float rot = 0;
+		double rot = 0;
 		if (tileentity != null) {
-			float angle = tileentity.angle;
-			float prev = tileentity.anglePrev;
-			if (prev > angle) {
-				prev -= 360;
-			}
+			double angle = tileentity.angle;
+			double prev = tileentity.anglePrev;
+
 			rot = prev + (angle - prev) * partialTicks;
 		}
 		GL11.glRotatef(23.5f, 1.0f, 0f, 0f);
-		GL11.glRotatef(rot, 0.0F, 1.0F, 0.0F);
+		GL11.glRotated(rot, 0.0F, 1.0F, 0.0F);
 		modelGlobe.render();
 
 		GL11.glPopMatrix();

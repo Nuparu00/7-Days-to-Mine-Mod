@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModLootTables;
+import com.nuparu.sevendaystomine.item.EnumMaterial;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGarbage;
 import com.nuparu.sevendaystomine.util.ItemUtils;
 import com.nuparu.sevendaystomine.util.SimplexNoise;
@@ -224,14 +225,21 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 			for (int j = 0; j < 16; ++j) {
 				double value = Math.abs(getNoiseValue((x << 4) + i, (z << 4) + j, 0));
 				if (value < 0.005d) {
-					for (int k = 255; k >= 63; --k) {
+					for (int k = 80; k >= 63; --k) {
 						Biome biome = biomesIn[j + i * 16];
 						IBlockState state = primer.getBlockState(i, k, j);
 						Block block = state.getBlock();
-						
-						if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN) ||BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) continue;
-						
-						if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.RIVER) && rand.nextInt(4096) == 0) { break;}
+
+						if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)
+								|| BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
+							continue;
+
+						for (int l = 1; l < 4; l++) {
+							primer.setBlockState(i, k + l, j, Blocks.AIR.getDefaultState());
+						}
+						if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.RIVER) && rand.nextInt(4096) == 0) {
+							break;
+						}
 						if (block == Blocks.STONE) {
 							primer.setBlockState(i, k, j, ModBlocks.ASPHALT.getDefaultState());
 							break;
@@ -497,7 +505,13 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 				int i1 = this.rand.nextInt(16) + 8;
 				int j1 = this.rand.nextInt(256);
 				int k1 = this.rand.nextInt(16) + 8;
-				(new WorldGenLakes(Blocks.WATER)).generate(this.world, this.rand, blockpos.add(i1, j1, k1));
+				BlockPos pos = blockpos.add(i1, j1, k1);
+				IBlockState state = world.getBlockState(pos);
+				Block block = state.getBlock();
+				Material mat = state.getMaterial();
+				if (mat == Material.WOOD || mat == Material.GLASS || block == Blocks.COBBLESTONE) {
+					(new WorldGenLakes(Blocks.WATER)).generate(this.world, this.rand, pos);
+				}
 			}
 
 		if (!flag && this.rand.nextInt(this.settings.lavaLakeChance / 10) == 0 && this.settings.useLavaLakes)
@@ -506,9 +520,12 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 				int i2 = this.rand.nextInt(16) + 8;
 				int l2 = this.rand.nextInt(this.rand.nextInt(248) + 8);
 				int k3 = this.rand.nextInt(16) + 8;
-
-				if (l2 < this.world.getSeaLevel() || this.rand.nextInt(this.settings.lavaLakeChance / 8) == 0) {
-					(new WorldGenLakes(Blocks.LAVA)).generate(this.world, this.rand, blockpos.add(i2, l2, k3));
+				BlockPos pos = blockpos.add(i2, l2, k3);
+				IBlockState state = world.getBlockState(pos);
+				Block block = state.getBlock();
+				Material mat = state.getMaterial();
+				if (mat == Material.WOOD || mat == Material.GLASS || block == Blocks.COBBLESTONE && (l2 < this.world.getSeaLevel() || this.rand.nextInt(this.settings.lavaLakeChance / 8) == 0)) {
+					(new WorldGenLakes(Blocks.LAVA)).generate(this.world, this.rand, pos);
 				}
 			}
 
@@ -592,8 +609,8 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 			return this.woodlandMansionGenerator.isInsideStructure(pos);
 		} else if ("Monument".equals(structureName) && this.oceanMonumentGenerator != null) {
 			return this.oceanMonumentGenerator.isInsideStructure(pos);
-		} else if ("Village".equals(structureName) && this.villageGenerator != null) {
-			return this.villageGenerator.isInsideStructure(pos);
+		} else if ("Village".equals(structureName)) {
+			return false;
 		} else if ("Mineshaft".equals(structureName) && this.mineshaftGenerator != null) {
 			return this.mineshaftGenerator.isInsideStructure(pos);
 		} else {
@@ -614,8 +631,8 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 			return this.woodlandMansionGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
 		} else if ("Monument".equals(structureName) && this.oceanMonumentGenerator != null) {
 			return this.oceanMonumentGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
-		} else if ("Village".equals(structureName) && this.villageGenerator != null) {
-			return this.villageGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
+		} else if ("Village".equals(structureName)) {
+			return null;
 		} else if ("Mineshaft".equals(structureName) && this.mineshaftGenerator != null) {
 			return this.mineshaftGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
 		} else {
@@ -635,10 +652,6 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 		if (this.mapFeaturesEnabled) {
 			if (this.settings.useMineShafts) {
 				this.mineshaftGenerator.generate(this.world, x, z, (ChunkPrimer) null);
-			}
-
-			if (this.settings.useVillages) {
-				this.villageGenerator.generate(this.world, x, z, (ChunkPrimer) null);
 			}
 
 			if (this.settings.useStrongholds) {

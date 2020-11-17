@@ -118,12 +118,26 @@ public class Building {
 			PlacementSettings placementsettings = (new PlacementSettings())
 					.setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot).setIgnoreEntities(false)
 					.setChunk((ChunkPos) null).setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
-
+			
+			generateTemplate(world,pos,mirror,facing,placementsettings,template,hasPedestal);
+/*
 			template.addBlocksToWorld(world, pos, placementsettings);
 			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
+			generatePedestal(world, pos, template, facing, mirror);*/
+		}
+	}
+
+	public void generateTemplate(World world, BlockPos pos, boolean mirror, EnumFacing facing,
+			PlacementSettings placementsettings, Template template, boolean pedestal) {
+		template.addBlocksToWorld(world, pos, placementsettings);
+		Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
+		for (Entry<BlockPos, String> entry : map.entrySet()) {
+			handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
+		}
+		if (pedestal) {
 			generatePedestal(world, pos, template, facing, mirror);
 		}
 	}
@@ -467,6 +481,7 @@ public class Building {
 	 * do not require overriding this, though it is encouraged.
 	 */
 	public BlockPos getDimensions(World world, EnumFacing facing) {
+		if(res == null) return BlockPos.ORIGIN;
 		if (!world.isRemote) {
 			WorldServer worldserver = (WorldServer) world;
 			MinecraftServer minecraftserver = world.getMinecraftServer();

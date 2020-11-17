@@ -12,6 +12,7 @@ import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedChunk;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.City;
 import com.nuparu.sevendaystomine.world.gen.city.CitySavedData;
@@ -20,7 +21,9 @@ import com.nuparu.sevendaystomine.world.gen.city.building.BuildingAirplane;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingCargoShip;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingFactory;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingHelicopter;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingLargeBanditCamp;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingMilitaryBase;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingSettlement;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingWindTurbine;
 import com.nuparu.sevendaystomine.world.gen.feature.WorldGenLookoutBurnt;
 import com.nuparu.sevendaystomine.world.gen.feature.WorldGenStick;
@@ -73,6 +76,11 @@ public class StructureGenerator implements IWorldGenerator {
 									BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH))
 							.stream().toArray(Biome[]::new))
 					.setAllowedBlocks(Blocks.GRASS);
+	Building BANDIT_CAMP_LARGE = new BuildingLargeBanditCamp()
+			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+			.setAllowedBlocks(Blocks.GRASS);
 	Building MILITARY_BASE = new BuildingMilitaryBase(0, -3)
 			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
 					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
@@ -122,11 +130,17 @@ public class StructureGenerator implements IWorldGenerator {
 					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
 			.setAllowedBlocks(Blocks.GRASS);;
 
-	Building WELL_BUNKER = (new Building(new ResourceLocation(SevenDaysToMine.MODID, "well_bunker"), 400, -15))
+	Building WELL_BUNKER = (new Building(new ResourceLocation(SevenDaysToMine.MODID, "well_bunker"), 400, -31))
 			.setHasPedestal(false)
 			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
 					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new));
+	
+	Building SETTLEMENT = new BuildingSettlement(0, -3)
+			.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+					BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+			.setAllowedBlocks(Blocks.GRASS);
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
@@ -179,11 +193,19 @@ public class StructureGenerator implements IWorldGenerator {
 			return;
 		}
 
+		if (generateStructure(BANDIT_CAMP_LARGE, world, rand, blockX, blockZ, 2000)) {
+			return;
+		}
+
 		if (generateStructure(MILITARY_BASE, world, rand, blockX, blockZ, 2500)) {
 			return;
 		}
 
 		if (generateStructure(RUINED_HOUSE_2, world, rand, blockX, blockZ, 512)) {
+			return;
+		}
+		
+		if (generateStructure(SETTLEMENT, world, rand, blockX, blockZ, 512)) {
 			return;
 		}
 
@@ -210,7 +232,7 @@ public class StructureGenerator implements IWorldGenerator {
 		if (generateStructure(HELICOPTER, world, rand, blockX, blockZ, 1200)) {
 			return;
 		}
-		
+
 		if (generateStructure(WELL_BUNKER, world, rand, blockX, blockZ, 2000)) {
 			return;
 		}
@@ -241,8 +263,20 @@ public class StructureGenerator implements IWorldGenerator {
 				|| Arrays.asList(building.allowedBlocks).contains(world.getBlockState(pos).getBlock())) {
 
 			Biome biome = world.provider.getBiomeForCoords(pos);
-			if (building.allowedBiomes == null || building.allowedBiomes.isEmpty()|| building.allowedBiomes.contains(biome)) {
-				building.generate(world, pos, EnumFacing.getHorizontal(rand.nextInt(4)), rand.nextBoolean());
+			if (building.allowedBiomes == null || building.allowedBiomes.isEmpty()
+					|| building.allowedBiomes.contains(biome)) {
+				EnumFacing facing = EnumFacing.getHorizontal(rand.nextInt(4));
+				boolean mirror = building.canBeMirrored ? rand.nextBoolean() : false;
+				BlockPos dimensions = building.getDimensions(world, facing);
+				BlockPos end = pos
+						.offset(facing, facing.getAxis() == EnumFacing.Axis.Z ? dimensions.getZ() : dimensions.getX())
+						.offset(mirror ? facing.rotateY() : facing.rotateYCCW(),
+								facing.getAxis() == EnumFacing.Axis.X ? dimensions.getZ() : dimensions.getX());
+				end = Utils.getTopGroundBlock(end, world, true);
+
+				building.generate(world,
+						new BlockPos(pos.getX(), MathUtils.lerp(pos.getY(), end.getY(), 0.5f), pos.getZ()), facing,
+						mirror);
 				return true;
 			}
 		}

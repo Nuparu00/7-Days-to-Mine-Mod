@@ -37,7 +37,7 @@ public class BuildingGasStation extends Building {
 	public BuildingGasStation(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight, yOffset);
 		this.pedestalState = Blocks.STONE.getDefaultState();
-		setAllowedCityTypes(EnumCityType.URBAN);
+		setAllowedCityTypes(EnumCityType.CITY);
 	}
 
 	@Override

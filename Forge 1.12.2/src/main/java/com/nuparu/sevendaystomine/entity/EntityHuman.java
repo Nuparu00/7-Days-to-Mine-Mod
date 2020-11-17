@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.entity;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.events.HumanResponseEvent;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.network.PacketManager;
@@ -13,8 +14,12 @@ import com.nuparu.sevendaystomine.util.dialogue.Dialogues;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
@@ -29,6 +34,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
@@ -69,9 +75,9 @@ public abstract class EntityHuman extends EntityCreature {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.10000000149011612D);
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20D);
 	}
 
@@ -83,6 +89,12 @@ public abstract class EntityHuman extends EntityCreature {
 		this.dataManager.register(TEXTURE, String.valueOf("textures/entity/steve.png"));
 		this.dataManager.register(SEX, String.valueOf(EnumSex.UNKNOWN.getName()));
 	}
+	
+	@Override
+	protected void initEntityAI()
+    {
+		this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
+    }
 
 	public void setDialogues(Dialogues dialogues) {
 		this.dataManager.set(DIALOGUES, dialogues);
@@ -173,12 +185,66 @@ public abstract class EntityHuman extends EntityCreature {
 		if (!getCurrentDialogue().isEmpty()) {
 			compound.setString("current_dialogue", getCurrentDialogue());
 		}
-		compound.setString("dialogues", getDialogues().getKey().toString());
 		if (getDialogues() != null) {
 			compound.setString("dialogues", getDialogues().getKey().toString());
 		}
 		return compound;
 	}
+	
+	@Override
+	public boolean attackEntityAsMob(Entity entityIn)
+    {
+        float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        int i = 0;
+
+        if (entityIn instanceof EntityLivingBase)
+        {
+            f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase)entityIn).getCreatureAttribute());
+            i += EnchantmentHelper.getKnockbackModifier(this);
+        }
+
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+
+        if (flag)
+        {
+            if (i > 0 && entityIn instanceof EntityLivingBase)
+            {
+                ((EntityLivingBase)entityIn).knockBack(this, (float)i * 0.5F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                this.motionX *= 0.6D;
+                this.motionZ *= 0.6D;
+            }
+
+            int j = EnchantmentHelper.getFireAspectModifier(this);
+
+            if (j > 0)
+            {
+                entityIn.setFire(j * 4);
+            }
+
+            if (entityIn instanceof EntityPlayer)
+            {
+                EntityPlayer entityplayer = (EntityPlayer)entityIn;
+                ItemStack itemstack = this.getHeldItemMainhand();
+                ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
+
+                if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.getItem().isShield(itemstack1, entityplayer))
+                {
+                    float f1 = 0.25F + (float)EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+
+                    if (this.rand.nextFloat() < f1)
+                    {
+                        entityplayer.getCooldownTracker().setCooldown(itemstack1.getItem(), 100);
+                        this.world.setEntityState(entityplayer, (byte)30);
+                    }
+                }
+            }
+            this.swingArm(EnumHand.MAIN_HAND);
+
+            this.applyEnchantments(this, entityIn);
+        }
+
+        return flag;
+    }
 	
 
 	@SideOnly(Side.CLIENT)
@@ -217,7 +283,7 @@ public abstract class EntityHuman extends EntityCreature {
 	@Override
 	@Nullable
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return SoundEvents.ENTITY_PLAYER_HURT;
+		return SoundHelper.HUMAN_HURT;
 	}
 
 	@Override

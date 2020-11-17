@@ -83,9 +83,6 @@ public class TileEntityTurretAdvanced extends TileEntityTurret {
 			if (isOnWhitelist(seenEntity.getDisplayName().getUnformattedText())) {
 				return;
 			}
-			else {
-				System.out.println("FECK OFF");
-			}
 			if (te.target == null || distanceSqrtTo(seenEntity) < distanceSqrtTo(te.target)) {
 				te.target = seenEntity;
 			}

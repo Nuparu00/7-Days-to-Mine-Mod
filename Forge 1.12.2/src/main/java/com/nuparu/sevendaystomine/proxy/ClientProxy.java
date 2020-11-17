@@ -85,6 +85,7 @@ import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
 import com.nuparu.sevendaystomine.entity.EntityProjectileVomit;
 import com.nuparu.sevendaystomine.entity.EntityReanimatedCorpse;
 import com.nuparu.sevendaystomine.entity.EntityShot;
+import com.nuparu.sevendaystomine.entity.EntitySoldier;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieCrawler;
@@ -276,6 +277,7 @@ public class ClientProxy extends CommonProxy {
 				RenderZombieSoldierFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySurvivor.class, RenderHumanFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityBandit.class, RenderHumanFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySoldier.class, RenderHumanFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityMinibike.class, RenderMinibikeFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityBloatedZombie.class,
 				RenderBloatedZombieFactory.INSTANCE);

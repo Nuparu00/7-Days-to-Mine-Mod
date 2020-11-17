@@ -2,8 +2,12 @@ package com.nuparu.sevendaystomine.network;
 
 import com.nuparu.sevendaystomine.network.packets.AddSubtitleHandler;
 import com.nuparu.sevendaystomine.network.packets.AddSubtitleMessage;
+import com.nuparu.sevendaystomine.network.packets.ApplyRecoilHandler;
+import com.nuparu.sevendaystomine.network.packets.ApplyRecoilMessage;
 import com.nuparu.sevendaystomine.network.packets.BreakSyncHandler;
 import com.nuparu.sevendaystomine.network.packets.BreakSyncMessage;
+import com.nuparu.sevendaystomine.network.packets.BulletImpactHandler;
+import com.nuparu.sevendaystomine.network.packets.BulletImpactMessage;
 import com.nuparu.sevendaystomine.network.packets.ControllableKeyUpdateHandler;
 import com.nuparu.sevendaystomine.network.packets.ControllableKeyUpdateMessage;
 import com.nuparu.sevendaystomine.network.packets.DialogueSelectionHandler;
@@ -71,6 +75,8 @@ public class PacketManager {
 	// This is packet for INetwork - does have nothing to do with actual
 	// server-client packets!!!
 	public static SimpleNetworkWrapper sendPacket;
+	public static SimpleNetworkWrapper applyRecoil;
+	public static SimpleNetworkWrapper bulletImpact;
 
 	private static int discriminator = 0;
 
@@ -149,5 +155,12 @@ public class PacketManager {
 
 		sendPacket = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:sendPacket");
 		sendPacket.registerMessage(new SendPacketHandler(), SendPacketMessage.class, discriminator++, Side.SERVER);
+
+		applyRecoil = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:applyRecoil");
+		applyRecoil.registerMessage(new ApplyRecoilHandler(), ApplyRecoilMessage.class, discriminator++, Side.CLIENT);
+
+		bulletImpact = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:bulletImpact");
+		bulletImpact.registerMessage(new BulletImpactHandler(), BulletImpactMessage.class, discriminator++,
+				Side.CLIENT);
 	}
 }

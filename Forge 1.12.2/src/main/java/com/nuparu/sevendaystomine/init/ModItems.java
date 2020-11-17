@@ -39,6 +39,7 @@ import com.nuparu.sevendaystomine.item.ItemHoney;
 import com.nuparu.sevendaystomine.item.ItemHuntingRifle;
 import com.nuparu.sevendaystomine.item.ItemInstallDisc;
 import com.nuparu.sevendaystomine.item.ItemLinkTool;
+import com.nuparu.sevendaystomine.item.ItemM4;
 import com.nuparu.sevendaystomine.item.ItemMP3;
 import com.nuparu.sevendaystomine.item.ItemMP5;
 import com.nuparu.sevendaystomine.item.ItemMagnum;
@@ -144,13 +145,13 @@ public class ModItems {
 	public static final Item HUNTING_RIFLE = new ItemHuntingRifle().setRegistryName("hunting_rifle")
 			.setUnlocalizedName("hunting_rifle");
 	public static final Item MAGNUM = new ItemMagnum().setRegistryName("magnum").setUnlocalizedName("magnum");
-	public static final Item MAGNUM_SCOPED = new ItemMagnum().setFOVFactor(2.5f).setRegistryName("magnum_scoped")
+	public static final Item MAGNUM_SCOPED = new ItemMagnum().setFOVFactor(2.5f).setScoped(true).setRegistryName("magnum_scoped")
 			.setUnlocalizedName("magnum_scoped");
 	public static final Item FLAMETHROWER = new ItemFlamethrower().setRegistryName("flamethrower")
 			.setUnlocalizedName("flamethrower");
 	public static final Item MP5 = new ItemMP5().setRegistryName("mp5").setUnlocalizedName("mp5");
 	public static final Item RPG = new ItemRPG().setRegistryName("rpg").setUnlocalizedName("rpg");
-	public static final Item M4 = new ItemAK47().setRegistryName("m4").setUnlocalizedName("m4");
+	public static final Item M4 = new ItemM4().setRegistryName("m4").setUnlocalizedName("m4");
 
 	public static final Item COOKING_GRILL = new ItemScrapable(EnumMaterial.IRON).setRegistryName("CookingGrill")
 			.setUnlocalizedName("CookingGrill").setMaxStackSize(1);

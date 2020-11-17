@@ -30,6 +30,7 @@ import com.nuparu.sevendaystomine.entity.EntityProjectileVomit;
 import com.nuparu.sevendaystomine.entity.EntityReanimatedCorpse;
 import com.nuparu.sevendaystomine.entity.EntityRocket;
 import com.nuparu.sevendaystomine.entity.EntityShot;
+import com.nuparu.sevendaystomine.entity.EntitySoldier;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieCrawler;
@@ -338,6 +339,7 @@ public class CommonProxy {
 		registerEntity(EntityZombieWolf.class, "zombie_wolf", 96, 2, true, 0xffffff, 0xffffff);
 		registerEntity(EntityZombiePig.class, "zombie_pig", 96, 2, true, 0xffffff, 0xffffff);
 		registerEntity(EntityAirplane.class, "airplane", 96, 2, true);
+		registerEntity(EntitySoldier.class, "soldier", 64, 1, true, 0x0b264b, 0x292929);
 		/*
 		 * addEntitySpawn(EntityReanimatedCorpse.class, 1000, 1, 7,
 		 * EnumCreatureType.MONSTER, Utils.combine(BiomeDictionary.getBiomes(Type.LUSH),

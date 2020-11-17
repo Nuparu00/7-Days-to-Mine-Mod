@@ -70,7 +70,7 @@ public class TerrainGenEventHandler {
 								if (biome.getHeightVariation() > 0.2)
 									continue;
 								if (!CitySavedData.get(world).isCityNearby(pos, 1048576)) {
-									City city = new City(world, pos);
+									City city = City.foundCity(world, pos);
 									city.startCityGen();
 									return;
 								}

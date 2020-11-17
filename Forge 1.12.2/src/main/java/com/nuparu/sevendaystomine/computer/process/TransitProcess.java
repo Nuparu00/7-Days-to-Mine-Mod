@@ -23,9 +23,9 @@ import com.nuparu.sevendaystomine.network.packets.SaveDataMessage;
 import com.nuparu.sevendaystomine.network.packets.SendPacketMessage;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncProcessMessage;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Tree;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;
@@ -53,27 +53,22 @@ public class TransitProcess extends WindowedProcess {
 	private List<ITextComponent> output = new ArrayList<ITextComponent>();
 	private int cursorPosition;
 	private int selectionEnd;
-
 	private int lineScrollOffset;
 
 	public ShellProcess shellProcess = null;
 
 	@SideOnly(Side.CLIENT)
-	private ColorRGBA cursorColor = new ColorRGBA(255, 255, 255);
+	private ColorRGBA cursorColor;
 	@SideOnly(Side.CLIENT)
 	private int cursorCounter;
-	@SideOnly(Side.CLIENT)
+
 	private int syncTimer = 150;
 
-	@SideOnly(Side.CLIENT)
 	int scrollProgress;
-
-	@SideOnly(Side.CLIENT)
 	int lines;
+	
 	@SideOnly(Side.CLIENT)
-	HashMap<String, Integer> keywords = new HashMap<String, Integer>();
-	@SideOnly(Side.CLIENT)
-	List<Token> tokens = new ArrayList<Token>();
+	List<Token> tokens;
 
 	@SideOnly(Side.CLIENT)
 	Button runButton;
@@ -93,13 +88,10 @@ public class TransitProcess extends WindowedProcess {
 	@SideOnly(Side.CLIENT)
 	public void clientInit() {
 		super.clientInit();
-		keywords.put("int", 0xCC6C1D);
-		keywords.put("string", 0xCC6C1D);
-		keywords.put("boolean", 0xCC6C1D);
-		keywords.put("true", 0xCC6C1D);
-		keywords.put("false", 0xCC6C1D);
-		keywords.put("for", 0xCC6C1D);
-		keywords.put("if", 0xCC6C1D);
+		
+		cursorColor = new ColorRGBA(255, 255, 255);
+		tokens = new ArrayList<Token>();
+
 		tokens = Interpreter.tokenize(text);
 
 		runButton = new Button(x, y + height * (0.75) - 10, 40, 10, Screen.screen, "Run", 1);

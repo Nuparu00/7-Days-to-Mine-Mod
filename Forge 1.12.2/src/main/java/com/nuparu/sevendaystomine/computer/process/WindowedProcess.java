@@ -13,9 +13,9 @@ import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.KillProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -71,6 +71,14 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	@SideOnly(Side.CLIENT)
 	public void clientInit() {
 		super.clientInit();
+		
+		if (x == -1) {
+			x = Screen.screen.getRelativeX(0.5) - 50;
+		}
+		if (y == -1) {
+			y = Screen.screen.localYToGlobal(0);
+		}
+		
 		elements.clear();
 		close = new Button(x + width - Screen.screen.ySize * title_bar_height, y,
 				Screen.screen.ySize * title_bar_height, Screen.screen.ySize * title_bar_height, Screen.screen, "X", 0);
@@ -246,7 +254,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 			this.height = Screen.screen.ySize * 0.9;
 			this.x = Screen.screen.localXToGlobal(0);
 			this.y = Screen.screen.localYToGlobal(0);
-			sync("x","y","width","height");
+			sync("x", "y", "width", "height");
 		}
 		if (close == null)
 			return;
@@ -270,7 +278,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onButtonPressed(Button button, int mouseButton) {
-		
+
 		if (isMinimized())
 			return;
 		int buttonId = button.ID;
@@ -290,11 +298,11 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 			this.y = Screen.screen.localYToGlobal(0);
 			this.maximized = !this.maximized;
 			initWindow();
-			sync("x","y","width","height","old_height","old_width","maximized","minimized");
-			
+			sync("x", "y", "width", "height", "old_height", "old_width", "maximized", "minimized");
+
 		} else if (buttonId == -2) {
 			setMinimized(true);
-			sync("x","y","width","height","old_height","old_width","maximized","minimized");
+			sync("x", "y", "width", "height", "old_height", "old_width", "maximized", "minimized");
 
 		}
 	}
@@ -316,11 +324,11 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 				x = old_x;
 				y = old_y;
 			} else {
-				sync("x","y","isDragged");
+				sync("x", "y", "isDragged");
 			}
 			setOffsetX(0);
 			setOffsetY(0);
-			sync("offsetX","offsetY");
+			sync("offsetX", "offsetY");
 			onDragReleased();
 			initWindow();
 		}
@@ -380,7 +388,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 			isFocused = false;
 		}
 		if (focusPrev != isFocused) {
-			sync("offsetX","offsetY","old_x","old_y","isFocused");
+			sync("offsetX", "offsetY", "old_x", "old_y", "isFocused");
 		}
 	}
 
@@ -448,6 +456,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 		return false;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void tryToPutOnTop() {
 
 		int newOrder = this.getWindowOrder();
@@ -477,6 +486,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 		return windowOrder;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void setWindowOrder(int newWindowOrder) {
 
 		boolean flag = false;
@@ -486,7 +496,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 		this.windowOrder = newWindowOrder;
 		this.zLevel = (1 + windowOrder) * 3;
 		if (flag && application != null && computerTE != null) {
-			sync("windowOrder","zLevel");
+			sync("windowOrder", "zLevel");
 		}
 
 	}

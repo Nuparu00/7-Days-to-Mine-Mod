@@ -117,17 +117,6 @@ public class EntityAIBreakBlock extends EntityAIBase {
 
 	}
 
-	@SuppressWarnings("deprecation")
-	@SideOnly(Side.CLIENT)
-	public void playBreakSound() {
-		SoundType soundType = block.getSoundType();
-		Minecraft.getMinecraft().getSoundHandler()
-				.playSound(new PositionedSoundRecord(soundType.getBreakSound(), SoundCategory.BLOCKS,
-						(soundType.volume + 1.0F) / 8.0F, soundType.pitch * 0.5F,
-						(float) this.blockPosition.getX() + 0.5F, (float) this.blockPosition.getY() + 0.5F,
-						(float) this.blockPosition.getZ() + 0.5F));
-	}
-
 	@Override
 	public void updateTask() {
 		super.updateTask();
@@ -143,15 +132,15 @@ public class EntityAIBreakBlock extends EntityAIBase {
 				theEntity.swingArm(world.rand.nextInt(2) == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 			}
 			float m = (getBreakSpeed(state,blockPosition,theEntity)/hardness)/32f;
-			++this.stepSoundTickCounter;
 
-			if (Utils.damageBlock(world, blockPosition, m, true)) {
+			if (Utils.damageBlock(world, blockPosition, m, true, this.stepSoundTickCounter % 4.0F == 0.0F)) {
 				world.playEvent(2001, blockPosition, Block.getStateId(world.getBlockState(blockPosition)));
 				resetTask();
 				MinecraftForge.EVENT_BUS.post(new MobBreakEvent(theEntity.world, blockPosition,
 						theEntity.world.getBlockState(blockPosition), (EntityLivingBase) theEntity));
 
 			}
+			++this.stepSoundTickCounter;
 		}
 	}
 }

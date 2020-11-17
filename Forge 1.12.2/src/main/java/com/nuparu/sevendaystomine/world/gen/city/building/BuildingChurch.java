@@ -35,7 +35,7 @@ public class BuildingChurch extends Building {
 	}
 	public BuildingChurch(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight,yOffset);
-		setAllowedCityTypes(EnumCityType.URBAN, EnumCityType.RURAL);
+		setAllowedCityTypes(EnumCityType.CITY, EnumCityType.TOWN);
 	}
 
 	@Override

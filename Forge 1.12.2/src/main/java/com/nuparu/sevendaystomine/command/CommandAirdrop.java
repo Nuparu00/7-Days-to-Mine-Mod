@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
@@ -17,6 +18,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -67,11 +69,13 @@ public class CommandAirdrop extends CommandBase {
 			return;
 		if (args.length == 0) {
 			BlockPos pos = Utils.getAirdropPos(world);
+			EntityAirdrop e = new EntityAirdrop(world, sender.getPosition());
 			sender.sendMessage(new TextComponentTranslation("airdrop.message",
 					pos.getX() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1),
 					pos.getZ() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1)));
-			EntityAirdrop e = new EntityAirdrop(world, pos);
+			System.out.println(pos.toString());
 			world.spawnEntity(e);
+			e.setPosition(pos.getX(), pos.getY(), pos.getZ());
 		}
 
 	}

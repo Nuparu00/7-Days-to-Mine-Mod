@@ -46,8 +46,14 @@ public class BlockGlobe extends BlockTileProvider<TileEntityGlobe> {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntityGlobe te = (TileEntityGlobe) worldIn.getTileEntity(pos);
-		te.addSpeed();
+		if (!worldIn.isRemote) {
+			TileEntityGlobe te = (TileEntityGlobe) worldIn.getTileEntity(pos);
+			double speed = -0.6f;
+			if ((hitX == 0 && hitZ < 0.5) || (hitX == 1 && hitZ > 0.5) || (hitX > 0.5 && hitZ == 0) || (hitX < 0.5 && hitZ == 1))  {
+				speed = -speed;
+			}
+			te.addSpeed(speed);
+		}
 		return true;
 
 	}
@@ -76,13 +82,13 @@ public class BlockGlobe extends BlockTileProvider<TileEntityGlobe> {
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasCustomStateMapper() {
 		return true;
 	}
-	
+
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;

@@ -10,6 +10,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 
@@ -483,5 +484,8 @@ public class ModBlocks {
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
 	public static final Block SIRENE = new BlockSirene().setRegistryName("sirene").setUnlocalizedName("sirene")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
+			
+	public static final Block STRUCTURE_STONE = new BlockStructureStone();
+	public static final Block STRUCTURE_COBBLESTONE =  new BlockBase(Material.ROCK).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("structure_cobblestone").setRegistryName("structure_cobblestone").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 
 }

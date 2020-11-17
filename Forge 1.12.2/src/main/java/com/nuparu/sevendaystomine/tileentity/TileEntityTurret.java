@@ -21,6 +21,7 @@ import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -28,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntitySelectors;
@@ -73,6 +75,8 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 	public Entity target;
 	public AITurretTarget targetAI;
 	public AITurretShoot shootAI;
+	
+	public List<String> whitelistedTypes = new ArrayList<String>();
 
 	public TileEntityTurret() {
 		targetAI = new AITurretTarget(this);
@@ -138,6 +142,13 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 				network.add(blockPos);
 			}
 		}
+		
+		whitelistedTypes.clear();
+		NBTTagList list = compound.getTagList("whitelistedTypes", Constants.NBT.TAG_STRING);
+		for (int i = 0; i < list.tagCount(); ++i) {
+			NBTTagString nbt = (NBTTagString) list.get(i);
+			whitelistedTypes.add(nbt.getString());
+		}
 	}
 
 	@Override
@@ -161,12 +172,21 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 			list.appendTag(new NBTTagLong(net.toLong()));
 		}
 		compound.setTag("network", list);
-
+		
+		NBTTagList targets = new NBTTagList();
+		for (String s : whitelistedTypes) {
+			targets.appendTag(new NBTTagString(s));
+		}
+		compound.setTag("whitelistedTypes", targets);
+		
 		return compound;
 	}
 
 	@Override
 	public void update() {
+		if(world.isRemote) {
+			return;
+		}
 		this.headRotationPrev = this.headRotation;
 		if (delay < maxDelay) {
 			delay++;
@@ -212,6 +232,7 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 			 * Blocks.BEDROCK.getDefaultState()); }
 			 */
 			targetAI.updateAITask();
+			markForUpdate();
 		}
 	}
 
@@ -428,6 +449,9 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 					&& (((EntityPlayer) seenEntity).isCreative() || ((EntityPlayer) seenEntity).isSpectator())) {
 				return;
 			}
+			ResourceLocation key = EntityList.getKey(seenEntity);
+			if(key != null && te.whitelistedTypes.contains(key.toString())) return;
+			
 			if (te.target == null || distanceSqrtTo(seenEntity) < distanceSqrtTo(te.target)) {
 				te.target = seenEntity;
 			}
@@ -481,7 +505,7 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 
 		public void shoot(Vec3d pos, float yaw, float pitch) {
 			EntityShot shot = new EntityShot(te.getWorld(), pos, yaw, pitch, 1.5f, 0.25f);
-			shot.setDamage(4f);
+			shot.setDamage(20f);
 
 			if (!te.getWorld().isRemote) {
 				te.getWorld().spawnEntity(shot);
@@ -595,6 +619,10 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 
 	public void setOn(boolean on) {
 		this.on = on;
+		markForUpdate();
+	}
+	
+	public void markForUpdate() {
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 		world.scheduleBlockUpdate(pos,this.getBlockType(),0,0);
@@ -618,6 +646,10 @@ public abstract class TileEntityTurret extends TileEntityItemHandler<ItemHandler
 			break;
 		case "shoot":
 			this.shootAI.shoot();
+			break;
+		case "reset":
+			this.whitelistedTypes.clear();
+			markDirty();
 			break;
 		}
 	}

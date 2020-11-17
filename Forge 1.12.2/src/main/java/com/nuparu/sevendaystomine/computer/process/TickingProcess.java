@@ -36,8 +36,8 @@ public abstract class TickingProcess {
 	public long existedFor = 0;
 	public long duration = 0;
 
-	@SideOnly(Side.CLIENT)
 	protected ArrayList<IScreenElement> elements = new ArrayList<IScreenElement>();
+	
 	@SideOnly(Side.CLIENT)
 	protected Screen screen;
 	@SideOnly(Side.CLIENT)
@@ -56,6 +56,7 @@ public abstract class TickingProcess {
 
 	@SideOnly(Side.CLIENT)
 	public void clientTick() {
+		if(!clientInit) return;
 		for (IScreenElement element : elements) {
 			element.update();
 		}

@@ -24,6 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -34,6 +35,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
@@ -63,18 +65,16 @@ public class EntityAirdrop extends Entity {
 		this.setSize(1, 1);
 		this.inventory = new AirdropInventoryHandler(getInventorySize(), this);
 		this.setHealth(40);
-		ItemUtils.fillWithLoot(inventory, ModLootTables.AIRDROP, world, rand);
+		ItemUtils.fillWithLoot(inventory, ModLootTables.AIRDROP, world, rand);	
 	}
 
 	public EntityAirdrop(World worldIn, double x, double y, double z) {
 		this(worldIn);
 		setPosition(x, y, z);
-		SevenDaysToMine.forceChunkLoad(world, new ChunkPos((int) posX >> 4, (int) posZ >> 4), this);
 	}
 
 	public EntityAirdrop(World worldIn, BlockPos pos) {
 		this(worldIn, pos.getX(), pos.getY(), pos.getZ());
-		System.out.println(posX + " " + posY + " " + posZ);
 	}
 
 	@Override
@@ -228,7 +228,6 @@ public class EntityAirdrop extends Entity {
 
 	@Override
 	public void setDead() {
-		SevenDaysToMine.releaseChunkLoad(world, new ChunkPos((int) posX >> 4, (int) posZ >> 4));
 		this.isDead = true;
 	}
 

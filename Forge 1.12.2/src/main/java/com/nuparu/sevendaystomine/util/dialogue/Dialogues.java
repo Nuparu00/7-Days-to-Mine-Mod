@@ -33,7 +33,7 @@ public class Dialogues {
 
 	@Override
 	public String toString() {
-		return new StringBuilder("Dialogues(Name:").append(name).append(" DialogueTrees:").append(dialogueTrees.size())
+		return new StringBuilder("Dialogues(Name:").append(name).append(" DialogueTrees:").append(dialogueTrees.toString())
 				.append(")").toString();
 	}
 

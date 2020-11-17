@@ -57,8 +57,6 @@ public class Street {
 
 	public City city;
 
-	public static int thickness = 7;
-	public static int pavement = 3; // On each side
 	public EnumFacing facing;
 	public boolean canBranch = true;
 	public boolean tunnel = false;
@@ -69,7 +67,6 @@ public class Street {
 	public String name;
 	public List<Plot> plots = new ArrayList<Plot>();
 
-	public static final int LENGTH = 64;
 	public static final int MAX_SLOPE = 24;
 
 	public static final int SEWERS_HEIGHT = 5;
@@ -91,7 +88,7 @@ public class Street {
 		for (EnumFacing f : EnumFacing.HORIZONTALS) {
 			if (f != facing.getOpposite() && city.getStreetsCount() < city.roadsLimit) {
 				if (canBranch || f == facing) {
-					BlockPos blockpos = end.offset(f, Street.LENGTH - 1);
+					BlockPos blockpos = end.offset(f, city.type.roadLength - 1);
 					Biome biome = world.getBiome(blockpos);
 					if (biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN || biome == Biomes.OCEAN
 							|| biome.getHeightVariation() > 0.15f)
@@ -146,10 +143,13 @@ public class Street {
 		BlockPos pos = start;
 		Biome biome = world.getBiome(pos);
 		int i = 0;
-		while (i < (canBranch ? LENGTH - 10 : LENGTH)) {
+		while (i < (canBranch ? city.type.roadLength - 10 : city.type.roadLength)) {
 			Building building = CityHelper.getRandomBuilding(world.rand);
-			if(building.allowedCityTypes != null && !building.allowedCityTypes.contains(city.type)) continue;
-			if(building.allowedBiomes != null && !building.allowedBiomes.isEmpty() && !building.allowedBiomes.contains(biome)) continue;
+			if (building.allowedCityTypes != null && !building.allowedCityTypes.contains(city.type))
+				continue;
+			if (building.allowedBiomes != null && !building.allowedBiomes.isEmpty()
+					&& !building.allowedBiomes.contains(biome))
+				continue;
 			Plot plot = new Plot(this, 0, building, false, pos);
 
 			if (facing.getAxis() == EnumFacing.Axis.X) {
@@ -160,7 +160,7 @@ public class Street {
 				i += plot.zSize + 1;
 				pos = pos.offset(facing, plot.zSize + 1);
 			}
-			if (i > (canBranch ? LENGTH - 10 : LENGTH))
+			if (i > (canBranch ? city.type.roadLength - 10 : city.type.roadLength))
 				break;
 			if (city.doesPlotIntersect(plot)) {
 				continue;
@@ -171,10 +171,13 @@ public class Street {
 		}
 		pos = start;
 		i = 0;
-		while (i < (canBranch ? LENGTH - 10 : LENGTH)) {
+		while (i < (canBranch ? city.type.roadLength - 10 : city.type.roadLength)) {
 			Building building = CityHelper.getRandomBuilding(world.rand);
-			if(building.allowedCityTypes != null && !building.allowedCityTypes.contains(city.type)) continue;
-			if(building.allowedBiomes != null && !building.allowedBiomes.isEmpty() && !building.allowedBiomes.contains(biome)) continue;
+			if (building.allowedCityTypes != null && !building.allowedCityTypes.contains(city.type))
+				continue;
+			if (building.allowedBiomes != null && !building.allowedBiomes.isEmpty()
+					&& !building.allowedBiomes.contains(biome))
+				continue;
 			if (!building.canBeMirrored) {
 				continue;
 			}
@@ -188,7 +191,7 @@ public class Street {
 				i += plot.zSize + 1;
 				pos = pos.offset(facing, plot.zSize + 1);
 			}
-			if (i > (canBranch ? LENGTH - 10 : LENGTH))
+			if (i > (canBranch ? city.type.roadLength - 10 : city.type.roadLength))
 				break;
 			if (city.doesPlotIntersect(plot)) {
 				continue;
@@ -217,16 +220,17 @@ public class Street {
 				}
 			}
 
-			int r = (int) Math.ceil(thickness / 2);
-			for (int i = 1; i < r + pavement + 1; i++) {
-				for (int j = 1; j < r + pavement + 1; j++) {
+			int r = (int) Math.ceil(city.type.getRoadWidth() / 2);
+			for (int i = 1; i < r + city.type.getPavementWidth() + 1; i++) {
+				for (int j = 1; j < r + city.type.getPavementWidth() + 1; j++) {
 					BlockPos pos = end.offset(facing.rotateYCCW(), i).offset(facing, j);
-					IBlockState state = Blocks.STONEBRICK.getDefaultState();
+					IBlockState state = city.type.pavementBlock == null ? Blocks.STONEBRICK.getDefaultState()
+							: city.type.pavementBlock;
 					if (i <= r && j <= r) {
-						state = ModBlocks.ASPHALT.getDefaultState();
+						state = city.type.roadBlock;
 					}
 					Block block2 = world.getBlockState(pos).getBlock();
-					if (block2 != ModBlocks.ASPHALT && block2 != Blocks.CONCRETE) {
+					if (block2 != city.type.roadBlock.getBlock() && block2 != Blocks.CONCRETE) {
 						world.setBlockState(pos, state);
 						BlockPos pos2 = pos.down();
 						while (world.getBlockState(pos2).getBlock().isReplaceable(world, pos2)) {
@@ -244,7 +248,8 @@ public class Street {
 
 	// To-do: Clean this, fix the random stonebrick near crossing
 	public void generateAsphaltAndSidewalk() {
-		int cross = city.getStreetsAtCrossingCount(end, (thickness + pavement + 2) / 2);
+		int cross = city.getStreetsAtCrossingCount(end,
+				(city.type.getRoadWidth() + city.type.getPavementWidth() + 2) / 2);
 
 		int roofBlocks = 0;
 
@@ -253,14 +258,18 @@ public class Street {
 
 		start = new BlockPos(start.getX(), startHeight, start.getZ());
 		end = new BlockPos(end.getX(), endHeight, end.getZ());
-		for (int i = 0; i <= LENGTH - 1; i++) {
 
-			int lerpedHeight = (int) Utils.lerp(startHeight, endHeight, i / (float) LENGTH);
+		int width = city.type.getRoadWidth() + (city.type.getPavementWidth() * 2);
+
+		for (int i = 0; i <= city.type.roadLength - 1; i++) {
+
+			int lerpedHeight = (int) Utils.lerp(startHeight, endHeight, i / (float) city.type.roadLength);
 			int y = lerpedHeight;
 
-			for (int t = 0; t < thickness + (pavement * 2); t++) {
+			for (int t = 0; t < width; t++) {
 
-				int offset = t - (thickness + (pavement * 2) / 2) + 4;
+				int offset = t - Math.round(width / 2f) + 1;
+
 				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i)
 						.offset(facing.rotateY(), offset).up(y);
 				IBlockState originalState = world.getBlockState(pos);
@@ -270,7 +279,7 @@ public class Street {
 				Block blockUnder = stateUnder.getBlock();
 
 				if (originalBLock == Blocks.CONCRETE || blockUnder == Blocks.CONCRETE
-						|| BlockAsphalt.isCityAsphalt(stateUnder))
+						|| stateUnder == city.type.roadBlock)
 					continue;
 
 				// Columns
@@ -284,7 +293,7 @@ public class Street {
 
 				}
 
-				IBlockState stateToPlace = ModBlocks.ASPHALT.getDefaultState().withProperty(BlockAsphalt.CITY, true);
+				IBlockState stateToPlace = city.type.roadBlock;
 
 				// Zebras
 				if (cross > 1 && (i == 6 || i == 7) && t % 2 == 0) {
@@ -292,32 +301,40 @@ public class Street {
 				}
 
 				// Sidewalk
-				if ((t < pavement || t >= thickness + pavement) && !BlockAsphalt.isCityAsphalt(originalState)) {
-					stateToPlace = Blocks.STONEBRICK.getDefaultState();
-					// Diversify
-					if (world.rand.nextInt() < 3) {
-						stateToPlace = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
-								BlockStoneBrick.EnumType.CRACKED);
-					} else if (world.rand.nextInt() < 2) {
-						stateToPlace = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT,
-								BlockStoneSlab.EnumType.SMOOTHBRICK);
-					} else {
-						Biome biome = world.getBiome(pos);
-						if (biome.getTemperature(pos) > 0.5 && world.rand.nextInt() < 2) {
-							if (biome.getRainfall() > 0.1) {
-								stateToPlace = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
-										BlockStoneBrick.EnumType.MOSSY);
-							} else {
-								stateToPlace = ModBlocks.DEAD_MOSSY_BRICK.getDefaultState();
-							}
+				if ((t < city.type.getPavementWidth() || t >= city.type.getRoadWidth() + city.type.getPavementWidth())
+						&& originalState != city.type.roadBlock) {
+					if (city.type.pavementBlock == null) {
+						stateToPlace = Blocks.STONEBRICK.getDefaultState();
+						// Diversify
+						if (world.rand.nextInt() < 3) {
+							stateToPlace = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
+									BlockStoneBrick.EnumType.CRACKED);
+						} else if (world.rand.nextInt() < 2) {
+							stateToPlace = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT,
+									BlockStoneSlab.EnumType.SMOOTHBRICK);
 						} else {
-							stateToPlace = Blocks.STONEBRICK.getDefaultState();
-						}
+							Biome biome = world.getBiome(pos);
+							if (biome.getTemperature(pos) > 0.5 && world.rand.nextInt() < 2) {
+								if (biome.getRainfall() > 0.1) {
+									stateToPlace = Blocks.STONEBRICK.getDefaultState()
+											.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+								} else {
+									stateToPlace = ModBlocks.DEAD_MOSSY_BRICK.getDefaultState();
+								}
+							} else {
+								stateToPlace = Blocks.STONEBRICK.getDefaultState();
+							}
 
+						}
+					} else {
+						stateToPlace = city.type.pavementBlock;
+						if(city.rand.nextInt(7) == 0) {
+							stateToPlace = originalState;
+						}
 					}
 				}
 
-				// Removed blocks above the orad -- tunnels
+				// Removed blocks above the road -- tunnels
 				for (int air = 1; air < 6; air++) {
 					BlockPos pos2 = pos.up(air);
 					IBlockState state = world.getBlockState(pos2);
@@ -349,7 +366,7 @@ public class Street {
 				world.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
 			}
 		}
-		if (roofBlocks >= ((thickness + 2 * pavement) * LENGTH) / 4) {
+		if (roofBlocks >= ((city.type.getRoadWidth() + 2 * city.type.getPavementWidth()) * city.type.roadLength) / 4) {
 			this.tunnel = true;
 		}
 	}
@@ -359,17 +376,16 @@ public class Street {
 	 */
 	public void generateSewers() {
 
-		for (int i = 0; i <= LENGTH - 1; i++) {
+		int width = city.type.getRoadWidth() + (city.type.getPavementWidth() * 2);
 
-			int lerpedHeight = (int) Utils.lerp(start.getY(), end.getY(), i / (float) LENGTH);
+		for (int i = 0; i <= city.type.roadLength - 1; i++) {
+
+			int lerpedHeight = (int) Utils.lerp(start.getY(), end.getY(), i / (float) city.type.roadLength);
 			int y = lerpedHeight;
 
-			for (int t = 0; t < thickness + (pavement * 2); t++) {
+			for (int t = 0; t < width; t++) {
 
-				int offset = t - (thickness + (pavement * 2) / 2) + 4;
-				if (facing == EnumFacing.NORTH || facing == EnumFacing.WEST) {
-
-				}
+				int offset = t - Math.round(width / 2f) + 1;
 				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i).offset(facing.rotateY(),
 						offset);
 
@@ -388,7 +404,7 @@ public class Street {
 						IBlockState replaceState = world.getBlockState(sewersPos);
 						Block replaceBlock = replaceState.getBlock();
 						if ((replaceState.getMaterial() == Material.WATER || replaceState.getMaterial() == Material.AIR)
-								&& (i <= 2 || i >= LENGTH - 3))
+								&& (i <= 2 || i >= city.type.roadLength - 3))
 							continue;
 						if ((i > 2 || canBranch) && Math.abs(offset) == SEWERS_WIDTH - 1 || j == SEWERS_HEIGHT - 1
 								|| (j == 0 && offset != 0)) {
@@ -424,7 +440,7 @@ public class Street {
 										BlockTrapDoor.DoorHalf.TOP);
 								for (EnumFacing f : EnumFacing.HORIZONTALS) {
 									if (world.getBlockState(manholePos.offset(f)).getMaterial().isReplaceable()) {
-										world.setBlockState(manholePos.offset(f), ModBlocks.ASPHALT.getDefaultState());
+										world.setBlockState(manholePos.offset(f), city.type.roadBlock);
 									}
 								}
 							}
@@ -441,31 +457,35 @@ public class Street {
 	 * cars
 	 */
 	public void decorate() {
+		int width = city.type.getRoadWidth() + (city.type.getPavementWidth() * 2);
 
-		for (int i = 0; i <= LENGTH - 1; i++) {
+		for (int i = 0; i <= city.type.roadLength - 1; i++) {
 
 			// What should be Y of the road in this position between the start and end
-			int lerpedHeight = (int) Utils.lerp(start.getY(), end.getY(), i / (float) LENGTH);
+			int lerpedHeight = (int) Utils.lerp(start.getY(), end.getY(), i / (float) city.type.roadLength);
 			int y = lerpedHeight;
 
-			for (int t = 0; t < thickness + (pavement * 2); t++) {
+			for (int t = 0; t < width; t++) {
 
-				int offset = t - (thickness + (pavement * 2) / 2) + 4;
+				int offset = t - Math.round(width / 2f) + 1;
 				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i).offset(facing.rotateY(),
 						offset);
-				int halfThickness = (int) Math.ceil(thickness / 2);
+				int halfThickness = (int) Math.ceil(city.type.getRoadWidth() / 2);
 				if (canBranch) {
 					if ((endCrossing != null && endCrossing.getStreets().size() > 2)
 							|| city.getStreetsAtCrossingCount(end, 4) > 2) {
-						if (i == LENGTH - (thickness - 2) && t == thickness + (pavement * 2) - 2) {
+						if (i == city.type.roadLength
+								- (city.type.getRoadWidth() - (2 - (city.type.getRoadWidth() - 7)))
+								&& t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 2) {
 							generateTrafficLight(pos.up(y + 1));
 						}
 					}
 
-					if (i < LENGTH - (halfThickness + pavement) && (i + 5) % (city.type == EnumCityType.RURAL ? 16 : 8) == 0) {
+					if (i < city.type.roadLength - (halfThickness + city.type.getPavementWidth())
+							&& (i + 5) % (city.type == EnumCityType.TOWN ? 16 : 8) == 0) {
 						if (t == 0) {
 							generateStreetLamp(pos.up(y + 1), false);
-						} else if (t == thickness + (pavement * 2) - 1) {
+						} else if (t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 1) {
 							generateStreetLamp(pos.up(y + 1), true);
 
 						}
@@ -474,28 +494,30 @@ public class Street {
 				} else {
 					if ((startCrossing != null && startCrossing.getStreets().size() > 2)
 							|| city.getStreetsAtCrossingCount(start, 4) > 2) {
-						if (i == Math.ceil(thickness / 2) + 1 && t == pavement - 1) {
+						if (i == Math.ceil(city.type.getRoadWidth() / 2) + (1 - (city.type.getRoadWidth() - 7))
+								&& t == city.type.getPavementWidth() - 1) {
 							generateTrafficLight(pos.up(y + 1));
 						}
 					}
-					if (i > halfThickness + pavement && (i - halfThickness) % (city.type == EnumCityType.RURAL ? 16 : 8) == 0) {
+					if (i > halfThickness + city.type.getPavementWidth()
+							&& (i - halfThickness) % (city.type == EnumCityType.TOWN ? 16 : 8) == 0) {
 						if (t == 0) {
 							generateStreetLamp(pos.up(y + 1), false);
-						} else if (t == thickness + (pavement * 2) - 1) {
+						} else if (t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 1) {
 							generateStreetLamp(pos.up(y + 1), true);
 						}
 					}
 				}
 				if (connectedStreets.size() == 1 && previousStreet != null) {
-					if (i == LENGTH - 2) {
-						if (t == 2) {
+					if (i == city.type.roadLength - 2) {
+						if (offset == -4) {
 							generateCityLimitsSign(pos.up(y + 1));
 						}
 					}
 				}
 
 				// Cars generation
-				if (Math.abs(t - (thickness / 2 + pavement)) <= 2) {
+				if (Math.abs(t - (city.type.getRoadWidth() / 2 + city.type.getPavementWidth())) <= 2) {
 					if (city.rand.nextInt(50) == 0) {
 						BlockPos pos2 = pos.up(y + 1);
 						if (world.getBlockState(pos2).getBlock() != Blocks.AIR) {
@@ -519,18 +541,14 @@ public class Street {
 		if (base.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
 		}
-		IBlockState base2 = world.getBlockState(pos.down().offset(facing.rotateY(), thickness + 1));
+		IBlockState base2 = world.getBlockState(pos.down().offset(facing.rotateY(), city.type.getRoadWidth() + 1));
 		if (base2.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
 		}
 
 		for (int i = 0; i < 8; i++) {
 			world.setBlockState(pos.up(i), Blocks.COBBLESTONE_WALL.getDefaultState());
-		}
-
-		for (int i = 0; i < 8; i++) {
-			world.setBlockState(pos.up(i).offset(facing.rotateY(), thickness + 1),
-					Blocks.COBBLESTONE_WALL.getDefaultState());
+			world.setBlockState(pos.up(i).offset(facing.rotateY(), 8), Blocks.COBBLESTONE_WALL.getDefaultState());
 		}
 
 		for (int i = 0; i < 9; i++) {
@@ -559,21 +577,34 @@ public class Street {
 
 	public void generateTrafficLight(BlockPos pos) {
 
+		IBlockState poleState = Blocks.COBBLESTONE_WALL.getDefaultState();
+		switch (city.type) {
+		default:
+		case CITY:
+		case METROPOLIS:
+			poleState = Blocks.COBBLESTONE_WALL.getDefaultState();
+			break;
+		case VILLAGE:
+		case TOWN:
+			poleState = Blocks.OAK_FENCE.getDefaultState();
+			break;
+		}
+		
 		IBlockState base = world.getBlockState(pos.down());
 		if (base.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
 		}
 		int height = 5;
 		for (int i = 0; i < height; i++) {
-			world.setBlockState(pos.up(i), Blocks.COBBLESTONE_WALL.getDefaultState());
+			world.setBlockState(pos.up(i), poleState);
 		}
 		if (world.getBlockState(pos.down()).getBlock() == Blocks.AIR) {
 			int i = 1;
 			while (world.getBlockState(pos.down(i)).getBlock() == Blocks.AIR) {
-				world.setBlockState(pos.down(i), Blocks.COBBLESTONE_WALL.getDefaultState());
+				world.setBlockState(pos.down(i), poleState);
 				i--;
 				if (world.getBlockState(pos.down(i)).getBlock() == Blocks.STONE_SLAB) {
-					world.setBlockState(pos.down(i), Blocks.STONEBRICK.getDefaultState());
+					world.setBlockState(pos.down(i), poleState);
 				}
 			}
 		}
@@ -582,7 +613,7 @@ public class Street {
 		if (!canBranch) {
 			for (int i = 1; i < 4; i++) {
 				world.setBlockState(pos.up(height).offset(facing.rotateY(), i),
-						Blocks.COBBLESTONE_WALL.getDefaultState());
+						poleState);
 				world.setBlockState(pos.up(height).offset(facing.rotateY(), i).offset(facing, 1),
 						ModBlocks.TRAFFIC_LIGHT.getDefaultState().withProperty(BlockHorizontalBase.FACING, facing));
 			}
@@ -658,6 +689,20 @@ public class Street {
 	}
 
 	public void generateStreetLamp(BlockPos pos, boolean end) {
+		switch (city.type) {
+		default:
+		case CITY:
+		case METROPOLIS:
+			generateCityStreetLamp(pos, end);
+			break;
+		case VILLAGE:
+		case TOWN:
+			generateVillageStreetLamp(pos, end);
+			break;
+		}
+	}
+
+	public void generateCityStreetLamp(BlockPos pos, boolean end) {
 		IBlockState base = world.getBlockState(pos.down());
 		if (base.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
@@ -696,6 +741,35 @@ public class Street {
 		}
 	}
 
+	public void generateVillageStreetLamp(BlockPos pos, boolean end) {
+		IBlockState base = world.getBlockState(pos.down());
+		if (base.getBlock() == Blocks.STONE_SLAB) {
+			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
+		}
+		int height = 6;
+		for (int i = 0; i < height; i++) {
+			if(i == height-1) {
+				world.setBlockState(pos.up(i), Blocks.STONE_SLAB.getDefaultState());
+			}
+			else if(i == height-2) {
+				world.setBlockState(pos.up(i), Blocks.REDSTONE_LAMP.getDefaultState());
+			}
+			else  {
+				world.setBlockState(pos.up(i), Blocks.OAK_FENCE.getDefaultState());
+			}
+		}
+		if (world.getBlockState(pos.down()).getBlock() == Blocks.AIR) {
+			int i = 1;
+			while (world.getBlockState(pos.down(i)).getBlock() == Blocks.AIR) {
+				world.setBlockState(pos.down(i), Blocks.OAK_FENCE.getDefaultState());
+				i--;
+				if (world.getBlockState(pos.down(i)).getBlock() == Blocks.STONE_SLAB) {
+					world.setBlockState(pos.down(i), Blocks.STONEBRICK.getDefaultState());
+				}
+			}
+		}
+	}
+
 	public void addConnectedStreet(Street street) {
 		connectedStreets.add(street);
 	}
@@ -710,7 +784,8 @@ public class Street {
 	}
 
 	public void readNBT(NBTTagCompound nbt) {
-
+		this.start = BlockPos.fromLong(nbt.getLong("start"));
+		this.end = BlockPos.fromLong(nbt.getLong("end"));
 	}
 
 	public NBTTagCompound writeNBT(NBTTagCompound nbt) {

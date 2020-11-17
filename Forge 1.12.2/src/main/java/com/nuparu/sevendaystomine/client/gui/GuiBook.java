@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.book.BookData;
 import com.nuparu.sevendaystomine.util.book.BookData.CraftingMatrix;
@@ -17,7 +18,6 @@ import com.nuparu.sevendaystomine.util.book.BookData.Page;
 import com.nuparu.sevendaystomine.util.book.BookData.Stack;
 import com.nuparu.sevendaystomine.util.book.BookData.TextBlock;
 import com.nuparu.sevendaystomine.util.book.BookDataParser;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;

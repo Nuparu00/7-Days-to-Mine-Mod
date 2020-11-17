@@ -39,19 +39,19 @@ public class Plot {
 		default:
 		case EAST:
 			this.start = start.offset(mirror ? EnumFacing.SOUTH : EnumFacing.NORTH,
-					(Street.thickness / 2) + Street.pavement + 1);
+					(city.type.getRoadWidth() / 2) + city.type.getPavementWidth() + 1);
 			break;
 		case WEST:
 			this.start = start.offset(mirror ? EnumFacing.NORTH : EnumFacing.SOUTH,
-					(Street.thickness / 2) + Street.pavement + 1);
+					(city.type.getRoadWidth() / 2) + city.type.getPavementWidth() + 1);
 			break;
 		case NORTH:
 			this.start = start.offset(mirror ? EnumFacing.EAST : EnumFacing.WEST,
-					(Street.thickness / 2) + Street.pavement + 1);
+					(city.type.getRoadWidth() / 2) + city.type.getPavementWidth() + 1);
 			break;
 		case SOUTH:
 			this.start = start.offset(mirror ? EnumFacing.WEST : EnumFacing.EAST,
-					(Street.thickness / 2) + Street.pavement + 1);
+					(city.type.getRoadWidth() / 2) + city.type.getPavementWidth() + 1);
 			break;
 
 		}

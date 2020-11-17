@@ -45,7 +45,7 @@ public class BuildingApartmentDark extends Building{
 	}
 	public BuildingApartmentDark(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight,yOffset);
-		setAllowedCityTypes(EnumCityType.URBAN);
+		setAllowedCityTypes(EnumCityType.CITY);
 	}
 	@Override
 	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {

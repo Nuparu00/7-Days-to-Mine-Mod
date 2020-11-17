@@ -68,7 +68,7 @@ public class GuiSubtitles {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			if (subtitle.getSender() != null) {
-				RenderUtils.drawCenteredString(subtitle.getSender().getName(), x, yBase, GuiDialogue.STYLING_COLOR,
+				RenderUtils.drawCenteredString(subtitle.getSender().getDisplayName().getFormattedText(), x, yBase, GuiDialogue.STYLING_COLOR,
 						true);
 			}
 			RenderUtils.drawCenteredString(

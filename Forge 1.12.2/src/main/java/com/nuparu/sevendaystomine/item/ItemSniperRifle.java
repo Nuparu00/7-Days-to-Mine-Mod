@@ -20,6 +20,7 @@ public class ItemSniperRifle extends ItemGun {
 		this.setReloadTime(1500);
 		this.setDelay(20);
 		this.setFOVFactor(10f);
+		this.setScoped(true);
 		this.setType(EnumGun.RIFLE);
 		this.setLength(EnumLength.LONG);
 		this.setWield(EnumWield.TWO_HAND);

@@ -18,9 +18,11 @@ public class ItemM4 extends ItemGun {
 		this.setCross(20);
 		this.setReloadTime(1500);
 		this.setDelay(13);
+		setFOVFactor(1.37f);
 		this.setType(EnumGun.RIFLE);
 		this.setLength(EnumLength.LONG);
 		this.setWield(EnumWield.TWO_HAND);
+		this.setAimPosition(-0.025, -0.025, -0.4);
 	}
 	
 	@Override

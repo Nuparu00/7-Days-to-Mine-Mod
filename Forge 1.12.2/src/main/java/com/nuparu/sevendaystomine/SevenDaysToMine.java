@@ -115,7 +115,7 @@ public class SevenDaysToMine {
 	public static HashMap<ChunkPos, Integer> ticketList;
 	public static Ticket chunkLoaderTicket;
 
-	public static final WorldType DEFAULT_WORLD = (new WorldTypeOverworld("overworld"));
+	public static final WorldType DEFAULT_WORLD = (new WorldTypeOverworld("SEVENDAYS"));
 
 	static {
 		// DataSerializers.registerSerializer(Utils.DIALOGUES);
@@ -272,7 +272,7 @@ public class SevenDaysToMine {
 			ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE, ModBlocks.BURNT_CHAIR,
 			ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE, ModBlocks.MERCURY,
 			ModBlocks.SEPARATOR, ModBlocks.TURRET_ADVANCED, ModBlocks.RAZOR_WIRE, ModBlocks.STAND, ModBlocks.LANDMINE,
-			ModBlocks.SIRENE };
+			ModBlocks.SIRENE, ModBlocks.STRUCTURE_STONE, ModBlocks.STRUCTURE_COBBLESTONE};
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,

@@ -13,13 +13,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 
 public class CapabilityHandler
-
 {
 
 	public static final ResourceLocation LOCKED_RECIPE_CAP = new ResourceLocation(SevenDaysToMine.MODID,
 			"locked_recipe");
 	public static final ResourceLocation EXTENDED_PLAYER_CAP = new ResourceLocation(SevenDaysToMine.MODID,
 			"extended_player");
+	public static final ResourceLocation EXTENDED_INV_CAP = new ResourceLocation(SevenDaysToMine.MODID, "extended_inv");
 	public static final ResourceLocation EXTENDED_CHUNK_CAP = new ResourceLocation(SevenDaysToMine.MODID, "extended_chunk");
 
 	@SubscribeEvent
@@ -29,6 +29,7 @@ public class CapabilityHandler
 		EntityPlayer player = (EntityPlayer) event.getObject();
 		event.addCapability(LOCKED_RECIPE_CAP, new LockedRecipeProvider());
 		event.addCapability(EXTENDED_PLAYER_CAP, new ExtendedPlayerProvider().setOwner(player));
+		event.addCapability(EXTENDED_INV_CAP, new ExtendedInventoryProvider(3));
 	}
 	
 	@SubscribeEvent
@@ -51,6 +52,13 @@ public class CapabilityHandler
 				extendedPlayer.unlockRecipe(s);
 			}
 			extendedPlayer.setHorde(oldExtendedPlayer.hasHorde());
+		}
+		else {
+			extendedPlayer.copy(oldExtendedPlayer);
+
+			IItemHandlerExtended extendedInv = CapabilityHelper.getExtendedInventory(player);
+			IItemHandlerExtended oldExtendedInv = CapabilityHelper.getExtendedInventory(event.getOriginal());
+			extendedInv.copy(oldExtendedInv);
 		}
 
 	}

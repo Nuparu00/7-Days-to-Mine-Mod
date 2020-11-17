@@ -8,7 +8,7 @@ import com.nuparu.sevendaystomine.client.gui.monitor.elements.TextField;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumState;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.gui.ScaledResolution;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WindowsLoginProcess extends TickingProcess {
 
-	@SideOnly(Side.CLIENT)
+
 	public final ResourceLocation DEFAULT_PROFILE = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/gui/computer/default_profile.png");
 

@@ -38,6 +38,7 @@ import com.nuparu.sevendaystomine.block.IUpgradeable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
+import com.nuparu.sevendaystomine.capability.IExtendedChunk;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
@@ -50,6 +51,7 @@ import com.nuparu.sevendaystomine.world.gen.RoadDecoratorWorldGen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -79,10 +81,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -302,9 +306,9 @@ public class Utils {
 	}
 
 	public static BlockPos getTopGroundBlock(BlockPos pos, World world, boolean solid) {
-		return getTopGroundBlock(pos,world,solid,true);
+		return getTopGroundBlock(pos, world, solid, true);
 	}
-	
+
 	public static BlockPos getTopGroundBlock(BlockPos pos, World world, boolean solid, boolean ignoreFoliage) {
 		Chunk chunk = world.getChunkFromBlockCoords(pos);
 		BlockPos blockpos;
@@ -321,12 +325,13 @@ public class Utils {
 				blockpos = blockpos1;
 				break;
 			}
-			if (solid && state.isFullCube() && material.blocksMovement() && (!ignoreFoliage || (!block.isLeaves(state, world, blockpos1)
-					&& !block.isFoliage(world, blockpos1))) && material != Material.SNOW) {
+			if (solid && state.isFullCube() && material.blocksMovement()
+					&& (!ignoreFoliage
+							|| (!block.isLeaves(state, world, blockpos1) && !block.isFoliage(world, blockpos1)))
+					&& material != Material.SNOW) {
 				blockpos = blockpos1;
 				break;
-			}
-			else if(material != Material.AIR) {
+			} else if (material != Material.AIR) {
 				blockpos = blockpos1;
 				break;
 			}
@@ -375,6 +380,11 @@ public class Utils {
 
 	// returns true if the block has been destroyed
 	public static boolean damageBlock(World world, BlockPos pos, float damage, boolean breakBlock) {
+		return damageBlock(world, pos, damage, breakBlock,true);
+	}
+
+	// returns true if the block has been destroyed
+	public static boolean damageBlock(World world, BlockPos pos, float damage, boolean breakBlock, boolean sound) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		float hardness = state.getBlockHardness(world, pos);
@@ -391,9 +401,15 @@ public class Utils {
 			world.destroyBlock(pos, false);
 			return true;
 		}
+
 		BreakSavedData data = BreakSavedData.get(world);
 		if (data == null) {
 			return false;
+		}
+		SoundType soundType = block.getSoundType(state, world, pos, null);
+		if (sound) {
+			world.playSound(null, pos, soundType.getHitSound(), SoundCategory.NEUTRAL,
+					(soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 		}
 		data.addBreakData(pos, world.provider.getDimension(), damage / hardness);
 		BreakData breakData = data.getBreakData(pos, world.provider.getDimension());
@@ -407,6 +423,7 @@ public class Utils {
 			world.destroyBlock(pos, false);
 			return true;
 		}
+
 		return false;
 	}
 
@@ -554,6 +571,8 @@ public class Utils {
 
 	public static final DataSerializer<Dialogues> DIALOGUES = new DataSerializer<Dialogues>() {
 		public void write(PacketBuffer buf, Dialogues value) {
+			if (buf == null || value == null || value.getKey() == null)
+				return;
 			buf.writeResourceLocation(value.getKey());
 		}
 
@@ -655,7 +674,7 @@ public class Utils {
 	public static boolean isBloodmoon(World world) {
 		return ModConfig.world.bloodmoonFrequency > 0 && Utils.getDay(world) % ModConfig.world.bloodmoonFrequency == 0;
 	}
-	
+
 	public static boolean isBloodmoon(int day) {
 		return ModConfig.world.bloodmoonFrequency > 0 && day % ModConfig.world.bloodmoonFrequency == 0;
 	}
@@ -796,147 +815,113 @@ public class Utils {
 		return count;
 	}
 
-	public static void renderBiomePreviewMap(World worldIn, ItemStack map)
-    {
-        if (map.getItem() instanceof ItemMap)
-        {
-            MapData mapdata = ((ItemMap) map.getItem()).getMapData(map, worldIn);
+	public static void renderBiomePreviewMap(World worldIn, ItemStack map) {
+		if (map.getItem() instanceof ItemMap) {
+			MapData mapdata = ((ItemMap) map.getItem()).getMapData(map, worldIn);
 
-            if (mapdata != null)
-            {
-                if (worldIn.provider.getDimension() == mapdata.dimension)
-                {
-                    int i = 1 << mapdata.scale;
-                    int j = mapdata.xCenter;
-                    int k = mapdata.zCenter;
-                    
-                    
-                    int x = (j / i - 64) * i;
-                    int z = (k / i - 64) * i;
-                    
-                    Biome[] abiome = worldIn.getBiomeProvider().getBiomes((Biome[])null, x, z , 128 * i, 128 * i, false);
+			if (mapdata != null) {
+				if (worldIn.provider.getDimension() == mapdata.dimension) {
+					int i = 1 << mapdata.scale;
+					int j = mapdata.xCenter;
+					int k = mapdata.zCenter;
 
-                    for (int l = 0; l < 128; ++l)
-                    {
-                        for (int i1 = 0; i1 < 128; ++i1)
-                        {
-                            int j1 = l * i;
-                            int k1 = i1 * i;
-                            Biome biome = abiome[j1 + k1 * 128 * i];
-                            MapColor mapcolor = MapColor.AIR;
-                            
-                            if(j1 % 64 == 0 || k1 % 64 == 0) {
-                            	mapcolor = MapColor.BLACK;
-                            }
-                            
-                            int l1 = 3;
-                            int i2 = 8;
+					int x = (j / i - 64) * i;
+					int z = (k / i - 64) * i;
 
-                            if (l > 0 && i1 > 0 && l < 127 && i1 < 127)
-                            {
-                                if (abiome[(l - 1) * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F)
-                                {
-                                    --i2;
-                                }
+					Biome[] abiome = worldIn.getBiomeProvider().getBiomes((Biome[]) null, x, z, 128 * i, 128 * i,
+							false);
 
-                                if (abiome[(l - 1) * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F)
-                                {
-                                    --i2;
-                                }
+					for (int l = 0; l < 128; ++l) {
+						for (int i1 = 0; i1 < 128; ++i1) {
+							int j1 = l * i;
+							int k1 = i1 * i;
+							Biome biome = abiome[j1 + k1 * 128 * i];
+							MapColor mapcolor = MapColor.AIR;
 
-                                if (abiome[(l - 1) * i + i1 * i * 128 * i].getBaseHeight() >= 0.0F)
-                                {
-                                    --i2;
-                                }
+							if (j1 % 64 == 0 || k1 % 64 == 0) {
+								mapcolor = MapColor.BLACK;
+							}
 
-                                if (abiome[(l + 1) * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F)
-                                {
-                                    --i2;
-                                }
+							int l1 = 3;
+							int i2 = 8;
 
-                                if (abiome[(l + 1) * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F)
-                                {
-                                    --i2;
-                                }
+							if (l > 0 && i1 > 0 && l < 127 && i1 < 127) {
+								if (abiome[(l - 1) * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F) {
+									--i2;
+								}
 
-                                if (abiome[(l + 1) * i + i1 * i * 128 * i].getBaseHeight() >= 0.0F)
-                                {
-                                    --i2;
-                                }
+								if (abiome[(l - 1) * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F) {
+									--i2;
+								}
 
-                                if (abiome[l * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F)
-                                {
-                                    --i2;
-                                }
+								if (abiome[(l - 1) * i + i1 * i * 128 * i].getBaseHeight() >= 0.0F) {
+									--i2;
+								}
 
-                                if (abiome[l * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F)
-                                {
-                                    --i2;
-                                }
+								if (abiome[(l + 1) * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F) {
+									--i2;
+								}
 
-                                if (biome.getBaseHeight() < 0.0F)
-                                {
-                                    mapcolor = MapColor.ADOBE;
+								if (abiome[(l + 1) * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F) {
+									--i2;
+								}
 
-                                    if (i2 > 7 && i1 % 2 == 0)
-                                    {
-                                        l1 = (l + (int)(MathHelper.sin((float)i1 + 0.0F) * 7.0F)) / 8 % 5;
+								if (abiome[(l + 1) * i + i1 * i * 128 * i].getBaseHeight() >= 0.0F) {
+									--i2;
+								}
 
-                                        if (l1 == 3)
-                                        {
-                                            l1 = 1;
-                                        }
-                                        else if (l1 == 4)
-                                        {
-                                            l1 = 0;
-                                        }
-                                    }
-                                    else if (i2 > 7)
-                                    {
-                                        mapcolor = MapColor.AIR;
-                                    }
-                                    else if (i2 > 5)
-                                    {
-                                        l1 = 1;
-                                    }
-                                    else if (i2 > 3)
-                                    {
-                                        l1 = 0;
-                                    }
-                                    else if (i2 > 1)
-                                    {
-                                        l1 = 0;
-                                    }
-                                }
-                                else if (i2 > 0)
-                                {
-                                    mapcolor = MapColor.BROWN;
+								if (abiome[l * i + (i1 - 1) * i * 128 * i].getBaseHeight() >= 0.0F) {
+									--i2;
+								}
 
-                                    if (i2 > 3)
-                                    {
-                                        l1 = 1;
-                                    }
-                                    else
-                                    {
-                                        l1 = 3;
-                                    }
-                                }
-                            }
-                            
-                            if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN) && Math.abs(RoadDecoratorWorldGen.getNoiseValue(x + j1, z + k1,0)) < 0.005d) {
-                            	mapcolor = MapColor.BROWN_STAINED_HARDENED_CLAY;
-                            }
-                                 
+								if (abiome[l * i + (i1 + 1) * i * 128 * i].getBaseHeight() >= 0.0F) {
+									--i2;
+								}
 
-                            if (mapcolor != MapColor.AIR)
-                            {
-                                mapdata.colors[l + i1 * 128] = (byte)(mapcolor.colorIndex * 4 + l1);
-                                mapdata.updateMapData(l, i1);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+								if (biome.getBaseHeight() < 0.0F) {
+									mapcolor = MapColor.ADOBE;
+
+									if (i2 > 7 && i1 % 2 == 0) {
+										l1 = (l + (int) (MathHelper.sin((float) i1 + 0.0F) * 7.0F)) / 8 % 5;
+
+										if (l1 == 3) {
+											l1 = 1;
+										} else if (l1 == 4) {
+											l1 = 0;
+										}
+									} else if (i2 > 7) {
+										mapcolor = MapColor.AIR;
+									} else if (i2 > 5) {
+										l1 = 1;
+									} else if (i2 > 3) {
+										l1 = 0;
+									} else if (i2 > 1) {
+										l1 = 0;
+									}
+								} else if (i2 > 0) {
+									mapcolor = MapColor.BROWN;
+
+									if (i2 > 3) {
+										l1 = 1;
+									} else {
+										l1 = 3;
+									}
+								}
+							}
+
+							if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)
+									&& Math.abs(RoadDecoratorWorldGen.getNoiseValue(x + j1, z + k1, 0)) < 0.005d) {
+								mapcolor = MapColor.BROWN_STAINED_HARDENED_CLAY;
+							}
+
+							if (mapcolor != MapColor.AIR) {
+								mapdata.colors[l + i1 * 128] = (byte) (mapcolor.colorIndex * 4 + l1);
+								mapdata.updateMapData(l, i1);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

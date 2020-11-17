@@ -1,6 +1,6 @@
 {
-	"parent": "sevendaystomine:item/liquidinjar",
-	"textures": {
-		"4": "sevendaystomine:blocks/beer_still"
-	}
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "sevendaystomine:items/bottled_beer"
+    }
 }

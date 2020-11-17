@@ -50,7 +50,7 @@ public class BloodmoonHorde extends Horde {
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 4));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_soldier"), 6));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zobie"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 4));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 4));
 		
 		if (center != null) {
@@ -75,7 +75,7 @@ public class BloodmoonHorde extends Horde {
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 4));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_soldier"), 6));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zobie"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 4));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 4));
 
 		Biome biome = world.getBiome(center);
@@ -100,7 +100,7 @@ public class BloodmoonHorde extends Horde {
 		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
 
 		if (zombies.size() <= 0) {
-			if (waves > 0) {
+			if (waves > 0 && Utils.isBloodmoon(world)) {
 				zombiesInWave = 0;
 				waves--;
 				start();
@@ -135,12 +135,14 @@ public class BloodmoonHorde extends Horde {
 	@Override
 	public void start() {
 		if(player == null) return;
-		BlockPos pos = Utils.getTopGroundBlock(getSpawn(), world, true);
 		zombies.clear();
+		BlockPos origin = getSpaawnOrigin();
 		for (int i = 0; i < MathUtils.getIntInRange(7, 10); i++) {
+			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin).up(), world, true);
 			HordeEntry entry = getHordeEntry(world.rand);
 			if (entry != null) {
 				EntityZombieBase zombie = entry.spawn(world, pos);
+				if(zombie == null) continue;
 				zombie.setAttackTarget(player);
 				zombie.horde = this;
 				zombies.add(zombie);
@@ -151,7 +153,7 @@ public class BloodmoonHorde extends Horde {
 		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
 	}
 
-	public BlockPos getSpawn() {
+	public BlockPos getSpaawnOrigin() {
 		double x = world.rand.nextDouble() - 0.5;
 		double y = world.rand.nextDouble() - 0.5;
 		double z = world.rand.nextDouble() - 0.5;
@@ -161,8 +163,22 @@ public class BloodmoonHorde extends Horde {
 		y /= mag;
 		z /= mag;
 
-		double d = world.rand.nextInt(10) + MIN_DISTANCE;
+		double d = world.rand.nextDouble()*10 + MIN_DISTANCE;
 		return center.add(x * d, y * d, z * d);
+	}
+	
+	public BlockPos getSpawn(BlockPos origin) {
+		double x = world.rand.nextDouble() - 0.5;
+		double y = world.rand.nextDouble() - 0.5;
+		double z = world.rand.nextDouble() - 0.5;
+
+		double mag = Math.sqrt(x * x + y * y + z * z);
+		x /= mag;
+		y /= mag;
+		z /= mag;
+
+		double d = world.rand.nextDouble()*1.5;
+		return origin.add(x * d, y * d, z * d);
 	}
 
 	@Override

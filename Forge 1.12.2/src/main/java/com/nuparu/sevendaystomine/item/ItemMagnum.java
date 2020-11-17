@@ -18,9 +18,11 @@ public class ItemMagnum extends ItemGun {
 		this.setCross(20);
 		this.setReloadTime(2500);
 		this.setDelay(15);
+		setFOVFactor(1.25f);
 		this.setType(EnumGun.PISTOL);
 		this.setLength(EnumLength.SHORT);
 		this.setWield(EnumWield.DUAL);
+		this.setAimPosition(-0.222, 0,-0.25);
 	}
 
 	public Item getBullet() {

@@ -42,7 +42,7 @@ public class City {
 	protected Random rand;
 
 	public String name = "Genericville";
-	public EnumCityType type = EnumCityType.RURAL;
+	public EnumCityType type = EnumCityType.CITY;
 
 	public int population;
 
@@ -50,22 +50,33 @@ public class City {
 
 	}
 
-	public City(World world, BlockPos start) {
+	public City(World world, BlockPos start, EnumCityType type, Random rand) {
 		this.start = start;
-
+		this.type = type;
+		this.rand =rand;
 		int height = Utils.getTopSolidGroundHeight(new BlockPos(this.start.getX() + 8, 0, this.start.getZ() + 8),
 				world);
 		this.start = new BlockPos(this.start.getX() + 8, height, this.start.getZ() + 8);
 
 		this.world = world;
-		this.rand = new Random(world.getSeed() + (start.getX() / 16) - (start.getZ() / 16));
 		this.unclaimedStreetNames = new ArrayList<String>(CityHelper.streets);
 		this.name = CityHelper.getRandomCityName(this.rand);
 		this.roadsLimit = MathUtils.getIntInRange(rand, 8, Math.max(8, ModConfig.world.maxCitySize));
 		CitySavedData.get(world).addCity(start);
-		if (type == EnumCityType.RURAL) {
-			roadsLimit = Math.round(roadsLimit * 0.75f);
+		roadsLimit = Math.round(roadsLimit * type.populationMultiplier);
+	}
+
+	public static City foundCity(World world, BlockPos pos) {
+		Biome biome = world.getBiome(pos);
+		EnumCityType type = EnumCityType.TOWN;
+		Random rand = new Random(world.getSeed() + (pos.getX() / 16) - (pos.getZ() / 16));
+		if (biome.getHeightVariation() <= 0.15 && rand.nextInt(2) == 0) {
+			type = EnumCityType.VILLAGE;
+		} 
+		else if (rand.nextInt(2) == 0) {
+			type = EnumCityType.CITY;
 		}
+		return new City(world, pos, type, rand);
 	}
 
 	public void startCityGen() {
@@ -73,7 +84,7 @@ public class City {
 		if (!areAllStreetsFound()) {
 			prepareStreets();
 		}
-		this.population = this.roadsLimit * (MathUtils.getIntInRange(rand, 512, 5120));
+		this.population = this.roadsLimit * (MathUtils.getIntInRange(rand, 512, 2048));
 		generate();
 		if (!world.isRemote) {
 			Utils.getLogger().info(this.name + " generated at " + start.getX() + " " + start.getZ() + " within "
@@ -94,7 +105,7 @@ public class City {
 		BlockPos bp_start = Utils.getTopGroundBlock(start, world, true);
 		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
 			if (getStreetsCount() < this.roadsLimit) {
-				BlockPos blockpos = bp_start.offset(facing, Street.LENGTH - 1);
+				BlockPos blockpos = bp_start.offset(facing, type.roadLength - 1);
 				Biome biome = world.getBiome(blockpos);
 				if (biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN || biome == Biomes.OCEAN)
 					continue;
@@ -130,8 +141,10 @@ public class City {
 				}
 			}
 		}
-		while (streetsQueue.size() > 0) {
+		int attempts = 0;
+		while (streetsQueue.size() > 0 && attempts < 8192) {
 			addIteration();
+			attempts++;
 		}
 		setAllStreetsFound(true);
 	}
@@ -148,11 +161,9 @@ public class City {
 				street.generateSewers();
 			}
 		}
-
 		for (Street street : streets) {
 			street.decorate();
 		}
-
 		for (Street street : streets) {
 			street.generateBuildings();
 		}
@@ -181,15 +192,17 @@ public class City {
 
 	public void addIteration() {
 		int size = streetsQueue.size();
+		int attempts = 0;
 		if (size > 0) {
-			while (size > 0) {
+			while (size > 0 && attempts < 16) {
+				System.out.println("looop 2");
 				try {
 					Street street = streetsQueue.take();
 					street.tryToContinueStreets();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
+				attempts++;
 				size--;
 			}
 		}

@@ -163,7 +163,7 @@ unlocked.toast=Recipes Unlocked!
 
 horde.bloodmoon.name=Bloodmoon Horde
 
-generator.overworld=Default (7D2M)
+generator.SEVENDAYS=Default (7D2M)
 generator.default=Default (Vanilla)
 
 book_forging.title=Forge Ahead
@@ -574,7 +574,7 @@ item.shotgun_short.name=Sawed-off Shotgun
 item.bellows.name=Bellows
 item.bullet_tip_mold.name=Bullet Tip Mold
 item.bullet_casing_mold.name=Bullet Casing Mold
-item.bullet_10mm=10mm Bullet
+item.bullet_10mm.name=10mm Bullet
 item.cement_mold.name=Cement Mold
 item.sniper_rifle.name=Sniper Rifle
 item.magnet.name=Magnet
@@ -943,6 +943,11 @@ entity.mountable_block.name=Mountable Block
 entity.lootable_corpse.name=Lootable Corpse
 entity.shot.name=Shot
 entity.survivor.name=Survivor
+entity.survivor.miner=Miner
+entity.survivor.farmer=Farmer
+entity.survivor.doctor=Doctor
+entity.survivor.electrician=Electrician
+entity.soldier.name=Soldier
 entity.bloated_zombie.name=Bloated Zombie
 entity.minibike.name=Minibike
 entity.infected_survivor.name=Infected Survivor
@@ -971,12 +976,12 @@ fluid.mercury=Mercury
 
 #DIALOGUES
 
-survivor.generic.a.a.text=Can I trade with you?
+survivor.trade.text=Can I trade with you?
 survivor.generic.a.b.text=Has anything interesting happened?
 survivor.generic.a.c.text=Do you have any work for me?
 survivor.generic.a.d.text=Can I ask you something?
 
-survivor.generic.a.a.response=Sure. Let's deal!
+survivor.trade.response=Sure. Let's deal!
 survivor.generic.a.b.response=Nothing really.
 survivor.generic.a.c.response=Sorry, I don't.
 survivor.generic.a.d.response=I don't have time for you.

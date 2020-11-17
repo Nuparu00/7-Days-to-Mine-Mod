@@ -40,15 +40,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityZombiePoliceman extends EntityBipedalZombie implements IRangedAttackMob {
 	private final EntityAIAttckRangedVomit rangedAttack = new EntityAIAttckRangedVomit(this, 1.0D, 0, 15.0F);
 
-	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(EntityCreeper.class,
+	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(EntityBipedalZombie.class,
 			DataSerializers.VARINT);
+	private static final DataParameter<Integer> ANIMATION = EntityDataManager
+			.<Integer>createKey(EntityBipedalZombie.class, DataSerializers.VARINT);
 
 	private int lastActiveTime;
 	private int timeSinceIgnited;
 	private int fuseTime = 30;
 
 	private float explosionRadius = 3;
-	
+
 	private int vomitTimer = 60;
 
 	public EntityZombiePoliceman(World worldIn) {
@@ -60,6 +62,7 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 	protected void entityInit() {
 		super.entityInit();
 		this.dataManager.register(STATE, Integer.valueOf(-1));
+		this.dataManager.register(ANIMATION, Integer.valueOf(0));
 	}
 
 	@Override
@@ -74,8 +77,7 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, false));
 		this.targetTasks.addTask(3,
 				new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, false));
-		this.targetTasks.addTask(3,
-				new EntityAINearestAttackableTarget<EntityHuman>(this, EntityHuman.class, false));
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityHuman>(this, EntityHuman.class, false));
 		this.targetTasks.addTask(3,
 				new EntityAINearestAttackableTarget<EntityIronGolem>(this, EntityIronGolem.class, false));
 	}
@@ -95,12 +97,12 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 		double d0 = target.posX - this.posX;
 		double d2 = target.posZ - this.posZ;
 		double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-
+		setAnimation(EnumAnimationState.VOMITING);
 		for (int i = 0; i < MathUtils.getIntInRange(rand, 7, 16); i++) {
 			EntityProjectileVomit entityVomit = new EntityProjectileVomit(this.world, this);
 			double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - entityVomit.posY;
 
-			entityVomit.setDamage(0);
+			entityVomit.setDamage(10);
 
 			entityVomit.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F,
 					(float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
@@ -123,12 +125,21 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 	public int getState() {
 		return ((Integer) this.dataManager.get(STATE)).intValue();
 	}
+	
+	public void setState(int state) {
+		this.dataManager.set(STATE, Integer.valueOf(state));
+	}
+
+
+	public EnumAnimationState getAnimation() {
+		return EnumAnimationState.values()[((Integer) this.dataManager.get(ANIMATION)).intValue()];
+	}
 
 	/**
 	 * Sets the state , -1 to idle and 1 to be 'in fuse'
 	 */
-	public void setState(int state) {
-		this.dataManager.set(STATE, Integer.valueOf(state));
+	public void setAnimation(EnumAnimationState anim) {
+		this.dataManager.set(ANIMATION, anim.ordinal());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -140,7 +151,10 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 	@Override
 	public void onUpdate() {
 		if (this.isEntityAlive()) {
-			if(getVomitTimer() > 0) {
+			if (getVomitTimer() > 0) {
+				if (getVomitTimer() < 55) {
+					setAnimation(EnumAnimationState.DEFAULT);
+				}
 				setVomitTimer(getVomitTimer() - 1);
 			}
 			this.lastActiveTime = this.timeSinceIgnited;
@@ -171,33 +185,32 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 			boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this);
 			float f = 1f;
 			this.dead = true;
-			this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionRadius  * f, flag);
+			this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionRadius * f, flag);
 			this.setDead();
 			this.spawnLingeringCloud();
 		}
 	}
-	
-	private void spawnLingeringCloud()
-    {
-        Collection<PotionEffect> collection = this.getActivePotionEffects();
 
-        if (!collection.isEmpty())
-        {
-            EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
-            entityareaeffectcloud.setRadius(2.5F);
-            entityareaeffectcloud.setRadiusOnUse(-0.5F);
-            entityareaeffectcloud.setWaitTime(10);
-            entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
-            entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float)entityareaeffectcloud.getDuration());
+	private void spawnLingeringCloud() {
+		Collection<PotionEffect> collection = this.getActivePotionEffects();
 
-            for (PotionEffect potioneffect : collection)
-            {
-                entityareaeffectcloud.addEffect(new PotionEffect(potioneffect));
-            }
+		if (!collection.isEmpty()) {
+			EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY,
+					this.posZ);
+			entityareaeffectcloud.setRadius(2.5F);
+			entityareaeffectcloud.setRadiusOnUse(-0.5F);
+			entityareaeffectcloud.setWaitTime(10);
+			entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
+			entityareaeffectcloud
+					.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float) entityareaeffectcloud.getDuration());
 
-            this.world.spawnEntity(entityareaeffectcloud);
-        }
-    }
+			for (PotionEffect potioneffect : collection) {
+				entityareaeffectcloud.addEffect(new PotionEffect(potioneffect));
+			}
+
+			this.world.spawnEntity(entityareaeffectcloud);
+		}
+	}
 
 	public int getVomitTimer() {
 		return vomitTimer;
@@ -205,6 +218,10 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 
 	public void setVomitTimer(int vomitTimer) {
 		this.vomitTimer = vomitTimer;
+	}
+
+	public enum EnumAnimationState {
+		DEFAULT, VOMITING
 	}
 
 }

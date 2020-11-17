@@ -1,5 +1,8 @@
 package com.nuparu.sevendaystomine.client.model;
 
+import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
+import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman.EnumAnimationState;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBox;
@@ -113,6 +116,7 @@ public class ModelZombiePoliceman extends ModelBase {
 		} else {
 			this.head.rotateAngleX = headPitch * 0.017453292F;
 		}
+		
 
 		this.body.rotateAngleY = 0.0F;
 		this.rightArm.rotationPointZ = 0.0F;
@@ -250,6 +254,15 @@ public class ModelZombiePoliceman extends ModelBase {
 			this.leftArm.rotateAngleY = 0.1F + this.head.rotateAngleY;
 			this.rightArm.rotateAngleX = -((float) Math.PI / 2F) + this.head.rotateAngleX;
 			this.leftArm.rotateAngleX = -((float) Math.PI / 2F) + this.head.rotateAngleX;
+		}
+		
+		if(entityIn instanceof EntityZombiePoliceman) {
+			EntityZombiePoliceman zombie = (EntityZombiePoliceman)entityIn;
+			if(zombie.getAnimation() == EnumAnimationState.VOMITING) {
+				this.head.rotateAngleX -= Math.toRadians(46);
+				this.rightArm.rotateAngleX += Math.toRadians(15);
+				this.leftArm.rotateAngleX += Math.toRadians(15);
+			}
 		}
 	}
 

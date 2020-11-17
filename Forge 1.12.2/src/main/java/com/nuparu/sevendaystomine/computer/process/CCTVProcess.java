@@ -11,7 +11,7 @@ import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.entity.EntityCameraView;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.gui.ScaledResolution;
@@ -50,6 +50,7 @@ public class CCTVProcess extends WindowedProcess {
 		GL11.glPushMatrix();
 		int yy = Screen.mc.displayHeight - (int) Math.round(y * scale) - (int) Math.round(height * scale);
 		if (cameras.size() > camera && cameras.get(camera) != null) {
+			cameras.get(camera).validate();
 			EntityCameraView view = cameras.get(camera).getCameraView(screen.gui.player);
 			if (view != null) {
 				RenderUtils.renderView(Screen.mc, view, (int) Math.round(width * scale),

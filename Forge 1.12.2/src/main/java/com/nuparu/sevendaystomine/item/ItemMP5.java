@@ -18,9 +18,11 @@ public class ItemMP5 extends ItemGun {
 		this.setCross(24);
 		this.setReloadTime(2000);
 		this.setDelay(4);
+		setFOVFactor(1.3f);
 		this.setType(EnumGun.SUBMACHINE);
 		this.setLength(EnumLength.LONG);
 		this.setWield(EnumWield.TWO_HAND);
+		this.setAimPosition(0.08, 0, -0.5);
 	}
 	
 	@Override

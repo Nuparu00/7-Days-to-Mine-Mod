@@ -17,8 +17,8 @@ public class ModBiomes {
 	public static final Biome WASTELAND = new BiomeWasteland();
 
 	public static void init() {
-		register(BURNT_FOREST, "Burnt Forest", BiomeType.DESERT, 50, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
-		register(WASTELAND, "Wasteland", BiomeType.DESERT, 40, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
+		register(BURNT_FOREST, "Burnt Forest", BiomeType.DESERT, 2, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
+		register(WASTELAND, "Wasteland", BiomeType.DESERT, 1, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
 	}
 
 	public static void register(Biome biome, String name, BiomeType type, int weight, Type... types) {

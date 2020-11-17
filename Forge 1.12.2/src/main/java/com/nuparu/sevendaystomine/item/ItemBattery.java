@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBattery extends ItemQualityScrapable {
 
-	public static final int MAX_VOLTAGE = 10000;
+	public static final int MAX_VOLTAGE = 2500;
 
 	public ItemBattery(EnumMaterial mat, int weight) {
 		super(mat, weight);

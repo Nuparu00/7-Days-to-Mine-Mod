@@ -38,7 +38,7 @@ public class BuildingSupermarket extends Building {
 	public BuildingSupermarket(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight, yOffset);
 		canBeMirrored = false;
-		setAllowedCityTypes(EnumCityType.URBAN);
+		setAllowedCityTypes(EnumCityType.CITY);
 	}
 
 	@Override

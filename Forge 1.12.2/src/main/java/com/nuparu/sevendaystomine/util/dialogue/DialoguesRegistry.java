@@ -57,5 +57,10 @@ public class DialoguesRegistry {
 		registerDialogues(Dialogues.EMPTY, new ResourceLocation(SevenDaysToMine.MODID, "empty"));
 		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/test.json"));
 		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/survivor_generic.json"));
+		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/survivor.doctor.json"));
+		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/survivor.miner.json"));
+		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/survivor.electrician.json"));
+		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/survivor.farmer.json"));
+		registerDialogues(new ResourceLocation(SevenDaysToMine.MODID, "data/dialogues/survivor.none.json"));
 	}
 }

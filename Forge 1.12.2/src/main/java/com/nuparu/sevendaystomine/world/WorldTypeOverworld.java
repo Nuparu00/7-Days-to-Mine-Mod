@@ -7,16 +7,15 @@ import com.nuparu.sevendaystomine.world.gen.ChunkGeneratorOverworldEnhanced;
 
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class WorldTypeOverworld extends WorldType {
 
 	public WorldTypeOverworld(String name) {
 		super(name);
-		WORLD_TYPES[this.getId()] = WORLD_TYPES[0];
-		WORLD_TYPES[0] = this;
 
 		try {
-			Field f_id = WorldType.class.getDeclaredField("id");
+			Field f_id = ObfuscationReflectionHelper.findField(WorldType.class, "id");
 			f_id.setAccessible(true);
 			int modifiers = f_id.getModifiers();
 			Field modifierField = f_id.getClass().getDeclaredField("modifiers");
@@ -28,6 +27,9 @@ public class WorldTypeOverworld extends WorldType {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		WORLD_TYPES[this.getId()] = WORLD_TYPES[0];
+		WORLD_TYPES[0] = this;
 	}
 
 	@Override

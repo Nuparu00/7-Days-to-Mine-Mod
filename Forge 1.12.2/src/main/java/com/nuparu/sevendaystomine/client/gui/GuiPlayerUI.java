@@ -32,6 +32,8 @@ public class GuiPlayerUI {
 
 	public static final ResourceLocation UI_TEX = new ResourceLocation(SevenDaysToMine.MODID, "textures/gui/hud.png");
 	public static final ResourceLocation SCOPE_TEX = new ResourceLocation(SevenDaysToMine.MODID, "textures/misc/scope.png");
+	
+	float minibikeFuelPrev = 0;
 
 	public GuiPlayerUI() {
 
@@ -81,9 +83,11 @@ public class GuiPlayerUI {
 			}
 			if (player.getRidingEntity() instanceof EntityMinibike) {
 				EntityMinibike minibike = (EntityMinibike) player.getRidingEntity();
+				float fuel = minibike.getFuel();
 				mc.ingameGUI.drawTexturedModalRect(posX - 100, posY - 18, 0, 22,
-						(int) Math.floor(minibike.getFuel() / (10f * (EntityMinibike.MAX_FUEL / 780f))), 6);
+						(int) Math.floor((fuel == 0 ? minibikeFuelPrev : fuel) / (10f * (EntityMinibike.MAX_FUEL / 780f))), 6);
 				mc.ingameGUI.drawTexturedModalRect(posX - 101, posY - 19, 0, 0, 81, 8);
+				minibikeFuelPrev = minibike.getFuel();
 			}
 
 			
@@ -100,7 +104,7 @@ public class GuiPlayerUI {
 			if(factor == 1) {
 				GL11.glPopMatrix();
 				return;}
-			if(mc.gameSettings.keyBindAttack.isKeyDown()) {
+			if(mc.gameSettings.keyBindAttack.isKeyDown() && gun.getScoped()) {
 				int w = resolution.getScaledWidth();
 				int h = resolution.getScaledHeight();
 				

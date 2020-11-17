@@ -18,9 +18,11 @@ public class ItemPistol extends ItemGun {
 		this.setCross(20);
 		this.setReloadTime(1900);
 		this.setDelay(6);
+		this.setFOVFactor(1.25f);
 		this.setType(EnumGun.PISTOL);
 		this.setLength(EnumLength.SHORT);
 		this.setWield(EnumWield.DUAL);
+		this.setAimPosition(-0.2, 0.1,-0.25);
 	}
 
 	public Item getBullet() {

@@ -9,8 +9,8 @@ import com.nuparu.sevendaystomine.computer.application.Application;
 import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowsDesktopProcess;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.MathUtils;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;

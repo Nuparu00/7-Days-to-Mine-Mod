@@ -41,7 +41,7 @@ public class BuildingHospital extends Building {
 
 	public BuildingHospital(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight, yOffset);
-		setAllowedCityTypes(EnumCityType.URBAN);
+		setAllowedCityTypes(EnumCityType.CITY);
 	}
 
 	@Override

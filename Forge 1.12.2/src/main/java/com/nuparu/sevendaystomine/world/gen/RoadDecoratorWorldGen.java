@@ -99,7 +99,7 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 								if (biome.getHeightVariation() > 0.2)
 									continue;
 								if (!CitySavedData.get(world).isCityNearby(pos, 2250000)) {
-									City city = new City(world, pos);
+									City city = City.foundCity(world, pos);
 									city.startCityGen();
 									return;
 								}

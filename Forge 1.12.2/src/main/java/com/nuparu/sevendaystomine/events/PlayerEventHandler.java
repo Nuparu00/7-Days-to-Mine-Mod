@@ -104,7 +104,7 @@ public class PlayerEventHandler {
 		}
 
 	}
-/*
+
 	@SubscribeEvent
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		if (!(event.getEntity() instanceof EntityPlayer)) {
@@ -112,10 +112,9 @@ public class PlayerEventHandler {
 		}
 		final EntityPlayer player = (EntityPlayer) event.getEntity();
 
-		player.inventory = new InventoryPlayerExtended(player);
-		player.inventoryContainer = new ContainerPlayerExtended(player.inventory, !player.world.isRemote, player);
+		IItemHandler extendedInv = player.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, null);
 		Container container = player.inventoryContainer;
-		Slot slotBackpack = new Slot(player.inventory, 41, 77, 44) {
+		Slot slotBackpack = new SlotItemHandler(extendedInv, 0, 77, 44) {
 
 			@Nullable
 
@@ -133,14 +132,14 @@ public class PlayerEventHandler {
 				return (!player.isCreative() && !player.isSpectator());
 			}
 		};
-		Slot slot1 = new SlotItemHandler(extendedInv, 1, 77, 26);
-		Slot slot2 = new SlotItemHandler(extendedInv, 2, 77, 8);
+		/*Slot slot1 = new SlotItemHandler(extendedInv, 1, 77, 26);
+		Slot slot2 = new SlotItemHandler(extendedInv, 2, 77, 8);*/
 		addSlot(slotBackpack, container);
 
-		addSlot(slot1, container);
-		addSlot(slot2, container);
+		/*addSlot(slot1, container);
+		addSlot(slot2, container);*/
 
-	}*/
+	}
 
 	public void addSlot(Slot slot, Container container) {
 		try {

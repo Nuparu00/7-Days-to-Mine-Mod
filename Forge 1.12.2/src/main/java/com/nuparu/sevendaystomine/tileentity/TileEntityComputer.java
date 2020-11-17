@@ -115,15 +115,17 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 	public void startProcess(TickingProcess process) {
 		process.setComputer(this);
 
-		if (process instanceof WindowedProcess) {
-			int order = 0;
-			for (TickingProcess tp : (ArrayList<TickingProcess>) this.getProcessesList().clone()) {
-				if (tp instanceof WindowedProcess) {
-					order++;
+		if (world != null && world.isRemote) {
+			if (process instanceof WindowedProcess) {
+				int order = 0;
+				for (TickingProcess tp : (ArrayList<TickingProcess>) this.getProcessesList().clone()) {
+					if (tp instanceof WindowedProcess) {
+						order++;
+					}
 				}
-			}
-			if (((WindowedProcess) process).getWindowOrder() == -1) {
-				((WindowedProcess) process).setWindowOrder(order);
+				if (((WindowedProcess) process).getWindowOrder() == -1) {
+					((WindowedProcess) process).setWindowOrder(order);
+				}
 			}
 		}
 		processes.add(process);
@@ -153,7 +155,7 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 				this.markDirty();
 				return;
 			}
-			if(sync) {
+			if (sync) {
 				return;
 			}
 			String res = nbt.getString(ProcessRegistry.RES_KEY);
@@ -653,10 +655,19 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 	public BlockPos getPosition() {
 		return this.getPos();
 	}
-	
+
 	@Override
 	public void sendPacket(String packet, INetwork from, EntityPlayer playerFrom) {
-		
+
+	}
+
+	public void createGenericAccount() {
+		if (this.isRegistered())
+			return;
+		setRegistered(true);
+		this.username = "Admin";
+		this.password = "Admin";
+		this.hint = "Admin";
 	}
 
 }

@@ -48,7 +48,7 @@ public class BuildingPoliceStation extends Building {
 	public BuildingPoliceStation(int weight, int yOffset) {
 		super(null, weight, yOffset);
 		canBeMirrored = false;
-		setAllowedCityTypes(EnumCityType.URBAN, EnumCityType.RURAL);
+		setAllowedCityTypes(EnumCityType.CITY, EnumCityType.TOWN);
 	}
 
 	@Override

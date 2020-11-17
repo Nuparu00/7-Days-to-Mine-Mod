@@ -22,9 +22,9 @@ import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncIconMessage;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.client.Animations;
-import com.nuparu.sevendaystomine.util.client.ColorRGBA;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.gui.ScaledResolution;
@@ -39,36 +39,25 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WindowsDesktopProcess extends DesktopProcess {
 
-	@SideOnly(Side.CLIENT)
 	public final ResourceLocation WIN_10_BGR_DEF = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/backgrounds/bgr_win10.png");
-	@SideOnly(Side.CLIENT)
 	public final ResourceLocation WIN_7_BGR_DEF = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/backgrounds/bgr_win7.png");
-	@SideOnly(Side.CLIENT)
 	public final ResourceLocation WIN_10_START = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/apps/win10_start.png");
-	
-	@SideOnly(Side.CLIENT)
 	public final ResourceLocation WIN_7_START = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/apps/win7_start.png");
-	@SideOnly(Side.CLIENT)
 	public final ResourceLocation WIN_10_SHUTDOWN = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/apps/win10_shutdown.png");
 
-	@SideOnly(Side.CLIENT)
 	public final ColorRGBA WIN_10_COL_DEF = new ColorRGBA(0.16, 0.17, 0.2, 0.8);
-	@SideOnly(Side.CLIENT)
 	public final ColorRGBA WIN_10_COL_START = new ColorRGBA(0.1, 0.11, 0.14, 0.76);
-
-	@SideOnly(Side.CLIENT)
+	
 	public boolean start = false;
-	@SideOnly(Side.CLIENT)
+	
 	public ArrayList<DesktopShortcut> shortcuts = new ArrayList<DesktopShortcut>();
-	@SideOnly(Side.CLIENT)
 	public ArrayList<TaskbarButton> taskbarIcons = new ArrayList<TaskbarButton>();
-
-	@SideOnly(Side.CLIENT)
+	
 	private static final NumberFormat HOUR_FORMATTER = new DecimalFormat("00");
 
 	private boolean shutdown = false;
@@ -296,12 +285,11 @@ public class WindowsDesktopProcess extends DesktopProcess {
 					if(process instanceof WindowedProcess) {
 						WindowedProcess wp = (WindowedProcess)process;
 						wp.application = ApplicationRegistry.INSTANCE.getByRes(new ResourceLocation(list.getStringTagAt(i)));
-						wp.x = Screen.screen.getRelativeX(0.5)-50;
-						wp.y = Screen.screen.localYToGlobal(0);
+						wp.x = -1;
+						wp.y = -1;
 						wp.width=100;
 						wp.height=100;
 						wp.zLevel=4;
-						wp.setScreen(getScreen());
 					}
 					computerTE.startProcess(process);
 				}
