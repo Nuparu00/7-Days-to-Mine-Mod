@@ -12,7 +12,7 @@ public class ItemSniperRifle extends ItemGun {
 	public ItemSniperRifle() {
 		super();
 		this.setMaxAmmo(12);
-		this.setFullDamage(150f);
+		this.setFullDamage(120f);
 		this.setSpeed(38f);
 		this.setRecoil(4f);
 		this.setCounterDef(0);
@@ -27,7 +27,7 @@ public class ItemSniperRifle extends ItemGun {
 	}
 	
 	@Override
-	public Item getBullet() {
+	public Item getReloadItem(ItemStack stack) {
 		return ModItems.SEVEN_MM_BULLET;
 	}
 	

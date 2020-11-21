@@ -1,0 +1,22 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "   II",
+    "   SI",
+    "  S  ",
+    " S   ",
+    "S    "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+      "item": "sevendaystomine:steelingot"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:steel_shovel"
+  },
+  "quality": true
+}

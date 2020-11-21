@@ -93,6 +93,7 @@ public class GuiPlayerUI {
 			
 			ItemStack stack = player.getHeldItemMainhand();
 			
+			
 			if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun)) {
 				stack = player.getHeldItemOffhand();
 				if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun))

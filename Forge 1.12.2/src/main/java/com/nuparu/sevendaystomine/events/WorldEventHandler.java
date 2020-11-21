@@ -203,7 +203,7 @@ public class WorldEventHandler {
 
 			CitySavedData city_data = ((CitySavedData) world.getPerWorldStorage().getOrLoadData(CitySavedData.class,
 					CitySavedData.DATA_NAME));
-			if (horde_data == null) {
+			if (city_data == null) {
 				SevenDaysToMine.citySavedData = new CitySavedData();
 				world.getPerWorldStorage().setData(CitySavedData.DATA_NAME, SevenDaysToMine.citySavedData);
 			} else {
@@ -293,7 +293,6 @@ public class WorldEventHandler {
 
 	@SubscribeEvent
 	public void onPlayLoundSoundAtEntity(LoudSoundEvent event) {
-		System.out.println("DDDSDSDSD");
 		if (event.pos != null) {
 				float range = event.volume * 6.4f;
 				AxisAlignedBB aabb = new AxisAlignedBB(event.pos).grow(range, range / 2, range);

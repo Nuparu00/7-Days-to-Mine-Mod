@@ -48,7 +48,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SuppressWarnings({ "deprecation", "unused" })
-public class ItemGun extends Item implements IQuality {
+public class ItemGun extends Item implements IQuality, IReloadable {
 
 	private SoundEvent shotSound = null;
 	private SoundEvent drySound = null;
@@ -74,7 +74,7 @@ public class ItemGun extends Item implements IQuality {
 	private EnumGun type;
 	private EnumLength length;
 	private EnumWield wield;
-	private Vec3d aimPosition = new Vec3d(0,0,0);
+	private Vec3d aimPosition = new Vec3d(0, 0, 0);
 
 	public ItemGun() {
 		this.setCreativeTab(CreativeTabs.COMBAT);
@@ -83,7 +83,7 @@ public class ItemGun extends Item implements IQuality {
 		this.setNoRepair();
 	}
 
-	public Item getBullet() {
+	public Item getReloadItem(ItemStack stack) {
 		return null;
 	}
 
@@ -257,14 +257,48 @@ public class ItemGun extends Item implements IQuality {
 	}
 
 	@Override
+	public void onReloadStart(World world, EntityPlayer player, ItemStack stack, int reloadTime) {
+		stack.getTagCompound().setLong("NextFire",
+				world.getTotalWorldTime() + (long) Math.ceil((reloadTime / 1000d) * 20));
+	}
+
+	@Override
+	public void onReloadEnd(World world, EntityPlayer player, ItemStack stack, ItemStack bullet) {
+		if (bullet != null && !bullet.isEmpty() && stack.getTagCompound().hasKey("Capacity")
+				&& stack.getTagCompound().hasKey("Ammo")) {
+
+			stack.getTagCompound().setBoolean("Reloading", false);
+			int toReload = (int) Math.ceil(
+					(double) (stack.getTagCompound().getInteger("Capacity") - stack.getTagCompound().getInteger("Ammo"))
+							/ (double) getShotsPerAmmo());
+			int reload = Math.min(toReload, Utils.getItemCount(player.inventory, bullet.getItem()));
+
+			setAmmo(stack,player,getAmmo(stack,player) + reload * getShotsPerAmmo());
+			player.inventory.clearMatchingItems(bullet.getItem(), -1, reload, null);
+		}
+	}
+	@Override
+	public int getAmmo(ItemStack stack, EntityPlayer player) {
+		if(stack == null || stack.isEmpty() || stack.getTagCompound() == null || !stack.getTagCompound().hasKey("Ammo")) return -1;
+		return stack.getTagCompound().getInteger("Ammo");
+	}
+	@Override
+	public int getCapacity(ItemStack stack, EntityPlayer player) {
+		return this.getMaxAmmo();
+	}
+	
+	@Override
+	public void setAmmo(ItemStack stack, EntityPlayer player, int ammo) {
+		if (stack.getTagCompound() == null) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		stack.getTagCompound().setInteger("Ammo", ammo);
+	}
+
+
+	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
-
-		/*
-		 * if (handIn == EnumHand.OFF_HAND && (gunWield != EnumWield.DUAL &&
-		 * playerIn.getHeldItemMainhand() != ItemStack.EMPTY)) { return new
-		 * ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack); }
-		 */
 
 		if ((getWield() == EnumWield.TWO_HAND && !playerIn.getHeldItem(getOtherHand(handIn)).isEmpty())) {
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
@@ -339,7 +373,7 @@ public class ItemGun extends Item implements IQuality {
 
 	public double getSpread(EntityPlayer player, EnumHand hand) {
 
-		float mult = 0.15f;
+		float mult = 0.05f;
 
 		if (Utils.isPlayerDualWielding(player)) {
 			mult += 0.11f;
@@ -357,7 +391,7 @@ public class ItemGun extends Item implements IQuality {
 	}
 
 	public double getCross(EntityPlayer player, EnumHand hand) {
-		float mult = 1;
+		float mult = 1f;
 
 		if (Utils.isPlayerDualWielding(player)) {
 			mult += 0.11f;
@@ -368,7 +402,7 @@ public class ItemGun extends Item implements IQuality {
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		return (spread * mult * (1.2d - ((double) quality / (ItemQuality.MAX_QUALITY + 1))*0.9))
+		return (spread * mult * (1.2d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)) * 0.9))
 				/ (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack) + 1d);
 	}
 

@@ -51,6 +51,7 @@ import com.nuparu.sevendaystomine.item.ItemPhoto;
 import com.nuparu.sevendaystomine.item.ItemPistol;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.item.ItemQualityAxe;
+import com.nuparu.sevendaystomine.item.ItemQualityHoe;
 import com.nuparu.sevendaystomine.item.ItemQualityPickaxe;
 import com.nuparu.sevendaystomine.item.ItemQualityScrapable;
 import com.nuparu.sevendaystomine.item.ItemQualitySpade;
@@ -145,8 +146,8 @@ public class ModItems {
 	public static final Item HUNTING_RIFLE = new ItemHuntingRifle().setRegistryName("hunting_rifle")
 			.setUnlocalizedName("hunting_rifle");
 	public static final Item MAGNUM = new ItemMagnum().setRegistryName("magnum").setUnlocalizedName("magnum");
-	public static final Item MAGNUM_SCOPED = new ItemMagnum().setFOVFactor(2.5f).setScoped(true).setRegistryName("magnum_scoped")
-			.setUnlocalizedName("magnum_scoped");
+	public static final Item MAGNUM_SCOPED = new ItemMagnum().setFOVFactor(2.5f).setScoped(true)
+			.setRegistryName("magnum_scoped").setUnlocalizedName("magnum_scoped");
 	public static final Item FLAMETHROWER = new ItemFlamethrower().setRegistryName("flamethrower")
 			.setUnlocalizedName("flamethrower");
 	public static final Item MP5 = new ItemMP5().setRegistryName("mp5").setUnlocalizedName("mp5");
@@ -173,35 +174,35 @@ public class ModItems {
 	public static final Item CANNED_WATER = new ItemDrink(0, 250, 50).setRegistryName("CannedWater")
 			.setUnlocalizedName("CannedWater").setContainerItem(EMPTY_CAN);
 
-	public static final Item CANNED_CATFOOD = new ItemCannedFood(3, 0.3f, true,2).setRegistryName("CannedCatFood")
+	public static final Item CANNED_CATFOOD = new ItemCannedFood(3, 0.3f, true, 2).setRegistryName("CannedCatFood")
 			.setUnlocalizedName("CannedCatFood");
-	public static final Item CANNED_DOGFOOD = new ItemCannedFood(3, 0.3f, true,2).setRegistryName("CannedDogFood")
+	public static final Item CANNED_DOGFOOD = new ItemCannedFood(3, 0.3f, true, 2).setRegistryName("CannedDogFood")
 			.setUnlocalizedName("CannedDogFood");
-	public static final Item CANNED_HAM = new ItemCannedFood(6, 0.9f, true,3).setRegistryName("CannedHam")
+	public static final Item CANNED_HAM = new ItemCannedFood(6, 0.9f, true, 3).setRegistryName("CannedHam")
 			.setUnlocalizedName("CannedHam");
-	public static final Item CANNED_CHICKEN = new ItemCannedFood(5, 0.7f, true,4).setRegistryName("CannedChicken")
+	public static final Item CANNED_CHICKEN = new ItemCannedFood(5, 0.7f, true, 4).setRegistryName("CannedChicken")
 			.setUnlocalizedName("CannedChicken");
-	public static final Item CANNED_CHILI = new ItemCannedFood(4, 0.45f, false,2).setRegistryName("CannedChili")
+	public static final Item CANNED_CHILI = new ItemCannedFood(4, 0.45f, false, 2).setRegistryName("CannedChili")
 			.setUnlocalizedName("CannedChili");
-	public static final Item CANNED_MISO = new ItemCannedFood(4, 0.45f, false,2).setRegistryName("CannedMiso")
+	public static final Item CANNED_MISO = new ItemCannedFood(4, 0.45f, false, 2).setRegistryName("CannedMiso")
 			.setUnlocalizedName("CannedMiso");
-	public static final Item CANNED_PASTA = new ItemCannedFood(5, 0.5f, false,2).setRegistryName("CannedPasta")
+	public static final Item CANNED_PASTA = new ItemCannedFood(5, 0.5f, false, 2).setRegistryName("CannedPasta")
 			.setUnlocalizedName("CannedPasta");
-	public static final Item CANNED_PEARS = new ItemCannedFood(4, 0.35f, false,2).setRegistryName("CannedPears")
+	public static final Item CANNED_PEARS = new ItemCannedFood(4, 0.35f, false, 2).setRegistryName("CannedPears")
 			.setUnlocalizedName("CannedPears");
-	public static final Item CANNED_PEAS = new ItemCannedFood(4, 0.35f, false,2).setRegistryName("CannedPeas")
+	public static final Item CANNED_PEAS = new ItemCannedFood(4, 0.35f, false, 2).setRegistryName("CannedPeas")
 			.setUnlocalizedName("CannedPeas");
-	public static final Item CANNED_SALMON = new ItemCannedFood(5, 0.4f, false,3).setRegistryName("CannedSalmon")
+	public static final Item CANNED_SALMON = new ItemCannedFood(5, 0.4f, false, 3).setRegistryName("CannedSalmon")
 			.setUnlocalizedName("CannedSalmon");
-	public static final Item CANNED_SOUP = new ItemCannedFood(5, 0.5f, false,2).setRegistryName("CannedSoup")
+	public static final Item CANNED_SOUP = new ItemCannedFood(5, 0.5f, false, 2).setRegistryName("CannedSoup")
 			.setUnlocalizedName("CannedSoup");
-	public static final Item CANNED_STOCK = new ItemCannedFood(4, 0.45f, false,3).setRegistryName("CannedStock")
+	public static final Item CANNED_STOCK = new ItemCannedFood(4, 0.45f, false, 3).setRegistryName("CannedStock")
 			.setUnlocalizedName("CannedStock");
-	public static final Item CANNED_TUNA = new ItemCannedFood(5, 0.4f, false,3).setRegistryName("CannedTuna")
+	public static final Item CANNED_TUNA = new ItemCannedFood(5, 0.4f, false, 3).setRegistryName("CannedTuna")
 			.setUnlocalizedName("CannedTuna");
-	public static final Item CANNED_BEEF = new ItemCannedFood(7, 1f, true,4).setRegistryName("CannedBeef")
+	public static final Item CANNED_BEEF = new ItemCannedFood(7, 1f, true, 4).setRegistryName("CannedBeef")
 			.setUnlocalizedName("CannedBeef");
-	public static final Item CANNED_LAMB = new ItemCannedFood(7, 1f, true,4).setRegistryName("CannedLamb")
+	public static final Item CANNED_LAMB = new ItemCannedFood(7, 1f, true, 4).setRegistryName("CannedLamb")
 			.setUnlocalizedName("CannedLamb");
 
 	public static final Item CORN = new ItemFood(1, 0.3f, false).setRegistryName("Corn").setUnlocalizedName("Corn");
@@ -227,16 +228,16 @@ public class ModItems {
 			.setUnlocalizedName("LeadIngot");
 	public static final Item INGOT_BRASS = new ItemScrapable(EnumMaterial.BRASS, 6).setRegistryName("BrassIngot")
 			.setUnlocalizedName("BrassIngot");
-	public static final Item INGOT_STEEL = new ItemScrapable(EnumMaterial.STEEL, 6).setRegistryName("SteelIngot")
-			.setUnlocalizedName("SteelIngot");
-	public static final Item INGOT_COPPER = new ItemScrapable(EnumMaterial.COPPER, 6).setRegistryName("CopperIngot")
-			.setUnlocalizedName("CopperIngot");
-	public static final Item INGOT_TIN = new ItemScrapable(EnumMaterial.TIN, 6).setRegistryName("TinIngot")
-			.setUnlocalizedName("TinIngot");
-	public static final Item INGOT_ZINC = new ItemScrapable(EnumMaterial.ZINC, 6).setRegistryName("ZincIngot")
-			.setUnlocalizedName("ZincIngot");
-	public static final Item INGOT_BRONZE = new ItemScrapable(EnumMaterial.BRONZE, 6).setRegistryName("BronzeIngot")
-			.setUnlocalizedName("BronzeIngot");
+	public static final Item INGOT_STEEL = new ItemScrapable(EnumMaterial.STEEL, 6).setSmallestBit()
+			.setRegistryName("SteelIngot").setUnlocalizedName("SteelIngot");
+	public static final Item INGOT_COPPER = new ItemScrapable(EnumMaterial.COPPER, 6).setSmallestBit()
+			.setRegistryName("CopperIngot").setUnlocalizedName("CopperIngot");
+	public static final Item INGOT_TIN = new ItemScrapable(EnumMaterial.TIN, 6).setSmallestBit()
+			.setRegistryName("TinIngot").setUnlocalizedName("TinIngot");
+	public static final Item INGOT_ZINC = new ItemScrapable(EnumMaterial.ZINC, 6).setSmallestBit()
+			.setRegistryName("ZincIngot").setUnlocalizedName("ZincIngot");
+	public static final Item INGOT_BRONZE = new ItemScrapable(EnumMaterial.BRONZE, 6).setSmallestBit()
+			.setRegistryName("BronzeIngot").setUnlocalizedName("BronzeIngot");
 	public static final Item INGOT_GOLD = new ItemScrapable(EnumMaterial.GOLD, 6).setRegistryName("GoldIngot")
 			.setUnlocalizedName("GoldIngot");
 	public static final Item CENT = new ItemScrapable(EnumMaterial.IRON, 6).setRegistryName("cent")
@@ -486,6 +487,10 @@ public class ModItems {
 	public static final Item MP5_SCHEMATICS = new ItemBlueprint(
 			new ResourceLocation(SevenDaysToMine.MODID, "data/books/mp5.json"), "mp5").setRegistryName("book_mp5")
 					.setUnlocalizedName("book_mp5");
+	
+	public static final Item AUGER_SCHEMATICS = new ItemBlueprint(
+			new ResourceLocation(SevenDaysToMine.MODID, "data/books/auger.json"), "auger").setRegistryName("book_auger")
+					.setUnlocalizedName("book_auger");
 
 	public static final Item MICROPHONE = new Item().setRegistryName("microphone").setUnlocalizedName("microphone");
 	public static final Item BULLET_TIP = new ItemScrapable(EnumMaterial.LEAD, 1).setRegistryName("bullet_tip")
@@ -557,17 +562,34 @@ public class ModItems {
 	public static final Item NIGHT_VISION_DEVICE = new ItemNightVisionDevice(SevenDaysToMine.SCRAP_ARMOR, 0,
 			EntityEquipmentSlot.HEAD).setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT)
 					.setRegistryName("night_vision_device").setUnlocalizedName("night_vision_device");
-	
-	public static final Item CHRISTMAS_HAT = new ItemChristmasHat(SevenDaysToMine.FIBER, 0,
-			EntityEquipmentSlot.HEAD).setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT)
-					.setRegistryName("christmas_hat").setUnlocalizedName("christmas_hat");
-	
-	public static final Item BERET = new ItemBeret(SevenDaysToMine.FIBER, 0,
-			EntityEquipmentSlot.HEAD).setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT)
-					.setRegistryName("beret").setUnlocalizedName("beret");
-	
+
+	public static final Item CHRISTMAS_HAT = new ItemChristmasHat(SevenDaysToMine.FIBER, 0, EntityEquipmentSlot.HEAD)
+			.setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT).setRegistryName("christmas_hat")
+			.setUnlocalizedName("christmas_hat");
+
+	public static final Item BERET = new ItemBeret(SevenDaysToMine.FIBER, 0, EntityEquipmentSlot.HEAD)
+			.setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT).setRegistryName("beret")
+			.setUnlocalizedName("beret");
+
 	public static final Item STETHOSCOPE = new ItemStethoscope().setMaxStackSize(1).setCreativeTab(CreativeTabs.TOOLS)
 			.setRegistryName("stethoscope").setUnlocalizedName("stethoscope");
+
+	public static final Item BLOODMOON = new Item().setMaxStackSize(1).setRegistryName("bloodmoon")
+			.setUnlocalizedName("bloodmoon");
 	
-	public static final Item BLOODMOON = new Item().setMaxStackSize(1).setRegistryName("bloodmoon").setUnlocalizedName("bloodmoon");
+	public static final Item SCRAP_HOE = new ItemQualityHoe(SevenDaysToMine.SCRAP_TOOLS).setRegistryName("scrap_hoe")
+			.setUnlocalizedName("scrap_hoe");
+	public static final Item COPPER_HOE = new ItemQualityHoe(SevenDaysToMine.COPPER_TOOLS).setRegistryName("copper_hoe")
+			.setUnlocalizedName("copper_hoe");
+	public static final Item BRONZE_HOE = new ItemQualityHoe(SevenDaysToMine.BRONZE_TOOLS).setRegistryName("bronze_hoe")
+			.setUnlocalizedName("bronze_hoe");
+	public static final Item IRON_HOE = new ItemQualityHoe(SevenDaysToMine.IRON_TOOLS).setRegistryName("iron_hoe")
+			.setUnlocalizedName("iron_hoe");
+	public static final Item STEEL_HOE = new ItemQualityHoe(SevenDaysToMine.STEEL_TOOLS).setRegistryName("steel_hoe")
+			.setUnlocalizedName("steel_hoe");
+	
+	public static final Item AUGER_HANDLES = new ItemQualityScrapable(EnumMaterial.IRON, 4)
+			.setRegistryName("auger_handles").setUnlocalizedName("auger_handles")
+			.setCreativeTab(SevenDaysToMine.TAB_FORGING).setMaxStackSize(1);
+
 }

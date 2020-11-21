@@ -13,6 +13,7 @@ import com.nuparu.sevendaystomine.item.ItemScrewdriver;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
@@ -53,7 +54,8 @@ public class ItemCache implements Serializable {
 							}
 							continue;
 						}
-						if (item instanceof ItemTool || item instanceof ItemSword) {
+						if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemHoe
+								|| item instanceof ItemBow) {
 							if (longItem.isEmpty()) {
 								longItem = stack;
 							}
@@ -68,12 +70,6 @@ public class ItemCache implements Serializable {
 								}
 								continue;
 							}
-							if (longItem.isEmpty()) {
-								longItem = stack;
-							}
-							continue;
-						}
-						if (item instanceof ItemBow) {
 							if (longItem.isEmpty()) {
 								longItem = stack;
 							}

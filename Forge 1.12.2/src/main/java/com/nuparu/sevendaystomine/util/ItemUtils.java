@@ -28,15 +28,30 @@ public class ItemUtils {
 
 	public static ItemUtils INSTANCE = new ItemUtils();
 	public HashMap<EnumMaterial, Item> scrapResults = new HashMap<EnumMaterial, Item>();
+	public HashMap<EnumMaterial, Item> smallestBit = new HashMap<EnumMaterial, Item>();
 	//func_186463_a
 	private static final Method m_shuffleItems = ObfuscationReflectionHelper.findMethod(LootTable.class, "func_186463_a", void.class, List.class, int.class, Random.class);
 
 	public void addScrapResult(EnumMaterial mat, Item item) {
 		scrapResults.put(mat, item);
+		addSmallestBit(mat,item);
+	}
+	
+	public void addSmallestBit(EnumMaterial mat, Item item) {
+		smallestBit.put(mat, item);
 	}
 
 	public Item getScrapResult(EnumMaterial mat) {
 		for (Map.Entry<EnumMaterial, Item> entry : scrapResults.entrySet()) {
+			if (mat == entry.getKey()) {
+				return entry.getValue();
+			}
+		}
+		return null;
+	}
+	
+	public Item getSmallestBit(EnumMaterial mat) {
+		for (Map.Entry<EnumMaterial, Item> entry : smallestBit.entrySet()) {
 			if (mat == entry.getKey()) {
 				return entry.getValue();
 			}

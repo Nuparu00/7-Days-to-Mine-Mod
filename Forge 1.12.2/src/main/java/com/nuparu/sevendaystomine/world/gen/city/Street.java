@@ -9,8 +9,10 @@ import com.nuparu.sevendaystomine.block.BlockAsphalt;
 import com.nuparu.sevendaystomine.block.BlockCar;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
+import com.nuparu.sevendaystomine.tileentity.TileEntityTrashCan;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.building.Building;
@@ -234,7 +236,7 @@ public class Street {
 						world.setBlockState(pos, state);
 						BlockPos pos2 = pos.down();
 						while (world.getBlockState(pos2).getBlock().isReplaceable(world, pos2)) {
-							world.setBlockState(pos2, Blocks.STONE.getDefaultState());
+							world.setBlockState(pos2, ModBlocks.STRUCTURE_STONE.getDefaultState());
 							pos2 = pos2.down();
 						}
 					} else {
@@ -328,7 +330,7 @@ public class Street {
 						}
 					} else {
 						stateToPlace = city.type.pavementBlock;
-						if(city.rand.nextInt(7) == 0) {
+						if (city.rand.nextInt(7) == 0) {
 							stateToPlace = originalState;
 						}
 					}
@@ -363,7 +365,7 @@ public class Street {
 				}
 
 				world.setBlockState(pos, stateToPlace);
-				world.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
+				world.setBlockState(pos.down(), ModBlocks.STRUCTURE_STONE.getDefaultState());
 			}
 		}
 		if (roofBlocks >= ((city.type.getRoadWidth() + 2 * city.type.getPavementWidth()) * city.type.roadLength) / 4) {
@@ -458,6 +460,7 @@ public class Street {
 	 */
 	public void decorate() {
 		int width = city.type.getRoadWidth() + (city.type.getPavementWidth() * 2);
+		int halfThickness = (int) Math.ceil(city.type.getRoadWidth() / 2);
 
 		for (int i = 0; i <= city.type.roadLength - 1; i++) {
 
@@ -470,7 +473,7 @@ public class Street {
 				int offset = t - Math.round(width / 2f) + 1;
 				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i).offset(facing.rotateY(),
 						offset);
-				int halfThickness = (int) Math.ceil(city.type.getRoadWidth() / 2);
+
 				if (canBranch) {
 					if ((endCrossing != null && endCrossing.getStreets().size() > 2)
 							|| city.getStreetsAtCrossingCount(end, 4) > 2) {
@@ -481,13 +484,21 @@ public class Street {
 						}
 					}
 
-					if (i < city.type.roadLength - (halfThickness + city.type.getPavementWidth())
-							&& (i + 5) % (city.type == EnumCityType.TOWN ? 16 : 8) == 0) {
-						if (t == 0) {
-							generateStreetLamp(pos.up(y + 1), false);
-						} else if (t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 1) {
-							generateStreetLamp(pos.up(y + 1), true);
+					if (i < city.type.roadLength - (halfThickness + city.type.getPavementWidth()) && (i + 5) % 8 == 0) {
+						if ((i + 5) % 16 == 0 || city.type == EnumCityType.CITY) {
+							if (t == 0) {
+								generateStreetLamp(pos.up(y + 1), false);
+							} else if (t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 1) {
+								generateStreetLamp(pos.up(y + 1), true);
 
+							}
+						} else if(city.rand.nextInt(10) == 0){
+							if (t == 0 || t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 1) {
+								world.setBlockState(pos.up(y + 1), ModBlocks.TRASH_CAN.getDefaultState());
+								TileEntityTrashCan te = (TileEntityTrashCan) world.getTileEntity(pos.up(y + 1));
+								te.setLootTable(ModLootTables.TRASH, world.rand.nextLong());
+								te.fillWithLoot(null);
+							}
 						}
 					}
 
@@ -499,12 +510,20 @@ public class Street {
 							generateTrafficLight(pos.up(y + 1));
 						}
 					}
-					if (i > halfThickness + city.type.getPavementWidth()
-							&& (i - halfThickness) % (city.type == EnumCityType.TOWN ? 16 : 8) == 0) {
-						if (t == 0) {
-							generateStreetLamp(pos.up(y + 1), false);
-						} else if (t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 1) {
-							generateStreetLamp(pos.up(y + 1), true);
+					if (i > halfThickness + city.type.getPavementWidth() && (i - halfThickness) % 8 == 0) {
+						if ((i - halfThickness) % 16 == 0 || city.type == EnumCityType.CITY) {
+							if (t == 0) {
+								generateStreetLamp(pos.up(y + 1), false);
+							} else if (t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 1) {
+								generateStreetLamp(pos.up(y + 1), true);
+							}
+						} else if(city.rand.nextInt(10) == 0){
+							if (t == 0 || t == city.type.getRoadWidth() + (city.type.getPavementWidth() * 2) - 1) {
+								world.setBlockState(pos.up(y + 1), ModBlocks.TRASH_CAN.getDefaultState());
+								TileEntityTrashCan te = (TileEntityTrashCan) world.getTileEntity(pos.up(y + 1));
+								te.setLootTable(ModLootTables.TRASH, world.rand.nextLong());
+								te.fillWithLoot(null);
+							}
 						}
 					}
 				}
@@ -589,7 +608,7 @@ public class Street {
 			poleState = Blocks.OAK_FENCE.getDefaultState();
 			break;
 		}
-		
+
 		IBlockState base = world.getBlockState(pos.down());
 		if (base.getBlock() == Blocks.STONE_SLAB) {
 			world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState());
@@ -612,8 +631,7 @@ public class Street {
 				BlockStoneBrick.EnumType.CHISELED));
 		if (!canBranch) {
 			for (int i = 1; i < 4; i++) {
-				world.setBlockState(pos.up(height).offset(facing.rotateY(), i),
-						poleState);
+				world.setBlockState(pos.up(height).offset(facing.rotateY(), i), poleState);
 				world.setBlockState(pos.up(height).offset(facing.rotateY(), i).offset(facing, 1),
 						ModBlocks.TRAFFIC_LIGHT.getDefaultState().withProperty(BlockHorizontalBase.FACING, facing));
 			}
@@ -748,13 +766,11 @@ public class Street {
 		}
 		int height = 6;
 		for (int i = 0; i < height; i++) {
-			if(i == height-1) {
+			if (i == height - 1) {
 				world.setBlockState(pos.up(i), Blocks.STONE_SLAB.getDefaultState());
-			}
-			else if(i == height-2) {
+			} else if (i == height - 2) {
 				world.setBlockState(pos.up(i), Blocks.REDSTONE_LAMP.getDefaultState());
-			}
-			else  {
+			} else {
 				world.setBlockState(pos.up(i), Blocks.OAK_FENCE.getDefaultState());
 			}
 		}

@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.util.ItemUtils;
 
 import net.minecraft.item.Item;
 
@@ -12,12 +13,16 @@ public class ItemScrapable extends Item implements IScrapable {
 	public ItemScrapable(EnumMaterial mat) {
 		this(mat, 1);
 	}
-
 	public ItemScrapable(EnumMaterial mat, int weight) {
 
 		this.material = mat;
 		this.weight = weight;
 		this.setCreativeTab(SevenDaysToMine.TAB_MATERIALS);
+	}
+	
+	public ItemScrapable setSmallestBit() {
+		ItemUtils.INSTANCE.addSmallestBit(material, this);
+		return this;
 	}
 
 	public void setMaterial(EnumMaterial mat) {
@@ -39,4 +44,5 @@ public class ItemScrapable extends Item implements IScrapable {
 	public boolean canBeScraped() {
 		return true;
 	}
+	
 }

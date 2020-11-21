@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiForge extends GuiContainer {
-	private static final ResourceLocation resourceLocation = new ResourceLocation(SevenDaysToMine.MODID,
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/gui/container/forge.png");
 	InventoryPlayer playerInventory;
 	TileEntityForge tileEntity;
@@ -38,7 +38,7 @@ public class GuiForge extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(resourceLocation);
+		mc.getTextureManager().bindTexture(TEXTURE);
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;
 		drawTexturedModalRect(marginHorizontal, marginVertical, 0, 0, xSize, ySize);

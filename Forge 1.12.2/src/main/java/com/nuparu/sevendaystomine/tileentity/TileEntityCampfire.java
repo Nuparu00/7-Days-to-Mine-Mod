@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockCampfire;
+import com.nuparu.sevendaystomine.crafting.campfire.CampfireRecipeManager;
+import com.nuparu.sevendaystomine.crafting.campfire.ICampfireRecipe;
 import com.nuparu.sevendaystomine.inventory.ContainerCampfire;
-import com.nuparu.sevendaystomine.item.crafting.campfire.CampfireRecipeManager;
-import com.nuparu.sevendaystomine.item.crafting.campfire.ICampfireRecipe;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;

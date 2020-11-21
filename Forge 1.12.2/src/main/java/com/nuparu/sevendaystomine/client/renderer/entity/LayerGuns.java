@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumHand;
@@ -89,7 +90,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 					if (item instanceof ItemStoneShovel) {
 						GlStateManager.translate(-0.225, 0.25, 0.16);
 						GlStateManager.scale(0.875, 0.875, 0.875);
-					} else if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemBow) {
+					} else if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemBow || item instanceof ItemHoe) {
 						GlStateManager.translate(0.75, 0.45, -0.2825);
 						GlStateManager.rotate(90, 0, 0, 1);
 					} else {

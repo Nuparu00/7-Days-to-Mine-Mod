@@ -1,0 +1,18 @@
+{
+   "type":"sevendaystomine:crafting_gun_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:auger_handles"
+      },
+      {
+         "item":"sevendaystomine:small_engine"
+      },
+      {
+         "item":"sevendaystomine:auger_blade"
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:auger"
+   },
+   "recipe":"auger"
+}

@@ -190,6 +190,7 @@ book_shotgun.title=Shotgun
 book_sniper.title=Sniper Rifle
 book_magnum.title=.44 Magnum
 book_mp5.title=MP5
+book_auger.title=Auger
 
 #Books
 book.contents=Contents
@@ -321,7 +322,7 @@ book_electricity.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights re
 
 
 book_chemistry.subtitle=Nobelium, Rhenium, Actinium, Titanium, Oxygen, Nitrogen
-book_chemistry.author=Maxmilian Vyroubal
+book_chemistry.author=Richard Kreet
 book_chemistry.contents.1=1. Chemistry Station
 book_chemistry.contents.2=2. Chemical Reactions
 book_chemistry.contents.3=3. Electrolysis
@@ -340,7 +341,7 @@ book_metalworking.dontdistribute.1=Copying and distribution of this book is stri
 book_metalworking.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
 
 book_pistol.subtitle=Assembly, shooting, dying
-book_pistol.author=Maxmilian Vyroubal
+book_pistol.author=Cicero Fryman
 book_pistol.contents.1=1. Assembly
 book_pistol.contents.2=2. Ammunition
 book_pistol.contents.3=3. Shooting
@@ -591,6 +592,7 @@ item.book_shotgun.name=Blueprint
 item.book_sniper.name=Blueprint
 item.book_magnum.name=Blueprint
 item.book_mp5.name=Blueprint
+item.book_auger.name=Blueprint
 item.bullet_magnum.name=.44 Magnum Bullet
 item.magnum_frame.name=.44 Magnum Frame
 item.magnum_grip.name=.44 Magnum Grip
@@ -607,6 +609,16 @@ item.mp5_trigger.name=MP5 Trigger
 item.shotgun_shell.name=Shotgun Shell
 item.auger_blade.name=Auger Blade
 item.stethoscope.name=Stethoscope
+item.scrap_hoe.name=Scrap Hoe
+item.copper_hoe.name=Copper Hoe
+item.bronze_hoe.name=Bronze Hoe
+item.iron_hoe.name=Iron Hoe
+item.steel_hoe.name=Steel Hoe
+item.auger_handles.name=Auger Handlebars
+item.christmas_hat.name=Christmas Hat
+item.beret.name=Beret
+item.night_vision_device.name=Night Vision Device
+item.bloodmoon.name=Bloodmoon Icon
 
 #Blocks
 
@@ -847,6 +859,23 @@ tile.separator.name=Electrolytic Cell
 tile.razor_wire.name=Razor Wire
 tile.stand.name=Stand
 tile.landmine.name=Landmine
+tile.stone.name=Structure Stone
+tile.camera.name=Camera
+tile.globe.name=Globe
+tile.sirene.name=Sirene
+tile.SleepingBag.name=Sleeping Bag
+tile.oak_log_spike.name=Oak Log Spike
+tile.spruce_log_spike.name=Spruce Log Spike
+tile.birch_log_spike.name=Birch Log Spike
+tile.jungle_log_spike.name=Jungle Log Spike
+tile.dark_oak_log_spike.name=Dark Oak Log Spike
+tile.acacia_log_spike.name=Acacia Log Spike
+tile.sandbags.name=Sandbags
+tile.ReinforcedConcreteWet.name=Wet Reinforced Concrete
+tile.gasoline.name=Gasoline
+tile.mercury.name=Mercury
+tile.turret_base.name=Turret
+tile.turret_advanced.name=Advanced Turret
 
 #Sound Subtitles
 
@@ -967,9 +996,10 @@ fluid.gasoline=Gasoline
 fluid.mercury=Mercury
 
 
-
-
-
+JEI
+jei.information.workbench=Workbench is a more advanced version of Crafting Table, that offers 5x5 crafting grid. Requires the "Metalworking" recipe book.
+jei.information.separator=Electrolytic cell is a device that breaks down complex substances into simpler substances.
+jei.information.stone_axe=Stone Axe is a basic universal tool. Used not only as a mining tool but also as a block upgrade and repair tool.
 
 
 

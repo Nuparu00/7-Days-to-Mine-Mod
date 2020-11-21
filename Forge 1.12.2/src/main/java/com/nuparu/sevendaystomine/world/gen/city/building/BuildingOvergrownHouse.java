@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import com.nuparu.sevendaystomine.block.BlockBackpack;
 import com.nuparu.sevendaystomine.block.BlockCardboardBox;
 import com.nuparu.sevendaystomine.block.BlockComputer;
+import com.nuparu.sevendaystomine.block.BlockGarbage;
 import com.nuparu.sevendaystomine.block.BlockMonitor;
 import com.nuparu.sevendaystomine.block.BlockWorkbench;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -16,6 +17,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityCardboard;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCupboard;
 import com.nuparu.sevendaystomine.tileentity.TileEntityDresser;
 import com.nuparu.sevendaystomine.tileentity.TileEntityFileCabinet;
+import com.nuparu.sevendaystomine.tileentity.TileEntityGarbage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMedicalCabinet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMicrowave;
 import com.nuparu.sevendaystomine.tileentity.TileEntityRefrigerator;
@@ -97,6 +99,23 @@ public class BuildingOvergrownHouse extends Building {
 		case "sedan": {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			CityHelper.placeRandomCar(world, pos, facing.rotateY(), world.rand);
+			break;
+		}
+		case "body_bag": {
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			if (world.rand.nextBoolean()) {
+				world.setBlockState(pos, ModBlocks.GARBAGE.getDefaultState().withProperty(BlockGarbage.FACING,
+						EnumFacing.getHorizontal(world.rand.nextInt(4))));
+				TileEntityGarbage te = (TileEntityGarbage) world.getTileEntity(pos);
+				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.BODY_BAG, world, world.rand);
+			}
+			break;
+		}
+		case "nightstand": {
+			TileEntityCupboard te = (TileEntityCupboard) world.getTileEntity(pos.down());
+			te.setLootTable(ModLootTables.WRITING_TABLE, world.rand.nextLong());
+			te.fillWithLoot(null);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			break;
 		}
 		default:

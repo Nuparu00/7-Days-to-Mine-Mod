@@ -2,13 +2,13 @@ package com.nuparu.sevendaystomine.tileentity;
 
 import java.util.List;
 
+import com.nuparu.sevendaystomine.crafting.separator.ISeparatorRecipe;
+import com.nuparu.sevendaystomine.crafting.separator.SeparatorRecipeManager;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSeparator;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSmall;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
-import com.nuparu.sevendaystomine.item.crafting.separator.SeparatorRecipeManager;
-import com.nuparu.sevendaystomine.item.crafting.separator.ISeparatorRecipe;
 import com.nuparu.sevendaystomine.tileentity.TileEntityChemistryStation.EnumSlots;
 
 import net.minecraft.block.state.IBlockState;

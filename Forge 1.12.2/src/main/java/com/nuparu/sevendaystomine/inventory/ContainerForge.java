@@ -1,8 +1,8 @@
 package com.nuparu.sevendaystomine.inventory;
 
+import com.nuparu.sevendaystomine.crafting.forge.ForgeRecipeManager;
+import com.nuparu.sevendaystomine.crafting.forge.IForgeRecipe;
 import com.nuparu.sevendaystomine.item.ItemScrap;
-import com.nuparu.sevendaystomine.item.crafting.forge.ForgeRecipeManager;
-import com.nuparu.sevendaystomine.item.crafting.forge.IForgeRecipe;
 import com.nuparu.sevendaystomine.tileentity.TileEntityForge;
 
 import net.minecraft.entity.player.EntityPlayer;

@@ -20,7 +20,7 @@ public class EntityBipedalZombie extends EntityZombieBase {
 		lootable.setPosition(posX, posY, posZ);
 		isDead = true;
 		if (!world.isRemote) {
-			ItemUtils.fillWithLoot(lootable.getInventory(), ModLootTables.ZOMBIE_GENERIC, world, rand);
+			ItemUtils.fillWithLoot(lootable.getInventory(), lootTable, world, rand);
 			world.spawnEntity(lootable);
 		}
 	}

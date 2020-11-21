@@ -28,44 +28,45 @@ public class BlockReinforcedConcrete extends BlockBase {
 
 	@Override
 	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
-		tryToRemove(worldIn,pos);
+		tryToRemove(worldIn, pos);
 	}
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player,
 			boolean willHarvest) {
 		if (player != null) {
-			if (!player.isCreative()) {
-				return tryToRemove(world,pos);
+			if (player.isCreative()) {
+				return world.setBlockToAir(pos);
 			}
-		} else {
-			return tryToRemove(world,pos);
 		}
-		return world.setBlockToAir(pos);
+		tryToRemove(world, pos);
+		return false;
+
 
 	}
-	
+
 	public boolean tryToRemove(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
-		if(!(state.getBlock() instanceof BlockReinforcedConcrete)) return true;
-		if(state.getValue(PHASE) == 0){
-			world.setBlockState(pos, ModBlocks.REINFORCED_CONCRETE.getDefaultState().withProperty(PHASE , 1));
-			 return false;
-			}
+		if (!(state.getBlock() instanceof BlockReinforcedConcrete))
+			return true;
+		if (state.getValue(PHASE) == 0) {
+			world.setBlockState(pos, ModBlocks.REINFORCED_CONCRETE.getDefaultState().withProperty(PHASE, 1));
+			return false;
+		}
 
-			if(world.getBlockState(pos).getValue(PHASE) == 1){
-			world.setBlockState(pos, ModBlocks.REINFORCED_CONCRETE.getDefaultState().withProperty(PHASE , 2));
-			 return false;
-			}
+		if (world.getBlockState(pos).getValue(PHASE) == 1) {
+			world.setBlockState(pos, ModBlocks.REINFORCED_CONCRETE.getDefaultState().withProperty(PHASE, 2));
+			return false;
+		}
 
-			if(world.getBlockState(pos).getValue(PHASE) == 2){
-			world.setBlockState(pos, ModBlocks.REINFORCED_CONCRETE.getDefaultState().withProperty(PHASE , 3));
-			 return false;
-			}
+		if (world.getBlockState(pos).getValue(PHASE) == 2) {
+			world.setBlockState(pos, ModBlocks.REINFORCED_CONCRETE.getDefaultState().withProperty(PHASE, 3));
+			return false;
+		}
 
-			if(world.getBlockState(pos).getValue(PHASE) == 3){
-				return true;
-			}
+		if (world.getBlockState(pos).getValue(PHASE) == 3) {
+			return world.setBlockToAir(pos);
+		}
 		return true;
 	}
 

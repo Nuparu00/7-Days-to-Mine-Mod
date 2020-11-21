@@ -24,7 +24,7 @@ public class ItemFlamethrower extends ItemGun {
 	public ItemFlamethrower() {
 		super();
 		setMaxAmmo(500);
-		setFullDamage(50f);
+		setFullDamage(30f);
 		setSpeed(0.18f);
 		setRecoil(0.15f);
 		setCounterDef(0);
@@ -39,7 +39,7 @@ public class ItemFlamethrower extends ItemGun {
 	}
 
 	@Override
-	public Item getBullet() {
+	public Item getReloadItem(ItemStack stack) {
 		return ModItems.GAS_CANISTER;
 	}
 

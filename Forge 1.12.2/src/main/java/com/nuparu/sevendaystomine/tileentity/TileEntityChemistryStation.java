@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockChemistryStation;
+import com.nuparu.sevendaystomine.crafting.chemistry.ChemistryRecipeManager;
+import com.nuparu.sevendaystomine.crafting.chemistry.IChemistryRecipe;
 import com.nuparu.sevendaystomine.inventory.ContainerChemistryStation;
-import com.nuparu.sevendaystomine.item.crafting.chemistry.ChemistryRecipeManager;
-import com.nuparu.sevendaystomine.item.crafting.chemistry.IChemistryRecipe;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

@@ -4,6 +4,7 @@ import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.init.ModItems;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
 
 public class ItemHuntingRifle extends ItemGun {
@@ -11,7 +12,7 @@ public class ItemHuntingRifle extends ItemGun {
 	public ItemHuntingRifle() {
 		super();
 		this.setMaxAmmo(1);
-		this.setFullDamage(100f);
+		this.setFullDamage(70f);
 		this.setSpeed(32f);
 		this.setRecoil(3.2f);
 		this.setCounterDef(0);
@@ -26,7 +27,7 @@ public class ItemHuntingRifle extends ItemGun {
 	}
 
 	@Override
-	public Item getBullet() {
+	public Item getReloadItem(ItemStack stack) {
 		return ModItems.SEVEN_MM_BULLET;
 	}
 

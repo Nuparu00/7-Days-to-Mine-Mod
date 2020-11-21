@@ -116,6 +116,7 @@ public class EntitySurvivor extends EntityHuman implements IMerchant {
 
 	public void setCarrier(EnumCarrier carrier) {
 		setCarrier(carrier.getName());
+		this.setTexture(SevenDaysToMine.MODID + ":textures/entity/human/" + carrier.getName() + "_" + getSex() + ".png");
 	}
 
 	public String getCarrier() {

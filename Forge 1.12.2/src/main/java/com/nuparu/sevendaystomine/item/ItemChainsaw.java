@@ -21,7 +21,7 @@ public class ItemChainsaw extends ItemFuelTool {
 	@SuppressWarnings("rawtypes")
 	public static final Set effectiveAgainst = Sets.newHashSet(new Block[] {Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG,
 			Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER,
-			Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE});
+			Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE, Blocks.WEB});
 
 	@SuppressWarnings("unchecked")
 	public ItemChainsaw(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn) {
@@ -56,15 +56,15 @@ public class ItemChainsaw extends ItemFuelTool {
 		}
 		Block block = state.getBlock();
 		Material mat = block.getMaterial(state);
-		if (stack.getTagCompound().getFloat("FuelCurrent") > 0.0F) {
+		if (getAmmo(stack,null) > 0) {
 			if (effectiveAgainst.contains(block) || mat == Material.WOOD || mat == Material.PLANTS
 					|| mat == Material.VINE) {
 				return this.efficiency * (1+(float) this.getQuality(stack) / 200f);
 			} else {
-				return 0F;
+				return efficiency/10f;
 			}
 		} else {
-			return 0F;
+			return efficiency/10f;
 		}
 
 	}
@@ -77,8 +77,7 @@ public class ItemChainsaw extends ItemFuelTool {
 		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 
 		float damage = this.attackDamage;
-		NBTTagCompound nbt = stack.getTagCompound();
-		if (nbt == null || !nbt.hasKey("FuelCurrent") || nbt.getFloat("FuelCurrent") <= 0) {
+		if (this.getAmmo(stack, null) <= 0) {
 			damage = 1f;
 		}
 		if (equipmentSlot == EntityEquipmentSlot.MAINHAND)

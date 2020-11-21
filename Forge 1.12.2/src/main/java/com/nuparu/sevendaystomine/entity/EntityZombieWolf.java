@@ -2,6 +2,8 @@ package com.nuparu.sevendaystomine.entity;
 
 import javax.annotation.Nullable;
 
+import com.nuparu.sevendaystomine.util.ItemUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityWolf;
@@ -226,6 +228,7 @@ public class EntityZombieWolf extends EntityZombieBase {
 		lootable.setPosition(posX, posY, posZ);
 		isDead = true;
 		if (!world.isRemote) {
+			ItemUtils.fillWithLoot(lootable.getInventory(), lootTable, world, rand);
 			world.spawnEntity(lootable);
 		}
 	}

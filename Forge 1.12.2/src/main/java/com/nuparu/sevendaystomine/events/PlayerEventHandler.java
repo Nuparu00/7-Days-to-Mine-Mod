@@ -20,6 +20,7 @@ import com.nuparu.sevendaystomine.inventory.ContainerPlayerExtended;
 import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
 import com.nuparu.sevendaystomine.item.IQuality;
 import com.nuparu.sevendaystomine.item.ItemBackpack;
+import com.nuparu.sevendaystomine.item.ItemFuelTool;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.Utils;
@@ -35,6 +36,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -250,9 +252,11 @@ public class PlayerEventHandler {
 	public void onPlayerBreakSpeed(PlayerEvent.BreakSpeed event) {
 		float speed = event.getOriginalSpeed() / 32f;
 		ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
-		if (!stack.isEmpty() && stack.getItem() instanceof IQuality) {
-			speed = speed * (1 + (float) ((IQuality) stack.getItem()).getQuality(stack) / 128f);
+		Item item = stack.getItem();
+		if (!stack.isEmpty() && item instanceof IQuality) {
+			speed = speed * (1 + (float) ((IQuality) item).getQuality(stack) / 128f);
 		}
+
 		event.setNewSpeed(speed);
 
 	}

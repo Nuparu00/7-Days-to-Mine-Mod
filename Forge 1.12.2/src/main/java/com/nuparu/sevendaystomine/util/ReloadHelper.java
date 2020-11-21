@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.util;
 
+import com.nuparu.sevendaystomine.item.IReloadable;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.ReloadMessage;
@@ -21,11 +22,13 @@ public class ReloadHelper {
 		EntityPlayer player = mc.player;
 		if(player == null) return;
 		
-		ItemStack stack = player.getHeldItemMainhand();
-		if(stack == null || stack.isEmpty()) return;
+		ItemStack mainStack = player.getHeldItemMainhand();
+		ItemStack secStack = player.getHeldItemMainhand();
+		if(mainStack.isEmpty() && secStack.isEmpty()) return;
 		
-		Item item = stack.getItem();
-		if(item instanceof ItemGun) {
+		Item mainItem = mainStack.getItem();
+		Item secItem = secStack.getItem();
+		if(mainItem instanceof IReloadable || secItem instanceof IReloadable) {
 			PacketManager.gunReload.sendToServer(new ReloadMessage());
 		}
 	}

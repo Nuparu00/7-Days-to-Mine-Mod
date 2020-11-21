@@ -195,7 +195,6 @@ public class City {
 		int attempts = 0;
 		if (size > 0) {
 			while (size > 0 && attempts < 16) {
-				System.out.println("looop 2");
 				try {
 					Street street = streetsQueue.take();
 					street.tryToContinueStreets();
@@ -215,8 +214,6 @@ public class City {
 		Crossing crossing = new Crossing(this);
 		int i = 0;
 		for (Street street : streets) {
-
-			// System.out.println(pos + " " + street.start + " " + street.end);
 			for (BlockPos pos2 : poses) {
 				if (pos2.getX() == street.start.getX() && pos2.getY() == street.start.getY()
 						&& pos2.getZ() == street.start.getZ()) {

@@ -1,7 +1,7 @@
 package com.nuparu.sevendaystomine.inventory;
 
+import com.nuparu.sevendaystomine.crafting.workbench.WorkbenchCraftingManager;
 import com.nuparu.sevendaystomine.init.ModBlocks;
-import com.nuparu.sevendaystomine.item.crafting.workbench.WorkbenchCraftingManager;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

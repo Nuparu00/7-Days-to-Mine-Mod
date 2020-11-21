@@ -3,9 +3,9 @@ package com.nuparu.sevendaystomine.util;
 import java.util.ArrayList;
 
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.crafting.RecipeManager;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
-import com.nuparu.sevendaystomine.item.crafting.RecipeManager;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
@@ -227,6 +227,8 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.COAL,EnumMaterial.CARBON).setWeight(1));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.IRON_NUGGET,EnumMaterial.IRON).setWeight(0));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.GOLD_NUGGET,EnumMaterial.GOLD).setWeight(0));
+		
+		ItemUtils.INSTANCE.addSmallestBit(EnumMaterial.CARBON, net.minecraft.init.Items.COAL);
 	}
 	
 	public static VanillaScrapableItem getVanillaScrapable(Item item) {
@@ -294,6 +296,11 @@ public class VanillaManager {
 		
 		public VanillaScrapableItem setMaterial(EnumMaterial mat) {
 			this.mat = mat;
+			return this;
+		}
+		
+		public VanillaScrapableItem setScrap() {
+			ItemUtils.INSTANCE.addScrapResult(mat, item);
 			return this;
 		}
 

@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.nuparu.sevendaystomine.entity.ai.EntityAIBreakBlock;
 import com.nuparu.sevendaystomine.entity.ai.EntityAIInfectedAttack;
+import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
 import com.nuparu.sevendaystomine.world.horde.Horde;
@@ -37,6 +38,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -60,6 +62,8 @@ public class EntityZombieBase extends EntityMob {
 	public IAttributeInstance armor;
 
 	public Horde horde;
+	
+	public ResourceLocation lootTable = ModLootTables.ZOMBIE_GENERIC;
 
 	public EntityZombieBase(World worldIn) {
 		super(worldIn);

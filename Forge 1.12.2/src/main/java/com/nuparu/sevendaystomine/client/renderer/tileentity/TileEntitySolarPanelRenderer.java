@@ -56,7 +56,6 @@ public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer<Tile
 			short1 = -90;
 		}
 		if (destroyStage >= 0) {
-			System.out.println("AAAA");
 			 this.bindTexture(DESTROY_STAGES[destroyStage]);
 	            GlStateManager.matrixMode(5890);
 	            GlStateManager.pushMatrix();

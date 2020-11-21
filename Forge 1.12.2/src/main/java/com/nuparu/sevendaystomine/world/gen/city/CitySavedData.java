@@ -19,9 +19,6 @@ import net.minecraftforge.common.util.Constants;
 
 public class CitySavedData extends WorldSavedData {
 	public static final String DATA_NAME = SevenDaysToMine.MODID + ":city_data";
-
-	protected int dim = Integer.MIN_VALUE;
-
 	private List<Long> cities = new ArrayList<Long>();
 
 	public CitySavedData() {
@@ -35,14 +32,10 @@ public class CitySavedData extends WorldSavedData {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		cities.clear();
-		dim = compound.getInteger("dim");
-		World world = DimensionManager.getWorld(dim);
-		if (world == null) {
-			return;
-		}
 		if (compound.hasKey("cities")) {
 			NBTTagList list = compound.getTagList("cities", Constants.NBT.TAG_LONG);
 			for (int i = 0; i < list.tagCount(); i++) {
+				System.out.println("READ CITY");
 				NBTBase nbt = list.get(i);
 				if (nbt instanceof NBTTagLong) {
 					cities.add(((NBTTagLong) nbt).getLong());
@@ -55,9 +48,9 @@ public class CitySavedData extends WorldSavedData {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
 		for (Long l : cities) {
+			System.out.println("WRITE CITY");
 			list.appendTag(new NBTTagLong(l));
 		}
-		compound.setInteger("dim", dim);
 		compound.setTag("cities", list);
 		return compound;
 	}

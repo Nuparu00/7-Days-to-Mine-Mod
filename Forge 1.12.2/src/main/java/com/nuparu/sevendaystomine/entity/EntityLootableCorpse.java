@@ -37,6 +37,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
@@ -115,7 +116,6 @@ public class EntityLootableCorpse extends Entity {
 		return this.dataManager.get(ORIGINAL_NBT);
 	}
 
-
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
@@ -149,13 +149,13 @@ public class EntityLootableCorpse extends Entity {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
-		
+
 		this.age++;
-		
-		if(this.age >= 48000) {
+
+		if (this.age >= 48000) {
 			this.setDead();
 		}
-		
+
 		if (!onGround && !onEntity) {
 			this.motionY = -0.0625;
 		} else {
@@ -191,12 +191,11 @@ public class EntityLootableCorpse extends Entity {
 	public boolean canBeCollidedWith() {
 		return true;
 	}
-	
+
 	@Override
-	protected boolean canTriggerWalking()
-    {
-        return false;
-    }
+	protected boolean canTriggerWalking() {
+		return false;
+	}
 
 	@Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
@@ -258,40 +257,47 @@ public class EntityLootableCorpse extends Entity {
 			playerEntity.openGui(SevenDaysToMine.instance, 9, this.world, (int) 0, (int) this.getEntityId(), (int) 0);
 		}
 	}
-	
+
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-		this.health-=amount;
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (this.age < 20)
+			return super.attackEntityFrom(source, amount);
 		if (this.world.isRemote) {
-			world.playSound((double) this.posX, (double) this.posY, (double) this.posZ,
-					SoundEvents.ENTITY_GENERIC_HURT, SoundCategory.HOSTILE, 1.0F, 1.0F, false);
-			for (int i = 0; i < (int) Math.round(MathUtils.getDoubleInRange(1, 5)*SevenDaysToMine.proxy.getParticleLevel()); i++) {
+			world.playSound((double) this.posX, (double) this.posY, (double) this.posZ, SoundEvents.ENTITY_GENERIC_HURT,
+					SoundCategory.HOSTILE, 1.0F, 1.0F, false);
+			for (int i = 0; i < (int) Math
+					.round(MathUtils.getDoubleInRange(1, 5) * SevenDaysToMine.proxy.getParticleLevel()); i++) {
 				double x = this.posX + MathUtils.getDoubleInRange(-1, 1) * this.width;
 				double y = this.posY + MathUtils.getDoubleInRange(0, 1) * this.height;
 				double z = this.posZ + MathUtils.getDoubleInRange(-1, 1) * this.width;
 				SevenDaysToMine.proxy.spawnParticle(this.world, EnumModParticleType.BLOOD, x, y, z,
-						MathUtils.getDoubleInRange(-1d, 1d) / 7d, MathUtils.getDoubleInRange(-0.5d, 1d)  / 7d, MathUtils.getDoubleInRange(-1d, 1d) / 7d);
+						MathUtils.getDoubleInRange(-1d, 1d) / 7d, MathUtils.getDoubleInRange(-0.5d, 1d) / 7d,
+						MathUtils.getDoubleInRange(-1d, 1d) / 7d);
 			}
 		}
-		if(this.health <= 0) {
-			for(int i = 0; i < inventory.getSlots(); i++) {
+		this.health -= amount;
+		if (this.health <= 0) {
+			for (int i = 0; i < inventory.getSlots(); i++) {
 				ItemStack stack = inventory.getStackInSlot(i);
 				this.entityDropItem(stack, 0);
 			}
 			this.setDead();
 		}
 		return super.attackEntityFrom(source, amount);
-    }
+	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-
 	}
+	
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target)
+    {
+		return this.getOriginal() != null ? getOriginal().getPickedResult(target) : ItemStack.EMPTY;
+    }
 
 }

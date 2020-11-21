@@ -1,8 +1,8 @@
 package com.nuparu.sevendaystomine.inventory;
 
+import com.nuparu.sevendaystomine.crafting.chemistry.ChemistryRecipeManager;
+import com.nuparu.sevendaystomine.crafting.chemistry.IChemistryRecipe;
 import com.nuparu.sevendaystomine.item.ItemScrap;
-import com.nuparu.sevendaystomine.item.crafting.forge.ForgeRecipeManager;
-import com.nuparu.sevendaystomine.item.crafting.forge.IForgeRecipe;
 import com.nuparu.sevendaystomine.tileentity.TileEntityChemistryStation;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -148,13 +148,6 @@ public class ContainerChemistryStation extends Container {
                         return ItemStack.EMPTY;
                     }
                 }
-            	else if (isMold(itemstack1.getItem()))
-                {
-                    if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal(), TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal()+1, false))
-                    {
-                        return ItemStack.EMPTY;
-                    }
-                }
             	else if (isIngredient(itemstack1.getItem()))
                 {
                     if (!this.mergeItemStack(itemstack1, TileEntityChemistryStation.EnumSlots.INPUT_SLOT.ordinal(), TileEntityChemistryStation.EnumSlots.INPUT_SLOT4.ordinal()+1, false))
@@ -179,18 +172,10 @@ public class ContainerChemistryStation extends Container {
 		return ItemStack.EMPTY;
 	}
 	
-	public boolean isMold(Item item) {
-		for(IForgeRecipe recipe : ForgeRecipeManager.getInstance().getRecipes()) {
-			if(recipe.getMold() != null && !recipe.getMold().isEmpty() && recipe.getMold().getItem() == item) {
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	public boolean isIngredient(Item item) {
 		if(item instanceof ItemScrap) return true;
-		for(IForgeRecipe recipe : ForgeRecipeManager.getInstance().getRecipes()) {
+		for(IChemistryRecipe recipe : ChemistryRecipeManager.getInstance().getRecipes()) {
 			if(recipe.getIngredients() != null) {
 				for(ItemStack stack : recipe.getIngredients()) {
 					if(!stack.isEmpty() && stack.getItem() == item) {

@@ -61,16 +61,16 @@ public class ItemAuger extends ItemFuelTool {
 		}
 		Block block = state.getBlock();
 		Material mat = block.getMaterial(state);
-		if (stack.getTagCompound().getFloat("FuelCurrent") > 0.0F) {
+		if (getAmmo(stack,null) > 0) {
 			if (effectiveAgainst.contains(block) || mat == Material.IRON || mat == Material.GRASS
 					|| mat == Material.GROUND || mat == Material.ROCK || mat == Material.ANVIL
 					|| mat == Material.SAND) {
 				return this.efficiency * (1+(float) this.getQuality(stack) / 200f);
 			} else {
-				return 0F;
+				return efficiency/10f;
 			}
 		} else {
-			return 0F;
+			return efficiency/10f;
 		}
 
 	}

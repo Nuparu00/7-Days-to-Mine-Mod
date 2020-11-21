@@ -538,7 +538,6 @@ public class Interpreter {
 
 			// To do: Make methods abstract
 			case METHOD: {
-				System.out.println("FECK THIS SHITE");
 				Method method = Methods.getByName(value);
 				try {
 					boolean valid = method.isValid(tree, codeBlock);

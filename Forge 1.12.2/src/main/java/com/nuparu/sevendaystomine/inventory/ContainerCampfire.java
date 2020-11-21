@@ -1,7 +1,7 @@
 package com.nuparu.sevendaystomine.inventory;
 
-import com.nuparu.sevendaystomine.item.crafting.campfire.CampfireRecipeManager;
-import com.nuparu.sevendaystomine.item.crafting.campfire.ICampfireRecipe;
+import com.nuparu.sevendaystomine.crafting.campfire.CampfireRecipeManager;
+import com.nuparu.sevendaystomine.crafting.campfire.ICampfireRecipe;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCampfire;
 
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,0 +1,19 @@
+{
+  "type": "sevendaystomine:crafting_quality_shaped",
+  "pattern": [
+    " S ",
+    "SCS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "sevendaystomine:scrapiron"
+    },
+    "C": {
+      "item": "sevendaystomine:woodenclub"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:ironreinforcedclub"
+  }
+}

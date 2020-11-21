@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.client.gui;
 import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.item.IReloadable;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.proxy.ClientProxy;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -58,112 +59,87 @@ public class GuiGun {
 				return;
 			}
 
-			ItemGun gun_main = null;
-			ItemGun gun_sec = null;
+			IReloadable reloadableMain = null;
+			IReloadable reloadableSec = null;
 
-			if (item_main instanceof ItemGun) {
-				gun_main = (ItemGun) item_main;
+			if (item_main instanceof IReloadable) {
+				reloadableMain = (IReloadable) item_main;
 			}
 
-			if (item_sec instanceof ItemGun) {
-				gun_sec = (ItemGun) item_sec;
+			if (item_sec instanceof IReloadable) {
+				reloadableSec = (IReloadable) item_sec;
 			}
 
-			if (gun_main == null && gun_sec == null) {
+			if (reloadableMain == null && reloadableSec == null) {
 				return;
 			}
 
-			NBTTagCompound nbt_main = main.getTagCompound();
-			NBTTagCompound nbt_sec = sec.getTagCompound();
-
-			if (nbt_main == null && nbt_sec == null) {
-				pos = 0;
-				return;
-			}
-			if ((nbt_main == null || !nbt_main.hasKey("Ammo") || !nbt_main.hasKey("Capacity"))
-					&& (nbt_sec == null || !nbt_sec.hasKey("Ammo") || !nbt_sec.hasKey("Capacity"))) {
-				pos = 0;
-				return;
-			}
-			int ammo_main = -1;
-			int capacity_main = -1;
-
-			int ammo_sec = -1;
-			int capacity_sec = -1;
-
-			if (gun_main != null && nbt_main != null) {
-				ammo_main = nbt_main.getInteger("Ammo");
-				capacity_main = nbt_main.getInteger("Capacity");
-			}
-
-			if (gun_sec != null && nbt_sec != null) {
-				ammo_sec = nbt_sec.getInteger("Ammo");
-				capacity_sec = nbt_sec.getInteger("Capacity");
-			}
-			if (ammo_main != -1) {
-				int color_main = ammo_main <= 0 ? 0xff0000 : 0xffffff;
-				String text = new StringBuilder(SevenDaysToMine.proxy.localize("stat.ammo.name")).append(ammo_main)
-						.append("/").append(capacity_main).toString();
+			if (reloadableMain != null) {
+				int ammoMain = reloadableMain.getAmmo(main, player);
+				int color_main = ammoMain <= 0 ? 0xff0000 : 0xffffff;
+				String text = new StringBuilder(SevenDaysToMine.proxy.localize("stat.ammo.name")).append(ammoMain)
+						.append("/").append(reloadableMain.getCapacity(main, player)).toString();
 				mc.fontRenderer.drawString(text,
 						event.getResolution().getScaledWidth() - mc.fontRenderer.getStringWidth(text), 0, color_main);
 			}
 
-			if (ammo_sec != -1) {
-				int color_sec = ammo_sec <= 0 ? 0xff0000 : 0xffffff;
-				String text = new StringBuilder(SevenDaysToMine.proxy.localize("stat.ammo.name")).append(ammo_sec)
-						.append("/").append(capacity_sec).toString();
+			if (reloadableSec != null) {
+				int ammoSec = reloadableSec.getAmmo(sec, player);
+				int color_sec = ammoSec <= 0 ? 0xff0000 : 0xffffff;
+				String text = new StringBuilder(SevenDaysToMine.proxy.localize("stat.ammo.name")).append(ammoSec)
+						.append("/").append(reloadableSec.getCapacity(sec, player)).toString();
 				mc.fontRenderer.drawString(text, 0, 0, color_sec);
 			}
 
-			if ((main.isEmpty() || gun_main.getFOVFactor(main) != 1)
-					&& (main.isEmpty() || gun_main.getFOVFactor(main) != 1)
-					&& mc.gameSettings.keyBindAttack.isKeyDown())
-				return;
-
-			double gunCross = Utils.getCrosshairSpread(player);
-			float vel = (float) (Math.abs(player.motionX) + Math.abs(player.motionZ)) * 0.5f;
-
-			pos = gunCross * (float) (0.75 + 3.14 * vel);
-			if (player.isSneaking()) {
-				pos *= 0.75f;
+			ItemGun gunMain = null;
+			if (reloadableMain instanceof ItemGun) {
+				gunMain = (ItemGun) reloadableMain;
+			}
+			ItemGun gunSec = null;
+			if (reloadableSec instanceof ItemGun) {
+				gunSec = (ItemGun) reloadableSec;
 			}
 
-			mc.renderEngine.bindTexture(CROSSHAIR_TEX);
+			if (gunMain != null || gunSec != null) {
 
-			/*
-			 * if (player.fallDistance > 0) { pos *= 1.1f; }
-			 */
+				if ((main.isEmpty() || gunMain.getFOVFactor(main) != 1)
+						&& (main.isEmpty() || gunMain.getFOVFactor(main) != 1)
+						&& mc.gameSettings.keyBindAttack.isKeyDown())
+					return;
 
-			/*
-			 * if (player.rotationYaw != player.prevRotationYaw || player.rotationPitch !=
-			 * player.prevRotationPitch) { pos += pos *
-			 * ((Utils.angularDistance(player.rotationYaw, player.prevRotationYaw) +
-			 * Utils.angularDistance(player.rotationPitch, player.prevRotationPitch) * 10));
-			 * }
-			 */
+				double gunCross = Utils.getCrosshairSpread(player);
+				float vel = (float) (Math.abs(player.motionX) + Math.abs(player.motionZ)) * 0.5f;
 
-			double alpha = 1f - (vel) * 3.3f;
+				pos = gunCross * (float) (0.75 + 3.14 * vel);
+				if (player.isSneaking()) {
+					pos *= 0.75f;
+				}
 
-			double finalPos = MathUtils.lerp(posPrev, pos, event.getPartialTicks());
+				mc.renderEngine.bindTexture(CROSSHAIR_TEX);
 
-			GlStateManager.pushMatrix();
-			GL11.glColor4d(1d, 1d, 1d, alpha);
-			GlStateManager.enableBlend();
-			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
-					GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
-					GlStateManager.DestFactor.ZERO);
-			GlStateManager.enableAlpha();
-			// LEFT
-			mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 - (finalPos)), posY - 2, 0, 14, 13, 4);
-			// RIGHT
-			mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 + (finalPos)), posY - 2, 19, 14, 13, 4);
-			// TOP
-			mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 - (finalPos)), 14, 0, 4, 13);
-			// DOVVN
-			mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 + (finalPos)), 14, 19, 4, 13);
-			GlStateManager.disableAlpha();
-			GlStateManager.disableBlend();
-			GlStateManager.popMatrix();
+				double alpha = 1f - (vel) * 3.3f;
+
+				double finalPos = MathUtils.lerp(posPrev, pos, event.getPartialTicks());
+
+				GlStateManager.pushMatrix();
+				GL11.glColor4d(1d, 1d, 1d, alpha);
+				GlStateManager.enableBlend();
+				GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
+						GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE,
+						GlStateManager.DestFactor.ZERO);
+				GlStateManager.enableAlpha();
+				// LEFT
+				mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 - (finalPos)), posY - 2, 0, 14, 13, 4);
+				// RIGHT
+				mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 + (finalPos)), posY - 2, 19, 14, 13, 4);
+				// TOP
+				mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 - (finalPos)), 14, 0, 4, 13);
+				// DOVVN
+				mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 + (finalPos)), 14, 19, 4, 13);
+				GlStateManager.disableAlpha();
+				GlStateManager.disableBlend();
+				GlStateManager.popMatrix();
+			}
 		}
 	}
 

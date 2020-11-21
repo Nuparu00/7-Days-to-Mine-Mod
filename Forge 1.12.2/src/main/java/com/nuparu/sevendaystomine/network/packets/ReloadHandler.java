@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.network.packets;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.nuparu.sevendaystomine.item.IReloadable;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -27,7 +28,7 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 	ItemStack stack = null;
 	ItemStack stackBullet = null;
 	Item bulletItem = null;
-	ItemGun gun = null;
+	IReloadable reloadable = null;
 
 	@Override
 	public ReloadMessage onMessage(ReloadMessage message, MessageContext ctx) {
@@ -37,20 +38,16 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 		if (stack == null || stack.isEmpty())
 			return null;
 
-
 		Item item = stack.getItem();
-		if (item instanceof ItemGun) {
-			gun = (ItemGun) item;
-			stackBullet = getBullet(player.inventory, stack);
+		if (item instanceof IReloadable) {
+			reloadable = (IReloadable) item;
+			stackBullet = getReloadItem(player.inventory, reloadable.getReloadItem(stack));
 			if (!stackBullet.isEmpty()) {
-				bulletItem = gun.getBullet();
-				SoundEvent reloadSound = gun.getReloadSound();
+				bulletItem = reloadable.getReloadItem(stack);
+				SoundEvent reloadSound = reloadable.getReloadSound();
 				world.playSound(null, new BlockPos(player), reloadSound, SoundCategory.PLAYERS, 1F, 1F);
-
-
-				int reloadTime = gun.getReloadTime(stack);
-				stack.getTagCompound().setLong("NextFire",
-						world.getTotalWorldTime() + (long) Math.ceil((reloadTime / 1000d) * 20));
+				int reloadTime = reloadable.getReloadTime(stack);
+				reloadable.onReloadStart(world, player, stack, reloadTime);
 				task = new MyTask(this);
 				timer.schedule(task, reloadTime, 1000);
 			}
@@ -59,28 +56,15 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 	}
 
 	public void reload() {
-		if (stackBullet != null && stack.getTagCompound().hasKey("Capacity") && stack.getTagCompound().hasKey("Ammo")) {
-
-			stack.getTagCompound().setBoolean("Reloading", false);
-			int toReload = (int) Math.ceil(
-					(double) (stack.getTagCompound().getInteger("Capacity") - stack.getTagCompound().getInteger("Ammo"))
-							/ (double) gun.getShotsPerAmmo());
-			int reload = Math.min(toReload, Utils.getItemCount(player.inventory, bulletItem));
-
-			stack.getTagCompound().setInteger("Ammo", stack.getTagCompound().getInteger("Ammo") + reload * gun.getShotsPerAmmo());
-			player.inventory.clearMatchingItems(stackBullet.getItem(), -1, reload, null);
-		}
+		reloadable.onReloadEnd(world, player, stack, stackBullet);
 	}
 
-	public ItemStack getBullet(InventoryPlayer inventory, ItemStack gun) {
+	public ItemStack getReloadItem(InventoryPlayer inventory, Item reloadItem) {
 		ItemStack itemstack = ItemStack.EMPTY;
-		if (gun != null && gun.getItem() != null && gun.getItem() instanceof ItemGun) {
-			Item bullet = ((ItemGun) gun.getItem()).getBullet();
-			for (ItemStack s : inventory.mainInventory) {
-				if (s != null && s.getItem() == bullet) {
-					itemstack = s;
-					break;
-				}
+		for (ItemStack s : inventory.mainInventory) {
+			if (s != null && s.getItem() == reloadItem) {
+				itemstack = s;
+				break;
 			}
 		}
 

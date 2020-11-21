@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockForge;
+import com.nuparu.sevendaystomine.crafting.forge.ForgeRecipeManager;
+import com.nuparu.sevendaystomine.crafting.forge.IForgeRecipe;
 import com.nuparu.sevendaystomine.inventory.ContainerForge;
-import com.nuparu.sevendaystomine.item.crafting.forge.ForgeRecipeManager;
-import com.nuparu.sevendaystomine.item.crafting.forge.IForgeRecipe;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;
@@ -178,7 +178,6 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 			if (ItemStack.areItemsEqual(getMoldSlot(), recipeToUse.getMold())) {
 
 				if (currentOutput.isEmpty()) {
-					System.out.println("FECK " + recipeToUse.getOutput(this));
 					setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), recipeToUse.getOutput(this));
 
 				} else {

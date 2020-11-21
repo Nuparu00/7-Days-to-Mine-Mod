@@ -28,6 +28,7 @@ import com.nuparu.sevendaystomine.command.CommandPlaceLegacyPrefab;
 import com.nuparu.sevendaystomine.command.CommandPlacePrefab;
 import com.nuparu.sevendaystomine.command.CommandSavePrefab;
 import com.nuparu.sevendaystomine.command.CommandSetBlockBreak;
+import com.nuparu.sevendaystomine.crafting.RecipeManager;
 import com.nuparu.sevendaystomine.events.ClientEventHandler;
 import com.nuparu.sevendaystomine.events.LivingEventHandler;
 import com.nuparu.sevendaystomine.events.PlayerEventHandler;
@@ -39,7 +40,6 @@ import com.nuparu.sevendaystomine.init.ModFluids;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.inventory.ContainerPlayerExtended;
 import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
-import com.nuparu.sevendaystomine.item.crafting.RecipeManager;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.proxy.CommonProxy;
 import com.nuparu.sevendaystomine.util.GuiHandler;
@@ -272,7 +272,7 @@ public class SevenDaysToMine {
 			ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE, ModBlocks.BURNT_CHAIR,
 			ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE, ModBlocks.MERCURY,
 			ModBlocks.SEPARATOR, ModBlocks.TURRET_ADVANCED, ModBlocks.RAZOR_WIRE, ModBlocks.STAND, ModBlocks.LANDMINE,
-			ModBlocks.SIRENE, ModBlocks.STRUCTURE_STONE, ModBlocks.STRUCTURE_COBBLESTONE};
+			ModBlocks.SIRENE, ModBlocks.STRUCTURE_STONE};
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -307,10 +307,10 @@ public class SevenDaysToMine {
 			ModItems.COPPER_PICKAXE, ModItems.BRONZE_PICKAXE, ModItems.IRON_PICKAXE, ModItems.STEEL_PICKAXE,
 			ModItems.COPPER_AXE, ModItems.BRONZE_AXE, ModItems.STEEL_AXE, ModItems.COPPER_SHOVEL,
 			ModItems.BRONZE_SHOVEL, ModItems.IRON_SHOVEL, ModItems.STEEL_SHOVEL, ModItems.BOOK_FORGING,
-			ModItems.IRON_PIPE, ModItems.SCRAP_PICKAXE, ModItems.SCRAP_SHOVEL,ModItems.SCRAP_AXE, ModItems.CIRCUIT, ModItems.LINK_TOOL,
-			ModItems.SURVIVAL_GUIDE, ModItems.MICROPHONE, ModItems.BULLET_TIP, ModItems.BULLET_CASING,
-			ModItems.MOLDY_BREAD, ModItems.SLEDGEHAMMER, ModItems.PISTOL_SLIDE, ModItems.PISTOL_TRIGGER,
-			ModItems.PISTOL_GRIP, ModItems.SNIPER_RIFLE_BARREL, ModItems.SNIPER_RIFLE_PARTS,
+			ModItems.IRON_PIPE, ModItems.SCRAP_PICKAXE, ModItems.SCRAP_SHOVEL, ModItems.SCRAP_AXE, ModItems.CIRCUIT,
+			ModItems.LINK_TOOL, ModItems.SURVIVAL_GUIDE, ModItems.MICROPHONE, ModItems.BULLET_TIP,
+			ModItems.BULLET_CASING, ModItems.MOLDY_BREAD, ModItems.SLEDGEHAMMER, ModItems.PISTOL_SLIDE,
+			ModItems.PISTOL_TRIGGER, ModItems.PISTOL_GRIP, ModItems.SNIPER_RIFLE_BARREL, ModItems.SNIPER_RIFLE_PARTS,
 			ModItems.SNIPER_RIFLE_SCOPE, ModItems.SNIPER_RIFLE_STOCK, ModItems.SNIPER_RIFLE_TRIGGER,
 			ModItems.SCRAP_BOOTS, ModItems.SCRAP_CHESTPLATE, ModItems.SCRAP_HELMET, ModItems.SCRAP_LEGGINGS,
 			ModItems.SNIPER_RIFLE, ModItems.SHOTGUN, ModItems.SHOTGUN_SAWED_OFF, ModItems.BELLOWS, ModItems.BOOK_AMMO,
@@ -324,7 +324,9 @@ public class SevenDaysToMine {
 			ModItems.MAGNUM_BULLET, ModItems.MAGNUM_FRAME, ModItems.MAGNUM_CYLINDER, ModItems.MAGNUM_GRIP,
 			ModItems.MAGNUM_SCHEMATICS, ModItems.MP5_BARREL, ModItems.MP5_STOCK, ModItems.MP5_TRIGGER,
 			ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL, ModItems.AUGER_BLADE, ModItems.NIGHT_VISION_DEVICE,
-			ModItems.CHRISTMAS_HAT, ModItems.BERET, ModItems.STETHOSCOPE, ModItems.BLOODMOON};
+			ModItems.CHRISTMAS_HAT, ModItems.BERET, ModItems.STETHOSCOPE, ModItems.BLOODMOON, ModItems.SCRAP_HOE,
+			ModItems.COPPER_HOE, ModItems.BRONZE_HOE, ModItems.IRON_HOE, ModItems.STEEL_HOE, ModItems.AUGER_HANDLES,
+			ModItems.AUGER_SCHEMATICS };
 
 	@SuppressWarnings("deprecation")
 	@EventHandler

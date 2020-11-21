@@ -16,7 +16,7 @@ public class ItemQualityAxe extends ItemQualityTool {
 
 	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG,
 			Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER,
-			Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE);
+			Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE, Blocks.LEAVES, Blocks.LEAVES2);
 
 	public ItemQualityAxe(ToolMaterial materialIn, double speed) {
 		super(materialIn, EFFECTIVE_ON);

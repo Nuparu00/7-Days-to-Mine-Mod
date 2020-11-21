@@ -25,6 +25,7 @@ import com.google.common.collect.Lists;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.util.client.MP3Helper;
 import com.nuparu.sevendaystomine.util.client.MP3Helper.Audio;
+import com.nuparu.sevendaystomine.util.client.MP3Helper.AudioPlayer;
 import com.nuparu.sevendaystomine.util.client.MP3Helper.EnumAudioMode;
 
 import net.minecraft.client.Minecraft;
@@ -713,7 +714,9 @@ public class GuiMp3 extends GuiScreen {
 		public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 			if (mouseX >= x && mouseX <= x + xSize && mouseY >= y && mouseY <= y + ySize) {
 				double part = (double) (mouseX - x) / xSize;
-				MP3Helper.getAudioPlayer().getAudioClip().setMicrosecondPosition(
+				AudioPlayer player = MP3Helper.getAudioPlayer();
+				if(player == null || player.getAudioClip() == null) return;
+				player.getAudioClip().setMicrosecondPosition(
 						(long) ((MP3Helper.getAudioPlayer().getDurationInSecs() * 1000000) * part));
 			}
 		}

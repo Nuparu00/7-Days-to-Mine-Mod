@@ -37,7 +37,7 @@ public class ItemRPG extends ItemGun {
 	}
 
 	@Override
-	public Item getBullet() {
+	public Item getReloadItem(ItemStack stack) {
 		return ModItems.SEVEN_MM_BULLET;
 	}
 
