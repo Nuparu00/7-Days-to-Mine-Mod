@@ -72,15 +72,6 @@ public class PlayerInventorySyncHelper {
 									backpack, player.inventory.currentItem));
 
 						} else {
-
-							InventoryCache cache = inventoryCache.get(player.getName());
-							if (areInventoriesEqual(inventory, cache.inventory)
-									&& ItemStack.areItemStacksEqual(currentItem, cache.currentItem)
-									&& ItemStack.areItemStacksEqual(backpack, cache.backpack)
-									&& player.inventory.currentItem == cache.index) {
-								return;
-							}
-
 							ItemCache items = new ItemCache();
 
 							items.selectCorrectItems(inventory.clone(), currentItem, player.inventory.currentItem);

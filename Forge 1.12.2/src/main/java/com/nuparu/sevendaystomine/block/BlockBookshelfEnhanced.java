@@ -3,6 +3,8 @@ package com.nuparu.sevendaystomine.block;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.item.EnumMaterial;
+import com.nuparu.sevendaystomine.item.IScrapable;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBookshelf;
 
 import net.minecraft.block.BlockHorizontal;
@@ -30,11 +32,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockBookshelfEnhanced extends BlockTileProvider<TileEntityBookshelf> {
+public class BlockBookshelfEnhanced extends BlockTileProvider<TileEntityBookshelf> implements IScrapable{
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool FULL = PropertyBool.create("full");
 
+	private EnumMaterial material = EnumMaterial.WOOD;
+	private int weight = 3;
 	public BlockBookshelfEnhanced() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
@@ -54,19 +58,10 @@ public class BlockBookshelfEnhanced extends BlockTileProvider<TileEntityBookshel
 		return new TileEntityBookshelf();
 	}
 
-	@Override
-	public int quantityDropped(Random rand) {
-		return rand.nextInt(5) + 1;
-	}
 
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
-	}
-
-	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int i) {
-		return Items.PAPER;
 	}
 
 	@Override
@@ -106,6 +101,31 @@ public class BlockBookshelfEnhanced extends BlockTileProvider<TileEntityBookshel
 		}
 
 		super.breakBlock(worldIn, pos, state);
+	}
+	
+	@Override
+	public void setMaterial(EnumMaterial mat) {
+		material = mat;
+	}
+
+	@Override
+	public EnumMaterial getMaterial() {
+		return material;
+	}
+
+	@Override
+	public void setWeight(int newWeight) {
+		weight = newWeight;
+	}
+
+	@Override
+	public int getWeight() {
+		return weight;
+	}
+
+	@Override
+	public boolean canBeScraped() {
+		return (material != null);
 	}
 
 	public IBlockState withRotation(IBlockState state, Rotation rot) {

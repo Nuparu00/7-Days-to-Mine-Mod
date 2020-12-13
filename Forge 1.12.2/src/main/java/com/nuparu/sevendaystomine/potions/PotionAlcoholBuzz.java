@@ -15,5 +15,7 @@ public class PotionAlcoholBuzz extends PotionBase {
 				"9c4420da-bf44-11e7-abc4-cec278b6b50a", 0.15D, 1);
 		this.registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_SPEED,
 				"9c4420da-bf44-11e7-abc4-cec278b6b50a", 0.25D, 1);
+		this.registerPotionAttributeModifier(SharedMonsterAttributes.FLYING_SPEED,
+				"9c4420da-bf44-11e7-abc4-cec278b6b50a", 0.15D, 1);
 	}
 }

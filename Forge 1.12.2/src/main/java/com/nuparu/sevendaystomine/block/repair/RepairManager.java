@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import java.util.Set;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import java.util.Map;
 import java.util.Iterator;
@@ -44,34 +45,41 @@ public class RepairManager {
 	}
 
 	public static void repairsInit() {
-		Map<String, String> map = getRepairsFile();
-		Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<String, String> pair = it.next();
-			Block block = Block.getBlockFromName((String) pair.getKey());
-			Item item = Item.getByNameOrId((String) pair.getValue());
-			if (block != null && item != null) {
-				RepairManager.INSTANCE.addRepair(block, item, 0.1f);
+		try {
+			Map<String, String> map = getRepairsFile();
+			Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, String> pair = it.next();
+				Block block = Block.getBlockFromName((String) pair.getKey());
+				Item item = Item.getByNameOrId((String) pair.getValue());
+				if (block != null && item != null) {
+					RepairManager.INSTANCE.addRepair(block, item, 0.1f);
+				}
 			}
+		} catch (InvalidRepairInputException | IOException e) {
+			e.printStackTrace();
 		}
+	
 
 	}
 
 	@SuppressWarnings("resource")
-	public static Map<String, String> getRepairsFile() {
+	public static Map<String, String> getRepairsFile() throws InvalidRepairInputException, IOException {
 		HashMap<String, String> map = new HashMap<String, String>();
-		final File file = new File("./config/7days/repair.json");
-		new File("./config/7days/").mkdirs();
-		try {
-			InputStream fis = new FileInputStream(file.getAbsolutePath());
+			InputStream fis = Utils.getInsideFileStream(SevenDaysToMine.MODID.toLowerCase() + "/data/repair.json");
 			InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
 			BufferedReader br = new BufferedReader(isr);
 			String line;
+			int lineIndex = 0;
+
 			while ((line = br.readLine()) != null) {
+				if(lineIndex++ == 0) continue;
 				String[] words = line.split(" ");
 				if (words.length > 2) {
+					br.close();
 					throw new InvalidRepairInputException("There can't be more than 3 elements in repair.json. Please , fix this!");
 				} else if (words.length < 1) {
+					br.close();
 					throw new InvalidRepairInputException("There is not any element in repair.json. Please , fix this!");
 				} else if (words.length == 1) {
 					map.put(words[0], "");
@@ -79,14 +87,7 @@ public class RepairManager {
 					map.put(words[0], words[1]);
 				}
 			}
-		} catch (IOException e) {
-
-		} catch (InvalidRepairInputException e) {
-			CrashReport crashreport = CrashReport.makeCrashReport(e, "Loading ./config/7days/repair.json");
-			throw new ReportedException(crashreport);
-		} finally {
-
-		}
+			br.close();
 		return map;
 	}
 
@@ -120,6 +121,7 @@ public class RepairManager {
 				bw.write(line);
 				bw.newLine();
 			}
+			br.close();
 		} catch (IOException e) {
 			CrashReport crashreport = CrashReport.makeCrashReport(e, "Reading repair.json from the mod file");
 			throw new ReportedException(crashreport);
@@ -141,7 +143,9 @@ public class RepairManager {
 			InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
 			BufferedReader br = new BufferedReader(isr);
 			new File("./config/7days/").mkdirs();
-			return br.readLine();
+			String version = br.readLine();
+			br.close();
+			return version;
 		} catch (IOException e) {
 			CrashReport crashreport = CrashReport.makeCrashReport(e, "Checking repair.json versions");
 			throw new ReportedException(crashreport);
@@ -152,7 +156,7 @@ public class RepairManager {
 		return getFileVersion() == null ? false : getFileVersion().equals(SevenDaysToMine.VERSION);
 	}
 
-	public void listAllBlocks() {
+	public void listAllBlocks() throws InvalidRepairInputException, IOException {
 		final File file = new File("./config/7days/repair.json");
 		if (!file.exists() || !file.isFile() || !matchFileVersion()) {
 			try {
@@ -164,10 +168,9 @@ public class RepairManager {
 			createDefualtRepairs(file);
 		}
 		Map<String, String> map = getRepairsFile();
-		FileWriter fw = null;
 		BufferedWriter bw = null;
 		try {
-			fw = new FileWriter(file.getAbsolutePath(), true);
+			FileWriter fw = new FileWriter(file.getAbsolutePath(), true);
 			bw = new BufferedWriter(fw);
 			Iterator<Block> iterator = Block.REGISTRY.iterator();
 			while (iterator.hasNext()) {
@@ -178,6 +181,7 @@ public class RepairManager {
 					bw.newLine();
 				}
 			}
+			fw.close();
 		} catch (Exception e) {
 
 		} finally {

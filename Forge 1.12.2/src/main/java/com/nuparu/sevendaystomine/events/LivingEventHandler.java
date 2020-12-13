@@ -9,6 +9,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockMercury;
+import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityHuman;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.potions.Potions;
@@ -31,8 +32,12 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.EntityVex;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -44,9 +49,12 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class LivingEventHandler {
 
@@ -80,7 +88,7 @@ public class LivingEventHandler {
 				return;
 			}
 			if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityZombieBase) {
-				if (world.rand.nextInt(20) == 0) {
+				if (world.rand.nextInt(15) == 0) {
 					Utils.infectPlayer(player, 0);
 				}
 			}
@@ -100,7 +108,7 @@ public class LivingEventHandler {
 			return;
 		}
 
-		if (amount >= (entity.getMaxHealth() / 100 * 20) && world.rand.nextInt(16) == 0) {
+		if (!world.isRemote && amount >= (entity.getMaxHealth() / 100 * 20) && world.rand.nextInt(16) == 0) {
 			PotionEffect effect = new PotionEffect(Potions.bleeding, Integer.MAX_VALUE, 1, false, false);
 			effect.setCurativeItems(new ArrayList<ItemStack>());
 			entity.addPotionEffect(effect);
@@ -121,7 +129,7 @@ public class LivingEventHandler {
 	@SubscribeEvent
 	public void onEntityFall(LivingFallEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
-		if (living instanceof EntityPlayer) {
+		if (living instanceof EntityPlayer && !living.world.isRemote) {
 			if (event.getDistance() > 4
 					&& living.world.rand.nextFloat() * (Math.max(256 - (event.getDistance() * 25), 0)) <= 1) {
 				PotionEffect effect = new PotionEffect(Potions.brokenLeg,
@@ -136,7 +144,7 @@ public class LivingEventHandler {
 	@SubscribeEvent
 	public void onEntityHurt(LivingHurtEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
-		if (living instanceof EntityPlayer || living instanceof EntityHuman) {
+		if (living instanceof EntityPlayer || living instanceof EntityHuman || living instanceof EntityVillager) {
 			World world = living.world;
 			List<EntityZombieBase> list = world.getEntitiesWithinAABB(EntityZombieBase.class,
 					new AxisAlignedBB(living.posX, living.posY, living.posZ, living.posX + 1, living.posY + 1,
@@ -147,7 +155,25 @@ public class LivingEventHandler {
 				}
 			}
 		}
+	}
 
+	@SubscribeEvent
+	public void onLivingSpawn(LivingSpawnEvent.SpecialSpawn event) {
+		EntityLivingBase living = event.getEntityLiving();
+		if (living.world.isRemote)
+			return;
+		if (living instanceof EntityBandit && living.world.rand.nextInt(30) == 0) {
+			EntityHorse horse = new EntityHorse(living.world);
+			horse.setPositionAndRotation(living.posX, living.posY, living.posZ, living.rotationYaw,
+					living.rotationPitch);
+			horse.setHorseTamed(true);
+
+			living.world.spawnEntity(horse);
+			living.startRiding(horse);
+			horse.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).insertItem(0,
+					new ItemStack(Items.SADDLE), false);
+
+		}
 	}
 
 }

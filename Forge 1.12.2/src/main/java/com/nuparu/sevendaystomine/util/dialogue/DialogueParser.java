@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.util.dialogue;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -27,7 +28,11 @@ public class DialogueParser {
 		Gson gson = new Gson();
 		JsonElement je = gson.fromJson(reader, JsonElement.class);
 		JsonObject json = je.getAsJsonObject();
-
+		try {
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		if (!json.has("name")) {
 			Utils.getLogger().error("An error occured while trying to read " + resourceLocation + ": Missing Name.");
 			return null;

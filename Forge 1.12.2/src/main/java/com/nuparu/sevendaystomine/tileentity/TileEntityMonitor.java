@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nuparu.sevendaystomine.block.BlockMonitor;
+import com.nuparu.sevendaystomine.electricity.ElectricConnection;
+import com.nuparu.sevendaystomine.electricity.EnumDeviceType;
+import com.nuparu.sevendaystomine.electricity.IVoltage;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SyncTileEntityMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
+import com.nuparu.sevendaystomine.util.ModConstants;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -19,11 +23,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class TileEntityMonitor extends TileEntity implements ITickable {
+public class TileEntityMonitor extends TileEntity implements ITickable, IVoltage {
 
 	private boolean on = false;
+	private long voltage = 0;
+	private long capacity = 800;
 	private BlockPos compPos = BlockPos.ORIGIN;
 	private TileEntityComputer computerTE;
 
@@ -117,7 +124,7 @@ public class TileEntityMonitor extends TileEntity implements ITickable {
 		Block block = state.getBlock();
 		NBTTagCompound nbt = this.writeToNBT(new NBTTagCompound());
 		if (computerTE != null) {
-			if (on && computerTE.isOn() && computerTE.isCompleted()) {
+			if (on && computerTE.isOn() && computerTE.isCompleted() && this.voltage >= this.getRequiredPower()) {
 				EnumSystem system = computerTE.getSystem();
 				if (system == EnumSystem.NONE) {
 					if (block != ModBlocks.MONITOR_OFF) {
@@ -200,6 +207,7 @@ public class TileEntityMonitor extends TileEntity implements ITickable {
 						}
 					}
 				}
+				this.voltage -= this.getRequiredPower();
 			} else {
 				if (block != ModBlocks.MONITOR_OFF) {
 					world.setBlockState(pos, applyPropertiesToState(ModBlocks.MONITOR_OFF, state));
@@ -255,6 +263,7 @@ public class TileEntityMonitor extends TileEntity implements ITickable {
 		super.readFromNBT(compound);
 		this.compPos = BlockPos.fromLong(compound.getLong("compPos"));
 		this.on = compound.getBoolean("on");
+		this.voltage = compound.getLong("power");
 	}
 
 	@Override
@@ -262,6 +271,7 @@ public class TileEntityMonitor extends TileEntity implements ITickable {
 		super.writeToNBT(compound);
 		compound.setLong("compPos", compPos.toLong());
 		compound.setBoolean("on", on);
+		compound.setLong("power", voltage);
 		return compound;
 	}
 
@@ -298,6 +308,106 @@ public class TileEntityMonitor extends TileEntity implements ITickable {
 		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 		world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
 		this.markDirty();
+	}
+	
+	@Override
+	public EnumDeviceType getDeviceType() {
+		return EnumDeviceType.CONSUMER;
+	}
+	
+	@Override
+	public int getMaximalInputs() {
+		return 0;
+	}
+
+	@Override
+	public int getMaximalOutputs() {
+		return 0;
+	}
+
+	@Override
+	public List<ElectricConnection> getInputs() {
+		return null;
+	}
+
+	@Override
+	public List<ElectricConnection> getOutputs() {
+		return null;
+	}
+
+	@Override
+	public long getOutput() {
+		return 0;
+	}
+
+	@Override
+	public long getMaxOutput() {
+		return 0;
+	}
+
+	@Override
+	public long getOutputForConnection(ElectricConnection connection) {
+		return 0;
+	}
+
+	@Override
+	public boolean tryToConnect(ElectricConnection connection) {
+		return false;
+	}
+
+	@Override
+	public boolean canConnect(ElectricConnection connection) {
+		return false;
+	}
+
+	@Override
+	public long getRequiredPower() {
+		return 128;
+	}
+
+	@Override
+	public long getCapacity() {
+		return this.capacity;
+	}
+
+	@Override
+	public long getVoltageStored() {
+		return this.voltage;
+	}
+
+	@Override
+	public void storePower(long power) {
+		this.voltage += power;
+		if (this.voltage > this.getCapacity()) {
+			this.voltage = this.getCapacity();
+		}
+		if (this.voltage < 0) {
+			this.voltage = 0;
+		}
+	}
+
+	@Override
+	public long tryToSendPower(long power, ElectricConnection connection) {
+		long canBeAdded = capacity - voltage;
+		long delta = Math.min(canBeAdded, power);
+		long lost = 0;
+		if (connection != null) {
+			lost = (long) Math.round(delta * ModConstants.DROP_PER_BLOCK * connection.getDistance());
+		}
+		long realDelta = delta - lost;
+		this.voltage += realDelta;
+
+		return delta;
+	}
+
+	@Override
+	public Vec3d getWireOffset() {
+		return null;
+	}
+
+	@Override
+	public boolean isPassive() {
+		return true;
 	}
 
 }

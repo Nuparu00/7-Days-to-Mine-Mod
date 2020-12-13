@@ -269,6 +269,12 @@ public abstract class EntityHuman extends EntityCreature {
 
 		return 0.0F;
 	}
+	
+	@Override
+	public double getYOffset()
+    {
+        return -0.6D;
+    }
 
 	@Override
 	protected SoundEvent getSwimSound() {

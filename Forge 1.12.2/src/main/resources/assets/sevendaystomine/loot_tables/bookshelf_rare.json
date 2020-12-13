@@ -1,0 +1,83 @@
+{
+    "pools": [
+        {
+        	"name" : "common",
+            "rolls": {
+                "min": 1,
+                "max": 4
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 55,
+                    "name": "minecraft:paper"
+                },
+                {
+                    "type": "item",
+                    "weight": 50,
+                    "name": "minecraft:book"
+                },      
+                {
+                    "type": "item",
+                    "weight": 15,
+                    "name": "sevendaystomine:book_minibike"
+                },      
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "sevendaystomine:book_auger"
+                },      
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:book_shotgun"
+                },      
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:book_sniper"
+                },      
+                {
+                    "type": "item",
+                    "weight": 20,
+                    "name": "sevendaystomine:book_magnum"
+                },      
+                {
+                    "type": "item",
+                    "weight": 20,
+                    "name": "sevendaystomine:book_mp5"
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "minecraft:writable_book"
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "minecraft:map"
+                },
+                {
+                    "type": "empty",
+                    "weight": 500
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:enchanted_book",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "enchantments": [
+                                "sevendaystomine:explosive",
+                                "sevendaystomine:sparking",
+                                "sevendaystomine:fast_reload",
+                                "sevendaystomine:marksman"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

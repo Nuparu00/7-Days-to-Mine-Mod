@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.ExtendedInventoryProvider;
 import com.nuparu.sevendaystomine.capability.ExtendedPlayer;
@@ -19,6 +20,7 @@ import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.inventory.ContainerPlayerExtended;
 import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
 import com.nuparu.sevendaystomine.item.IQuality;
+import com.nuparu.sevendaystomine.item.IScrapable;
 import com.nuparu.sevendaystomine.item.ItemBackpack;
 import com.nuparu.sevendaystomine.item.ItemFuelTool;
 import com.nuparu.sevendaystomine.item.ItemQuality;
@@ -41,6 +43,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.scoreboard.IScoreCriteria;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -54,12 +57,14 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -134,12 +139,15 @@ public class PlayerEventHandler {
 				return (!player.isCreative() && !player.isSpectator());
 			}
 		};
-		/*Slot slot1 = new SlotItemHandler(extendedInv, 1, 77, 26);
-		Slot slot2 = new SlotItemHandler(extendedInv, 2, 77, 8);*/
+		/*
+		 * Slot slot1 = new SlotItemHandler(extendedInv, 1, 77, 26); Slot slot2 = new
+		 * SlotItemHandler(extendedInv, 2, 77, 8);
+		 */
 		addSlot(slotBackpack, container);
 
-		/*addSlot(slot1, container);
-		addSlot(slot2, container);*/
+		/*
+		 * addSlot(slot1, container); addSlot(slot2, container);
+		 */
 
 	}
 
@@ -161,13 +169,22 @@ public class PlayerEventHandler {
 			return;
 		final EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 		IItemHandlerExtended extendedInv = CapabilityHelper.getExtendedInventory(player);
-		if(extendedInv == null) return;
+		if (extendedInv == null)
+			return;
 		for (int i = 0; i < extendedInv.getSlots(); i++) {
 			ItemStack stack = extendedInv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				player.dropItem(stack, false, false);
 			}
-		}
+		} /*
+			 * player.world.getScoreboard().addPlayerToTeam(player.getName(), "death");
+			 * player.world.getScoreboard().addScoreObjective("death",
+			 * IScoreCriteria.DUMMY);
+			 * player.world.getScoreboard().setObjectiveInDisplaySlot(0,
+			 * player.world.getScoreboard().getObjective("death"));
+			 */
+		// player.world.getScoreboard().getOrCreateScore(player.getName(),
+		// player.world.getScoreboard().getObjective("death")).setScorePoints(player.experienceTotal);
 	}
 
 	@SubscribeEvent
@@ -287,6 +304,7 @@ public class PlayerEventHandler {
 				player.dropItem(stack, false);
 			}
 		}
+
 	}
 
 	@SubscribeEvent
@@ -318,6 +336,18 @@ public class PlayerEventHandler {
 		if (original.inventory instanceof InventoryPlayerExtended
 				&& clone.inventory instanceof InventoryPlayerExtended) {
 			((InventoryPlayerExtended) original.inventory).copy((InventoryPlayerExtended) clone.inventory);
+		}
+	}
+
+	@SubscribeEvent
+	public void onItemCrafted(ItemCraftedEvent event) {
+		if (event.player.world.isRemote)
+			return;
+		ItemStack stack = event.crafting;
+		if (stack.getItem() instanceof IQuality) {
+			if (!event.player.isCreative()) {
+				Utils.consumeXp(event.player, MathHelper.floor(event.player.experienceTotal * (event.player.world.rand.nextDouble()*0.04+0.01)));
+			}
 		}
 	}
 }

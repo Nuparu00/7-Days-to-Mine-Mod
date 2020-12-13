@@ -6,6 +6,7 @@ import com.nuparu.sevendaystomine.entity.ai.EntityAIAttckRangedVomit;
 import com.nuparu.sevendaystomine.entity.ai.EntityAIBreakBlock;
 import com.nuparu.sevendaystomine.entity.ai.EntityAIInfectedAttack;
 import com.nuparu.sevendaystomine.entity.ai.EntityAISwell;
+import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.util.MathUtils;
 
@@ -33,6 +34,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -55,6 +57,8 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 
 	public EntityZombiePoliceman(World worldIn) {
 		super(worldIn);
+		this.experienceValue = 20;
+		this.lootTable = ModLootTables.ZOMBIE_POLICEMAN;
 		this.tasks.addTask(1, this.rangedAttack);
 	}
 
@@ -88,7 +92,7 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 		range.setBaseValue(64.0D);
 		speed.setBaseValue(0.15D);
 		attack.setBaseValue(7.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(125D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120D);
 		armor.setBaseValue(3.0D);
 	}
 
@@ -125,11 +129,10 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 	public int getState() {
 		return ((Integer) this.dataManager.get(STATE)).intValue();
 	}
-	
+
 	public void setState(int state) {
 		this.dataManager.set(STATE, Integer.valueOf(state));
 	}
-
 
 	public EnumAnimationState getAnimation() {
 		return EnumAnimationState.values()[((Integer) this.dataManager.get(ANIMATION)).intValue()];
@@ -215,6 +218,11 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 	public int getVomitTimer() {
 		return vomitTimer;
 	}
+	
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
+    {
+    }
 
 	public void setVomitTimer(int vomitTimer) {
 		this.vomitTimer = vomitTimer;

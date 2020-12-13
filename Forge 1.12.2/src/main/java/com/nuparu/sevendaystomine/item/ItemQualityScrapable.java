@@ -2,7 +2,9 @@ package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class ItemQualityScrapable extends ItemQuality implements IScrapable {
 
@@ -61,5 +63,4 @@ public class ItemQualityScrapable extends ItemQuality implements IScrapable {
 			return super.getRGBDurabilityForDisplay(stack);
 		}
 	}
-	
 }

@@ -7,6 +7,7 @@ import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.item.ItemGun;
+import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.proxy.ClientProxy;
 
 import net.minecraft.client.Minecraft;
@@ -70,8 +71,8 @@ public class GuiPlayerUI {
 			if (!player.isCreative() && !player.isSpectator() && mc.playerController.shouldDrawHUD()) {
 
 				IExtendedPlayer extendedPlayer = CapabilityHelper.getExtendedPlayer(player);
-
-				mc.ingameGUI.drawTexturedModalRect(posX - 100, posY - 9, 0, 8,
+				
+				mc.ingameGUI.drawTexturedModalRect(posX - 100, posY - 9, 0, player.isPotionActive(Potions.dysentery) ? 29 : 8,
 						(int) Math
 								.floor(extendedPlayer.getThirst() / (10f * (extendedPlayer.getMaximumThirst() / 780f))),
 						6);
@@ -96,9 +97,10 @@ public class GuiPlayerUI {
 			
 			if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun)) {
 				stack = player.getHeldItemOffhand();
-				if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun))
+				if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun)) {
 					GL11.glPopMatrix();
 					return;
+				}
 			}
 			ItemGun gun = (ItemGun) stack.getItem();
 			float factor = gun.getFOVFactor(stack);

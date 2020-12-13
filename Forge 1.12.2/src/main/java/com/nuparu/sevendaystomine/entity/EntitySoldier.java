@@ -39,8 +39,10 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.monster.AbstractSkeleton;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEvoker;
 import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityVex;
 import net.minecraft.entity.monster.EntityVindicator;
 import net.minecraft.entity.monster.EntityZombie;
@@ -71,6 +73,7 @@ public class EntitySoldier extends EntityHuman implements IMerchant, IRangedAtta
 	public EntitySoldier(World worldIn) {
 		super(worldIn);
 		setCombatTask();
+		this.experienceValue = 10;
 	}
 
 	@Override
@@ -103,6 +106,8 @@ public class EntitySoldier extends EntityHuman implements IMerchant, IRangedAtta
 		this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityZombieBase>(this, EntityZombieBase.class, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityBandit>(this, EntityBandit.class, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityCreeper>(this, EntityCreeper.class, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntitySpider>(this, EntitySpider.class, true));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
 	}
 	

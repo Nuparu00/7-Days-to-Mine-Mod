@@ -1,0 +1,26 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "WGS",
+    "IGI",
+    "GIG"
+  ],
+  "key": {
+    "S": {
+      "item": "sevendaystomine:scrapiron"
+    },
+    "W": {
+      "item": "minecraft:clock"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "I": {
+      "item": "sevendaystomine:ironingot"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:fragmentation_grenade"
+  },
+  "recipe": "chemistry"
+}

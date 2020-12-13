@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,7 +50,7 @@ public class RenderGlobalEnhanced extends RenderGlobal {
 
 		World world = entityIn.world;
 		Minecraft minecraft = Minecraft.getMinecraft();
-		ArrayList<BreakData> list = BreakSavedData.get(world).list;
+		ArrayList<BreakData> list = BreakSavedData.get(world).getList();
 		GlStateManager.pushMatrix();
 		if (list != null) {
 
@@ -69,14 +70,21 @@ public class RenderGlobalEnhanced extends RenderGlobal {
 			worldRendererIn.setTranslation(-d0, -d1, -d2);
 			worldRendererIn.noColor();
 			Iterator<BreakData> it = list.iterator();
+			TextureAtlasSprite[] textures;
+			try {
+				textures = ((TextureAtlasSprite[]) (f_icons.get((RenderGlobal) this)));
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+				return;
+			}
 			while (it.hasNext()) {
 				BreakData data = (BreakData) it.next();
 				BlockPos blockpos = BlockPos.fromLong(data.getPos());
-				
-				if(!world.isBlockLoaded(blockpos)) {
+
+				if (!world.isBlockLoaded(blockpos)) {
 					continue;
 				}
-				
+
 				double d3 = (double) blockpos.getX() - d0;
 				double d4 = (double) blockpos.getY() - d1;
 				double d5 = (double) blockpos.getZ() - d2;
@@ -93,21 +101,9 @@ public class RenderGlobalEnhanced extends RenderGlobal {
 					} else {
 						IBlockState iblockstate = world.getBlockState(blockpos);
 						if (iblockstate.getMaterial() != Material.AIR) {
-							int i = Math.min((int) Math.floor(data.getState() * 10), 9);
-
-							try {
-								TextureAtlasSprite textureatlassprite = ((TextureAtlasSprite[]) (f_icons
-										.get((RenderGlobal) this)))[i];
-								BlockRendererDispatcher blockrendererdispatcher = minecraft
-										.getBlockRendererDispatcher();
-								blockrendererdispatcher.renderBlockDamage(iblockstate, blockpos, textureatlassprite,
-										world);
-
-							} catch (IllegalAccessException ex) {
-								ex.printStackTrace();
-							} catch (IllegalArgumentException ex) {
-								ex.printStackTrace();
-							}
+							int i = MathHelper.clamp((int) Math.floor(data.getState() * 10), 0, 9);
+							BlockRendererDispatcher blockrendererdispatcher = minecraft.getBlockRendererDispatcher();
+							blockrendererdispatcher.renderBlockDamage(iblockstate, blockpos, textures[i], world);
 
 						}
 					}

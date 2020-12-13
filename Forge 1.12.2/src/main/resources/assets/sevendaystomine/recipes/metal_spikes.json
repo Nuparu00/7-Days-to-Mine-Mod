@@ -1,0 +1,22 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "PPP",
+      "PPP",
+      "RIR"
+   ],
+   "key":{
+      "P":{
+         "item":"sevendaystomine:iron_pipe"
+      },
+      "R":{
+         "item":"minecraft:redstone"
+      },
+      "I":{
+         "item":"sevendaystomine:ironingot"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:metal_spikes"
+   }
+}

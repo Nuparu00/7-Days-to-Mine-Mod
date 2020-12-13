@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -20,7 +22,7 @@ import net.minecraftforge.common.util.Constants;
 public class HordeSavedData extends WorldSavedData {
 	public static final String DATA_NAME = SevenDaysToMine.MODID + ":horde_data";
 
-	protected List<Horde> hordes = new ArrayList<Horde>();
+	protected CopyOnWriteArrayList<Horde> hordes = new CopyOnWriteArrayList<Horde>();
 	protected int dim = Integer.MIN_VALUE;
 
 	public HordeSavedData() {
@@ -56,6 +58,7 @@ public class HordeSavedData extends WorldSavedData {
 					Constructor<?> constructor = clazz.getConstructor(World.class);
 					Horde horde = (Horde) constructor.newInstance(world);
 					horde.readFromNBT(nbt);
+					horde.data = this;
 					hordes.add(horde);
 				} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
 						| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -78,6 +81,7 @@ public class HordeSavedData extends WorldSavedData {
 
 	public void addHorde(Horde horde) {
 		if (!hordes.contains(horde)) {
+			horde.data = this;
 			hordes.add(horde);
 			if (dim == Integer.MIN_VALUE) {
 				dim = horde.world.provider.getDimension();
@@ -109,6 +113,13 @@ public class HordeSavedData extends WorldSavedData {
 		}
 		hordes.clear();
 		markDirty();
+	}
+	
+	public void update(World world) {
+		for (Horde horde : hordes) {
+			horde.update();
+		}
+
 	}
 
 	public static HordeSavedData get(World world) {

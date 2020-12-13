@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.Constants;
 public class TileEntityWindTurbine extends TileEntity implements ITickable, IVoltage {
 	private List<ElectricConnection> inputs = new ArrayList<ElectricConnection>();
 	private List<ElectricConnection> outputs = new ArrayList<ElectricConnection>();
-	private long capacity = 1000l;
+	private long capacity = 500l;
 	private long voltage = 0;
 
 	public float angle;
@@ -51,7 +51,7 @@ public class TileEntityWindTurbine extends TileEntity implements ITickable, IVol
 		}
 
 		float windPrev = wind;
-		wind = getWindAccess();
+		wind = getWindAccess()/2f;
 
 		if (wind >= 0.5f) {
 			long voltagePrev = voltage;
@@ -232,7 +232,7 @@ public class TileEntityWindTurbine extends TileEntity implements ITickable, IVol
 
 	@Override
 	public long getMaxOutput() {
-		return 256;
+		return 512;
 	}
 
 	@Override

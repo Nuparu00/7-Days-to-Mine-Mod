@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.block;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -25,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
@@ -121,6 +123,16 @@ public class BlockSeparator extends BlockTileProvider<TileEntitySeparator> {
 	public EnumPushReaction getMobilityFlag(IBlockState state) {
 		return EnumPushReaction.DESTROY;
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    {
+        double d0 = (double)((float)pos.getX() + 0.4F + rand.nextFloat() * 0.2F);
+        double d1 = (double)((float)pos.getY() + 0.4F + rand.nextFloat() * 0.2F);
+        double d2 = (double)((float)pos.getZ() + 0.4F + rand.nextFloat() * 0.2F);
+        worldIn.spawnParticle(EnumParticleTypes.WATER_DROP, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+    }
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
@@ -137,7 +149,7 @@ public class BlockSeparator extends BlockTileProvider<TileEntitySeparator> {
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		if (!worldIn.isRemote) {
 			TileEntity te = worldIn.getTileEntity(pos);
-			if (te instanceof TileEntityFileCabinet) {
+			if (te instanceof TileEntitySeparator) {
 				NonNullList<ItemStack> drops = ((TileEntitySeparator) te).getDrops();
 				for (ItemStack stack : drops) {
 					worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack));

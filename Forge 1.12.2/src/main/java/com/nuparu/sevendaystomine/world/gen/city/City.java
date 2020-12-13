@@ -70,7 +70,7 @@ public class City {
 		Biome biome = world.getBiome(pos);
 		EnumCityType type = EnumCityType.TOWN;
 		Random rand = new Random(world.getSeed() + (pos.getX() / 16) - (pos.getZ() / 16));
-		if (biome.getHeightVariation() <= 0.15 && rand.nextInt(2) == 0) {
+		if (biome.getHeightVariation() <= 0.15 && rand.nextInt(3) == 0) {
 			type = EnumCityType.VILLAGE;
 		} 
 		else if (rand.nextInt(2) == 0) {
@@ -183,6 +183,7 @@ public class City {
 
 		streets.add(street);
 		street.streetIndex = streets.size();
+		CitySavedData.get(world).addCity(street.start);
 		try {
 			streetsQueue.put(street);
 		} catch (InterruptedException e) {

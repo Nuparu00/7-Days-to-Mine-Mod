@@ -51,6 +51,7 @@ import com.nuparu.sevendaystomine.world.gen.RoadDecoratorWorldGen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -327,13 +328,39 @@ public class Utils {
 			}
 			if (solid && state.isFullCube() && material.blocksMovement()
 					&& (!ignoreFoliage
-							|| (!block.isLeaves(state, world, blockpos1) && !block.isFoliage(world, blockpos1)))
+							|| (!block.isLeaves(state, world, blockpos1) && !block.isFoliage(world, blockpos1) && !(block instanceof BlockLog)))
 					&& material != Material.SNOW) {
 				blockpos = blockpos1;
 				break;
 			} else if (material != Material.AIR) {
 				blockpos = blockpos1;
 				break;
+			}
+		}
+
+		return blockpos;
+	}
+	
+	public static BlockPos getTopBiomeGroundBlock(BlockPos pos, World world) {
+		Chunk chunk = world.getChunkFromBlockCoords(pos);
+		BlockPos blockpos;
+		BlockPos blockpos1;
+		
+		Biome biome = world.getBiome(pos);
+
+		for (blockpos = new BlockPos(pos.getX(), chunk.getTopFilledSegment() + 16, pos.getZ()); blockpos
+				.getY() >= 0; blockpos = blockpos1) {
+			blockpos1 = blockpos.down();
+			IBlockState state = chunk.getBlockState(blockpos1);
+			Block block = state.getBlock();
+			Material material = state.getMaterial();
+
+			if (state == biome.topBlock) {
+				blockpos = blockpos1;
+				break;
+			}
+			if(blockpos1.getY() <= 63) {
+				return new BlockPos(0,-1,0);
 			}
 		}
 
@@ -380,7 +407,7 @@ public class Utils {
 
 	// returns true if the block has been destroyed
 	public static boolean damageBlock(World world, BlockPos pos, float damage, boolean breakBlock) {
-		return damageBlock(world, pos, damage, breakBlock,true);
+		return damageBlock(world, pos, damage, breakBlock, true);
 	}
 
 	// returns true if the block has been destroyed
@@ -411,10 +438,10 @@ public class Utils {
 			world.playSound(null, pos, soundType.getHitSound(), SoundCategory.NEUTRAL,
 					(soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 		}
-		data.addBreakData(pos, world.provider.getDimension(), damage / hardness);
+		data.addBreakData(pos, world, damage / hardness);
 		BreakData breakData = data.getBreakData(pos, world.provider.getDimension());
 		if (breakData != null && breakData.getState() >= 1f && breakBlock) {
-			data.setBreakData(pos, world.provider.getDimension(), 0);
+			data.setBreakData(pos, world, 0);
 			if (block instanceof IUpgradeable) {
 				IBlockState prev = ((IUpgradeable) block).getPrev(world, pos);
 				world.setBlockState(pos, prev);
@@ -675,12 +702,16 @@ public class Utils {
 		return ModConfig.world.bloodmoonFrequency > 0 && Utils.getDay(world) % ModConfig.world.bloodmoonFrequency == 0;
 	}
 
+	public static boolean isBloodmoonProper(World world) {
+		return isBloodmoon(world) && !world.isDaytime();
+	}
+
 	public static boolean isBloodmoon(int day) {
 		return ModConfig.world.bloodmoonFrequency > 0 && day % ModConfig.world.bloodmoonFrequency == 0;
 	}
 
 	public static boolean isWolfHorde(World world) {
-		return Utils.getDay(world) % 5 == 0;
+		return ModConfig.world.wolfHordeFrequency > 0 && Utils.getDay(world) % ModConfig.world.wolfHordeFrequency == 0;
 	}
 
 	public static int getItemBurnTime(ItemStack stack) {
@@ -745,16 +776,26 @@ public class Utils {
 
 		if (players.size() == 1) {
 			EntityPlayer player = players.get(0);
-			return new BlockPos(player.posX + (world.rand.nextDouble() * 512) - 256, 255,
-					player.posZ + (world.rand.nextDouble() * 512) - 256);
+
+			double angle = 2.0 * Math.PI * world.rand.nextDouble();
+			double dist = 256 + world.rand.nextDouble() * 256;
+			double x = player.posX + dist * Math.cos(angle);
+			double z = player.posZ + dist * Math.sin(angle);
+
+			return new BlockPos(x, 255, z);
 		}
 
 		for (EntityPlayer player : players) {
 			xSum += player.posX;
 			zSum += player.posZ;
 		}
-		return new BlockPos((double) xSum / players.size() + (world.rand.nextDouble() * 512) - 256, 255,
-				(double) zSum / players.size() + (world.rand.nextDouble() * 512) - 256);
+
+		double angle = 2.0 * Math.PI * world.rand.nextDouble();
+		double dist = 256 + world.rand.nextDouble() * 256;
+		double x = (double) xSum / players.size() + dist * Math.cos(angle);
+		double z = (double) zSum / players.size() + dist * Math.sin(angle);
+
+		return new BlockPos(x, 255, z);
 	}
 
 	public static BlockPos getAirDropStartPoint(World world, BlockPos centerPoint) {
@@ -923,5 +964,30 @@ public class Utils {
 				}
 			}
 		}
+	}
+
+	public static void consumeXp(EntityPlayer player, float amount) {
+		System.out.println("FFFF");
+		if (player.experienceTotal - amount <= 0) {
+			player.experienceLevel = 0;
+			player.experience = 0;
+			player.experienceTotal = 0;
+			return;
+		}
+
+		player.experienceTotal -= amount;
+
+		if (player.experience * (float) player.xpBarCap() <= amount) {
+			amount -= player.experience * (float) player.xpBarCap();
+			player.experience = 1.0f;
+			player.experienceLevel--;
+		}
+
+		while (player.xpBarCap() < amount) {
+			amount -= player.xpBarCap();
+			player.experienceLevel--;
+		}
+
+		player.experience -= amount / (float) player.xpBarCap();
 	}
 }

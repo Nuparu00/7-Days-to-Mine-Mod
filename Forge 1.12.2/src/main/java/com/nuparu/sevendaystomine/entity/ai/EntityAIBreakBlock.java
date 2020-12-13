@@ -5,6 +5,7 @@ import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.entity.INoiseListener;
 import com.nuparu.sevendaystomine.events.MobBreakEvent;
+import com.nuparu.sevendaystomine.item.ItemQualityPickaxe;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;
@@ -17,6 +18,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -103,6 +105,16 @@ public class EntityAIBreakBlock extends EntityAIBase {
 
 		if (!living.onGround) {
 			f /= 5.0F;
+		}
+		
+		if(Utils.isBloodmoonProper(living.world)) {
+			f*=2;
+		}
+		
+		
+		ItemStack stack = living.getHeldItem(EnumHand.MAIN_HAND);
+		if(!stack.isEmpty() && stack.getItem() instanceof ItemQualityPickaxe) {
+			f*=2.5f;
 		}
 
 		return f;

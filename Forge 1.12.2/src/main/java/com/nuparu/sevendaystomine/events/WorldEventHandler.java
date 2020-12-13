@@ -10,6 +10,8 @@ import com.nuparu.sevendaystomine.entity.INoiseListener;
 import com.nuparu.sevendaystomine.entity.Noise;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.item.EnumMaterial;
+import com.nuparu.sevendaystomine.item.IScrapable;
 import com.nuparu.sevendaystomine.util.DamageSources;
 import com.nuparu.sevendaystomine.util.VanillaManager;
 import com.nuparu.sevendaystomine.util.VanillaManager.VanillaBlockUpgrade;
@@ -32,6 +34,8 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -43,6 +47,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.DifficultyChangeEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -96,12 +101,12 @@ public class WorldEventHandler {
 		if (block.getHarvestLevel(state) != 0) {
 			if (data != null) {
 				event.setDropChance(1.0f - data.getState());
-				BreakSavedData.get(world).removeBreakData(pos, world.provider.getDimension());
+				BreakSavedData.get(world).removeBreakData(pos, world);
 			}
 		} else {
-			BreakSavedData.get(world).removeBreakData(pos, world.provider.getDimension());
+			BreakSavedData.get(world).removeBreakData(pos, world);
 		}
-		if (state.getBlock() instanceof IUpgradeable && ((IUpgradeable) block).getPrev(world, pos) != null) {
+		if (state.getBlock() instanceof IUpgradeable && ((IUpgradeable) block).getPrev(world, pos) != null && ((IUpgradeable) block).getPrev(world, pos).getBlock() != Blocks.AIR) {
 			IUpgradeable upgradeable = (IUpgradeable) state.getBlock();
 			event.getDrops().clear();
 			world.setBlockState(pos, upgradeable.getPrev(world, pos));
@@ -119,7 +124,7 @@ public class WorldEventHandler {
 			return;
 		} else {
 			VanillaBlockUpgrade upgrade = VanillaManager.getVanillaUpgrade(state);
-			if (upgrade != null && upgrade.getPrev() != null) {
+			if (upgrade != null && upgrade.getPrev() != null && upgrade.getPrev().getBlock() != Blocks.AIR) {
 				event.getDrops().clear();
 				world.setBlockState(pos, upgrade.getPrev());
 				if (upgrade.getPrev().getBlock() instanceof IUpgradeable) {
@@ -170,7 +175,7 @@ public class WorldEventHandler {
 					}
 				}
 			}
-			BreakSavedData.get(world).removeBreakData(event.getPos(), world.provider.getDimension());
+			BreakSavedData.get(world).removeBreakData(event.getPos(), world);
 		}
 	}
 
@@ -180,7 +185,6 @@ public class WorldEventHandler {
 	@SubscribeEvent
 	public void loadWorld(WorldEvent.Load event) {
 		World world = event.getWorld();
-		SevenDaysToMine.chunkLoaderTicket = null;
 		if (!world.isRemote) {
 			// BREAK SAVED DATA
 			BreakSavedData break_data = ((BreakSavedData) world.getPerWorldStorage().getOrLoadData(BreakSavedData.class,
@@ -235,9 +239,7 @@ public class WorldEventHandler {
 		World world = event.player.world;
 		if (event.player instanceof EntityPlayerMP && !world.isRemote) {
 			EntityPlayerMP player = (EntityPlayerMP) event.player;
-			if (SevenDaysToMine.breakSavedData != null) {
-				SevenDaysToMine.breakSavedData.sync(player);
-			}
+			BreakSavedData.get(world).sync(player);
 		}
 	}
 
@@ -294,26 +296,46 @@ public class WorldEventHandler {
 	@SubscribeEvent
 	public void onPlayLoundSoundAtEntity(LoudSoundEvent event) {
 		if (event.pos != null) {
-				float range = event.volume * 6.4f;
-				AxisAlignedBB aabb = new AxisAlignedBB(event.pos).grow(range, range / 2, range);
-				List<Entity> entities = event.world.getEntitiesWithinAABB(Entity.class, aabb);
-				for (Entity e : entities) {
-					if (e instanceof INoiseListener) {
-						INoiseListener noiseListener = (INoiseListener) e;
-						noiseListener.addNoise(new Noise(null, event.pos, event.world, event.volume,1));
-					}
+			float range = event.volume * 6.4f;
+			AxisAlignedBB aabb = new AxisAlignedBB(event.pos).grow(range, range / 2, range);
+			List<Entity> entities = event.world.getEntitiesWithinAABB(Entity.class, aabb);
+			for (Entity e : entities) {
+				if (e instanceof INoiseListener) {
+					INoiseListener noiseListener = (INoiseListener) e;
+					noiseListener.addNoise(new Noise(null, event.pos, event.world, event.volume, 1));
 				}
+			}
 		}
 	}
 
 	@SubscribeEvent
-	public void onPotentialSpawns(EntityJoinWorldEvent event) {
-		/*
-		 * Entity entity = event.getEntity(); if(entity == null ||
-		 * EntityList.getKey(entity.getClass())== null) return; String name =
-		 * EntityList.getKey(entity.getClass()).toString().toLowerCase();
-		 * if(name.equals("minecraft:zombie") || name.equals("minecraft:skeleton")){
-		 * event.setCanceled(true); }
-		 */
+	public void onFurnaceBurnTime(FurnaceFuelBurnTimeEvent event) {
+		ItemStack fuel = event.getItemStack();
+		if (fuel.isEmpty())
+			return;
+		Item item = fuel.getItem();
+		if (item instanceof IScrapable) {
+			IScrapable scrapable = (IScrapable) item;
+			if (scrapable.getMaterial() == EnumMaterial.WOOD) {
+				event.setBurnTime(200 * scrapable.getWeight());
+			}
+		}
+		if (item instanceof ItemBlock) {
+			ItemBlock itemBlock = (ItemBlock) item;
+			Block block = itemBlock.getBlock();
+			if (block instanceof IScrapable) {
+				IScrapable scrapable = (IScrapable) block;
+				if (scrapable.getMaterial() == EnumMaterial.WOOD) {
+					event.setBurnTime(200 * scrapable.getWeight());
+				}
+			}
+		}
+		if (VanillaManager.getVanillaScrapable(item) != null) {
+			VanillaManager.VanillaScrapableItem scrapable = VanillaManager.getVanillaScrapable(item);
+			if (scrapable.getMaterial() == EnumMaterial.WOOD) {
+				event.setBurnTime(200 * scrapable.getWeight());
+			}
+		}
 	}
+
 }

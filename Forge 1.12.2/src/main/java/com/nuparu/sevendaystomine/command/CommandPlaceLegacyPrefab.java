@@ -71,9 +71,10 @@ public class CommandPlaceLegacyPrefab extends CommandBase {
 			rotation = Float.parseFloat(args[5]);
 		}
 		String line;
+		InputStream fis = null;
 		try {
 			startTime = System.nanoTime();
-			InputStream fis = new FileInputStream(file.getAbsolutePath());
+			fis = new FileInputStream(file.getAbsolutePath());
 			PrefabLegacy prefab = null;
 			if (prefab == null) {
 				prefab = new PrefabLegacy(name, false);
@@ -93,6 +94,11 @@ public class CommandPlaceLegacyPrefab extends CommandBase {
 					TextFormatting.RED + "IOException:An eroor has occurred while reading file."));
 			e.printStackTrace();
 		} finally {
+			try {
+				fis.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "PrefabLegacy has been placed at "
 					+ TextFormatting.GREEN + pos.toString() + "in" + (duration / 1000000) + "ms."));
 		}

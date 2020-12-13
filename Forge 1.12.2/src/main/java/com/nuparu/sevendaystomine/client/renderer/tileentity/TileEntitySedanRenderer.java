@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.client.renderer.tileentity;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockCar;
+import com.nuparu.sevendaystomine.client.model.ModelPoliceCar;
 import com.nuparu.sevendaystomine.client.model.ModelSedan;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCar;
@@ -18,7 +19,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntitySedanRenderer extends TileEntitySpecialRenderer<TileEntityCar> {
 
-	public static final ModelSedan model = new ModelSedan();
+	public static final ModelSedan modelSedan = new ModelSedan();
+	public static final ModelPoliceCar modelPolice = new ModelPoliceCar();
 	public static final ResourceLocation TEXTURE_RED = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/tileentity/sedan_red.png");
 	public static final ResourceLocation TEXTURE_BLUE = new ResourceLocation(SevenDaysToMine.MODID,
@@ -31,6 +33,8 @@ public class TileEntitySedanRenderer extends TileEntitySpecialRenderer<TileEntit
 			"textures/tileentity/sedan_black.png");
 	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/tileentity/sedan_white.png");
+	public static final ResourceLocation TEXTURE_POLICE = new ResourceLocation(SevenDaysToMine.MODID,
+			"textures/tileentity/police_car.png");
 
 	public void render(TileEntityCar te, double x, double y, double z, float partialTicks, int destroyStage,
 			float alpha) {
@@ -63,20 +67,26 @@ public class TileEntitySedanRenderer extends TileEntitySpecialRenderer<TileEntit
 			}
 		}
 		GlStateManager.rotate((float) facing.getHorizontalAngle(), 0.0F, 1.0F, 0.0F);
-		this.bindTexture(TEXTURE_RED);
+		if (block == ModBlocks.POLICE_CAR) {
+			this.bindTexture(TEXTURE_POLICE);
+			modelPolice.render(null, 0f, 0f, 0f, 0f, 0f, 0.0625f);
+		} else {
+			this.bindTexture(TEXTURE_RED);
 
-		if (block == ModBlocks.SEDAN_BLUE) {
-			this.bindTexture(TEXTURE_BLUE);
-		} else if (block == ModBlocks.SEDAN_YELLOW) {
-			this.bindTexture(TEXTURE_YELLOW);
-		} else if (block == ModBlocks.SEDAN_GREEN) {
-			this.bindTexture(TEXTURE_GREEN);
-		} else if (block == ModBlocks.SEDAN_BLACK) {
-			this.bindTexture(TEXTURE_BLACK);
-		} else if (block == ModBlocks.SEDAN_WHITE) {
-			this.bindTexture(TEXTURE_WHITE);
+			if (block == ModBlocks.SEDAN_BLUE) {
+				this.bindTexture(TEXTURE_BLUE);
+			} else if (block == ModBlocks.SEDAN_YELLOW) {
+				this.bindTexture(TEXTURE_YELLOW);
+			} else if (block == ModBlocks.SEDAN_GREEN) {
+				this.bindTexture(TEXTURE_GREEN);
+			} else if (block == ModBlocks.SEDAN_BLACK) {
+				this.bindTexture(TEXTURE_BLACK);
+			} else if (block == ModBlocks.SEDAN_WHITE) {
+				this.bindTexture(TEXTURE_WHITE);
+			}
+			modelSedan.render(null, 0f, 0f, 0f, 0f, 0f, 0f);
 		}
-		model.render(null, 0f, 0f, 0f, 0f, 0f, 0f);
+		
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.popMatrix();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

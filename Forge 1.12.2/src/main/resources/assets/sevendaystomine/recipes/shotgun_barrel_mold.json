@@ -1,0 +1,20 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "CCC",
+    "COC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    },
+    "O": {
+      "item": "sevendaystomine:shotgun_barrel"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:shotgun_barrel_mold"
+  },
+  "recipe": "shotgun"
+}

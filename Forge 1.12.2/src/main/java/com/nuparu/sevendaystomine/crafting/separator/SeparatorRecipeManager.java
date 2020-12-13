@@ -28,7 +28,7 @@ public class SeparatorRecipeManager {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addRecipes() {
-		addRecipe(new SeparatorRecipe(new ItemStack(Blocks.DIRT), Arrays.asList(new ItemStack(Blocks.STONE),new ItemStack(Blocks.GRASS))));
+		addRecipe(new SeparatorRecipe(new ItemStack(ModItems.SALT), Arrays.asList(new ItemStack(ModItems.CHLORINE_TANK),new ItemStack(ModItems.NATRIUM_TANK))));
 	}
 
 	public void addRecipe(ISeparatorRecipe recipe) {

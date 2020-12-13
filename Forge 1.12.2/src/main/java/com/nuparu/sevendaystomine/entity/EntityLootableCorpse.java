@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
@@ -56,7 +57,8 @@ public class EntityLootableCorpse extends Entity {
 
 	public EntityLootableCorpse(World worldIn) {
 		super(worldIn);
-		this.setSize(1f, 0.45f);
+		this.setSize(1.5f, 0.45f);
+		this.isImmuneToFire = true;
 		initInventory();
 	}
 
@@ -69,6 +71,7 @@ public class EntityLootableCorpse extends Entity {
 			EntityLivingBase living = ((EntityLivingBase) entity);
 			living.hurtTime = 0;
 			living.limbSwing = 0;
+			living.deathTime = 0;
 		}
 
 		this.rotationPitch = entity.rotationPitch;
@@ -152,12 +155,15 @@ public class EntityLootableCorpse extends Entity {
 
 		this.age++;
 
-		if (this.age >= 48000) {
-			this.setDead();
+		if (!world.isRemote) {
+			if (this.age >= ModConfig.world.corpseLifespan) {
+				this.setDead();
+				return;
+			}
 		}
 
 		if (!onGround && !onEntity) {
-			this.motionY = -0.0625;
+			 this.motionY -= 0.03999999910593033D;
 		} else {
 			this.motionY = 0;
 		}
@@ -293,11 +299,10 @@ public class EntityLootableCorpse extends Entity {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 	}
-	
+
 	@Override
-	public ItemStack getPickedResult(RayTraceResult target)
-    {
+	public ItemStack getPickedResult(RayTraceResult target) {
 		return this.getOriginal() != null ? getOriginal().getPickedResult(target) : ItemStack.EMPTY;
-    }
+	}
 
 }

@@ -148,7 +148,7 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 			ItemStack stack = new ItemStack(this, 1, 0);
 			if (player != null) {
 				setQuality(stack,
-						(int) Math.min(Math.max(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT), 1),
+						(int) Math.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1),
 								ItemQuality.MAX_QUALITY));
 				NBTTagCompound nbt = stack.getTagCompound();
 				nbt.setInteger("FuelMax", 1000);

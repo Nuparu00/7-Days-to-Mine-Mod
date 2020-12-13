@@ -26,7 +26,6 @@ public class BlockBurntPlanks extends BlockUpgradeable {
 		setResistance(7.5f);
 		setHarvestLevel("axe", 0);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		Blocks.FIRE.setFireInfo(this, 5, 20);
 	}
 
 	@Override

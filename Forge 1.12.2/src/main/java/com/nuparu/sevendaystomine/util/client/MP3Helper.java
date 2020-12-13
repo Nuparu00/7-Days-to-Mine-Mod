@@ -148,6 +148,7 @@ public class MP3Helper {
 			audioClip.addLineListener(this);
 
 			audioClip.open(audioStream);
+			audioStream.close();
 
 		}
 

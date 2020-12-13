@@ -37,23 +37,29 @@ import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirdropFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirplaneFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBlindZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBloatedZombieFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderChlorineGrenadeFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFlameFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderFragmentationGrenadeFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderHumanFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderInfectedSurvivorFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderMinibikeFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderMolotovFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderPlaguedNurseFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderProjectileVomitFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderSpiderZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieCrawlerFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieMinerFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombiePigFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombiePolicemanFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieSoldierFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderZombieWolfFactory;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityAirplaneRotorRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityBigSignRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCalendarRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCameraRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityFlagRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityGlobeRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityMetalSpikesRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityOldChestRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityPhotoRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySedanRenderer;
@@ -73,13 +79,16 @@ import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
+import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
+import com.nuparu.sevendaystomine.entity.EntityFragmentationGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
 import com.nuparu.sevendaystomine.entity.EntityFrostbittenWorker;
 import com.nuparu.sevendaystomine.entity.EntityFrozenLumberjack;
 import com.nuparu.sevendaystomine.entity.EntityInfectedSurvivor;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
+import com.nuparu.sevendaystomine.entity.EntityMolotov;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
 import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
 import com.nuparu.sevendaystomine.entity.EntityProjectileVomit;
@@ -89,6 +98,7 @@ import com.nuparu.sevendaystomine.entity.EntitySoldier;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieCrawler;
+import com.nuparu.sevendaystomine.entity.EntityZombieMiner;
 import com.nuparu.sevendaystomine.entity.EntityZombiePig;
 import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
@@ -105,10 +115,12 @@ import com.nuparu.sevendaystomine.item.ItemGuide;
 import com.nuparu.sevendaystomine.item.ItemRecipeBook;
 import com.nuparu.sevendaystomine.tileentity.TileEntityAirplaneRotor;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCalendar;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCar;
 import com.nuparu.sevendaystomine.tileentity.TileEntityFlag;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGlobe;
+import com.nuparu.sevendaystomine.tileentity.TileEntityMetalSpikes;
 import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
 import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
@@ -147,6 +159,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -230,11 +243,10 @@ public class ClientProxy extends CommonProxy {
 		slimModel.addLayer(new LayerBackpack(slimModel));
 
 		ItemColors colors = Minecraft.getMinecraft().getItemColors();
-		ItemClothing[] clothes = new ItemClothing[] { (ItemClothing) ModItems.SHORTS, (ItemClothing) ModItems.SKIRT,
-				(ItemClothing) ModItems.SHORTS_LONG, (ItemClothing) ModItems.JEANS, (ItemClothing) ModItems.SHIRT,
-				(ItemClothing) ModItems.SHORT_SLEEVED_SHIRT, (ItemClothing) ModItems.JACKET,
-				(ItemClothing) ModItems.JUMPER, (ItemClothing) ModItems.COAT, (ItemClothing) ModItems.T_SHIRT_0,
-				(ItemClothing) ModItems.T_SHIRT_1 };
+		Item[] clothes = new Item[] { ModItems.SHORTS, ModItems.SKIRT, ModItems.SHORTS_LONG, ModItems.JEANS,
+				ModItems.SHIRT, ModItems.SHORT_SLEEVED_SHIRT, ModItems.JACKET, ModItems.JUMPER, ModItems.COAT,
+				ModItems.T_SHIRT_0, ModItems.T_SHIRT_1, ModItems.LEATHER_BOOTS, ModItems.LEATHER_CHESTPLATE,
+				ModItems.LEATHER_HELMET, ModItems.LEATHER_LEGGINGS };
 
 		colors.registerItemColorHandler(new IItemColor() {
 			public int colorMultiplier(ItemStack stack, int tintIndex) {
@@ -298,6 +310,10 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombieWolf.class, RenderZombieWolfFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombiePig.class, RenderZombiePigFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityAirplane.class, RenderAirplaneFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityZombieMiner.class, RenderZombieMinerFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityChlorineGrenade.class, RenderChlorineGrenadeFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFragmentationGrenade.class, RenderFragmentationGrenadeFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityMolotov.class, RenderMolotovFactory.INSTANCE);
 
 	}
 
@@ -347,6 +363,8 @@ public class ClientProxy extends CommonProxy {
 				new TileEntityWoodenLogSpikeRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCamera.class, new TileEntityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGlobe.class, new TileEntityGlobeRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCalendar.class, new TileEntityCalendarRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMetalSpikes.class, new TileEntityMetalSpikesRenderer());
 	}
 
 	@Override
@@ -355,10 +373,8 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	void initKeybindings() {
-		keyBindings = new KeyBinding[3];
+		keyBindings = new KeyBinding[1];
 		keyBindings[0] = new KeyBinding("key.reload.desc", Keyboard.KEY_R, "key.sevendaystomine.category");
-		keyBindings[1] = new KeyBinding("key.accelerate.desc", Keyboard.KEY_W, "key.sevendaystomine.category");
-		keyBindings[2] = new KeyBinding("key.brakes.desc", Keyboard.KEY_SPACE, "key.sevendaystomine.category");
 
 		for (int i = 0; i < keyBindings.length; ++i) {
 			ClientRegistry.registerKeyBinding(keyBindings[i]);
@@ -479,9 +495,9 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void playLoudSound(World world, ResourceLocation resource, float volume, BlockPos blockPosIn,
+	public void playLoudSound(World world, SoundEvent soundEvent, float volume, BlockPos blockPosIn,
 			SoundCategory category) {
-		super.playLoudSound(world, resource, volume, blockPosIn, category);
+		super.playLoudSound(world, soundEvent, volume, blockPosIn, category);
 		if (Minecraft.getMinecraft().world == null || Minecraft.getMinecraft().world != world)
 			return;
 		ISound isound = (ISound) mapSoundPositions.get(blockPosIn);
@@ -490,9 +506,9 @@ public class ClientProxy extends CommonProxy {
 			mapSoundPositions.remove(blockPosIn);
 		}
 
-		if (resource != null) {
-			PositionedLoudSound positionedsoundrecord = new PositionedLoudSound(resource, volume, 1.0F, false, 0,
-					ISound.AttenuationType.LINEAR, (float) blockPosIn.getX(), (float) blockPosIn.getY(),
+		if (soundEvent != null && soundEvent.getSoundName() != null) {
+			PositionedLoudSound positionedsoundrecord = new PositionedLoudSound(soundEvent.getSoundName(), volume, 1.0F,
+					false, 0, ISound.AttenuationType.LINEAR, (float) blockPosIn.getX(), (float) blockPosIn.getY(),
 					(float) blockPosIn.getZ(), category);
 			mapSoundPositions.put(blockPosIn, positionedsoundrecord);
 			Minecraft.getMinecraft().getSoundHandler().playSound(positionedsoundrecord);

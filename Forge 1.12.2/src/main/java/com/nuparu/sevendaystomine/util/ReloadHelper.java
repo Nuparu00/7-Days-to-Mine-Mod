@@ -23,7 +23,7 @@ public class ReloadHelper {
 		if(player == null) return;
 		
 		ItemStack mainStack = player.getHeldItemMainhand();
-		ItemStack secStack = player.getHeldItemMainhand();
+		ItemStack secStack = player.getHeldItemOffhand();
 		if(mainStack.isEmpty() && secStack.isEmpty()) return;
 		
 		Item mainItem = mainStack.getItem();

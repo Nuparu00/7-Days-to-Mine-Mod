@@ -1,0 +1,198 @@
+{
+    "pools": [
+        {
+            "name": "nurse",
+            "rolls": {
+                "min": 1,
+                "max": 9
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 45,
+                    "name": "minecraft:paper",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 8
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 80,
+                    "name": "minecraft:rotten_flesh",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 50,
+                    "name": "minecraft:bone",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "sevendaystomine:bottledwater",
+                    "quality": 20,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 25,
+                    "name": "sevendaystomine:bandage",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 30,
+                    "name": "sevendaystomine:cloth",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+               {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:pistol",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 30,
+                    "name": "sevendaystomine:cent",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "empty",
+                    "weight": 200
+                },
+                {
+                    "type": "item",
+                    "weight": 8,
+                    "name": "sevendaystomine:magnum",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "sevendaystomine:shotgun",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "sevendaystomine:shotgun_short",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 20,
+                    "name": "sevendaystomine:ninemmbullet",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "sevendaystomine:bullet_magnum",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 8,
+                    "name": "sevendaystomine:shotgun_shell",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

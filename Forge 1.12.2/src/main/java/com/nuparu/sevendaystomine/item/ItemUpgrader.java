@@ -98,10 +98,10 @@ public class ItemUpgrader extends ItemQualityTool {
 								MathUtils.getFloatInRange(0.9f, 1f));
 						playerIn.swingArm(hand);
 						if (damage - (effect / 1f) <= 0f) {
-							data.removeBreakData(pos, worldIn.provider.getDimension());
+							data.removeBreakData(pos, worldIn);
 							break;
 						} else {
-							data.setBreakData(pos, worldIn.provider.getDimension(), damage - (effect / 1f));
+							data.setBreakData(pos, worldIn, damage - (effect / 1f));
 							break;
 						}
 

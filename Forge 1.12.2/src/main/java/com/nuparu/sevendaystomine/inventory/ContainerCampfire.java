@@ -143,7 +143,7 @@ public class ContainerCampfire extends Container {
 
             if (index <= TileEntityCampfire.EnumSlots.POT_SLOT.ordinal())
             {
-                if (!this.mergeItemStack(itemstack1, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+1, 39, true))
+                if (!this.mergeItemStack(itemstack1, TileEntityCampfire.EnumSlots.POT_SLOT.ordinal()+1, this.inventorySlots.size(), true))
                 {
                     return ItemStack.EMPTY;
                 }

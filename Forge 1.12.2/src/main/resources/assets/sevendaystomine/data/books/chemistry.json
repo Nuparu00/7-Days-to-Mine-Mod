@@ -303,118 +303,6 @@
         }
       ]
     },
-    {
-      "res": "sevendaystomine:textures/gui/books/chem_base.png",
-      "texts": [
-        {
-          "x": 64,
-          "y": 20,
-          "z": 0,
-          "text": "book_chemistry.contents.4",
-          "unlocalized": true,
-          "centered": true,
-          "color": "000000",
-          "scale": 1,
-          "formatting": [
-            "UNDERLINE"
-          ]
-        }
-      ],
-      "images": [
-        {
-          "x": 12,
-          "y": 33,
-          "z": 0,
-          "width": 94,
-          "height": 36,
-          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
-        },
-        {
-          "x": 12,
-          "y": 73,
-          "z": 0,
-          "width": 94,
-          "height": 36,
-          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
-        },
-        {
-          "x": 12,
-          "y": 113,
-          "z": 0,
-          "width": 94,
-          "height": 36,
-          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
-        }
-      ],
-       "stacks": [
-        {
-          "x": 13,
-          "y": 34,
-          "z": 0,
-          "item": "minecraft:coal"
-        },
-		{
-          "x": 31,
-          "y": 34,
-          "z": 0,
-          "item": "sevendaystomine:potassium"
-        },
-		{
-          "x": 85,
-          "y": 43,
-          "z": 0,
-          "item": "minecraft:gunpowder"
-        },
-        {
-          "x": 13,
-          "y": 74,
-          "z": 0,
-          "item": "minecraft:wheat"
-        },
-		{
-          "x": 31,
-          "y": 74,
-          "z": 0,
-          "item": "minecraft:sugar"
-        },
-        {
-          "x": 13,
-          "y": 92,
-          "z": 0,
-          "item": "sevendaystomine:bottledwater"
-        },
-		{
-          "x": 85,
-          "y": 83,
-          "z": 0,
-          "item": "sevendaystomine:bottledbeer"
-        },
-        {
-          "x": 13,
-          "y": 114,
-          "z": 0,
-          "item": "sevendaystomine:corn"
-        },
-		{
-          "x": 31,
-          "y": 114,
-          "z": 0,
-          "item": "minecraft:sugar"
-        },
-        {
-          "x": 13,
-          "y": 132,
-          "z": 0,
-          "item": "sevendaystomine:bottledwater"
-        },
-		{
-          "x": 85,
-          "y": 123,
-          "z": 0,
-          "item": "sevendaystomine:bottledbeer"
-        }
-        ]
-    },
      {
       "res": "sevendaystomine:textures/gui/books/chem_base.png",
       "texts": [
@@ -437,25 +325,9 @@
           "x": 12,
           "y": 33,
           "z": 0,
-          "width": 94,
-          "height": 36,
-          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
-        },
-        {
-          "x": 12,
-          "y": 73,
-          "z": 0,
-          "width": 94,
-          "height": 36,
-          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
-        },
-        {
-          "x": 12,
-          "y": 113,
-          "z": 0,
-          "width": 94,
-          "height": 36,
-          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
+          "width": 102,
+          "height": 18,
+          "res": "sevendaystomine:textures/gui/books/separator.png"
         }
       ],
        "stacks": [
@@ -463,67 +335,19 @@
           "x": 13,
           "y": 34,
           "z": 0,
-          "item": "minecraft:coal"
+          "item": "sevendaystomine:chlorine_tank"
         },
 		{
-          "x": 31,
+          "x": 55,
           "y": 34,
           "z": 0,
-          "item": "sevendaystomine:potassium"
+          "item": "sevendaystomine:salt"
         },
 		{
-          "x": 85,
-          "y": 43,
+          "x": 97,
+          "y": 34,
           "z": 0,
-          "item": "minecraft:gunpowder"
-        },
-        {
-          "x": 13,
-          "y": 74,
-          "z": 0,
-          "item": "minecraft:wheat"
-        },
-		{
-          "x": 31,
-          "y": 74,
-          "z": 0,
-          "item": "minecraft:sugar"
-        },
-        {
-          "x": 13,
-          "y": 92,
-          "z": 0,
-          "item": "sevendaystomine:bottledwater"
-        },
-		{
-          "x": 85,
-          "y": 83,
-          "z": 0,
-          "item": "sevendaystomine:bottledbeer"
-        },
-        {
-          "x": 13,
-          "y": 114,
-          "z": 0,
-          "item": "sevendaystomine:corn"
-        },
-		{
-          "x": 31,
-          "y": 114,
-          "z": 0,
-          "item": "minecraft:sugar"
-        },
-        {
-          "x": 13,
-          "y": 132,
-          "z": 0,
-          "item": "sevendaystomine:bottledwater"
-        },
-		{
-          "x": 85,
-          "y": 123,
-          "z": 0,
-          "item": "sevendaystomine:bottledbeer"
+          "item": "sevendaystomine:natrium_tank"
         }
         ]
     },

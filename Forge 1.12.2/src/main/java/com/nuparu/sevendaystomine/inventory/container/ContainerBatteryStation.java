@@ -54,10 +54,10 @@ public class ContainerBatteryStation extends Container {
 
 			if (index < 2) {
 				if (!this.mergeItemStack(stack, 2, this.inventorySlots.size(), true)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (!this.mergeItemStack(stack, 0, 2, false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 
 			if (stack.getCount() == 0) {
@@ -69,7 +69,7 @@ public class ContainerBatteryStation extends Container {
 			return originalStack;
 		}
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

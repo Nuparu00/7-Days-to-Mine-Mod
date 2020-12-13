@@ -117,9 +117,10 @@ public class GuiMp3 extends GuiScreen {
 				audio.setPath(entry);
 				audio.setName(FilenameUtils.removeExtension(entry.getFileName().toString()));
 				// audio.duration =
+				AudioInputStream audioStream = null;
 				try {
 					File audioFile = new File(entry.toString());
-					AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+					audioStream = AudioSystem.getAudioInputStream(audioFile);
 					AudioFormat format = audioStream.getFormat();
 					long frames = audioStream.getFrameLength();
 					audio.setDuration((frames + 0.0) / format.getFrameRate());
@@ -128,9 +129,13 @@ public class GuiMp3 extends GuiScreen {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				finally {
+					audioStream.close();
+				}
 				arrayList.add(audio);
 			}
 			MP3Helper.files = arrayList;
+			stream.close();
 
 		} catch (IOException x) {
 			throw new RuntimeException(String.format("error reading folder %s: %s", dir, x.getMessage()), x);

@@ -150,7 +150,7 @@ public class ItemArmorBase extends ItemArmor implements IQuality{
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
 		setQuality(itemstack,
-				(int) Math.min(Math.max(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT), 1),
+				(int) Math.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1),
 						ItemQuality.MAX_QUALITY));
 	}
 

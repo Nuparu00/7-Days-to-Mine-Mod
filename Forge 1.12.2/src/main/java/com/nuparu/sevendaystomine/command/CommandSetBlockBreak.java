@@ -66,8 +66,7 @@ public class CommandSetBlockBreak extends CommandBase {
 				return;
 			}
 
-			BreakSavedData.get(world).setBreakData(parseBlockPos(sender, args, 0, true),
-					Integer.parseInt(args[3]), Float.parseFloat(args[4]));
+			BreakSavedData.get(world).setBreakData(parseBlockPos(sender, args, 0, true),world, Float.parseFloat(args[4]));
 		}
 	}
 

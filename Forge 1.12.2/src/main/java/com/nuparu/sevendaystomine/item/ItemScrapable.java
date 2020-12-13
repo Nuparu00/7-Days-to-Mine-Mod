@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 
 public class ItemScrapable extends Item implements IScrapable {
 	private EnumMaterial material;
-
 	private int weight;
 
 	public ItemScrapable(EnumMaterial mat) {

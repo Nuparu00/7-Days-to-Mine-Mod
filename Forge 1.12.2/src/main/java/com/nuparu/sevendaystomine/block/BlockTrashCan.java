@@ -43,7 +43,7 @@ public class BlockTrashCan extends BlockTileProvider<TileEntityTrashCan> impleme
 	public BlockTrashCan() {
 		super(Material.IRON);
 		setSoundType(SoundType.METAL);
-		this.setHardness(1.8F);
+		this.setHardness(1.4F);
 		this.setResistance(2.0F);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));

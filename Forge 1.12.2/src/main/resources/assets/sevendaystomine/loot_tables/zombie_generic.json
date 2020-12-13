@@ -9,7 +9,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "weight": 45,
+                    "weight": 40,
                     "name": "minecraft:paper",
                     "functions": [
                         {
@@ -23,7 +23,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 50,
+                    "weight": 140,
                     "name": "minecraft:rotten_flesh",
                     "functions": [
                         {
@@ -37,7 +37,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 50,
+                    "weight": 40,
                     "name": "minecraft:bone",
                     "functions": [
                         {
@@ -66,7 +66,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 3,
+                    "weight": 1,
                     "name": "sevendaystomine:pistol",
 					"functions": [
                         {
@@ -76,7 +76,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 10,
+                    "weight": 5,
                     "name": "sevendaystomine:ninemmbullet",
                     "functions": [
                         {
@@ -90,21 +90,21 @@
                 },
                 {
                     "type": "item",
-                    "weight": 25,
+                    "weight": 5,
                     "name": "sevendaystomine:bandage",
                     "functions": [
                         {
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 5
+                                "max": 2
                             }
                         }
                     ]
                 },
                 {
                     "type": "item",
-                    "weight": 30,
+                    "weight": 20,
                     "name": "sevendaystomine:cloth",
                     "functions": [
                         {
@@ -118,7 +118,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 8,
+                    "weight": 2,
                     "name": "sevendaystomine:advancedbandage",
                     "functions": [
                         {
@@ -132,7 +132,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 30,
+                    "weight": 5,
                     "name": "sevendaystomine:cent",
                     "functions": [
                         {
@@ -146,7 +146,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 40,
+                    "weight": 10,
                     "name": "sevendaystomine:moldy_bread",
                     "functions": [
                         {
@@ -157,7 +157,7 @@
                 },
                 {
                     "type": "empty",
-                    "weight": 100
+                    "weight": 300
                 }
             ]
         }

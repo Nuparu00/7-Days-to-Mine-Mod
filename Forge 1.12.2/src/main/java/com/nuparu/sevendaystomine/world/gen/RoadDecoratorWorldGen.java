@@ -6,6 +6,7 @@ import java.util.Random;
 import com.nuparu.sevendaystomine.block.BlockGarbage;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedChunk;
+import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModLootTables;
@@ -92,16 +93,27 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 								}
 								break;
 							} else if (rand.nextInt(300) == 0) {
-								CityHelper.placeRandomCar(world, pos.up(), EnumFacing.HORIZONTALS[rand.nextInt(4)],rand);
+								CityHelper.placeRandomCar(world, pos.up(), EnumFacing.HORIZONTALS[rand.nextInt(4)],true,rand);
 								break;
 							} else if (rand.nextInt(1024) == 0) {
 								Biome biome = world.getBiome(pos);
 								if (biome.getHeightVariation() > 0.2)
 									continue;
-								if (!CitySavedData.get(world).isCityNearby(pos, 2250000)) {
+								CitySavedData data = CitySavedData.get(world);
+								if (!data.isCityNearby(pos, 2250000) && !data.isScatteredNearby(pos, 22500)) {
 									City city = City.foundCity(world, pos);
 									city.startCityGen();
 									return;
+								}
+							}
+							else if(rand.nextInt(1024) == 0) {
+								int count = 2+world.rand.nextInt(6);
+								while (count-- > 0){
+									EntityBandit bandit = new EntityBandit(world);
+									bandit.setPositionAndRotation(pos.getX(), pos.getY()+2, pos.getZ(), world.rand.nextFloat(), world.rand.nextFloat());
+									if(!world.isRemote) {
+										world.spawnEntity(bandit);
+									}
 								}
 							}
 						}

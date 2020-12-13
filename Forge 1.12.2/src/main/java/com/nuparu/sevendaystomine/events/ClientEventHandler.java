@@ -12,12 +12,16 @@ import com.nuparu.sevendaystomine.client.gui.GuiRedirect;
 import com.nuparu.sevendaystomine.client.gui.GuiUpdate;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.init.ModBiomes;
+import com.nuparu.sevendaystomine.item.EnumMaterial;
+import com.nuparu.sevendaystomine.item.IScrapable;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.proxy.ClientProxy;
 import com.nuparu.sevendaystomine.proxy.CommonProxy;
 import com.nuparu.sevendaystomine.util.ConfigHandler;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.util.VanillaManager;
+import com.nuparu.sevendaystomine.util.VanillaManager.VanillaScrapableItem;
 import com.nuparu.sevendaystomine.util.VersionChecker;
 import com.nuparu.sevendaystomine.util.dialogue.SubtitleHelper;
 
@@ -34,6 +38,8 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -48,6 +54,8 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
@@ -210,13 +218,42 @@ public class ClientEventHandler {
 		}
 		ItemGun gun = (ItemGun) stack.getItem();
 		float factor = gun.getFOVFactor(stack);
-		if(factor == 1) return;
-		if(mc.gameSettings.keyBindAttack.isKeyDown()) {
-			event.setNewfov(event.getNewfov()/factor);
+		if (factor == 1)
+			return;
+		if (mc.gameSettings.keyBindAttack.isKeyDown()) {
+			event.setNewfov(event.getNewfov() / factor);
 		}
 
 	}
-	
 
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void itemToolTip(ItemTooltipEvent event) {
+		ItemStack stack = event.getItemStack();
+		if (stack.isEmpty())
+			return;
+		Item item = stack.getItem();
+
+		EnumMaterial mat = EnumMaterial.NONE;
+		int weight = 0;
+		if (item instanceof IScrapable) {
+			IScrapable scrapable = (IScrapable) stack.getItem();
+			mat = scrapable.getMaterial();
+			weight = scrapable.getWeight();
+
+		} else if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IScrapable) {
+			IScrapable scrapable = (IScrapable) ((ItemBlock) item).getBlock();
+			mat = scrapable.getMaterial();
+			weight = scrapable.getWeight();
+		} else if (VanillaManager.getVanillaScrapable(item) != null) {
+			VanillaScrapableItem scrapable = VanillaManager.getVanillaScrapable(item);
+			mat = scrapable.getMaterial();
+			weight = scrapable.getWeight();
+		}
+		
+		if(mat != null && mat != EnumMaterial.NONE) {
+			event.getToolTip().add(weight+"x"+mat.getLocalizedName());
+		}
+	}
 
 }

@@ -45,8 +45,8 @@ public class BuildingLargeBanditCamp extends Building {
 
 	List<INetwork> devices = new ArrayList<INetwork>();
 
-	public BuildingLargeBanditCamp() {
-		super(null, 0);
+	public BuildingLargeBanditCamp(int weight) {
+		super(null, weight);
 		this.canBeMirrored = false;
 		this.setPedestal(Blocks.STONE.getDefaultState());
 	}

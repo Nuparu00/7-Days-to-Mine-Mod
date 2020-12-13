@@ -53,6 +53,7 @@ public class LayerClothing implements LayerRenderer<EntityLivingBase> {
 			armorModel.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
 			this.playerRenderer.bindTexture(item.texture);
 			int c = item.getColor(stack);
+			GlStateManager.pushMatrix();
 			if (c != -1) // Allow this for anything, not only cloth.
 			{
 				float r = (float) (c >> 16 & 255) / 255.0F;
@@ -73,6 +74,8 @@ public class LayerClothing implements LayerRenderer<EntityLivingBase> {
 						scale + item.scale);
 
 			}
+			GlStateManager.color(1,1,1,1);
+			GlStateManager.popMatrix();
 		}
 
 	}

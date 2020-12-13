@@ -12,7 +12,7 @@ public class ItemM4 extends ItemGun {
 	public ItemM4() {
 		super();
 		this.setMaxAmmo(30);
-		this.setFullDamage(70f);
+		this.setFullDamage(65f);
 		this.setSpeed(28f);
 		this.setRecoil(2.5f);
 		this.setCounterDef(0);

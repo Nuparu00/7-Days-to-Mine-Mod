@@ -131,20 +131,28 @@ public class VanillaManager {
 		RecipeManager.removeRecipe(Blocks.IRON_BARS);
 		RecipeManager.removeRecipe(Blocks.IRON_TRAPDOOR);
 		RecipeManager.removeRecipe(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
-		RecipeManager.removeItem(net.minecraft.init.Items.WOODEN_SWORD);
-		RecipeManager.removeItem(net.minecraft.init.Items.WOODEN_AXE);
-		RecipeManager.removeItem(net.minecraft.init.Items.WOODEN_PICKAXE);
-		RecipeManager.removeItem(net.minecraft.init.Items.WOODEN_SHOVEL);
-		RecipeManager.removeItem(net.minecraft.init.Items.WOODEN_HOE);
-		RecipeManager.removeItem(net.minecraft.init.Items.STONE_SWORD);
-		RecipeManager.removeItem(net.minecraft.init.Items.STONE_AXE);
-		RecipeManager.removeItem(net.minecraft.init.Items.STONE_PICKAXE);
-		RecipeManager.removeItem(net.minecraft.init.Items.STONE_SHOVEL);
-		RecipeManager.removeItem(net.minecraft.init.Items.STONE_HOE);
-		RecipeManager.removeRecipe(net.minecraft.init.Items.IRON_INGOT);
-		RecipeManager.removeRecipe(net.minecraft.init.Items.GOLD_INGOT);
+		RecipeManager.removeItem(Items.WOODEN_SWORD);
+		RecipeManager.removeItem(Items.WOODEN_AXE);
+		RecipeManager.removeItem(Items.WOODEN_PICKAXE);
+		RecipeManager.removeItem(Items.WOODEN_SHOVEL);
+		RecipeManager.removeItem(Items.WOODEN_HOE);
+		RecipeManager.removeItem(Items.STONE_SWORD);
+		RecipeManager.removeItem(Items.STONE_AXE);
+		RecipeManager.removeItem(Items.STONE_PICKAXE);
+		RecipeManager.removeItem(Items.STONE_SHOVEL);
+		RecipeManager.removeItem(Items.STONE_HOE);
 		RecipeManager.removeRecipe(net.minecraft.init.Blocks.IRON_BLOCK);
 		RecipeManager.removeRecipe(net.minecraft.init.Blocks.GOLD_BLOCK);
+		RecipeManager.removeRecipe(Items.IRON_CHESTPLATE);
+		RecipeManager.removeRecipe(Items.IRON_HELMET);
+		RecipeManager.removeRecipe(Items.IRON_BOOTS);
+		RecipeManager.removeRecipe(Items.IRON_LEGGINGS);
+		RecipeManager.removeRecipe(Items.LEATHER_CHESTPLATE);
+		RecipeManager.removeRecipe(Items.LEATHER_HELMET);
+		RecipeManager.removeRecipe(Items.LEATHER_BOOTS);
+		RecipeManager.removeRecipe(Items.LEATHER_LEGGINGS);
+		RecipeManager.removeSmelting(new ItemStack(Items.GOLD_INGOT),"minecraft");
+		RecipeManager.removeSmelting(new ItemStack(Items.IRON_INGOT),"minecraft");
 	}
 
 	public static void addVanillaBlockUpgrades() {
@@ -214,8 +222,8 @@ public class VanillaManager {
 	}
 	
 	public static void addVanillaScrapables() {
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.IRON_INGOT,EnumMaterial.IRON).setWeight(6));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.GOLD_INGOT,EnumMaterial.GOLD).setWeight(6));
+		vanillaScrapables.add(new VanillaScrapableItem(Items.IRON_INGOT,EnumMaterial.IRON).setWeight(6));
+		vanillaScrapables.add(new VanillaScrapableItem(Items.GOLD_INGOT,EnumMaterial.GOLD).setWeight(6));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.IRON_ORE,EnumMaterial.IRON).setWeight(12));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.GOLD_ORE,EnumMaterial.GOLD).setWeight(12));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.IRON_BLOCK,EnumMaterial.IRON).setWeight(54));
@@ -223,12 +231,16 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.STONE,EnumMaterial.STONE).setWeight(9));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.GRAVEL,EnumMaterial.STONE).setWeight(4));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.COBBLESTONE,EnumMaterial.STONE).setWeight(6));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.FLINT,EnumMaterial.STONE).setWeight(2));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.COAL,EnumMaterial.CARBON).setWeight(1));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.IRON_NUGGET,EnumMaterial.IRON).setWeight(0));
-		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Items.GOLD_NUGGET,EnumMaterial.GOLD).setWeight(0));
+		vanillaScrapables.add(new VanillaScrapableItem(Items.FLINT,EnumMaterial.STONE).setWeight(2));
+		vanillaScrapables.add(new VanillaScrapableItem(Items.COAL,EnumMaterial.CARBON).setWeight(1));
+		vanillaScrapables.add(new VanillaScrapableItem(Items.IRON_NUGGET,EnumMaterial.IRON).setWeight(0));
+		vanillaScrapables.add(new VanillaScrapableItem(Items.GOLD_NUGGET,EnumMaterial.GOLD).setWeight(0));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.GLASS,EnumMaterial.GLASS).setWeight(12));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.STAINED_GLASS,EnumMaterial.GLASS).setWeight(12));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.GLASS_PANE,EnumMaterial.GLASS).setWeight(6));
+		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.STAINED_GLASS_PANE,EnumMaterial.GLASS).setWeight(6));
 		
-		ItemUtils.INSTANCE.addSmallestBit(EnumMaterial.CARBON, net.minecraft.init.Items.COAL);
+		ItemUtils.INSTANCE.addSmallestBit(EnumMaterial.CARBON, Items.COAL);
 	}
 	
 	public static VanillaScrapableItem getVanillaScrapable(Item item) {

@@ -37,7 +37,7 @@ public class TileEntitySirene extends TileEntity implements ITickable {
 				this.time = channel.duration;
 			} else if (this.time <= 0) {
 				this.time = channel.duration;
-				SevenDaysToMine.proxy.playLoudSound(world,channel.sound.getSoundName(), 10f, pos, SoundCategory.RECORDS);
+				SevenDaysToMine.proxy.playLoudSound(world,channel.sound, 10f, pos, SoundCategory.RECORDS);
 			}
 			--this.time;
 
@@ -55,7 +55,7 @@ public class TileEntitySirene extends TileEntity implements ITickable {
 			SevenDaysToMine.proxy.stopLoudSound(pos);
 			return;
 		}
-		SevenDaysToMine.proxy.playLoudSound(world,channel.sound.getSoundName(), 10f, pos, SoundCategory.RECORDS);
+		SevenDaysToMine.proxy.playLoudSound(world,channel.sound, 10f, pos, SoundCategory.RECORDS);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class TileEntitySirene extends TileEntity implements ITickable {
 			if (CHANNELS.get(i) == channel && i < CHANNELS.size() - 1) {
 				channel = CHANNELS.get(i + 1);
 				this.time = channel.duration;
-				SevenDaysToMine.proxy.playLoudSound(world,channel.sound.getSoundName(), 10f, pos, SoundCategory.RECORDS);
+				SevenDaysToMine.proxy.playLoudSound(world,channel.sound, 10f, pos, SoundCategory.RECORDS);
 				return;
 			}
 		}

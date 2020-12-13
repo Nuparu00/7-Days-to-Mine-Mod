@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=up":    { "model": "sevendaystomine:metal_spikes", "uvlock": true },
+        "facing=down":  { "model": "sevendaystomine:metal_spikes", "uvlock": true, "x": 180 },
+        "facing=east":  { "model": "sevendaystomine:metal_spikes", "uvlock": true, "x": 90, "y": 90 },
+        "facing=west":  { "model": "sevendaystomine:metal_spikes", "uvlock": true, "x": 90, "y": 270 },
+        "facing=south": { "model": "sevendaystomine:metal_spikes", "uvlock": true, "x": 90, "y": 180 },
+        "facing=north": { "model": "sevendaystomine:metal_spikes", "uvlock": true, "x": 90 }
+    }
+}

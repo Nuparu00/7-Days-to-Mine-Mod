@@ -100,8 +100,8 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 	private GuiButton realmsButton;
 
 	public String official_server_ip = "";
-	public static final int MINIMAL_DUST_PARTICLES = 256;
-	public static final int NATURAL_MAXIMUM_DUST_PARTICLES = 321;
+	public static final int MINIMAL_DUST_PARTICLES = 300;
+	public static final int NATURAL_MAXIMUM_DUST_PARTICLES = 256;
 	public List<Dust> dusts = new ArrayList<Dust>();
 	public List<Dust> dustsToAdd = new ArrayList<Dust>();
 	public List<Dust> dustsToRemove = new ArrayList<Dust>();
@@ -168,9 +168,6 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 			Dust dust = summonDust(RANDOM, sr);
 			dust.x = mX;
 			dust.y = mY;
-			if (dust.opacity < 0.5f) {
-				dust.opacity = 0.5f;
-			}
 			dusts.add(dust);
 		}
 
@@ -212,7 +209,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 
 			catch (IOException e) {
 			} finally {
-
+				in.close();
 				try {
 					List<String> content = IOUtils.readLines(in);
 					official_server_ip = content.get(0);
@@ -446,7 +443,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 	public Dust summonDust(Random rand, ScaledResolution sr) {
 		float x = rand.nextFloat() * sr.getScaledWidth();
 		float y = MathUtils.getFloatInRange(0f, 0.75f) * sr.getScaledHeight();
-		float motionX = rand.nextFloat() - 0.5f;
+		float motionX = rand.nextFloat()*0.6f - 0.15f;
 		float motionY = rand.nextFloat();
 		float[] rgb = new float[3];
 		if (bday) {
@@ -474,7 +471,8 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 			motionY = -motionY;
 		}
 
-		return new Dust(x, y, motionX, motionY, MathUtils.getFloatInRange(0.0625f, 1f), MathUtils.getFloatInRange(0.0625f, 1f), rgb, this);
+		return new Dust(x, y, motionX, motionY, MathUtils.getFloatInRange(0.017528f, 0.80f),
+				MathUtils.getFloatInRange(0.25f, 1f), rgb, this);
 	}
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -487,13 +485,13 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 		dusts.removeAll(dustsToRemove);
 		dustsToRemove.clear();
 		dustsToAdd.clear();
-		
+
 		List<Dust> dustsClone = new ArrayList<Dust>();
 		dustsClone.addAll(dusts);
 		ListIterator<Dust> it = dustsClone.listIterator();
 		while (it.hasNext()) {
 			Dust dust = it.next();
-			dust.update();
+			dust.update(mouseX, mouseY);
 			if (dust.x - dust.scale > ((sr.getScaledWidth())) || dust.y - dust.scale > ((sr.getScaledHeight()))
 					|| dust.x + dust.scale < 0 || dust.y + dust.scale < 0) {
 				dust.opacity -= 0.05f;
@@ -536,13 +534,15 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 		GlStateManager.scale(f, f, f);
 		this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, -256);
 		GlStateManager.popMatrix();
-		String s = "7 Days to Mine for Minecraft 1.8.8";
+		String s = "7 Days to Mine for Minecraft 1.12.2";
 		if (this.mc.isDemo()) {
 			s = s + " Demo";
 		}
 
-		java.util.List<String> brandings = com.google.common.collect.Lists
-				.reverse(net.minecraftforge.fml.common.FMLCommonHandler.instance().getBrandings(true));
+		List<String> brandings = new ArrayList<String>(
+				net.minecraftforge.fml.common.FMLCommonHandler.instance().getBrandings(true));
+		brandings.add(1, "7 Days to Mine " + SevenDaysToMine.VERSION);
+		brandings = Lists.reverse(brandings);
 		for (int brdline = 0; brdline < brandings.size(); brdline++) {
 			String brd = brandings.get(brdline);
 			if (!com.google.common.base.Strings.isNullOrEmpty(brd)) {
@@ -618,7 +618,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 			this.gui = gui;
 		}
 
-		public void update() {
+		public void update(int mouseX, int mouseY) {
 			this.x += +this.motionX;
 			this.y += this.motionY;
 			this.lifeSpan--;
@@ -626,6 +626,16 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 				this.opacity -= 0.05f;
 				this.lifeSpan = 0;
 			}
+			else if(opacity < 1 && RANDOM.nextInt(20) == 0) {
+				opacity = (float) MathHelper.clamp(opacity+RANDOM.nextFloat()*0.05, 0, 1);
+			}
+			if(mouseX-x < -500) {
+				motionX+=MathUtils.getFloatInRange(-0.0071258f, 0.0005f);
+			}
+			else if(mouseX - x > 500) {
+				motionX+=MathUtils.getFloatInRange(-0.0005f, 0.0071258f);
+			}
+			
 
 			if (this.opacity <= 0) {
 				this.gui.dustsToRemove.add(this);

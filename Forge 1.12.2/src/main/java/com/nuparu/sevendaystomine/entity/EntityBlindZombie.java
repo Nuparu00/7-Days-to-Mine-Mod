@@ -18,6 +18,7 @@ public class EntityBlindZombie extends EntityBipedalZombie implements INoiseList
 	
 	public EntityBlindZombie(World worldIn) {
 		super(worldIn);
+		this.experienceValue = 20;
 	}
 	
 	@Override
@@ -38,7 +39,7 @@ public class EntityBlindZombie extends EntityBipedalZombie implements INoiseList
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.16D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70D);
 	}
 
 	@Override

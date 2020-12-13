@@ -181,6 +181,7 @@ public class ModBlocks {
 			.setUnlocalizedName("sedan_white");
 	public static final Block SEDAN_BLACK = new BlockSedan().setRegistryName("sedan_black")
 			.setUnlocalizedName("sedan_black");
+	public static final Block POLICE_CAR = new BlockPoliceCar().setRegistryName("police_car").setUnlocalizedName("police_car");
 
 	public static final Block DEAD_MOSSY_STONE = new BlockStoneBase().setRegistryName("DeadMossyStone")
 			.setUnlocalizedName("DeadMossyStone");
@@ -484,8 +485,33 @@ public class ModBlocks {
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
 	public static final Block SIRENE = new BlockSirene().setRegistryName("sirene").setUnlocalizedName("sirene")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);;
-			
-	public static final Block STRUCTURE_STONE = new BlockStructureStone();
-	public static final Block STRUCTURE_COBBLESTONE =  new BlockBase(Material.ROCK).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("structure_cobblestone").setRegistryName("structure_cobblestone").setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 
+	public static final Block STRUCTURE_STONE = new BlockStructureStone();
+	public static final Block STRUCTURE_COBBLESTONE = new BlockBase(Material.ROCK).setHardness(2.0F)
+			.setResistance(10.0F).setUnlocalizedName("structure_cobblestone").setRegistryName("structure_cobblestone")
+			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+	public static final Block FAKE_ANVIL = new BlockFakeAnvil().setRegistryName("fake_anvil")
+			.setUnlocalizedName("fake_anvil");
+
+	public static final Block REDSTONE_LAMP_BROKEN = new BlockRedstoneLightBroken()
+			.setRegistryName("redstone_lamp_broken").setUnlocalizedName("redstone_lamp_broken")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+
+	public static final Block CALENDAR = new BlockCalendar().setRegistryName("calendar").setUnlocalizedName("calendar")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	public static final Block FLAMETHOWER = new BlockFlamethrower().setRegistryName("flamethrower_trap")
+			.setUnlocalizedName("flamethrower_trap").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	public static final Block METAL_SPIKES = new BlockMetalSpikes().setRegistryName("metal_spikes")
+			.setUnlocalizedName("metal_spikes").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	
+	public static final Block BOOKSHELF_SPRUCE = new BlockBookshelfEnhanced().setRegistryName("bookshelf_spruce")
+			.setUnlocalizedName("bookshelf_spruce").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	public static final Block BOOKSHELF_BIRCH = new BlockBookshelfEnhanced().setRegistryName("bookshelf_birch")
+			.setUnlocalizedName("bookshelf_birch").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	public static final Block BOOKSHELF_JUNGLE = new BlockBookshelfEnhanced().setRegistryName("bookshelf_jungle")
+			.setUnlocalizedName("bookshelf_jungle").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	public static final Block BOOKSHELF_ACACIA = new BlockBookshelfEnhanced().setRegistryName("bookshelf_acacia")
+			.setUnlocalizedName("bookshelf_acacia").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	public static final Block BOOKSHELF_DARK_OAK = new BlockBookshelfEnhanced().setRegistryName("bookshelf_dark_oak")
+			.setUnlocalizedName("bookshelf_dark_oak").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 }

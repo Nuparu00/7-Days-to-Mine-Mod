@@ -61,13 +61,25 @@ public class EntityZombieBase extends EntityMob {
 	public IAttributeInstance attack;
 	public IAttributeInstance armor;
 
+	public static final AttributeModifier NIGHT_SPEED_BOOST = new AttributeModifier(
+			UUID.fromString("da53c6d8-c01f-11e7-abc4-cec278b6b50a"), "nightSpeedBoost", 0.75f, 2);
+	public static final AttributeModifier BLOODMOON_SPEED_BOOST = new AttributeModifier(
+			UUID.fromString("2ca21e76-c020-11e7-abc4-cec278b6b50a"), "bloodmoonSpeedBoost", 0.2f, 2);
+	public static final AttributeModifier BLOODMOON_DAMAGE_BOOST = new AttributeModifier(
+			UUID.fromString("dc7572f6-d05f-4df6-afee-7fa78046ec54"), "bloodmoonDamageBoost", 0.5f, 2);
+	public static final AttributeModifier BLOODMOON_RANGE_BOOST = new AttributeModifier(
+			UUID.fromString("4340be6a-c8bf-11e7-a80b-cec278b6b50a"), "bloodmoonRangeBoost", 0.5f, 2);
+	public static final AttributeModifier BLOODMOON_ARMOR_BOOST = new AttributeModifier(
+			UUID.fromString("b859cf4a-b7cd-486f-9b59-ebabfdd0985e"), "bloodmoonArmorBoost", 4f, 0);
+
 	public Horde horde;
-	
+
 	public ResourceLocation lootTable = ModLootTables.ZOMBIE_GENERIC;
 
 	public EntityZombieBase(World worldIn) {
 		super(worldIn);
 		this.setSize(0.6F, 1.95F);
+		this.experienceValue = 15;
 	}
 
 	protected void initEntityAI() {
@@ -103,7 +115,7 @@ public class EntityZombieBase extends EntityMob {
 		range.setBaseValue(64.0D);
 		speed.setBaseValue(0.175D);
 		attack.setBaseValue(4.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60D);
 		armor.setBaseValue(0.0D);
 	}
 
@@ -141,70 +153,47 @@ public class EntityZombieBase extends EntityMob {
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 
-		IAttributeInstance speed = getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-		IAttributeInstance range = getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-		IAttributeInstance attack = getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		IAttributeInstance armor = getEntityAttribute(SharedMonsterAttributes.ARMOR);
-
 		if (!this.world.isRemote) {
-			if (Utils.isBloodmoon(world)) {
-
-				if (speed.getModifier(BLOODMOON_SPEED_BOOST_ID) == null) {
-					AttributeModifier speedModifier = new AttributeModifier(BLOODMOON_SPEED_BOOST_ID,
-							"BLOODMOON_SPEED_BOOST", 0.2f, 2);
-					speed.applyModifier(speedModifier);
+			if (Utils.isBloodmoonProper(world)) {
+				if (!speed.hasModifier(BLOODMOON_SPEED_BOOST)) {
+					speed.applyModifier(BLOODMOON_SPEED_BOOST);
 				}
-				if (range.getModifier(BLOODMOON_RANGE_BOOST_ID) == null) {
-					AttributeModifier rangeModifier = new AttributeModifier(BLOODMOON_RANGE_BOOST_ID,
-							"BLOODMOON_RANGE_BOOST", 0.5f, 2);
-					range.applyModifier(rangeModifier);
+				if (!range.hasModifier(BLOODMOON_RANGE_BOOST)) {
+					range.applyModifier(BLOODMOON_RANGE_BOOST);
 				}
-
-				if (attack.getModifier(BLOODMOON_DAMAGE_BOOST_ID) == null) {
-					AttributeModifier rangeModifier = new AttributeModifier(BLOODMOON_DAMAGE_BOOST_ID,
-							"BLOODMOON_DAMAGE_BOOST", 0.5f, 2);
-					attack.applyModifier(rangeModifier);
+				if (!armor.hasModifier(BLOODMOON_ARMOR_BOOST)) {
+					armor.applyModifier(BLOODMOON_ARMOR_BOOST);
 				}
-
-				if (armor.getModifier(BLOODMOON_ARMOR_BOOST_ID) == null) {
-					AttributeModifier rangeModifier = new AttributeModifier(BLOODMOON_ARMOR_BOOST_ID,
-							"BLOODMOON_ARMOR_BOOST", 4f, 0);
-					armor.applyModifier(rangeModifier);
+				if (!attack.hasModifier(BLOODMOON_DAMAGE_BOOST)) {
+					attack.applyModifier(BLOODMOON_DAMAGE_BOOST);
 				}
-
 			} else {
-				if (speed.getModifier(BLOODMOON_SPEED_BOOST_ID) != null) {
-					speed.removeModifier(speed.getModifier(BLOODMOON_SPEED_BOOST_ID));
+				if (speed.hasModifier(BLOODMOON_SPEED_BOOST)) {
+					speed.removeModifier(BLOODMOON_SPEED_BOOST);
 				}
-				if (range.getModifier(BLOODMOON_RANGE_BOOST_ID) != null) {
-					range.removeModifier(range.getModifier(BLOODMOON_RANGE_BOOST_ID));
+				if (range.hasModifier(BLOODMOON_RANGE_BOOST)) {
+					range.removeModifier(BLOODMOON_RANGE_BOOST);
 				}
-
-				if (armor.getModifier(BLOODMOON_ARMOR_BOOST_ID) != null) {
-					armor.removeModifier(armor.getModifier(BLOODMOON_ARMOR_BOOST_ID));
+				if (armor.hasModifier(BLOODMOON_ARMOR_BOOST)) {
+					armor.removeModifier(BLOODMOON_ARMOR_BOOST);
 				}
-
-				if (attack.getModifier(BLOODMOON_DAMAGE_BOOST_ID) != null) {
-					attack.removeModifier(attack.getModifier(BLOODMOON_DAMAGE_BOOST_ID));
+				if (attack.hasModifier(BLOODMOON_DAMAGE_BOOST)) {
+					attack.removeModifier(BLOODMOON_DAMAGE_BOOST);
 				}
 			}
-			BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-			int i = this.world.getLight(blockpos, true);
-			if (i >= 10) {
 
-				if (speed.getModifier(NIGHT_BOOST_ID) != null) {
-					speed.removeModifier(speed.getModifier(NIGHT_BOOST_ID));
+			BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+			int light = this.world.getLight(pos, true);
+			if (light < 10) {
+				if (!speed.hasModifier(NIGHT_SPEED_BOOST)) {
+					speed.applyModifier(NIGHT_SPEED_BOOST);
 				}
 			} else {
-
-				if (speed.getModifier(NIGHT_BOOST_ID) == null) {
-					AttributeModifier speedModifier = new AttributeModifier(NIGHT_BOOST_ID, "NIGHT_BOOST", 0.75f, 2);
-					speed.applyModifier(speedModifier);
+				if (speed.hasModifier(NIGHT_SPEED_BOOST)) {
+					speed.removeModifier(NIGHT_SPEED_BOOST);
 				}
-
 			}
 		}
-
 	}
 
 	@Override
@@ -215,7 +204,7 @@ public class EntityZombieBase extends EntityMob {
 	@Override
 	public void onDeath(DamageSource source) {
 		super.onDeath(source);
-		if (horde != null) {
+		if (!this.world.isRemote && horde != null) {
 			horde.onZombieKill(this);
 		}
 	}
@@ -281,37 +270,41 @@ public class EntityZombieBase extends EntityMob {
 	public Vec3d corpseRotation() {
 		return Vec3d.ZERO;
 	}
-	
+
 	public Vec3d corpseTranslation() {
 		return Vec3d.ZERO;
 	}
-	
+
 	public boolean customCoprseTransform() {
 		return false;
 	}
+
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
+	}
+
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return SoundEvents.ENTITY_ZOMBIE_HURT;
+	}
+
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_ZOMBIE_DEATH;
+	}
+
+	protected SoundEvent getStepSound() {
+		return SoundEvents.ENTITY_ZOMBIE_STEP;
+	}
+
+	protected void playStepSound(BlockPos pos, Block blockIn) {
+		this.playSound(this.getStepSound(), 0.15F, 1.0F);
+	}
 	
-	protected SoundEvent getAmbientSound()
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
-        return SoundEvents.ENTITY_ZOMBIE_HURT;
-    }
-
-    protected SoundEvent getDeathSound()
-    {
-        return SoundEvents.ENTITY_ZOMBIE_DEATH;
-    }
-
-    protected SoundEvent getStepSound()
-    {
-        return SoundEvents.ENTITY_ZOMBIE_STEP;
-    }
-
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(this.getStepSound(), 0.15F, 1.0F);
+		if(source.isExplosion()) {
+			amount *= 2;
+		}
+        return this.isEntityInvulnerable(source) ? false : super.attackEntityFrom(source, amount);
     }
 }

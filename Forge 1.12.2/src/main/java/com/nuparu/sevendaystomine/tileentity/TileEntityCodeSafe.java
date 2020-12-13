@@ -163,7 +163,7 @@ public class TileEntityCodeSafe extends TileEntitySafe {
 
 	public int testDigit(EntityPlayer player, int guess, int numPos) {
 		int digit = tryToGetDigit(player, numPos);
-		return digit < guess ? 1 : (digit > guess ? -1 : 0);
+		return digit < guess ? -1 : (digit > guess ? 1 : 0);
 	}
 
 	@Override

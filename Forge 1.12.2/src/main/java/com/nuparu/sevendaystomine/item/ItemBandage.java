@@ -13,12 +13,15 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class ItemBandage extends Item {
+public class ItemBandage extends Item implements IScrapable {
+	private EnumMaterial material = EnumMaterial.CLOTH;
+	private int weight = 1;
 
 	public ItemBandage() {
 		setMaxDamage(0);
 		maxStackSize = 16;
 		setCreativeTab(SevenDaysToMine.TAB_MEDICINE);
+
 	}
 
 	@Override
@@ -46,6 +49,16 @@ public class ItemBandage extends Item {
 			}
 		}
 	}
+	
+	@Override
+	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
+    {
+		if(target.getActivePotionEffect(Potions.bleeding) != null) {
+			target.removePotionEffect(Potions.bleeding);
+			stack.shrink(1);
+		}
+        return false;
+    }
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack itemStack) {
@@ -55,5 +68,25 @@ public class ItemBandage extends Item {
 	@Override
 	public EnumAction getItemUseAction(ItemStack itemStack) {
 		return EnumAction.BOW;
+	}
+
+	public void setMaterial(EnumMaterial mat) {
+		material = mat;
+	}
+
+	public EnumMaterial getMaterial() {
+		return material;
+	}
+
+	public void setWeight(int newWeight) {
+		weight = newWeight;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public boolean canBeScraped() {
+		return true;
 	}
 }

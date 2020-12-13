@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.world.gen.city.building;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ import com.nuparu.sevendaystomine.block.BlockWheels;
 import com.nuparu.sevendaystomine.block.BlockWritingTable;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
+import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
+import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModLootTables;
@@ -52,6 +55,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityVindicator;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
@@ -293,14 +297,14 @@ public class Building {
 			}
 			case "bookshelf": {
 				TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
-				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.setLootTable(getBookshelfLootTable(world.rand), world.rand.nextLong());
 				te.fillWithLoot(null);
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				break;
 			}
 			case "bookshelf_bottom": {
 				TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.up());
-				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.setLootTable(getBookshelfLootTable(world.rand), world.rand.nextLong());
 				te.fillWithLoot(null);
 				world.setBlockState(pos, world.getBlockState(
 						pos.offset(world.getBlockState(pos.up()).getValue(BlockBookshelfEnhanced.FACING))));
@@ -308,23 +312,23 @@ public class Building {
 			}
 			case "bookshelves": {
 				TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
-				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.setLootTable(getBookshelfLootTable(world.rand), world.rand.nextLong());
 				te.fillWithLoot(null);
 				te = (TileEntityBookshelf) world.getTileEntity(pos.down(2));
-				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.setLootTable(getBookshelfLootTable(world.rand), world.rand.nextLong());
 				te.fillWithLoot(null);
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				break;
 			}
 			case "bookshelf_tall": {
 				TileEntityBookshelf te = (TileEntityBookshelf) world.getTileEntity(pos.down());
-				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.setLootTable(getBookshelfLootTable(world.rand), world.rand.nextLong());
 				te.fillWithLoot(null);
 				te = (TileEntityBookshelf) world.getTileEntity(pos.down(2));
-				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.setLootTable(getBookshelfLootTable(world.rand), world.rand.nextLong());
 				te.fillWithLoot(null);
 				te = (TileEntityBookshelf) world.getTileEntity(pos.down(3));
-				te.setLootTable(ModLootTables.BOOKSHELF_COMMON, world.rand.nextLong());
+				te.setLootTable(getBookshelfLootTable(world.rand), world.rand.nextLong());
 				te.fillWithLoot(null);
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				break;
@@ -422,6 +426,13 @@ public class Building {
 				te.fillWithLoot(null);
 				break;
 			}
+			case "supply_chest": {
+				TileEntityChest te = (TileEntityChest) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.SUPPLY_CHEST, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
 			case "bandit": {
 				EntityBandit bandit = new EntityBandit(world);
 				bandit.enablePersistence();
@@ -469,8 +480,27 @@ public class Building {
 				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.CODE_SAFE, world, world.rand);
 				break;
 			}
+			case "zombie_policeman": {
+				EntityZombiePoliceman zombie = new EntityZombiePoliceman(world);
+				zombie.enablePersistence();
+				zombie.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+				zombie.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(zombie)), (IEntityLivingData) null);
+				world.spawnEntity(zombie);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+				break;
+			}
+			case "plagued_nurse": {
+				EntityPlaguedNurse zombie = new EntityPlaguedNurse(world);
+				zombie.enablePersistence();
+				zombie.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+				zombie.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(zombie)), (IEntityLivingData) null);
+				world.spawnEntity(zombie);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+				break;
+			}
 			}
 		} catch (Exception e) {
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			Utils.getLogger().warn(pos.toString());
 			e.printStackTrace();
 		}
@@ -567,5 +597,14 @@ public class Building {
 	public Building setHasPedestal(boolean hasPedestal) {
 		this.hasPedestal = hasPedestal;
 		return this;
+	}
+	
+	public Building setCanBeMirrored(boolean canBeMirrored) {
+		this.canBeMirrored = canBeMirrored;
+		return this;
+	}
+	
+	public ResourceLocation getBookshelfLootTable(Random rand) {
+		return rand.nextInt(10) == 0 ? ModLootTables.BOOKSHELF_RARE : ModLootTables.BOOKSHELF_RARE;
 	}
 }

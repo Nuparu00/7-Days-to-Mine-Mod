@@ -1,12 +1,15 @@
 package com.nuparu.sevendaystomine.crafting;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
@@ -70,5 +73,18 @@ public class RecipeManager {
 
 	public static void removeItem(Block block) {
 		removeItem(Item.getItemFromBlock(block));
+	}
+	
+	public static void removeSmelting(ItemStack resultStack, String modID) {
+		ItemStack recipeResult = null;
+		Map<ItemStack,ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
+		Iterator<ItemStack> iterator = recipes.keySet().iterator();
+		while(iterator.hasNext()) {
+			ItemStack tmpRecipe = iterator.next();
+			recipeResult = recipes.get(tmpRecipe);
+			if (ItemStack.areItemStacksEqual(resultStack, recipeResult)) {
+				iterator.remove();
+			 }
+		}
 	}
 }

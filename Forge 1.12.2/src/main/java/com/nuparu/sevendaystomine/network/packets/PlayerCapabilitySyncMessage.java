@@ -35,8 +35,7 @@ public class PlayerCapabilitySyncMessage implements IMessage {
 		NBTTagCompound nbt = ByteBufUtils.readTag(buf);
 		if (nbt == null)
 			return;
-
-          extendedPlayer = new ExtendedPlayer();
+		extendedPlayer = new ExtendedPlayer();
 		extendedPlayer.readNBT(nbt);
 	}
 
@@ -54,7 +53,8 @@ public class PlayerCapabilitySyncMessage implements IMessage {
 	public IExtendedPlayer getExtendedPlayer() {
 		return this.extendedPlayer;
 	}
-     public int getPlayerID(){
-          return playerID;
-     }
+
+	public int getPlayerID() {
+		return playerID;
+	}
 }

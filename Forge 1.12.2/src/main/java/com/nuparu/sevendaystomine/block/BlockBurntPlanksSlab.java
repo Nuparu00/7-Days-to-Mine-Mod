@@ -25,7 +25,6 @@ public class BlockBurntPlanksSlab extends BlockSlabBase {
 		if (!isdouble) {
 			setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		}
-		Blocks.FIRE.setFireInfo(this, 5, 20);
 	}
 
 	@Override

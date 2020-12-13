@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
+import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.building.Building;
 
 import net.minecraft.entity.Entity;
@@ -13,11 +14,14 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class Horde {
+	public static final int WAVE_DELAY = 200;
+
 	// Living zombies
 	public List<EntityZombieBase> zombies = new ArrayList<EntityZombieBase>();
 	public List<HordeEntry> entries = new ArrayList<HordeEntry>();
@@ -25,15 +29,24 @@ public abstract class Horde {
 	public BlockPos center;
 	public World world;
 	public UUID uuid;
+	public long startTime = 0;
+	public int waves;
+	public int zombiesInWave = 0;
+
+	public int waveTimer;
+
+	public HordeSavedData data;
 
 	public Horde(World world) {
 		this.world = world;
+		startTime = Utils.getDay(world);
 	}
 
 	public Horde(BlockPos center, World world) {
 		uuid = UUID.randomUUID();
 		this.center = center;
 		this.world = world;
+		startTime = Utils.getDay(world);
 		HordeSavedData.get(world).addHorde(this);
 	}
 
@@ -43,7 +56,31 @@ public abstract class Horde {
 	}
 
 	public void start() {
+		--waves;
+		waveTimer = WAVE_DELAY;
+	}
 
+	public void update() {
+		if (startTime != Utils.getDay(world) && world != null) {
+			HordeSavedData data = HordeSavedData.get(world);
+			if (data != null) {
+				data.removeHorde(this);
+				return;
+			}
+		} else if (zombies.size() == 0) {
+			if (waves > 0) {
+				if (--waveTimer <= 0) {
+					start();
+				}
+			}
+			else {
+				HordeSavedData data = HordeSavedData.get(world);
+				if (data != null) {
+					data.removeHorde(this);
+					return;
+				}
+			}
+		}
 	}
 
 	public HordeEntry getHordeEntry(Random rand) {
@@ -72,14 +109,36 @@ public abstract class Horde {
 	public void onPlayerStopTacking(EntityPlayerMP player, EntityZombieBase zombie) {
 
 	}
-	
+
 	public void onRemove() {
-		
+		for(EntityZombieBase zombie : zombies) {
+			zombie.horde = null;
+		}
+
 	}
 
-	public abstract void readFromNBT(NBTTagCompound compound);
+	public void readFromNBT(NBTTagCompound compound) {
+		if (world.isRemote) {
+			return;
+		}
+		waves = compound.getInteger("wave");
+		zombiesInWave = compound.getInteger("zombiesInWave");
+		uuid = NBTUtil.getUUIDFromTag(compound.getCompoundTag("uuid"));
+		center = BlockPos.fromLong(compound.getLong("center"));
+		startTime = compound.getLong("startTime");
+		waveTimer = compound.getInteger("waveTimer");
+		zombies.clear();
+	}
 
-	public abstract NBTTagCompound writeToNBT(NBTTagCompound compound);
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		compound.setInteger("wave", waves);
+		compound.setInteger("zombiesInWave", zombiesInWave);
+		compound.setTag("uuid", NBTUtil.createUUIDTag(uuid));
+		compound.setLong("center", center.toLong());
+		compound.setLong("startTime", startTime);
+		compound.setInteger("waveTimer", waveTimer);
+		return compound;
+	}
 
 	public static class HordeEntry {
 		public ResourceLocation res;

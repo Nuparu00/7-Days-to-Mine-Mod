@@ -13,7 +13,6 @@ public class BlockBurntPlanksFence extends BlockFenceBase {
 		super(Material.WOOD, MapColor.BLACK);
 		setSoundType(SoundType.WOOD);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		Blocks.FIRE.setFireInfo(this, 5, 20);
 	}
 
 }

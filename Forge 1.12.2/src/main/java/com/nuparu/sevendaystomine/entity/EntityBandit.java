@@ -38,7 +38,9 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.monster.AbstractSkeleton;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEvoker;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityVex;
 import net.minecraft.entity.monster.EntityVindicator;
 import net.minecraft.entity.monster.EntityZombie;
@@ -69,6 +71,7 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 	public EntityBandit(World worldIn) {
 		super(worldIn);
 		setCombatTask();
+		this.experienceValue = 5;
 	}
 
 	@Override
@@ -122,8 +125,11 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 				new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
 		this.targetTasks.addTask(2,
 				new EntityAINearestAttackableTarget<EntityZombieBase>(this, EntityZombieBase.class, true));
+		this.targetTasks.addTask(2,
+				new EntityAINearestAttackableTarget<EntityCreeper>(this, EntityCreeper.class, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntitySpider>(this, EntitySpider.class, true));
 	}
-	
+
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
@@ -178,13 +184,12 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 		ItemStack stack = ItemStack.EMPTY;
 		stack = new ItemStack(ModItems.PISTOL);
 
-		if(rand.nextInt(10) == 0) {
+		if (rand.nextInt(10) == 0) {
 			stack = new ItemStack(ModItems.SHOTGUN);
-		}
-		else if(rand.nextInt(10) == 0) {
+		} else if (rand.nextInt(10) == 0) {
 			stack = new ItemStack(ModItems.MP5);
 		}
-		
+
 		ItemQuality.setQualityForStack(stack, MathUtils.getIntInRange(rand, 50, 300));
 
 		this.setHeldItem(EnumHand.MAIN_HAND, stack);

@@ -14,7 +14,6 @@ public class BlockBurntLog extends BlockPillarBase {
 		setHardness(2F);
 		setResistance(10F);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-		Blocks.FIRE.setFireInfo(this,5,20);
 	}
 
 }

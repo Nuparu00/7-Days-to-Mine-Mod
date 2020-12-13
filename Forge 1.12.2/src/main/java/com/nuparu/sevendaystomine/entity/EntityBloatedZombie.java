@@ -7,6 +7,7 @@ public class EntityBloatedZombie extends EntityBipedalZombie {
 
 	public EntityBloatedZombie(World worldIn) {
 		super(worldIn);
+		this.experienceValue = 20;
 	}
 	
 	@Override

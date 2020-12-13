@@ -11,6 +11,33 @@ stat.quality.great.name=Great
 stat.ammo.name=Ammo: 
 stat.capacity.name=Capacity: 
 
+#Materials
+material.none=None
+material.carbon=Carbon
+material.iron=Iron
+material.brass=Brass
+material.lead=Lead
+material.steel=Steel
+material.copper=Copper
+material.bronze=Bronze
+material.tin=Tin
+material.zinc=Zinc
+material.wolfram=Wolfram
+material.uranium=Uranium
+material.wood=Wood
+material.stone=Stone
+material.glass=Glass
+material.cloth=Cloth
+material.plant_fiber=Plant Fiber
+material.plastic=Plastic
+material.clay=Clay
+material.mercury=Mercury
+material.potassium=Potassium
+material.concrete=Concrete
+material.leather=Leather
+material.gasoline=Gasoline
+material.gold=Gold
+
 #Colors
 color.red=Red
 color.green=Green
@@ -55,6 +82,9 @@ death.attack.infection=%1$s died due to infection.
 
 death.attack.mercury_poisoning.player=%1$s has died of mercury poisoning while fighting %2$s.
 death.attack.mercury_poisoning=%1$s has died of mercury poisoning.
+
+death.attack.chlorine_poisoning.player=%1$s has died of chlorine poisoning while fighting %2$s.
+death.attack.chlorine_poisoning=%1$s has died of chlorine poisoning.
 
 #Chat Messages
 
@@ -105,6 +135,7 @@ effect.bleeding=Bleeding
 effect.infection=Infection
 effect.broken_leg=Broken Leg
 effect.mercury_poisoning=Mercury Poisoning
+effect.chlorine_poisoning=Chlorine Poisoning
 
 #Enchantments
 
@@ -143,6 +174,7 @@ container.car=Car
 container.file_cabinet=File Cabinet
 container.cash_register=Cash Register
 container.separator=Electrolytic Cell
+container.flamethrower=Flamethrower
 
 gui.warning=WARNING
 mod.new.update=Your 7 Days to Mine version is outdated!
@@ -162,6 +194,8 @@ gui.electricity.stored=Stored:
 unlocked.toast=Recipes Unlocked!
 
 horde.bloodmoon.name=Bloodmoon Horde
+horde.wolf.name=Wolf Horde
+
 
 generator.SEVENDAYS=Default (7D2M)
 generator.default=Default (Vanilla)
@@ -191,6 +225,7 @@ book_sniper.title=Sniper Rifle
 book_magnum.title=.44 Magnum
 book_mp5.title=MP5
 book_auger.title=Auger
+book_hunting_rifle.title=Hunting Rifle
 
 #Books
 book.contents=Contents
@@ -593,6 +628,7 @@ item.book_sniper.name=Blueprint
 item.book_magnum.name=Blueprint
 item.book_mp5.name=Blueprint
 item.book_auger.name=Blueprint
+item.book_hunting_rifle.name=Blueprint
 item.bullet_magnum.name=.44 Magnum Bullet
 item.magnum_frame.name=.44 Magnum Frame
 item.magnum_grip.name=.44 Magnum Grip
@@ -619,6 +655,37 @@ item.christmas_hat.name=Christmas Hat
 item.beret.name=Beret
 item.night_vision_device.name=Night Vision Device
 item.bloodmoon.name=Bloodmoon Icon
+item.hunting_rifle_barrel.name=Hunting Rifle Barrel
+item.hunting_rifle_bolt.name=Hunting Rifle Bolt
+item.hunting_rifle_parts.name=Hunting Rifle Parts
+item.hunting_rifle_stock.name=Hunting Rifle Stock
+item.empty_jar_mold.name=Empty Jar Mold
+item.hunting_rifle_barrel_mold.name=Hunting Rifle Barrel Mold
+item.hunting_rifle_bolt_mold.name=Hunting Rifle Bolt Mold
+item.mp5_stock_mold.name=MP5 Stock Mold
+item.mp5_barrel_mold.name=MP5 Barrel Mold
+item.mp5_trigger_mold.name=MP5 Trigger Mold
+item.sniper_rifle_trigger_mold.name=Sniper Rifle Trigger Mold
+item.sniper_rifle_stock_mold.name=Sniper Rifle Stock Mold
+item.pistol_barrel_mold.name=Pistol Slide Mold
+item.pistol_trigger_mold.name=Pistol Trigger Mold
+item.shotgun_receiver_mold.name=Shotgun Receiver Mold
+item.shotgun_barrel_mold.name=Shotgun Barrel Mold
+item.shotgun_short_barrel_mold.name=Shotgun Short Barrel Mold
+item.salt.name=Salt
+item.iron_helmet.name=Iron Helmet
+item.iron_chestplate.name=Iron Chestplate
+item.iron_leggings.name=Iron Leggings
+item.iron_boots.name=Iron Boots
+item.chlorine_tank.name=Chlorine Tank
+item.natrium_tank.name=Natrium Tank
+item.chlorine_grenade.name=Chlorine Grenade
+item.leather_helmet.name=Leather Cap
+item.leather_chestplate.name=Leather Tunic
+item.leather_leggings.name=Leather Pants
+item.leather_boots.name=Leather Boots
+item.fragmentation_grenade.name=Fragmentation Grenade
+item.molotov.name=Molotov
 
 #Blocks
 
@@ -676,7 +743,12 @@ tile.KeySafe.name=Key Safe
 tile.CardboardBox.name=Cardboard Box
 tile.Cupboard.name=Cupboard
 tile.Garbage.name=Garbage
-tile.Bookshelf.name=Bookshelf
+tile.Bookshelf.name=Oak Bookshelf
+tile.bookshelf_spruce.name=Spruce Bookshelf
+tile.bookshelf_birch.name=Birch Bookshelf
+tile.bookshelf_jungle.name=Jungle Bookshelf
+tile.bookshelf_acacia.name=Acacia Bookshelf
+tile.bookshelf_dark_oak.name=Dark Oak Bookshelf
 tile.WritingTable.name=Writing table
 tile.MedicalCabinet.name=Medical Cabinet
 tile.Fridge.name=Refrigerator
@@ -876,6 +948,12 @@ tile.gasoline.name=Gasoline
 tile.mercury.name=Mercury
 tile.turret_base.name=Turret
 tile.turret_advanced.name=Advanced Turret
+tile.fake_anvil.name=Street Light Base
+tile.calendar.name=Calendar
+tile.redstone_lamp_broken.name=Broken Redstone Lamp
+tile.flamethrower_trap.name=Flamethrower Trap
+tile.metal_spikes.name=Metal Spikes
+tile.police_car.name=Police Car
 
 #Sound Subtitles
 
@@ -958,7 +1036,7 @@ advancements.policeman.description=Kill a Zombie Policeman in close range combat
 advancements.wired.title=Wired
 advancements.chemistry_station.title=Back to School
 advancements.steelworking.title=Acquire Better Hardware
-advancements.steelworking.description=AGet a steel ingot
+advancements.steelworking.description=Get a steel ingot
 advancements.steel_pickaxe.title=Pick of Steel
 advancements.steel_pickaxe.description=Craft a steel pickaxe
 #Entities
@@ -990,6 +1068,7 @@ entity.zombie_policeman.name=Zombie Policeman
 entity.projectile_vomit.name=Projectile Vomit
 entity.zombie_wolf.name=Zombie Wolf
 entity.zombie_pig.name=Zombie Pig
+entity.zombie_miner.name=Zombie Miner
 
 #Fluids
 fluid.gasoline=Gasoline
@@ -1000,9 +1079,10 @@ JEI
 jei.information.workbench=Workbench is a more advanced version of Crafting Table, that offers 5x5 crafting grid. Requires the "Metalworking" recipe book.
 jei.information.separator=Electrolytic cell is a device that breaks down complex substances into simpler substances.
 jei.information.stone_axe=Stone Axe is a basic universal tool. Used not only as a mining tool but also as a block upgrade and repair tool.
-
-
-
+jei.information.wind_turbine=Converts wind's energy into electricity. The higher it is placed, the more electricity is generated. Provides extra electricity during rain and storms. Must not be obstructed.
+jei.information.solar_panel=Converts sunlight's energy into electricity. The higher the sun is on the sky, the more electricity is generated. Should be faced to EAST or WEST for maximal efficiency. Must not be obstructed.
+jei.information.gas_generator=Converts heat energy, obtained from burning gas, into electricity. The higher the temperature, the more electricity is generated. Prone to overheating. Recommended using water or ice as a coolant, or using thermometers to turn the generator off if the temperature reaches critical levels.
+jei.information.combustion_generator=Converts heat energy, obtained from burning, into electricity. The higher the temperature, the more electricity is generated. Prone to overheating. Recommended using water or ice as a coolant, or using thermometers to turn the generator off if the temperature reaches critical levels.
 
 #DIALOGUES
 

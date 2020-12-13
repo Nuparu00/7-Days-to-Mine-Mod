@@ -143,12 +143,11 @@ public class ContainerForge extends Container {
 
             if (index <= TileEntityForge.EnumSlots.MOLD_SLOT.ordinal())
             {
+                slot.onSlotChange(itemstack1, itemstack);
                 if (!this.mergeItemStack(itemstack1, TileEntityForge.EnumSlots.MOLD_SLOT.ordinal()+1, 39, true))
                 {
                     return ItemStack.EMPTY;
                 }
-
-                slot.onSlotChange(itemstack1, itemstack);
             }
             else if (index > TileEntityForge.EnumSlots.MOLD_SLOT.ordinal())
             {

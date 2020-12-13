@@ -24,7 +24,7 @@ public class ItemFlamethrower extends ItemGun {
 	public ItemFlamethrower() {
 		super();
 		setMaxAmmo(500);
-		setFullDamage(30f);
+		setFullDamage(20f);
 		setSpeed(0.18f);
 		setRecoil(0.15f);
 		setCounterDef(0);

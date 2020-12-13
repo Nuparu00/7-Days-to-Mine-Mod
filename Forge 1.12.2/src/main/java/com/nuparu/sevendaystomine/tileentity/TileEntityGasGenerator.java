@@ -42,7 +42,6 @@ public class TileEntityGasGenerator extends TileEntityGeneratorBase{
 
 	protected FluidTank tank = new FluidTank(ModFluids.GASOLINE, 0, 4000);
 
-	protected static final int MAX_VOLUME = 4000;
 
 	protected int timer;
 	protected boolean isEmpty = true;
@@ -113,7 +112,7 @@ public class TileEntityGasGenerator extends TileEntityGeneratorBase{
 		if (temperature > 1) {
 			this.world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 2, true);
 		}
-		if (tank.getFluidAmount() < MAX_VOLUME) {
+		if (tank.getFluidAmount() < tank.getCapacity()) {
 			ItemStack stack = this.inventory.getStackInSlot(0);
 			if (!stack.isEmpty()) {
 				Item item = stack.getItem();
@@ -121,7 +120,7 @@ public class TileEntityGasGenerator extends TileEntityGeneratorBase{
 					UniversalBucket bucket = (UniversalBucket) item;
 					FluidStack fluidStack = bucket.getFluid(stack);
 					if (fluidStack.getFluid() == ModFluids.GASOLINE) {
-						if (fluidStack.amount <= MAX_VOLUME - tank.getFluidAmount()) {
+						if (fluidStack.amount <= tank.getCapacity() - tank.getFluidAmount()) {
 							tank.fill(fluidStack, true);
 							this.inventory.setStackInSlot(0, new ItemStack(Items.BUCKET));
 						}

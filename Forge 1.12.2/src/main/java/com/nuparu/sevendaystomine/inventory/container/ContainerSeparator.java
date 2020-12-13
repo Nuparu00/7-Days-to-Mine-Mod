@@ -52,10 +52,10 @@ public class ContainerSeparator extends Container {
 
 			if (index < 3) {
 				if (!this.mergeItemStack(stack, 3, this.inventorySlots.size(), true)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (!this.mergeItemStack(stack, 0, 3, false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 
 			if (stack.getCount() == 0) {
@@ -67,7 +67,7 @@ public class ContainerSeparator extends Container {
 			return originalStack;
 		}
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

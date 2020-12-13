@@ -12,12 +12,14 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.advancements.ModTriggers;
+import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.ExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
+import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
 import com.nuparu.sevendaystomine.item.ItemNightVisionDevice;
@@ -29,14 +31,18 @@ import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 import com.nuparu.sevendaystomine.world.MiscSavedData;
 import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
-import com.nuparu.sevendaystomine.world.horde.ZombieWoflHorde;
+import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
+import com.nuparu.sevendaystomine.world.horde.ZombieWolfHorde;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.client.shader.Shader;
 import net.minecraft.client.shader.ShaderGroup;
@@ -50,11 +56,15 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -216,8 +226,16 @@ public class TickHandler {
 	@SubscribeEvent
 	public void onWorldTick(TickEvent.WorldTickEvent event) {
 		World world = event.world;
-		if (world == null || world.provider.getDimension() != 0 || world.isRemote
-				|| ModConfig.world.airdropFrequency <= 0 || event.phase != TickEvent.Phase.START)
+		if (world == null)
+			return;
+		HordeSavedData.get(world).update(world);
+		BreakSavedData.get(world).update(world);
+
+		if (world.provider.getDimension() != 0 || world.isRemote || ModConfig.world.airdropFrequency <= 0
+				|| event.phase != TickEvent.Phase.START)
+			return;
+		MinecraftServer server = world.getMinecraftServer();
+		if (server == null || server.getPlayerList().getCurrentPlayerCount() == 0)
 			return;
 
 		long time = world.getWorldTime() % 24000;
@@ -225,9 +243,6 @@ public class TickHandler {
 
 		if (time >= 6000 && miscData.getLastAirdrop() != Utils.getDay(world)
 				&& Utils.getDay(world) % ModConfig.world.airdropFrequency == 0) {
-			MinecraftServer server = Utils.getServer();
-			if (server == null || server.getPlayerList().getCurrentPlayerCount() == 0)
-				return;
 			miscData.setLastAirdrop(Utils.getDay(world));
 			BlockPos pos = Utils.getAirdropPos(world);
 
@@ -244,7 +259,7 @@ public class TickHandler {
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		EntityPlayer player = event.player;
-		if (player == null)
+		if (player == null || player.isDead)
 			return;
 
 		World world = player.world;
@@ -261,17 +276,20 @@ public class TickHandler {
 					&& time > 13000 && time < 23000) {
 
 				if (!iep.hasHorde()) {
-					BloodmoonHorde horde = new BloodmoonHorde(new BlockPos(playerMP), world, playerMP);
+					BlockPos pos = new BlockPos(playerMP);
+					BloodmoonHorde horde = new BloodmoonHorde(pos, world, playerMP);
 					horde.addTarget(playerMP);
 					horde.start();
 					iep.setHorde(true);
+					world.playSound(null, pos, SoundHelper.HORDE, SoundCategory.HOSTILE,
+							world.rand.nextFloat() * 0.1f + 0.95f, world.rand.nextFloat() * 0.1f + 0.95f);
 				}
 
 			} else if (Utils.isWolfHorde(world) && !world.isRemote && world.getDifficulty() != EnumDifficulty.PEACEFUL
 					&& time > 1000 && time < 1060) {
 
 				if (!iep.hasHorde()) {
-					ZombieWoflHorde horde = new ZombieWoflHorde(new BlockPos(player), world, player);
+					ZombieWolfHorde horde = new ZombieWolfHorde(new BlockPos(player), world, player);
 					horde.addTarget(playerMP);
 					horde.start();
 					iep.setHorde(true);
@@ -333,8 +351,10 @@ public class TickHandler {
 
 		if (event.phase == net.minecraftforge.fml.common.gameevent.TickEvent.Phase.START) {
 			EntityPlayer player = mc.player;
+
 			if (player == null)
 				return;
+			World world = player.world;
 
 			if (recoil > 0) {
 				recoil *= 0.8F;
@@ -346,22 +366,53 @@ public class TickHandler {
 				}
 				antiRecoil *= 0.8F;
 			}
+			
+			IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
+			if (iep.getStamina() <= 0) {
+				KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), false);
+			}
+			//System.out.println("C " + iep.getStamina());
+
+			for (int l = 0; l < 1000; ++l) {
+				int i1 = MathHelper.floor(player.posX) + world.rand.nextInt(16) - world.rand.nextInt(16);
+				int j1 = MathHelper.floor(player.posY) + world.rand.nextInt(16) - world.rand.nextInt(16);
+				int k1 = MathHelper.floor(player.posZ) + world.rand.nextInt(16) - world.rand.nextInt(16);
+				BlockPos pos = new BlockPos(i1, j1, k1);
+				Biome biome = world.getBiome(pos);
+
+				if (biome == ModBiomes.BURNT_FOREST) {
+					if (world.rand.nextInt(8) > Math.abs(world.getHeight(pos).getY() - j1)) {
+						IBlockState block = world.getBlockState(pos);
+
+						if (block.getMaterial() == Material.AIR) {
+
+							world.spawnParticle(EnumParticleTypes.SUSPENDED_DEPTH,
+									(double) ((float) i1 + world.rand.nextFloat()),
+									(double) ((float) j1 + world.rand.nextFloat()),
+									(double) ((float) k1 + world.rand.nextFloat()), 0.0D, 0.0D, 0.0D);
+						}
+					}
+				}
+			}
+
 		}
 
 	}
 
 	public static void handleExtendedPlayer(EntityPlayer player, World world, IExtendedPlayer extendedPlayer) {
-		if (world.isRemote)
+		if (world.isRemote){
 			return;
+		}
 
 		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			extendedPlayer.setThirst(1000);
 			extendedPlayer.setStamina(1000);
 			return;
 		}
-
-		if (world.rand.nextInt(25) == 0) {
-			extendedPlayer.consumeThirst((int) 1);
+		if (extendedPlayer.getThirst() > 0) {
+			if (world.rand.nextInt(25) == 0) {
+				extendedPlayer.consumeThirst((int) 1);
+			}
 		}
 
 		if (player.isSprinting()) {
@@ -375,25 +426,22 @@ public class TickHandler {
 				}
 			}
 
+		} else if (extendedPlayer.getThirst() >= 100 && world.rand.nextInt(10) == 0
+				&& player.distanceWalkedModified - player.prevDistanceWalkedModified <= 0.05) {
+			extendedPlayer.addStamina(1);
 		}
-
-		if (extendedPlayer.getStamina() > extendedPlayer.getMaximumStamina()) {
-			extendedPlayer.setStamina(extendedPlayer.getMaximumStamina());
-		}
-		if (extendedPlayer.getStamina() < 0) {
-			extendedPlayer.setStamina(0);
+		
+		if (extendedPlayer.getStamina() <= 0) {
+			player.setSprinting(false);
 		}
 
 		if (extendedPlayer.getThirst() <= 0) {
-
-			extendedPlayer.setThirst(0);
-
 			PotionEffect effect = new PotionEffect(Potions.thirst, 4, 4, false, false);
 			effect.setCurativeItems(new ArrayList<ItemStack>());
 			player.addPotionEffect(effect);
 		}
-		if (extendedPlayer.getThirst() > extendedPlayer.getMaximumThirst()) {
-			extendedPlayer.setThirst(extendedPlayer.getMaximumThirst());
-		}
+
 	}
+	
+
 }

@@ -58,10 +58,10 @@ public class ContainerSmall extends Container {
 
 			if (index < this.numRows * SLOTS_PER_ROW) {
 				if (!this.mergeItemStack(stack, this.numRows * SLOTS_PER_ROW, this.inventorySlots.size(), true)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (!this.mergeItemStack(stack, 0, this.numRows * SLOTS_PER_ROW, false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 
 			if (stack.getCount() == 0) {
@@ -73,7 +73,7 @@ public class ContainerSmall extends Container {
 			return originalStack;
 		}
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

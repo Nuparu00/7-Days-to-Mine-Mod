@@ -1,5 +1,7 @@
 package com.nuparu.sevendaystomine.init;
 
+import java.util.Random;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 
 import net.minecraft.util.ResourceLocation;
@@ -17,6 +19,7 @@ public class ModLootTables {
 	public static final ResourceLocation CUPBOARD = new ResourceLocation(SevenDaysToMine.MODID,"cupboard");
 	public static final ResourceLocation SEDAN = new ResourceLocation(SevenDaysToMine.MODID,"sedan");
 	public static final ResourceLocation BOOKSHELF_COMMON = new ResourceLocation(SevenDaysToMine.MODID,"bookshelf_common");
+	public static final ResourceLocation BOOKSHELF_RARE = new ResourceLocation(SevenDaysToMine.MODID,"bookshelf_rare");
 	public static final ResourceLocation MICROWAVE = new ResourceLocation(SevenDaysToMine.MODID,"microwave");
 	public static final ResourceLocation FURNACE = new ResourceLocation(SevenDaysToMine.MODID,"furnace");
 	public static final ResourceLocation MEDICAL_CABINET = new ResourceLocation(SevenDaysToMine.MODID,"medical_cabinet");
@@ -27,6 +30,9 @@ public class ModLootTables {
 	public static final ResourceLocation CASH_REGISTER = new ResourceLocation(SevenDaysToMine.MODID,"cash_register");
 	public static final ResourceLocation ZOMBIE_GENERIC = new ResourceLocation(SevenDaysToMine.MODID,"zombie_generic");
 	public static final ResourceLocation CODE_SAFE = new ResourceLocation(SevenDaysToMine.MODID,"code_safe");
-	public static final ResourceLocation ZOMBIE_NURSE = new ResourceLocation(SevenDaysToMine.MODID,"zombie_generic");
+	public static final ResourceLocation ZOMBIE_NURSE = new ResourceLocation(SevenDaysToMine.MODID,"zombie_nurse");
 	public static final ResourceLocation BODY_BAG = new ResourceLocation(SevenDaysToMine.MODID,"body_bag");
+	public static final ResourceLocation ZOMBIE_POLICEMAN = new ResourceLocation(SevenDaysToMine.MODID,"zombie_policeman");
+	public static final ResourceLocation ZOMBIE_MINER = new ResourceLocation(SevenDaysToMine.MODID,"zombie_miner");
+	public static final ResourceLocation SUPPLY_CHEST = new ResourceLocation(SevenDaysToMine.MODID,"supply_chest");
 }

@@ -22,11 +22,12 @@ public class ItemAlcoholDrink extends ItemDrink {
 
 	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
 		super.onFoodEaten(stack, worldIn, player);
+		if(worldIn.isRemote) return;
 		if (!player.isPotionActive(Potions.alcoholBuzz) && !player.isPotionActive(Potions.drunk) && !player.isPotionActive(Potions.alcoholPoison)) {
 			PotionEffect effect = new PotionEffect(Potions.alcoholBuzz, 6000, 4, false, false);
 			effect.setCurativeItems(new ArrayList<ItemStack>());
 			player.addPotionEffect(effect);
-		} else if (player.isPotionActive(Potions.alcoholBuzz)) {
+		} else if (player.isPotionActive(Potions.alcoholBuzz) && itemRand.nextInt(3) != 0) {
 			PotionEffect effect = player.getActivePotionEffect(Potions.alcoholBuzz) != null
 					? player.getActivePotionEffect(Potions.alcoholBuzz)
 					: player.getActivePotionEffect(Potions.drunk);
@@ -36,7 +37,7 @@ public class ItemAlcoholDrink extends ItemDrink {
 				player.addPotionEffect(effect_new);
 				player.removePotionEffect(Potions.alcoholBuzz);
 			}
-		} else if (player.isPotionActive(Potions.drunk) || player.isPotionActive(Potions.alcoholPoison)) {
+		} else if (player.isPotionActive(Potions.drunk) || player.isPotionActive(Potions.alcoholPoison) && itemRand.nextInt(5) != 0) {
 			PotionEffect effect = player.getActivePotionEffect(Potions.drunk);
 			if(effect != null) {
 			if (worldIn.rand.nextInt(Math.max(6000 - (effect.getDuration() * effect.getAmplifier()), 1)) == 0) {

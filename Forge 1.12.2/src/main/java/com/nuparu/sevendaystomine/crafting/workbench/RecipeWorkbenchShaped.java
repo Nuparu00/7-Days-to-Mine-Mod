@@ -84,7 +84,7 @@ public class RecipeWorkbenchShaped extends ShapedRecipes {
 					stack.setTagCompound(new NBTTagCompound());
 				}
 				stack.getTagCompound().setInteger("Quality", (int) Math
-						.min(Math.max(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT), 1), 600));
+						.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1), 600));
 			}
 		}
 		return stack;

@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.util.book;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -45,6 +46,12 @@ public class BookDataParser {
 		JsonElement je = gson.fromJson(reader, JsonElement.class);
 		JsonObject json = je.getAsJsonObject();
 
+		try {
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		List<Page> pages = new ArrayList<Page>();
 		JsonArray pgs = json.get("pages").getAsJsonArray();
 		for (JsonElement je2 : pgs) {

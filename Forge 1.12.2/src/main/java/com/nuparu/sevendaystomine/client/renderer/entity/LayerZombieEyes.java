@@ -38,7 +38,7 @@ public class LayerZombieEyes<T extends EntityZombieBase> implements LayerRendere
 				renderer.bindTexture(TEXTURE);
 				GlStateManager.enableBlend();
 				GlStateManager.enableAlpha();
-				GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+				GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.SRC_ALPHA);
 
 				if (entitylivingbaseIn.isInvisible()) {
 					GlStateManager.depthMask(false);

@@ -1,0 +1,22 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "  II ",
+    "  II ",
+    " III ",
+    " SI  ",
+    "S    "
+  ],
+  "key": {
+    "S": {
+      "item": "sevendaystomine:woodplank"
+    },
+    "I": {
+      "item": "sevendaystomine:steelingot"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:machete"
+  },
+  "quality": true
+}

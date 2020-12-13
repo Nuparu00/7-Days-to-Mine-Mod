@@ -61,6 +61,7 @@ public class EntitySurvivor extends EntityHuman implements IMerchant {
 
 	public EntitySurvivor(World worldIn) {
 		super(worldIn);
+		this.experienceValue = 4;
 	}
 
 	@Override

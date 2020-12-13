@@ -120,7 +120,6 @@ public class BlockCodeSafe extends BlockSafe<TileEntityCodeSafe> {
 				PacketManager.syncTileEntity.sendTo(new SyncTileEntityMessage(te.writeToNBT(new NBTTagCompound()), pos),
 						(EntityPlayerMP) playerIn);
 			}
-			System.out.println(safe.superSecretMethod());
 			if (!safe.locked && !playerIn.isSneaking()) {
 				playerIn.openGui(SevenDaysToMine.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			} else {

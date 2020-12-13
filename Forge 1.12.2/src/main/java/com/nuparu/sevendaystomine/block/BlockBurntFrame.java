@@ -28,7 +28,6 @@ public class BlockBurntFrame extends BlockUpgradeable {
 		setHardness(0.8f);
 		setResistance(2f);
 		setHarvestLevel("axe", 0);
-		Blocks.FIRE.setFireInfo(this,5,20);
 	}
 	@Override
 	public IBlockState getResult(World world, BlockPos pos) {

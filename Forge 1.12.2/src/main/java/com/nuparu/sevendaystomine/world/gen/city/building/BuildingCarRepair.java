@@ -65,7 +65,7 @@ public class BuildingCarRepair extends Building {
 
 	@Override
 	public BlockPos getDimensions(World world, EnumFacing facing) {
-		return new BlockPos(32, 22, 32);
+		return new BlockPos(40, 22, 40);
 	}
 
 	@Override

@@ -58,5 +58,6 @@ public class ProcessRegistry {
 		registerProcess(NotesProcess.class,"notes_process");
 		registerProcess(CCTVProcess.class,"cctv_process");
 		registerProcess(TransitProcess.class,"transit_process");
+		registerProcess(MapsProcess.class,"maps_process");
 	}
 }

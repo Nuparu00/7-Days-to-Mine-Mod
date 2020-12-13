@@ -2,6 +2,10 @@ package com.nuparu.sevendaystomine.network.packets;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import com.nuparu.sevendaystomine.item.IReloadable;
 import com.nuparu.sevendaystomine.item.ItemGun;
@@ -20,43 +24,68 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessage> {
 
-	private Timer timer = new Timer();
-	private TimerTask task = new MyTask(this);
+	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(16);
 
 	EntityPlayer player = null;
 	World world = null;
-	ItemStack stack = null;
-	ItemStack stackBullet = null;
-	Item bulletItem = null;
-	IReloadable reloadable = null;
+	ItemStack mainStack = null;
+	ItemStack secStack = null;
+
+	ItemStack mainBullet = null;
+	ItemStack secBullet = null;
+
+	IReloadable reloadableMain = null;
+	IReloadable reloadableSec = null;
 
 	@Override
 	public ReloadMessage onMessage(ReloadMessage message, MessageContext ctx) {
 		player = ctx.getServerHandler().player;
 		world = player.world;
-		stack = player.getHeldItemMainhand();
-		if (stack == null || stack.isEmpty())
-			return null;
+		mainStack = player.getHeldItemMainhand();
+		secStack = player.getHeldItemOffhand();
 
-		Item item = stack.getItem();
-		if (item instanceof IReloadable) {
-			reloadable = (IReloadable) item;
-			stackBullet = getReloadItem(player.inventory, reloadable.getReloadItem(stack));
-			if (!stackBullet.isEmpty()) {
-				bulletItem = reloadable.getReloadItem(stack);
-				SoundEvent reloadSound = reloadable.getReloadSound();
+		Item main = mainStack.getItem();
+		int reloadTime = 0;
+
+		if (main instanceof IReloadable) {
+			reloadableMain = (IReloadable) main;
+			mainBullet = getReloadItem(player.inventory, reloadableMain.getReloadItem(mainStack));
+			if (!mainBullet.isEmpty()) {
+				SoundEvent reloadSound = reloadableMain.getReloadSound();
 				world.playSound(null, new BlockPos(player), reloadSound, SoundCategory.PLAYERS, 1F, 1F);
-				int reloadTime = reloadable.getReloadTime(stack);
-				reloadable.onReloadStart(world, player, stack, reloadTime);
-				task = new MyTask(this);
-				timer.schedule(task, reloadTime, 1000);
+				reloadTime = reloadableMain.getReloadTime(mainStack);
+				reloadableMain.onReloadStart(world, player, mainStack, reloadTime);
 			}
 		}
+		Item sec = secStack.getItem();
+		if (sec instanceof IReloadable) {
+			reloadableSec = (IReloadable) sec;
+			secBullet = getReloadItem(player.inventory, reloadableSec.getReloadItem(secStack));
+			if (!secBullet.isEmpty()) {
+				SoundEvent reloadSound = reloadableSec.getReloadSound();
+				world.playSound(null, new BlockPos(player), reloadSound, SoundCategory.PLAYERS, 1F, 1F);
+				reloadTime = Math.max(reloadTime, reloadableSec.getReloadTime(secStack));
+				reloadableSec.onReloadStart(world, player, secStack, reloadTime);
+
+			}
+		}
+
+		ScheduledFuture<?> countdown = scheduler.schedule(new Runnable() {
+			@Override
+			public void run() {
+				reload();
+			}
+		}, reloadTime, TimeUnit.MILLISECONDS);
 		return null;
 	}
 
 	public void reload() {
-		reloadable.onReloadEnd(world, player, stack, stackBullet);
+		if (reloadableMain != null) {
+			reloadableMain.onReloadEnd(world, player, mainStack, mainBullet);
+		}
+		if (reloadableSec != null) {
+			reloadableSec.onReloadEnd(world, player, secStack, secBullet);
+		}
 	}
 
 	public ItemStack getReloadItem(InventoryPlayer inventory, Item reloadItem) {
@@ -69,22 +98,6 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 		}
 
 		return itemstack;
-	}
-
-	private class MyTask extends TimerTask {
-
-		private ReloadHandler handler;
-
-		private MyTask(ReloadHandler h) {
-			this.handler = h;
-		}
-
-		@Override
-		public void run() {
-
-			handler.reload();
-			cancel();
-		}
 	}
 
 }

@@ -7,8 +7,9 @@
   ],
   "key": {
     "L": {
-      "item": "minecraft:leather"
-    }, 
+    "type": "forge:ore_dict",
+    "ore": "leather"
+}, 
     "I": {
       "item": "sevendaystomine:iron_pipe"
     },

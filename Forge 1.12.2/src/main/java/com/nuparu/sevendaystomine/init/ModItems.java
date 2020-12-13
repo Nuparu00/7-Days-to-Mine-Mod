@@ -19,6 +19,7 @@ import com.nuparu.sevendaystomine.item.ItemBloodDrawKit;
 import com.nuparu.sevendaystomine.item.ItemBlueprint;
 import com.nuparu.sevendaystomine.item.ItemCannedFood;
 import com.nuparu.sevendaystomine.item.ItemChainsaw;
+import com.nuparu.sevendaystomine.item.ItemChlorineGrenade;
 import com.nuparu.sevendaystomine.item.ItemChristmasHat;
 import com.nuparu.sevendaystomine.item.ItemCircuit;
 import com.nuparu.sevendaystomine.item.ItemClothingChest;
@@ -33,11 +34,13 @@ import com.nuparu.sevendaystomine.item.ItemEmptyCan;
 import com.nuparu.sevendaystomine.item.ItemEmptyJar;
 import com.nuparu.sevendaystomine.item.ItemFirstAidKit;
 import com.nuparu.sevendaystomine.item.ItemFlamethrower;
+import com.nuparu.sevendaystomine.item.ItemFragmentationGrenade;
 import com.nuparu.sevendaystomine.item.ItemGuide;
 import com.nuparu.sevendaystomine.item.ItemGunPart;
 import com.nuparu.sevendaystomine.item.ItemHoney;
 import com.nuparu.sevendaystomine.item.ItemHuntingRifle;
 import com.nuparu.sevendaystomine.item.ItemInstallDisc;
+import com.nuparu.sevendaystomine.item.ItemLeatherArmor;
 import com.nuparu.sevendaystomine.item.ItemLinkTool;
 import com.nuparu.sevendaystomine.item.ItemM4;
 import com.nuparu.sevendaystomine.item.ItemMP3;
@@ -45,6 +48,7 @@ import com.nuparu.sevendaystomine.item.ItemMP5;
 import com.nuparu.sevendaystomine.item.ItemMagnum;
 import com.nuparu.sevendaystomine.item.ItemMinibikeChassis;
 import com.nuparu.sevendaystomine.item.ItemMold;
+import com.nuparu.sevendaystomine.item.ItemMolotov;
 import com.nuparu.sevendaystomine.item.ItemMurkyWater;
 import com.nuparu.sevendaystomine.item.ItemNightVisionDevice;
 import com.nuparu.sevendaystomine.item.ItemPhoto;
@@ -82,6 +86,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemFood;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -240,7 +245,7 @@ public class ModItems {
 			.setRegistryName("BronzeIngot").setUnlocalizedName("BronzeIngot");
 	public static final Item INGOT_GOLD = new ItemScrapable(EnumMaterial.GOLD, 6).setRegistryName("GoldIngot")
 			.setUnlocalizedName("GoldIngot");
-	public static final Item CENT = new ItemScrapable(EnumMaterial.IRON, 6).setRegistryName("cent")
+	public static final Item CENT = new ItemScrapable(EnumMaterial.BRASS, 6).setRegistryName("cent")
 			.setUnlocalizedName("cent");
 	public static final Item BACKPACK = new ItemBackpack().setRegistryName("backpack").setUnlocalizedName("backpack");
 
@@ -411,6 +416,24 @@ public class ModItems {
 			EntityEquipmentSlot.FEET, "leather_iron_boots");
 	public static final Item LEATHER_IRON_HELMET = new ItemArmorBase(SevenDaysToMine.LEATHER_IRON_ARMOR, 0,
 			EntityEquipmentSlot.HEAD, "leather_iron_helmet");
+	
+	public static final Item IRON_CHESTPLATE = new ItemArmorBase(SevenDaysToMine.IRON_ARMOR ,0,
+			EntityEquipmentSlot.CHEST, "iron_chestplate");
+	public static final Item IRON_LEGGINGS = new ItemArmorBase(SevenDaysToMine.IRON_ARMOR, 1,
+			EntityEquipmentSlot.LEGS, "iron_leggings");
+	public static final Item IRON_BOOTS = new ItemArmorBase(SevenDaysToMine.IRON_ARMOR, 0, EntityEquipmentSlot.FEET,
+			"iron_boots");
+	public static final Item IRON_HELMET = new ItemArmorBase(SevenDaysToMine.IRON_ARMOR, 0, EntityEquipmentSlot.HEAD,
+			"iron_helmet");
+	
+	public static final Item LEATHER_CHESTPLATE = new ItemLeatherArmor(ArmorMaterial.LEATHER ,0,
+			EntityEquipmentSlot.CHEST, "leather_chestplate");
+	public static final Item LEATHER_LEGGINGS = new ItemLeatherArmor(ArmorMaterial.LEATHER, 1,
+			EntityEquipmentSlot.LEGS, "leather_leggings");
+	public static final Item LEATHER_BOOTS = new ItemLeatherArmor(ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.FEET,
+			"leather_boots");
+	public static final Item LEATHER_HELMET = new ItemLeatherArmor(ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.HEAD,
+			"leather_helmet");
 
 	public static final Item COPPER_AXE = new ItemQualityAxe(SevenDaysToMine.COPPER_TOOLS, -2.8)
 			.setRegistryName("copper_axe").setUnlocalizedName("copper_axe");
@@ -487,6 +510,9 @@ public class ModItems {
 	public static final Item MP5_SCHEMATICS = new ItemBlueprint(
 			new ResourceLocation(SevenDaysToMine.MODID, "data/books/mp5.json"), "mp5").setRegistryName("book_mp5")
 					.setUnlocalizedName("book_mp5");
+	public static final Item HUNTING_RIFLE_SCHEMATICS = new ItemBlueprint(
+			new ResourceLocation(SevenDaysToMine.MODID, "data/books/hunting_rifle.json"), "hunting_rifle").setRegistryName("book_hunting_rifle")
+					.setUnlocalizedName("book_hunting_rifle");
 	
 	public static final Item AUGER_SCHEMATICS = new ItemBlueprint(
 			new ResourceLocation(SevenDaysToMine.MODID, "data/books/auger.json"), "auger").setRegistryName("book_auger")
@@ -504,29 +530,34 @@ public class ModItems {
 	public static final Item SLEDGEHAMMER = new ItemClub(SevenDaysToMine.SLEDGEHAMMER, -3.6d)
 			.setRegistryName("sledgehammer").setUnlocalizedName("sledgehammer");
 
-	public static Item PISTOL_SLIDE = new ItemGunPart("pistol_slide");
-	public static Item PISTOL_TRIGGER = new ItemGunPart("pistol_trigger");
-	public static Item PISTOL_GRIP = new ItemGunPart("pistol_grip");
-	public static Item SNIPER_RIFLE_BARREL = new ItemGunPart("sniper_rifle_barrel");
-	public static Item SNIPER_RIFLE_TRIGGER = new ItemGunPart("sniper_rifle_trigger");
-	public static Item SNIPER_RIFLE_SCOPE = new ItemGunPart("sniper_rifle_scope");
-	public static Item SNIPER_RIFLE_PARTS = new ItemGunPart("sniper_rifle_parts");
-	public static Item SNIPER_RIFLE_STOCK = new ItemGunPart("sniper_rifle_stock");
+	public static Item PISTOL_SLIDE = new ItemGunPart("pistol_slide",EnumMaterial.IRON,2);
+	public static Item PISTOL_TRIGGER = new ItemGunPart("pistol_trigger",EnumMaterial.IRON,4);
+	public static Item PISTOL_GRIP = new ItemGunPart("pistol_grip",EnumMaterial.IRON,3);
+	public static Item SNIPER_RIFLE_BARREL = new ItemGunPart("sniper_rifle_barrel",EnumMaterial.IRON,3);
+	public static Item SNIPER_RIFLE_TRIGGER = new ItemGunPart("sniper_rifle_trigger",EnumMaterial.IRON,6);
+	public static Item SNIPER_RIFLE_SCOPE = new ItemGunPart("sniper_rifle_scope",EnumMaterial.IRON,4);
+	public static Item SNIPER_RIFLE_PARTS = new ItemGunPart("sniper_rifle_parts",EnumMaterial.IRON,2);
+	public static Item SNIPER_RIFLE_STOCK = new ItemGunPart("sniper_rifle_stock",EnumMaterial.IRON,6);
 
-	public static Item SHOTGUN_RECEIVER = new ItemGunPart("shotgun_receiver");
-	public static Item SHOTGUN_STOCK = new ItemGunPart("shotgun_stock");
-	public static Item SHOTGUN_STOCK_SHORT = new ItemGunPart("shotgun_stock_short");
-	public static Item SHOTGUN_PARTS = new ItemGunPart("shotgun_parts");
-	public static Item SHOTGUN_BARREL = new ItemGunPart("shotgun_barrel");
-	public static Item SHOTGUN_BARREL_SHORT = new ItemGunPart("shotgun_barrel_short");
+	public static Item SHOTGUN_RECEIVER = new ItemGunPart("shotgun_receiver",EnumMaterial.IRON,4);
+	public static Item SHOTGUN_STOCK = new ItemGunPart("shotgun_stock",EnumMaterial.WOOD,3);
+	public static Item SHOTGUN_STOCK_SHORT = new ItemGunPart("shotgun_stock_short",EnumMaterial.WOOD,2);
+	public static Item SHOTGUN_PARTS = new ItemGunPart("shotgun_parts",EnumMaterial.IRON,2);
+	public static Item SHOTGUN_BARREL = new ItemGunPart("shotgun_barrel",EnumMaterial.IRON,3);
+	public static Item SHOTGUN_BARREL_SHORT = new ItemGunPart("shotgun_barrel_short",EnumMaterial.IRON,2);
 
-	public static Item MAGNUM_FRAME = new ItemGunPart("magnum_frame");
-	public static Item MAGNUM_CYLINDER = new ItemGunPart("magnum_cylinder");
-	public static Item MAGNUM_GRIP = new ItemGunPart("magnum_grip");
+	public static Item MAGNUM_FRAME = new ItemGunPart("magnum_frame",EnumMaterial.IRON,4);
+	public static Item MAGNUM_CYLINDER = new ItemGunPart("magnum_cylinder",EnumMaterial.IRON,4);
+	public static Item MAGNUM_GRIP = new ItemGunPart("magnum_grip",EnumMaterial.IRON,2);
 
-	public static Item MP5_BARREL = new ItemGunPart("mp5_barrel");
-	public static Item MP5_TRIGGER = new ItemGunPart("mp5_trigger");
-	public static Item MP5_STOCK = new ItemGunPart("mp5_stock");
+	public static Item MP5_BARREL = new ItemGunPart("mp5_barrel",EnumMaterial.IRON,4);
+	public static Item MP5_TRIGGER = new ItemGunPart("mp5_trigger",EnumMaterial.IRON,6);
+	public static Item MP5_STOCK = new ItemGunPart("mp5_stock",EnumMaterial.IRON,4);
+	
+	public static Item HUNTING_RIFLE_BARREL = new ItemGunPart("hunting_rifle_barrel",EnumMaterial.IRON,3);
+	public static Item HUNTING_RIFLE_STOCK = new ItemGunPart("hunting_rifle_stock",EnumMaterial.WOOD,4);
+	public static Item HUNTING_RIFLE_PARTS = new ItemGunPart("hunting_rifle_parts",EnumMaterial.IRON,2);
+	public static Item HUNTING_RIFLE_BOLT = new ItemGunPart("hunting_rifle_bolt",EnumMaterial.IRON,4);
 
 	public static final Item SCRAP_CHESTPLATE = new ItemArmorBase(SevenDaysToMine.SCRAP_ARMOR, 0,
 			EntityEquipmentSlot.CHEST, "scrap_chestplate");
@@ -591,5 +622,47 @@ public class ModItems {
 	public static final Item AUGER_HANDLES = new ItemQualityScrapable(EnumMaterial.IRON, 4)
 			.setRegistryName("auger_handles").setUnlocalizedName("auger_handles")
 			.setCreativeTab(SevenDaysToMine.TAB_FORGING).setMaxStackSize(1);
-
+	
+	public static final Item EMPTY_JAR_MOLD = new ItemMold().setRegistryName("empty_jar_mold")
+			.setUnlocalizedName("empty_jar_mold");
+	public static final Item HUNTING_RIFLE_BARREL_MOLD = new ItemMold().setRegistryName("hunting_rifle_barrel_mold")
+			.setUnlocalizedName("hunting_rifle_barrel_mold");
+	public static final Item HUNTING_RIFLE_BOLT_MOLD = new ItemMold().setRegistryName("hunting_rifle_bolt_mold")
+			.setUnlocalizedName("hunting_rifle_bolt_mold");
+	public static final Item MP5_BARREL_MOLD = new ItemMold().setRegistryName("mp5_barrel_mold")
+			.setUnlocalizedName("mp5_barrel_mold");
+	public static final Item MP5_STOCK_MOLD = new ItemMold().setRegistryName("mp5_stock_mold")
+			.setUnlocalizedName("mp5_stock_mold");
+	public static final Item MP5_TRIGGER_MOLD = new ItemMold().setRegistryName("mp5_trigger_mold")
+			.setUnlocalizedName("mp5_trigger_mold");
+	public static final Item PISTOL_BARREL_MOLD = new ItemMold().setRegistryName("pistol_barrel_mold")
+			.setUnlocalizedName("pistol_barrel_mold");
+	public static final Item PISTOL_TRIGGER_MOLD = new ItemMold().setRegistryName("pistol_trigger_mold")
+			.setUnlocalizedName("pistol_trigger_mold");
+	public static final Item SNIPER_RIFLE_STOCK_MOLD = new ItemMold().setRegistryName("sniper_rifle_stock_mold")
+			.setUnlocalizedName("sniper_rifle_stock_mold");
+	public static final Item SNIPER_RIFLE_TRIGGER_MOLD = new ItemMold().setRegistryName("sniper_rifle_trigger_mold")
+			.setUnlocalizedName("sniper_rifle_trigger_mold");
+	public static final Item SHOTGUN_BARREL_MOLD = new ItemMold().setRegistryName("shotgun_barrel_mold")
+			.setUnlocalizedName("shotgun_barrel_mold");
+	public static final Item SHOTGUN_RECEIVER_MOLD = new ItemMold().setRegistryName("shotgun_receiver_mold")
+			.setUnlocalizedName("shotgun_receiver_mold");
+	public static final Item SHOTGUN_SHORT_BARREL_MOLD = new ItemMold().setRegistryName("shotgun_short_barrel_mold")
+			.setUnlocalizedName("shotgun_short_barrel_mold");
+	
+	public static final Item SALT = new Item().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("salt")
+			.setUnlocalizedName("salt");
+	
+	public static final Item CHLORINE_TANK = new Item().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("chlorine_tank")
+			.setUnlocalizedName("chlorine_tank");
+	
+	public static final Item NATRIUM_TANK = new Item().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("natrium_tank")
+			.setUnlocalizedName("natrium_tank");
+	
+	public static final Item CHLORINE_GRENADE = new ItemChlorineGrenade().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("chlorine_grenade")
+			.setUnlocalizedName("chlorine_grenade");
+	public static final Item FRAGMENTATION_GRENADE = new ItemFragmentationGrenade().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("fragmentation_grenade")
+			.setUnlocalizedName("fragmentation_grenade");
+	public static final Item MOLOTOV = new ItemMolotov().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("molotov")
+			.setUnlocalizedName("molotov");
 }

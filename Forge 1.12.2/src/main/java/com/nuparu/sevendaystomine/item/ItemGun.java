@@ -181,7 +181,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
-		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT),
+		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT),
 				ItemQuality.MAX_QUALITY));
 		initNBT(itemstack);
 	}
@@ -237,7 +237,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 			if (player != null) {
 				setQuality(stack,
 						(int) (int) Math.min(
-								Math.max(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT), 1),
+								Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1),
 								ItemQuality.MAX_QUALITY));
 				stack.getTagCompound().setInteger("Capacity", getMaxAmmo());
 				stack.getTagCompound().setInteger("Ammo", 0);
@@ -264,7 +264,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 	@Override
 	public void onReloadEnd(World world, EntityPlayer player, ItemStack stack, ItemStack bullet) {
-		if (bullet != null && !bullet.isEmpty() && stack.getTagCompound().hasKey("Capacity")
+		if (bullet != null && !bullet.isEmpty() && stack != null && stack.getTagCompound().hasKey("Capacity")
 				&& stack.getTagCompound().hasKey("Ammo")) {
 
 			stack.getTagCompound().setBoolean("Reloading", false);
@@ -611,13 +611,20 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, IBlockState state) {
-		return 0;
+		return -1;
 	}
 
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
 		return true;
 	}
+	
+	@Override
+	 public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
+    {
+		worldIn.setBlockState(pos, state);
+        return false;
+    }
 
 	public static enum EnumGun {
 		PISTOL, SHOTGUN, RIFLE, LAUNCHER, MACHINE, SUBMACHINE

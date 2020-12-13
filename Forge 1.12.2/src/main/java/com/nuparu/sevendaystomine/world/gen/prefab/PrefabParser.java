@@ -38,6 +38,12 @@ public class PrefabParser {
 		JsonElement je = gson.fromJson(reader, JsonElement.class);
 		JsonObject json = je.getAsJsonObject();
 
+		try {
+			reader.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
 		if (!json.has("name")) {
 			return null;
 		}

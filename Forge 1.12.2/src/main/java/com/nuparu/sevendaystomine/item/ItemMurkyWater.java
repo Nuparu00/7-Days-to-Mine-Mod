@@ -31,8 +31,9 @@ public class ItemMurkyWater extends ItemDrink {
 
 	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
 		super.onFoodEaten(stack, worldIn, player);
+		if(worldIn.isRemote) return;
 		if (worldIn.rand.nextInt(5) == 0) {
-			player.addPotionEffect((new PotionEffect(Potions.dysentery, 48000, 4, false, false)));
+			player.addPotionEffect((new PotionEffect(Potions.dysentery,  worldIn.rand.nextInt(4000) + 18000, 4, false, false)));
 		}
 
 	}

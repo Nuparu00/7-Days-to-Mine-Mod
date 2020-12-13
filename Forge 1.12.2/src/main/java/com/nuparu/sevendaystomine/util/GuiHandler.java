@@ -16,6 +16,7 @@ import com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerBig;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerLootableEntity;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerSmallOld;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiContainerTiny;
+import com.nuparu.sevendaystomine.client.gui.inventory.GuiFlamethrower;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiForge;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiGasGenerator;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiMinibike;
@@ -44,6 +45,7 @@ import com.nuparu.sevendaystomine.inventory.ContainerSmall;
 import com.nuparu.sevendaystomine.inventory.ContainerTiny;
 import com.nuparu.sevendaystomine.inventory.ContainerWorkbench;
 import com.nuparu.sevendaystomine.inventory.container.ContainerBackpack;
+import com.nuparu.sevendaystomine.inventory.container.ContainerFlamethrower;
 import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.container.ContainerMinibike;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSeparator;
@@ -74,6 +76,10 @@ public class GuiHandler implements IGuiHandler {
 
 		ItemStack stack = player.getHeldItemMainhand();
 		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+
+		if (tileEntity instanceof TileEntityItemHandler) {
+			return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
+		}
 
 		if (ID == 9) {
 			Entity entity = world.getEntityByID(y);
@@ -114,14 +120,6 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerCampfire(player.inventory, (IInventory) tileEntity);
 		case 1:
 			return new ContainerForge(player.inventory, (IInventory) tileEntity);
-		case 2:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
-		case 3:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
 		case 4:
 			return null;
 		case 5:
@@ -137,38 +135,12 @@ public class GuiHandler implements IGuiHandler {
 		case 12:
 			return new ContainerChemistryStation(player.inventory, (IInventory) tileEntity);
 		case 13:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
 			return new ContainerProjector(player.inventory, (IInventory) tileEntity);
 		case 15:
 			return null;
-		case 16:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
-		case 19:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
-		case 20:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
 		case 22:
 			return null;
-		case 23:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
-		case 24:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
-		case 25:
-			if (tileEntity instanceof TileEntityItemHandler) {
-				return ((TileEntityItemHandler<?>) tileEntity).createContainer(player);
-			}
+
 		}
 
 		return null;
@@ -304,6 +276,12 @@ public class GuiHandler implements IGuiHandler {
 
 				return new GuiTurretAdvanced(
 						(ContainerTurretAdvanced) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
+			}
+		case 26:
+			if (tileEntity instanceof TileEntityItemHandler) {
+
+				return new GuiFlamethrower(
+						(ContainerFlamethrower) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
 			}
 		}
 		return null;

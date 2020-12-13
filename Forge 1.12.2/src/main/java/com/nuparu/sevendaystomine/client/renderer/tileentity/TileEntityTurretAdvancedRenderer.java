@@ -73,16 +73,13 @@ public class TileEntityTurretAdvancedRenderer extends TileEntitySpecialRenderer<
 		bindTexture(texture);
 		turret.render(rotation);
 		GL11.glPopMatrix();
-		
+		/*
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		if(player == null) return;
 		
 		Vec3d pos = te.getHeadPosition().subtract(player.posX, player.posY, player.posZ);
 		Vec3d rot = te.getHeadRotation();
 		Vec3d rayEnd = pos.add(new Vec3d(rot.x * TileEntityTurret.VIEW_DISTANCE, rot.y * TileEntityTurret.VIEW_DISTANCE, rot.z * TileEntityTurret.VIEW_DISTANCE));
-		
-		//System.out.println(pos.toString() + " " + x + " " + y + " " + z);
-		
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glBegin(GL11.GL_LINE_STRIP);
@@ -91,7 +88,7 @@ public class TileEntityTurretAdvancedRenderer extends TileEntitySpecialRenderer<
 		GL11.glVertex3d(rayEnd.x, rayEnd.y, rayEnd.z);
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glPopMatrix();
+		GL11.glPopMatrix();*/
 	}
 
 }

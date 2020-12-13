@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.proxy;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -21,13 +22,16 @@ import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
+import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
+import com.nuparu.sevendaystomine.entity.EntityFragmentationGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
 import com.nuparu.sevendaystomine.entity.EntityFrostbittenWorker;
 import com.nuparu.sevendaystomine.entity.EntityFrozenLumberjack;
 import com.nuparu.sevendaystomine.entity.EntityInfectedSurvivor;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
+import com.nuparu.sevendaystomine.entity.EntityMolotov;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
 import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
 import com.nuparu.sevendaystomine.entity.EntityProjectileVomit;
@@ -38,6 +42,7 @@ import com.nuparu.sevendaystomine.entity.EntitySoldier;
 import com.nuparu.sevendaystomine.entity.EntitySpiderZombie;
 import com.nuparu.sevendaystomine.entity.EntitySurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieCrawler;
+import com.nuparu.sevendaystomine.entity.EntityZombieMiner;
 import com.nuparu.sevendaystomine.entity.EntityZombiePig;
 import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
@@ -57,6 +62,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignMaster;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBigSignSlave;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBirdNest;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBookshelf;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCalendar;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCampfire;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCarMaster;
@@ -74,6 +80,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityEnergyPole;
 import com.nuparu.sevendaystomine.tileentity.TileEntityEnergySwitch;
 import com.nuparu.sevendaystomine.tileentity.TileEntityFileCabinet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityFlag;
+import com.nuparu.sevendaystomine.tileentity.TileEntityFlamethrower;
 import com.nuparu.sevendaystomine.tileentity.TileEntityForge;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGarbage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityGasGenerator;
@@ -82,6 +89,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityKeySafe;
 import com.nuparu.sevendaystomine.tileentity.TileEntityLamp;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMailBox;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMedicalCabinet;
+import com.nuparu.sevendaystomine.tileentity.TileEntityMetalSpikes;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMicrowave;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMonitor;
 import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
@@ -121,13 +129,16 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -192,17 +203,20 @@ public class CommonProxy {
 		ModBiomes.init();
 
 		// Registers advancement criteria
-		Method method = ObfuscationReflectionHelper.findMethod(CriteriaTriggers.class, "func_192118_a",ICriterionTrigger.class,
-				ICriterionTrigger.class);
+		Method method = ObfuscationReflectionHelper.findMethod(CriteriaTriggers.class, "func_192118_a",
+				ICriterionTrigger.class, ICriterionTrigger.class);
 		method.setAccessible(true);
 
 		for (int i = 0; i < ModTriggers.TRIGGER_ARRAY.length; i++) {
-				try {
-					method.invoke(null, ModTriggers.TRIGGER_ARRAY[i]);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					e.printStackTrace();
-				}
+			try {
+				method.invoke(null, ModTriggers.TRIGGER_ARRAY[i]);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
 		}
+
+		FurnaceRecipes.instance().addSmelting(ModItems.BOTTLED_MURKY_WATER, new ItemStack(ModItems.BOTTLED_WATER), 2);
+		FurnaceRecipes.instance().addSmelting(ModItems.CANNED_MURKY_WATER, new ItemStack(ModItems.CANNED_WATER), 2);
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
@@ -303,6 +317,12 @@ public class CommonProxy {
 		registerTileEntity(TileEntitySeparator.class, "separator");
 		registerTileEntity(TileEntityTurretAdvanced.class, "turret_advanced");
 		registerTileEntity(TileEntitySirene.class, "sirene");
+		registerTileEntity(TileEntityCalendar.class, "calendar");
+		registerTileEntity(TileEntityFlamethrower.class, "flamethrower");
+		registerTileEntity(TileEntityMetalSpikes.class, "metal_spikes");
+		
+		
+		
 	}
 
 	public void registerTileEntity(Class<? extends TileEntity> te, String name) {
@@ -340,6 +360,10 @@ public class CommonProxy {
 		registerEntity(EntityZombiePig.class, "zombie_pig", 96, 2, true, 0xffffff, 0xffffff);
 		registerEntity(EntityAirplane.class, "airplane", 96, 2, true);
 		registerEntity(EntitySoldier.class, "soldier", 64, 1, true, 0x0b264b, 0x292929);
+		registerEntity(EntityChlorineGrenade.class, "chlorine_grenade", 32, 30, true);
+		registerEntity(EntityFragmentationGrenade.class, "fragmentation_grenade", 32, 30, true);
+		registerEntity(EntityMolotov.class, "molotov", 32, 30, true);
+		registerEntity(EntityZombieMiner.class, "zombie_miner", 64, 1, true, 0x574F45, 0x685452);
 		/*
 		 * addEntitySpawn(EntityReanimatedCorpse.class, 1000, 1, 7,
 		 * EnumCreatureType.MONSTER, Utils.combine(BiomeDictionary.getBiomes(Type.LUSH),
@@ -367,7 +391,36 @@ public class CommonProxy {
 				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST)).stream().toArray(Biome[]::new));
 
+		addEntitySpawn(EntitySpiderZombie.class, 20, 1, 2, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+
+		addEntitySpawn(
+				EntityFrozenLumberjack.class, 25, 1, 3, EnumCreatureType.MONSTER, Utils
+						.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
+								BiomeDictionary.getBiomes(BiomeDictionary.Type.CONIFEROUS))
+						.stream().toArray(Biome[]::new));
+		addEntitySpawn(EntityFrigidHunter.class, 40, 1, 3, EnumCreatureType.MONSTER,
+				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD)).stream().toArray(Biome[]::new));
+		addEntitySpawn(
+				EntityFrostbittenWorker.class, 40, 2, 5, EnumCreatureType.MONSTER, Utils
+						.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
+								BiomeDictionary.getBiomes(BiomeDictionary.Type.CONIFEROUS))
+						.stream().toArray(Biome[]::new));
+		
+		addEntitySpawn(EntityZombieWolf.class, 20, 1, 3, EnumCreatureType.MONSTER,
+				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD)).stream().toArray(Biome[]::new));
+
+		addEntitySpawn(EntityBurntZombie.class, 20, 1, 2, EnumCreatureType.MONSTER,
+				Arrays.asList(ModBiomes.BURNT_FOREST, ModBiomes.WASTELAND).stream().toArray(Biome[]::new));
+		
+		addEntitySpawn(EntityZombieMiner.class, 30, 1, 1, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+
 		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+		EntityRegistry.removeSpawn(EntityHusk.class, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 		EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
@@ -430,6 +483,13 @@ public class CommonProxy {
 		LootTableList.register(ModLootTables.NEST);
 		LootTableList.register(ModLootTables.CASH_REGISTER);
 		LootTableList.register(ModLootTables.ZOMBIE_GENERIC);
+		LootTableList.register(ModLootTables.CODE_SAFE);
+		LootTableList.register(ModLootTables.ZOMBIE_NURSE);
+		LootTableList.register(ModLootTables.BODY_BAG);
+		LootTableList.register(ModLootTables.BOOKSHELF_RARE);
+		LootTableList.register(ModLootTables.ZOMBIE_POLICEMAN);
+		LootTableList.register(ModLootTables.ZOMBIE_MINER);
+		LootTableList.register(ModLootTables.SUPPLY_CHEST);
 	}
 
 	public void openClientSideGui(int id, int x, int y, int z) {
@@ -473,7 +533,7 @@ public class CommonProxy {
 
 	}
 
-	public void playLoudSound(World world, ResourceLocation resource, float volume, BlockPos blockPosIn,
+	public void playLoudSound(World world, SoundEvent resource, float volume, BlockPos blockPosIn,
 			SoundCategory category) {
 		MinecraftForge.EVENT_BUS.post(new LoudSoundEvent(world, blockPosIn, resource, volume, category));
 	}

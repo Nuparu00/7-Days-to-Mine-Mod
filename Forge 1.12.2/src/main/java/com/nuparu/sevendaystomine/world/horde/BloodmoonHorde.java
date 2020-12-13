@@ -1,10 +1,12 @@
 package com.nuparu.sevendaystomine.world.horde;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityInfectedSurvivor;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -34,11 +36,9 @@ public class BloodmoonHorde extends Horde {
 			new TextComponentTranslation("horde.bloodmoon.name"), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS))
 					.setDarkenSky(true);
 
-	public int waves = 10;
-	public int zombiesInWave = 0;
 	public EntityPlayer player;
 
-	public static final int MIN_DISTANCE = 20;
+	public static final int MIN_DISTANCE = 30;
 
 	public BloodmoonHorde(World world) {
 		super(world);
@@ -50,9 +50,10 @@ public class BloodmoonHorde extends Horde {
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 4));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_soldier"), 6));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 1));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 4));
-		
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_miner"), 3));
+
 		if (center != null) {
 			Biome biome = world.getBiome(center);
 			if (biome.isSnowyBiome()) {
@@ -61,12 +62,12 @@ public class BloodmoonHorde extends Horde {
 				entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frozen_lumberjack"), 6));
 			}
 		}
+		this.waves = ModConfig.world.bloodmoonHordeWaves;
 	}
 
 	public BloodmoonHorde(BlockPos center, World world, EntityPlayer player) {
 		super(center, world);
 		this.player = player;
-		this.waves = MathUtils.getIntInRange(8, 14);
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 10));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "bloated_zombie"), 6));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "infected_survivor"), 10));
@@ -75,8 +76,9 @@ public class BloodmoonHorde extends Horde {
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 4));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_soldier"), 6));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 1));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_miner"), 3));
 
 		Biome biome = world.getBiome(center);
 		if (biome.isSnowyBiome()) {
@@ -84,35 +86,30 @@ public class BloodmoonHorde extends Horde {
 			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frostbitten_worker"), 8));
 			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frozen_lumberjack"), 6));
 		}
+		this.waves = ModConfig.world.bloodmoonHordeWaves;
 	}
 
 	public void addTarget(EntityPlayerMP player) {
+		if(bossInfo == null) return;
 		bossInfo.addPlayer(player);
 	}
 
 	public void removeTarget(EntityPlayerMP player) {
-		// bossInfo.removePlayer(player);
+		if(bossInfo == null) return;
+		bossInfo.removePlayer(player);
 	}
 
 	@Override
 	public void onZombieKill(EntityZombieBase zombie) {
 		super.onZombieKill(zombie);
+		if(bossInfo == null) return;
 		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
-
-		if (zombies.size() <= 0) {
-			if (waves > 0 && Utils.isBloodmoon(world)) {
-				zombiesInWave = 0;
-				waves--;
-				start();
-			} else {
-				HordeSavedData.get(world).removeHorde(this);
-			}
-		}
 	}
 
 	@Override
 	public void addZombie(EntityZombieBase zombie) {
 		super.addZombie(zombie);
+		if(bossInfo == null) return;
 		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
 	}
 
@@ -123,50 +120,52 @@ public class BloodmoonHorde extends Horde {
 
 	@Override
 	public void onPlayerStopTacking(EntityPlayerMP player, EntityZombieBase zombie) {
-		removeTarget(player);
+		//removeTarget(player);
 	}
 
 	public void onRemove() {
-		for (EntityPlayerMP playerMP : bossInfo.getPlayers()) {
+		super.onRemove();
+		if(bossInfo == null ||  bossInfo.getPlayers() == null) return;
+		Collection<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>(bossInfo.getPlayers());
+		for (EntityPlayerMP playerMP :  players) {
 			bossInfo.removePlayer(playerMP);
 		}
 	}
 
 	@Override
 	public void start() {
-		if(player == null) return;
+		super.start();
+		if (player == null)
+			return;
 		zombies.clear();
-		BlockPos origin = getSpaawnOrigin();
-		for (int i = 0; i < MathUtils.getIntInRange(7, 10); i++) {
-			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin).up(), world, true);
+		zombiesInWave = 0;
+		BlockPos origin = getSpawnOrigin();
+		for (int i = 0; i < ModConfig.world.bloodmoonHordeZombiesPerWave; i++) {
+			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin), world, true).up();
 			HordeEntry entry = getHordeEntry(world.rand);
 			if (entry != null) {
 				EntityZombieBase zombie = entry.spawn(world, pos);
-				if(zombie == null) continue;
+				if (zombie == null)
+					continue;
 				zombie.setAttackTarget(player);
 				zombie.horde = this;
 				zombies.add(zombie);
 				zombiesInWave++;
-				System.out.println(new BlockPos(zombie));
 			}
 		}
 		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
+		data.markDirty();
 	}
 
-	public BlockPos getSpaawnOrigin() {
-		double x = world.rand.nextDouble() - 0.5;
-		double y = world.rand.nextDouble() - 0.5;
-		double z = world.rand.nextDouble() - 0.5;
-
-		double mag = Math.sqrt(x * x + y * y + z * z);
-		x /= mag;
-		y /= mag;
-		z /= mag;
-
-		double d = world.rand.nextDouble()*10 + MIN_DISTANCE;
-		return center.add(x * d, y * d, z * d);
+	public BlockPos getSpawnOrigin() {
+		double angle = 2.0 * Math.PI * world.rand.nextDouble();
+		double dist = MIN_DISTANCE + world.rand.nextDouble()*10;
+		double x = center.getX() + dist * Math.cos(angle);
+		double z = center.getZ() + dist * Math.sin(angle);
+		
+		return new BlockPos(x,0,z);
 	}
-	
+
 	public BlockPos getSpawn(BlockPos origin) {
 		double x = world.rand.nextDouble() - 0.5;
 		double y = world.rand.nextDouble() - 0.5;
@@ -177,29 +176,8 @@ public class BloodmoonHorde extends Horde {
 		y /= mag;
 		z /= mag;
 
-		double d = world.rand.nextDouble()*1.5;
+		double d = world.rand.nextDouble() * 1.5;
 		return origin.add(x * d, y * d, z * d);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		if (world.isRemote) {
-			return;
-		}
-		waves = compound.getInteger("wave");
-		zombiesInWave = compound.getInteger("zombiesInWave");
-		uuid = NBTUtil.getUUIDFromTag(compound.getCompoundTag("uuid"));
-		center = BlockPos.fromLong(compound.getLong("center"));
-		zombies.clear();
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setInteger("wave", waves);
-		compound.setInteger("zombiesInWave", zombiesInWave);
-		compound.setTag("uuid", NBTUtil.createUUIDTag(uuid));
-		compound.setLong("center", center.toLong());
-		return compound;
 	}
 
 }

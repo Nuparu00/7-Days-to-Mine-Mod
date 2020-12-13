@@ -78,6 +78,10 @@ public class JeiPlugin implements IModPlugin {
 		registry.addIngredientInfo(new ItemStack(ModBlocks.WORKBENCH), VanillaTypes.ITEM, "jei.information.workbench");
 		registry.addIngredientInfo(new ItemStack(ModBlocks.SEPARATOR), VanillaTypes.ITEM, "jei.information.separator");
 		registry.addIngredientInfo(new ItemStack(ModItems.STONE_AXE), VanillaTypes.ITEM, "jei.information.stone_axe");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.WIND_TURBINE), VanillaTypes.ITEM, "jei.information.wind_turbine");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.SOLAR_PANEL), VanillaTypes.ITEM, "jei.information.solar_panel");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.GENERATOR_COMBUSTION), VanillaTypes.ITEM, "jei.information.combustion_generator");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.GENERATOR_GAS), VanillaTypes.ITEM, "jei.information.gas_generator");
 	}
 	
 }

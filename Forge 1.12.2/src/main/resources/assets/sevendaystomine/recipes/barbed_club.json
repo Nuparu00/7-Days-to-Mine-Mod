@@ -1,13 +1,13 @@
 {
   "type": "sevendaystomine:crafting_quality_shaped",
   "pattern": [
-    "SSS",
+    " S ",
     "SCS",
-    "SSS"
+    " S "
   ],
   "key": {
     "S": {
-      "item": "sevendaystomine:scrapiron"
+      "item": "sevendaystomine:razor_wire"
     },
     "C": {
       "item": "sevendaystomine:ironreinforcedclub"

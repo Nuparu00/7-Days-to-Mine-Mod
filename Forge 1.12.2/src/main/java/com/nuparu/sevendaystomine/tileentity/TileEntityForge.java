@@ -85,7 +85,7 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 					}
 				}
 			}
-			if (this.isBurning() || hasMold() && hasFuel() && !isInputEmpty()) {
+			if (this.isBurning() || hasMold() && !isInputEmpty()) {
 				if (!this.isBurning() && this.canSmelt()) {
 					this.burnTime = Utils.getItemBurnTime(itemstack);
 					this.currentItemBurnTime = this.burnTime;
@@ -139,9 +139,9 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 	}
 
 	private boolean canSmelt() {
-		if (!getOutputSlot().isEmpty() && getOutputSlot().getCount() > this.getInventoryStackLimit())
+		if (!getOutputSlot().isEmpty() && getOutputSlot().getCount() > Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit()))
 			return false;
-		if (isInputEmpty() || !hasMold() || !hasFuel())
+		if (isInputEmpty() || !hasMold())
 			return false;
 		for (IForgeRecipe recipe : ForgeRecipeManager.getInstance().getRecipes()) {
 			if (recipe.matches(this, this.world)) {
@@ -149,10 +149,10 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 				if (!getOutputSlot().isEmpty() && !ItemStack.areItemsEqual(getOutputSlot(), output)) {
 					continue;
 				}
-				if (!ItemStack.areItemsEqual(getMoldSlot(), recipe.getMold())) {
+				if (!ItemStack.areItemsEqualIgnoreDurability(getMoldSlot(), recipe.getMold())) {
 					continue;
 				}
-				if (getOutputSlot().getCount() + output.getCount() <= this.getInventoryStackLimit()) {
+				if (getOutputSlot().getCount() + output.getCount() <= Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit())) {
 					currentRecipe = recipe;
 					return true;
 				}
@@ -166,7 +166,7 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 		IForgeRecipe recipeToUse = null;
 		for (IForgeRecipe recipe : ForgeRecipeManager.getInstance().getRecipes()) {
 			if (recipe.matches(this, this.world)) {
-				if (ItemStack.areItemsEqual(getMoldSlot(), recipe.getMold())) {
+				if (ItemStack.areItemsEqualIgnoreDurability(getMoldSlot(), recipe.getMold())) {
 					recipeToUse = recipe;
 					break;
 				}
@@ -175,19 +175,21 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 		if (recipeToUse != null) {
 
 			ItemStack currentOutput = getOutputSlot();
-			if (ItemStack.areItemsEqual(getMoldSlot(), recipeToUse.getMold())) {
+			if (ItemStack.areItemsEqualIgnoreDurability(getMoldSlot(), recipeToUse.getMold())) {
 
 				if (currentOutput.isEmpty()) {
 					setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), recipeToUse.getOutput(this));
 
 				} else {
 					if (ItemStack.areItemsEqual(currentOutput, recipeToUse.getOutput(this)) && currentOutput.getCount()
-							+ recipeToUse.getOutput(this).getCount() <= getInventoryStackLimit()) {
+							+ recipeToUse.getOutput(this).getCount() <= Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit())) {
 
 						currentOutput.grow(recipeToUse.getOutput(this).getCount());
+						this.getMoldSlot().attemptDamageItem(1, world.rand, null);
 						setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), currentOutput);
 					}
-				}
+				}	
+				this.getMoldSlot().attemptDamageItem(1, world.rand, null);
 				consumeInput(recipeToUse);
 			}
 		}

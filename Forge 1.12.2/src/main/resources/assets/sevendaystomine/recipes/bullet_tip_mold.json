@@ -1,6 +1,7 @@
 {
   "type": "sevendaystomine:crafting_locked_shaped",
   "pattern": [
+    "CCC",
     "CBC",
     "CCC"
   ],

@@ -1,5 +1,8 @@
 package com.nuparu.sevendaystomine.client.gui.inventory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSeparator;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
@@ -45,12 +48,16 @@ public class GuiSeparator extends GuiContainer {
 				new TextComponentTranslation("container.inventory", new Object[0]).getUnformattedText(), 8,
 				ySize - 96 + 2, 4210752);
 		int progressLevel = getProgressLevel(24);
+		int marginHorizontal = (width - xSize) / 2;
+		int marginVertical = (height - ySize) / 2;
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(resourceLocation);
 		drawTexturedModalRect(107, 43, 176, 14, progressLevel + 1, 16);
 		mc.getTextureManager().bindTexture(resourceLocation);
 		drawTexturedModalRect(107, 43, 176, 14, progressLevel + 1, 16);
 		drawTexturedModalRect(45+24-progressLevel-1, 43, 176 + 24 - progressLevel-1, 31, progressLevel + 2, 16);
+		int k = this.getBurnLeftScaled(14);
+		this.drawTexturedModalRect(82, 73 - k, 176, 14 - k, 14, k);
 
 	}
 
@@ -67,6 +74,11 @@ public class GuiSeparator extends GuiContainer {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
+		if (isPointInRegion(81, 59, 14, 14, mouseX, mouseY)) {
+			List<String> tooltip = new ArrayList<String>();
+			tooltip.add(te.getVoltageStored() + "J");
+			drawHoveringText(tooltip, mouseX, mouseY);
+		}
 	}
 	
 	private int getProgressLevel(int progressIndicatorPixelWidth) {
@@ -75,5 +87,9 @@ public class GuiSeparator extends GuiContainer {
 		return ticksPerItem != 0 && ticksGrindingItemSoFar != 0
 				? (int)Math.round(ticksGrindingItemSoFar * progressIndicatorPixelWidth / ticksPerItem)
 				: 0;
+	}
+	
+	private int getBurnLeftScaled(int pixels) {
+		return (int) (te.getVoltageStored() * pixels / te.getCapacity());
 	}
 }

@@ -1,0 +1,21 @@
+{
+   "type":"sevendaystomine:crafting_gun_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:hunting_rifle_barrel"
+      },
+      {
+         "item":"sevendaystomine:hunting_rifle_stock"
+      },
+      {
+         "item":"sevendaystomine:hunting_rifle_bolt"
+      },
+      {
+         "item":"sevendaystomine:hunting_rifle_parts"
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:hunting_rifle"
+   },
+   "recipe":"hunting_rifle"
+}

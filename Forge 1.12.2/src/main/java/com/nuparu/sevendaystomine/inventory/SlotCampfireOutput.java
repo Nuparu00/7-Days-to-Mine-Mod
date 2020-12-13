@@ -9,96 +9,89 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
-public class SlotCampfireOutput extends Slot
-{
-    /** The player that is using the GUI where this slot resides. */
-    private final EntityPlayer player;
-    private int removeCount;
+public class SlotCampfireOutput extends Slot {
+	/** The player that is using the GUI where this slot resides. */
+	private final EntityPlayer player;
+	private int removeCount;
 
-    public SlotCampfireOutput(EntityPlayer player, IInventory inventoryIn, int slotIndex, int xPosition, int yPosition)
-    {
-        super(inventoryIn, slotIndex, xPosition, yPosition);
-        this.player = player;
-    }
+	public SlotCampfireOutput(EntityPlayer player, IInventory inventoryIn, int slotIndex, int xPosition,
+			int yPosition) {
+		super(inventoryIn, slotIndex, xPosition, yPosition);
+		this.player = player;
+	}
 
-    /**
-     * Check if the stack is allowed to be placed in this slot, used for armor slots as well as furnace fuel.
-     */
-    public boolean isItemValid(ItemStack stack)
-    {
-        return false;
-    }
+	/**
+	 * Check if the stack is allowed to be placed in this slot, used for armor slots
+	 * as well as furnace fuel.
+	 */
+	public boolean isItemValid(ItemStack stack) {
+		return false;
+	}
 
-    /**
-     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-     * stack.
-     */
-    public ItemStack decrStackSize(int amount)
-    {
-        if (this.getHasStack())
-        {
-            this.removeCount += Math.min(amount, this.getStack().getCount());
-        }
+	/**
+	 * Decrease the size of the stack in slot (first int arg) by the amount of the
+	 * second int arg. Returns the new stack.
+	 */
+	public ItemStack decrStackSize(int amount) {
+		if (this.getHasStack()) {
+			this.removeCount += Math.min(amount, this.getStack().getCount());
+		}
 
-        return super.decrStackSize(amount);
-    }
+		return super.decrStackSize(amount);
+	}
 
-    public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack)
-    {
-        this.onCrafting(stack);
-        super.onTake(thePlayer, stack);
-        return stack;
-    }
+	public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+		this.onCrafting(stack);
+		super.onTake(thePlayer, stack);
+		return stack;
+	}
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood. Typically increases an
-     * internal count then calls onCrafting(item).
-     */
-    protected void onCrafting(ItemStack stack, int amount)
-    {
-        this.removeCount += amount;
-        this.onCrafting(stack);
-    }
+	/**
+	 * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not
+	 * ore and wood. Typically increases an internal count then calls
+	 * onCrafting(item).
+	 */
+	protected void onCrafting(ItemStack stack, int amount) {
+		this.removeCount += amount;
+		this.onCrafting(stack);
+	}
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
-     */
-    protected void onCrafting(ItemStack stack)
-    {
-        stack.onCrafting(this.player.world, this.player, this.removeCount);
+	/**
+	 * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not
+	 * ore and wood.
+	 */
+	protected void onCrafting(ItemStack stack) {
+		stack.onCrafting(this.player.world, this.player, this.removeCount);
 
-        if (!this.player.world.isRemote&& inventory instanceof TileEntityCampfire)
-        {
-            TileEntityCampfire tileEntity = (TileEntityCampfire)inventory;
-        	
-        	int i = this.removeCount;
-            float f = tileEntity.getCurrentRecipe().intGetXP(this.player);
+		if (!this.player.world.isRemote && inventory instanceof TileEntityCampfire) {
+			TileEntityCampfire tileEntity = (TileEntityCampfire) inventory;
 
-            if (f == 0.0F)
-            {
-                i = 0;
-            }
-            else if (f < 1.0F)
-            {
-                int j = MathHelper.floor((float)i * f);
+			int i = this.removeCount;
+			if (tileEntity.getCurrentRecipe() != null) {
+				float f = tileEntity.getCurrentRecipe().intGetXP(this.player);
 
-                if (j < MathHelper.ceil((float)i * f) && Math.random() < (double)((float)i * f - (float)j))
-                {
-                    ++j;
-                }
+				if (f == 0.0F) {
+					i = 0;
+				} else if (f < 1.0F) {
+					int j = MathHelper.floor((float) i * f);
 
-                i = j;
-            }
+					if (j < MathHelper.ceil((float) i * f) && Math.random() < (double) ((float) i * f - (float) j)) {
+						++j;
+					}
 
-            while (i > 0)
-            {
-                int k = EntityXPOrb.getXPSplit(i);
-                i -= k;
-                this.player.world.spawnEntity(new EntityXPOrb(this.player.world, this.player.posX, this.player.posY + 0.5D, this.player.posZ + 0.5D, k));
-            }
-        }
+					i = j;
+				}
 
-        this.removeCount = 0;
-        net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerSmeltedEvent(player, stack);
-    }
+				while (i > 0) {
+					int k = EntityXPOrb.getXPSplit(i);
+					i -= k;
+					this.player.world.spawnEntity(new EntityXPOrb(this.player.world, this.player.posX,
+							this.player.posY + 0.5D, this.player.posZ + 0.5D, k));
+				}
+			}
+		}
+
+		this.removeCount = 0;
+		net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerSmeltedEvent(player, stack);
+	}
 }

@@ -1,5 +1,7 @@
 package com.nuparu.sevendaystomine.block;
 
+import java.util.Random;
+
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -12,6 +14,7 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -59,6 +62,13 @@ public class BlockDoorLocked extends BlockDoorBase {
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		return new ItemStack(ModItems.LOCKED_DOOR_ITEM);
 	}
+	
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? net.minecraft.init.Items.AIR
+				: ModItems.LOCKED_DOOR_ITEM;
+    }
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,

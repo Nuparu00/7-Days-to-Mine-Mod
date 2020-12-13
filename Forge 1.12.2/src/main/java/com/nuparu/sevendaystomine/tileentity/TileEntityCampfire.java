@@ -85,7 +85,7 @@ public class TileEntityCampfire extends TileEntityLockableLoot implements ITicka
     				}
     			}
             }
-            if (this.isBurning() || hasPot() && hasFuel() && !isInputEmpty()) {
+            if (this.isBurning() || hasPot() && !isInputEmpty()) {
 				if (!this.isBurning() && this.canSmelt()) {
 					this.burnTime = Utils.getItemBurnTime(itemstack);
 					this.currentItemBurnTime = this.burnTime;
@@ -139,10 +139,10 @@ public class TileEntityCampfire extends TileEntityLockableLoot implements ITicka
 	}
 
 	private boolean canSmelt() {
-		if (!getOutputSlot().isEmpty() && getOutputSlot().getCount() > this.getInventoryStackLimit())
+		if (!getOutputSlot().isEmpty() && getOutputSlot().getCount() > Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit()))
 			return false;
 
-		if (isInputEmpty() || !hasPot() || !hasFuel())
+		if (isInputEmpty() || !hasPot())
 			return false;
 
 		for (ICampfireRecipe recipe : CampfireRecipeManager.getInstance().getRecipes()) {
@@ -151,7 +151,7 @@ public class TileEntityCampfire extends TileEntityLockableLoot implements ITicka
 					return false;
 				if (!ItemStack.areItemsEqual(getPotSlot(), recipe.getPot()))
 					return false;
-				if (getOutputSlot().getCount() + recipe.getResult().getCount() <= this.getInventoryStackLimit()) {
+				if (getOutputSlot().getCount() + recipe.getResult().getCount() <= Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit())) {
 					currentRecipe = recipe;
 					return true;
 				}
@@ -179,7 +179,7 @@ public class TileEntityCampfire extends TileEntityLockableLoot implements ITicka
 
 				} else {
 					if (ItemStack.areItemsEqual(currentOutput, recipeToUse.getResult()) && currentOutput.getCount()
-							+ recipeToUse.getResult().getCount() <= getInventoryStackLimit()) {
+							+ recipeToUse.getResult().getCount() <= Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit())) {
 
 						currentOutput.grow(recipeToUse.getResult().getCount());
 						setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), currentOutput);

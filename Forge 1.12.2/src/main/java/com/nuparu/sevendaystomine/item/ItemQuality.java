@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemQuality extends Item implements IQuality {
 
 	public static final int MAX_QUALITY = 600;
-	public static final double XP_PER_QUALITY_POINT = 2;
+	public static final double XP_PER_QUALITY_POINT = 5;
 
 	public ItemQuality() {
 
@@ -93,7 +93,7 @@ public class ItemQuality extends Item implements IQuality {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		NBTTagCompound nbt = stack.getTagCompound();
-		nbt.setInteger("Quality",(int) MathUtils.clamp(player.getScore() / XP_PER_QUALITY_POINT, 1, MAX_QUALITY));
+		nbt.setInteger("Quality",(int) MathUtils.clamp(player.experienceTotal / XP_PER_QUALITY_POINT, 1, MAX_QUALITY));
 
 		return stack;
 	}
@@ -144,6 +144,12 @@ public class ItemQuality extends Item implements IQuality {
 		default:
 			return super.getRGBDurabilityForDisplay(stack);
 		}
+	}
+	
+	@Override
+	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
+		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT),
+				ItemQuality.MAX_QUALITY));
 	}
 	
 }

@@ -5,6 +5,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -23,8 +24,8 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public static final int INFECTION_STAGE_THREE_START = 96000;
 	public static final int INFECTION_STAGE_FOUR_START = 144000;
 	
-	int maxThirst = 780;
-	int maxStamina = 780;
+	public static final int MAX_THIRST = 780;
+	public static final int MAX_STAMINA = 780;
 
 	int thirst = 780;
 	int stamina = 780;
@@ -36,23 +37,28 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	//Has been a bloodmoon horde spawnde for this player on the current day?
 	boolean bloodmoon;
 	
+	public ExtendedPlayer() {
+		thirst = MAX_THIRST;
+		stamina = MAX_STAMINA;
+	}
+	
 	
 	List<String> recipes = new ArrayList<String>();
 
 	EntityPlayer player;
 
 	public void setThirst(int thirst) {
-		this.thirst = thirst;
+		this.thirst = MathHelper.clamp(thirst,0,MAX_STAMINA);
 		onDataChanged();
 	}
 
 	public void consumeThirst(int thirst) {
-		this.thirst = this.thirst >= thirst ? this.thirst -= thirst : 0;
+		this.thirst = MathHelper.clamp(this.thirst - thirst,0,MAX_STAMINA);
 		onDataChanged();
 	}
 
 	public void addThirst(int thirst) {
-		this.thirst = this.thirst <= maxThirst - thirst ? this.thirst += thirst : maxThirst;
+		this.thirst = MathHelper.clamp(this.thirst + thirst,0,MAX_STAMINA);
 		onDataChanged();
 	}
 
@@ -61,21 +67,21 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	public int getMaximumThirst() {
-		return this.maxThirst;
+		return this.MAX_THIRST;
 	}
 
 	public void setStamina(int stamina) {
-		this.stamina = stamina;
+		this.stamina = MathHelper.clamp(stamina,0,MAX_STAMINA);
 		onDataChanged();
 	}
 
 	public void consumeStamina(int stamina) {
-		this.stamina = this.stamina >= stamina ? this.stamina -= stamina : 0;
+		this.stamina =MathHelper.clamp(this.stamina - stamina,0,MAX_STAMINA);
 		onDataChanged();
 	}
 
 	public void addStamina(int stamina) {
-		this.stamina = this.stamina <= maxStamina - stamina ? this.stamina += stamina : maxStamina;
+		this.stamina = MathHelper.clamp(this.stamina + stamina,0,MAX_STAMINA);
 		onDataChanged();
 	}
 
@@ -84,7 +90,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	public int getMaximumStamina() {
-		return this.maxStamina;
+		return this.MAX_STAMINA;
 	}
 
 	public boolean getCrawling() {
@@ -116,8 +122,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	public void readNBT(NBTTagCompound nbt) {
-		maxThirst = nbt.getInteger("maxThirst");
-		maxStamina = nbt.getInteger("maxStamina");
+		
 		thirst = nbt.getInteger("thirst");
 		stamina = nbt.getInteger("stamina");
 		isCrawling = nbt.getBoolean("isCrawling");
@@ -133,9 +138,6 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	public NBTTagCompound writeNBT(NBTTagCompound nbt) {
-		nbt.setInteger("maxThirst", maxThirst);
-		nbt.setInteger("maxStamina", maxStamina);
-
 		nbt.setInteger("thirst", thirst);
 		nbt.setInteger("stamina", stamina);
 

@@ -7,6 +7,7 @@ public class EntityFrigidHunter extends EntityBipedalZombie {
 
 	public EntityFrigidHunter(World worldIn) {
 		super(worldIn);
+		this.experienceValue = 20;
 	}
 	
 	@Override

@@ -53,9 +53,9 @@ public class CommandGetBlockBreak extends CommandBase {
 
 		if (world.isRemote) {
 		} else {
-			ArrayList<BreakData> list = BreakSavedData.get(world).list;
+			ArrayList<BreakData> list = BreakSavedData.get(world).getList();
 			for (BreakData data : list) {
-				sender.sendMessage(new TextComponentString(TextFormatting.GREEN + BlockPos.fromLong(data.getPos()).toString() + " " + data.getDim() + " "
+				sender.sendMessage(new TextComponentString(TextFormatting.GREEN + BlockPos.fromLong(data.getPos()).toString() + " " + data.getLastChange() + " "
 						+ data.getState()));
 			}
 		}

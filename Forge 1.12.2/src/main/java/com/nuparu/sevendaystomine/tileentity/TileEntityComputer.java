@@ -19,10 +19,14 @@ import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowsDesktopProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowsLoginProcess;
+import com.nuparu.sevendaystomine.electricity.ElectricConnection;
+import com.nuparu.sevendaystomine.electricity.EnumDeviceType;
+import com.nuparu.sevendaystomine.electricity.IVoltage;
 import com.nuparu.sevendaystomine.electricity.network.INetwork;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SyncTileEntityMessage;
+import com.nuparu.sevendaystomine.util.ModConstants;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,9 +50,11 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntityComputer extends TileEntityLockableLoot implements ISidedInventory, ITickable, INetwork {
+public class TileEntityComputer extends TileEntityLockableLoot
+		implements ISidedInventory, ITickable, INetwork, IVoltage {
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(7, ItemStack.EMPTY);
 
 	private TileEntityMonitor monitorTE = null;
@@ -56,6 +62,8 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 	// Machine variables
 	private EnumState state = EnumState.OFF;
 	private EnumSystem system = EnumSystem.NONE;
+	private long voltage = 0;
+	private long capacity = 1000;
 
 	// processes
 	private ArrayList<TickingProcess> processes = new ArrayList<TickingProcess>();
@@ -223,9 +231,12 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 		if (world.isRemote) {
 			return;
 		}
-		if (!isCompleted() && isOn()) {
-			turnOff();
-			return;
+		if (isOn()) {
+			if ((!isCompleted() || this.voltage < this.getRequiredPower())) {
+				turnOff();
+				return;
+			}
+			this.voltage -= this.getRequiredPower();
 		}
 		if (!world.isRemote) {
 			for (TickingProcess process : getProcessesList()) {
@@ -242,6 +253,7 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 		ItemStackHelper.loadAllItems(compound, this.inventory);
 		this.state = EnumState.getEnum(compound.getString("state"));
 		this.system = EnumSystem.getEnum(compound.getString("system"));
+		this.voltage = compound.getLong("power");
 
 		this.username = compound.getString("username");
 		this.password = compound.getString("password");
@@ -308,6 +320,7 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 		ItemStackHelper.saveAllItems(compound, this.inventory);
 		compound.setString("state", state.getName());
 		compound.setString("system", system.getName());
+		compound.setLong("power", voltage);
 
 		compound.setString("username", username);
 		compound.setString("password", password);
@@ -668,6 +681,106 @@ public class TileEntityComputer extends TileEntityLockableLoot implements ISided
 		this.username = "Admin";
 		this.password = "Admin";
 		this.hint = "Admin";
+	}
+
+	@Override
+	public EnumDeviceType getDeviceType() {
+		return EnumDeviceType.CONSUMER;
+	}
+
+	@Override
+	public int getMaximalInputs() {
+		return 0;
+	}
+
+	@Override
+	public int getMaximalOutputs() {
+		return 0;
+	}
+
+	@Override
+	public List<ElectricConnection> getInputs() {
+		return null;
+	}
+
+	@Override
+	public List<ElectricConnection> getOutputs() {
+		return null;
+	}
+
+	@Override
+	public long getOutput() {
+		return 0;
+	}
+
+	@Override
+	public long getMaxOutput() {
+		return 0;
+	}
+
+	@Override
+	public long getOutputForConnection(ElectricConnection connection) {
+		return 0;
+	}
+
+	@Override
+	public boolean tryToConnect(ElectricConnection connection) {
+		return false;
+	}
+
+	@Override
+	public boolean canConnect(ElectricConnection connection) {
+		return false;
+	}
+
+	@Override
+	public long getRequiredPower() {
+		return 256;
+	}
+
+	@Override
+	public long getCapacity() {
+		return this.capacity;
+	}
+
+	@Override
+	public long getVoltageStored() {
+		return this.voltage;
+	}
+
+	@Override
+	public void storePower(long power) {
+		this.voltage += power;
+		if (this.voltage > this.getCapacity()) {
+			this.voltage = this.getCapacity();
+		}
+		if (this.voltage < 0) {
+			this.voltage = 0;
+		}
+	}
+
+	@Override
+	public long tryToSendPower(long power, ElectricConnection connection) {
+		long canBeAdded = capacity - voltage;
+		long delta = Math.min(canBeAdded, power);
+		long lost = 0;
+		if (connection != null) {
+			lost = (long) Math.round(delta * ModConstants.DROP_PER_BLOCK * connection.getDistance());
+		}
+		long realDelta = delta - lost;
+		this.voltage += realDelta;
+
+		return delta;
+	}
+
+	@Override
+	public Vec3d getWireOffset() {
+		return null;
+	}
+
+	@Override
+	public boolean isPassive() {
+		return true;
 	}
 
 }

@@ -30,7 +30,7 @@ public class TileEntityEnergyPole extends TileEntity implements ITickable, IVolt
 	protected List<ElectricConnection> outputs = new ArrayList<ElectricConnection>();
 
 	protected long voltage = 0;
-	protected long capacity = 3000;
+	protected long capacity = 1000;
 
 	public TileEntityEnergyPole() {
 

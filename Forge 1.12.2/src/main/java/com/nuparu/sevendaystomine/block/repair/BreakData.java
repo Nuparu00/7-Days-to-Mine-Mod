@@ -8,12 +8,12 @@ public class BreakData implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	long pos;
-	int dim;
+	long lastChange;
 	float state;
 
-	public BreakData(long pos, int dim, float state) {
+	public BreakData(long pos, long dim, float state) {
 		this.pos = pos;
-		this.dim = dim;
+		this.lastChange = dim;
 		this.state = state;
 	}
 
@@ -23,7 +23,7 @@ public class BreakData implements Serializable {
      public float getState(){
           return this.state;
      }
-     public int getDim(){
-          return this.dim;
+     public long getLastChange(){
+          return this.lastChange;
      }
 }

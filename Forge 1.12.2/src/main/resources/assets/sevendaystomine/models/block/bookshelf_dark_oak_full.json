@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/bookshelf_full",
+	"textures": {
+		"0": "blocks/planks_big_oak",
+		"particle": "blocks/planks_big_oak"
+	}
+}

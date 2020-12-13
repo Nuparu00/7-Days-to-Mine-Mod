@@ -102,10 +102,13 @@ public class GuiGun {
 
 			if (gunMain != null || gunSec != null) {
 
-				if ((main.isEmpty() || gunMain.getFOVFactor(main) != 1)
-						&& (main.isEmpty() || gunMain.getFOVFactor(main) != 1)
-						&& mc.gameSettings.keyBindAttack.isKeyDown())
+				if(gunMain != null && (gunMain.getFOVFactor(main) != 1 && mc.gameSettings.keyBindAttack.isKeyDown())) {
 					return;
+				}
+				
+				if(gunSec != null && (gunSec.getFOVFactor(sec) != 1 && mc.gameSettings.keyBindAttack.isKeyDown())) {
+					return;
+				}
 
 				double gunCross = Utils.getCrosshairSpread(player);
 				float vel = (float) (Math.abs(player.motionX) + Math.abs(player.motionZ)) * 0.5f;

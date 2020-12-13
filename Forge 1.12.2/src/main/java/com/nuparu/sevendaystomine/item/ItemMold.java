@@ -8,6 +8,7 @@ public class ItemMold extends Item{
 
 	public ItemMold() {
 		setMaxStackSize(1);
+		this.setMaxDamage(64);
 		setCreativeTab(SevenDaysToMine.TAB_FORGING);
 	}
 }

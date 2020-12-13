@@ -102,7 +102,6 @@ public class EntityAirdrop extends Entity {
 				if (!getLanded()) {
 					setSmokeTime(1200);
 					setLanded(true);
-					SevenDaysToMine.releaseChunkLoad(world, new ChunkPos((int) posX >> 4, (int) posZ >> 4));
 				}
 			}
 		}

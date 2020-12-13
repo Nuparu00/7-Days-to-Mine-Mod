@@ -18,6 +18,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
@@ -53,7 +54,8 @@ public class RecipeQualityShapeless extends ShapelessRecipes {
 					stack.setTagCompound(new NBTTagCompound());
 				}
 				stack.getTagCompound().setInteger("Quality", (int) Math
-						.min(Math.max(Math.floor(player.getScore() / ItemQuality.XP_PER_QUALITY_POINT), 1), 600));
+						.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1), 600));
+
 			}
 		}
 		return stack;

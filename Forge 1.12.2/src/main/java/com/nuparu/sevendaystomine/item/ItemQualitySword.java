@@ -101,7 +101,7 @@ public class ItemQualitySword extends Item implements IQuality {
 
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
-		setQuality(itemstack, (int) (int) Math.min(Math.max(Math.floor(player.getScore()/ItemQuality.XP_PER_QUALITY_POINT), 1),600));
+		setQuality(itemstack, (int) (int) Math.min(Math.max(Math.floor(player.experienceTotal/ItemQuality.XP_PER_QUALITY_POINT), 1),600));
 	}
 
 	@Override

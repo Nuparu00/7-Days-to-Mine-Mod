@@ -4,12 +4,16 @@ import java.util.List;
 
 import com.nuparu.sevendaystomine.crafting.separator.ISeparatorRecipe;
 import com.nuparu.sevendaystomine.crafting.separator.SeparatorRecipeManager;
+import com.nuparu.sevendaystomine.electricity.ElectricConnection;
+import com.nuparu.sevendaystomine.electricity.EnumDeviceType;
+import com.nuparu.sevendaystomine.electricity.IVoltage;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSeparator;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSmall;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 import com.nuparu.sevendaystomine.tileentity.TileEntityChemistryStation.EnumSlots;
+import com.nuparu.sevendaystomine.util.ModConstants;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,17 +30,19 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class TileEntitySeparator extends TileEntityItemHandler<ItemHandlerNameable> implements ITickable {
+public class TileEntitySeparator extends TileEntityItemHandler<ItemHandlerNameable> implements ITickable, IVoltage {
 
 	private static final int INVENTORY_SIZE = 3;
 	private static final ITextComponent DEFAULT_NAME = new TextComponentTranslation("container.separator");
-
+	private long voltage = 0;
+	private long capacity = 1000;
 	private int cookTime;
 	private int totalCookTime;
 
@@ -117,6 +123,8 @@ public class TileEntitySeparator extends TileEntityItemHandler<ItemHandlerNameab
 	}
 
 	private boolean canSmelt() {
+		if(this.voltage < this.getRequiredPower()) return false;
+		
 		ISeparatorRecipe recipeToUse = null;
 		for (ISeparatorRecipe recipe : SeparatorRecipeManager.getInstance().getRecipes()) {
 			if (recipe.matches(this, this.world)) {
@@ -191,7 +199,7 @@ public class TileEntitySeparator extends TileEntityItemHandler<ItemHandlerNameab
 				}
 			}
 			consumeInput(recipeToUse);
-
+			this.voltage -= this.getRequiredPower();
 		}
 	}
 
@@ -261,6 +269,113 @@ public class TileEntitySeparator extends TileEntityItemHandler<ItemHandlerNameab
 			net.minecraft.network.play.server.SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
 		world.notifyBlockUpdate(pos, Blocks.AIR.getDefaultState(), world.getBlockState(pos), 1);
+	}
+
+	public void markForUpdate() {
+		world.markBlockRangeForRenderUpdate(pos, pos);
+		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+		world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+		this.markDirty();
+	}
+	
+	@Override
+	public EnumDeviceType getDeviceType() {
+		return EnumDeviceType.CONSUMER;
+	}
+	
+	@Override
+	public int getMaximalInputs() {
+		return 0;
+	}
+
+	@Override
+	public int getMaximalOutputs() {
+		return 0;
+	}
+
+	@Override
+	public List<ElectricConnection> getInputs() {
+		return null;
+	}
+
+	@Override
+	public List<ElectricConnection> getOutputs() {
+		return null;
+	}
+
+	@Override
+	public long getOutput() {
+		return 0;
+	}
+
+	@Override
+	public long getMaxOutput() {
+		return 0;
+	}
+
+	@Override
+	public long getOutputForConnection(ElectricConnection connection) {
+		return 0;
+	}
+
+	@Override
+	public boolean tryToConnect(ElectricConnection connection) {
+		return false;
+	}
+
+	@Override
+	public boolean canConnect(ElectricConnection connection) {
+		return false;
+	}
+
+	@Override
+	public long getRequiredPower() {
+		return 200;
+	}
+
+	@Override
+	public long getCapacity() {
+		return this.capacity;
+	}
+
+	@Override
+	public long getVoltageStored() {
+		return this.voltage;
+	}
+
+	@Override
+	public void storePower(long power) {
+		this.voltage += power;
+		if (this.voltage > this.getCapacity()) {
+			this.voltage = this.getCapacity();
+		}
+		if (this.voltage < 0) {
+			this.voltage = 0;
+		}
+	}
+
+	@Override
+	public long tryToSendPower(long power, ElectricConnection connection) {
+		long canBeAdded = capacity - voltage;
+		long delta = Math.min(canBeAdded, power);
+		long lost = 0;
+		if (connection != null) {
+			lost = (long) Math.round(delta * ModConstants.DROP_PER_BLOCK * connection.getDistance());
+		}
+		long realDelta = delta - lost;
+		this.voltage += realDelta;
+
+		return delta;
+	}
+
+	@Override
+	public Vec3d getWireOffset() {
+		return null;
+	}
+
+	@Override
+	public boolean isPassive() {
+		return true;
 	}
 
 }

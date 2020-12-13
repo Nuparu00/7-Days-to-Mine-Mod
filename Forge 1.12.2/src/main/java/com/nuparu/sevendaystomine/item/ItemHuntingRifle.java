@@ -12,7 +12,7 @@ public class ItemHuntingRifle extends ItemGun {
 	public ItemHuntingRifle() {
 		super();
 		this.setMaxAmmo(1);
-		this.setFullDamage(70f);
+		this.setFullDamage(60f);
 		this.setSpeed(32f);
 		this.setRecoil(3.2f);
 		this.setCounterDef(0);

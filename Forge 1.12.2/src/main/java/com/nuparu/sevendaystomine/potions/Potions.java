@@ -16,10 +16,11 @@ public static PotionBleeding bleeding = new PotionBleeding(true, 5092544);
 public static PotionInfection infection = new PotionInfection(true, 1930808);
 public static PotionBrokenLeg brokenLeg = new PotionBrokenLeg(true, 0xaaaaaa);
 public static PotionMercuryPoisoning mercuryPoison = new PotionMercuryPoisoning(true, 1930808);
+public static PotionChlorinePoisoning chlorinePoison = new PotionChlorinePoisoning(true, 1930808);
 
 public static void register(IForgeRegistry<Potion> registry) {
     registry.registerAll(
-            thirst,dysentery,alcoholBuzz,drunk,alcoholPoison,caffeineBuzz,bleeding,infection,brokenLeg, mercuryPoison
+            thirst,dysentery,alcoholBuzz,drunk,alcoholPoison,caffeineBuzz,bleeding,infection,brokenLeg, mercuryPoison, chlorinePoison
     );
 }
 

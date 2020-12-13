@@ -29,8 +29,6 @@ public class EntityAirplane extends Entity {
 		this.width = 7F;
 		int x = (int) (this.posX / 16);
 		int z = (int) (this.posZ / 16);
-		SevenDaysToMine.forceChunkLoad(world, new ChunkPos((int) posX >> 4, (int) posZ >> 4), this);
-
 	}
 
 	public EntityAirplane(World worldIn, double x, double y, double z) {

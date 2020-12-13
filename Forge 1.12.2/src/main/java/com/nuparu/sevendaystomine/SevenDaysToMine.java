@@ -62,6 +62,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -94,7 +95,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(modid = SevenDaysToMine.MODID, version = SevenDaysToMine.VERSION, useMetadata = true)
 public class SevenDaysToMine {
 	public static final String MODID = "sevendaystomine";
-	public static final String VERSION = "Beta 1.0";
+	public static final String VERSION = "Beta 1.0 Pre-release 2.3.9";
 
 	static final String CLIENT_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.ClientProxy";
 	static final String SERVER_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.CommonProxy";
@@ -111,9 +112,6 @@ public class SevenDaysToMine {
 	public static HordeSavedData hordeSavedData;
 	public static CitySavedData citySavedData;
 	public static MiscSavedData miscSavedData;
-
-	public static HashMap<ChunkPos, Integer> ticketList;
-	public static Ticket chunkLoaderTicket;
 
 	public static final WorldType DEFAULT_WORLD = (new WorldTypeOverworld("SEVENDAYS"));
 
@@ -185,36 +183,40 @@ public class SevenDaysToMine {
 		}
 	};
 
-	public static final Item.ToolMaterial STONE_TOOLS = EnumHelper.addToolMaterial("stone_tools", 1, 100, 3.5f, 14, 2);
-	public static final Item.ToolMaterial BONE_TOOLS = EnumHelper.addToolMaterial("bone_tools", 1, 100, 2f, 14, 2);
-	public static final Item.ToolMaterial CRUDE_TOOLS = EnumHelper.addToolMaterial("crude_tools", 1, 60, 2f, 16, 2);
-	public static final Item.ToolMaterial WOODEN_TOOLS = EnumHelper.addToolMaterial("wooden_tools", 1, 180, 2f, 20, 2);
+	public static final Item.ToolMaterial STONE_TOOLS = EnumHelper.addToolMaterial("stone_tools", 1, 100, 3.5f, 5, 2);
+	public static final Item.ToolMaterial BONE_TOOLS = EnumHelper.addToolMaterial("bone_tools", 1, 100, 2f, 6, 2);
+	public static final Item.ToolMaterial CRUDE_TOOLS = EnumHelper.addToolMaterial("crude_tools", 1, 60, 2f, 8, 2);
+	public static final Item.ToolMaterial WOODEN_TOOLS = EnumHelper.addToolMaterial("wooden_tools", 1, 180, 2f, 14, 2);
 	public static final Item.ToolMaterial WOODEN_REINFORCED_TOOLS = EnumHelper
-			.addToolMaterial("wooden_reinforced_tools", 1, 200, 2f, 25, 2);
-	public static final Item.ToolMaterial BARBED_TOOLS = EnumHelper.addToolMaterial("barbed_tools", 1, 220, 2f, 30, 2);
-	public static final Item.ToolMaterial SPIKED_TOOLS = EnumHelper.addToolMaterial("spiked_tools", 1, 250, 2f, 40, 2);
-	public static final Item.ToolMaterial COPPER_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 200, 4.8f, 16,
+			.addToolMaterial("wooden_reinforced_tools", 1, 200, 2f, 18, 2);
+	public static final Item.ToolMaterial BARBED_TOOLS = EnumHelper.addToolMaterial("barbed_tools", 1, 220, 2f, 22, 2);
+	public static final Item.ToolMaterial SPIKED_TOOLS = EnumHelper.addToolMaterial("spiked_tools", 1, 250, 2f, 26, 2);
+	public static final Item.ToolMaterial COPPER_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 200, 4.8f, 17,
 			2);
-	public static final Item.ToolMaterial SCRAP_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 125, 5.5f, 12, 2);
-	public static final Item.ToolMaterial BRONZE_TOOLS = EnumHelper.addToolMaterial("bronze_tools", 1, 250, 6f, 18, 2);
-	public static final Item.ToolMaterial IRON_TOOLS = EnumHelper.addToolMaterial("iron_tools", 1, 300, 8.2f, 22, 2);
-	public static final Item.ToolMaterial STEEL_TOOLS = EnumHelper.addToolMaterial("steel_tools", 1, 40, 11f, 24, 2);
+	public static final Item.ToolMaterial SCRAP_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 125, 4.2f, 18, 2);
+	public static final Item.ToolMaterial BRONZE_TOOLS = EnumHelper.addToolMaterial("bronze_tools", 1, 250, 6f, 20, 2);
+	public static final Item.ToolMaterial IRON_TOOLS = EnumHelper.addToolMaterial("iron_tools", 1, 300, 8.2f, 24, 2);
+	public static final Item.ToolMaterial STEEL_TOOLS = EnumHelper.addToolMaterial("steel_tools", 1, 40, 11f, 28, 2);
 	public static final Item.ToolMaterial ARMY_TOOLS = EnumHelper.addToolMaterial("army_tools", 1, 350, 2f, 26, 2);
-	public static final Item.ToolMaterial MACHETE = EnumHelper.addToolMaterial("machete", 1, 200, 2f, 35, 2);
-	public static final Item.ToolMaterial SLEDGEHAMMER = EnumHelper.addToolMaterial("sledgehammer", 1, 40, 11f, 60, 2);
-	public static final Item.ToolMaterial AUGER = EnumHelper.addToolMaterial("AUGER", 5, 600, 26F, 80, 0);
+	public static final Item.ToolMaterial MACHETE = EnumHelper.addToolMaterial("machete", 1, 200, 2f, 28, 2);
+	public static final Item.ToolMaterial SLEDGEHAMMER = EnumHelper.addToolMaterial("sledgehammer", 1, 40, 11f, 30, 2);
+	public static final Item.ToolMaterial AUGER = EnumHelper.addToolMaterial("auger", 5, 600, 26F, 24, 0);
 
 	public static final ItemArmor.ArmorMaterial CLOTHING = EnumHelper.addArmorMaterial("clothing",
-			"sevendaystomine:clothing", 5, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
-	public static final ItemArmor.ArmorMaterial FIBER = EnumHelper.addArmorMaterial("fiber", "sevendaystomine:fiber",
-			10, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+			"sevendaystomine:clothing", 6, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
+	public static final ItemArmor.ArmorMaterial FIBER = EnumHelper.addArmorMaterial("fiber", "sevendaystomine:fiber", 2,
+			new int[] { 1, 1, 1, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 	public static final ItemArmor.ArmorMaterial STEEL_ARMOR = EnumHelper.addArmorMaterial("steel",
-			"sevendaystomine:steel", 25, new int[] { 3, 5, 2, 2 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+			"sevendaystomine:steel", 25, new int[] { 3, 4, 3, 3 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1);
 	public static final ItemArmor.ArmorMaterial LEATHER_IRON_ARMOR = EnumHelper.addArmorMaterial("leather_iron",
 			"sevendaystomine:leather_iron", 12, new int[] { 2, 3, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+	public static final ItemArmor.ArmorMaterial IRON_ARMOR = EnumHelper.addArmorMaterial("iron", "Iron", 15,
+			new int[] { 2, 3, 3, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+	public static final ItemArmor.ArmorMaterial LEATHER_ARMOR = EnumHelper.addArmorMaterial("leather", "Leather", 15,
+			new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 
 	public static final ItemArmor.ArmorMaterial SCRAP_ARMOR = EnumHelper.addArmorMaterial("scrap",
-			"sevendaystomine:scrap", 10, new int[] { 2, 3, 1, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+			"sevendaystomine:scrap", 10, new int[] { 2, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
 
 	public static final Block[] BLOCKS = new Block[] { ModBlocks.OAK_FRAME, ModBlocks.BIRCH_FRAME,
 			ModBlocks.SPRUCE_FRAME, ModBlocks.JUNGLE_FRAME, ModBlocks.ACACIA_FRAME, ModBlocks.DARKOAK_FRAME,
@@ -272,7 +274,10 @@ public class SevenDaysToMine {
 			ModBlocks.BURNT_PLANKS_SLAB_DOUBLE, ModBlocks.BURNT_PLANKS_FENCE, ModBlocks.BURNT_CHAIR,
 			ModBlocks.STONE_BRICK_STAIRS_MOSSY, ModBlocks.RADIO, ModBlocks.GLOBE, ModBlocks.MERCURY,
 			ModBlocks.SEPARATOR, ModBlocks.TURRET_ADVANCED, ModBlocks.RAZOR_WIRE, ModBlocks.STAND, ModBlocks.LANDMINE,
-			ModBlocks.SIRENE, ModBlocks.STRUCTURE_STONE};
+			ModBlocks.SIRENE, ModBlocks.STRUCTURE_STONE, ModBlocks.FAKE_ANVIL, ModBlocks.REDSTONE_LAMP_BROKEN,
+			ModBlocks.CALENDAR, ModBlocks.FLAMETHOWER, ModBlocks.METAL_SPIKES, ModBlocks.BOOKSHELF_SPRUCE,
+			ModBlocks.BOOKSHELF_BIRCH, ModBlocks.BOOKSHELF_JUNGLE, ModBlocks.BOOKSHELF_ACACIA,
+			ModBlocks.BOOKSHELF_DARK_OAK, ModBlocks.POLICE_CAR};
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -326,7 +331,16 @@ public class SevenDaysToMine {
 			ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL, ModItems.AUGER_BLADE, ModItems.NIGHT_VISION_DEVICE,
 			ModItems.CHRISTMAS_HAT, ModItems.BERET, ModItems.STETHOSCOPE, ModItems.BLOODMOON, ModItems.SCRAP_HOE,
 			ModItems.COPPER_HOE, ModItems.BRONZE_HOE, ModItems.IRON_HOE, ModItems.STEEL_HOE, ModItems.AUGER_HANDLES,
-			ModItems.AUGER_SCHEMATICS };
+			ModItems.AUGER_SCHEMATICS, ModItems.HUNTING_RIFLE_BARREL, ModItems.HUNTING_RIFLE_BOLT,
+			ModItems.HUNTING_RIFLE_PARTS, ModItems.HUNTING_RIFLE_STOCK, ModItems.HUNTING_RIFLE_SCHEMATICS,
+			ModItems.EMPTY_JAR_MOLD, ModItems.HUNTING_RIFLE_BARREL_MOLD, ModItems.HUNTING_RIFLE_BOLT_MOLD,
+			ModItems.MP5_STOCK_MOLD, ModItems.MP5_BARREL_MOLD, ModItems.MP5_TRIGGER_MOLD, ModItems.PISTOL_BARREL_MOLD,
+			ModItems.PISTOL_TRIGGER_MOLD, ModItems.SNIPER_RIFLE_STOCK_MOLD, ModItems.SNIPER_RIFLE_TRIGGER_MOLD,
+			ModItems.SHOTGUN_BARREL_MOLD, ModItems.SHOTGUN_RECEIVER_MOLD, ModItems.SHOTGUN_SHORT_BARREL_MOLD,
+			ModItems.SALT, ModItems.CHLORINE_TANK, ModItems.NATRIUM_TANK, ModItems.CHLORINE_GRENADE,
+			ModItems.IRON_HELMET, ModItems.IRON_CHESTPLATE, ModItems.IRON_LEGGINGS, ModItems.IRON_BOOTS,
+			ModItems.LEATHER_HELMET, ModItems.LEATHER_CHESTPLATE, ModItems.LEATHER_LEGGINGS, ModItems.LEATHER_BOOTS,
+			ModItems.FRAGMENTATION_GRENADE, ModItems.MOLOTOV };
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
@@ -352,8 +366,6 @@ public class SevenDaysToMine {
 		MinecraftForge.EVENT_BUS.register(new TerrainGenEventHandler());
 		// Alters Vanilla
 		VanillaManager.modifyVanilla();
-		// Loads repairs
-		RepairManager.INSTANCE.listAllBlocks();
 		// Gets streets and city names from a .csv files in assets folder
 		CityHelper.getStreetNames();
 		CityHelper.getCityNames();
@@ -363,7 +375,6 @@ public class SevenDaysToMine {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-
 		GameRegistry.registerWorldGenerator(new RoadDecoratorWorldGen(), Integer.MIN_VALUE);
 		GameRegistry.registerWorldGenerator(new StructureGenerator(), 0);
 		GameRegistry.registerWorldGenerator(new OreWorldGenerator(), 1);
@@ -374,21 +385,37 @@ public class SevenDaysToMine {
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		CityHelper.loadBuildings();
+		StructureGenerator.loadBuildings();
 
 		proxy.init(event);
+
+		STONE_TOOLS.setRepairItem(new ItemStack(ModItems.SMALL_STONE));
+		BONE_TOOLS.setRepairItem(new ItemStack(Items.BONE));
+		CRUDE_TOOLS.setRepairItem(new ItemStack(ModItems.PLANK_WOOD));
+		WOODEN_TOOLS.setRepairItem(new ItemStack(ModItems.PLANK_WOOD));
+		BARBED_TOOLS.setRepairItem(new ItemStack(ModItems.IRON_SCRAP));
+		SPIKED_TOOLS.setRepairItem(new ItemStack(ModItems.IRON_PIPE));
+		COPPER_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_COPPER));
+		SCRAP_TOOLS.setRepairItem(new ItemStack(ModItems.IRON_SCRAP));
+		BRONZE_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_BRONZE));
+		IRON_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_IRON));
+		STEEL_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
+		ARMY_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
+		MACHETE.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
+		SLEDGEHAMMER.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
+		CLOTHING.setRepairItem(new ItemStack(ModItems.CLOTH));
+		FIBER.setRepairItem(new ItemStack(ModItems.PLANT_FIBER));
+		STEEL_ARMOR.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
+		LEATHER_IRON_ARMOR.setRepairItem(new ItemStack(Items.LEATHER));
+		IRON_ARMOR.setRepairItem(new ItemStack(ModItems.INGOT_IRON));
+		LEATHER_ARMOR.setRepairItem(new ItemStack(Items.LEATHER));
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
-
-		ticketList = new HashMap<ChunkPos, Integer>();
-		ForgeChunkManager.setForcedChunkLoadingCallback(this, new LoadingCallback() {
-			@Override
-			public void ticketsLoaded(List<Ticket> tickets, World world) {
-
-			}
-		});
+		// Loads repairs
+		RepairManager.repairsInit();
 	}
 
 	@EventHandler
@@ -412,32 +439,12 @@ public class SevenDaysToMine {
 		} else {
 			rules.addGameRule("handleThirst", rules.getBoolean("handleThirst") + "", GameRules.ValueType.BOOLEAN_VALUE);
 		}
-
-	}
-
-	public static void forceChunkLoad(World w, ChunkPos pos, Entity entity) {
-		if (!ticketList.containsKey(pos)) {
-			if (chunkLoaderTicket == null) {
-				chunkLoaderTicket = ForgeChunkManager.requestTicket(instance, w, ForgeChunkManager.Type.ENTITY);
-			}
-			ticketList.put(pos, 1);
-
-			chunkLoaderTicket.bindEntity(entity);
-			ForgeChunkManager.forceChunk(chunkLoaderTicket, pos);
+		if (!rules.hasRule("damageDecayRate")) {
+			rules.addGameRule("damageDecayRate", "-1", GameRules.ValueType.NUMERICAL_VALUE);
 		} else {
-			ticketList.put(pos, ticketList.get(pos) + 1);
+			rules.addGameRule("damageDecayRate", rules.getInt("damageDecayRate") + "",
+					GameRules.ValueType.NUMERICAL_VALUE);
 		}
-	}
 
-	public static void releaseChunkLoad(World w, ChunkPos pos) {
-		if (!ticketList.containsKey(pos) || chunkLoaderTicket == null) {
-			return;
-		} else {
-			int num = ticketList.get(pos) - 1;
-			if (num > 0)
-				ticketList.put(pos, num);
-			else
-				ForgeChunkManager.unforceChunk(chunkLoaderTicket, pos);
-		}
 	}
 }

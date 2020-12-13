@@ -1,9 +1,13 @@
 package com.nuparu.sevendaystomine.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -15,6 +19,7 @@ public class EntityFlame extends EntityThrowable {
 
 	private int ticksAlive;
 	private int lifetime = 40;
+	float gravity = -0.0002F;
 
 	public EntityFlame(World worldIn) {
 		super(worldIn);
@@ -90,9 +95,7 @@ public class EntityFlame extends EntityThrowable {
 		}
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
+	@Override
 	public void onUpdate() {
 		super.onUpdate();
 		if (this.ticksAlive >= 2) {
@@ -112,14 +115,18 @@ public class EntityFlame extends EntityThrowable {
 			this.setDead();
 		}
 		++this.ticksAlive;
-		if (this.ticksAlive >= 40) {
+		if (this.ticksAlive >= (getGravityVelocity() < 0 ? 40 : 200)) {
 			this.setDead();
 		}
 
 	}
 
-	protected float getGravityVelocity() {
-		return -0.0002F;
+	public float getGravityVelocity() {
+		return gravity;
+	}
+	
+	public void setGravityVelocity(float g) {
+		gravity = g;
 	}
 
 	public float getBrightness(float partialTicks) {
@@ -130,5 +137,18 @@ public class EntityFlame extends EntityThrowable {
 	public int getBrightnessForRender(float partialTicks) {
 		return 15728880;
 	}
+	@Override
+	public void writeEntityToNBT(NBTTagCompound compound)
+    {
+
+		super.writeEntityToNBT(compound);
+		compound.setFloat("gravity", gravity);
+    }
+	@Override
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+		super.readEntityFromNBT(compound);
+		gravity = compound.getFloat("gravity");
+    }
 
 }

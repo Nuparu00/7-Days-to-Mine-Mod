@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:flamethrower_trap" },
+        "facing=west": { "model": "sevendaystomine:flamethrower_trap", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:flamethrower_trap", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:flamethrower_trap", "y": 180 }
+    }
+}

@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.Constants;
 public class CitySavedData extends WorldSavedData {
 	public static final String DATA_NAME = SevenDaysToMine.MODID + ":city_data";
 	private List<Long> cities = new ArrayList<Long>();
+	private List<Long> scattered = new ArrayList<Long>();
 
 	public CitySavedData() {
 		super(DATA_NAME);
@@ -35,10 +36,19 @@ public class CitySavedData extends WorldSavedData {
 		if (compound.hasKey("cities")) {
 			NBTTagList list = compound.getTagList("cities", Constants.NBT.TAG_LONG);
 			for (int i = 0; i < list.tagCount(); i++) {
-				System.out.println("READ CITY");
 				NBTBase nbt = list.get(i);
 				if (nbt instanceof NBTTagLong) {
 					cities.add(((NBTTagLong) nbt).getLong());
+				}
+			}
+		}
+		
+		if (compound.hasKey("scattered")) {
+			NBTTagList list = compound.getTagList("scattered", Constants.NBT.TAG_LONG);
+			for (int i = 0; i < list.tagCount(); i++) {
+				NBTBase nbt = list.get(i);
+				if (nbt instanceof NBTTagLong) {
+					scattered.add(((NBTTagLong) nbt).getLong());
 				}
 			}
 		}
@@ -48,20 +58,38 @@ public class CitySavedData extends WorldSavedData {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
 		for (Long l : cities) {
-			System.out.println("WRITE CITY");
 			list.appendTag(new NBTTagLong(l));
 		}
 		compound.setTag("cities", list);
+		list = new NBTTagList();
+		for (Long l : scattered) {
+			list.appendTag(new NBTTagLong(l));
+		}
+		compound.setTag("scattered", list);
 		return compound;
 	}
 
 	public void addCity(BlockPos pos) {
-		this.cities.add(pos.toLong());
+		this.cities.add(new BlockPos(pos.getX(),128,pos.getZ()).toLong());
+		markDirty();
+	}
+	
+	public void addScattered(BlockPos pos) {
+		this.scattered.add(new BlockPos(pos.getX(),128,pos.getZ()).toLong());
 		markDirty();
 	}
 
 	public boolean isCityNearby(BlockPos pos, long distanceSq) {
 		for (Long l : cities) {
+			if (pos.distanceSq(BlockPos.fromLong(l)) <= distanceSq) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isScatteredNearby(BlockPos pos, long distanceSq) {
+		for (Long l : scattered) {
 			if (pos.distanceSq(BlockPos.fromLong(l)) <= distanceSq) {
 				return true;
 			}
@@ -84,6 +112,10 @@ public class CitySavedData extends WorldSavedData {
 	
 	public List<Long> getCities(){
 		return new ArrayList<Long>(cities);
+	}
+	
+	public List<Long> getScattered(){
+		return new ArrayList<Long>(scattered);
 	}
 
 }
