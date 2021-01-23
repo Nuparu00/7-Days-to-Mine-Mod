@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -42,74 +43,106 @@ public class BloodmoonHorde extends Horde {
 
 	public BloodmoonHorde(World world) {
 		super(world);
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 10));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "bloated_zombie"), 6));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "infected_survivor"), 10));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "spider_zombie"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "plagued_nurse"), 8));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 20));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "bloated_zombie"), 12));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "infected_survivor"), 16));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "spider_zombie"), 8));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "plagued_nurse"), 12));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 10));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_soldier"), 6));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 1));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_miner"), 3));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 3));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 8));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_miner"), 10));
 
 		if (center != null) {
 			Biome biome = world.getBiome(center);
 			if (biome.isSnowyBiome()) {
-				entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frigid_hunter"), 10));
-				entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frostbitten_worker"), 8));
-				entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frozen_lumberjack"), 6));
+				entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frigid_hunter"), 15));
+				entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frostbitten_worker"), 15));
+				entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frozen_lumberjack"), 7));
 			}
 		}
+		if (Utils.getDay(world) > 2 * ModConfig.world.bloodmoonFrequency) {
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "feral_zombie"),
+					Math.min(5, (int) Math.floor(Utils.getDay(world) / ModConfig.world.bloodmoonFrequency) - 1)));
+		}
+
 		this.waves = ModConfig.world.bloodmoonHordeWaves;
+		if (Utils.isCityInArea(world, (int) (center.getX() * 16), (int) (center.getZ() * 16), 5)) {
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
+		}
 	}
 
 	public BloodmoonHorde(BlockPos center, World world, EntityPlayer player) {
 		super(center, world);
 		this.player = player;
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 10));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "bloated_zombie"), 6));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "infected_survivor"), 10));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "spider_zombie"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "plagued_nurse"), 8));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 4));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 20));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "bloated_zombie"), 12));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "infected_survivor"), 16));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "spider_zombie"), 8));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "plagued_nurse"), 12));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_crawler"), 10));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_soldier"), 6));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 1));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 4));
-		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_miner"), 3));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "burnt_zombie"), 3));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 8));
+		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_miner"), 10));
 
 		Biome biome = world.getBiome(center);
 		if (biome.isSnowyBiome()) {
-			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frigid_hunter"), 10));
-			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frostbitten_worker"), 8));
-			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frozen_lumberjack"), 6));
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frigid_hunter"), 15));
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frostbitten_worker"), 15));
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frozen_lumberjack"), 7));
+		}
+		if (Utils.getDay(world) > 2 * ModConfig.world.bloodmoonFrequency) {
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "feral_zombie"),
+					Math.min(5, (int) Math.floor(Utils.getDay(world) / ModConfig.world.bloodmoonFrequency) - 1)));
 		}
 		this.waves = ModConfig.world.bloodmoonHordeWaves;
+
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		List<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>(server.getPlayerList().getPlayers());
+		for (EntityPlayerMP playerMP : players) {
+			if (playerMP.getGameProfile().equals(player.getGameProfile()))
+				continue;
+			if (playerMP.world.provider.getDimension() == world.provider.getDimension()) {
+				if (playerMP.getDistanceSq(player) <= 1024) {
+					this.waves = (int) Math.ceil(waves * 0.8);
+					break;
+				}
+			}
+		}
+
+		if (Utils.isCityInArea(world, (int) (player.posX * 16), (int) (player.posZ * 16), 5)) {
+			this.waves = (int) Math.ceil(waves * 1.2);
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
+		}
 	}
 
 	public void addTarget(EntityPlayerMP player) {
-		if(bossInfo == null) return;
+		if (bossInfo == null)
+			return;
 		bossInfo.addPlayer(player);
 	}
 
 	public void removeTarget(EntityPlayerMP player) {
-		if(bossInfo == null) return;
+		if (bossInfo == null)
+			return;
 		bossInfo.removePlayer(player);
 	}
 
 	@Override
 	public void onZombieKill(EntityZombieBase zombie) {
 		super.onZombieKill(zombie);
-		if(bossInfo == null) return;
+		if (bossInfo == null)
+			return;
 		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
 	}
 
 	@Override
 	public void addZombie(EntityZombieBase zombie) {
 		super.addZombie(zombie);
-		if(bossInfo == null) return;
+		if (bossInfo == null)
+			return;
 		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
 	}
 
@@ -120,14 +153,15 @@ public class BloodmoonHorde extends Horde {
 
 	@Override
 	public void onPlayerStopTacking(EntityPlayerMP player, EntityZombieBase zombie) {
-		//removeTarget(player);
+		// removeTarget(player);
 	}
 
 	public void onRemove() {
 		super.onRemove();
-		if(bossInfo == null ||  bossInfo.getPlayers() == null) return;
+		if (bossInfo == null || bossInfo.getPlayers() == null)
+			return;
 		Collection<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>(bossInfo.getPlayers());
-		for (EntityPlayerMP playerMP :  players) {
+		for (EntityPlayerMP playerMP : players) {
 			bossInfo.removePlayer(playerMP);
 		}
 	}
@@ -140,7 +174,7 @@ public class BloodmoonHorde extends Horde {
 		zombies.clear();
 		zombiesInWave = 0;
 		BlockPos origin = getSpawnOrigin();
-		for (int i = 0; i < ModConfig.world.bloodmoonHordeZombiesPerWave; i++) {
+		for (int i = 0; i < getZombiesInWave(); i++) {
 			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin), world, true).up();
 			HordeEntry entry = getHordeEntry(world.rand);
 			if (entry != null) {
@@ -157,13 +191,19 @@ public class BloodmoonHorde extends Horde {
 		data.markDirty();
 	}
 
+	public int getZombiesInWave() {
+		return (int) MathHelper.clampedLerp(ModConfig.world.bloodmoonHordeZombiesPerWaveMin,
+				ModConfig.world.bloodmoonHordeZombiesPerWaveMax,
+				((int) (Math.floor(Utils.getDay(world) / ModConfig.world.bloodmoonFrequency))-1) / 5);
+	}
+
 	public BlockPos getSpawnOrigin() {
 		double angle = 2.0 * Math.PI * world.rand.nextDouble();
-		double dist = MIN_DISTANCE + world.rand.nextDouble()*10;
+		double dist = MIN_DISTANCE + world.rand.nextDouble() * 10;
 		double x = center.getX() + dist * Math.cos(angle);
 		double z = center.getZ() + dist * Math.sin(angle);
-		
-		return new BlockPos(x,0,z);
+
+		return new BlockPos(x, 0, z);
 	}
 
 	public BlockPos getSpawn(BlockPos origin) {

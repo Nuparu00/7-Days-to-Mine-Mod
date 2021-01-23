@@ -19,7 +19,7 @@ public class EnchantmentFastReload extends Enchantment {
 
 	@Override
 	public int getMaxLevel() {
-		return 2;
+		return 5;
 	}
 
 	@Override
@@ -37,5 +37,11 @@ public class EnchantmentFastReload extends Enchantment {
 	public int getMaxEnchantability(int enchantmentLevel)
     {
         return super.getMinEnchantability(enchantmentLevel) + 50;
+    }
+	
+	@Override
+	protected boolean canApplyTogether(Enchantment ench)
+    {
+        return super.canApplyTogether(ench) && ench != ModEnchantments.big_mag;
     }
 }

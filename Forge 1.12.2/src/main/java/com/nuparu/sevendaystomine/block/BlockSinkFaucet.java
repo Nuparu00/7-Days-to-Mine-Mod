@@ -6,10 +6,12 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 import com.nuparu.sevendaystomine.item.IScrapable;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -110,5 +112,31 @@ public class BlockSinkFaucet extends BlockHorizontalBase implements IScrapable {
 	public boolean canBeScraped() {
 		return true;
 	}
+	
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(BlockHorizontalBase.FACING,
+				facing);
+	}
+	
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		 EnumFacing enumfacing = (EnumFacing)state.getValue(BlockHorizontalBase.FACING);
+
+	        if (!world.getBlockState(pos.offset(enumfacing.getOpposite())).getMaterial().isSolid())
+	        {
+	            this.dropBlockAsItem(world, pos, state, 0);
+	            world.setBlockToAir(pos);
+	        }
+
+	        super.neighborChanged(state, world, pos, blockIn, fromPos);
+	}
+	
+	@Override
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+    {
+		return (side != EnumFacing.DOWN && side != EnumFacing.UP) && worldIn.getBlockState(pos.offset(side.getOpposite())).getMaterial().isSolid();
+    }
 
 }

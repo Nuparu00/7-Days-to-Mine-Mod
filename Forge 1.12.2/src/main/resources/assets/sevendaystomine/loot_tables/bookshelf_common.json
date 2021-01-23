@@ -74,12 +74,13 @@
                 },
                 {
                     "type": "item",
-                    "weight": 10,
-                    "name": "minecraft:map"
-                },
-                {
-                    "type": "empty",
-                    "weight": 500
+                    "weight": 8,
+                    "name": "minecraft:map",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:city_map"
+                        }
+                    ]
                 }
             ]
         }

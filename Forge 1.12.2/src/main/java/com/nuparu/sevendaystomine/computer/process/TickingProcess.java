@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.lwjgl.opengl.GL11;
+
 import com.nuparu.sevendaystomine.client.gui.monitor.IScreenElement;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
@@ -13,7 +15,11 @@ import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.SyncProcessMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
+import com.nuparu.sevendaystomine.util.ColorRGBA;
+import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +30,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -37,7 +45,7 @@ public abstract class TickingProcess {
 	public long duration = 0;
 
 	protected ArrayList<IScreenElement> elements = new ArrayList<IScreenElement>();
-	
+
 	@SideOnly(Side.CLIENT)
 	protected Screen screen;
 	@SideOnly(Side.CLIENT)
@@ -56,7 +64,8 @@ public abstract class TickingProcess {
 
 	@SideOnly(Side.CLIENT)
 	public void clientTick() {
-		if(!clientInit) return;
+		if (!clientInit)
+			return;
 		for (IScreenElement element : elements) {
 			element.update();
 		}
@@ -178,15 +187,18 @@ public abstract class TickingProcess {
 
 	@SideOnly(Side.CLIENT)
 	public void sync() {
+		System.out.println("sync");
 		NBTTagCompound nbt = writeToNBT(new NBTTagCompound());
-		PacketManager.startProcess.sendToServer(new StartProcessMessage(computerTE.getPos(), nbt));
+		PacketManager.syncProcess.sendToServer(new SyncProcessMessage(computerTE.getPos(), nbt));
+
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void sync(String... fields) {
+		System.out.println("siiiinc");
 		NBTTagCompound nbt = new NBTTagCompound();
 		for (String s : fields) {
-						Class<?> clazz = this.getClass();
+			Class<?> clazz = this.getClass();
 			Field f = null;
 			while (f == null && clazz != null) // stop when we got field or reached top of class hierarchy
 			{
@@ -275,7 +287,28 @@ public abstract class TickingProcess {
 		nbt.setString(ProcessRegistry.RES_KEY, ProcessRegistry.INSTANCE.getResByClass(this.getClass()).toString());
 		if (computerTE != null && nbt != null) {
 			PacketManager.syncProcess.sendToServer(new SyncProcessMessage(computerTE.getPos(), nbt));
-			//System.out.println(nbt.toString());
+			// System.out.println(nbt.toString());
 		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void renderTooltip(int mouseX, int mouseY, FontRenderer fontRenderer, Object...text) {
+		int height = text.length * (fontRenderer.FONT_HEIGHT + 1);
+		int width = 0;
+		for (Object s : text) {
+			int i = fontRenderer.getStringWidth(s.toString());
+			if (i > width) {
+				width = i;
+			}
+		}
+
+
+		RenderUtils.drawColoredRect(new ColorRGBA(1d, 1d, 1d), screen.mouseX, screen.mouseY, width, height, 1);
+		GL11.glTranslatef(0, 0, 1);
+		for (int i = 0; i < text.length; i++) {
+			RenderUtils.drawString(text[i].toString(), screen.mouseX, screen.mouseY + 1 + i * (fontRenderer.FONT_HEIGHT + 1),
+					0x000000);
+		}
+		GL11.glTranslatef(0, 0, -1);
 	}
 }

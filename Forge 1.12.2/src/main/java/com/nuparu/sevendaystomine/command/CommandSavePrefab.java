@@ -48,9 +48,14 @@ public class CommandSavePrefab extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return "savePrefab <name> <shouldContainAir?> <saveTileEntityData?> <saveEntities> <only:exclude> [tile] <data>";
+		return "<name> <shouldContainAir?> <saveTileEntityData?> <saveEntities> <only:exclude> [tile] <data>";
 	}
 
+	@Override
+	public int getRequiredPermissionLevel() {
+		return 4;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) throws CommandException {

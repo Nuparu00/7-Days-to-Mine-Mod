@@ -12,10 +12,12 @@ import com.nuparu.sevendaystomine.item.ItemArmorBase;
 import com.nuparu.sevendaystomine.item.ItemAuger;
 import com.nuparu.sevendaystomine.item.ItemBackpack;
 import com.nuparu.sevendaystomine.item.ItemBandage;
+import com.nuparu.sevendaystomine.item.ItemBaneberry;
 import com.nuparu.sevendaystomine.item.ItemBattery;
 import com.nuparu.sevendaystomine.item.ItemBeret;
 import com.nuparu.sevendaystomine.item.ItemBloodBag;
 import com.nuparu.sevendaystomine.item.ItemBloodDrawKit;
+import com.nuparu.sevendaystomine.item.ItemBlueberry;
 import com.nuparu.sevendaystomine.item.ItemBlueprint;
 import com.nuparu.sevendaystomine.item.ItemCannedFood;
 import com.nuparu.sevendaystomine.item.ItemChainsaw;
@@ -34,6 +36,7 @@ import com.nuparu.sevendaystomine.item.ItemEmptyCan;
 import com.nuparu.sevendaystomine.item.ItemEmptyJar;
 import com.nuparu.sevendaystomine.item.ItemFirstAidKit;
 import com.nuparu.sevendaystomine.item.ItemFlamethrower;
+import com.nuparu.sevendaystomine.item.ItemFoodBitable;
 import com.nuparu.sevendaystomine.item.ItemFragmentationGrenade;
 import com.nuparu.sevendaystomine.item.ItemGuide;
 import com.nuparu.sevendaystomine.item.ItemGunPart;
@@ -55,6 +58,7 @@ import com.nuparu.sevendaystomine.item.ItemPhoto;
 import com.nuparu.sevendaystomine.item.ItemPistol;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.item.ItemQualityAxe;
+import com.nuparu.sevendaystomine.item.ItemQualityBow;
 import com.nuparu.sevendaystomine.item.ItemQualityHoe;
 import com.nuparu.sevendaystomine.item.ItemQualityPickaxe;
 import com.nuparu.sevendaystomine.item.ItemQualityScrapable;
@@ -64,6 +68,7 @@ import com.nuparu.sevendaystomine.item.ItemRPG;
 import com.nuparu.sevendaystomine.item.ItemRealityWand;
 import com.nuparu.sevendaystomine.item.ItemRecipeBook;
 import com.nuparu.sevendaystomine.item.ItemRefrigerator;
+import com.nuparu.sevendaystomine.item.ItemRiotShield;
 import com.nuparu.sevendaystomine.item.ItemScrap;
 import com.nuparu.sevendaystomine.item.ItemScrapable;
 import com.nuparu.sevendaystomine.item.ItemScrewdriver;
@@ -79,6 +84,7 @@ import com.nuparu.sevendaystomine.item.ItemTea;
 import com.nuparu.sevendaystomine.item.ItemUpgrader;
 import com.nuparu.sevendaystomine.item.ItemVoltmeter;
 import com.nuparu.sevendaystomine.item.ItemWire;
+import com.nuparu.sevendaystomine.item.ItemWrench;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
 
 import net.minecraft.block.Block;
@@ -88,6 +94,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemShield;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
@@ -135,7 +142,7 @@ public class ModItems {
 			.setRegistryName("SpikedClub").setUnlocalizedName("SpikedClub");
 	public static final Item CLAWHAMMER = new ItemUpgrader(SevenDaysToMine.IRON_TOOLS).setEffectiveness(0.5f)
 			.setLength(EnumLength.SHORT).setRegistryName("Clawhammer").setUnlocalizedName("Clawhammer");
-	public static final Item WRENCH = new ItemUpgrader(SevenDaysToMine.IRON_TOOLS).setEffectiveness(0.33334f)
+	public static final Item WRENCH = new ItemWrench().setEffectiveness(0.33334f)
 			.setLength(EnumLength.SHORT).setRegistryName("Wrench").setUnlocalizedName("Wrench");
 	public static final Item KITCHEN_KNIFE = new ItemQualitySword(SevenDaysToMine.IRON_TOOLS, EnumLength.SHORT)
 			.setRegistryName("KitchenKnife").setUnlocalizedName("KitchenKnife");
@@ -209,11 +216,14 @@ public class ModItems {
 			.setUnlocalizedName("CannedBeef");
 	public static final Item CANNED_LAMB = new ItemCannedFood(7, 1f, true, 4).setRegistryName("CannedLamb")
 			.setUnlocalizedName("CannedLamb");
+	
+	public static final Item MRE = new ItemFoodBitable(7, 1f, true, 8).setRegistryName("mre")
+			.setUnlocalizedName("mre");
 
 	public static final Item CORN = new ItemFood(1, 0.3f, false).setRegistryName("Corn").setUnlocalizedName("Corn");
-	public static final Item BLUEBERRY = new ItemFood(1, 0.3f, false).setRegistryName("Blueberry")
+	public static final Item BLUEBERRY = new ItemBlueberry().setRegistryName("Blueberry")
 			.setUnlocalizedName("Blueberry");
-	public static final Item BANEBERRY = new ItemFood(1, 0.3f, false).setRegistryName("Baneberry")
+	public static final Item BANEBERRY = new ItemBaneberry().setRegistryName("Baneberry")
 			.setUnlocalizedName("Baneberry");
 
 	public static final Item BANDAGE = new ItemBandage().setRegistryName("Bandage").setUnlocalizedName("Bandage");
@@ -434,6 +444,15 @@ public class ModItems {
 			"leather_boots");
 	public static final Item LEATHER_HELMET = new ItemLeatherArmor(ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.HEAD,
 			"leather_helmet");
+	
+	public static final Item MILITARY_CHESTPLATE = new ItemArmorBase(SevenDaysToMine.MILITARY_ARMOR, 0,
+			EntityEquipmentSlot.CHEST, "military_chestplate");
+	public static final Item MILITARY_LEGGINGS = new ItemArmorBase(SevenDaysToMine.MILITARY_ARMOR, 1,
+			EntityEquipmentSlot.LEGS, "military_leggings");
+	public static final Item MILITARY_BOOTS = new ItemArmorBase(SevenDaysToMine.MILITARY_ARMOR, 0, EntityEquipmentSlot.FEET,
+			"military_boots");
+	public static final Item MILITARY_HELMET = new ItemArmorBase(SevenDaysToMine.MILITARY_ARMOR, 0, EntityEquipmentSlot.HEAD,
+			"military_helmet");
 
 	public static final Item COPPER_AXE = new ItemQualityAxe(SevenDaysToMine.COPPER_TOOLS, -2.8)
 			.setRegistryName("copper_axe").setUnlocalizedName("copper_axe");
@@ -665,4 +684,12 @@ public class ModItems {
 			.setUnlocalizedName("fragmentation_grenade");
 	public static final Item MOLOTOV = new ItemMolotov().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("molotov")
 			.setUnlocalizedName("molotov");
+	
+	public static final Item RIOT_SHIELD = new ItemRiotShield().setRegistryName("riot_shield")
+			.setUnlocalizedName("riot_shield");
+	
+	public static final Item CRUDE_BOW = new ItemQualityBow(1.45,1f).setMaxDamage(20).setRegistryName("crude_bow")
+			.setUnlocalizedName("crude_bow");
+	public static final Item COMPOUND_BOW = new ItemQualityBow(2.4,1.33f).setMaxDamage(50).setRegistryName("compound_bow")
+			.setUnlocalizedName("compound_bow");
 }

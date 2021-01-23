@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.world.gen.city.building;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -38,7 +39,7 @@ public class BuildingApartmentBig extends Building{
 		setAllowedCityTypes(EnumCityType.CITY);
 	}
 	@Override
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
 		if (!world.isRemote) {
 
 			WorldServer worldserver = (WorldServer) world;

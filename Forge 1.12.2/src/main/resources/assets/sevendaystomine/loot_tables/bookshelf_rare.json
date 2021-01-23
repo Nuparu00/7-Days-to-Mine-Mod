@@ -54,8 +54,13 @@
                 },
                 {
                     "type": "item",
-                    "weight": 10,
-                    "name": "minecraft:map"
+                    "weight": 4,
+                    "name": "minecraft:map",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:city_map"
+                        }
+                    ]
                 },
                 {
                     "type": "empty",
@@ -64,7 +69,7 @@
                 {
                     "type": "item",
                     "name": "minecraft:enchanted_book",
-                    "weight": 1,
+                    "weight": 2,
                     "functions": [
                         {
                             "function": "minecraft:enchant_randomly",
@@ -72,7 +77,10 @@
                                 "sevendaystomine:explosive",
                                 "sevendaystomine:sparking",
                                 "sevendaystomine:fast_reload",
-                                "sevendaystomine:marksman"
+                                "sevendaystomine:marksman",
+                                 "sevendaystomine:big_mag",
+                                 "sevendaystomine:strabismus",
+                                 "sevendaystomine:small_mag"
                             ]
                         }
                     ]

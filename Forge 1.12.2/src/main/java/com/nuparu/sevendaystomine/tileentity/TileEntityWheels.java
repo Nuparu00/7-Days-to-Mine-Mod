@@ -47,7 +47,7 @@ public class TileEntityWheels extends TileEntity {
 
 	public ItemStack generateItemStack() {
 		ItemStack is = new ItemStack(ModBlocks.WHEELS);
-		this.stack = ItemQuality.setQualityForStack(is, MathUtils.getIntInRange(1, 600));
+		this.stack = ItemQuality.setQualityForStack(is, MathUtils.getIntInRange(1, ItemQuality.MAX_QUALITY));
 		return is;
 	}
 

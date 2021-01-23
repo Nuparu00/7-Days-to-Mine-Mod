@@ -83,6 +83,7 @@ public class CCTVProcess extends WindowedProcess {
 			GL11.glScaled(0.75, 0.75, 1);
 			RenderUtils.drawCenteredString(SevenDaysToMine.proxy.localize("computer.app.cctv.no.camera"), 0, 0,
 					0xffffff, true);
+			GL11.glPopMatrix();
 		}
 		GL11.glPopMatrix();
 	}

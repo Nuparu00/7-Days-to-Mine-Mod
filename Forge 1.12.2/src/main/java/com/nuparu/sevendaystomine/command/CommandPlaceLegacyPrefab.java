@@ -36,6 +36,11 @@ public class CommandPlaceLegacyPrefab extends CommandBase {
 	public String getUsage(ICommandSender sender) {
 		return "placeLegacyPrefab <x> <y> <z> <name> <genereateAir?> [rotation]";
 	}
+	
+	@Override
+	public int getRequiredPermissionLevel() {
+		return 4;
+	}
 
 	@SuppressWarnings({ "deprecation", "unused" })
 	@Override

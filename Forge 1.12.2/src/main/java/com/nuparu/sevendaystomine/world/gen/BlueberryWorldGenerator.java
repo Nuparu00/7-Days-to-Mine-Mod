@@ -15,7 +15,8 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class BlueberryWorldGenerator implements IWorldGenerator {
 
-	WorldGenerator generator = new WorldGenBlueberry();
+	WorldGenerator blueberrry = new WorldGenBlueberry();
+
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
@@ -42,12 +43,12 @@ public class BlueberryWorldGenerator implements IWorldGenerator {
 			return;
 		}
 		int MIN = 0;
-		int MAX = 8;
+		int MAX = 7;
 		int num = MIN + rand.nextInt(MAX - MIN);
 		for (int i = 0; i < num; i++) {
 			int randX = blockX + rand.nextInt(16);
 			int randZ = blockZ + rand.nextInt(16);
-			generator.generate(world, rand, new BlockPos(randX, 24, randZ));
+			blueberrry.generate(world, rand, new BlockPos(randX, 24, randZ));
 
 		}
 	}

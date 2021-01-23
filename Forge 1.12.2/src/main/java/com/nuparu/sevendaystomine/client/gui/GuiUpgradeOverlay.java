@@ -46,16 +46,17 @@ public class GuiUpgradeOverlay extends Gui {
 								ScaledResolution resolution = event.getResolution();
 								int posX = (resolution.getScaledWidth() / 2);
 								int posY = (resolution.getScaledHeight() / 2);
-								float percent = (stack.getTagCompound().getFloat("Percent"));
+								float percent = stack.getTagCompound().getFloat("Percent");
+								float percentAbs = Math.abs(percent);
 								
 								GL11.glPushMatrix();
 								GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 								GL11.glDisable(GL11.GL_LIGHTING);
 								GL11.glEnable(GL11.GL_BLEND);
 								mc.renderEngine.bindTexture(UPGRADE_TEX);
-								drawTexturedModalRect(posX - 50, posY + 2, 0, 42, (int) (percent * 100f), 7);
-								drawTexturedModalRect(posX - 51, posY - 32, 0, 0, 102, 42);
-								drawCenteredString(mc.fontRenderer, (int) (percent * 100f) + "%", posX, posY + 10,
+								drawTexturedModalRect(posX - 50, posY + 2, 0, 42, (int) (percentAbs * 100f), 7);
+								drawTexturedModalRect(posX - 51, posY - 32, percent < 0 ? 102 : 0, 0, 102, 42);
+								drawCenteredString(mc.fontRenderer, (int) (percentAbs * 100f) + "%", posX, posY + 10,
 										0xffffff);
 								GL11.glPopMatrix();
 

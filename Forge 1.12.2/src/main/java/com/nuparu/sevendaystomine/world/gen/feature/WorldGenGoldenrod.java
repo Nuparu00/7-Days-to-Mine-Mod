@@ -3,11 +3,13 @@ package com.nuparu.sevendaystomine.world.gen.feature;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.init.ModBiomes;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBase;
 
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenGoldenrod extends WorldGenerator
@@ -28,7 +30,8 @@ public class WorldGenGoldenrod extends WorldGenerator
 
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-    	if(worldIn.getBiome(position) == ModBiomes.BURNT_FOREST) return false;
+    	Biome biome = worldIn.getBiome(position);
+		if(biome instanceof BiomeWastelandBase) return false;
         for (int i = 0; i < 64; ++i)
         {
             BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));

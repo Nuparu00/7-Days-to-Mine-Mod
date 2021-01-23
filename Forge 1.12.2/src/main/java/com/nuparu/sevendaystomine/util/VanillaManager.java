@@ -27,6 +27,8 @@ public class VanillaManager {
 		removeVanillaRecipes();
 		addVanillaBlockUpgrades();
 		addVanillaScrapables();
+		
+
 	}
 
 	public static void editVanillaBlockProperties() {
@@ -123,6 +125,26 @@ public class VanillaManager {
 		Items.MUTTON.setMaxStackSize(1);
 		Items.COOKED_MUTTON.setMaxStackSize(1);
 		Items.ROTTEN_FLESH.setMaxStackSize(1);
+		Items.CARROT.setMaxStackSize(1);
+		Items.GOLDEN_CARROT.setMaxStackSize(1);
+		Items.POTATO.setMaxStackSize(1);
+		Items.BAKED_POTATO.setMaxStackSize(1);
+		Items.RABBIT_STEW.setMaxStackSize(1);
+		Items.BEETROOT_SOUP.setMaxStackSize(1);
+		Items.BEETROOT.setMaxStackSize(1);
+		
+		Items.APPLE.setMaxDamage(2);
+		Items.PORKCHOP.setMaxDamage(4);
+		Items.COOKED_PORKCHOP.setMaxDamage(4);
+		Items.BEEF.setMaxDamage(4);
+		Items.COOKED_BEEF.setMaxDamage(4);
+		Items.BREAD.setMaxDamage(3);
+		Items.CHICKEN.setMaxDamage(3);
+		Items.COOKED_CHICKEN.setMaxDamage(3);
+		Items.RABBIT.setMaxDamage(3);
+		Items.COOKED_RABBIT.setMaxDamage(3);
+		Items.MUTTON.setMaxDamage(4);
+		Items.COOKED_MUTTON.setMaxDamage(4);
 	}
 
 	public static void removeVanillaRecipes() {

@@ -14,10 +14,12 @@ import com.nuparu.sevendaystomine.world.gen.StructureGenerator;
 import com.nuparu.sevendaystomine.world.gen.city.City;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -37,12 +39,12 @@ public class CommandLocateModded extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "locatemodded";
+		return "locatecity";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/locatemodded";
+		return "<x> <y> <z>";
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -55,29 +57,47 @@ public class CommandLocateModded extends CommandBase {
 		return 4;
 	}
 
-	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		return true;
-	}
 
 	@Override
-	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) {
+	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) throws CommandException {
 		final World world = sender.getEntityWorld();
 
-		if (world.isRemote)
-			return;
-		if (args.length == 0) {
-			/*BlockPos pos = StructureGenerator.getNearestStructurePos(world,sender.getPosition(),true);
-			sender.sendMessage(new TextComponentString(pos == null ? "null" : (pos.getX() + " " + pos.getZ())));*/
-			
-		}
+		if (world.isRemote) {
 
+		} else {
+			if (args.length < 3) {
+				sender.sendMessage(new TextComponentString(TextFormatting.RED + "Missing arguments"));
+				sender.sendMessage(new TextComponentString("\u00a7C" + "<x>" + "\u00a7C" + "<y>" + "\u00a7C" + "<z>"
+						+ "\u00a7C" + "<dim>" + "\u00a7C" + "<damage>"));
+				return;
+			}
+
+			BlockPos from = parseBlockPos(sender, args, 0, true);
+			// BlockPos to = parseBlockPos(sender, args, 3, true);
+
+			int chunkX = from.getX() >> 4;
+			int chunkZ = from.getZ() >> 4;
+			
+			List<ChunkPos> poses = Utils.getClosestCities(world, chunkX, chunkZ,128);
+			if(poses.isEmpty()) {
+				sender.sendMessage(new TextComponentString("No city located"));
+				
+			}
+			else {
+				for(ChunkPos pos : poses) {
+					sender.sendMessage(
+							new TextComponentString("City is located at " + (pos.x * 16) + " " + (pos.z * 16)));
+				}
+			}
+
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public List getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,
 			@Nullable BlockPos pos) {
-		return null;
+		return args.length > 0 && args.length <= 3 ? getTabCompletionCoordinate(args, 0, pos)
+				: (args.length < 6 ? getTabCompletionCoordinate(args, 1, pos) : null);
 	}
 }

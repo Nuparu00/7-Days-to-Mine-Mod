@@ -18,8 +18,10 @@ import com.nuparu.sevendaystomine.world.gen.city.City;
 import com.nuparu.sevendaystomine.world.gen.city.CitySavedData;
 import com.nuparu.sevendaystomine.world.gen.city.building.Building;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingAirplane;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingAirport;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingCargoShip;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingFactory;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingFarmProcedural;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingHelicopter;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingLargeBanditCamp;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingMilitaryBase;
@@ -51,11 +53,9 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class StructureGenerator implements IWorldGenerator {
-	
-	
+
 	public static List<Building> buildings = new ArrayList<Building>();
-	
-	
+
 	public static void loadBuildings() {
 		buildings.add(new BuildingFactory(new ResourceLocation(SevenDaysToMine.MODID, "factory_garage"), 30)
 				.setAllowedBiomes(ModBiomes.BURNT_FOREST, ModBiomes.WASTELAND));
@@ -63,31 +63,32 @@ public class StructureGenerator implements IWorldGenerator {
 				.setAllowedBiomes(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST).stream().toArray(Biome[]::new))
 				.setAllowedBlocks(Blocks.GRASS));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "lookout_dark_oak"), 280)
-				.setAllowedBiomes(BiomeDictionary.getBiomes(BiomeDictionary.Type.CONIFEROUS).stream().toArray(Biome[]::new))
+				.setAllowedBiomes(
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.CONIFEROUS).stream().toArray(Biome[]::new))
 				.setAllowedBlocks(Blocks.GRASS));
 		buildings.add((new Building(new ResourceLocation(SevenDaysToMine.MODID, "lookout_burnt"), 280))
 				.setAllowedBiomes(ModBiomes.BURNT_FOREST).setAllowedBlocks(Blocks.GRASS));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "burnt_house"), 300, -5)
-		.setAllowedBiomes(ModBiomes.BURNT_FOREST).setAllowedBlocks(Blocks.GRASS)
-		.setPedestal(Blocks.STONE.getDefaultState()));
+				.setAllowedBiomes(ModBiomes.BURNT_FOREST).setAllowedBlocks(Blocks.GRASS)
+				.setPedestal(Blocks.STONE.getDefaultState()));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruined_house"), 300)
-		.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
-		.setAllowedBlocks(Blocks.GRASS));
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruined_house_1"), 300)
-		.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
-		.setAllowedBlocks(Blocks.GRASS));
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "bandit_camp"), 80, 0,
 				Blocks.STONE.getDefaultState())
-		.setAllowedBiomes(Utils
-				.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH))
-				.stream().toArray(Biome[]::new))
-		.setAllowedBlocks(Blocks.GRASS));
+						.setAllowedBiomes(Utils
+								.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+										BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+										BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH))
+								.stream().toArray(Biome[]::new))
+						.setAllowedBlocks(Blocks.GRASS));
 		buildings.add(new BuildingLargeBanditCamp(20)
 				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
@@ -99,48 +100,51 @@ public class StructureGenerator implements IWorldGenerator {
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
 				.setAllowedBlocks(Blocks.GRASS));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruined_house_2"), 300)
-		.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
-		.setAllowedBlocks(Blocks.GRASS));
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruined_house_icy_2"), 300)
-		.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY)).stream()
-				.toArray(Biome[]::new)));
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY)).stream()
+						.toArray(Biome[]::new)));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruined_house_icy"), 300)
-		.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY)).stream()
-				.toArray(Biome[]::new)));
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruined_house_desert_1"),
-				300).setAllowedBiomes(
-						Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SANDY)).stream()
-								.toArray(Biome[]::new)));
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY)).stream()
+						.toArray(Biome[]::new)));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruined_house_desert_1"), 300)
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SANDY)).stream()
+						.toArray(Biome[]::new)));
 		buildings.add(new BuildingCargoShip(60, -4).setAllowedBiomes(
 				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.OCEAN)).stream().toArray(Biome[]::new)));
-		buildings.add(new BuildingAirplane(80, -4).setAllowedBiomes(Utils.combine(
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH), BiomeDictionary.getBiomes(BiomeDictionary.Type.BEACH),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD), BiomeDictionary.getBiomes(BiomeDictionary.Type.DRY))
-				.stream().toArray(Biome[]::new)));
+		buildings
+				.add(new BuildingAirplane(60, -4)
+						.setAllowedBiomes(Utils
+								.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+										BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+										BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH),
+										BiomeDictionary.getBiomes(BiomeDictionary.Type.BEACH),
+										BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD),
+										BiomeDictionary.getBiomes(BiomeDictionary.Type.DRY))
+								.stream().toArray(Biome[]::new)));
 		buildings.add(new BuildingHelicopter(new ResourceLocation(SevenDaysToMine.MODID, "helicopter"), 50, -3)
 				.setHasPedestal(false)
 				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new)));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "observatory"), 150)
-		.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
-		.setAllowedBlocks(Blocks.GRASS));
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
 		buildings.add(new BuildingWindTurbine(200, 0, ModBlocks.MARBLE.getDefaultState())
-		.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
-		.setAllowedBlocks(Blocks.GRASS));
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "well_bunker"), 40, -31)
-		.setHasPedestal(false)
-		.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
-				BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new)));
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "well_bunker"), 40, -21)
+				.setHasPedestal(false)
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new)));
 		buildings.add(new BuildingSettlement(20, -3)
 				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
@@ -154,8 +158,21 @@ public class StructureGenerator implements IWorldGenerator {
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new)));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "yacht"), 250, -4).setAllowedBiomes(
+				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.OCEAN)).stream().toArray(Biome[]::new))
+				.setHasPedestal(false));
+		buildings.add(new BuildingAirport(80)
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "campsite"), 70,-3)
+				.setPedestal(Blocks.STONE.getDefaultState())
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.SAVANNA)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
+		// buildings.add(new BuildingFarmProcedural(600));
 	}
-
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
@@ -185,11 +202,11 @@ public class StructureGenerator implements IWorldGenerator {
 		int blockZ = chunkZ * 16;
 
 		CitySavedData data = CitySavedData.get(world);
-		if (data.isCityNearby(new BlockPos(blockX, 0, blockZ), 22500)
-				|| data.isScatteredNearby(new BlockPos(blockX, 128, blockZ), 12321))
+		if (data.isCityNearby(new BlockPos(blockX, 0, blockZ), 90000)
+				|| data.isScatteredNearby(new BlockPos(blockX, 128, blockZ), 120000))
 			return;
 		Building building = getRandomBuilding(rand);
-		generateStructure(building, world, rand, blockX, blockZ, 24);
+		generateStructure(building, world, rand, blockX, blockZ, 20);
 
 	}
 
@@ -200,8 +217,9 @@ public class StructureGenerator implements IWorldGenerator {
 	private boolean generateStructure(Building building, World world, Random rand, int blockX, int blockZ, int chance) {
 		if (rand.nextInt(chance) != 0)
 			return false;
-		BlockPos pos = Utils.getTopBiomeGroundBlock(new BlockPos(blockX, 64, blockZ), world);
-		if(pos.getY() < 0) return false;
+		BlockPos pos = Utils.getTopGroundBlock(new BlockPos(blockX, 64, blockZ), world, true);
+		if (pos.getY() < 0)
+			return false;
 		if (building.allowedBlocks == null || building.allowedBlocks.length == 0
 				|| Arrays.asList(building.allowedBlocks).contains(world.getBlockState(pos).getBlock())) {
 
@@ -215,18 +233,17 @@ public class StructureGenerator implements IWorldGenerator {
 						.offset(facing, facing.getAxis() == EnumFacing.Axis.Z ? dimensions.getZ() : dimensions.getX())
 						.offset(mirror ? facing.rotateY() : facing.rotateYCCW(),
 								facing.getAxis() == EnumFacing.Axis.X ? dimensions.getZ() : dimensions.getX());
-				end = Utils.getTopBiomeGroundBlock(end, world);
-				BlockPos pos2 = new BlockPos(pos.getX(), MathUtils.lerp(pos.getY(), end.getY(), 0.5f), pos.getZ());
-				building.generate(world,
-						pos2, facing,
-						mirror);
+				end = Utils.getTopGroundBlock(end, world, true);
+				BlockPos pos2 = new BlockPos(pos.getX(),
+						end.getY() < 0 ? pos.getY() : MathUtils.lerp(pos.getY(), end.getY(), 0.5f), pos.getZ());
+				building.generate(world, pos2, facing, mirror, rand);
 				CitySavedData.get(world).addScattered(pos);
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public int getBuildingsCount() {
 		return buildings.size();
 	}

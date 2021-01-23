@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.nuparu.sevendaystomine.block.BlockCornPlant;
 import com.nuparu.sevendaystomine.init.ModBiomes;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -11,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenCorn extends WorldGenerator {
@@ -18,7 +20,8 @@ public class WorldGenCorn extends WorldGenerator {
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos pos) {
 		int bottomAge = rand.nextInt(4);
-		if(worldIn.getBiome(pos) == ModBiomes.BURNT_FOREST) return false;
+		Biome biome = worldIn.getBiome(pos);
+		if(biome instanceof BiomeWastelandBase) return false;
 		IBlockState bottom = com.nuparu.sevendaystomine.init.ModBlocks.CORN_PLANT.getDefaultState()
 				.withProperty(BlockCornPlant.AGE, bottomAge)
 				.withProperty(BlockCornPlant.HALF, BlockCornPlant.EnumBlockHalf.LOWER);

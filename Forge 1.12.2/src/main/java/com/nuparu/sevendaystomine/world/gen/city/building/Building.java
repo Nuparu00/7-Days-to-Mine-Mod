@@ -7,7 +7,11 @@ import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
+import com.nuparu.sevendaystomine.block.BlockBackpack;
 import com.nuparu.sevendaystomine.block.BlockBookshelfEnhanced;
+import com.nuparu.sevendaystomine.block.BlockCardboardBox;
 import com.nuparu.sevendaystomine.block.BlockChestOld;
 import com.nuparu.sevendaystomine.block.BlockCodeSafe;
 import com.nuparu.sevendaystomine.block.BlockCupboard;
@@ -19,6 +23,7 @@ import com.nuparu.sevendaystomine.block.BlockWritingTable;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
+import com.nuparu.sevendaystomine.entity.EntityZombieMiner;
 import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -44,6 +49,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityTrashBin;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTrashCan;
 import com.nuparu.sevendaystomine.util.ItemUtils;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
 import com.nuparu.sevendaystomine.world.gen.city.EnumCityType;
 
 import net.minecraft.block.Block;
@@ -74,11 +80,13 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 
 public class Building {
+	@Nullable
 	public ResourceLocation res;
 	public ResourceLocation registryName;
 	public int weight;
 	public int yOffset = 0;
 	public boolean canBeMirrored = true;
+	@Nullable
 	public IBlockState pedestalState;
 	public boolean hasPedestal = true;
 
@@ -103,13 +111,14 @@ public class Building {
 		this.allowedBiomes = null;
 	}
 
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
+		if(res == null) return;
 		if (!world.isRemote) {
 
 			WorldServer worldserver = (WorldServer) world;
 			MinecraftServer minecraftserver = world.getMinecraftServer();
 			TemplateManager templatemanager = worldserver.getStructureTemplateManager();
-
+			
 			Template template = templatemanager.getTemplate(minecraftserver, res);
 			if (template == null) {
 				return;
@@ -172,7 +181,7 @@ public class Building {
 			case "cardboard": {
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				if (world.rand.nextInt(5) == 0) {
-					world.setBlockState(pos, ModBlocks.CARDBOARD_BOX.getDefaultState().withProperty(BlockGarbage.FACING,
+					world.setBlockState(pos, ModBlocks.CARDBOARD_BOX.getDefaultState().withProperty(BlockCardboardBox.FACING,
 							EnumFacing.getHorizontal(world.rand.nextInt(4))));
 					TileEntityCardboard te = (TileEntityCardboard) world.getTileEntity(pos);
 					te.setLootTable(ModLootTables.CARDBOARD, world.rand.nextLong());
@@ -196,7 +205,7 @@ public class Building {
 				break;
 			}
 			case "backpack": {
-				world.setBlockState(pos, ModBlocks.BACKPACK_NORMAL.getDefaultState().withProperty(BlockGarbage.FACING,
+				world.setBlockState(pos, ModBlocks.BACKPACK_NORMAL.getDefaultState().withProperty(BlockBackpack.FACING,
 						EnumFacing.getHorizontal(world.rand.nextInt(4))));
 				TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
 				te.setLootTable(ModLootTables.BACKPACK, world.rand.nextLong());
@@ -204,7 +213,7 @@ public class Building {
 				break;
 			}
 			case "medical_backpack": {
-				world.setBlockState(pos, ModBlocks.BACKPACK_MEDICAL.getDefaultState().withProperty(BlockGarbage.FACING,
+				world.setBlockState(pos, ModBlocks.BACKPACK_MEDICAL.getDefaultState().withProperty(BlockBackpack.FACING,
 						EnumFacing.getHorizontal(world.rand.nextInt(4))));
 				TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
 				te.setLootTable(ModLootTables.MEDICAL_CABINET, world.rand.nextLong());
@@ -461,7 +470,7 @@ public class Building {
 				break;
 			}
 			case "military_backpack": {
-				world.setBlockState(pos, ModBlocks.BACKPACK_ARMY.getDefaultState().withProperty(BlockGarbage.FACING,
+				world.setBlockState(pos, ModBlocks.BACKPACK_ARMY.getDefaultState().withProperty(BlockBackpack.FACING,
 						EnumFacing.getHorizontal(world.rand.nextInt(4))));
 				TileEntityBackpack te = (TileEntityBackpack) world.getTileEntity(pos);
 				te.setLootTable(ModLootTables.BACKPACK, world.rand.nextLong());
@@ -496,6 +505,29 @@ public class Building {
 				zombie.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(zombie)), (IEntityLivingData) null);
 				world.spawnEntity(zombie);
 				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+				break;
+			}
+			case "zombie_miner": {
+				EntityZombieMiner zombie = new EntityZombieMiner(world);
+				zombie.enablePersistence();
+				zombie.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+				zombie.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(zombie)), (IEntityLivingData) null);
+				world.spawnEntity(zombie);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+				break;
+			}
+			case "sedan_v": {
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				if (world.rand.nextBoolean()) {
+					CityHelper.placeRandomCar(world, pos, facing.rotateY(), world.rand);
+				}
+				break;
+			}
+			case "sedan_h": {
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				if (world.rand.nextBoolean()) {
+					CityHelper.placeRandomCar(world, pos, facing, world.rand);
+				}
 				break;
 			}
 			}
@@ -605,6 +637,6 @@ public class Building {
 	}
 	
 	public ResourceLocation getBookshelfLootTable(Random rand) {
-		return rand.nextInt(10) == 0 ? ModLootTables.BOOKSHELF_RARE : ModLootTables.BOOKSHELF_RARE;
+		return rand.nextInt(10) == 0 ? ModLootTables.BOOKSHELF_RARE : ModLootTables.BOOKSHELF_COMMON;
 	}
 }

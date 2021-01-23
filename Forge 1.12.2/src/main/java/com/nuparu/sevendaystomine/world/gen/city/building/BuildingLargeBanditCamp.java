@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.electricity.network.INetwork;
@@ -50,8 +51,8 @@ public class BuildingLargeBanditCamp extends Building {
 		this.canBeMirrored = false;
 		this.setPedestal(Blocks.STONE.getDefaultState());
 	}
-
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	@Override
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
 		if (!world.isRemote) {
 			devices.clear();
 			WorldServer worldserver = (WorldServer) world;

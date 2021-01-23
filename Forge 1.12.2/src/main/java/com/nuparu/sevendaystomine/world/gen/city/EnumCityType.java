@@ -10,7 +10,7 @@ public enum EnumCityType {
 
 	VILLAGE("village", false,48,5,2,0.25f,ModBlocks.ASPHALT.getDefaultState().withProperty(BlockAsphalt.CITY, true), Blocks.GRASS_PATH.getDefaultState()),
 	TOWN("town", false,64,5,2,0.5f,ModBlocks.ASPHALT.getDefaultState().withProperty(BlockAsphalt.CITY, true), Blocks.DOUBLE_STONE_SLAB.getDefaultState()),
-	CITY("city", true,64,7,3,0.8f),
+	CITY("city", true,80,7,3,0.8f),
 	METROPOLIS("metropolis", true,64,7,3,1f);
 	
 	String name;

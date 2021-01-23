@@ -94,7 +94,13 @@ public class TransitProcess extends WindowedProcess {
 
 		tokens = Interpreter.tokenize(text);
 
-		runButton = new Button(x, y + height * (0.75) - 10, 40, 10, Screen.screen, "Run", 1);
+		runButton = new Button(x, y + height * (0.75) - 10, 40, 10, Screen.screen, "Run", 1) {
+			@Override
+			public boolean isVisible() {
+				return this.tickingProcess != null
+						&& ((WindowedProcess) this.tickingProcess).isNotHidden((int)(this.x+this.width), (int)(this.y+this.height));
+			}
+		};
 		runButton.background = true;
 		runButton.border = false;
 		runButton.textNormal = 0xffffff;
@@ -105,7 +111,13 @@ public class TransitProcess extends WindowedProcess {
 		runButton.setProcess(this);
 		elements.add(runButton);
 
-		buildButton = new Button(x + 45, y + height * (0.75) - 10, 40, 10, Screen.screen, "Build", 2);
+		buildButton = new Button(x + 45, y + height * (0.75) - 10, 40, 10, Screen.screen, "Build", 2){
+			@Override
+			public boolean isVisible() {
+				return this.tickingProcess != null
+						&& ((WindowedProcess) this.tickingProcess).isNotHidden((int)(this.x+this.width), (int)(this.y+this.height));
+			}
+		};
 		buildButton.background = true;
 		buildButton.border = false;
 		buildButton.textNormal = 0xffffff;

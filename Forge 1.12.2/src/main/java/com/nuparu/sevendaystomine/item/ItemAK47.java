@@ -13,7 +13,7 @@ public class ItemAK47 extends ItemGun {
 		super();
 		this.setMaxAmmo(30);
 		this.setFullDamage(80f);
-		this.setSpeed(28f);
+		this.setSpeed(24f);
 		this.setRecoil(3f);
 		this.setCounterDef(0);
 		this.setCross(22);
@@ -23,7 +23,7 @@ public class ItemAK47 extends ItemGun {
 		this.setType(EnumGun.RIFLE);
 		this.setLength(EnumLength.LONG);
 		this.setWield(EnumWield.TWO_HAND);
-		this.setAimPosition(-0.43, 0.1, 0);
+		this.setAimPosition(-0.43, 0.12, 0);
 	}
 	
 	@Override

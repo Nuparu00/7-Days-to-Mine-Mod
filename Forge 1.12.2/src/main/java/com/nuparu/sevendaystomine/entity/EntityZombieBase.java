@@ -5,12 +5,16 @@ import java.util.UUID;
 import com.nuparu.sevendaystomine.entity.ai.EntityAIBreakBlock;
 import com.nuparu.sevendaystomine.entity.ai.EntityAIInfectedAttack;
 import com.nuparu.sevendaystomine.init.ModLootTables;
+import com.nuparu.sevendaystomine.item.ItemQualityPickaxe;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
 import com.nuparu.sevendaystomine.world.horde.Horde;
 import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -31,13 +35,16 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -46,9 +53,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 
 public class EntityZombieBase extends EntityMob {
+
+	public boolean nightRun = true;
 
 	public final static UUID NIGHT_BOOST_ID = UUID.fromString("da53c6d8-c01f-11e7-abc4-cec278b6b50a");
 	public final static UUID BLOODMOON_SPEED_BOOST_ID = UUID.fromString("2ca21e76-c020-11e7-abc4-cec278b6b50a");
@@ -182,18 +192,77 @@ public class EntityZombieBase extends EntityMob {
 				}
 			}
 
-			BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-			int light = this.world.getLight(pos, true);
-			if (light < 10) {
-				if (!speed.hasModifier(NIGHT_SPEED_BOOST)) {
-					speed.applyModifier(NIGHT_SPEED_BOOST);
-				}
-			} else {
-				if (speed.hasModifier(NIGHT_SPEED_BOOST)) {
-					speed.removeModifier(NIGHT_SPEED_BOOST);
+			if (nightRun) {
+				BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+				int light = this.world.getLight(pos, true);
+				if (light < 10) {
+					if (!speed.hasModifier(NIGHT_SPEED_BOOST)) {
+						speed.applyModifier(NIGHT_SPEED_BOOST);
+					}
+				} else {
+					if (speed.hasModifier(NIGHT_SPEED_BOOST)) {
+						speed.removeModifier(NIGHT_SPEED_BOOST);
+					}
 				}
 			}
 		}
+	}
+	
+	public float getBlockBreakSpeed(IBlockState state, BlockPos pos) {
+		Block block = state.getBlock();
+		
+		float f = 0.1f;
+
+		if (this.isPotionActive(MobEffects.HASTE)) {
+			f *= 1.0F + (float) (this.getActivePotionEffect(MobEffects.HASTE).getAmplifier() + 1) * 0.2F;
+		}
+
+		if (this.isPotionActive(MobEffects.MINING_FATIGUE)) {
+			float f1 = 1.0F;
+
+			switch (this.getActivePotionEffect(MobEffects.MINING_FATIGUE).getAmplifier()) {
+			case 0:
+				f1 = 0.3F;
+				break;
+			case 1:
+				f1 = 0.09F;
+				break;
+			case 2:
+				f1 = 0.0027F;
+				break;
+			case 3:
+			default:
+				f1 = 8.1E-4F;
+			}
+
+			f *= f1;
+		}
+
+		if (this.isInsideOfMaterial(Material.WATER) && !EnchantmentHelper.getAquaAffinityModifier(this)) {
+			f /= 5.0F;
+		}
+
+		if (!this.onGround) {
+			f /= 5.0F;
+		}
+		
+		if(Utils.isBloodmoonProper(this.world)) {
+			f*=2;
+		}
+		
+		if (speed.hasModifier(BLOODMOON_SPEED_BOOST)) {
+			f*=1.5f;
+		}
+		
+		
+		ItemStack stack = this.getHeldItem(EnumHand.MAIN_HAND);
+		if(!stack.isEmpty()) {
+			if(ForgeHooks.isToolEffective(world, pos, stack)) {
+				f*=2.5f;
+			}
+		}
+
+		return f;
 	}
 
 	@Override
@@ -298,13 +367,12 @@ public class EntityZombieBase extends EntityMob {
 	protected void playStepSound(BlockPos pos, Block blockIn) {
 		this.playSound(this.getStepSound(), 0.15F, 1.0F);
 	}
-	
+
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-		if(source.isExplosion()) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (source.isExplosion()) {
 			amount *= 2;
 		}
-        return this.isEntityInvulnerable(source) ? false : super.attackEntityFrom(source, amount);
-    }
+		return this.isEntityInvulnerable(source) ? false : super.attackEntityFrom(source, amount);
+	}
 }

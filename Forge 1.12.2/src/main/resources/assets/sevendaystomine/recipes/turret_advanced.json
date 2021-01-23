@@ -1,0 +1,18 @@
+{
+   "type":"sevendaystomine:crafting_locked_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:turret_base"
+      },
+      {
+         "item":"sevendaystomine:circuit"
+      },
+      {
+         "item":"sevendaystomine:camera"
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:turret_advanced"
+   },
+   "recipe":"computers"
+}

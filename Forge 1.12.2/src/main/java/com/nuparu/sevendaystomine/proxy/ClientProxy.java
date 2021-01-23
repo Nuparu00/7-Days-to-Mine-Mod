@@ -38,6 +38,7 @@ import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirplaneFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBlindZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBloatedZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderChlorineGrenadeFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderFeralZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFlameFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFragmentationGrenadeFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderHumanFactory;
@@ -63,6 +64,7 @@ import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityMetalSpik
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityOldChestRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityPhotoRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySedanRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityShieldRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySleepingBagRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySolarPanelRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityStreetSignRenderer;
@@ -80,6 +82,7 @@ import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
 import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
+import com.nuparu.sevendaystomine.entity.EntityFeralZombie;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
 import com.nuparu.sevendaystomine.entity.EntityFragmentationGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
@@ -123,6 +126,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityGlobe;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMetalSpikes;
 import com.nuparu.sevendaystomine.tileentity.TileEntityOldChest;
 import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
+import com.nuparu.sevendaystomine.tileentity.TileEntityShield;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySolarPanel;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
@@ -176,6 +180,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ClientProxy extends CommonProxy {
 
@@ -216,6 +221,7 @@ public class ClientProxy extends CommonProxy {
 		ClientEventHandler.init();
 		MP3Helper.init();
 		registerOldRenderers();
+		registerTileEntityRenderers();
 
 		// Tries to inject our own RenderPlayer
 		f_skinMap = ObfuscationReflectionHelper.findField(RenderManager.class, "field_178636_l");
@@ -311,9 +317,12 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombiePig.class, RenderZombiePigFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityAirplane.class, RenderAirplaneFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityZombieMiner.class, RenderZombieMinerFactory.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntityChlorineGrenade.class, RenderChlorineGrenadeFactory.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntityFragmentationGrenade.class, RenderFragmentationGrenadeFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityChlorineGrenade.class,
+				RenderChlorineGrenadeFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFragmentationGrenade.class,
+				RenderFragmentationGrenadeFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityMolotov.class, RenderMolotovFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFeralZombie.class, RenderFeralZombieFactory.INSTANCE);
 
 	}
 
@@ -334,7 +343,6 @@ public class ClientProxy extends CommonProxy {
 		registerRenderer(EntityFrozenLumberjack.class,
 				new RenderFrozenLumberjack(renderManager, new ModelBiped(0.3f), 0.58f));
 		registerRenderer(EntityMountableBlock.class, new RenderMountableBlock(renderManager));
-		registerTileEntityRenderers();
 	}
 
 	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
@@ -365,6 +373,10 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGlobe.class, new TileEntityGlobeRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCalendar.class, new TileEntityCalendarRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMetalSpikes.class, new TileEntityMetalSpikesRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShield.class, new TileEntityShieldRenderer());
+
+		ForgeHooksClient.registerTESRItemStack(ModItems.RIOT_SHIELD, 0,
+				TileEntityShield.class);
 	}
 
 	@Override

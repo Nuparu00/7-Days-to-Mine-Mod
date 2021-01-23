@@ -11,6 +11,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.computer.application.Application;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
+import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -29,11 +30,21 @@ public class HardDrive {
 
 	public HardDrive(TileEntityComputer te) {
 		this.te = te;
-		desktopIcons.put(new double[] { 0.1, 0.1 }, ApplicationRegistry.INSTANCE.getByString("shell"));
-		desktopIcons.put(new double[] { 0.1, 64 }, ApplicationRegistry.INSTANCE.getByString("notes"));
-		desktopIcons.put(new double[] { 0.1, 32 }, ApplicationRegistry.INSTANCE.getByString("cctv"));
-		desktopIcons.put(new double[] { 20, 0.1 }, ApplicationRegistry.INSTANCE.getByString("explorer"));
-		desktopIcons.put(new double[] { 20, 32 }, ApplicationRegistry.INSTANCE.getByString("transit"));
+		if (te.getSystem() == EnumSystem.MAC) {
+			desktopIcons.put(new double[] { 0.1, 32 }, ApplicationRegistry.INSTANCE.getByString("shell"));
+			desktopIcons.put(new double[] { 0.1, 96 }, ApplicationRegistry.INSTANCE.getByString("notes"));
+			desktopIcons.put(new double[] { 0.1, 64 }, ApplicationRegistry.INSTANCE.getByString("cctv"));
+			desktopIcons.put(new double[] { 20, 32 }, ApplicationRegistry.INSTANCE.getByString("explorer"));
+			desktopIcons.put(new double[] { 20, 64 }, ApplicationRegistry.INSTANCE.getByString("transit"));
+			desktopIcons.put(new double[] { 20, 96 }, ApplicationRegistry.INSTANCE.getByString("epidemic"));
+		} else {
+			desktopIcons.put(new double[] { 0.1, 0.1 }, ApplicationRegistry.INSTANCE.getByString("shell"));
+			desktopIcons.put(new double[] { 0.1, 64 }, ApplicationRegistry.INSTANCE.getByString("notes"));
+			desktopIcons.put(new double[] { 0.1, 32 }, ApplicationRegistry.INSTANCE.getByString("cctv"));
+			desktopIcons.put(new double[] { 20, 0.1 }, ApplicationRegistry.INSTANCE.getByString("explorer"));
+			desktopIcons.put(new double[] { 20, 32 }, ApplicationRegistry.INSTANCE.getByString("transit"));
+			desktopIcons.put(new double[] { 20, 64 }, ApplicationRegistry.INSTANCE.getByString("epidemic"));
+		}
 	}
 
 	@SuppressWarnings("unchecked")

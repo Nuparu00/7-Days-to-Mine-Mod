@@ -9,11 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.computer.HardDrive;
 import com.nuparu.sevendaystomine.computer.process.BootingProcess;
 import com.nuparu.sevendaystomine.computer.process.CreateAccountProcess;
+import com.nuparu.sevendaystomine.computer.process.WindowsCreateAccountProcess;
 import com.nuparu.sevendaystomine.computer.process.DesktopProcess;
+import com.nuparu.sevendaystomine.computer.process.MacCreateAccountProcess;
+import com.nuparu.sevendaystomine.computer.process.MacDesktopProcess;
 import com.nuparu.sevendaystomine.computer.process.ProcessRegistry;
 import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
@@ -74,7 +79,8 @@ public class TileEntityComputer extends TileEntityLockableLoot
 	private String hint = "";
 
 	// hard drive
-	private HardDrive hardDrive = new HardDrive(this);
+	@Nullable
+	private HardDrive hardDrive;
 
 	private ArrayList<BlockPos> network = new ArrayList<BlockPos>();
 
@@ -196,13 +202,33 @@ public class TileEntityComputer extends TileEntityLockableLoot
 	}
 
 	public void onBootFinished() {
+		if(hardDrive == null) {
+			hardDrive = new HardDrive(this);
+		}
 		setState(EnumState.LOGIN);
 		if (!isRegistered()) {
-			startProcess(new CreateAccountProcess());
+			switch (system) {
+			default:
+				startProcess(new WindowsCreateAccountProcess());
+				break;
+
+			case MAC:
+				startProcess(new MacCreateAccountProcess());
+				break;
+			}
+
 		} else {
 			if (password.isEmpty()) {
 				setState(EnumState.NORMAL);
-				startProcess(new WindowsDesktopProcess());
+				switch (system) {
+				default:
+					startProcess(new WindowsDesktopProcess());
+					break;
+
+				case MAC:
+					startProcess(new MacDesktopProcess());
+					break;
+				}
 			} else {
 				startProcess(new WindowsLoginProcess());
 			}
@@ -211,14 +237,31 @@ public class TileEntityComputer extends TileEntityLockableLoot
 
 	public void onLogin(WindowsLoginProcess process) {
 		setState(EnumState.NORMAL);
-		startProcess(new WindowsDesktopProcess());
+		switch (system) {
+		default:
+			startProcess(new WindowsDesktopProcess());
+			break;
+
+		case MAC:
+			startProcess(new MacDesktopProcess());
+			break;
+		}
 		killProcess(process);
 	}
 
 	public void onAccountCreated(CreateAccountProcess process) {
 		setState(EnumState.NORMAL);
 		setRegistered(true);
-		startProcess(new WindowsDesktopProcess());
+		switch (system) {
+		default:
+			startProcess(new WindowsDesktopProcess());
+			break;
+
+		case MAC:
+			startProcess(new MacDesktopProcess());
+			break;
+		}
+
 		this.username = process.username;
 		this.password = process.password;
 		this.hint = process.hint;

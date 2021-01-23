@@ -121,7 +121,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 	public int getReloadTime(ItemStack stack) {
 		return (int) Math.ceil((float) getReloadTime()
-				/ (float) (1 + EnchantmentHelper.getEnchantmentLevel(ModEnchantments.fast_reload, stack)));
+				* (float) (1f - EnchantmentHelper.getEnchantmentLevel(ModEnchantments.fast_reload, stack) / 10f));
 	}
 
 	public float getFullDamage() {
@@ -181,8 +181,8 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
-		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT),
-				ItemQuality.MAX_QUALITY));
+		setQuality(itemstack, (int) (int) Math
+				.min(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), ItemQuality.MAX_QUALITY));
 		initNBT(itemstack);
 	}
 
@@ -264,29 +264,42 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 	@Override
 	public void onReloadEnd(World world, EntityPlayer player, ItemStack stack, ItemStack bullet) {
-		if (bullet != null && !bullet.isEmpty() && stack != null && stack.getTagCompound().hasKey("Capacity")
-				&& stack.getTagCompound().hasKey("Ammo")) {
+		NBTTagCompound nbt = stack.getTagCompound();
+		if (bullet != null && !bullet.isEmpty() && stack != null && nbt.hasKey("Capacity") && nbt.hasKey("Ammo")) {
 
-			stack.getTagCompound().setBoolean("Reloading", false);
-			int toReload = (int) Math.ceil(
-					(double) (stack.getTagCompound().getInteger("Capacity") - stack.getTagCompound().getInteger("Ammo"))
-							/ (double) getShotsPerAmmo());
+			nbt.setBoolean("Reloading", false);
+			int toReload = (int) Math
+					.ceil((double) (getCapacity(stack, player) - nbt.getInteger("Ammo")) / (double) getShotsPerAmmo());
+			
+			if(toReload < 1) return;
+			
 			int reload = Math.min(toReload, Utils.getItemCount(player.inventory, bullet.getItem()));
 
-			setAmmo(stack,player,getAmmo(stack,player) + reload * getShotsPerAmmo());
+			setAmmo(stack, player, getAmmo(stack, player) + reload * getShotsPerAmmo());
 			player.inventory.clearMatchingItems(bullet.getItem(), -1, reload, null);
 		}
 	}
+
 	@Override
 	public int getAmmo(ItemStack stack, EntityPlayer player) {
-		if(stack == null || stack.isEmpty() || stack.getTagCompound() == null || !stack.getTagCompound().hasKey("Ammo")) return -1;
+		if (stack == null || stack.isEmpty() || stack.getTagCompound() == null
+				|| !stack.getTagCompound().hasKey("Ammo"))
+			return -1;
 		return stack.getTagCompound().getInteger("Ammo");
 	}
+
 	@Override
 	public int getCapacity(ItemStack stack, EntityPlayer player) {
-		return this.getMaxAmmo();
+		if (stack.getTagCompound() == null)
+			return this.getMaxAmmo();
+		NBTTagCompound nbt = stack.getTagCompound();
+		if (!nbt.hasKey("Capacity"))
+			return this.getMaxAmmo();
+		return (int) Math.ceil((nbt.getInteger("Capacity")
+				* (1d + EnchantmentHelper.getEnchantmentLevel(ModEnchantments.big_mag, stack) / 10d)
+				* (1d - EnchantmentHelper.getEnchantmentLevel(ModEnchantments.small_mag, stack) / 10d)));
 	}
-	
+
 	@Override
 	public void setAmmo(ItemStack stack, EntityPlayer player, int ammo) {
 		if (stack.getTagCompound() == null) {
@@ -294,7 +307,6 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 		}
 		stack.getTagCompound().setInteger("Ammo", ammo);
 	}
-
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
@@ -327,7 +339,8 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 					&& itemstack.getItem() instanceof ItemShotgun) {
 				ModTriggers.GUN_INTERACT.trigger((EntityPlayerMP) playerIn);
 			}
-			for (int i = 0; i < projectiles; i++) {
+			for (int i = 0; i < projectiles
+					* (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.multishot, itemstack) + 1); i++) {
 				EntityShot shot = new EntityShot(worldIn, playerIn, velocity,
 						((float) getSpread(playerIn, handIn) / (playerIn.isSneaking() ? 1.5f : 1f)));
 				shot.setExplosive(explosive);
@@ -373,21 +386,21 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 	public double getSpread(EntityPlayer player, EnumHand hand) {
 
-		float mult = 0.05f;
+		float mult = 0.045f;
 
 		if (Utils.isPlayerDualWielding(player)) {
-			mult += 0.11f;
+			mult += 0.05f;
 		} else if (!player.getHeldItem(getOtherHand(hand)).isEmpty()) {
-			mult += 0.5f;
+			mult += 0.1f;
 		}
 
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		double spread_local = spread * mult * (1.2d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)));
+		double spread_local = spread * mult * (2d - ((double) quality / (ItemQuality.MAX_QUALITY)));
 		return (spread_local
 				* (((double) (Math.abs(player.motionX) + Math.abs(player.motionY) + Math.abs(player.motionZ)))))
-				/ (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack) + 1d);
+				* (1-(EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack)-EnchantmentHelper.getEnchantmentLevel(ModEnchantments.strabismus, stack))*0.2 );
 	}
 
 	public double getCross(EntityPlayer player, EnumHand hand) {
@@ -403,7 +416,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 		int quality = getQuality(stack);
 
 		return (spread * mult * (1.2d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)) * 0.9))
-				/ (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack) + 1d);
+				* (1-(EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack)-EnchantmentHelper.getEnchantmentLevel(ModEnchantments.strabismus, stack))*0.2 );
 	}
 
 	@Override
@@ -618,13 +631,13 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
 		return true;
 	}
-	
+
 	@Override
-	 public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
-    {
+	public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos,
+			EntityLivingBase entityLiving) {
 		worldIn.setBlockState(pos, state);
-        return false;
-    }
+		return false;
+	}
 
 	public static enum EnumGun {
 		PISTOL, SHOTGUN, RIFLE, LAUNCHER, MACHINE, SUBMACHINE

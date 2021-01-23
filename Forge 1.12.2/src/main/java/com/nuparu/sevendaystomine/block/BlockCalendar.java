@@ -4,8 +4,11 @@ import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCalendar;
+import com.nuparu.sevendaystomine.tileentity.TileEntityMetalSpikes;
 import com.nuparu.sevendaystomine.tileentity.TileEntityToilet;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -30,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCalendar extends BlockTileProvider<TileEntityCalendar>{
+public class BlockCalendar extends BlockTileProvider<TileEntityCalendar> {
 
 	public BlockCalendar() {
 		super(Material.GROUND);
@@ -58,7 +61,7 @@ public class BlockCalendar extends BlockTileProvider<TileEntityCalendar>{
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
@@ -67,7 +70,7 @@ public class BlockCalendar extends BlockTileProvider<TileEntityCalendar>{
 		default:
 			return new AxisAlignedBB(0.F, 0.4375F, 0.9375F, 0.75F, 1F, 1F);
 		case NORTH:
-			return new AxisAlignedBB(0.25F,0.4375F, 0.9375F, 0.75F, 1F, 1F);
+			return new AxisAlignedBB(0.25F, 0.4375F, 0.9375F, 0.75F, 1F, 1F);
 		case SOUTH:
 			return new AxisAlignedBB(0.25F, 0.4375F, 0.0F, 0.75F, 1F, 0.0625F);
 		case WEST:
@@ -84,7 +87,7 @@ public class BlockCalendar extends BlockTileProvider<TileEntityCalendar>{
 		default:
 			return new AxisAlignedBB(0.25F, 0.4375F, 0.9375F, 0.75F, 1F, 1F);
 		case NORTH:
-			return new AxisAlignedBB(0.25F,0.4375F, 0.9375F, 0.75F, 1F, 1F);
+			return new AxisAlignedBB(0.25F, 0.4375F, 0.9375F, 0.75F, 1F, 1F);
 		case SOUTH:
 			return new AxisAlignedBB(0.25F, 0.4375F, 0.0F, 0.75F, 1F, 0.0625F);
 		case WEST:
@@ -93,18 +96,38 @@ public class BlockCalendar extends BlockTileProvider<TileEntityCalendar>{
 			return new AxisAlignedBB(0.0F, 0.4375F, 0.25F, 0.0625F, 1F, 0.75F);
 		}
 	}
-	
+
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-	
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
 	@Override
 	public EnumPushReaction getMobilityFlag(IBlockState state) {
 		return EnumPushReaction.DESTROY;
 	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		 EnumFacing enumfacing = (EnumFacing)state.getValue(BlockHorizontalBase.FACING);
+
+	        if (!world.getBlockState(pos.offset(enumfacing.getOpposite())).getMaterial().isSolid())
+	        {
+	            this.dropBlockAsItem(world, pos, state, 0);
+	            world.setBlockToAir(pos);
+	        }
+
+	        super.neighborChanged(state, world, pos, blockIn, fromPos);
+	}
 	
+	@Override
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+    {
+		return (side != EnumFacing.DOWN && side != EnumFacing.UP) && worldIn.getBlockState(pos.offset(side.getOpposite())).getMaterial().isSolid();
+    }
+
+	
+
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(BlockHorizontalBase.FACING,
 				rot.rotate((EnumFacing) state.getValue(BlockHorizontalBase.FACING)));
@@ -117,7 +140,7 @@ public class BlockCalendar extends BlockTileProvider<TileEntityCalendar>{
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY,
 			float hitZ, int meta, EntityLivingBase placer) {
 		return this.getDefaultState().withProperty(BlockHorizontalBase.FACING,
-				placer.getHorizontalFacing().getOpposite());
+				facing);
 	}
 
 	public IBlockState getStateFromMeta(int meta) {

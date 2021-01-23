@@ -13,7 +13,7 @@ public class ItemMP5 extends ItemGun {
 		super();
 		this.setMaxAmmo(30);
 		this.setFullDamage(40f);
-		this.setSpeed(20f);
+		this.setSpeed(18f);
 		this.setRecoil(2.3f);
 		this.setCounterDef(0);
 		this.setCross(24);

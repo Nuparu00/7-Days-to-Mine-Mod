@@ -18,7 +18,9 @@ import com.nuparu.sevendaystomine.world.gen.city.building.BuildingApartmentBig;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingApartmentDark;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingBrickHouse;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingCarRepair;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingCemetery;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingChurch;
+import com.nuparu.sevendaystomine.world.gen.city.building.BuildingConstructionSite;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingFarm;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingGasStation;
 import com.nuparu.sevendaystomine.world.gen.city.building.BuildingGrayHouse;
@@ -158,9 +160,11 @@ public class CityHelper {
 				.add(new BuildingSupermarket(new ResourceLocation(SevenDaysToMine.MODID, "supermarket_right"), 30, -1));
 		buildings.add(new BuildingPoliceStation(30, 0));
 		buildings.add(new BuildingCarRepair(20));
-		buildings.add(new BuildingSchool(20));
+		buildings.add(new BuildingSchool(10));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "book_store"), 10, -1)
 				.setAllowedCityTypes(EnumCityType.CITY).setCanBeMirrored(false));
+		buildings.add(new BuildingConstructionSite(40));
+		buildings.add(new BuildingCemetery(10,-3));
 	}
 
 	public int getBuildingsCount() {

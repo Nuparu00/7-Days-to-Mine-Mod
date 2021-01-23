@@ -56,11 +56,6 @@ public class CommandInfect extends CommandBase {
 	}
 
 	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		return true;
-	}
-
-	@Override
 	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) {
 		final World world = sender.getEntityWorld();
 		EntityPlayer player = null;

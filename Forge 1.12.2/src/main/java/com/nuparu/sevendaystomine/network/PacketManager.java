@@ -85,81 +85,81 @@ public class PacketManager {
 	}
 
 	public void register() {
-		playerCapabilitySync = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:playerCapSync");
+		playerCapabilitySync = NetworkRegistry.INSTANCE.newSimpleChannel("playerCapSync");
 		playerCapabilitySync.registerMessage(new PlayerCapabilitySyncHandler(), PlayerCapabilitySyncMessage.class,
 				discriminator++, Side.CLIENT);
 
-		blockBreakSync = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:blockBreakSync");
+		blockBreakSync = NetworkRegistry.INSTANCE.newSimpleChannel("blockBreakSync");
 		blockBreakSync.registerMessage(new BreakSyncHandler(), BreakSyncMessage.class, discriminator++, Side.CLIENT);
 
-		gunReload = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:gunReload");
+		gunReload = NetworkRegistry.INSTANCE.newSimpleChannel("gunReload");
 		gunReload.registerMessage(new ReloadHandler(), ReloadMessage.class, discriminator++, Side.SERVER);
 
-		openGuiClient = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:openGuiClient");
+		openGuiClient = NetworkRegistry.INSTANCE.newSimpleChannel("openGuiClient");
 		openGuiClient.registerMessage(new OpenGuiClientHandler(), OpenGuiClientMessage.class, discriminator++,
 				Side.CLIENT);
 
-		syncTileEntity = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncTileEntity");
+		syncTileEntity = NetworkRegistry.INSTANCE.newSimpleChannel("syncTileEntity");
 		syncTileEntity.registerMessage(new SyncTileEntityHandler(), SyncTileEntityMessage.class, discriminator++,
 				Side.CLIENT);
 
-		safeCodeUpdate = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:SafeCodeReload");
+		safeCodeUpdate = NetworkRegistry.INSTANCE.newSimpleChannel("SafeCodeReload");
 		safeCodeUpdate.registerMessage(new SafeCodeHandler(), SafeCodeMessage.class, discriminator++, Side.SERVER);
 
-		startProcess = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:startProcess");
+		startProcess = NetworkRegistry.INSTANCE.newSimpleChannel("startProcess");
 		startProcess.registerMessage(new StartProcessHandler(), StartProcessMessage.class, discriminator++,
 				Side.SERVER);
 
-		syncIcon = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncIcon");
+		syncIcon = NetworkRegistry.INSTANCE.newSimpleChannel("syncIcon");
 		syncIcon.registerMessage(new SyncIconHandler(), SyncIconMessage.class, discriminator++, Side.SERVER);
 
-		photoToServer = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:photoToServer");
+		photoToServer = NetworkRegistry.INSTANCE.newSimpleChannel("photoToServer");
 		photoToServer.registerMessage(new PhotoToServerHandler(), PhotoToServerMessage.class, discriminator++,
 				Side.SERVER);
 
-		photoRequest = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:photoRequest");
+		photoRequest = NetworkRegistry.INSTANCE.newSimpleChannel("photoRequest");
 		photoRequest.registerMessage(new PhotoRequestHandler(), PhotoRequestMessage.class, discriminator++,
 				Side.SERVER);
 
-		photoToClient = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:photoToClient");
+		photoToClient = NetworkRegistry.INSTANCE.newSimpleChannel("photoToClient");
 		photoToClient.registerMessage(new PhotoToClientHandler(), PhotoToClientMessage.class, discriminator++,
 				Side.CLIENT);
 
-		dialogueSelection = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:dialogueSelection");
+		dialogueSelection = NetworkRegistry.INSTANCE.newSimpleChannel("dialogueSelection");
 		dialogueSelection.registerMessage(new DialogueSelectionHandler(), DialogueSelectionMessage.class,
 				discriminator++, Side.SERVER);
 
-		addSubtitle = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:addSubtitle");
+		addSubtitle = NetworkRegistry.INSTANCE.newSimpleChannel("addSubtitle");
 		addSubtitle.registerMessage(new AddSubtitleHandler(), AddSubtitleMessage.class, discriminator++, Side.CLIENT);
 
-		syncInventory = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncInventory");
+		syncInventory = NetworkRegistry.INSTANCE.newSimpleChannel("syncInventory");
 		syncInventory.registerMessage(new SyncInventoryHandler(), SyncInventoryMessage.class, discriminator++,
 				Side.CLIENT);
 
-		controllableKeyUpdate = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:controls");
+		controllableKeyUpdate = NetworkRegistry.INSTANCE.newSimpleChannel("controls");
 		controllableKeyUpdate.registerMessage(new ControllableKeyUpdateHandler(), ControllableKeyUpdateMessage.class,
 				discriminator++, Side.SERVER);
 
-		syncThrottle = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncThrottle");
+		syncThrottle = NetworkRegistry.INSTANCE.newSimpleChannel("syncThrottle");
 		syncThrottle.registerMessage(new SyncThrottleHandler(), SyncThrottleMessage.class, discriminator++,
 				Side.SERVER);
 
-		killProcess = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:killProcess");
+		killProcess = NetworkRegistry.INSTANCE.newSimpleChannel("killProcess");
 		killProcess.registerMessage(new KillProcessHandler(), KillProcessMessage.class, discriminator++, Side.SERVER);
 
-		syncProcess = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:syncProcess");
+		syncProcess = NetworkRegistry.INSTANCE.newSimpleChannel("syncProcess");
 		syncProcess.registerMessage(new SyncProcessHandler(), SyncProcessMessage.class, discriminator++, Side.SERVER);
 
-		saveData = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:saveData");
+		saveData = NetworkRegistry.INSTANCE.newSimpleChannel("saveData");
 		saveData.registerMessage(new SaveDataHandler(), SaveDataMessage.class, discriminator++, Side.SERVER);
 
-		sendPacket = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:sendPacket");
+		sendPacket = NetworkRegistry.INSTANCE.newSimpleChannel("sendPacket");
 		sendPacket.registerMessage(new SendPacketHandler(), SendPacketMessage.class, discriminator++, Side.SERVER);
 
-		applyRecoil = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:applyRecoil");
+		applyRecoil = NetworkRegistry.INSTANCE.newSimpleChannel("applyRecoil");
 		applyRecoil.registerMessage(new ApplyRecoilHandler(), ApplyRecoilMessage.class, discriminator++, Side.CLIENT);
 
-		bulletImpact = NetworkRegistry.INSTANCE.newSimpleChannel("7D2M:bulletImpact");
+		bulletImpact = NetworkRegistry.INSTANCE.newSimpleChannel("bulletImpact");
 		bulletImpact.registerMessage(new BulletImpactHandler(), BulletImpactMessage.class, discriminator++,
 				Side.CLIENT);
 	}

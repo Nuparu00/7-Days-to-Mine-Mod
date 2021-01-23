@@ -13,8 +13,9 @@
          "item":"minecraft:redstone"
       },
       "I":{
-         "item":"sevendaystomine:ironingot"
-      }
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+}
    },
    "result":{
       "item":"sevendaystomine:metal_spikes"

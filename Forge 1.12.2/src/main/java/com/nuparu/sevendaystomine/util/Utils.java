@@ -60,6 +60,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -85,9 +86,11 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -967,7 +970,6 @@ public class Utils {
 	}
 
 	public static void consumeXp(EntityPlayer player, float amount) {
-		System.out.println("FFFF");
 		if (player.experienceTotal - amount <= 0) {
 			player.experienceLevel = 0;
 			player.experience = 0;
@@ -989,5 +991,80 @@ public class Utils {
 		}
 
 		player.experience -= amount / (float) player.xpBarCap();
+	}
+	
+	public static boolean canCityBeGeneratedhere(World world, int chunkX, int chunkZ) {
+		if(chunkX % 32 != 0 || chunkZ % 32 != 0) return false;
+		Random rand = new Random(world.getSeed());
+		long k = rand.nextLong() / 2L * 2L + 1L;
+		long l = rand.nextLong() / 2L * 2L + 1L;
+		rand.setSeed((long) chunkX * k + (long) chunkZ * l ^ world.getSeed());
+		
+		Biome biome = world.getChunkFromChunkCoords(chunkX, chunkZ).getBiome(new BlockPos(16*chunkX+8,255,16*chunkZ+8), world.getBiomeProvider());
+		if (BiomeDictionary.hasType(biome,BiomeDictionary.Type.OCEAN)) return false;
+		return rand.nextInt(16) == 0;
+	}
+	
+	public static List<ChunkPos> getClosestCities(World world, int chunkX, int chunkZ, int dst) {
+		List<ChunkPos> poses = new ArrayList<ChunkPos>();
+		for (int i = -dst; i < dst; i++) {
+			for (int j = -dst; j < dst; j++) {
+				int cX = chunkX + i;
+				int cZ = chunkZ + j;
+				if (Utils.canCityBeGeneratedhere(world, cX, cZ)) {
+					poses.add(new ChunkPos(cX,cZ));
+				}
+			}
+		}
+		return poses;
+	}
+	
+	public static boolean isCityInArea(World world, int chunkX, int chunkZ, int dst) {
+		for (int i = -dst; i < dst; i++) {
+			for (int j = -dst; j < dst; j++) {
+				int cX = chunkX + i;
+				int cZ = chunkZ + j;
+				if (Utils.canCityBeGeneratedhere(world, cX, cZ)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static ChunkPos getClosestCity(World world, int chunkX, int chunkZ) {
+		
+		ChunkPos nearest = null;
+		double nearestDst = Double.MAX_VALUE;
+		List<ChunkPos> cities = getClosestCities(world,chunkX,chunkZ,128);
+		for(ChunkPos pos : cities) {
+			double dst = (pos.x-chunkX) + (pos.z-chunkZ);
+			if(dst < nearestDst) {
+				nearestDst = dst;
+				nearest = pos;
+			}
+		}
+		
+		return nearest;
+	}
+	
+	public static void generateDiagonal(World world, BlockPos start, BlockPos end) {
+		int minX = Math.min(start.getX(), end.getX());
+		int minZ = Math.min(start.getZ(), end.getZ());
+
+		int maxX = Math.max(start.getX(), end.getX());
+		int maxZ = Math.max(start.getZ(), end.getZ());
+
+		Vec3d dif = new Vec3d(maxX - minX, 0, maxZ - minZ);
+		Vec3d vec = dif.scale(1d / dif.lengthVector());
+
+		for (double d = 0; d < dif.lengthVector(); d++) {
+			Vec3d vec2 = vec.scale(d);
+			world.setBlockState(new BlockPos(minX + vec2.x, 200, minZ + vec2.z),
+					Blocks.IRON_BLOCK.getDefaultState());
+		}
+		world.setBlockState(new BlockPos(minX, 50, minZ), Blocks.REDSTONE_BLOCK.getDefaultState());
+		world.setBlockState(new BlockPos(maxX, 50, maxZ), Blocks.GOLD_BLOCK.getDefaultState());
+
 	}
 }

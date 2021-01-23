@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.world.gen.city.building;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
@@ -28,6 +29,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 public class BuildingFactory extends Building {
 	
 	private ResourceLocation LEFT  = new ResourceLocation(SevenDaysToMine.MODID, "factory");
+	private ResourceLocation CHIMNEY  = new ResourceLocation(SevenDaysToMine.MODID, "factory_chimney");
 
 
 	public BuildingFactory(ResourceLocation res, int weight) {
@@ -39,7 +41,7 @@ public class BuildingFactory extends Building {
 	}
 
 	@Override
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
 		if (!world.isRemote) {
 			WorldServer worldserver = (WorldServer) world;
 			MinecraftServer minecraftserver = world.getMinecraftServer();
@@ -80,6 +82,12 @@ public class BuildingFactory extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			template = templatemanager.getTemplate(minecraftserver, CHIMNEY);
+			if (template == null) {
+				return;
+			}
+			pos = pos.offset(facing, -43);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
 		}
 	}
 

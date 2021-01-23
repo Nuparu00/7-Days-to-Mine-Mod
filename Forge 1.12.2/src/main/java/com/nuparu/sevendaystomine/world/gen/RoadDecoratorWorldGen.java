@@ -95,18 +95,8 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 							} else if (rand.nextInt(300) == 0) {
 								CityHelper.placeRandomCar(world, pos.up(), EnumFacing.HORIZONTALS[rand.nextInt(4)],true,rand);
 								break;
-							} else if (rand.nextInt(1024) == 0) {
-								Biome biome = world.getBiome(pos);
-								if (biome.getHeightVariation() > 0.2)
-									continue;
-								CitySavedData data = CitySavedData.get(world);
-								if (!data.isCityNearby(pos, 2250000) && !data.isScatteredNearby(pos, 22500)) {
-									City city = City.foundCity(world, pos);
-									city.startCityGen();
-									return;
-								}
 							}
-							else if(rand.nextInt(1024) == 0) {
+							else if(rand.nextInt(2048) == 0) {
 								int count = 2+world.rand.nextInt(6);
 								while (count-- > 0){
 									EntityBandit bandit = new EntityBandit(world);

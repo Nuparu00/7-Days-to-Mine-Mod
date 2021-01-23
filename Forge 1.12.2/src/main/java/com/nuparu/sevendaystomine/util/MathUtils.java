@@ -112,4 +112,14 @@ public class MathUtils {
 	public static boolean isInRange(int value, int min, int max) {
 		return (value >= min) && (value <= max);
 	}
+	
+	public static boolean almostEqual(double a, double b, double eps){
+	    return Math.abs(a-b)<eps;
+	}
+	
+	public static double bias(double n, double bias) {
+		double k = Math.pow(1-bias, 3);
+		return (n*k)/(n*k-n+1);
+		
+	}
 }

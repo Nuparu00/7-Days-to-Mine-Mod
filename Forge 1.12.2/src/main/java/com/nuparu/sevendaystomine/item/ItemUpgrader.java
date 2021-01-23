@@ -97,6 +97,7 @@ public class ItemUpgrader extends ItemQualityTool {
 								SoundCategory.BLOCKS, MathUtils.getFloatInRange(0.5f, 0.75f),
 								MathUtils.getFloatInRange(0.9f, 1f));
 						playerIn.swingArm(hand);
+						itemstack.damageItem(1, playerIn);
 						if (damage - (effect / 1f) <= 0f) {
 							data.removeBreakData(pos, worldIn);
 							break;
@@ -129,6 +130,7 @@ public class ItemUpgrader extends ItemQualityTool {
 				itemstack.getTagCompound().setFloat("Percent", itemstack.getTagCompound().getFloat("Percent") + effect);
 				playerIn.swingArm(hand);
 				if (itemstack.getTagCompound().getFloat("Percent") >= 1F) {
+					itemstack.damageItem(1, playerIn);
 					upgradeable.onUpgrade(worldIn, pos, state);
 					worldIn.setBlockState(pos, upgradeable.getResult(worldIn, pos), 3);
 					if (!worldIn.isRemote) {
@@ -150,6 +152,7 @@ public class ItemUpgrader extends ItemQualityTool {
 				itemstack.getTagCompound().setFloat("Percent", itemstack.getTagCompound().getFloat("Percent") + effect);
 				playerIn.swingArm(hand);
 				if (itemstack.getTagCompound().getFloat("Percent") >= 1F) {
+					itemstack.damageItem(1, playerIn);
 					worldIn.setBlockState(pos, upgrade.getResult(), 3);
 					if (!worldIn.isRemote) {
 						ModTriggers.BLOCK_UPGRADE.trigger((EntityPlayerMP) playerIn, state);

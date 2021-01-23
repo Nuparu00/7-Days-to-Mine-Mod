@@ -9,8 +9,9 @@
   ],
   "key": {
     "I": {
-      "item": "sevendaystomine:ironingot"
-    },
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+},
     "F": {
       "item": "minecraft:flint_and_steel"
     },

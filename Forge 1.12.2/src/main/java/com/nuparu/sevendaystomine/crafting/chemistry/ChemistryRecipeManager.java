@@ -2,11 +2,17 @@ package com.nuparu.sevendaystomine.crafting.chemistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import com.google.common.collect.Lists;
 import com.nuparu.sevendaystomine.init.ModItems;
 
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 
 public class ChemistryRecipeManager {
 	private static ChemistryRecipeManager INSTANCE;
@@ -38,6 +44,16 @@ public class ChemistryRecipeManager {
 						new ItemStack(Items.SUGAR)))));
 		addRecipe(new ChemistryRecipeShapeless(new ItemStack(Items.GUNPOWDER),
 				new ArrayList(Arrays.asList(new ItemStack(Items.COAL), new ItemStack(ModItems.POTASSIUM, 2)))));
+		addRecipe(new ChemistryRecipeShapeless(new ItemStack(ModItems.SALT),
+				new ArrayList(Arrays.asList(new ItemStack(ModItems.BOTTLED_WATER), new ItemStack(ModItems.NATRIUM_TANK),
+						new ItemStack(ModItems.CHLORINE_TANK)))));
+
+		ItemStack lingering = new ItemStack(Items.LINGERING_POTION);
+		List<PotionEffect> list = Lists.<PotionEffect>newArrayList();
+		list.add(new PotionEffect(MobEffects.POISON, 100, 0));
+		PotionUtils.appendEffects(lingering, list);
+		addRecipe(new ChemistryRecipeShapeless(lingering,
+				new ArrayList(Arrays.asList(new ItemStack(ModItems.BANEBERRY), new ItemStack(ModItems.BANEBERRY),new ItemStack(ModItems.BOTTLED_BEER), new ItemStack(ModItems.BOTTLED_BEER)))));
 	}
 
 	public void addRecipe(IChemistryRecipe recipe) {

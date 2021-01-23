@@ -93,26 +93,6 @@
                     "name": "sevendaystomine:firstaidkit"
                 },
                 {
-                    "type": "item",
-                    "weight": 3,
-                    "name": "sevendaystomine:car_battery",
-					"functions": [
-                        {
-                            "function": "sevendaystomine:random_quality"
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 5,
-                    "name": "sevendaystomine:small_engine",
-					"functions": [
-                        {
-                            "function": "sevendaystomine:random_quality"
-                        }
-                    ]
-                },
-                {
                     "type": "empty",
                     "weight": 100
                 }

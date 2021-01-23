@@ -1,9 +1,19 @@
 package com.nuparu.sevendaystomine.init;
 
 import com.nuparu.sevendaystomine.world.biome.BiomeBurntForest;
+import com.nuparu.sevendaystomine.world.biome.BiomeBurntJungle;
+import com.nuparu.sevendaystomine.world.biome.BiomeBurntTaiga;
 import com.nuparu.sevendaystomine.world.biome.BiomeWasteland;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBeach;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandDesert;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandForest;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandOcean;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandRiver;
 
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeDesert;
+import net.minecraft.world.biome.Biome.BiomeProperties;
+import net.minecraft.world.biome.BiomeBeach;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
@@ -13,12 +23,28 @@ import net.minecraftforge.common.BiomeManager;
 
 public class ModBiomes {
 
-	public static final Biome BURNT_FOREST = new BiomeBurntForest();
+public static final Biome BURNT_FOREST = new BiomeBurntForest();
+	public static final Biome BURNT_JUNGLE = new BiomeBurntJungle();
+	public static final Biome BURNT_TAIGA = new BiomeBurntTaiga();
 	public static final Biome WASTELAND = new BiomeWasteland();
-
+	public static final Biome WASTELAND_FOREST = new BiomeWastelandForest();
+	public static final Biome WASTELAND_RIVER = new BiomeWastelandRiver();
+	public static final Biome WASTELAND_OCEAN = new BiomeWastelandOcean(new BiomeProperties("Wasteland Ocean").setTemperature(2.0F).setRainfall(0.4F).setWaterColor(0x404736).setBaseHeight(-1.0F).setHeightVariation(0.1F));
+	public static final Biome WASTELAND_DEEP_OCEAN = new BiomeWastelandOcean(new BiomeProperties("Wasteland Deep Ocean").setTemperature(2.0F).setRainfall(0.4F).setWaterColor(0x404736).setBaseHeight(-1.8F).setHeightVariation(0.1F));
+	public static final Biome WASTELAND_DESERT = new BiomeWastelandDesert((new Biome.BiomeProperties("Wasteland Desert")).setBaseHeight(0.125F).setHeightVariation(0.05F).setTemperature(2.0F).setRainfall(0.0F).setRainDisabled().setWaterColor(0x404736));
+	public static final Biome WASTELAND_BEACH = new BiomeWastelandBeach((new Biome.BiomeProperties("Wasteland Beach")).setBaseHeight(0.0F).setHeightVariation(0.025F).setTemperature(0.8F).setRainfall(0.4F).setWaterColor(0x404736));
+	
 	public static void init() {
-		register(BURNT_FOREST, "Burnt Forest", BiomeType.DESERT, 5, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
-		register(WASTELAND, "Wasteland", BiomeType.DESERT, 3, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
+		register(BURNT_FOREST, "Burnt Forest", BiomeType.WARM, 2, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.FOREST);
+		register(BURNT_JUNGLE, "Burnt Jungle", BiomeType.WARM, 2, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.JUNGLE, Type.DENSE);
+		register(WASTELAND, "Wasteland", BiomeType.DESERT, 1, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
+		register(WASTELAND_RIVER, "Wasteland River", BiomeType.DESERT, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.RIVER);
+		register(BURNT_TAIGA, "Burnt Cold Taiga", BiomeType.ICY, Type.COLD, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.SNOWY);
+		register(WASTELAND_OCEAN, "Wasteland Ocean", BiomeType.COOL, Type.OCEAN, Type.DEAD, Type.WASTELAND, Type.WATER);
+		register(WASTELAND_DEEP_OCEAN, "Wasteland Deep Ocean", BiomeType.COOL, Type.OCEAN, Type.DEAD, Type.WASTELAND, Type.WATER);
+		register(WASTELAND_DESERT, "Wasteland Desert", BiomeType.DESERT, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.SANDY);
+		register(WASTELAND_BEACH, "Wasteland Beach", BiomeType.DESERT, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.BEACH);
+		register(WASTELAND_FOREST, "Dead Forest", BiomeType.WARM, 1, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.FOREST);
 	}
 
 	public static void register(Biome biome, String name, BiomeType type, int weight, Type... types) {
@@ -27,6 +53,15 @@ public class ModBiomes {
 		BiomeDictionary.addTypes(biome, types);
 		BiomeManager.addBiome(type, new BiomeEntry(biome, weight));
 		BiomeManager.addSpawnBiome(biome);
+		BiomeManager.addStrongholdBiome(biome);
+	}
+	
+	public static void register(Biome biome, String name, BiomeType type, Type... types) {
+		biome.setRegistryName(name);
+		ForgeRegistries.BIOMES.register(biome);
+		BiomeDictionary.addTypes(biome, types);
+		BiomeManager.addSpawnBiome(biome);
+		BiomeManager.addStrongholdBiome(biome);
 	}
 
 }

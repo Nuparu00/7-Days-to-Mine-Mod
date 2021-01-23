@@ -33,29 +33,13 @@ public class ItemCannedFood extends ItemFood {
 	protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
 		super.onFoodEaten(stack, worldIn, player);
-		if(stack.getItemDamage() == stack.getMaxDamage() && getContainerItem() != null) {
-			player.addItemStackToInventory(new ItemStack(getContainerItem()));
-		}
-    }
-	
-	@Override
-	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
-    {
-        if (entityLiving instanceof EntityPlayer)
-        {
-            EntityPlayer entityplayer = (EntityPlayer)entityLiving;
-            entityplayer.getFoodStats().addStats(this, stack);
-            worldIn.playSound((EntityPlayer)null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-            this.onFoodEaten(stack, worldIn, entityplayer);
-            entityplayer.addStat(StatList.getObjectUseStats(this));
-
-            if (entityplayer instanceof EntityPlayerMP)
+		if(stack.getItemDamage()+1 == stack.getMaxDamage() && getContainerItem() != null) {
+			ItemStack itemStack = new ItemStack(getContainerItem());
+			if (!player.addItemStackToInventory(itemStack))
             {
-                CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP)entityplayer, stack);
+                player.dropItem(itemStack, false);
             }
-        }
-    	stack.damageItem(1, entityLiving);
-        return stack;
+		}
     }
 
 }

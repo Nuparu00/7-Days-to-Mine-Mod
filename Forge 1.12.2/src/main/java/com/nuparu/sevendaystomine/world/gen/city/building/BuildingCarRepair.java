@@ -1,5 +1,7 @@
 package com.nuparu.sevendaystomine.world.gen.city.building;
 
+import java.util.Random;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.util.Utils;
@@ -34,7 +36,7 @@ public class BuildingCarRepair extends Building {
 	}
 
 	@Override
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
 		if (!world.isRemote) {
 			WorldServer worldserver = (WorldServer) world;
 			MinecraftServer minecraftserver = world.getMinecraftServer();
@@ -71,20 +73,6 @@ public class BuildingCarRepair extends Building {
 	@Override
 	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror) {
 		switch (data) {
-		case "sedan_v": {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			if (world.rand.nextBoolean()) {
-				CityHelper.placeRandomCar(world, pos, facing.rotateY(), world.rand);
-			}
-			break;
-		}
-		case "sedan_h": {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			if (world.rand.nextBoolean()) {
-				CityHelper.placeRandomCar(world, pos, facing, world.rand);
-			}
-			break;
-		}
 		default:
 			super.handleDataBlock(world, facing, pos, data, mirror);
 		}

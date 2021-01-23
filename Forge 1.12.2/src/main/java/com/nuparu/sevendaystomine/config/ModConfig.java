@@ -16,7 +16,7 @@ public class ModConfig {
 	public static CategoryWorld world = new CategoryWorld();
 
 	public static class CategoryPlayer {
-		@Config.Comment("Cotrols rendering of player's items (weapons, tools).")
+		@Config.Comment("Cotrols rendering of player's items (weapons, tools). If false on a server, no one will be able to see the items regardless of  their settings")
 		public boolean renderPlayerInventory = true;
 	}
 	
@@ -25,12 +25,15 @@ public class ModConfig {
 		public int bloodmoonFrequency = 7;
 		@Config.Comment("How many waves bloodmoon horde has")
 		public int bloodmoonHordeWaves = 8;
-		@Config.Comment("How many zombies bloodmoon horde wave has")
-		public int bloodmoonHordeZombiesPerWave = 8;
+		@Config.Comment("Minimal number of zombies the bloodmoon horde wave has - used during the first few bloodmoons")
+		public int bloodmoonHordeZombiesPerWaveMin = 5;
+		@Config.Comment("Maximal number of zombies the bloodmoon horde wace has - used  after the fifth bloodmoon")
+		public int bloodmoonHordeZombiesPerWaveMax = 15;
+		
 		
 		@Config.Comment("How many days between individual wolf hordes (0 = disabled)")
 		public int wolfHordeFrequency = 5;
-		@Config.Comment("How many waves bloodmoon horde has")
+		@Config.Comment("How many waves wolf horde has")
 		public int wolfHordeWaves = 8;
 		@Config.Comment("How many zombies wolf horde wave has")
 		public int wolfHordeZombiesPerWave = 8;

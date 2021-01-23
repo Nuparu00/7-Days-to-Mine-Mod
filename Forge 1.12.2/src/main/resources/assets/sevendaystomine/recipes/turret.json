@@ -1,0 +1,31 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "CC   ",
+    "CCMB ",
+    " SPS ",
+    " P P ",
+    "P   P"
+  ],
+  "key": {
+    "C": {
+      "item": "sevendaystomine:emptycan"
+    },
+    "M": {
+      "item": "sevendaystomine:magnum_cylinder"
+    },
+    "B": {
+      "item": "sevendaystomine:mp5_barrel"
+    },
+    "S": {
+      "item": "sevendaystomine:steelingot"
+    },
+    "P": {
+      "item": "sevendaystomine:iron_pipe"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:turret_base"
+  },
+  "recipe": "computers"
+}

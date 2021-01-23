@@ -12,8 +12,9 @@
       "item": "minecraft:string"
     },
     "I": {
-      "item": "sevendaystomine:ironingot"
-    },
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+},
     "L": {
       "item": "minecraft:leather"
     },

@@ -226,7 +226,6 @@ public class EntityRocket extends Entity implements IProjectile {
 						this.motionZ);
 			}
 
-			f1 = 0.6F;
 		} else {
 			for (int i = 0; i < 10; ++i) {
 				this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE,
@@ -279,7 +278,7 @@ public class EntityRocket extends Entity implements IProjectile {
 			}
 		} else {
 			if (!this.world.isRemote) {
-				world.newExplosion(this, posX+motionX, posY+motionY, posZ+motionZ, 5.2f, true, true);
+				world.newExplosion(this, raytraceResultIn.hitVec.x, raytraceResultIn.hitVec.y, raytraceResultIn.hitVec.z, 5.2f, true, true);
 			}
 		}
 		this.setDead();

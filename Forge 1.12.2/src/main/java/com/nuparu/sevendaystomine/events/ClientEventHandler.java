@@ -24,6 +24,7 @@ import com.nuparu.sevendaystomine.util.VanillaManager;
 import com.nuparu.sevendaystomine.util.VanillaManager.VanillaScrapableItem;
 import com.nuparu.sevendaystomine.util.VersionChecker;
 import com.nuparu.sevendaystomine.util.dialogue.SubtitleHelper;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBase;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -174,7 +175,7 @@ public class ClientEventHandler {
 			event.setGreen(MathUtils.clamp(event.getGreen() + 0.05f * mult, 0, 1));
 			event.setBlue(MathUtils.clamp(event.getBlue() + 0.02f * mult, 0, 1));
 		}
-		if ((biome == ModBiomes.BURNT_FOREST || biome == ModBiomes.WASTELAND) && mat != Material.WATER
+		if ((biome instanceof BiomeWastelandBase) && mat != Material.WATER
 				&& mat != Material.LAVA) {
 			event.setRed(MathUtils.clamp(event.getRed() - 0.05f, 0, 1));
 			event.setGreen(MathUtils.clamp(event.getGreen() - 0.13f, 0, 1));
@@ -190,7 +191,7 @@ public class ClientEventHandler {
 		IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(event.getEntity().world,
 				event.getEntity(), (float) event.getRenderPartialTicks());
 		Material mat = iblockstate.getMaterial();
-		if ((biome == ModBiomes.BURNT_FOREST || biome == ModBiomes.WASTELAND) && mat != Material.WATER
+		if ((biome instanceof BiomeWastelandBase) && mat != Material.WATER
 				&& mat != Material.LAVA) {
 			event.setDensity(event.getDensity() / 4f);
 			GlStateManager.setFog(GlStateManager.FogMode.EXP);

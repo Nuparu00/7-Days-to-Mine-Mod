@@ -31,9 +31,14 @@ public class CommandPlacePrefab extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return "placePrefab <x> <y> <z> <name> <genereateAir?> [rotation]";	
+		return "<x> <y> <z> <name> <genereateAir?> [rotation]";	
 	}
 
+	@Override
+	public int getRequiredPermissionLevel() {
+		return 4;
+	}
+	
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		final World world = sender.getEntityWorld();

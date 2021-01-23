@@ -8,6 +8,8 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -69,6 +71,16 @@ public class ItemRecipeBook extends ItemGuide {
 
 	public String getRecipe() {
 		return this.recipe;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		if(!GuiScreen.isShiftKeyDown()) return;
+		if(Minecraft.getMinecraft().player == null) return;
+		boolean known = CapabilityHelper.getExtendedPlayer(Minecraft.getMinecraft().player).hasRecipe(recipe);
+		tooltip.add(known ? TextFormatting.GREEN +  SevenDaysToMine.proxy.localize("stat.known.name") : TextFormatting.RED + SevenDaysToMine.proxy.localize("stat.unknown.name"));
 	}
 
 }

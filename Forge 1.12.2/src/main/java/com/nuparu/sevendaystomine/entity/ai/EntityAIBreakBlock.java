@@ -70,56 +70,6 @@ public class EntityAIBreakBlock extends EntityAIBase {
 		super.resetTask();
 	}
 
-	public float getBreakSpeed(IBlockState state, BlockPos pos, EntityLivingBase living) {
-
-		float f = 0.1f;
-
-		if (living.isPotionActive(MobEffects.HASTE)) {
-			f *= 1.0F + (float) (living.getActivePotionEffect(MobEffects.HASTE).getAmplifier() + 1) * 0.2F;
-		}
-
-		if (living.isPotionActive(MobEffects.MINING_FATIGUE)) {
-			float f1 = 1.0F;
-
-			switch (living.getActivePotionEffect(MobEffects.MINING_FATIGUE).getAmplifier()) {
-			case 0:
-				f1 = 0.3F;
-				break;
-			case 1:
-				f1 = 0.09F;
-				break;
-			case 2:
-				f1 = 0.0027F;
-				break;
-			case 3:
-			default:
-				f1 = 8.1E-4F;
-			}
-
-			f *= f1;
-		}
-
-		if (living.isInsideOfMaterial(Material.WATER) && !EnchantmentHelper.getAquaAffinityModifier(living)) {
-			f /= 5.0F;
-		}
-
-		if (!living.onGround) {
-			f /= 5.0F;
-		}
-		
-		if(Utils.isBloodmoonProper(living.world)) {
-			f*=2;
-		}
-		
-		
-		ItemStack stack = living.getHeldItem(EnumHand.MAIN_HAND);
-		if(!stack.isEmpty() && stack.getItem() instanceof ItemQualityPickaxe) {
-			f*=2.5f;
-		}
-
-		return f;
-	}
-
 	public float blockStrength(IBlockState state, EntityLivingBase player, World world, BlockPos pos) {
 		float hardness = state.getBlockHardness(world, pos);
 		if (hardness < 0.0F) {
@@ -143,7 +93,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
 			if (stepSoundTickCounter % 4.0F == 0.0F) {
 				theEntity.swingArm(world.rand.nextInt(2) == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 			}
-			float m = (getBreakSpeed(state,blockPosition,theEntity)/hardness)/32f;
+			float m = (theEntity.getBlockBreakSpeed(state, blockPosition)/hardness)/32f;
 
 			if (Utils.damageBlock(world, blockPosition, m, true, this.stepSoundTickCounter % 4.0F == 0.0F)) {
 				world.playEvent(2001, blockPosition, Block.getStateId(world.getBlockState(blockPosition)));

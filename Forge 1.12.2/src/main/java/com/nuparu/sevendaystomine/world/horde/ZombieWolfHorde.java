@@ -46,6 +46,17 @@ public class ZombieWolfHorde extends Horde {
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 10));
 
 		this.waves = ModConfig.world.wolfHordeWaves;
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		List<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>(server.getPlayerList().getPlayers());
+		for(EntityPlayerMP playerMP : players) {
+			if(playerMP.getGameProfile().equals(player.getGameProfile())) continue;
+			if(playerMP.world.provider.getDimension() == world.provider.getDimension()) {
+				if(playerMP.getDistanceSq(player) <= 1024) {
+					this.waves= (int) Math.ceil(waves * 0.8);
+					break;
+				}
+			}
+		}
 	}
 
 	public ZombieWolfHorde(BlockPos center, World world, EntityPlayer player) {

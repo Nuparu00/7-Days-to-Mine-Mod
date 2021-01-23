@@ -6,6 +6,7 @@ import com.nuparu.sevendaystomine.block.BlockFruitBush;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
@@ -16,16 +17,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenBlueberry extends WorldGenerator {
 
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos pos) {
+		Biome biome = worldIn.getBiome(pos);
+		if(biome instanceof BiomeWastelandBase) return false;
 		pos = pos.add(8, 0, 8);
-		if (worldIn.getBiome(pos) == ModBiomes.BURNT_FOREST)
-			return false;
-		IBlockState toPlace = ModBlocks.BLUEBERRY_PLANT.getDefaultState().withProperty(BlockFruitBush.AGE,
+		IBlockState toPlace = (rand.nextBoolean() ? ModBlocks.BANEBERRY_PLANT : ModBlocks.BLUEBERRY_PLANT).getDefaultState().withProperty(BlockFruitBush.AGE,
 				rand.nextInt(8));
 		int y = Utils.getTopSolidGroundHeight(pos, worldIn);
 

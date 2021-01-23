@@ -71,7 +71,7 @@ public class Plot {
 		
 
 		building.generate(street.world, new BlockPos(pos.getX(), MathUtils.lerp(yStart, yEnd, 0.5f), pos.getZ()),
-				street.facing, mirror);
+				street.facing, mirror, street.city.rand);
 	}
 
 	public boolean intersects(Plot plot) {

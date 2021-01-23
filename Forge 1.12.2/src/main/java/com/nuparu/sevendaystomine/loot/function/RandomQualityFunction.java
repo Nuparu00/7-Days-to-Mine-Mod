@@ -32,7 +32,7 @@ public class RandomQualityFunction extends LootFunction {
 			return stack;
 
 		IQuality quality = (IQuality) item;
-		quality.setQuality(stack, MathUtils.getIntInRange(100, 400));
+		quality.setQuality(stack, 1+(int)(MathUtils.bias(rand.nextDouble(),0.35)*(ItemQuality.MAX_QUALITY-1)));
 
 		if (item instanceof ItemGun) {
 			((ItemGun) item).initNBT(stack);

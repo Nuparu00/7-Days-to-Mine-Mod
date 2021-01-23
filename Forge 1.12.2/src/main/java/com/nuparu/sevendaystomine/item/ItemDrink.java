@@ -39,7 +39,11 @@ public class ItemDrink extends ItemFood {
 		player.removePotionEffect(Potions.thirst);
 		
 		if(getContainerItem() != null) {
-			player.addItemStackToInventory(new ItemStack(getContainerItem()));
+			ItemStack itemStack = new ItemStack(getContainerItem());
+			if (!player.addItemStackToInventory(itemStack))
+            {
+                player.dropItem(itemStack, false);
+            }
 		}
     }
 	

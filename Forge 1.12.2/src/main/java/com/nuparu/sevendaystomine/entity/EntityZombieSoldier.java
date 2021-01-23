@@ -13,7 +13,7 @@ public class EntityZombieSoldier extends EntityBipedalZombie {
 
 	public EntityZombieSoldier(World worldIn) {
 		super(worldIn);
-		this.lootTable = ModLootTables.ZOMBIE_POLICEMAN;
+		this.lootTable = ModLootTables.ZOMBIE_SOLDIER;
 		this.experienceValue = 20;
 	}
 

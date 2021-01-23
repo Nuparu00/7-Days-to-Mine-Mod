@@ -16,6 +16,7 @@ import com.nuparu.sevendaystomine.crafting.campfire.CampfireRecipeManager;
 import com.nuparu.sevendaystomine.crafting.chemistry.ChemistryRecipeManager;
 import com.nuparu.sevendaystomine.crafting.forge.ForgeRecipeManager;
 import com.nuparu.sevendaystomine.crafting.separator.SeparatorRecipeManager;
+import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.entity.EntityAirplane;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
@@ -23,6 +24,7 @@ import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
 import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
+import com.nuparu.sevendaystomine.entity.EntityFeralZombie;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
 import com.nuparu.sevendaystomine.entity.EntityFragmentationGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
@@ -54,6 +56,7 @@ import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.init.ModLootTables;
+import com.nuparu.sevendaystomine.loot.function.CityMapFunction;
 import com.nuparu.sevendaystomine.loot.function.RandomQualityFunction;
 import com.nuparu.sevendaystomine.tileentity.TileEntityAirplaneRotor;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBackpack;
@@ -98,6 +101,7 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityRadio;
 import com.nuparu.sevendaystomine.tileentity.TileEntityRefrigerator;
 import com.nuparu.sevendaystomine.tileentity.TileEntityScreenProjector;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySeparator;
+import com.nuparu.sevendaystomine.tileentity.TileEntityShield;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySirene;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySleepingBag;
 import com.nuparu.sevendaystomine.tileentity.TileEntitySolarPanel;
@@ -126,6 +130,8 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -320,6 +326,7 @@ public class CommonProxy {
 		registerTileEntity(TileEntityCalendar.class, "calendar");
 		registerTileEntity(TileEntityFlamethrower.class, "flamethrower");
 		registerTileEntity(TileEntityMetalSpikes.class, "metal_spikes");
+		registerTileEntity(TileEntityShield.class, "riot_shield");
 		
 		
 		
@@ -364,6 +371,7 @@ public class CommonProxy {
 		registerEntity(EntityFragmentationGrenade.class, "fragmentation_grenade", 32, 30, true);
 		registerEntity(EntityMolotov.class, "molotov", 32, 30, true);
 		registerEntity(EntityZombieMiner.class, "zombie_miner", 64, 1, true, 0x574F45, 0x685452);
+		registerEntity(EntityFeralZombie.class, "feral_zombie", 64, 1, true, 0x5D623F, 0x6D3826);
 		/*
 		 * addEntitySpawn(EntityReanimatedCorpse.class, 1000, 1, 7,
 		 * EnumCreatureType.MONSTER, Utils.combine(BiomeDictionary.getBiomes(Type.LUSH),
@@ -413,10 +421,14 @@ public class CommonProxy {
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD)).stream().toArray(Biome[]::new));
 
 		addEntitySpawn(EntityBurntZombie.class, 20, 1, 2, EnumCreatureType.MONSTER,
-				Arrays.asList(ModBiomes.BURNT_FOREST, ModBiomes.WASTELAND).stream().toArray(Biome[]::new));
+				Arrays.asList(ModBiomes.BURNT_FOREST, ModBiomes.BURNT_JUNGLE, ModBiomes.WASTELAND).stream().toArray(Biome[]::new));
 		
 		addEntitySpawn(EntityZombieMiner.class, 30, 1, 1, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+		
+		addEntitySpawn(EntityFeralZombie.class, 1, 1, 1, EnumCreatureType.MONSTER,
+				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+		
 
 		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
@@ -462,6 +474,7 @@ public class CommonProxy {
 
 	public void registerLootTables() {
 		LootFunctionManager.registerFunction(new RandomQualityFunction.Serializer());
+		LootFunctionManager.registerFunction(new CityMapFunction.Serializer());
 
 		LootTableList.register(ModLootTables.AIRDROP);
 		LootTableList.register(ModLootTables.DRESSER);
@@ -490,6 +503,9 @@ public class CommonProxy {
 		LootTableList.register(ModLootTables.ZOMBIE_POLICEMAN);
 		LootTableList.register(ModLootTables.ZOMBIE_MINER);
 		LootTableList.register(ModLootTables.SUPPLY_CHEST);
+		LootTableList.register(ModLootTables.COFFIN);
+		LootTableList.register(ModLootTables.ZOMBIE_FERAL);
+		LootTableList.register(ModLootTables.ZOMBIE_SOLDIER);
 	}
 
 	public void openClientSideGui(int id, int x, int y, int z) {

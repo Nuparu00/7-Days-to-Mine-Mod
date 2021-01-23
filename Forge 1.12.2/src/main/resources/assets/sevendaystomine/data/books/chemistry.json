@@ -184,6 +184,14 @@
           "width": 94,
           "height": 36,
           "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
+        },
+        {
+          "x": 138,
+          "y": 33,
+          "z": 0,
+          "width": 94,
+          "height": 36,
+          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
         }
       ],
        "stacks": [
@@ -252,6 +260,31 @@
           "y": 123,
           "z": 0,
           "item": "sevendaystomine:bottledbeer"
+        },
+        {
+          "x": 139,
+          "y": 34,
+          "z": 0,
+          "item": "sevendaystomine:bottledwater"
+        },
+		{
+          "x": 157,
+          "y": 34,
+          "z": 0,
+          "item": "sevendaystomine:natrium_tank"
+        },
+        {
+          "x": 139,
+          "y": 52,
+          "z": 0,
+          "item": "sevendaystomine:chlorine_tank"
+        }
+        ,
+		{
+          "x": 211,
+          "y": 43,
+          "z": 0,
+          "item": "sevendaystomine:salt"
         }
         ]
     },

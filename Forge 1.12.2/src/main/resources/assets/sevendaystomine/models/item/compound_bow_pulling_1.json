@@ -1,0 +1,6 @@
+{
+    "parent": "sevendaystomine:item/compound_bow",
+    "textures": {
+        "layer0": "sevendaystomine:items/compound_bow_pulling_1"
+    }
+}

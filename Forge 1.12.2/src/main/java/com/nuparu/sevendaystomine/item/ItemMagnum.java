@@ -13,7 +13,7 @@ public class ItemMagnum extends ItemGun {
 		super();
 		this.setMaxAmmo(6);
 		this.setFullDamage(50F);
-		this.setSpeed(18f);
+		this.setSpeed(15f);
 		this.setRecoil(2.76f);
 		this.setCounterDef(0);
 		this.setCross(20);
@@ -23,7 +23,7 @@ public class ItemMagnum extends ItemGun {
 		this.setType(EnumGun.PISTOL);
 		this.setLength(EnumLength.SHORT);
 		this.setWield(EnumWield.DUAL);
-		this.setAimPosition(-0.222, 0,-0.25);
+		this.setAimPosition(-0.229, 0.026,-0.25);
 	}
 
 	public Item getReloadItem(ItemStack stack) {

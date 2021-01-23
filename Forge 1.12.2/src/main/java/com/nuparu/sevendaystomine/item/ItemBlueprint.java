@@ -5,7 +5,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -23,5 +26,9 @@ public class ItemBlueprint extends ItemRecipeBook {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(SevenDaysToMine.proxy.localize(this.getRegistryName().getResourcePath() + ".title"));
+		if(!GuiScreen.isShiftKeyDown()) return;
+		if(Minecraft.getMinecraft().player == null) return;
+		boolean known = CapabilityHelper.getExtendedPlayer(Minecraft.getMinecraft().player).hasRecipe(getRecipe());
+		tooltip.add(known ? TextFormatting.GREEN +  SevenDaysToMine.proxy.localize("stat.known.name") : TextFormatting.RED + SevenDaysToMine.proxy.localize("stat.unknown.name"));
 	}
 }

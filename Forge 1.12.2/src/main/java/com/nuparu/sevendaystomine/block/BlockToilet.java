@@ -1,9 +1,13 @@
 package com.nuparu.sevendaystomine.block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.item.ItemBattery;
+import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.tileentity.TileEntityToilet;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -15,19 +19,23 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockToilet extends BlockTileProvider<TileEntityToilet> {
+public class BlockToilet extends BlockTileProvider<TileEntityToilet> implements ISalvageable {
 
 	public BlockToilet() {
 		super(Material.IRON);
@@ -152,5 +160,25 @@ public class BlockToilet extends BlockTileProvider<TileEntityToilet> {
     {
         return new BlockStateContainer(this, new IProperty[] {BlockHorizontalBase.FACING});
     }
+    
+	@Override
+	public List<ItemStack> getItems(World world, BlockPos pos, IBlockState oldState, EntityPlayer player) {
+		List<ItemStack> items = new ArrayList<ItemStack>();
+		items.add(new ItemStack(ModItems.IRON_PIPE,1+world.rand.nextInt(2)));
+		items.add(new ItemStack(ModItems.IRON_SCRAP,1+world.rand.nextInt(2)));
+		
+		return items;
+	}
+
+	@Override
+	public SoundEvent getSound() {
+		return SoundEvents.BLOCK_ANVIL_LAND;
+	}
+
+	@Override
+	public void onSalvage(World world, BlockPos pos, IBlockState oldState) {
+		world.destroyBlock(pos, false);
+	}
+
 
 }

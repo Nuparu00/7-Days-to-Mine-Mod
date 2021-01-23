@@ -16,8 +16,6 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 
 public class CapabilityHandler {
 
-	public static final ResourceLocation LOCKED_RECIPE_CAP = new ResourceLocation(SevenDaysToMine.MODID,
-			"locked_recipe");
 	public static final ResourceLocation EXTENDED_PLAYER_CAP = new ResourceLocation(SevenDaysToMine.MODID,
 			"extended_player");
 	public static final ResourceLocation EXTENDED_INV_CAP = new ResourceLocation(SevenDaysToMine.MODID, "extended_inv");
@@ -29,7 +27,6 @@ public class CapabilityHandler {
 		if (!(event.getObject() instanceof EntityPlayer))
 			return;
 		EntityPlayer player = (EntityPlayer) event.getObject();
-		event.addCapability(LOCKED_RECIPE_CAP, new LockedRecipeProvider());
 		event.addCapability(EXTENDED_PLAYER_CAP, new ExtendedPlayerProvider().setOwner(player));
 		event.addCapability(EXTENDED_INV_CAP, new ExtendedInventoryProvider(3));
 	}
@@ -42,10 +39,6 @@ public class CapabilityHandler {
 	@SubscribeEvent
 	public void onPlayerClone(PlayerEvent.Clone event) {
 		EntityPlayer player = event.getEntityPlayer();
-		// LOCKED RECIPE
-		ILockedRecipe recipe = player.getCapability(LockedRecipeProvider.LOCKED_RECIPE_CAP, null);
-		ILockedRecipe oldRecipe = event.getOriginal().getCapability(LockedRecipeProvider.LOCKED_RECIPE_CAP, null);
-		recipe.copy(oldRecipe);
 		// EXTENDED PLAYER
 		IExtendedPlayer extendedPlayer = CapabilityHelper.getExtendedPlayer(player);
 		IExtendedPlayer oldExtendedPlayer = CapabilityHelper.getExtendedPlayer(event.getOriginal());

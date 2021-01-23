@@ -59,7 +59,7 @@ public class ItemFragmentationGrenade extends Item {
 
 			if (!worldIn.isRemote) {
 				EntityFragmentationGrenade grenade = new EntityFragmentationGrenade(worldIn, player);
-				grenade.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.3f*f , 0.5f);
+				grenade.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1f*f , 0.5f);
 				worldIn.spawnEntity(grenade);
 			}
 

@@ -1,7 +1,7 @@
 {
    "display":{
       "icon":{
-         "item":"minecraft:bow"
+         "item":"sevendaystomine:crude_bow"
       },
       "title":{
          "translate":"advancements.bow.title"
@@ -20,7 +20,7 @@
          "conditions":{
             "items":[
                {
-                  "item":"minecraft:bow"
+                  "item":"sevendaystomine:crude_bow"
                }
             ]
          }

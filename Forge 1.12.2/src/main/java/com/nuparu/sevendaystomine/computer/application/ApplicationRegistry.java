@@ -48,6 +48,7 @@ public class ApplicationRegistry {
 		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/cctv.png"),"cctv"),"cctv");
 		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/explorer.png"),"explorer"),"explorer");
 		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/transit.png"),"transit"),"transit");
+		registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/epidemic.png"),"epidemic"),"epidemic");
 		//registerApp(new Application(new ResourceLocation(SevenDaysToMine.MODID,"textures/apps/maps.png"),"maps"),"maps");
 	}
 }

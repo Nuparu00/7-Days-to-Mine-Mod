@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.world.gen.city.building;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockBookshelfEnhanced;
@@ -76,7 +77,10 @@ public class BuildingAirplane extends Building{
 		this.pedestalState = null;
 	}
 
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	@Override
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
+		System.out.println("AIRPLANE " + pos);
+
 		if (!world.isRemote) {
 
 			WorldServer worldserver = (WorldServer) world;
@@ -89,7 +93,6 @@ public class BuildingAirplane extends Building{
 			}
 
 			Rotation rot = Utils.facingToRotation(facing);
-			world.setBlockState(pos, Blocks.BEDROCK.getDefaultState());
 			pos = pos.up(yOffset).offset(facing,42).offset(facing.rotateY(),8);
 			
 

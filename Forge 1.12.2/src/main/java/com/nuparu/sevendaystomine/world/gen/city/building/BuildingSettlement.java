@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.world.gen.city.building;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
@@ -58,7 +59,7 @@ public class BuildingSettlement extends Building {
 	}
 
 	@Override
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
 		if (!world.isRemote) {
 			WorldServer worldserver = (WorldServer) world;
 			MinecraftServer minecraftserver = world.getMinecraftServer();

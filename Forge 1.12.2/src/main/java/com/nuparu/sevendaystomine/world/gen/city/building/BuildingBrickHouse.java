@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.world.gen.city.building;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import com.nuparu.sevendaystomine.block.BlockBackpack;
@@ -60,7 +61,7 @@ public class BuildingBrickHouse extends Building {
 	}
 
 	@Override
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
 		BlockPlanks.EnumType variant = BlockPlanks.EnumType.values()[world.rand
 				.nextInt(BlockPlanks.EnumType.values().length)];
 		if (!world.isRemote) {

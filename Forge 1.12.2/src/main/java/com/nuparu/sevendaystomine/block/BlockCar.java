@@ -1,10 +1,15 @@
 package com.nuparu.sevendaystomine.block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.init.ModLootTables;
+import com.nuparu.sevendaystomine.item.ItemBattery;
 import com.nuparu.sevendaystomine.item.ItemBlockCar;
+import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCar;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCarMaster;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCarSlave;
@@ -24,10 +29,12 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -35,14 +42,16 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
+public abstract class BlockCar extends BlockTileProvider<TileEntityCar> implements ISalvageable {
 
 	public static final PropertyInteger PIECE = PropertyInteger.create("piece", 0, 16);
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
@@ -78,12 +87,11 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
 	}
-	
+
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(Blocks.AIR);
-    }
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Item.getItemFromBlock(Blocks.AIR);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
@@ -153,13 +161,14 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 		}
 		if (state.getValue(MASTER)) {
 			EnumFacing facing = state.getValue(FACING);
-			generate(worldIn,pos,facing,false,masterTE);
+			generate(worldIn, pos, facing, false, masterTE);
 
 		}
 	}
-	
-	public void generate(World worldIn, BlockPos pos,EnumFacing facing, boolean placeMaster, TileEntityCarMaster masterTE) {
-		if(placeMaster) {
+
+	public void generate(World worldIn, BlockPos pos, EnumFacing facing, boolean placeMaster,
+			TileEntityCarMaster masterTE) {
+		if (placeMaster) {
 			IBlockState state = getDefaultState().withProperty(FACING, facing).withProperty(MASTER, true);
 			worldIn.setBlockState(pos, state);
 			TileEntity TE = worldIn.getTileEntity(pos);
@@ -181,7 +190,7 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 					BlockPos pos2 = pos.offset(facing.rotateY(), width - Math.round(shape2d.length / 2) + 1)
 							.offset(facing, length - Math.round(shape1d.length / 2) - 1).up(height);
 					if (pos2 == pos) {
-							continue;
+						continue;
 					}
 					IBlockState state2 = getDefaultState().withProperty(FACING, facing).withProperty(MASTER, false);
 					worldIn.setBlockState(pos2, state2);
@@ -196,26 +205,27 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 			}
 		}
 	}
-	
+
 	public boolean canBePlaced(World world, BlockPos pos, EnumFacing facing) {
-        for(int height = 0; height < shape.length; height++) {
+		for (int height = 0; height < shape.length; height++) {
 			byte[][] shape2d = shape[height];
-			for(int length = 0; length < shape2d.length; length++) {
-				byte[] shape1d = shape2d[length]; 
-				for(int width = 0; width < shape1d.length; width++) {
-					byte point = shape1d[width]; 
-					if(point == 0) continue;
+			for (int length = 0; length < shape2d.length; length++) {
+				byte[] shape1d = shape2d[length];
+				for (int width = 0; width < shape1d.length; width++) {
+					byte point = shape1d[width];
+					if (point == 0)
+						continue;
 					BlockPos pos2 = pos.offset(facing.rotateY(), width - Math.round(shape2d.length / 2) + 1)
 							.offset(facing, length - Math.round(shape1d.length / 2) - 1).up(height);
 					IBlockState state = world.getBlockState(pos2);
 					Block block2 = state.getBlock();
-					if(!block2.isReplaceable(world, pos2)) {
+					if (!block2.isReplaceable(world, pos2)) {
 						return false;
 					}
 				}
 			}
 		}
-        return true;
+		return true;
 	}
 
 	@Override
@@ -290,6 +300,40 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 		super.breakBlock(worldIn, pos, state);
 	}
 
+	@Override
+	public List<ItemStack> getItems(World world, BlockPos pos, IBlockState oldState, EntityPlayer player) {
+		List<ItemStack> items = new ArrayList<ItemStack>();
+		if (world.rand.nextDouble() < 0.05) {
+			ItemStack engine = new ItemStack(ModItems.SMALL_ENGINE);
+			ItemQuality.setQualityForPlayer(engine, player);
+			items.add(engine);
+		}
+		if (world.rand.nextDouble() < 0.05) {
+			ItemStack battery = new ItemStack(ModItems.CAR_BATTERY);
+			ItemQuality.setQualityForPlayer(battery, player);
+			if (battery.getTagCompound() == null) {
+				battery.setTagCompound(new NBTTagCompound());
+			}
+			NBTTagCompound nbt = battery.getTagCompound();
+			nbt.setInteger("voltage", MathHelper.getInt(world.rand, ItemBattery.MAX_VOLTAGE/2, ItemBattery.MAX_VOLTAGE));
+			items.add(battery);
+		}
+		items.add(new ItemStack(ModItems.IRON_PIPE,1+world.rand.nextInt(5)));
+		items.add(new ItemStack(ModItems.IRON_SCRAP,1+world.rand.nextInt(5)));
+		
+		return items;
+	}
+
+	@Override
+	public SoundEvent getSound() {
+		return SoundEvents.BLOCK_ANVIL_LAND;
+	}
+
+	@Override
+	public void onSalvage(World world, BlockPos pos, IBlockState oldState) {
+		world.destroyBlock(pos, false);
+	}
+
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { FACING, MASTER, PIECE });
 	}
@@ -314,7 +358,6 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> {
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
 
 	@Override
 	@SideOnly(Side.CLIENT)

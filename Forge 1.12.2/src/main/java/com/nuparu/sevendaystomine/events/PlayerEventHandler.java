@@ -34,12 +34,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
@@ -56,6 +58,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -347,6 +350,18 @@ public class PlayerEventHandler {
 		if (stack.getItem() instanceof IQuality) {
 			if (!event.player.isCreative()) {
 				Utils.consumeXp(event.player, MathHelper.floor(event.player.experienceTotal * (event.player.world.rand.nextDouble()*0.04+0.01)));
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public  void onEatenEvent(LivingEntityUseItemEvent.Finish event) {
+		if(event.getEntityLiving() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+			ItemStack stack = event.getItem();
+			if(stack.getItem() instanceof ItemFood && stack.getItem().getMaxDamage() > 0 && (stack.getMaxDamage()-stack.getItemDamage()) > 1) {
+				stack.damageItem(1, player);
+				event.setResultStack(stack);
 			}
 		}
 	}

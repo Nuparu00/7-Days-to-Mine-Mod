@@ -21,7 +21,7 @@ public class BootingProcess extends TickingProcess {
 	@Override
 	public void tick() {
 		super.tick();
-		if (existedFor >= BOOT_TIME) {
+		if (existedFor >= getBootTime()) {
 			computerTE.onBootFinished();
 			computerTE.killProcess(this);
 		}
@@ -30,12 +30,11 @@ public class BootingProcess extends TickingProcess {
 
 	@Override
 	public void render(float partialTicks) {
-		float frame = existedFor / 10;
 
 		Animation anim = getLoadingAnimation(computerTE);
 		if (anim == null)
 			return;
-		ResourceLocation res = anim.getFrame((int) Math.round(frame));
+		ResourceLocation res = anim.getFrame((int) Math.round(getFrame()));
 		if (res != null) {
 			GlStateManager.pushMatrix();
 			GL11.glEnable(GL11.GL_BLEND);
@@ -59,7 +58,23 @@ public class BootingProcess extends TickingProcess {
 			return Animations.WIN10_LOADING;
 		case WIN7:
 			return Animations.WIN7_LOADING;
+		case WIN8:
+			return Animations.WIN8_LOADING;
+		case WINXP:
+			return Animations.WINXP_LOADING;
+		case MAC:
+			return Animations.MAC_LOADING;
+		case LINUX:
+			return Animations.LINUX_LOADING;
 		}
+	}
+	
+	public long getBootTime() {
+		return this.computerTE.getSystem() == TileEntityComputer.EnumSystem.MAC ? 320 : 300;
+	}
+	
+	public float getFrame() {
+		return existedFor / (this.computerTE.getSystem() == TileEntityComputer.EnumSystem.MAC ? 20 : 10);
 	}
 
 }

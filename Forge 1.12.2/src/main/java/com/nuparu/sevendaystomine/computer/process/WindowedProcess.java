@@ -13,6 +13,7 @@ import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.KillProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
+import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
@@ -254,6 +255,11 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 			this.height = Screen.screen.ySize * 0.9;
 			this.x = Screen.screen.localXToGlobal(0);
 			this.y = Screen.screen.localYToGlobal(0);
+			
+			if(this.computerTE.getSystem() == EnumSystem.MAC && y < Screen.screen.localYToGlobal(0)+screen.ySize*0.05) {
+				y = Screen.screen.localYToGlobal(0)+screen.ySize*0.05;
+			}
+			
 			sync("x", "y", "width", "height");
 		}
 		if (close == null)
@@ -323,12 +329,10 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 					|| mouseY > Screen.screen.getRelativeY(0) + Screen.screen.ySize + 20) {
 				x = old_x;
 				y = old_y;
-			} else {
-				sync("x", "y", "isDragged");
 			}
 			setOffsetX(0);
 			setOffsetY(0);
-			sync("offsetX", "offsetY");
+			sync();
 			onDragReleased();
 			initWindow();
 		}
@@ -380,6 +384,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 				isFocused = false;
 				super.mouseClicked(mouseX, mouseY, mouseButton);
 			}
+			System.out.println("F in the chat boiz");
 			tryToPutOnTop();
 		} else {
 			for (IScreenElement element : elements) {
@@ -388,7 +393,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 			isFocused = false;
 		}
 		if (focusPrev != isFocused) {
-			sync("offsetX", "offsetY", "old_x", "old_y", "isFocused");
+			sync();
 		}
 	}
 
@@ -542,6 +547,10 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 			maxRelativeZ = i;
 		}
 		return i;
+	}
+	
+	public boolean isMouseInside() {
+		return Utils.isInArea(screen.mouseX, screen.mouseY, x, y + (Screen.screen.ySize * title_bar_height), width, height);
 	}
 
 }

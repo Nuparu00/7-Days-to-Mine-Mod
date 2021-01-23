@@ -1,8 +1,5 @@
 package com.nuparu.sevendaystomine;
 
-import java.util.HashMap;
-import java.util.List;
-
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.block.repair.RepairManager;
 import com.nuparu.sevendaystomine.capability.CapabilityHandler;
@@ -15,11 +12,10 @@ import com.nuparu.sevendaystomine.capability.ExtendedPlayerStorage;
 import com.nuparu.sevendaystomine.capability.IExtendedChunk;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
-import com.nuparu.sevendaystomine.capability.ILockedRecipe;
-import com.nuparu.sevendaystomine.capability.LockedRecipe;
-import com.nuparu.sevendaystomine.capability.LockedRecipeStorage;
 import com.nuparu.sevendaystomine.client.renderer.RenderGlobalEnhanced;
+import com.nuparu.sevendaystomine.command.CommandAStar;
 import com.nuparu.sevendaystomine.command.CommandAirdrop;
+import com.nuparu.sevendaystomine.command.CommandAirport;
 import com.nuparu.sevendaystomine.command.CommandGenerateCity;
 import com.nuparu.sevendaystomine.command.CommandGetBlockBreak;
 import com.nuparu.sevendaystomine.command.CommandInfect;
@@ -29,6 +25,7 @@ import com.nuparu.sevendaystomine.command.CommandPlacePrefab;
 import com.nuparu.sevendaystomine.command.CommandSavePrefab;
 import com.nuparu.sevendaystomine.command.CommandSetBlockBreak;
 import com.nuparu.sevendaystomine.crafting.RecipeManager;
+import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.events.ClientEventHandler;
 import com.nuparu.sevendaystomine.events.LivingEventHandler;
 import com.nuparu.sevendaystomine.events.PlayerEventHandler;
@@ -38,16 +35,14 @@ import com.nuparu.sevendaystomine.events.WorldEventHandler;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModFluids;
 import com.nuparu.sevendaystomine.init.ModItems;
-import com.nuparu.sevendaystomine.inventory.ContainerPlayerExtended;
-import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.proxy.CommonProxy;
 import com.nuparu.sevendaystomine.util.GuiHandler;
 import com.nuparu.sevendaystomine.util.VanillaManager;
 import com.nuparu.sevendaystomine.world.MiscSavedData;
 import com.nuparu.sevendaystomine.world.WorldTypeOverworld;
+import com.nuparu.sevendaystomine.world.WorldTypeWasteland;
 import com.nuparu.sevendaystomine.world.gen.BlueberryWorldGenerator;
-import com.nuparu.sevendaystomine.world.gen.CityWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.CornWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.GoldenrodWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.OreWorldGenerator;
@@ -56,25 +51,20 @@ import com.nuparu.sevendaystomine.world.gen.SmallFeatureWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.StructureGenerator;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
 import com.nuparu.sevendaystomine.world.gen.city.CitySavedData;
+import com.nuparu.sevendaystomine.world.gen.structure.MapGenWastelandScatteredFeature;
 import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
@@ -95,7 +85,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(modid = SevenDaysToMine.MODID, version = SevenDaysToMine.VERSION, useMetadata = true)
 public class SevenDaysToMine {
 	public static final String MODID = "sevendaystomine";
-	public static final String VERSION = "Beta 1.0 Pre-release 2.3.9";
+	public static final String VERSION = "Beta 1.0 Pre-release 2.5.2";
 
 	static final String CLIENT_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.ClientProxy";
 	static final String SERVER_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.CommonProxy";
@@ -114,6 +104,7 @@ public class SevenDaysToMine {
 	public static MiscSavedData miscSavedData;
 
 	public static final WorldType DEFAULT_WORLD = (new WorldTypeOverworld("SEVENDAYS"));
+	public static final WorldType WASTELAND = (new WorldTypeWasteland("WASTELAND"));
 
 	static {
 		// DataSerializers.registerSerializer(Utils.DIALOGUES);
@@ -176,12 +167,12 @@ public class SevenDaysToMine {
 		}
 	};
 
-	public static CreativeTabs TAB_BOOKS = new CreativeTabs(MODID + ".books") {
+	public static CreativeTabs TAB_BOOKS = (new CreativeTabs(MODID + ".books") {
 		@SideOnly(Side.CLIENT)
 		public ItemStack getTabIconItem() {
 			return new ItemStack(ModItems.BOOK_FORGING);
 		}
-	};
+	}).setRelevantEnchantmentTypes(ModEnchantments.GUNS);
 
 	public static final Item.ToolMaterial STONE_TOOLS = EnumHelper.addToolMaterial("stone_tools", 1, 100, 3.5f, 5, 2);
 	public static final Item.ToolMaterial BONE_TOOLS = EnumHelper.addToolMaterial("bone_tools", 1, 100, 2f, 6, 2);
@@ -195,8 +186,8 @@ public class SevenDaysToMine {
 			2);
 	public static final Item.ToolMaterial SCRAP_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 125, 4.2f, 18, 2);
 	public static final Item.ToolMaterial BRONZE_TOOLS = EnumHelper.addToolMaterial("bronze_tools", 1, 250, 6f, 20, 2);
-	public static final Item.ToolMaterial IRON_TOOLS = EnumHelper.addToolMaterial("iron_tools", 1, 300, 8.2f, 24, 2);
-	public static final Item.ToolMaterial STEEL_TOOLS = EnumHelper.addToolMaterial("steel_tools", 1, 40, 11f, 28, 2);
+	public static final Item.ToolMaterial IRON_TOOLS = EnumHelper.addToolMaterial("iron_tools", 2, 300, 8.2f, 24, 2);
+	public static final Item.ToolMaterial STEEL_TOOLS = EnumHelper.addToolMaterial("steel_tools", 2, 40, 11f, 28, 2);
 	public static final Item.ToolMaterial ARMY_TOOLS = EnumHelper.addToolMaterial("army_tools", 1, 350, 2f, 26, 2);
 	public static final Item.ToolMaterial MACHETE = EnumHelper.addToolMaterial("machete", 1, 200, 2f, 28, 2);
 	public static final Item.ToolMaterial SLEDGEHAMMER = EnumHelper.addToolMaterial("sledgehammer", 1, 40, 11f, 30, 2);
@@ -217,6 +208,8 @@ public class SevenDaysToMine {
 
 	public static final ItemArmor.ArmorMaterial SCRAP_ARMOR = EnumHelper.addArmorMaterial("scrap",
 			"sevendaystomine:scrap", 10, new int[] { 2, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+	public static final ItemArmor.ArmorMaterial MILITARY_ARMOR = EnumHelper.addArmorMaterial("military",
+			"sevendaystomine:military", 30, new int[] { 4, 4, 3, 3 }, 2, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 3);
 
 	public static final Block[] BLOCKS = new Block[] { ModBlocks.OAK_FRAME, ModBlocks.BIRCH_FRAME,
 			ModBlocks.SPRUCE_FRAME, ModBlocks.JUNGLE_FRAME, ModBlocks.ACACIA_FRAME, ModBlocks.DARKOAK_FRAME,
@@ -277,7 +270,7 @@ public class SevenDaysToMine {
 			ModBlocks.SIRENE, ModBlocks.STRUCTURE_STONE, ModBlocks.FAKE_ANVIL, ModBlocks.REDSTONE_LAMP_BROKEN,
 			ModBlocks.CALENDAR, ModBlocks.FLAMETHOWER, ModBlocks.METAL_SPIKES, ModBlocks.BOOKSHELF_SPRUCE,
 			ModBlocks.BOOKSHELF_BIRCH, ModBlocks.BOOKSHELF_JUNGLE, ModBlocks.BOOKSHELF_ACACIA,
-			ModBlocks.BOOKSHELF_DARK_OAK, ModBlocks.POLICE_CAR};
+			ModBlocks.BOOKSHELF_DARK_OAK, ModBlocks.POLICE_CAR };
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -340,7 +333,9 @@ public class SevenDaysToMine {
 			ModItems.SALT, ModItems.CHLORINE_TANK, ModItems.NATRIUM_TANK, ModItems.CHLORINE_GRENADE,
 			ModItems.IRON_HELMET, ModItems.IRON_CHESTPLATE, ModItems.IRON_LEGGINGS, ModItems.IRON_BOOTS,
 			ModItems.LEATHER_HELMET, ModItems.LEATHER_CHESTPLATE, ModItems.LEATHER_LEGGINGS, ModItems.LEATHER_BOOTS,
-			ModItems.FRAGMENTATION_GRENADE, ModItems.MOLOTOV };
+			ModItems.FRAGMENTATION_GRENADE, ModItems.MOLOTOV, ModItems.MILITARY_HELMET, ModItems.MILITARY_CHESTPLATE,
+			ModItems.MILITARY_LEGGINGS, ModItems.MILITARY_BOOTS, ModItems.RIOT_SHIELD, ModItems.CRUDE_BOW,
+			ModItems.COMPOUND_BOW, ModItems.MRE};
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
@@ -349,7 +344,6 @@ public class SevenDaysToMine {
 		// RegisterUtil.registerAll(event);
 		new RecipeManager().init();
 
-		CapabilityManager.INSTANCE.register(ILockedRecipe.class, new LockedRecipeStorage(), LockedRecipe.class);
 		CapabilityManager.INSTANCE.register(IExtendedPlayer.class, new ExtendedPlayerStorage(), ExtendedPlayer.class);
 		CapabilityManager.INSTANCE.register(IItemHandlerExtended.class, new ExtendedInventoryStorage(),
 				ExtendedInventory.class);
@@ -382,6 +376,8 @@ public class SevenDaysToMine {
 		GameRegistry.registerWorldGenerator(new GoldenrodWorldGenerator(), 18);
 		GameRegistry.registerWorldGenerator(new CornWorldGenerator(), 19);
 		GameRegistry.registerWorldGenerator(new BlueberryWorldGenerator(), 20);
+
+		MapGenStructureIO.registerStructure(MapGenWastelandScatteredFeature.Start.class, "wastelandScatteredFeature");
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		CityHelper.loadBuildings();
@@ -428,6 +424,8 @@ public class SevenDaysToMine {
 		event.registerServerCommand(new CommandPlaceLegacyPrefab());
 		event.registerServerCommand(new CommandAirdrop());
 		event.registerServerCommand(new CommandInfect());
+		event.registerServerCommand(new CommandAirport());
+		event.registerServerCommand(new CommandAStar());
 		event.registerServerCommand(new CommandLocateModded());
 
 		proxy.serverStarting(event);

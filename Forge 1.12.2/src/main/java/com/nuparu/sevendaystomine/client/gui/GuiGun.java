@@ -132,13 +132,13 @@ public class GuiGun {
 						GlStateManager.DestFactor.ZERO);
 				GlStateManager.enableAlpha();
 				// LEFT
-				mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 - (finalPos)), posY - 2, 0, 14, 13, 4);
+				mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 - (finalPos)), posY - 2, 0, 14, 13, 2);
 				// RIGHT
-				mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 + (finalPos)), posY - 2, 19, 14, 13, 4);
+				mc.ingameGUI.drawTexturedModalRect((int) (posX - 13 / 2 + (finalPos)), posY - 2, 19, 14, 13, 2);
 				// TOP
-				mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 - (finalPos)), 14, 0, 4, 13);
+				mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 - (finalPos)), 14, 0, 2, 13);
 				// DOVVN
-				mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 + (finalPos)), 14, 19, 4, 13);
+				mc.ingameGUI.drawTexturedModalRect(posX - 2, (int) (posY - 13 / 2 + (finalPos)), 14, 19, 2, 13);
 				GlStateManager.disableAlpha();
 				GlStateManager.disableBlend();
 				GlStateManager.popMatrix();

@@ -49,17 +49,6 @@
                 },
                 {
                     "type": "item",
-                    "weight": 3,
-                    "name": "sevendaystomine:jarofhoney",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": 1
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
                     "weight": 1,
                     "name": "minecraft:cake"
                 },

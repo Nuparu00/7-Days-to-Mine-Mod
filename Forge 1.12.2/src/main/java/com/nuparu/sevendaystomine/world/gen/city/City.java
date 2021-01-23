@@ -18,10 +18,12 @@ import net.minecraft.init.Biomes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 
 public class City {
 
@@ -39,7 +41,7 @@ public class City {
 	private boolean allStreetsFound = false;
 	protected List<String> unclaimedStreetNames = null;
 
-	protected Random rand;
+	public Random rand;
 
 	public String name = "Genericville";
 	public EnumCityType type = EnumCityType.CITY;
@@ -54,9 +56,9 @@ public class City {
 		this.start = start;
 		this.type = type;
 		this.rand =rand;
-		int height = Utils.getTopSolidGroundHeight(new BlockPos(this.start.getX() + 8, 0, this.start.getZ() + 8),
+		int height = Utils.getTopSolidGroundHeight(new BlockPos(this.start.getX(), 0, this.start.getZ()),
 				world);
-		this.start = new BlockPos(this.start.getX() + 8, height, this.start.getZ() + 8);
+		this.start = new BlockPos(this.start.getX(), height, this.start.getZ());
 
 		this.world = world;
 		this.unclaimedStreetNames = new ArrayList<String>(CityHelper.streets);
@@ -65,11 +67,18 @@ public class City {
 		CitySavedData.get(world).addCity(start);
 		roadsLimit = Math.round(roadsLimit * type.populationMultiplier);
 	}
+	
+	public static City foundCity(World world, ChunkPos pos, Random rand) {
+		return foundCity(world,new BlockPos(pos.x * 16  + 8,0,pos.z * 16  + 8), rand);
+	}
 
 	public static City foundCity(World world, BlockPos pos) {
+		return foundCity(world,pos,new Random(world.getSeed() + (pos.getX() / 16) - (pos.getZ() / 16)));
+	}
+	
+	public static City foundCity(World world, BlockPos pos,Random rand) {
 		Biome biome = world.getBiome(pos);
 		EnumCityType type = EnumCityType.TOWN;
-		Random rand = new Random(world.getSeed() + (pos.getX() / 16) - (pos.getZ() / 16));
 		if (biome.getHeightVariation() <= 0.15 && rand.nextInt(3) == 0) {
 			type = EnumCityType.VILLAGE;
 		} 
@@ -107,8 +116,7 @@ public class City {
 			if (getStreetsCount() < this.roadsLimit) {
 				BlockPos blockpos = bp_start.offset(facing, type.roadLength - 1);
 				Biome biome = world.getBiome(blockpos);
-				if (biome == Biomes.DEEP_OCEAN || biome == Biomes.FROZEN_OCEAN || biome == Biomes.OCEAN)
-					continue;
+				if (BiomeDictionary.hasType(biome,BiomeDictionary.Type.OCEAN)) continue;
 				int height = Utils.getTopSolidGroundHeight(blockpos, world);
 				int deltaHeight = bp_start.getY() - height;
 				if (deltaHeight <= Street.MAX_SLOPE) {

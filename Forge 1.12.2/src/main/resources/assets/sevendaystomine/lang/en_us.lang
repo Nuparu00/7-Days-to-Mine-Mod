@@ -10,6 +10,8 @@ stat.quality.fine.name=Fine
 stat.quality.great.name=Great
 stat.ammo.name=Ammo: 
 stat.capacity.name=Capacity: 
+stat.knwon.name=Known
+stat.unknown.name=Unknown
 
 #Materials
 material.none=None
@@ -122,6 +124,10 @@ computer.app.explorer=MineNet Explorer 11
 computer.app.desc=Recommended MineNet Explorer
 computer.app.transit=Transit IDE
 computer.app.transit.desc=IDE for Ni developers
+computer.mac.create_account=Create Your Computer Account
+computer.mac.create_account_desc=Enter a name and password to create your account.
+computer.epidemic.new_game=New Game
+computer.epidemic.start=Start
 
 #Status Effects
 
@@ -143,6 +149,10 @@ enchantment.fast_reload=Fast Reload
 enchantment.marksman=Marksman
 enchantment.explosive=Explosive
 enchantment.sparking=Sparking
+enchantment.big_mag=Big Mag
+enchantment.multishot=Multishot
+enchantment.small_mag=Curse of Emptiness
+enchantment.strabismus=Curse of Cross Eyeing
 
 #GUI
 
@@ -199,6 +209,7 @@ horde.wolf.name=Wolf Horde
 
 generator.SEVENDAYS=Default (7D2M)
 generator.default=Default (Vanilla)
+generator.WASTELAND=Wasteland (7D2M)
 
 book_forging.title=Forge Ahead
 book_forging.desc=Blacksmithing, Metalworks and more
@@ -686,6 +697,16 @@ item.leather_leggings.name=Leather Pants
 item.leather_boots.name=Leather Boots
 item.fragmentation_grenade.name=Fragmentation Grenade
 item.molotov.name=Molotov
+item.military_helmet.name=Military Helmet
+item.military_chestplate.name=Military Chestplate
+item.military_leggings.name=Military Leggings
+item.military_boots.name=Military Boots
+item.riot_shield.name=Riot Shield
+item.crude_bow.name=Crude Bow
+item.compound_bow.name=Compound Bow
+item.mre.name=MRE
+
+filled_map.city=City Map
 
 #Blocks
 
@@ -988,29 +1009,29 @@ key.accelerate.desc=Vehicle Acceleration
 advancements.survival.root.title=Survival
 advancements.survival.root.description=Survival in the ruins of the old world
 advancements.smallstone.title=Rock by rock
-advancements.smallstone.description=Collect your first rock!
+advancements.smallstone.description=Collect your first rock
 advancements.stoneaxe.title=It's sharp
-advancements.stoneaxe.description=Use rock, fiber and sticks to make an axe!
+advancements.stoneaxe.description=Use rock, fiber and sticks to make an axe
 advancements.stoneshovel.title=Ace of spades
-advancements.stoneshovel.description=Use rock, fiber and sticks to make a shovel!
+advancements.stoneshovel.description=Use rock, fiber and sticks to make a shovel
 advancements.crafting_table.title=Woodworking
-advancements.crafting_table.description=Make a crafting table out of a wood!
-advancements.bow.title=Archery
-advancements.bow.description=Make a bow and an arrow!
+advancements.crafting_table.description=Make a crafting table out of a wood
+advancements.bow.title=Traditional Archery
+advancements.bow.description=Craft a Crude Bow and an Arrow!
 advancements.pistol.title=Small Arms
-advancements.pistol.description=Get a pistol!
+advancements.pistol.description=Get a pistol
 advancements.rifle.title=Military Issue
-advancements.rifle.description=Get a rifle!
+advancements.rifle.description=Get a rifle
 advancements.woodenclub.title=Right off the bat
-advancements.woodenclub.description=Make a Wooden Club out of a wood!
+advancements.woodenclub.description=Make a Wooden Club out of a wood
 advancements.spikedclub.title=Illegal Modification
-advancements.spikedclub.description=Make a Spiked Club!
+advancements.spikedclub.description=Make a Spiked Club
 advancements.wooden_frame.title=Construction I
-advancements.wooden_frame.description=Craft a wooden frame!
+advancements.wooden_frame.description=Craft a Wooden Frame
 advancements.reinforcedconcrete.title=Construction II
 advancements.reinforcedconcrete.description=Craft a reinforced concrete!
 advancements.campfire.title=Only YOU Can Start Forest Fires
-advancements.campfire.description=Craft a campfire!
+advancements.campfire.description=Craft a Campfire!
 advancements.forge.title=Metallurgy I
 advancements.forge.description=Craft a forge!
 advancements.sleeping_bag.title=Rolling Bed
@@ -1024,7 +1045,7 @@ advancements.months.description=Survive the 28th Bloodmoon
 advancements.automation.title=Automation
 advancements.automation.description=Craft a turret
 advancements.different.title=I'm Different
-advancements.different.description=I'm Different
+advancements.different.description=It just is not like other turrets
 advancements.cured.title=-1 Days to Die
 advancements.cured.description=Cure Stage III infection
 advancements.workbench.title=Metalworking
@@ -1034,11 +1055,22 @@ advancements.shotgun.description=Craft a Workbench.
 advancements.policeman.title=Police Brutality
 advancements.policeman.description=Kill a Zombie Policeman in close range combat
 advancements.wired.title=Wired
+advancements.wired.description=Craft a wire
 advancements.chemistry_station.title=Back to School
+advancements.chemistry_station.description=Craft a Chemistry Station
 advancements.steelworking.title=Acquire Better Hardware
 advancements.steelworking.description=Get a steel ingot
 advancements.steel_pickaxe.title=Pick of Steel
 advancements.steel_pickaxe.description=Craft a steel pickaxe
+advancements.dropbox.title=Dropbox
+advancements.dropbox.description=Loot an airdrop
+advancements.compound_bow.title=Modern Archery
+advancements.compound_bow.description=Craft a Compound Bow
+advancements.auger.title=It isn't a Pick
+advancements.auger.description=But you can get maple syrup with it
+advancements.chainsaw.title=Chained Saw
+advancements.chainsaw.description=It can't hurt anyone this way
+
 #Entities
 entity.reanimated_corpse.name=Reanimated Corpse
 entity.burnt_zombie.name=Burnt Zombie
@@ -1069,6 +1101,7 @@ entity.projectile_vomit.name=Projectile Vomit
 entity.zombie_wolf.name=Zombie Wolf
 entity.zombie_pig.name=Zombie Pig
 entity.zombie_miner.name=Zombie Miner
+entity.feral_zombie.name=Feral Zombie
 
 #Fluids
 fluid.gasoline=Gasoline

@@ -6,9 +6,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.computer.application.Application;
+import com.nuparu.sevendaystomine.computer.process.DesktopProcess;
 import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowsDesktopProcess;
+import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
@@ -45,14 +47,14 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 
 	protected double fontSize = 0.4;
 
-	public WindowsDesktopProcess process;
+	public DesktopProcess process;
 
 	public Application app;
 
 	private long lastClick = 0l;
 
-	public DesktopShortcut(double x, double y, double width, double height, Screen screen,
-			WindowsDesktopProcess process, Application app) {
+	public DesktopShortcut(double x, double y, double width, double height, Screen screen, DesktopProcess process,
+			Application app) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -124,7 +126,7 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 	public void render(float partialTicks) {
 		if (isDisabled() == false && isVisible() && app != null) {
 			GL11.glPushMatrix();
-			GlStateManager.color(1,1,1);
+			GlStateManager.color(1, 1, 1);
 			RenderUtils.drawTexturedRect(app.ICON, new ColorRGBA(1d, 1d, 1d), x + 2, y + 2, 0, 0, width - 4, height - 4,
 					width - 4, height - 4, 1, zLevel + 1);
 
@@ -136,15 +138,16 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 				GlStateManager.scale(fontSize, fontSize, 1);
 				GL11.glTranslated(0, (height * fontSize) / 2d, 0);
 			}
-			if(localizedName.length() > 16) {
-				localizedName = localizedName.subSequence(0, 16)+"...";
+			if (localizedName.length() > 16) {
+				localizedName = localizedName.subSequence(0, 16) + "...";
 			}
-			List<ITextComponent> l = GuiUtilRenderComponents.splitText(new TextComponentString(localizedName), (int) Math.floor(width*4),
-					Screen.mc.fontRenderer, true, true);
+			List<ITextComponent> l = GuiUtilRenderComponents.splitText(new TextComponentString(localizedName),
+					(int) Math.floor(width * 4), Screen.mc.fontRenderer, true, true);
 			for (int l1 = 0; l1 < l.size(); ++l1) {
 				ITextComponent textcompoenent = l.get(l1);
 
-				RenderUtils.drawCenteredString(textcompoenent.getFormattedText(), 0, l1 * Screen.mc.fontRenderer.FONT_HEIGHT, textColor, true);
+				RenderUtils.drawCenteredString(textcompoenent.getFormattedText(), 0,
+						l1 * Screen.mc.fontRenderer.FONT_HEIGHT, textColor, true);
 			}
 			GL11.glPopMatrix();
 
@@ -153,7 +156,7 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 		if (isHovered(screen.mouseX, screen.mouseY) && isDragged == false
 				&& WindowedProcess.isDesktopVisible(screen.mouseX, screen.mouseY, process.getTE())) {
 			GL11.glPushMatrix();
-			GlStateManager.color(1,1,1);
+			GlStateManager.color(1, 1, 1);
 			RenderUtils.drawColoredRect(new ColorRGBA(1d, 1d, 1d), screen.mouseX, screen.mouseY,
 					fontRenderer.getStringWidth(app.getLocalizedDesc()), 9, zLevel + 2);
 			GL11.glTranslatef(0, 0, zLevel + 3);
@@ -207,8 +210,14 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 				x = screen.getRelativeX(0) + Math.round((mouseX - screen.getRelativeX(0)) / width) * width;
 				y = screen.getRelativeY(0) + Math.round((mouseY - screen.getRelativeY(0)) / height) * height;
 				x = MathUtils.clamp(x, screen.getRelativeX(0), screen.getRelativeX(1) - width);
-				y = MathUtils.clamp(y, screen.getRelativeY(0),
-						screen.getRelativeY(1) - height - (screen.ySize * 0.1) - (10d * fontSize));
+
+				if (this.process.getTE().getSystem() == EnumSystem.MAC) {
+					y = MathUtils.clamp(y, screen.getRelativeY(0) - height + (process.getTaskbarHeight()) + (10d * fontSize),
+							screen.getRelativeY(1));
+				} else {
+					y = MathUtils.clamp(y, screen.getRelativeY(0),
+							screen.getRelativeY(1) - height - (process.getTaskbarHeight()) - (10d * fontSize));
+				}
 
 				double dX = Math.round((mouseX - screen.getRelativeX(0)) / width) * width;
 				double dY = Math.round((mouseY - screen.getRelativeY(0)) / height) * height;
@@ -231,11 +240,12 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 
 				boolean flag = true;
 				for (DesktopShortcut shortcut : process.shortcuts) {
-					if(shortcut == this) continue;
+					if (shortcut == this)
+						continue;
 					if (shortcut.getX() == dX && shortcut.getY() == dY) {
 						x = old_x;
 						y = old_y;
-						//flag = false;
+						// flag = false;
 						break;
 					}
 				}
@@ -255,14 +265,22 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 				isDragged = true;
 			}
 			x = MathUtils.clamp(mouseX - getOffsetX(), screen.getRelativeX(0), screen.getRelativeX(1) - width);
-			y = MathUtils.clamp(mouseY - getOffsetY(), screen.getRelativeY(0),
-					screen.getRelativeY(1) - height - (screen.ySize * 0.1) - (10d * fontSize));
+
+			if (this.process.getTE().getSystem() == EnumSystem.MAC) {
+				y = MathUtils.clamp(mouseY - getOffsetY(),
+						screen.getRelativeY(0) - height + (process.getTaskbarHeight()) + (10d * fontSize),
+						screen.getRelativeY(1));
+			} else {
+				y = MathUtils.clamp(mouseY - getOffsetY(), screen.getRelativeY(0),
+						screen.getRelativeY(1) - height - (process.getTaskbarHeight()) - (10d * fontSize));
+			}
 		}
 	}
 
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-		if (isHovered(mouseX, mouseY) && WindowedProcess.isDesktopVisible(screen.mouseX, screen.mouseY, process.getTE())) {
+		if (isHovered(mouseX, mouseY)
+				&& WindowedProcess.isDesktopVisible(screen.mouseX, screen.mouseY, process.getTE())) {
 			if (mouseButton == 0) {
 				isFocused = true;
 				old_x = x;
@@ -325,7 +343,7 @@ public class DesktopShortcut implements IDesktopElement, IDraggable {
 	public void open() {
 		process.tryToRunProcess(app.key);
 	}
-	
+
 	public void setFocus(boolean focus) {
 		this.isFocused = focus;
 	}

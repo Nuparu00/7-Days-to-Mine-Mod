@@ -21,8 +21,9 @@
       "data": 32767
     },
     "I": {
-      "item": "sevendaystomine:ironingot"
-    }
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+}
   },
   "result": {
     "item": "sevendaystomine:workbench"

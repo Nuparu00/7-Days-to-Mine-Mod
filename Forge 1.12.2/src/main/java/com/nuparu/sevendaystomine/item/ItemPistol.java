@@ -13,7 +13,7 @@ public class ItemPistol extends ItemGun {
 		super();
 		this.setMaxAmmo(15);
 		this.setFullDamage(30F);
-		this.setSpeed(14f);
+		this.setSpeed(10f);
 		this.setRecoil(0.61f);
 		this.setCounterDef(0);
 		this.setCross(20);
@@ -23,7 +23,7 @@ public class ItemPistol extends ItemGun {
 		this.setType(EnumGun.PISTOL);
 		this.setLength(EnumLength.SHORT);
 		this.setWield(EnumWield.DUAL);
-		this.setAimPosition(-0.2, 0.1,-0.25);
+		this.setAimPosition(-0.195, 0.1,-0.25);
 	}
 
 	public Item getReloadItem(ItemStack stack) {

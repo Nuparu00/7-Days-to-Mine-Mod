@@ -51,13 +51,16 @@ public class ProcessRegistry {
 	
 	public void register() {
 		registerProcess(BootingProcess.class, "booting_process");
-		registerProcess(CreateAccountProcess.class,"create_account_process");
+		registerProcess(WindowsCreateAccountProcess.class,"windows_create_account_process");
+		registerProcess(MacCreateAccountProcess.class,"mac_create_account_process");
 		registerProcess(WindowsDesktopProcess.class,"windows_desktop_process");
+		registerProcess(MacDesktopProcess.class,"mac_desktop_process");
 		registerProcess(WindowsLoginProcess.class,"windows_login_process");
 		registerProcess(ShellProcess.class,"shell_process");
 		registerProcess(NotesProcess.class,"notes_process");
 		registerProcess(CCTVProcess.class,"cctv_process");
 		registerProcess(TransitProcess.class,"transit_process");
 		registerProcess(MapsProcess.class,"maps_process");
+		registerProcess(EpidemicProcess.class,"epidemic_process");
 	}
 }

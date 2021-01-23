@@ -300,7 +300,7 @@
       "res": "sevendaystomine:textures/gui/books/ammo_base.png",
       "texts": [
         {
-          "x": 186,
+          "x": 188,
           "y": 70,
           "z": 0,
           "text": "book_ammo.title",

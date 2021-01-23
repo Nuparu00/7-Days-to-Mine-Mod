@@ -13,7 +13,7 @@ public class ItemSniperRifle extends ItemGun {
 		super();
 		this.setMaxAmmo(12);
 		this.setFullDamage(100f);
-		this.setSpeed(38f);
+		this.setSpeed(25f);
 		this.setRecoil(4f);
 		this.setCounterDef(0);
 		this.setCross(15);

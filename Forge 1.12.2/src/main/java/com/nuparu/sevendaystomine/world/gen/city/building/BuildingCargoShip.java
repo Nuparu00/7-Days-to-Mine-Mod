@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.world.gen.city.building;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -40,10 +41,11 @@ public class BuildingCargoShip extends Building {
 	public BuildingCargoShip(int weight, int yOffset) {
 		super(null, weight, yOffset);
 		this.pedestalState = null;
+		this.hasPedestal = false;
 	}
 
 	@Override
-	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror) {
+	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
 		if (!world.isRemote) {
 			WorldServer worldserver = (WorldServer) world;
 			MinecraftServer minecraftserver = world.getMinecraftServer();
