@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockPlanksReinforcedIron extends BlockUpgradeable {
 	public BlockPlanksReinforcedIron() {
-		super(Material.WOOD);
+		super(Material.IRON);
 		setSoundType(SoundType.WOOD);
 		setHardness(3.1f);
 		setResistance(10f);

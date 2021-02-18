@@ -42,7 +42,7 @@ public class BlockComputer extends BlockTileProvider<TileEntityComputer> {
 	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.125F, 0.0F, 0.3125F, 0.9375, 1F, 0.6875F);
 
 	public BlockComputer() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
 		setHardness(1.5F);
 		setResistance(1.0F);

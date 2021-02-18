@@ -52,6 +52,7 @@ public class EntityProjectileVomit extends Entity implements IProjectile {
 			});
 
 	protected boolean inGround;
+	public boolean particle;
 	public Entity shootingEntity;
 	private int ticksInAir;
 	private double damage;
@@ -146,6 +147,7 @@ public class EntityProjectileVomit extends Entity implements IProjectile {
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		this.inGround = compound.getByte("inGround") == 1;
+		this.particle = compound.getBoolean("particle");
 		if (compound.hasKey("damage", 99)) {
 			this.damage = compound.getDouble("damage");
 		}
@@ -157,6 +159,7 @@ public class EntityProjectileVomit extends Entity implements IProjectile {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
+		compound.setBoolean("particle", particle);
 		compound.setDouble("damage", this.damage);
 		if (getShooterName() != null) {
 			compound.setString("shooterName", getShooterName());
@@ -166,6 +169,7 @@ public class EntityProjectileVomit extends Entity implements IProjectile {
 
 	public void onUpdate() {
 		super.onUpdate();
+
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
 			float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
@@ -235,8 +239,6 @@ public class EntityProjectileVomit extends Entity implements IProjectile {
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 		float f1 = 0.99F;
 		float f2 = 0.05F;
-		
-		SevenDaysToMine.proxy.spawnParticle(world, EnumModParticleType.VOMIT, posX, posY, posZ, motionX, motionY, motionZ);
 
 		if (this.isInWater()) {
 			for (int i = 0; i < 4; ++i) {
@@ -354,7 +356,8 @@ public class EntityProjectileVomit extends Entity implements IProjectile {
 				if (iblockstate.getMaterial() == Material.GLASS) {
 					this.world.destroyBlock(blockpos, false);
 				} else {
-					Utils.damageBlock(world, blockpos, (float)(damage / iblockstate.getBlockHardness(world, blockpos)) * BLOCK_DAMAGE_BASE, true);
+					Utils.damageBlock(world, blockpos,
+							(float) (damage / iblockstate.getBlockHardness(world, blockpos)) * BLOCK_DAMAGE_BASE, true);
 
 				}
 			}

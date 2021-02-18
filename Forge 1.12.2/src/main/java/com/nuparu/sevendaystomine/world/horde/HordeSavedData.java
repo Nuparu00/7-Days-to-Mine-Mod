@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -114,7 +115,7 @@ public class HordeSavedData extends WorldSavedData {
 		hordes.clear();
 		markDirty();
 	}
-	
+
 	public void update(World world) {
 		for (Horde horde : hordes) {
 			horde.update();

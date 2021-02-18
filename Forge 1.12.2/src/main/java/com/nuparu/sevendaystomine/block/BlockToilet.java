@@ -40,7 +40,7 @@ public class BlockToilet extends BlockTileProvider<TileEntityToilet> implements 
 	public BlockToilet() {
 		super(Material.IRON);
 		this.setResistance(2f);
-		this.setHardness(4f);
+		this.setHardness(3.5f);
 	}
 
 	@Override

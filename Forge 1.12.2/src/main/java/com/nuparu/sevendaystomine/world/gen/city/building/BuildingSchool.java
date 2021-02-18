@@ -65,28 +65,28 @@ public class BuildingSchool extends Building {
 					.setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot).setIgnoreEntities(false)
 					.setChunk((ChunkPos) null).setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
 
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 
 			template = templatemanager.getTemplate(minecraftserver, FRONT_RIGHT);
 			if (template == null) {
 				return;
 			}
 			pos = pos.offset(facing, -30);
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 			
 			template = templatemanager.getTemplate(minecraftserver, BACK_RIGHT);
 			if (template == null) {
 				return;
 			}
 			pos = pos.offset(facing.rotateY(), mirror ? 32 : -32);
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 			
 			template = templatemanager.getTemplate(minecraftserver, BACK_LEFT);
 			if (template == null) {
 				return;
 			}
 			pos = pos.offset(facing, 30);
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 
 		}
 	}

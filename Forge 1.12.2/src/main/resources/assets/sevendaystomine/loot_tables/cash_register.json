@@ -9,7 +9,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "weight": 30,
+                    "weight": 20,
                     "name": "minecraft:paper",
                     "functions": [
                         {
@@ -23,7 +23,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 20,
+                    "weight": 15,
                     "name": "minecraft:rotten_flesh",
                     "functions": [
                         {

@@ -13,15 +13,21 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 
+import com.nuparu.sevendaystomine.events.ClientEventHandler;
+import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.item.ItemAnalogCamera;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.PhotoToServerMessage;
 import com.nuparu.sevendaystomine.util.Utils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -36,15 +42,32 @@ public class CameraHelper {
 	}
 
 	public void saveScreenshot(String screenshotName, int width, int height, Framebuffer buffer) {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.player;
+		if (player == null)
+			return;
+		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+		if (!stack.isEmpty() && stack.getItem() == ModItems.ANALOG_CAMERA) {
+			double dW = 1-ItemAnalogCamera.getWidth(stack, player);
+			double dH = 1-ItemAnalogCamera.getHeight(stack, player);
+			
+			saveScreenshot(screenshotName, (int)(width*dW/2d), (int)(height*dH/2d), (int)(width-width*dW/2d), (int)(height-height*dH/2d), width, height, buffer);
+		}
+	}
 
+	public void saveScreenshot(String screenshotName, int x, int y, int xx, int yy, int screenWidth, int screenHeight,
+			Framebuffer buffer) {
+
+		int width = xx - x;
+		int height = yy - y;
 		try {
 
 			if (OpenGlHelper.isFramebufferEnabled()) {
-				width = buffer.framebufferTextureWidth;
-				height = buffer.framebufferTextureHeight;
+				screenWidth = buffer.framebufferTextureWidth;
+				screenHeight = buffer.framebufferTextureHeight;
 			}
 
-			int i = width * height;
+			int i = screenWidth * screenHeight;
 
 			if (pixelBuffer == null || pixelBuffer.capacity() < i) {
 				pixelBuffer = BufferUtils.createIntBuffer(i);
@@ -59,14 +82,16 @@ public class CameraHelper {
 				GlStateManager.bindTexture(buffer.framebufferTexture);
 				GlStateManager.glGetTexImage(3553, 0, 32993, 33639, pixelBuffer);
 			} else {
-				GlStateManager.glReadPixels(0, 0, width, height, 32993, 33639, pixelBuffer);
+				GlStateManager.glReadPixels(xx, yy, screenWidth, screenHeight, 32993, 33639, pixelBuffer);
 			}
 
 			pixelBuffer.get(pixelValues);
-			TextureUtil.processPixelValues(pixelValues, width, height);
-			BufferedImage bufferedimage = new BufferedImage(width, height, 1);
-			bufferedimage.setRGB(0, 0, width, height, pixelValues, 0, width);
-
+			TextureUtil.processPixelValues(pixelValues, screenWidth, screenHeight);
+			BufferedImage bufferedimage = new BufferedImage(screenWidth, screenHeight, 1);
+			bufferedimage.setRGB(0, 0, screenWidth, screenHeight, pixelValues, 0, screenWidth);
+			if (x != 0 || y != 0) {
+				bufferedimage = bufferedimage.getSubimage(x, y, width, height);
+			}
 			sendFile(bufferedimage);
 
 		} catch (Exception exception) {

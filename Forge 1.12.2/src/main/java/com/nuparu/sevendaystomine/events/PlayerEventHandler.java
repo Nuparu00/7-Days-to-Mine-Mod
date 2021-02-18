@@ -9,13 +9,18 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.block.BlockFlowerPotEnhanced;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.ExtendedInventoryProvider;
 import com.nuparu.sevendaystomine.capability.ExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
+import com.nuparu.sevendaystomine.client.sound.MovingSoundChainsawCut;
+import com.nuparu.sevendaystomine.client.sound.MovingSoundChainsawIdle;
+import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
+import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.inventory.ContainerPlayerExtended;
 import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
@@ -28,12 +33,19 @@ import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.MovingSoundMinecart;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
@@ -46,6 +58,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.IScoreCriteria;
+import net.minecraft.stats.StatList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -80,6 +95,10 @@ public class PlayerEventHandler {
 			Slot.class, Slot.class);
 	public Field f_allInventories;
 
+	protected static long nextChainsawIdleSound = 0l;
+	public static  long nextChainsawCutSound = 0l;
+	protected static long lastTimeHittingBlock = 0l;
+
 	/*
 	 * @SideOnly(Side.CLIENT)
 	 * 
@@ -101,15 +120,62 @@ public class PlayerEventHandler {
 
 	@SubscribeEvent
 	public void onBlockPlaced(PlayerInteractEvent.RightClickBlock event) {
-
+		World world = event.getWorld();
 		BlockPos pos = event.getPos().offset(event.getFace());
 		EntityPlayer player = event.getEntityPlayer();
 		ItemStack stack = player.getHeldItemMainhand();
-		if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
-			List<EntityLootableCorpse> list = event.getWorld().getEntitiesWithinAABB(EntityLootableCorpse.class,
-					new AxisAlignedBB(pos, pos.add(1, 1, 1)));
-			if (list.size() > 0) {
+		Item item = stack.getItem();
+		IBlockState state = world.getBlockState(event.getPos());
+		Block block = state.getBlock();
+		if (event.getHand() == EnumHand.MAIN_HAND) {
+			if (block == Blocks.FLOWER_POT) {
+				if (state.getValue(BlockFlowerPot.CONTENTS) == BlockFlowerPot.EnumFlowerType.EMPTY) {
+					if (((BlockFlowerPotEnhanced) ModBlocks.FLOWER_POT_ENHANCED).canBePotted(stack)) {
+						world.setBlockState(event.getPos(), ModBlocks.FLOWER_POT_ENHANCED.getDefaultState());
+						TileEntity tile = world.getTileEntity(event.getPos());
+						if (tile != null) {
+							TileEntityFlowerPot te = (TileEntityFlowerPot) tile;
+							te.setItemStack(stack);
+							player.addStat(StatList.FLOWER_POTTED);
+							if (!player.capabilities.isCreativeMode) {
+								stack.shrink(1);
+							}
+							te.markDirty();
+							world.notifyBlockUpdate(pos, state, state, 3);
+						}
+						world.markBlockRangeForRenderUpdate(pos, pos);
+						world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+						world.scheduleBlockUpdate(pos, ModBlocks.FLOWER_POT_ENHANCED, 0, 0);
+						event.setCanceled(true);
+					}
+				}
+			} else if (block == ModBlocks.FLOWER_POT_ENHANCED) {
+				TileEntity tile = world.getTileEntity(event.getPos());
+				if (tile != null && !world.isRemote) {
+					TileEntityFlowerPot te = (TileEntityFlowerPot) tile;
+					ItemStack itemstack1 = te.getFlowerItemStack();
+					if (stack.isEmpty()) {
+						player.setHeldItem(event.getHand(), itemstack1);
+					} else if (!player.addItemStackToInventory(itemstack1)) {
+						player.dropItem(itemstack1, false);
+					}
+
+					world.setBlockState(event.getPos(), Blocks.FLOWER_POT.getDefaultState());
+				}
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, Blocks.FLOWER_POT, 0, 0);
 				event.setCanceled(true);
+			}
+		}
+
+		if (item instanceof ItemBlock) {
+			if (!stack.isEmpty()) {
+				List<EntityLootableCorpse> list = world.getEntitiesWithinAABB(EntityLootableCorpse.class,
+						new AxisAlignedBB(pos, pos.add(1, 1, 1)));
+				if (list.size() > 0) {
+					event.setCanceled(true);
+				}
 			}
 		}
 
@@ -127,7 +193,6 @@ public class PlayerEventHandler {
 		Slot slotBackpack = new SlotItemHandler(extendedInv, 0, 77, 44) {
 
 			@Nullable
-
 			@SideOnly(Side.CLIENT)
 			public String getSlotTexture() {
 				return SevenDaysToMine.MODID + ":items/empty_backpack_slot";
@@ -349,20 +414,57 @@ public class PlayerEventHandler {
 		ItemStack stack = event.crafting;
 		if (stack.getItem() instanceof IQuality) {
 			if (!event.player.isCreative()) {
-				Utils.consumeXp(event.player, MathHelper.floor(event.player.experienceTotal * (event.player.world.rand.nextDouble()*0.04+0.01)));
+				Utils.consumeXp(event.player, MathHelper
+						.floor(event.player.experienceTotal * (event.player.world.rand.nextDouble() * 0.04 + 0.01)));
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
-	public  void onEatenEvent(LivingEntityUseItemEvent.Finish event) {
-		if(event.getEntityLiving() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+	public void onEatenEvent(LivingEntityUseItemEvent.Finish event) {
+		if (event.getEntityLiving() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			ItemStack stack = event.getItem();
-			if(stack.getItem() instanceof ItemFood && stack.getItem().getMaxDamage() > 0 && (stack.getMaxDamage()-stack.getItemDamage()) > 1) {
+			if (stack.getItem() instanceof ItemFood && stack.getItem().getMaxDamage() > 0
+					&& (stack.getMaxDamage() - stack.getItemDamage()) > 1) {
 				stack.damageItem(1, player);
 				event.setResultStack(stack);
 			}
 		}
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
+		EntityLivingBase livingEntity = event.getEntityLiving();
+		World world = livingEntity.world;
+		if (!world.isRemote)
+			return;
+		if (livingEntity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) livingEntity;
+			ItemStack activeStack = player.getHeldItem(EnumHand.MAIN_HAND);
+			NBTTagCompound nbt = activeStack.getTagCompound();
+			if (activeStack.isEmpty() || activeStack.getItem() != ModItems.CHAINSAW)
+				return;
+			if (nbt != null && nbt.hasKey("FuelMax") &&  nbt.getInteger("FuelMax") > 0) {
+				if(SevenDaysToMine.proxy.isHittingBlock(player)) {
+					lastTimeHittingBlock = System.currentTimeMillis();
+				}
+				
+				if (System.currentTimeMillis() > nextChainsawIdleSound) {
+					Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundChainsawIdle(player));
+					nextChainsawIdleSound = System.currentTimeMillis() + 3000l;
+				}
+				if (System.currentTimeMillis() > nextChainsawCutSound && System.currentTimeMillis()-getLastTimeHittingBlock() <= 500 ) {
+					Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundChainsawCut(player));
+					nextChainsawCutSound = System.currentTimeMillis() + 1600l;
+				}
+			}
+		}
+
+	}
+
+	public static long getLastTimeHittingBlock() {
+		return lastTimeHittingBlock;
 	}
 }

@@ -181,8 +181,11 @@ public class ModBlocks {
 			.setUnlocalizedName("sedan_white");
 	public static final Block SEDAN_BLACK = new BlockSedan().setRegistryName("sedan_black")
 			.setUnlocalizedName("sedan_black");
-	public static final Block POLICE_CAR = new BlockPoliceCar().setRegistryName("police_car").setUnlocalizedName("police_car");
-
+	public static final Block POLICE_CAR = new BlockPoliceCar().setRegistryName("police_car")
+			.setUnlocalizedName("police_car");
+	public static final Block AMBULANCE = new BlockAmbulance().setRegistryName("ambulance")
+			.setUnlocalizedName("ambulance");
+	
 	public static final Block DEAD_MOSSY_STONE = new BlockStoneBase().setRegistryName("DeadMossyStone")
 			.setUnlocalizedName("DeadMossyStone");
 	public static final Block DEAD_MOSSY_BRICK = new BlockStoneBase().setRegistryName("DeadMossyBrick")
@@ -503,7 +506,7 @@ public class ModBlocks {
 			.setUnlocalizedName("flamethrower_trap").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	public static final Block METAL_SPIKES = new BlockMetalSpikes().setRegistryName("metal_spikes")
 			.setUnlocalizedName("metal_spikes").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
-	
+
 	public static final Block BOOKSHELF_SPRUCE = new BlockBookshelfEnhanced().setRegistryName("bookshelf_spruce")
 			.setUnlocalizedName("bookshelf_spruce").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	public static final Block BOOKSHELF_BIRCH = new BlockBookshelfEnhanced().setRegistryName("bookshelf_birch")
@@ -514,4 +517,10 @@ public class ModBlocks {
 			.setUnlocalizedName("bookshelf_acacia").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	public static final Block BOOKSHELF_DARK_OAK = new BlockBookshelfEnhanced().setRegistryName("bookshelf_dark_oak")
 			.setUnlocalizedName("bookshelf_dark_oak").setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+
+	public static final Block FLOWER_POT_ENHANCED = new BlockFlowerPotEnhanced().setRegistryName("flower_pot_enhanced")
+			.setUnlocalizedName("flower_pot_enhanced");
+	public static final Block PAPER = new BlockPaper().setRegistryName("paper").setUnlocalizedName("paper");
+	public static final Block SAND_LAYER = new BlockSandLayer().setRegistryName("sand_layer").setUnlocalizedName("sand_layer");
+	public static final Block RED_SAND_LAYER = new BlockSandLayer().setRegistryName("red_sand_layer").setUnlocalizedName("red_sand_layer");
 }

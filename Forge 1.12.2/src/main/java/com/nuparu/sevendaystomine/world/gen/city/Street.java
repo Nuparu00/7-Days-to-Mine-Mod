@@ -11,6 +11,8 @@ import com.nuparu.sevendaystomine.block.BlockBackpack;
 import com.nuparu.sevendaystomine.block.BlockCar;
 import com.nuparu.sevendaystomine.block.BlockFakeAnvil;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
+import com.nuparu.sevendaystomine.block.BlockPaper;
+import com.nuparu.sevendaystomine.block.BlockSandLayer;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBackpack;
@@ -33,6 +35,7 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockStoneSlab;
@@ -54,6 +57,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class Street {
@@ -387,7 +391,7 @@ public class Street {
 	public void generateSewers() {
 
 		boolean flag = false;
-		
+
 		int width = city.type.getRoadWidth() + (city.type.getPavementWidth() * 2);
 
 		for (int i = 0; i <= city.type.roadLength - 1; i++) {
@@ -435,19 +439,17 @@ public class Street {
 							state = Blocks.STONE_BRICK_STAIRS.getDefaultState()
 									.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP).withProperty(
 											BlockStairs.FACING, offset > 0 ? facing.rotateY() : facing.rotateYCCW());
-						}
-						else if (j == 0 && offset == 0) {
+						} else if (j == 0 && offset == 0) {
 							state = Blocks.WATER.getDefaultState();
 							world.setBlockState(sewersPos.down(), Blocks.STONEBRICK.getDefaultState());
-						}
-						else if(i != 0 && i % 8 == 0 && (int)Math.abs(offset) == 1 && (j==1 || j == 2)) {
+						} else if (i != 0 && i % 8 == 0 && (int) Math.abs(offset) == 1 && (j == 1 || j == 2)) {
 							state = Blocks.IRON_BARS.getDefaultState();
-						}
-						else if(city.rand.nextInt(128) == 0 && (int)Math.abs(offset) == 1 && j == 1) {
-							world.setBlockState(sewersPos, ModBlocks.BACKPACK_NORMAL.getDefaultState().withProperty(BlockBackpack.FACING, EnumFacing.getHorizontal(city.rand.nextInt(4))));
+						} else if (city.rand.nextInt(128) == 0 && (int) Math.abs(offset) == 1 && j == 1) {
+							world.setBlockState(sewersPos, ModBlocks.BACKPACK_NORMAL.getDefaultState().withProperty(
+									BlockBackpack.FACING, EnumFacing.getHorizontal(city.rand.nextInt(4))));
 							TileEntity te = world.getTileEntity(sewersPos);
-							if(te != null && te instanceof TileEntityBackpack) {
-								TileEntityBackpack backpack = (TileEntityBackpack)te;
+							if (te != null && te instanceof TileEntityBackpack) {
+								TileEntityBackpack backpack = (TileEntityBackpack) te;
 								backpack.setLootTable(ModLootTables.BACKPACK, city.rand.nextLong());
 								backpack.fillWithLoot(null);
 							}
@@ -521,7 +523,7 @@ public class Street {
 							TileEntity te = world.getTileEntity(pos2);
 							if (te != null) {
 								if (te instanceof TileEntityChest) {
-									TileEntityChest chest = (TileEntityChest)te;
+									TileEntityChest chest = (TileEntityChest) te;
 									chest.setLootTable(ModLootTables.SUPPLY_CHEST, city.rand.nextLong());
 									chest.fillWithLoot(null);
 								}
@@ -540,6 +542,7 @@ public class Street {
 	 * cars
 	 */
 	public void decorate() {
+
 		int width = city.type.getRoadWidth() + (city.type.getPavementWidth() * 2);
 		int halfThickness = (int) Math.ceil(city.type.getRoadWidth() / 2);
 
@@ -554,6 +557,8 @@ public class Street {
 				int offset = t - Math.round(width / 2f) + 1;
 				BlockPos pos = new BlockPos(start.getX(), 0, start.getZ()).offset(facing, i).offset(facing.rotateY(),
 						offset);
+
+				Biome biome = world.getBiome(pos);
 				if (!tunnel) {
 					if (canBranch) {
 						if ((endCrossing != null && endCrossing.getStreets().size() > 2)
@@ -622,18 +627,34 @@ public class Street {
 					}
 				}
 
-				// Cars generation
-				if (Math.abs(t - (city.type.getRoadWidth() / 2 + city.type.getPavementWidth())) <= 2) {
-					if (city.rand.nextInt(50) == 0) {
-						BlockPos pos2 = pos.up(y + 1);
-						if (world.getBlockState(pos2).getBlock() != Blocks.AIR) {
-							pos2 = pos2.up();
-						}
+				BlockPos pos2 = pos.up(y + 1);
+				if (world.getBlockState(pos2).getBlock() != Blocks.AIR) {
+					pos2 = pos2.up();
+				}
+				if (world.getBlockState(pos2).getBlock() == Blocks.AIR
+						&& world.getBlockState(pos2.down()).isSideSolid(world, pos.down(), EnumFacing.UP)) {
+					// Cars generation
+					if (Math.abs(t - (city.type.getRoadWidth() / 2 + city.type.getPavementWidth())) <= 2
+							&& city.rand.nextInt(50) == 0) {
+
 						EnumFacing facing2 = facing;
 						if (city.rand.nextInt(4) == 0) {
 							facing2 = EnumFacing.getHorizontal(city.rand.nextInt(4));
 						}
 						CityHelper.placeRandomCar(world, pos2, facing2, true, city.rand);
+					} else if (!tunnel && city.rand.nextInt(1) == 0
+							&& BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY)) {
+						IBlockState sand = ModBlocks.SAND_LAYER.getDefaultState();
+						if(biome.topBlock.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND) {
+							sand = ModBlocks.RED_SAND_LAYER.getDefaultState();
+						}
+						world.setBlockState(pos2, sand.withProperty(BlockSandLayer.LAYERS, 1 + city.rand.nextInt(2)));
+
+					} else if (this.city.type == EnumCityType.CITY && city.rand.nextInt(28) == 0) {
+
+						world.setBlockState(pos2, ModBlocks.PAPER.getDefaultState().withProperty(BlockPaper.FACING,
+								EnumFacing.getHorizontal(city.rand.nextInt(4))));
+
 					}
 				}
 

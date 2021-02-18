@@ -122,4 +122,8 @@ public class MathUtils {
 		return (n*k)/(n*k-n+1);
 		
 	}
+	public static double roundToNDecimal(double d, int places) {
+		double fac = Math.pow(10, places);
+		return Math.round(d*fac)/fac;
+	}
 }

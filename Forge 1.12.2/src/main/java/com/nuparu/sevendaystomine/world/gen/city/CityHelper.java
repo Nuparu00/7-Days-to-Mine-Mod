@@ -99,9 +99,9 @@ public class CityHelper {
 
 	public static BlockCar getRandomCar(Random rand, boolean special) {
 		BlockCar car = null;
-		while (car == null || (!special && car.special)) {
+		do {
 			car = cars.get(rand.nextInt(CityHelper.cars.size()));
-		}
+		} while (car == null || (!special && car.special) || (car.special && rand.nextInt(8) != 0));
 		return car;
 	}
 
@@ -117,8 +117,9 @@ public class CityHelper {
 			master.fillWithLoot(null);
 		}
 	}
+
 	public static void placeRandomCar(World world, BlockPos pos, EnumFacing facing, Random rand) {
-		placeRandomCar(world,pos,facing,false,rand);
+		placeRandomCar(world, pos, facing, false, rand);
 	}
 
 	public static void loadBuildings() {
@@ -164,7 +165,7 @@ public class CityHelper {
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "book_store"), 10, -1)
 				.setAllowedCityTypes(EnumCityType.CITY).setCanBeMirrored(false));
 		buildings.add(new BuildingConstructionSite(40));
-		buildings.add(new BuildingCemetery(10,-3));
+		buildings.add(new BuildingCemetery(10, -3));
 	}
 
 	public int getBuildingsCount() {

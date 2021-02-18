@@ -21,6 +21,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBoat;
@@ -36,6 +37,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -139,7 +141,8 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 	}
 
 	private boolean canSmelt() {
-		if (!getOutputSlot().isEmpty() && getOutputSlot().getCount() > Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit()))
+		if (!getOutputSlot().isEmpty() && getOutputSlot().getCount() > Math
+				.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()), this.getInventoryStackLimit()))
 			return false;
 		if (isInputEmpty() || !hasMold())
 			return false;
@@ -152,7 +155,8 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 				if (!ItemStack.areItemsEqualIgnoreDurability(getMoldSlot(), recipe.getMold())) {
 					continue;
 				}
-				if (getOutputSlot().getCount() + output.getCount() <= Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit())) {
+				if (getOutputSlot().getCount() + output.getCount() <= Math.min(
+						getOutputSlot().getItem().getItemStackLimit(getOutputSlot()), this.getInventoryStackLimit())) {
 					currentRecipe = recipe;
 					return true;
 				}
@@ -181,14 +185,16 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 					setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), recipeToUse.getOutput(this));
 
 				} else {
-					if (ItemStack.areItemsEqual(currentOutput, recipeToUse.getOutput(this)) && currentOutput.getCount()
-							+ recipeToUse.getOutput(this).getCount() <= Math.min(getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),this.getInventoryStackLimit())) {
+					if (ItemStack.areItemsEqual(currentOutput, recipeToUse.getOutput(this))
+							&& currentOutput.getCount() + recipeToUse.getOutput(this).getCount() <= Math.min(
+									getOutputSlot().getItem().getItemStackLimit(getOutputSlot()),
+									this.getInventoryStackLimit())) {
 
 						currentOutput.grow(recipeToUse.getOutput(this).getCount());
 						this.getMoldSlot().attemptDamageItem(1, world.rand, null);
 						setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), currentOutput);
 					}
-				}	
+				}
 				this.getMoldSlot().attemptDamageItem(1, world.rand, null);
 				consumeInput(recipeToUse);
 			}
@@ -196,7 +202,28 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 	}
 
 	public void consumeInput(IForgeRecipe recipe) {
-		recipe.consumeInput(this);
+		List<ItemStack> left = recipe.consumeInput(this);
+		if (left != null && !left.isEmpty()) {
+			for (ItemStack stack : left) {
+				for (int i = EnumSlots.INPUT_SLOT.ordinal(); i < EnumSlots.INPUT_SLOT4.ordinal() + 1; i++) {
+					ItemStack slot = getStackInSlot(i);
+					if (slot.isEmpty()) {
+						setInventorySlotContents(i,stack.copy());
+						stack = ItemStack.EMPTY;
+						break;
+					}
+					if (ItemStack.areItemsEqual(stack, slot) && slot.getCount() < slot.getMaxStackSize()) {
+						int delta = Math.min(slot.getMaxStackSize()-slot.getCount(),stack.getCount());
+						slot.grow(delta);
+						stack.shrink(delta);
+						break;
+					}
+				}
+				if(!stack.isEmpty()) {
+					InventoryHelper.spawnItemStack(world, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5, stack);
+				}
+			}
+		}
 	}
 
 	public boolean isInputEmpty() {
@@ -262,7 +289,7 @@ public class TileEntityForge extends TileEntityLockableLoot implements ITickable
 	public NonNullList<ItemStack> getInventory() {
 		return this.inventory;
 	}
-	
+
 	@Override
 	protected NonNullList<ItemStack> getItems() {
 		return inventory;

@@ -1,0 +1,16 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "MM",
+      "MM"
+   ],
+   "key":{
+      "M":{
+         "item":"sevendaystomine:marble"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:marblebricks",
+      "count":4
+   }
+}

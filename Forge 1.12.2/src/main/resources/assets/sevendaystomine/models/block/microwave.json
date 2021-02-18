@@ -1,14 +1,14 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "blocks/iron_block",
+		"0": "sevendaystomine:blocks/iron_block_rusty",
 		"1": "blocks/glass",
 		"2": "blocks/quartz_block_bottom",
 		"3": "blocks/stone_slab_top",
 		"4": "blocks/hardened_clay_stained_cyan",
 		"5": "blocks/stone",
 		"6": "blocks/wool_colored_black",
-		"particle": "blocks/iron_block"
+		"particle": "sevendaystomine:blocks/iron_block_rusty"
 	},
 	"elements": [
 		{
@@ -50,7 +50,7 @@
 			"faces": {
 				"east": {"uv": [4, 1, 12, 2], "texture": "#0"},
 				"west": {"uv": [3, 1, 11, 2], "texture": "#0"},
-				"up": {"uv": [1, 6, 15, 14], "texture": "#0"},
+				"up": {"uv": [1, 5, 15, 13], "texture": "#0"},
 				"down": {"uv": [0, 0, 14, 8], "texture": "#2"}
 			}
 		},

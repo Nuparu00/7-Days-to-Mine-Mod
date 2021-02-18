@@ -56,11 +56,11 @@ public class GuiKeySafeLocked extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		Keyboard.enableRepeatEvents(true);
 		super.initGui();
-		Mouse.setGrabbed(true);
+		Mouse.setGrabbed(false);
 		guiLeft = (this.width - xSize) / 2;
 		guiTop = (this.height - ySize) / 2;
+		Keyboard.enableRepeatEvents(true);
 		this.buttonList.clear();
 	}
 

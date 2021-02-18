@@ -102,7 +102,7 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 		double d2 = target.posZ - this.posZ;
 		double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
 		setAnimation(EnumAnimationState.VOMITING);
-		for (int i = 0; i < MathUtils.getIntInRange(rand, 7, 16); i++) {
+		for (int i = 0; i < MathUtils.getIntInRange(rand, 5, 15); i++) {
 			EntityProjectileVomit entityVomit = new EntityProjectileVomit(this.world, this);
 			double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - entityVomit.posY;
 
@@ -115,7 +115,7 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 			}
 
 		}
-		this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+		this.playSound(SoundEvents.ENTITY_ZOMBIE_HURT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.swingArm(EnumHand.MAIN_HAND);
 		this.swingArm(EnumHand.OFF_HAND);
 	}

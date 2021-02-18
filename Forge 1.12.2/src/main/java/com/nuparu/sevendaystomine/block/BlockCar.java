@@ -67,7 +67,7 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> implemen
 	public boolean special = false;
 
 	public BlockCar(byte[][][] shape) {
-		super(Material.ROCK);
+		super(Material.IRON);
 		this.shape = shape;
 		this.setDefaultState(
 				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(MASTER, true));

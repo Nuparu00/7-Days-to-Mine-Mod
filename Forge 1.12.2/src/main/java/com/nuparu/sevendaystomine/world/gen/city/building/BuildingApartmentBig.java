@@ -79,6 +79,7 @@ public class BuildingApartmentBig extends Building{
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
+			coverWithSand(world, pos, template, facing, mirror,rand);
 		}
 	}
 }

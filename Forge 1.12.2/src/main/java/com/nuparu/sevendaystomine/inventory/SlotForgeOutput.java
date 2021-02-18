@@ -72,7 +72,7 @@ public class SlotForgeOutput extends Slot {
 			TileEntityForge tileEntity = (TileEntityForge) inventory;
 
 			int i = this.removeCount;
-			float f = tileEntity.getCurrentRecipe().intGetXP(this.player);
+			float f = tileEntity.getCurrentRecipe() == null ? 5 : tileEntity.getCurrentRecipe().intGetXP(this.player);
 
 			if (f == 0.0F) {
 				i = 0;

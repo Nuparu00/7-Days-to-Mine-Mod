@@ -173,12 +173,12 @@ public class BlockCoffeePlant extends net.minecraft.block.BlockBush implements I
 
     protected Item getSeed()
     {
-        return ModItems.COFFEE_BEANS;
+        return ModItems.COFFEE_BERRY;
     }
 
     protected Item getCrop()
     {
-        return ModItems.COFFEE_BEANS;
+        return ModItems.COFFEE_BERRY;
     }
 
     @Override

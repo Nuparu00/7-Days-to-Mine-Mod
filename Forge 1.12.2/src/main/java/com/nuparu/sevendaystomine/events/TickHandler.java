@@ -21,6 +21,7 @@ import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.inventory.InventoryPlayerExtended;
 import com.nuparu.sevendaystomine.item.ItemNightVisionDevice;
 import com.nuparu.sevendaystomine.potions.Potions;
@@ -28,10 +29,12 @@ import com.nuparu.sevendaystomine.util.DamageSources;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.OpenSimplexNoise;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.util.client.CameraHelper;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 import com.nuparu.sevendaystomine.world.MiscSavedData;
 import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBase;
 import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
+import com.nuparu.sevendaystomine.world.horde.GenericHorde;
 import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
 import com.nuparu.sevendaystomine.world.horde.ZombieWolfHorde;
 
@@ -57,6 +60,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -274,35 +278,38 @@ public class TickHandler {
 				IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
 				EntityPlayerMP playerMP = (EntityPlayerMP) player;
 				long time = world.getWorldTime() % 24000;
-				if (Utils.isBloodmoon(world) && !world.isRemote && world.getDifficulty() != EnumDifficulty.PEACEFUL
-						&& time > 13000 && time < 23000) {
+				int day = Utils.getDay(world);
+				if (!world.isRemote && world.getDifficulty() != EnumDifficulty.PEACEFUL) {
+					if (Utils.isBloodmoon(world) && time > 13000 && time < 23000) {
 
-					if (!iep.hasHorde()) {
-						BlockPos pos = new BlockPos(playerMP);
-						BloodmoonHorde horde = new BloodmoonHorde(pos, world, playerMP);
-						horde.addTarget(playerMP);
-						horde.start();
-						iep.setHorde(true);
-						world.playSound(null, pos, SoundHelper.HORDE, SoundCategory.HOSTILE,
-								world.rand.nextFloat() * 0.1f + 0.95f, world.rand.nextFloat() * 0.1f + 0.95f);
-					}
+						if (iep.getBloodmoon() != day) {
+							BlockPos pos = new BlockPos(playerMP);
+							BloodmoonHorde horde = new BloodmoonHorde(pos, world, playerMP);
+							horde.addTarget(playerMP);
+							horde.start();
+							iep.setBloodmoon(day);
+							System.out.println(day + " " + iep.getBloodmoon());
+							world.playSound(null, pos, SoundHelper.HORDE, SoundCategory.HOSTILE,
+									world.rand.nextFloat() * 0.1f + 0.95f, world.rand.nextFloat() * 0.1f + 0.95f);
+						}
 
-				} else if (Utils.isWolfHorde(world) && !world.isRemote
-						&& world.getDifficulty() != EnumDifficulty.PEACEFUL && time > 1000 && time < 1060) {
+					} else if (time > 1000 && time < 1060 && iep.getWolfHorde() != day && Utils.isWolfHorde(world)) {
 
-					if (!iep.hasHorde()) {
 						ZombieWolfHorde horde = new ZombieWolfHorde(new BlockPos(player), world, player);
 						horde.addTarget(playerMP);
 						horde.start();
-						iep.setHorde(true);
-
+						iep.setWolfHorde(day);
+					} else if (world.rand.nextDouble() < ModConfig.world.genericHordeChance && !iep.hasHorde(world)) {
+						GenericHorde horde = new GenericHorde(new BlockPos(player), world, player);
+						horde.addTarget(playerMP);
+						horde.start();
+						iep.setHorde(day);
 					}
-				} else if (iep.hasHorde()) {
-					iep.setHorde(false);
 				}
 
 				if (Utils.isBloodmoon(Utils.getDay(world) - 1) && time < 1000) {
 					ModTriggers.BLOODMOON_SURVIVAL.trigger(playerMP);
+
 				}
 			}
 			if (extendedPlayer.isInfected()) {
@@ -344,7 +351,7 @@ public class TickHandler {
 						player.inventory.armorInventory.set(i, new ItemStack(ModBlocks.TORCH_LIT, s.getCount()));
 					}
 				}
-				nextTorchCheck = System.currentTimeMillis() + 10000l;
+				nextTorchCheck = System.currentTimeMillis() + 1000l;
 			}
 		}
 	}
@@ -385,7 +392,7 @@ public class TickHandler {
 				BlockPos pos = new BlockPos(i1, j1, k1);
 				Biome biome = world.getBiome(pos);
 
-				if ((biome instanceof BiomeWastelandBase) && ((BiomeWastelandBase)biome).floatingParticles()) {
+				if ((biome instanceof BiomeWastelandBase) && ((BiomeWastelandBase) biome).floatingParticles()) {
 					if (world.rand.nextInt(8) > Math.abs(world.getHeight(pos).getY() - j1)) {
 						IBlockState block = world.getBlockState(pos);
 
@@ -398,6 +405,10 @@ public class TickHandler {
 						}
 					}
 				}
+			}
+			if (ClientEventHandler.takingPhoto) {
+				CameraHelper.INSTANCE.saveScreenshot(mc.displayWidth, mc.displayHeight, mc.getFramebuffer(), player);
+				ClientEventHandler.takingPhoto = false;
 			}
 
 		}

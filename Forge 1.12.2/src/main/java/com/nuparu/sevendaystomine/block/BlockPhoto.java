@@ -1,5 +1,7 @@
 package com.nuparu.sevendaystomine.block;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
@@ -19,6 +21,7 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,9 +43,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPhoto extends BlockTileProvider<TileEntityPhoto> {
 
 	public BlockPhoto() {
-		super(Material.CLOTH);
+		super(Material.CIRCUITS);
 		this.setSoundType(SoundType.CLOTH);
-		this.setHardness(0.1f);
+		this.setHardness(0.001f);
 		this.setResistance(0.1f);
 	}
 
@@ -86,8 +89,13 @@ public class BlockPhoto extends BlockTileProvider<TileEntityPhoto> {
 	}
 
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state,
-			int fortune) {
+	 public int quantityDropped(IBlockState state, int fortune, Random random)
+    {
+        return 0;
+    }
+	
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null && te instanceof TileEntityPhoto) {
 			TileEntityPhoto t = (TileEntityPhoto) te;
@@ -97,7 +105,7 @@ public class BlockPhoto extends BlockTileProvider<TileEntityPhoto> {
 					stack.setTagCompound(new NBTTagCompound());
 				}
 				stack.getTagCompound().setString("path", t.getPath());
-				drops.add(stack);
+				InventoryHelper.spawnItemStack(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, stack);
 			}
 		}
 	}
@@ -216,8 +224,7 @@ public class BlockPhoto extends BlockTileProvider<TileEntityPhoto> {
 	 */
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY,
 			float hitZ, int meta, EntityLivingBase placer) {
-		return this.getDefaultState().withProperty(BlockHorizontalBase.FACING,
-				placer.getHorizontalFacing().getOpposite());
+		return this.getDefaultState().withProperty(BlockHorizontalBase.FACING,facing);
 	}
 
 	/**

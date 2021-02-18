@@ -188,5 +188,19 @@
       "sounds":[  
          "sevendaystomine:gas_leak"
       ]
+   },
+   "chainsaw.idle":{  
+      "category":"player",
+      "subtitle":"subtitle.chainsaw.idle",
+      "sounds":[  
+         "sevendaystomine:chainsaw.idle"
+      ]
+   },
+   "chainsaw.cut":{  
+      "category":"player",
+      "subtitle":"subtitle.chainsaw.cut",
+      "sounds":[  
+         "sevendaystomine:chainsaw.cut"
+      ]
    }
 }

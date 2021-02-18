@@ -287,17 +287,20 @@ public class ForgeRecipeMaterial implements IForgeRecipe {
 	}
 
 	@Override
-	public void consumeInput(TileEntityForge tileEntity) {
+	public List<ItemStack> consumeInput(TileEntityForge tileEntity) {
 		int multiplier = getOutputMultiplier(tileEntity);
 		List<MaterialStackWrapper> listIng = MaterialStackWrapper.wrapList(ingredients, false);
 		List<ItemStack> listInv = tileEntity.getActiveInventory();
 		Iterator<MaterialStackWrapper> itIng = listIng.iterator();
 		Iterator<ItemStack> itInv = listInv.iterator();
+		
+		List<ItemStack> leftovers = new ArrayList<ItemStack>();
 
 		while (itIng.hasNext()) {
 			MaterialStackWrapper ingWrapper = itIng.next();
 			EnumMaterial enumMat = ingWrapper.getMaterial();
 			int weightLeft = ingWrapper.getWeight() * multiplier;
+			System.out.println(enumMat + " " + weightLeft + " " + ingWrapper.getWeight());
 			while (itInv.hasNext() && weightLeft > 0) {
 				ItemStack stack = itInv.next();
 				if (stack == null || stack.isEmpty())
@@ -323,7 +326,12 @@ public class ForgeRecipeMaterial implements IForgeRecipe {
 							break;
 						}
 					}
-					if (weightLeft <= 0) {
+					if(weightLeft == 0) break;
+				    if (weightLeft < 0) {
+						Item scrap = ItemUtils.INSTANCE.getScrapResult(enumMat);
+						if(scrap != null) {
+							leftovers.add(new ItemStack(scrap,-weightLeft));
+						}
 						break;
 					}
 				} else if (VanillaManager.getVanillaScrapable(item) != null) {
@@ -339,7 +347,12 @@ public class ForgeRecipeMaterial implements IForgeRecipe {
 							break;
 						}
 					}
-					if (weightLeft <= 0) {
+					if(weightLeft == 0) break;
+				    if (weightLeft < 0) {
+						Item scrap = ItemUtils.INSTANCE.getScrapResult(enumMat);
+						if(scrap != null) {
+							leftovers.add(new ItemStack(scrap,-weightLeft));
+						}
 						break;
 					}
 				} else {
@@ -348,6 +361,8 @@ public class ForgeRecipeMaterial implements IForgeRecipe {
 			}
 			itInv = listInv.iterator();
 		}
+		System.out.println(leftovers);
+		return leftovers;
 	}
 
 }

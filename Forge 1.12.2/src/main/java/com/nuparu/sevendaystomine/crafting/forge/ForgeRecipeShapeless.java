@@ -82,7 +82,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe {
 	}
 
 	@Override
-	public void consumeInput(TileEntityForge tileEntity) {
+	public List<ItemStack> consumeInput(TileEntityForge tileEntity) {
 		List<ItemStackWrapper> listInv = ItemStackWrapper.wrapList(tileEntity.getActiveInventory(), false);
 		List<ItemStackWrapper> listIng = ItemStackWrapper.wrapList(ingredients, false);
 		ListIterator<ItemStackWrapper> iteratorInv = listInv.listIterator();
@@ -99,6 +99,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe {
 			}
 
 		}
+		return null;
 	}
 
 }

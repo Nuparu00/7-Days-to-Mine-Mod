@@ -85,7 +85,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(modid = SevenDaysToMine.MODID, version = SevenDaysToMine.VERSION, useMetadata = true)
 public class SevenDaysToMine {
 	public static final String MODID = "sevendaystomine";
-	public static final String VERSION = "Beta 1.0 Pre-release 2.5.2";
+	public static final String VERSION = "Beta 1.0 Pre-release 2.6.5";
 
 	static final String CLIENT_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.ClientProxy";
 	static final String SERVER_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.CommonProxy";
@@ -182,16 +182,16 @@ public class SevenDaysToMine {
 			.addToolMaterial("wooden_reinforced_tools", 1, 200, 2f, 18, 2);
 	public static final Item.ToolMaterial BARBED_TOOLS = EnumHelper.addToolMaterial("barbed_tools", 1, 220, 2f, 22, 2);
 	public static final Item.ToolMaterial SPIKED_TOOLS = EnumHelper.addToolMaterial("spiked_tools", 1, 250, 2f, 26, 2);
-	public static final Item.ToolMaterial COPPER_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 200, 4.8f, 17,
+	public static final Item.ToolMaterial COPPER_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 100, 5.2f, 17,
 			2);
-	public static final Item.ToolMaterial SCRAP_TOOLS = EnumHelper.addToolMaterial("copper_tools", 1, 125, 4.2f, 18, 2);
+	public static final Item.ToolMaterial SCRAP_TOOLS = EnumHelper.addToolMaterial("scrap_tools", 1, 125, 4f, 18, 2);
 	public static final Item.ToolMaterial BRONZE_TOOLS = EnumHelper.addToolMaterial("bronze_tools", 1, 250, 6f, 20, 2);
 	public static final Item.ToolMaterial IRON_TOOLS = EnumHelper.addToolMaterial("iron_tools", 2, 300, 8.2f, 24, 2);
 	public static final Item.ToolMaterial STEEL_TOOLS = EnumHelper.addToolMaterial("steel_tools", 2, 40, 11f, 28, 2);
 	public static final Item.ToolMaterial ARMY_TOOLS = EnumHelper.addToolMaterial("army_tools", 1, 350, 2f, 26, 2);
 	public static final Item.ToolMaterial MACHETE = EnumHelper.addToolMaterial("machete", 1, 200, 2f, 28, 2);
 	public static final Item.ToolMaterial SLEDGEHAMMER = EnumHelper.addToolMaterial("sledgehammer", 1, 40, 11f, 30, 2);
-	public static final Item.ToolMaterial AUGER = EnumHelper.addToolMaterial("auger", 5, 600, 26F, 24, 0);
+	public static final Item.ToolMaterial AUGER = EnumHelper.addToolMaterial("auger", 5, 1200, 26F, 24, 0);
 
 	public static final ItemArmor.ArmorMaterial CLOTHING = EnumHelper.addArmorMaterial("clothing",
 			"sevendaystomine:clothing", 6, new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
@@ -270,7 +270,8 @@ public class SevenDaysToMine {
 			ModBlocks.SIRENE, ModBlocks.STRUCTURE_STONE, ModBlocks.FAKE_ANVIL, ModBlocks.REDSTONE_LAMP_BROKEN,
 			ModBlocks.CALENDAR, ModBlocks.FLAMETHOWER, ModBlocks.METAL_SPIKES, ModBlocks.BOOKSHELF_SPRUCE,
 			ModBlocks.BOOKSHELF_BIRCH, ModBlocks.BOOKSHELF_JUNGLE, ModBlocks.BOOKSHELF_ACACIA,
-			ModBlocks.BOOKSHELF_DARK_OAK, ModBlocks.POLICE_CAR };
+			ModBlocks.BOOKSHELF_DARK_OAK, ModBlocks.POLICE_CAR, ModBlocks.FLOWER_POT_ENHANCED, ModBlocks.PAPER,
+			ModBlocks.SAND_LAYER, ModBlocks.RED_SAND_LAYER, ModBlocks.AMBULANCE};
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -280,11 +281,12 @@ public class SevenDaysToMine {
 			ModItems.CANNED_BEEF, ModItems.CANNED_CATFOOD, ModItems.CANNED_CHICKEN, ModItems.CANNED_CHILI,
 			ModItems.CANNED_DOGFOOD, ModItems.CANNED_HAM, ModItems.CANNED_LAMB, ModItems.CANNED_MISO,
 			ModItems.CANNED_PASTA, ModItems.CANNED_PEARS, ModItems.CANNED_PEAS, ModItems.CANNED_SALMON,
-			ModItems.CANNED_SOUP, ModItems.CANNED_STOCK, ModItems.CANNED_TUNA, ModItems.COFFEE_BEANS, ModItems.CORN,
-			ModItems.BLUEBERRY, ModItems.BANEBERRY, ModItems.BANDAGE, ModItems.BANDAGE_ADVANCED, ModItems.FIRST_AID_KIT,
-			ModItems.BLOOD_BAG, ModItems.BLOOD_DRAW_KIT, ModItems.INGOT_IRON, ModItems.INGOT_LEAD, ModItems.INGOT_BRASS,
-			ModItems.INGOT_STEEL, ModItems.INGOT_COPPER, ModItems.INGOT_TIN, ModItems.INGOT_ZINC, ModItems.INGOT_BRONZE,
-			ModItems.INGOT_GOLD, ModItems.MOLD_INGOT, ModItems.CLOTH, ModItems.ANTIBIOTICS, ModItems.CONCRETE_MIX,
+			ModItems.CANNED_SOUP, ModItems.CANNED_STOCK, ModItems.CANNED_TUNA, ModItems.COFFEE_BERRY,
+			ModItems.COFFEE_BEANS, ModItems.CORN, ModItems.BLUEBERRY, ModItems.BANEBERRY, ModItems.BANDAGE,
+			ModItems.BANDAGE_ADVANCED, ModItems.FIRST_AID_KIT, ModItems.BLOOD_BAG, ModItems.BLOOD_DRAW_KIT,
+			/* ModItems.INGOT_IRON, */ ModItems.INGOT_LEAD, ModItems.INGOT_BRASS, ModItems.INGOT_STEEL,
+			ModItems.INGOT_COPPER, ModItems.INGOT_TIN, ModItems.INGOT_ZINC, ModItems.INGOT_BRONZE,
+			/* ModItems.INGOT_GOLD, */ ModItems.MOLD_INGOT, ModItems.CLOTH, ModItems.ANTIBIOTICS, ModItems.CONCRETE_MIX,
 			ModItems.BONE_SHIV, ModItems.CEMENT, ModItems.CRUDE_CLUB, ModItems.WOODEN_CLUB,
 			ModItems.IRON_REINFORCED_CLUB, ModItems.BARBED_CLUB, ModItems.SPIKED_CLUB, ModItems.CLAWHAMMER,
 			ModItems.WRENCH, ModItems.KITCHEN_KNIFE, ModItems.ARMY_KNIFE, ModItems.MACHETE, ModItems.PISTOL,
@@ -335,7 +337,7 @@ public class SevenDaysToMine {
 			ModItems.LEATHER_HELMET, ModItems.LEATHER_CHESTPLATE, ModItems.LEATHER_LEGGINGS, ModItems.LEATHER_BOOTS,
 			ModItems.FRAGMENTATION_GRENADE, ModItems.MOLOTOV, ModItems.MILITARY_HELMET, ModItems.MILITARY_CHESTPLATE,
 			ModItems.MILITARY_LEGGINGS, ModItems.MILITARY_BOOTS, ModItems.RIOT_SHIELD, ModItems.CRUDE_BOW,
-			ModItems.COMPOUND_BOW, ModItems.MRE};
+			ModItems.COMPOUND_BOW, ModItems.MRE, ModItems.SAND_DUST, ModItems.VOMIT, ModItems.ROCKET};
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
@@ -394,7 +396,7 @@ public class SevenDaysToMine {
 		COPPER_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_COPPER));
 		SCRAP_TOOLS.setRepairItem(new ItemStack(ModItems.IRON_SCRAP));
 		BRONZE_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_BRONZE));
-		IRON_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_IRON));
+		IRON_TOOLS.setRepairItem(new ItemStack(Items.IRON_INGOT));
 		STEEL_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
 		ARMY_TOOLS.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
 		MACHETE.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
@@ -403,7 +405,7 @@ public class SevenDaysToMine {
 		FIBER.setRepairItem(new ItemStack(ModItems.PLANT_FIBER));
 		STEEL_ARMOR.setRepairItem(new ItemStack(ModItems.INGOT_STEEL));
 		LEATHER_IRON_ARMOR.setRepairItem(new ItemStack(Items.LEATHER));
-		IRON_ARMOR.setRepairItem(new ItemStack(ModItems.INGOT_IRON));
+		IRON_ARMOR.setRepairItem(new ItemStack(Items.IRON_INGOT));
 		LEATHER_ARMOR.setRepairItem(new ItemStack(Items.LEATHER));
 	}
 
@@ -442,6 +444,12 @@ public class SevenDaysToMine {
 		} else {
 			rules.addGameRule("damageDecayRate", rules.getInt("damageDecayRate") + "",
 					GameRules.ValueType.NUMERICAL_VALUE);
+		}
+
+		if (!rules.hasRule("hordeGlow")) {
+			rules.addGameRule("hordeGlow", "0", GameRules.ValueType.NUMERICAL_VALUE);
+		} else {
+			rules.addGameRule("hordeGlow", rules.getInt("hordeGlow") + "", GameRules.ValueType.NUMERICAL_VALUE);
 		}
 
 	}

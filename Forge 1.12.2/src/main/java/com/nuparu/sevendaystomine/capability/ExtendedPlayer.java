@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.capability;
 
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,15 +16,16 @@ import java.util.concurrent.Callable;
 
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.PlayerCapabilitySyncMessage;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.entity.EntityTracker;
 
 public class ExtendedPlayer implements IExtendedPlayer {
-	
+
 	public static final int INFECTION_STAGE_TWO_START = 48000;
 	public static final int INFECTION_STAGE_THREE_START = 96000;
 	public static final int INFECTION_STAGE_FOUR_START = 144000;
-	
+
 	public static final int MAX_THIRST = 780;
 	public static final int MAX_STAMINA = 780;
 
@@ -33,32 +35,35 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	boolean isCrawling;
 
 	int infectionTime = -1;
-	
-	//Has been a bloodmoon horde spawnde for this player on the current day?
-	boolean bloodmoon;
-	
+
+	// Last bloodmoon
+	int bloodmoon;
+	// Last wolf horde
+	int wolfHorde;
+	// Last generic horde
+	int horde;
+
 	public ExtendedPlayer() {
 		thirst = MAX_THIRST;
 		stamina = MAX_STAMINA;
 	}
-	
-	
+
 	List<String> recipes = new ArrayList<String>();
 
 	EntityPlayer player;
 
 	public void setThirst(int thirst) {
-		this.thirst = MathHelper.clamp(thirst,0,MAX_STAMINA);
+		this.thirst = MathHelper.clamp(thirst, 0, MAX_STAMINA);
 		onDataChanged();
 	}
 
 	public void consumeThirst(int thirst) {
-		this.thirst = MathHelper.clamp(this.thirst - thirst,0,MAX_STAMINA);
+		this.thirst = MathHelper.clamp(this.thirst - thirst, 0, MAX_STAMINA);
 		onDataChanged();
 	}
 
 	public void addThirst(int thirst) {
-		this.thirst = MathHelper.clamp(this.thirst + thirst,0,MAX_STAMINA);
+		this.thirst = MathHelper.clamp(this.thirst + thirst, 0, MAX_STAMINA);
 		onDataChanged();
 	}
 
@@ -71,17 +76,17 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	public void setStamina(int stamina) {
-		this.stamina = MathHelper.clamp(stamina,0,MAX_STAMINA);
+		this.stamina = MathHelper.clamp(stamina, 0, MAX_STAMINA);
 		onDataChanged();
 	}
 
 	public void consumeStamina(int stamina) {
-		this.stamina =MathHelper.clamp(this.stamina - stamina,0,MAX_STAMINA);
+		this.stamina = MathHelper.clamp(this.stamina - stamina, 0, MAX_STAMINA);
 		onDataChanged();
 	}
 
 	public void addStamina(int stamina) {
-		this.stamina = MathHelper.clamp(this.stamina + stamina,0,MAX_STAMINA);
+		this.stamina = MathHelper.clamp(this.stamina + stamina, 0, MAX_STAMINA);
 		onDataChanged();
 	}
 
@@ -102,7 +107,6 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		onDataChanged();
 	}
 
-
 	public int getInfectionTime() {
 		return this.infectionTime;
 	}
@@ -122,14 +126,15 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	public void readNBT(NBTTagCompound nbt) {
-		
+
 		thirst = nbt.getInteger("thirst");
 		stamina = nbt.getInteger("stamina");
 		isCrawling = nbt.getBoolean("isCrawling");
 		infectionTime = nbt.getInteger("infectionTime");
-		bloodmoon = nbt.getBoolean("bloodmoon");
-		
-		
+		bloodmoon = nbt.getInteger("bloodmoon");
+		wolfHorde = nbt.getInteger("wolfHorde");
+		horde = nbt.getInteger("horde");
+
 		recipes.clear();
 		NBTTagList list = nbt.getTagList("recipes", Constants.NBT.TAG_STRING);
 		for (int i = 0; i < list.tagCount(); i++) {
@@ -144,11 +149,13 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		nbt.setBoolean("isCrawling", isCrawling);
 
 		nbt.setInteger("infectionTime", infectionTime);
-		
-		nbt.setBoolean("bloodmoon", bloodmoon);
-		
+
+		nbt.setInteger("bloodmoon", bloodmoon);
+		nbt.setInteger("wolfHorde", wolfHorde);
+		nbt.setInteger("horde", horde);
+
 		NBTTagList list = new NBTTagList();
-		for(String rec : recipes) {
+		for (String rec : recipes) {
 			list.appendTag(new NBTTagString(rec));
 		}
 		nbt.setTag("recipes", list);
@@ -190,7 +197,8 @@ public class ExtendedPlayer implements IExtendedPlayer {
 
 	@Override
 	public void unlockRecipe(String rec) {
-		if(hasRecipe(rec)) return;
+		if (hasRecipe(rec))
+			return;
 		recipes.add(rec);
 		onDataChanged();
 	}
@@ -206,19 +214,48 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	@Override
-	public boolean hasHorde() {
+	public boolean hasHorde(World world) {
+		int day = Utils.getDay(world);
+
+		return bloodmoon == day || wolfHorde == day || horde == day;
+	}
+
+	@Override
+	public void setBloodmoon(int i) {
+		bloodmoon = i;
+		onDataChanged();
+	}
+
+	@Override
+	public int getBloodmoon() {
 		return bloodmoon;
 	}
 
 	@Override
-	public void setHorde(boolean state) {
-		bloodmoon = state;
+	public void setWolfHorde(int i) {
+		wolfHorde = i;
 		onDataChanged();
+	}
+
+	@Override
+	public int getWolfHorde() {
+		return wolfHorde;
+	}
+
+	@Override
+	public void setHorde(int i) {
+		horde = i;
+		onDataChanged();
+	}
+
+	@Override
+	public int getHorde() {
+		return horde;
 	}
 
 	@Override
 	public boolean isInfected() {
 		return infectionTime != -1;
 	}
-	
+
 }

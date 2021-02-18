@@ -33,8 +33,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockFlag extends BlockTileProvider<TileEntityFlag>{
 
 	public BlockFlag() {
-		super(Material.GROUND);
-		setHardness(1);
+		super(Material.IRON);
+		setHardness(0.7f);
 		setResistance(1);
 	}
 

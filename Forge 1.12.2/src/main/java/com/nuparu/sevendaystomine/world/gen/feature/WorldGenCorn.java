@@ -21,7 +21,7 @@ public class WorldGenCorn extends WorldGenerator {
 	public boolean generate(World worldIn, Random rand, BlockPos pos) {
 		int bottomAge = rand.nextInt(4);
 		Biome biome = worldIn.getBiome(pos);
-		if(biome instanceof BiomeWastelandBase) return false;
+		if(biome instanceof BiomeWastelandBase || biome.getBaseHeight() > 0.25f || biome.getTemperature(pos) < 0.2f || biome.getRainfall() < 0.2f) return false;
 		IBlockState bottom = com.nuparu.sevendaystomine.init.ModBlocks.CORN_PLANT.getDefaultState()
 				.withProperty(BlockCornPlant.AGE, bottomAge)
 				.withProperty(BlockCornPlant.HALF, BlockCornPlant.EnumBlockHalf.LOWER);

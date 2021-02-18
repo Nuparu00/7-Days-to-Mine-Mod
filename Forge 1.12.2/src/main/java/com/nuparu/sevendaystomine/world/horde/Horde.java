@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.building.Building;
@@ -13,8 +14,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,6 +38,7 @@ public abstract class Horde {
 
 	public int waveTimer;
 
+	public EntityPlayer player;
 	public HordeSavedData data;
 
 	public Horde(World world) {
@@ -61,6 +65,17 @@ public abstract class Horde {
 	}
 
 	public void update() {
+		boolean glow = world.getGameRules().getInt("hordeGlow") > zombies.size();
+		for (EntityZombieBase zombie : new ArrayList<EntityZombieBase>(zombies)) {
+			if (!zombie.isEntityAlive()) {
+				zombies.remove(zombie);
+				continue;
+			}
+			if(glow) {
+				zombie.addPotionEffect(new PotionEffect(MobEffects.GLOWING,10000));
+			}
+		}
+
 		if (startTime != Utils.getDay(world) && world != null) {
 			HordeSavedData data = HordeSavedData.get(world);
 			if (data != null) {
@@ -72,9 +87,11 @@ public abstract class Horde {
 				if (--waveTimer <= 0) {
 					start();
 				}
-			}
-			else {
+			} else {
 				HordeSavedData data = HordeSavedData.get(world);
+				if(player != null) {
+					player.addExperience(30);
+				}
 				if (data != null) {
 					data.removeHorde(this);
 					return;
@@ -111,7 +128,7 @@ public abstract class Horde {
 	}
 
 	public void onRemove() {
-		for(EntityZombieBase zombie : zombies) {
+		for (EntityZombieBase zombie : zombies) {
 			zombie.horde = null;
 		}
 

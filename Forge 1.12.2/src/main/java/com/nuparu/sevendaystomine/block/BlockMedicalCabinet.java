@@ -32,7 +32,7 @@ public class BlockMedicalCabinet extends BlockTileProvider<TileEntityMedicalCabi
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
 	public BlockMedicalCabinet() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		setSoundType(SoundType.METAL);
 		setHardness(1.8F);
 		setResistance(3.0F);

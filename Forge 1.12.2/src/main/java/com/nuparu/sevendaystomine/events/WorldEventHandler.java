@@ -6,6 +6,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.IUpgradeable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.INoiseListener;
 import com.nuparu.sevendaystomine.entity.Noise;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -224,7 +225,7 @@ public class WorldEventHandler {
 			}
 
 		} else {
-			if (world.provider.getDimension() == 0) {
+			if (ModConfig.players.customSky && world.provider.getDimension() == 0) {
 				SevenDaysToMine.proxy.setSkyRenderer(world);
 				SevenDaysToMine.proxy.setCloudRenderer(world);
 			}

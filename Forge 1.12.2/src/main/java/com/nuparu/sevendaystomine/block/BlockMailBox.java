@@ -32,7 +32,7 @@ public class BlockMailBox extends BlockTileProvider<TileEntityMailBox> {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
 	public BlockMailBox() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		setHardness(1.4F);
 		setResistance(2.0F);
 		setHarvestLevel("pickaxe", 0);

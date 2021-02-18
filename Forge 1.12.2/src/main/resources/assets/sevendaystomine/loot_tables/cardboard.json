@@ -23,14 +23,14 @@
                 },
                 {
                     "type": "item",
-                    "weight": 15,
+                    "weight": 12,
                     "name": "minecraft:paper",
                     "functions": [
                         {
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 10
+                                "max": 4
                             }
                         }
                     ]

@@ -36,7 +36,7 @@ public class ParticleVomit extends Particle {
 		super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
 
 		this.particleGravity = 0.981F;
-		this.particleMaxAge = (int) (256.0D / (this.rand.nextDouble() * 0.8D + 0.2D)) * 2;
+		this.particleMaxAge = (int) (16.0D / (this.rand.nextDouble() * 0.8D + 0.2D)) * 2;
 		this.setSize(0.4F, 0.4F);
 		this.multipleParticleScaleBy(MathUtils.getFloatInRange(0.2f, 1.4f));
 

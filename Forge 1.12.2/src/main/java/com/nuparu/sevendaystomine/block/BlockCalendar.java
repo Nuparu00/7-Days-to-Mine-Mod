@@ -36,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockCalendar extends BlockTileProvider<TileEntityCalendar> {
 
 	public BlockCalendar() {
-		super(Material.GROUND);
+		super(Material.CIRCUITS);
 		setHardness(0.05f);
 		setResistance(0.05f);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(BlockHorizontalBase.FACING, EnumFacing.NORTH));

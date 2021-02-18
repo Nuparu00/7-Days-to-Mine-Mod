@@ -85,6 +85,11 @@
                 {
                     "type": "item",
                     "weight": 4,
+                    "name": "sevendaystomine:coffee_beans"
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
                     "name": "sevendaystomine:moldy_bread",
                     "functions": [
                         {

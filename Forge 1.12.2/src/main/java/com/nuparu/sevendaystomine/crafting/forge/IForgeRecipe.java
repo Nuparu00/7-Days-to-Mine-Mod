@@ -14,7 +14,8 @@ public interface IForgeRecipe {
 	 public ItemStack getOutput(TileEntityForge tileEntity);
 	 public ItemStack getMold();
 	 public List<ItemStack> getIngredients();
-	 public void consumeInput(TileEntityForge tileEntity);
+	 //Returns the leftovers
+	 public List<ItemStack> consumeInput(TileEntityForge tileEntity);
 	 public int intGetXP(EntityPlayer player);
 	 
 }

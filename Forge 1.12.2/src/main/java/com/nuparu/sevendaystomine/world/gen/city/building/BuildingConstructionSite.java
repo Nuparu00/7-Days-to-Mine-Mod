@@ -59,7 +59,7 @@ public class BuildingConstructionSite extends Building {
 			for(int i = 1; i < 3;i++) {
 				Template template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"construction_site_a"+(i)));
 				if(template != null) {
-					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);	
+					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);	
 				}
 				pos = pos.offset(facing.rotateY(),mirror ? 32 : -32);
 			}
@@ -67,7 +67,7 @@ public class BuildingConstructionSite extends Building {
 			for(int i = 0; i < 2;i++) {
 				Template template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"construction_site_b"+(2-i)));
 				if(template != null) {
-					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);	
+					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);	
 				}
 				pos = pos.offset(facing.rotateY(),mirror ? -32 : 32);
 			}
@@ -75,26 +75,26 @@ public class BuildingConstructionSite extends Building {
 			pos = pos.offset(facing, 41).offset(facing.rotateY(),mirror ? 32 : -32);
 			Template template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"construction_site_crane_bottom"));
 			if(template != null) {
-				this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);	
+				this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);	
 			}
 			
 			pos = pos.up(32);
 			
 			template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"construction_site_crane_cab"));
 			if(template != null) {
-				this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, false);	
+				this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, false,rand);	
 			}
 
 			pos = pos.offset(facing, -32);
 			template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"construction_site_crane_front"));
 			if(template != null) {
-				this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, false);	
+				this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, false,rand);	
 			}
 			
 			pos = pos.offset(facing, 47);
 			template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"construction_site_crane_end"));
 			if(template != null) {
-				this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, false);	
+				this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, false,rand);	
 			}
 		}
 	}

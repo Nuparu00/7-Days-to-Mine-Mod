@@ -30,7 +30,7 @@ public class Button implements IScreenElement {
 	protected TickingProcess tickingProcess;
 	protected FontRenderer fontRenderer;
 
-	protected String text = "";
+	private String text = "";
 
 	protected boolean isHovered = false;
 	protected boolean isDisabled = false;
@@ -57,7 +57,7 @@ public class Button implements IScreenElement {
 		this.width = width;
 		this.height = height;
 		this.screen = screen;
-		this.text = text;
+		this.setText(text);
 		this.ID = id;
 
 		this.fontRenderer = Minecraft.getMinecraft().fontRenderer;
@@ -117,6 +117,10 @@ public class Button implements IScreenElement {
 	public void setHeight(double height) {
 		this.height = height;
 	}
+	
+	public int getTextColor() {
+		return isHovered(screen.mouseX, screen.mouseY) ? textHovered : textNormal;
+	}
 
 	@Override
 	public void render(float partialTicks) {
@@ -129,13 +133,10 @@ public class Button implements IScreenElement {
 			if (background) {
 				RenderUtils.drawColoredRect(color, x, y, width, height, zLevel + 1);
 			}
-			int textColor = textNormal;
-			if (isHovered(screen.mouseX, screen.mouseY)) {
-				textColor = textHovered;
-			}
+			int textColor = getTextColor();
 			GL11.glTranslated(x + (width / 2), y, zLevel + 2);
 
-			String localized = SevenDaysToMine.proxy.localize(text);
+			String localized = SevenDaysToMine.proxy.localize(getText());
 			if (fontSize != 1) {
 				GlStateManager.scale(fontSize, fontSize, 1);
 				GL11.glTranslated(0, (height * fontSize) / 2d, 0);
@@ -204,6 +205,14 @@ public class Button implements IScreenElement {
 	
 	public void setFocus(boolean focus) {
 		
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 }

@@ -68,7 +68,7 @@ public class CommandAirport extends CommandBase {
 				return;
 			}
 			
-			new BuildingAirplane(30).generate(world, parseBlockPos(sender, args, 0, true), EnumFacing.SOUTH, false, world.rand);
+			new BuildingAirport(30).generate(world, parseBlockPos(sender, args, 0, true), EnumFacing.SOUTH, false, world.rand);
 		}
 	}
 

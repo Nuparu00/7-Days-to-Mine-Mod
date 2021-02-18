@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.crafting.RecipeManager;
+import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 
@@ -133,7 +134,7 @@ public class VanillaManager {
 		Items.BEETROOT_SOUP.setMaxStackSize(1);
 		Items.BEETROOT.setMaxStackSize(1);
 		
-		Items.APPLE.setMaxDamage(2);
+		/*Items.APPLE.setMaxDamage(2);
 		Items.PORKCHOP.setMaxDamage(4);
 		Items.COOKED_PORKCHOP.setMaxDamage(4);
 		Items.BEEF.setMaxDamage(4);
@@ -144,10 +145,11 @@ public class VanillaManager {
 		Items.RABBIT.setMaxDamage(3);
 		Items.COOKED_RABBIT.setMaxDamage(3);
 		Items.MUTTON.setMaxDamage(4);
-		Items.COOKED_MUTTON.setMaxDamage(4);
+		Items.COOKED_MUTTON.setMaxDamage(4);*/
 	}
 
 	public static void removeVanillaRecipes() {
+		
 		RecipeManager.removeRecipe(Blocks.FURNACE);
 		RecipeManager.removeRecipe(Blocks.PLANKS);
 		RecipeManager.removeRecipe(Blocks.IRON_BARS);
@@ -173,6 +175,32 @@ public class VanillaManager {
 		RecipeManager.removeRecipe(Items.LEATHER_HELMET);
 		RecipeManager.removeRecipe(Items.LEATHER_BOOTS);
 		RecipeManager.removeRecipe(Items.LEATHER_LEGGINGS);
+
+		RecipeManager.removeRecipe(Items.GOLDEN_SWORD);
+		RecipeManager.removeRecipe(Items.GOLDEN_AXE);
+		RecipeManager.removeRecipe(Items.GOLDEN_PICKAXE);
+		RecipeManager.removeRecipe(Items.GOLDEN_SHOVEL);
+		RecipeManager.removeRecipe(Items.GOLDEN_HOE);
+		RecipeManager.removeRecipe(Items.DIAMOND_SWORD);
+		RecipeManager.removeRecipe(Items.DIAMOND_AXE);
+		RecipeManager.removeRecipe(Items.DIAMOND_PICKAXE);
+		RecipeManager.removeRecipe(Items.DIAMOND_SHOVEL);
+		RecipeManager.removeRecipe(Items.DIAMOND_HOE);
+		RecipeManager.removeRecipe(Blocks.TORCH);
+		
+		RecipeManager.removeRecipe(Items.GOLDEN_CHESTPLATE);
+		RecipeManager.removeRecipe(Items.GOLDEN_HELMET);
+		RecipeManager.removeRecipe(Items.GOLDEN_BOOTS);
+		RecipeManager.removeRecipe(Items.GOLDEN_LEGGINGS);
+		RecipeManager.removeRecipe(Items.DIAMOND_CHESTPLATE);
+		RecipeManager.removeRecipe(Items.DIAMOND_HELMET);
+		RecipeManager.removeRecipe(Items.DIAMOND_BOOTS);
+		RecipeManager.removeRecipe(Items.DIAMOND_LEGGINGS);
+		
+
+
+		
+		
 		RecipeManager.removeSmelting(new ItemStack(Items.GOLD_INGOT),"minecraft");
 		RecipeManager.removeSmelting(new ItemStack(Items.IRON_INGOT),"minecraft");
 	}
@@ -261,6 +289,12 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.STAINED_GLASS,EnumMaterial.GLASS).setWeight(12));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.GLASS_PANE,EnumMaterial.GLASS).setWeight(6));
 		vanillaScrapables.add(new VanillaScrapableItem(net.minecraft.init.Blocks.STAINED_GLASS_PANE,EnumMaterial.GLASS).setWeight(6));
+		vanillaScrapables.add(new VanillaScrapableItem(Blocks.IRON_BARS,EnumMaterial.IRON).setWeight(1));
+		vanillaScrapables.add(new VanillaScrapableItem(Blocks.IRON_DOOR,EnumMaterial.IRON).setWeight(6));
+		vanillaScrapables.add(new VanillaScrapableItem(Blocks.IRON_TRAPDOOR,EnumMaterial.IRON).setWeight(4));
+		vanillaScrapables.add(new VanillaScrapableItem(Blocks.COAL_BLOCK,EnumMaterial.CARBON).setWeight(9));
+		vanillaScrapables.add(new VanillaScrapableItem(Blocks.SAND,EnumMaterial.SAND).setWeight(9));
+		vanillaScrapables.add(new VanillaScrapableItem(ModBlocks.SAND_LAYER,EnumMaterial.SAND).setWeight(1));
 		
 		ItemUtils.INSTANCE.addSmallestBit(EnumMaterial.CARBON, Items.COAL);
 	}

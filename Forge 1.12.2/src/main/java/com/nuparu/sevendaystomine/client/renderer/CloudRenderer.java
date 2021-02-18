@@ -38,6 +38,7 @@ public class CloudRenderer extends IRenderHandler {
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
 		if (mc.world.provider.isSurfaceWorld()) {
+			GlStateManager.pushMatrix();
 			RenderGlobal render = mc.renderGlobal;
 
 			Entity entity = mc.player;
@@ -123,6 +124,7 @@ public class CloudRenderer extends IRenderHandler {
 				GlStateManager.disableBlend();
 				GlStateManager.enableCull();
 			}
+			GlStateManager.popMatrix();
 		}
 	}
 
@@ -141,6 +143,7 @@ public class CloudRenderer extends IRenderHandler {
 		int l1 = MathHelper.floor(d5 / 2048.0D);
 		d4 = d4 - (double) (k1 * 2048);
 		d5 = d5 - (double) (l1 * 2048);
+		GlStateManager.pushMatrix();
 		mc.renderEngine.bindTexture(CLOUDS_TEXTURES);
 		GlStateManager.enableBlend();
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
@@ -376,6 +379,7 @@ public class CloudRenderer extends IRenderHandler {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.disableBlend();
 		GlStateManager.enableCull();
+		GlStateManager.popMatrix();
 	}
 
 }

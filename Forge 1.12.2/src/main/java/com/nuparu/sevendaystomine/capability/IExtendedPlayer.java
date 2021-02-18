@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.capability;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -58,8 +59,15 @@ public interface IExtendedPlayer {
 
 	public void onStartedTracking(EntityPlayer tracker);
 	
-	public boolean hasHorde();
+	public boolean hasHorde(World world);
 	
-	public void setHorde(boolean state);
+	public void setBloodmoon(int i);
+	public int getBloodmoon();
+	
+	public void setWolfHorde(int i);
+	public int getWolfHorde();
+	
+	public void setHorde(int i);
+	public int getHorde();
 
 }

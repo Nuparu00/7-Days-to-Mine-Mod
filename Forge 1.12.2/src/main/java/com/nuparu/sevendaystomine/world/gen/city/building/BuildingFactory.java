@@ -87,7 +87,7 @@ public class BuildingFactory extends Building {
 				return;
 			}
 			pos = pos.offset(facing, -43);
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 		}
 	}
 

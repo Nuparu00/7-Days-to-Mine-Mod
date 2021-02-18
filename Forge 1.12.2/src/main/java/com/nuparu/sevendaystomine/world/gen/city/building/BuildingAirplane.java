@@ -68,18 +68,21 @@ public class BuildingAirplane extends Building{
 	private ResourceLocation LEFT_WING = new ResourceLocation(SevenDaysToMine.MODID, "airplane_left_wing");
 	private ResourceLocation FRONT = new ResourceLocation(SevenDaysToMine.MODID, "airplane_front");
 	
-	public BuildingAirplane(int weight) {
-		this(weight, 0);
+	public BuildingAirplane(int weight, ResourceLocation tail, ResourceLocation right_wing, ResourceLocation left_wing, ResourceLocation front) {
+		this(weight, 0, tail, right_wing,left_wing,front);
 	}
 
-	public BuildingAirplane(int weight, int yOffset) {
+	public BuildingAirplane(int weight, int yOffset, ResourceLocation tail, ResourceLocation right_wing, ResourceLocation left_wing, ResourceLocation front) {
 		super(null, weight, yOffset);
 		this.pedestalState = null;
+		this.TAIL = tail;
+		this.FRONT = front;
+		this.LEFT_WING = left_wing;
+		this.RIGHT_WING = right_wing;
 	}
 
 	@Override
 	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
-		System.out.println("AIRPLANE " + pos);
 
 		if (!world.isRemote) {
 
@@ -106,7 +109,8 @@ public class BuildingAirplane extends Building{
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
-			
+
+			coverWithSand(world, pos, template, facing, mirror,rand);
 			
 			pos = pos.offset(facing,32* (mirror ? -1 : 1)).offset(facing.rotateY(),9);
 			template = templatemanager.getTemplate(minecraftserver, RIGHT_WING);
@@ -118,6 +122,7 @@ public class BuildingAirplane extends Building{
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
+			coverWithSand(world, pos, template, facing, mirror,rand);
 			
 			pos = pos.offset(facing.rotateY(),-19);
 			template = templatemanager.getTemplate(minecraftserver, LEFT_WING);
@@ -129,6 +134,7 @@ public class BuildingAirplane extends Building{
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
+			coverWithSand(world, pos, template, facing, mirror,rand);
 			
 			pos = pos.offset(facing,11* (mirror ? -1 : 1)).offset(facing.rotateY(),17);
 			template = templatemanager.getTemplate(minecraftserver, FRONT);
@@ -140,6 +146,7 @@ public class BuildingAirplane extends Building{
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
+			coverWithSand(world, pos, template, facing, mirror,rand);
 		}
 	}
 

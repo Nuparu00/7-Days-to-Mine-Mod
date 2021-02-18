@@ -13,13 +13,18 @@ import com.nuparu.sevendaystomine.util.client.ResourcesHelper.Image;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.item.EntityPainting;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -83,22 +88,27 @@ public class TileEntityPhotoRenderer extends TileEntitySpecialRenderer<TileEntit
 				h = h * 0.75f;
 				w = ((float) te.image.width / (float) te.image.height) * h;
 			}
-			
-			int i = te.getWorld().getCombinedLight(te.getPos(), 0);
-			float e = (float) (i & 65535);
-			float e1 = (float) (i >> 16);
-
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, e, e1);
-			RenderHelper.enableStandardItemLighting();
-			Minecraft.getMinecraft().entityRenderer.enableLightmap();
-
+			GlStateManager.pushMatrix();
+			GlStateManager.enableLighting();
+			setLightmap(te.getPos().getX(),te.getPos().getY(),te.getPos().getZ(),te.getWorld());
 			drawQuad((float) x, (float) y + 1.0F, (float) z + 1.0F, w, h, 0f, 0f, 1f, 1f, (float) short1,
 					te.image.res);
-			
-			Minecraft.getMinecraft().entityRenderer.disableLightmap();
-			RenderHelper.disableStandardItemLighting();
+			GlStateManager.disableLighting();
+			GlStateManager.popMatrix();
 		}
 	}
+	
+	private void setLightmap(double x, double y, double z, World world)
+    {
+        int i = MathHelper.floor(x);
+        int j = MathHelper.floor(y);
+        int k = MathHelper.floor(z);
+        int l = world.getCombinedLight(new BlockPos(i, j, k), 0);
+        int i1 = l % 65536;
+        int j1 = l / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1, (float)j1);
+        GlStateManager.color(1.6F, 1.6F, 1.6F);
+    }
 
 	private void drawQuad(float x, float y, float z, double width, double height, float minU, float minV, float maxU,
 			float maxV, float meta, ResourceLocation virtualLocation) {
@@ -111,10 +121,10 @@ public class TileEntityPhotoRenderer extends TileEntitySpecialRenderer<TileEntit
 
 			GL11.glPushMatrix();
 			GL11.glTranslated(x+0.9999, y-1, z - 1);
-			wr.pos(0, 0.5+(height/2f), 0.5-(width/2f)).tex(minU, minV).endVertex();
-			wr.pos(0, 0.5-(height/2f), 0.5-(width/2f)).tex(minU, maxV).endVertex();
-			wr.pos(0, 0.5-(height/2f), 0.5+(width/2f)).tex(maxU, maxV).endVertex();
-			wr.pos(0, 0.5+(height/2f), 0.5+(width/2f)).tex(maxU, minV).endVertex();
+			wr.pos(-0.001, 0.5+(height/2f), 0.5-(width/2f)).tex(minU, minV).endVertex();
+			wr.pos(-0.001, 0.5-(height/2f), 0.5-(width/2f)).tex(minU, maxV).endVertex();
+			wr.pos(-0.001, 0.5-(height/2f), 0.5+(width/2f)).tex(maxU, maxV).endVertex();
+			wr.pos(-0.001, 0.5+(height/2f), 0.5+(width/2f)).tex(maxU, minV).endVertex();
 			
 
 			tessellator.draw();
@@ -127,10 +137,10 @@ public class TileEntityPhotoRenderer extends TileEntitySpecialRenderer<TileEntit
 			GL11.glPushMatrix();
 			GL11.glTranslated(x+0.0001, y-1, z);
 			GL11.glRotatef(meta+270, 0.0F, -1.0F, 0.0F);
-			wr.pos(0, 0.5+(height/2f), 0.5-(width/2f)).tex(minU, minV).endVertex();
-			wr.pos(0, 0.5-(height/2f), 0.5-(width/2f)).tex(minU, maxV).endVertex();
-			wr.pos(0, 0.5-(height/2f), 0.5+(width/2f)).tex(maxU, maxV).endVertex();
-			wr.pos(0, 0.5+(height/2f), 0.5+(width/2f)).tex(maxU, minV).endVertex();
+			wr.pos(-0.001, 0.5+(height/2f), 0.5-(width/2f)).tex(minU, minV).endVertex();
+			wr.pos(-0.001, 0.5-(height/2f), 0.5-(width/2f)).tex(minU, maxV).endVertex();
+			wr.pos(-0.001, 0.5-(height/2f), 0.5+(width/2f)).tex(maxU, maxV).endVertex();
+			wr.pos(-0.001, 0.5+(height/2f), 0.5+(width/2f)).tex(maxU, minV).endVertex();
 
 			tessellator.draw();
 			GL11.glPopMatrix();
@@ -143,10 +153,10 @@ public class TileEntityPhotoRenderer extends TileEntitySpecialRenderer<TileEntit
 			GL11.glTranslated(x, y-1, z - 0.9999);
 			GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
 			// GL11.glScalef(-1.0F, -1.0F, 1.0F);
-			wr.pos(0, 0.5+(height/2f), 0.5-(width/2f)).tex(minU, minV).endVertex();
-			wr.pos(0, 0.5-(height/2f), 0.5-(width/2f)).tex(minU, maxV).endVertex();
-			wr.pos(0, 0.5-(height/2f), 0.5+(width/2f)).tex(maxU, maxV).endVertex();
-			wr.pos(0, 0.5+(height/2f), 0.5+(width/2f)).tex(maxU, minV).endVertex();
+			wr.pos(-0.001, 0.5+(height/2f), 0.5-(width/2f)).tex(minU, minV).endVertex();
+			wr.pos(-0.001, 0.5-(height/2f), 0.5-(width/2f)).tex(minU, maxV).endVertex();
+			wr.pos(-0.001, 0.5-(height/2f), 0.5+(width/2f)).tex(maxU, maxV).endVertex();
+			wr.pos(-0.001, 0.5+(height/2f), 0.5+(width/2f)).tex(maxU, minV).endVertex();
 
 			tessellator.draw();
 			GL11.glPopMatrix();
@@ -159,10 +169,10 @@ public class TileEntityPhotoRenderer extends TileEntitySpecialRenderer<TileEntit
 			GL11.glTranslated(x + 1, y-1, z-0.0001);
 			GL11.glRotatef(90, 0.0F, -1.0F, 0.0F);
 			// GL11.glScalef(-1.0F, -1.0F, 1.0F);
-			wr.pos(0, 0.5+(height/2f), 0.5-(width/2f)).tex(minU, minV).endVertex();
-			wr.pos(0, 0.5-(height/2f), 0.5-(width/2f)).tex(minU, maxV).endVertex();
-			wr.pos(0, 0.5-(height/2f), 0.5+(width/2f)).tex(maxU, maxV).endVertex();
-			wr.pos(0, 0.5+(height/2f), 0.5+(width/2f)).tex(maxU, minV).endVertex();
+			wr.pos(-0.001, 0.5+(height/2f), 0.5-(width/2f)).tex(minU, minV).endVertex();
+			wr.pos(-0.001, 0.5-(height/2f), 0.5-(width/2f)).tex(minU, maxV).endVertex();
+			wr.pos(-0.001, 0.5-(height/2f), 0.5+(width/2f)).tex(maxU, maxV).endVertex();
+			wr.pos(-0.001, 0.5+(height/2f), 0.5+(width/2f)).tex(maxU, minV).endVertex();
 
 			tessellator.draw();
 			GL11.glPopMatrix();

@@ -20,5 +20,6 @@
   "result": {
     "item": "sevendaystomine:minibike_seat"
   },
-  "recipe": "minibike"
+  "recipe": "minibike",
+  "quality": true
 }

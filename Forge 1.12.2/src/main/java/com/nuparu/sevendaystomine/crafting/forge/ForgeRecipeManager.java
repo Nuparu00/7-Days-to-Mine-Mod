@@ -7,6 +7,8 @@ import java.util.HashMap;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class ForgeRecipeManager {
@@ -29,9 +31,10 @@ public class ForgeRecipeManager {
 	}
 
 	public void addRecipes() {
+		
 		HashMap<EnumMaterial, Integer> ingotiron = new HashMap<EnumMaterial, Integer>();
 		ingotiron.put(EnumMaterial.IRON, 6);
-		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.INGOT_IRON), new ItemStack(ModItems.MOLD_INGOT),
+		addRecipe(new ForgeRecipeMaterial(new ItemStack(Items.IRON_INGOT), new ItemStack(ModItems.MOLD_INGOT),
 				ingotiron));
 		HashMap<EnumMaterial, Integer> ingotbrass1 = new HashMap<EnumMaterial, Integer>();
 		ingotbrass1.put(EnumMaterial.BRASS, 6);
@@ -55,7 +58,7 @@ public class ForgeRecipeManager {
 				ingotzinc));
 		HashMap<EnumMaterial, Integer> ingotgold = new HashMap<EnumMaterial, Integer>();
 		ingotgold.put(EnumMaterial.GOLD, 6);
-		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.INGOT_GOLD), new ItemStack(ModItems.MOLD_INGOT),
+		addRecipe(new ForgeRecipeMaterial(new ItemStack(Items.GOLD_INGOT), new ItemStack(ModItems.MOLD_INGOT),
 				ingotgold));
 		HashMap<EnumMaterial, Integer> ingotsteel = new HashMap<EnumMaterial, Integer>();
 		ingotsteel.put(EnumMaterial.STEEL, 6);
@@ -91,34 +94,37 @@ public class ForgeRecipeManager {
 		bulletTip.put(EnumMaterial.LEAD, 1);
 		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.BULLET_TIP), new ItemStack(ModItems.BULLET_TIP_MOLD),
 				bulletTip));
+		HashMap<EnumMaterial, Integer> glass = new HashMap<EnumMaterial, Integer>();
+		cement.put(EnumMaterial.SAND, 1);
+		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.GLASS_SCRAP), new ItemStack(ModItems.MOLD_INGOT), glass));
 
 		addMaterialRecipe(new ItemStack(ModItems.EMPTY_JAR), new ItemStack(ModItems.EMPTY_JAR_MOLD),
 				new EnumMaterialWrapper(EnumMaterial.GLASS, 3));
-		addMaterialRecipe(new ItemStack(ModItems.PISTOL_SLIDE),
-				new ItemStack(ModItems.PISTOL_BARREL_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON, 2));
-		addMaterialRecipe(new ItemStack(ModItems.PISTOL_TRIGGER),
-				new ItemStack(ModItems.PISTOL_TRIGGER_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON, 4));
+		addMaterialRecipe(new ItemStack(ModItems.PISTOL_SLIDE), new ItemStack(ModItems.PISTOL_BARREL_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 2));
+		addMaterialRecipe(new ItemStack(ModItems.PISTOL_TRIGGER), new ItemStack(ModItems.PISTOL_TRIGGER_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 4));
 		addMaterialRecipe(new ItemStack(ModItems.SNIPER_RIFLE_TRIGGER),
-				new ItemStack(ModItems.SNIPER_RIFLE_TRIGGER_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,6));
-		addMaterialRecipe(new ItemStack(ModItems.SNIPER_RIFLE_STOCK),
-				new ItemStack(ModItems.SNIPER_RIFLE_STOCK_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,6));
-		addMaterialRecipe(new ItemStack(ModItems.SHOTGUN_RECEIVER),
-				new ItemStack(ModItems.SHOTGUN_RECEIVER_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,4));
-		addMaterialRecipe(new ItemStack(ModItems.SHOTGUN_BARREL),
-				new ItemStack(ModItems.SHOTGUN_BARREL_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,3));
+				new ItemStack(ModItems.SNIPER_RIFLE_TRIGGER_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON, 6));
+		addMaterialRecipe(new ItemStack(ModItems.SNIPER_RIFLE_STOCK), new ItemStack(ModItems.SNIPER_RIFLE_STOCK_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 6));
+		addMaterialRecipe(new ItemStack(ModItems.SHOTGUN_RECEIVER), new ItemStack(ModItems.SHOTGUN_RECEIVER_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 4));
+		addMaterialRecipe(new ItemStack(ModItems.SHOTGUN_BARREL), new ItemStack(ModItems.SHOTGUN_BARREL_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 3));
 		addMaterialRecipe(new ItemStack(ModItems.SHOTGUN_BARREL_SHORT),
-				new ItemStack(ModItems.SHOTGUN_SHORT_BARREL_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,2));
-		addMaterialRecipe(new ItemStack(ModItems.MP5_BARREL),
-				new ItemStack(ModItems.MP5_BARREL_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,4));
-		addMaterialRecipe(new ItemStack(ModItems.MP5_TRIGGER),
-				new ItemStack(ModItems.MP5_TRIGGER_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,6));
-		addMaterialRecipe(new ItemStack(ModItems.MP5_STOCK),
-				new ItemStack(ModItems.MP5_STOCK_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,4));
+				new ItemStack(ModItems.SHOTGUN_SHORT_BARREL_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON, 2));
+		addMaterialRecipe(new ItemStack(ModItems.MP5_BARREL), new ItemStack(ModItems.MP5_BARREL_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 4));
+		addMaterialRecipe(new ItemStack(ModItems.MP5_TRIGGER), new ItemStack(ModItems.MP5_TRIGGER_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 6));
+		addMaterialRecipe(new ItemStack(ModItems.MP5_STOCK), new ItemStack(ModItems.MP5_STOCK_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 4));
 		addMaterialRecipe(new ItemStack(ModItems.HUNTING_RIFLE_BARREL),
-				new ItemStack(ModItems.HUNTING_RIFLE_BARREL_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,3));
-		addMaterialRecipe(new ItemStack(ModItems.HUNTING_RIFLE_BOLT),
-				new ItemStack(ModItems.HUNTING_RIFLE_BOLT_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON,4));	
-		
+				new ItemStack(ModItems.HUNTING_RIFLE_BARREL_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON, 3));
+		addMaterialRecipe(new ItemStack(ModItems.HUNTING_RIFLE_BOLT), new ItemStack(ModItems.HUNTING_RIFLE_BOLT_MOLD),
+				new EnumMaterialWrapper(EnumMaterial.IRON, 4));
+
 		// addRecipe(new CampfireRecipeShapeless(new ItemStack(Items.STICK),new
 		// ItemStack(Items.ARROW),new ArrayList(Arrays.asList(new
 		// ItemStack(Items.COAL),new ItemStack(Items.PAPER)))));

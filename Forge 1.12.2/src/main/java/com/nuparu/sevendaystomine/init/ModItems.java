@@ -27,7 +27,7 @@ import com.nuparu.sevendaystomine.item.ItemCircuit;
 import com.nuparu.sevendaystomine.item.ItemClothingChest;
 import com.nuparu.sevendaystomine.item.ItemClothingLegs;
 import com.nuparu.sevendaystomine.item.ItemClub;
-import com.nuparu.sevendaystomine.item.ItemCoffeeBeans;
+import com.nuparu.sevendaystomine.item.ItemCoffeeBerry;
 import com.nuparu.sevendaystomine.item.ItemCoffeeDrink;
 import com.nuparu.sevendaystomine.item.ItemConcreteMix;
 import com.nuparu.sevendaystomine.item.ItemDoorBase;
@@ -119,8 +119,10 @@ public class ModItems {
 	public static final Item EMPTY_JAR = new ItemEmptyJar().setRegistryName("EmptyJar").setUnlocalizedName("EmptyJar");
 	public static final Item GLASS_SCRAP = new ItemScrap(EnumMaterial.GLASS).setRegistryName("ScrapGlass")
 			.setUnlocalizedName("ScrapGlass");
-	public static final Item COFFEE_BEANS = new ItemCoffeeBeans().setRegistryName("CoffeeBeans")
-			.setUnlocalizedName("CoffeeBeans");
+	public static final Item COFFEE_BERRY = new ItemCoffeeBerry().setRegistryName("coffee_berry")
+			.setUnlocalizedName("coffee_berry");
+	public static final Item COFFEE_BEANS = new Item().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("coffee_beans")
+			.setUnlocalizedName("coffee_beans");
 	public static final Item CLOTH = new ItemScrap(EnumMaterial.CLOTH).setRegistryName("Cloth")
 			.setUnlocalizedName("Cloth");
 
@@ -237,8 +239,8 @@ public class ModItems {
 	public static final Item ANTIBIOTICS = new ItemAntibiotics().setRegistryName("Antibiotics")
 			.setUnlocalizedName("Antibiotics");
 
-	public static final Item INGOT_IRON = new ItemScrapable(EnumMaterial.IRON, 6).setRegistryName("IronIngot")
-			.setUnlocalizedName("IronIngot");
+	/*public static final Item INGOT_IRON = new ItemScrapable(EnumMaterial.IRON, 6).setRegistryName("IronIngot")
+			.setUnlocalizedName("IronIngot");*/
 	public static final Item INGOT_LEAD = new ItemScrapable(EnumMaterial.LEAD, 6).setRegistryName("LeadIngot")
 			.setUnlocalizedName("LeadIngot");
 	public static final Item INGOT_BRASS = new ItemScrapable(EnumMaterial.BRASS, 6).setRegistryName("BrassIngot")
@@ -253,8 +255,8 @@ public class ModItems {
 			.setRegistryName("ZincIngot").setUnlocalizedName("ZincIngot");
 	public static final Item INGOT_BRONZE = new ItemScrapable(EnumMaterial.BRONZE, 6).setSmallestBit()
 			.setRegistryName("BronzeIngot").setUnlocalizedName("BronzeIngot");
-	public static final Item INGOT_GOLD = new ItemScrapable(EnumMaterial.GOLD, 6).setRegistryName("GoldIngot")
-			.setUnlocalizedName("GoldIngot");
+	/*public static final Item INGOT_GOLD = new ItemScrapable(EnumMaterial.GOLD, 6).setRegistryName("GoldIngot")
+			.setUnlocalizedName("GoldIngot");*/
 	public static final Item CENT = new ItemScrapable(EnumMaterial.BRASS, 6).setRegistryName("cent")
 			.setUnlocalizedName("cent");
 	public static final Item BACKPACK = new ItemBackpack().setRegistryName("backpack").setUnlocalizedName("backpack");
@@ -282,7 +284,9 @@ public class ModItems {
 			.setUnlocalizedName("bullet_magnum").setCreativeTab(CreativeTabs.COMBAT);
 	public static final Item SHOTGUN_SHELL = new Item().setRegistryName("shotgun_shell")
 			.setUnlocalizedName("shotgun_shell").setCreativeTab(CreativeTabs.COMBAT);
-
+	public static final Item ROCKET = new Item().setRegistryName("rocket")
+			.setUnlocalizedName("rocket").setCreativeTab(CreativeTabs.COMBAT);
+	
 	public static final Item FRIDGE = new ItemRefrigerator().setRegistryName("FridgeItem").setUnlocalizedName("Fridge")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	public static final Item SLEEPING_BAG = new ItemSleepingBag().setRegistryName("SleepingBagItem")
@@ -692,4 +696,10 @@ public class ModItems {
 			.setUnlocalizedName("crude_bow");
 	public static final Item COMPOUND_BOW = new ItemQualityBow(2.4,1.33f).setMaxDamage(50).setRegistryName("compound_bow")
 			.setUnlocalizedName("compound_bow");
+	
+	public static final Item SAND_DUST = new ItemScrap(EnumMaterial.SAND).setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("sand_dust")
+			.setUnlocalizedName("sand_dust");
+	
+	public static final Item VOMIT = new Item().setRegistryName("vomit")
+			.setUnlocalizedName("vomit");
 }

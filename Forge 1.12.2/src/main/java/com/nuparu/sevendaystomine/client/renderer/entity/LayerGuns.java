@@ -87,10 +87,11 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 						GlStateManager.translate(-0.225, 0.2, 0.16);
 						GlStateManager.rotate(-90, 0, 1, 0);
 					}
-					if (item instanceof ItemStoneShovel) {
+					else if (item instanceof ItemStoneShovel) {
 						GlStateManager.translate(-0.225, 0.25, 0.16);
 						GlStateManager.scale(0.875, 0.875, 0.875);
-					} else if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemBow || item instanceof ItemHoe) {
+					}
+					else if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemBow || item instanceof ItemHoe) {
 						GlStateManager.translate(0.75, 0.45, -0.2825);
 						GlStateManager.rotate(90, 0, 0, 1);
 					} else {
@@ -125,7 +126,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 						GlStateManager.rotate(-90, 1, 0, 0);
 						GlStateManager.scale(0.3625, 0.3625, 0.3625);
 					}
-					if (item instanceof ItemQualitySword) {
+					else if (item instanceof ItemQualitySword) {
 						GlStateManager.translate(0, 0.7, 0);
 						GlStateManager.rotate(
 								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleX),
@@ -135,10 +136,11 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 								0, 1, 0);
 						GlStateManager.translate(0, -0.7, 0);
 						GlStateManager.translate(-0.255, 1, -0.025);
-						GlStateManager.rotate(180, 0, 1, 0);
+						GlStateManager.rotate(90, 0, 1, 0);
+						GlStateManager.rotate(270, 0, 0, 1);
 						GlStateManager.scale(0.3625, 0.3625, 0.3625);
 					}
-					if (item instanceof ItemQualityTool) {
+					else if (item instanceof ItemQualityTool) {
 						GlStateManager.translate(0, 0.7, 0);
 						GlStateManager.rotate(
 								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleX),
@@ -152,7 +154,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 						GlStateManager.rotate(180, 0, 1, 0);
 						GlStateManager.scale(0.3625, 0.3625, 0.3625);
 					}
-					if (item instanceof ItemScrewdriver) {
+					else if (item instanceof ItemScrewdriver) {
 						GlStateManager.translate(0, 0.7, 0);
 						GlStateManager.rotate(
 								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleX),
@@ -194,7 +196,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 						GlStateManager.rotate(-90, 1, 0, 0);
 						GlStateManager.scale(0.3625, 0.3625, 0.3625);
 					}
-					if (item instanceof ItemQualitySword) {
+					else if (item instanceof ItemQualitySword) {
 						GlStateManager.translate(0, 0.7, 0);
 						GlStateManager.rotate(
 								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleX),
@@ -204,10 +206,11 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 								0, 1, 0);
 						GlStateManager.translate(0, -0.7, 0);
 						GlStateManager.translate(0.255, 1, -0.025);
-						GlStateManager.rotate(180, 0, 1, 0);
+						GlStateManager.rotate(90, 0, 1, 0);
+						GlStateManager.rotate(270, 0, 0, 1);
 						GlStateManager.scale(0.3625, 0.3625, 0.3625);
 					}
-					if (item instanceof ItemQualityTool) {
+					else if (item instanceof ItemQualityTool) {
 						GlStateManager.translate(0, 0.7, 0);
 						GlStateManager.rotate(
 								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleX),
@@ -221,7 +224,7 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 						GlStateManager.rotate(180, 0, 1, 0);
 						GlStateManager.scale(0.3625, 0.3625, 0.3625);
 					}
-					if (item instanceof ItemScrewdriver) {
+					else if (item instanceof ItemScrewdriver) {
 						GlStateManager.translate(0, 0.7, 0);
 						GlStateManager.rotate(
 								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleX),

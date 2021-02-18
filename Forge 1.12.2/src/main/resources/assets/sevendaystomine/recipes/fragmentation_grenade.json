@@ -16,8 +16,9 @@
       "item": "minecraft:gunpowder"
     },
     "I": {
-      "item": "sevendaystomine:ironingot"
-    }
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+}
   },
   "result": {
     "item": "sevendaystomine:fragmentation_grenade"

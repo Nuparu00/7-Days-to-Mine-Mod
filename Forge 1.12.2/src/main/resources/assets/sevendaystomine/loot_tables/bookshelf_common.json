@@ -7,9 +7,13 @@
                 "max": 4
             },
             "entries": [
+           	 	{
+                    "type": "empty",
+                    "weight": 10
+                },
                 {
                     "type": "item",
-                    "weight": 55,
+                    "weight": 25,
                     "name": "minecraft:paper"
                 },
                 {

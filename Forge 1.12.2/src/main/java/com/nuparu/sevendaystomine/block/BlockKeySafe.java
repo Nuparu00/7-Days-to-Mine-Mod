@@ -4,6 +4,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SyncTileEntityMessage;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCodeSafe;
 import com.nuparu.sevendaystomine.tileentity.TileEntityFileCabinet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityKeySafe;
 
@@ -70,30 +71,19 @@ public class BlockKeySafe extends BlockSafe<TileEntityKeySafe> {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te != null && te instanceof TileEntityKeySafe) {
 			TileEntityKeySafe safe = (TileEntityKeySafe) te;
-
 			if (!worldIn.isRemote) {
 				PacketManager.syncTileEntity.sendTo(new SyncTileEntityMessage(te.writeToNBT(new NBTTagCompound()), pos),
 						(EntityPlayerMP) playerIn);
-				System.out.println(safe.superSecretMethod());
 			}
-			if (!safe.locked) {
-				if (!playerIn.isSneaking()) {
-					if (!worldIn.isRemote) {
-						playerIn.openGui(SevenDaysToMine.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
-					}
-				}
-				else {
-					playerIn.openGui(SevenDaysToMine.instance, 4, worldIn, pos.getX(), pos.getY(), pos.getZ());
-				}
+			if (!safe.locked && !playerIn.isSneaking()) {
+				playerIn.openGui(SevenDaysToMine.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			} else {
-				playerIn.openGui(SevenDaysToMine.instance, 4, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				SevenDaysToMine.proxy.openClientSideGui(1, pos.getX(), pos.getY(), pos.getZ());
 			}
 		}
-
 		return true;
 	}
 	

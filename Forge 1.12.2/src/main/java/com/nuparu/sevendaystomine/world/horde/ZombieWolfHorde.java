@@ -37,8 +37,6 @@ public class ZombieWolfHorde extends Horde {
 			new TextComponentTranslation("horde.wolf.name"), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS))
 					.setDarkenSky(true);
 
-	public EntityPlayer player;
-
 	public static final int MIN_DISTANCE = 30;
 
 	public ZombieWolfHorde(World world) {

@@ -8,6 +8,8 @@ import com.nuparu.sevendaystomine.network.packets.BreakSyncHandler;
 import com.nuparu.sevendaystomine.network.packets.BreakSyncMessage;
 import com.nuparu.sevendaystomine.network.packets.BulletImpactHandler;
 import com.nuparu.sevendaystomine.network.packets.BulletImpactMessage;
+import com.nuparu.sevendaystomine.network.packets.CameraDimensionsMessage;
+import com.nuparu.sevendaystomine.network.packets.CameraDimensionsHandler;
 import com.nuparu.sevendaystomine.network.packets.ControllableKeyUpdateHandler;
 import com.nuparu.sevendaystomine.network.packets.ControllableKeyUpdateMessage;
 import com.nuparu.sevendaystomine.network.packets.DialogueSelectionHandler;
@@ -30,6 +32,8 @@ import com.nuparu.sevendaystomine.network.packets.SafeCodeHandler;
 import com.nuparu.sevendaystomine.network.packets.SafeCodeMessage;
 import com.nuparu.sevendaystomine.network.packets.SaveDataHandler;
 import com.nuparu.sevendaystomine.network.packets.SaveDataMessage;
+import com.nuparu.sevendaystomine.network.packets.SchedulePhotoHandler;
+import com.nuparu.sevendaystomine.network.packets.SchedulePhotoMessage;
 import com.nuparu.sevendaystomine.network.packets.SendPacketHandler;
 import com.nuparu.sevendaystomine.network.packets.SendPacketMessage;
 import com.nuparu.sevendaystomine.network.packets.StartProcessHandler;
@@ -77,6 +81,8 @@ public class PacketManager {
 	public static SimpleNetworkWrapper sendPacket;
 	public static SimpleNetworkWrapper applyRecoil;
 	public static SimpleNetworkWrapper bulletImpact;
+	public static SimpleNetworkWrapper schedulePhoto;
+	public static SimpleNetworkWrapper cameraDimensions;
 
 	private static int discriminator = 0;
 
@@ -162,5 +168,12 @@ public class PacketManager {
 		bulletImpact = NetworkRegistry.INSTANCE.newSimpleChannel("bulletImpact");
 		bulletImpact.registerMessage(new BulletImpactHandler(), BulletImpactMessage.class, discriminator++,
 				Side.CLIENT);
+
+		schedulePhoto = NetworkRegistry.INSTANCE.newSimpleChannel("schedulePhoto");
+		schedulePhoto.registerMessage(new SchedulePhotoHandler(), SchedulePhotoMessage.class, discriminator++,
+				Side.CLIENT);
+		
+		cameraDimensions = NetworkRegistry.INSTANCE.newSimpleChannel("cameraDimensions");
+		cameraDimensions.registerMessage(new CameraDimensionsHandler(), CameraDimensionsMessage.class, discriminator++, Side.SERVER);
 	}
 }

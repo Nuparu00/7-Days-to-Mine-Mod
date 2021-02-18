@@ -36,7 +36,7 @@ public class BlockMicrowave extends BlockTileProvider<TileEntityMicrowave> {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
 	public BlockMicrowave() {
-		super(Material.GROUND);
+		super(Material.IRON);
 		setSoundType(SoundType.METAL);
 		this.setHardness(1.8F);
 		this.setResistance(4.0F);

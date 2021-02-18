@@ -1,6 +1,8 @@
 package com.nuparu.sevendaystomine.block;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.item.EnumMaterial;
+import com.nuparu.sevendaystomine.item.IScrapable;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCupboard;
 
 import net.minecraft.block.BlockHorizontal;
@@ -22,13 +24,16 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockCupboard extends BlockTileProvider<TileEntityCupboard> {
+public class BlockCupboard extends BlockTileProvider<TileEntityCupboard> implements IScrapable {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-
+	
+	private EnumMaterial material = EnumMaterial.IRON;
+	private int weight = 30;
+	
 	public BlockCupboard() {
-		super(Material.WOOD);
-		setSoundType(SoundType.WOOD);
+		super(Material.IRON);
+		setSoundType(SoundType.METAL);
 		setHardness(2.5F);
 		setResistance(7.0F);
 		setHarvestLevel("pickaxe", 0);
@@ -91,6 +96,31 @@ public class BlockCupboard extends BlockTileProvider<TileEntityCupboard> {
 		}
 
 		super.breakBlock(worldIn, pos, state);
+	}
+	
+	@Override
+	public void setMaterial(EnumMaterial mat) {
+		material = mat;
+	}
+
+	@Override
+	public EnumMaterial getMaterial() {
+		return material;
+	}
+
+	@Override
+	public void setWeight(int newWeight) {
+		weight = newWeight;
+	}
+
+	@Override
+	public int getWeight() {
+		return weight;
+	}
+
+	@Override
+	public boolean canBeScraped() {
+		return true;
 	}
 
 	public IBlockState withRotation(IBlockState state, Rotation rot) {

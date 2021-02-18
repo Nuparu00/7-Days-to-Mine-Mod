@@ -43,6 +43,7 @@ public class BuildingHospital extends Building {
 	public BuildingHospital(ResourceLocation res, int weight, int yOffset) {
 		super(res, weight, yOffset);
 		setAllowedCityTypes(EnumCityType.CITY);
+		setPedestal(ModBlocks.STRUCTURE_STONE.getDefaultState());
 	}
 
 	@Override
@@ -72,6 +73,7 @@ public class BuildingHospital extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			coverWithSand(world, pos, template, facing, mirror,rand);
 			BlockPos size = template.getSize();
 			template = templatemanager.getTemplate(minecraftserver, res);
 			if (template == null) {
@@ -87,6 +89,7 @@ public class BuildingHospital extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			coverWithSand(world, pos, template, facing, mirror,rand);
 			template = templatemanager.getTemplate(minecraftserver, BACK_LEFT);
 			if (template == null) {
 				return;
@@ -100,6 +103,7 @@ public class BuildingHospital extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			coverWithSand(world, pos, template, facing, mirror,rand);
 			template = templatemanager.getTemplate(minecraftserver, BACK_RIGHT);
 			if (template == null) {
 				return;
@@ -113,6 +117,7 @@ public class BuildingHospital extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			coverWithSand(world, pos, template, facing, mirror,rand);
 
 		}
 	}

@@ -37,7 +37,7 @@ public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0D, 0.0D, 0D, 1D, 0.25D, 1D);
 
 	public BlockCampfire(boolean isBurning) {
-		super(Material.GROUND);
+		super(Material.ROCK);
 		this.isBurning = isBurning;
 		setHardness(1.8F);
 		setResistance(2.0F);

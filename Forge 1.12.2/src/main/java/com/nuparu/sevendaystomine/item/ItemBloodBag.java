@@ -17,7 +17,7 @@ public class ItemBloodBag extends Item {
 	
 	public ItemBloodBag() {
 		setMaxDamage(0);
-		maxStackSize = 16;
+		maxStackSize = 8;
 		setCreativeTab(SevenDaysToMine.TAB_MEDICINE);
 	}
 

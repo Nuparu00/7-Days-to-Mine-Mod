@@ -19,7 +19,7 @@ public class ItemBandage extends Item implements IScrapable {
 
 	public ItemBandage() {
 		setMaxDamage(0);
-		maxStackSize = 16;
+		maxStackSize = 8;
 		setCreativeTab(SevenDaysToMine.TAB_MEDICINE);
 
 	}

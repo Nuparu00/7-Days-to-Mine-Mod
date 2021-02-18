@@ -27,7 +27,7 @@ public class BlockSinkFaucet extends BlockHorizontalBase implements IScrapable {
 	private int weight = 3;
 
 	public BlockSinkFaucet() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		this.setSoundType(SoundType.METAL);
 		this.setHardness(1f);
 		this.setResistance(2f);

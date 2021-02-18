@@ -93,7 +93,7 @@ public class TileEntitySleepingBagRenderer extends TileEntitySpecialRenderer<Til
 			f2 += 0.5f;
 		}
 
-		GlStateManager.translate((float) x + f1, (float) y + 1.5625F, (float) z + f2);
+		GlStateManager.translate((float) x + f1, (float) y + 1.5F, (float) z + f2);
 		GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
 		GlStateManager.rotate(f, 0.0F, 1.0F, 0.0F);
 		GlStateManager.enableRescaleNormal();

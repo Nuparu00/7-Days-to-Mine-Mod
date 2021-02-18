@@ -91,6 +91,7 @@ public class BuildingPoliceStation extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			coverWithSand(world, pos, template, facing, mirror,rand);
 		}
 	}
 

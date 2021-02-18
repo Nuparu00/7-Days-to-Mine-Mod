@@ -46,24 +46,32 @@ public class ContainerBig extends Container {
 		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = this.inventorySlots.get(index);
 
-		if (slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+		 if (slot != null && slot.getHasStack())
+	        {
+	            ItemStack itemstack1 = slot.getStack();
+	            itemstack = itemstack1.copy();
 
-			if (index < 36) {
-				if (!this.mergeItemStack(itemstack1, 36, this.inventorySlots.size(), true)) {
-					return ItemStack.EMPTY;
-				}
-			} else if (!this.mergeItemStack(itemstack1, 0, 36, false)) {
-				return ItemStack.EMPTY;
-			}
+	            if (index < 27)
+	            {
+	                if (!this.mergeItemStack(itemstack1, 27, this.inventorySlots.size(), true))
+	                {
+	                    return ItemStack.EMPTY;
+	                }
+	            }
+	            else if (!this.mergeItemStack(itemstack1, 0, 27, false))
+	            {
+	                return ItemStack.EMPTY;
+	            }
 
-			if (itemstack1.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-		}
+	            if (itemstack1.isEmpty())
+	            {
+	                slot.putStack(ItemStack.EMPTY);
+	            }
+	            else
+	            {
+	                slot.onSlotChanged();
+	            }
+	        }
 
 		return itemstack;
 	}

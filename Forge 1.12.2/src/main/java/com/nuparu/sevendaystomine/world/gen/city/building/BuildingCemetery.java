@@ -68,12 +68,12 @@ public class BuildingCemetery extends Building {
 					.setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot).setIgnoreEntities(false)
 					.setChunk((ChunkPos) null).setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
 
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 			
 			template = templatemanager.getTemplate(minecraftserver, REST);
 			pos = pos.offset(facing, -32);
 			template = templatemanager.getTemplate(minecraftserver, REST);
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 			
 		}
 	}

@@ -21,7 +21,7 @@ public class TaskbarButton extends Button {
 		super(x, y, width, height, screen, "", 0);
 		this.process = process;
 		if (process.getApp() != null) {
-			this.text = process.getApp().getLocalizedName();
+			this.setText(process.getApp().getLocalizedName());
 		}
 		this.hovered = new ColorRGBA(1d, 1d, 1d);
 		this.normal = new ColorRGBA(1d, 1d, 1d);

@@ -46,7 +46,9 @@ public class CapabilityHandler {
 		for (String s : oldExtendedPlayer.getRecipes()) {
 			extendedPlayer.unlockRecipe(s);
 		}
-		extendedPlayer.setHorde(oldExtendedPlayer.hasHorde());
+		extendedPlayer.setHorde(oldExtendedPlayer.getHorde());
+		extendedPlayer.setWolfHorde(oldExtendedPlayer.getWolfHorde());
+		extendedPlayer.setBloodmoon(oldExtendedPlayer.getBloodmoon());
 
 		if (!event.isWasDeath()) {
 			extendedPlayer.copy(oldExtendedPlayer);

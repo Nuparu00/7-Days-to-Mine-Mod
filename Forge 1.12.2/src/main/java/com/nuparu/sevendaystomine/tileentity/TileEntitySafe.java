@@ -35,7 +35,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public abstract class TileEntitySafe extends TileEntityItemHandler<ItemHandlerNameable> implements ITickable {
 
-	public static final ITextComponent DEFAULT_NAME = new TextComponentTranslation("container.turret");
+	public static final ITextComponent DEFAULT_NAME = new TextComponentTranslation("container.safe");
 
 	private String customName;
 	public boolean locked = true;

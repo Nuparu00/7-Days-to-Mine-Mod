@@ -26,25 +26,27 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.mojang.authlib.GameProfile;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.IUpgradeable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
-import com.nuparu.sevendaystomine.capability.IExtendedChunk;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
+import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.item.ItemGun.EnumWield;
-import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.dialogue.Dialogues;
 import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 import com.nuparu.sevendaystomine.world.gen.RoadDecoratorWorldGen;
@@ -60,7 +62,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -76,8 +77,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -88,9 +89,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -1066,5 +1066,75 @@ public class Utils {
 		world.setBlockState(new BlockPos(minX, 50, minZ), Blocks.REDSTONE_BLOCK.getDefaultState());
 		world.setBlockState(new BlockPos(maxX, 50, maxZ), Blocks.GOLD_BLOCK.getDefaultState());
 
+	}
+	
+	public static RayTraceResult raytraceEntities(EntityZombieBase entity, double dst) {
+
+        Entity pointedEntity = null;
+		
+        Vec3d vec3d = entity.getPositionEyes(1);
+        
+        RayTraceResult r = entity.rayTraceServer(dst, 1);
+        double d1 = dst;
+        if(r != null && r.typeOfHit == RayTraceResult.Type.BLOCK) {
+        	d1= r.hitVec.distanceTo(vec3d);
+        }
+        
+        Vec3d vec3d1 = entity.getLook(1.0F);
+        Vec3d vec3d2 = vec3d.addVector(vec3d1.x * dst, vec3d1.y * dst, vec3d1.z * dst);
+        List<Entity> list = entity.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().expand(vec3d1.x * dst, vec3d1.y * dst, vec3d1.z * dst).grow(1.0D, 1.0D, 1.0D), Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>()
+        {
+            public boolean apply(@Nullable Entity p_apply_1_)
+            {
+                return p_apply_1_ != null && p_apply_1_.canBeCollidedWith();
+            }
+        }));
+        
+        Vec3d vec3d3 = null;
+        double d2 = d1;
+        for (int j = 0; j < list.size(); ++j)
+        {
+            Entity entity1 = list.get(j);
+            AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow((double)entity1.getCollisionBorderSize());
+            RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d, vec3d2);
+
+            if (axisalignedbb.contains(vec3d))
+            {
+                if (d2 >= 0.0D)
+                {
+                    pointedEntity = entity1;
+                    vec3d3 = raytraceresult == null ? vec3d : raytraceresult.hitVec;
+                    d2 = 0.0D;
+                }
+            }
+            else if (raytraceresult != null)
+            {
+                double d3 = vec3d.distanceTo(raytraceresult.hitVec);
+
+                if (d3 < d2 || d2 == 0.0D)
+                {
+                    if (entity1.getLowestRidingEntity() == entity.getLowestRidingEntity() && !entity1.canRiderInteract())
+                    {
+                        if (d2 == 0.0D)
+                        {
+                            pointedEntity = entity1;
+                            vec3d3 = raytraceresult.hitVec;
+                        }
+                    }
+                    else
+                    {
+                        pointedEntity = entity1;
+                        vec3d3 = raytraceresult.hitVec;
+                        d2 = d3;
+                    }
+                }
+            }
+        }
+        
+        if(pointedEntity != null) {
+        	return new RayTraceResult(pointedEntity, vec3d3);
+        }
+        vec3d3 = new Vec3d(0,-1,0);
+        return new RayTraceResult(RayTraceResult.Type.MISS, vec3d3, (EnumFacing)null, new BlockPos(vec3d3));
 	}
 }

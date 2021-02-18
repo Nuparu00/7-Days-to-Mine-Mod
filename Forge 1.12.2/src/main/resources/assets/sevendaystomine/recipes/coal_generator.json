@@ -10,8 +10,9 @@
       "item": "minecraft:furnace"
     },
     "I": {
-      "item": "sevendaystomine:ironingot"
-    },
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+},
     "S": {
       "item": "sevendaystomine:iron_pipe"
     },

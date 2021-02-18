@@ -1,0 +1,16 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "BB",
+      "BB"
+   ],
+   "key":{
+      "B":{
+         "item":"sevendaystomine:basalt"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:basaltbricks",
+      "count":4
+   }
+}

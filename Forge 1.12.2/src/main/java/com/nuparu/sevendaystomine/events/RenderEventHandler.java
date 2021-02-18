@@ -196,16 +196,13 @@ public class RenderEventHandler {
 
 		if (aiming && gun != null) {
 			/*
-			if (this.handPos == EnumHandPos.PISTOL_ONE) {
-				GlStateManager.translate(-0.2, 0.1,-0.25);
-				GlStateManager.rotate(0, 0.0F, 1, 0.0F);
-			}
-			else {
-				GlStateManager.translate(-0.43, 0.1, 0);
-				GlStateManager.rotate(0, 0.0F, 1, 0.0F);
-			}*/
+			 * if (this.handPos == EnumHandPos.PISTOL_ONE) { GlStateManager.translate(-0.2,
+			 * 0.1,-0.25); GlStateManager.rotate(0, 0.0F, 1, 0.0F); } else {
+			 * GlStateManager.translate(-0.43, 0.1, 0); GlStateManager.rotate(0, 0.0F, 1,
+			 * 0.0F); }
+			 */
 			Vec3d pos = gun.getAimPosition();
-			//Vec3d pos = new Vec3d(-0.025, -0.025, -0.4);
+			// Vec3d pos = new Vec3d(-0.025, -0.025, -0.4);
 			GlStateManager.translate(pos.x, pos.y, pos.z);
 		}
 
@@ -263,8 +260,12 @@ public class RenderEventHandler {
 
 		if (item_main instanceof ItemGun) {
 			gun_main = (ItemGun) item_main;
-		}
+		} else if (item_main == ModItems.ANALOG_CAMERA && player.getItemInUseCount() > 0
+				|| ClientEventHandler.takingPhoto) {
+			event.setCanceled(true);
+			return;
 
+		}
 		if (item_sec instanceof ItemGun) {
 			gun_sec = (ItemGun) item_sec;
 		}
@@ -278,7 +279,8 @@ public class RenderEventHandler {
 
 		if (gun_main != null && gun_main.getWield() == EnumWield.DUAL) {
 			if (gun_sec == null) {
-				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped() && gun_main.getFOVFactor(main) != 1);
+				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
 				gun = gun_main;
 				handPos = EnumHandPos.PISTOL_ONE;
 				return;
@@ -289,7 +291,8 @@ public class RenderEventHandler {
 			}
 		}
 		if (gun_sec != null && gun_sec.getWield() == EnumWield.DUAL) {
-			aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped() && gun_sec.getFOVFactor(sec) != 1);
+			aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
+					&& gun_sec.getFOVFactor(sec) != 1);
 			gun = gun_sec;
 			handPos = EnumHandPos.PISTOL_ONE;
 			return;
@@ -297,13 +300,15 @@ public class RenderEventHandler {
 		if (gun_main != null) {
 			EnumWield wield = gun_main.getWield();
 			if (wield == EnumWield.ONE_HAND) {
-				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped() && gun_main.getFOVFactor(main) != 1);
+				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
 				gun = gun_main;
 				handPos = EnumHandPos.LONG_ONE;
 				return;
 			}
 			if (wield == EnumWield.TWO_HAND) {
-				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped() && gun_main.getFOVFactor(main) != 1);
+				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
 				gun = gun_main;
 				handPos = EnumHandPos.LONG_ONE;
 				return;
@@ -313,13 +318,17 @@ public class RenderEventHandler {
 		if (gun_sec != null) {
 			EnumWield wield = gun_sec.getWield();
 			if (wield == EnumWield.ONE_HAND) {
-				aiming = gun_main != null ? false : (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped() && gun_sec.getFOVFactor(sec) != 1);
+				aiming = gun_main != null ? false
+						: (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
+								&& gun_sec.getFOVFactor(sec) != 1);
 				gun = gun_sec;
 				handPos = EnumHandPos.LONG_ONE;
 				return;
 			}
 			if (wield == EnumWield.TWO_HAND) {
-				aiming = gun_main != null ? false : (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped() && gun_sec.getFOVFactor(sec) != 1);
+				aiming = gun_main != null ? false
+						: (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
+								&& gun_sec.getFOVFactor(sec) != 1);
 				gun = gun_sec;
 				handPos = EnumHandPos.LONG_ONE;
 				return;

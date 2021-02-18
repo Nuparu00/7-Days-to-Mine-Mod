@@ -1,9 +1,10 @@
 {
    "type":"sevendaystomine:crafting_locked_shapeless",
     "ingredients": [
-        {
-            "item": "sevendaystomine:ironingot"
-        },
+{
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+},
         {
             "item": "minecraft:paper"
         },

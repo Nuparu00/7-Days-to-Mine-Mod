@@ -91,6 +91,7 @@ public class BuildingOvergrownHouse extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(),mirror, variant);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			coverWithSand(world, pos, template, facing, mirror,rand);
 		}
 	}
 

@@ -33,6 +33,7 @@ public class BlockBoards extends BlockHorizontalBase {
 	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
+		if(facing == EnumFacing.UP || facing == EnumFacing.DOWN) facing = placer.getHorizontalFacing();
         return this.getDefaultState().withProperty(FACING, facing);
     }
 

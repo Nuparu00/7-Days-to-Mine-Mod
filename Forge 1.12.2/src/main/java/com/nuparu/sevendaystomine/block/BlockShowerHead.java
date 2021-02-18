@@ -27,7 +27,7 @@ public class BlockShowerHead extends BlockHorizontalBase implements IScrapable {
 	private int weight = 3;
 
 	public BlockShowerHead() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		this.setSoundType(SoundType.METAL);
 		this.setHardness(1f);
 		this.setResistance(2f);

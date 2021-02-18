@@ -34,7 +34,7 @@ public class BlockRazorWire extends BlockTileProvider<TileEntityWoodenSpikes> im
 	private int weight = 6;
 
 	public BlockRazorWire() {
-		super(Material.WOOD);
+		super(Material.IRON);
 		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		this.setHardness(2f);

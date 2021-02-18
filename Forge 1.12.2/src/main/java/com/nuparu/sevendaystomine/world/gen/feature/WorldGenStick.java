@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.BiomeDictionary;
 
 public class WorldGenStick extends WorldGenerator {
 
@@ -22,6 +23,7 @@ public class WorldGenStick extends WorldGenerator {
 	public boolean generate(World worldIn, Random rand, BlockPos pos) {
 		pos = pos.add(8, 0, 8);
 		Biome biome = worldIn.provider.getBiomeForCoords(pos);
+		if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY)) return false;
 		IBlockState toPlace = ((BlockStick) com.nuparu.sevendaystomine.init.ModBlocks.STICK)
 				.getRandomVariant(rand);
 		int y = Utils.getTopSolidGroundHeight(pos, worldIn);

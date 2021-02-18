@@ -11,11 +11,14 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -27,7 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFruitBush extends net.minecraft.block.BlockBush implements IGrowable {
+public class BlockFruitBush extends net.minecraft.block.BlockBush implements IGrowable, IBlockBase{
 
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 7);
 
@@ -319,5 +322,39 @@ public class BlockFruitBush extends net.minecraft.block.BlockBush implements IGr
 
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { AGE });
+	}
+
+	public boolean metaItemBlock() {
+    	return false;
+    }
+    
+    public ItemBlock createItemBlock() {
+    	return new ItemBlock(this);
+    }
+    public static ItemBlock createItemBlock(Block block) {
+    	return new ItemBlock(block);
+    }
+    
+    @Override
+	@SideOnly(Side.CLIENT)
+    public boolean hasCustomStateMapper() {
+		return false;
+	}
+	@Override
+    @SideOnly(Side.CLIENT)
+    public IStateMapper getStateMapper(){
+		return null;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasCustomItemMesh() {
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ItemMeshDefinition getItemMesh() {
+		return null;
 	}
 }

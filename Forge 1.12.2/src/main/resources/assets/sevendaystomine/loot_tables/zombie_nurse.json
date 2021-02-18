@@ -16,7 +16,7 @@
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 8
+                                "max": 4
                             }
                         }
                     ]
@@ -107,22 +107,8 @@
                     ]
                 },
                 {
-                    "type": "item",
-                    "weight": 30,
-                    "name": "sevendaystomine:cent",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 6
-                            }
-                        }
-                    ]
-                },
-                {
                     "type": "empty",
-                    "weight": 150
+                    "weight": 250
                 },
                 {
                     "type": "item",
@@ -146,7 +132,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 3,
+                    "weight": 1,
                     "name": "sevendaystomine:stethoscope"
                 }
             ]

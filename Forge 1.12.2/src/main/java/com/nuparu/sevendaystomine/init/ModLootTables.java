@@ -38,4 +38,6 @@ public class ModLootTables {
 	public static final ResourceLocation COFFIN = new ResourceLocation(SevenDaysToMine.MODID,"coffin");
 	public static final ResourceLocation ZOMBIE_FERAL = new ResourceLocation(SevenDaysToMine.MODID,"zombie_feral");
 	public static final ResourceLocation ZOMBIE_SOLDIER = new ResourceLocation(SevenDaysToMine.MODID,"zombie_soldier");
+	public static final ResourceLocation TRAPPED_CHEST = new ResourceLocation(SevenDaysToMine.MODID,"trapped_chest");
+	public static final ResourceLocation POLICE_CAR = new ResourceLocation(SevenDaysToMine.MODID,"police_car");
 }

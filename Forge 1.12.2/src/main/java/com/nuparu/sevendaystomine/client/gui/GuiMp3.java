@@ -108,7 +108,7 @@ public class GuiMp3 extends GuiScreen {
 		try {
 
 			ArrayList<Audio> arrayList = new ArrayList<Audio>();
-			DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "*.{wav,mp3}");
+			DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "*.{wav}");
 			/*
 			 * int previousY = this.guiTop+42-20; i = 0;
 			 */
@@ -128,9 +128,10 @@ public class GuiMp3 extends GuiScreen {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
-				finally {
-					audioStream.close();
+				} finally {
+					if (audioStream != null) {
+						audioStream.close();
+					}
 				}
 				arrayList.add(audio);
 			}
@@ -720,7 +721,8 @@ public class GuiMp3 extends GuiScreen {
 			if (mouseX >= x && mouseX <= x + xSize && mouseY >= y && mouseY <= y + ySize) {
 				double part = (double) (mouseX - x) / xSize;
 				AudioPlayer player = MP3Helper.getAudioPlayer();
-				if(player == null || player.getAudioClip() == null) return;
+				if (player == null || player.getAudioClip() == null)
+					return;
 				player.getAudioClip().setMicrosecondPosition(
 						(long) ((MP3Helper.getAudioPlayer().getDurationInSecs() * 1000000) * part));
 			}

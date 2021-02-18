@@ -69,7 +69,6 @@ public class LivingEventHandler {
 	}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
 	public void onEntityAttack(LivingAttackEvent event) {
 		DamageSource source = event.getSource();
 		float amount = event.getAmount();
@@ -88,7 +87,7 @@ public class LivingEventHandler {
 				return;
 			}
 			if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityZombieBase) {
-				if (world.rand.nextInt(15) == 0) {
+				if (world.rand.nextInt(8) == 0) {
 					Utils.infectPlayer(player, 0);
 				}
 			}

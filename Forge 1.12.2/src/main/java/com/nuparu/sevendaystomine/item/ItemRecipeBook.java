@@ -81,6 +81,7 @@ public class ItemRecipeBook extends ItemGuide {
 		if(Minecraft.getMinecraft().player == null) return;
 		boolean known = CapabilityHelper.getExtendedPlayer(Minecraft.getMinecraft().player).hasRecipe(recipe);
 		tooltip.add(known ? TextFormatting.GREEN +  SevenDaysToMine.proxy.localize("stat.known.name") : TextFormatting.RED + SevenDaysToMine.proxy.localize("stat.unknown.name"));
+		tooltip.add(isRead(stack) ? TextFormatting.GREEN +  SevenDaysToMine.proxy.localize("stat.used.name") : TextFormatting.RED + SevenDaysToMine.proxy.localize("stat.unused.name"));
 	}
 
 }

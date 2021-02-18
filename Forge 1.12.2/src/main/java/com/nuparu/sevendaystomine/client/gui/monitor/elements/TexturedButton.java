@@ -36,7 +36,7 @@ public class TexturedButton extends Button {
 			}
 			GL11.glTranslated(x + (width / 2), y, zLevel + 2);
 
-			String localized = SevenDaysToMine.proxy.localize(text);
+			String localized = SevenDaysToMine.proxy.localize(getText());
 			if (fontSize != 1) {
 				GlStateManager.scale(fontSize, fontSize, 1);
 				GL11.glTranslated(0, (height * fontSize) / 2d, 0);

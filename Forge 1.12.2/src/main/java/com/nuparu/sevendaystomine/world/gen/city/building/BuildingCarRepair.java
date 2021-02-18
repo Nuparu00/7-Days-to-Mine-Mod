@@ -54,13 +54,13 @@ public class BuildingCarRepair extends Building {
 
 			pos = pos.up(yOffset);
 
-			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal);
+			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal,rand);
 			pos = pos.offset(facing.rotateY(), mirror ? 32 : -32);
 			template = templatemanager.getTemplate(minecraftserver, REST);
 			if (template == null) {
 				return;
 			}
-			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal);
+			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal,rand);
 
 		}
 	}

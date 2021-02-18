@@ -33,7 +33,7 @@ public class BlockCatwalkBase extends BlockBase implements IScrapable {
 	private int weight = 2;
 
 	public BlockCatwalkBase() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, EnumBlockCatwalk.BOTTOM));

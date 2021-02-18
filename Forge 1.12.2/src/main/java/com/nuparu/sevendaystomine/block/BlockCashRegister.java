@@ -43,7 +43,7 @@ public class BlockCashRegister extends BlockTileProvider<TileEntityCashRegister>
 	private int weight = 2;
 
 	public BlockCashRegister() {
-		super(Material.GROUND);
+		super(Material.IRON);
 		setSoundType(SoundType.METAL);
 		this.setHardness(1);
 		this.setResistance(1.5F);

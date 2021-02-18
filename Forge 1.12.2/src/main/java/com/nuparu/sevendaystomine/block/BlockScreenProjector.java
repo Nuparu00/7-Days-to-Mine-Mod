@@ -36,7 +36,7 @@ public class BlockScreenProjector extends BlockTileProvider<TileEntityScreenProj
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
 	public BlockScreenProjector() {
-		super(Material.GROUND);
+		super(Material.IRON);
 		this.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
 		this.setSoundType(SoundType.METAL);
 		this.setHardness(1.4F);

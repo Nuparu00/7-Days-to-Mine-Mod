@@ -71,31 +71,31 @@ public class BuildingLargeBanditCamp extends Building {
 
 			pos = pos.up(yOffset);
 
-			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal);
+			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal,rand);
 			pos = pos.offset(facing, -18);
 			template = templatemanager.getTemplate(minecraftserver, TENT);
 			if (template == null) {
 				return;
 			}
-			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal);
+			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal,rand);
 			pos = pos.offset(facing.rotateY(), -20);
 			template = templatemanager.getTemplate(minecraftserver, LARGE_TOWER);
 			if (template == null) {
 				return;
 			}
-			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal);
+			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal,rand);
 			pos = pos.offset(facing, 18);
 			template = templatemanager.getTemplate(minecraftserver, POOL);
 			if (template == null) {
 				return;
 			}
-			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal);
+			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal,rand);
 			pos = pos.offset(facing.rotateY(), 4).down(4).offset(facing, -4);
 			template = templatemanager.getTemplate(minecraftserver, BASEMENT);
 			if (template == null) {
 				return;
 			}
-			generateTemplate(world, pos, mirror, facing, placementsettings, template, false);
+			generateTemplate(world, pos, mirror, facing, placementsettings, template, false,rand);
 
 			for (INetwork deviceFrom : devices) {
 				for (INetwork deviceTo : devices) {

@@ -38,7 +38,7 @@ public class BlockThermometer extends BlockTileProvider<TileEntityThermometer> {
 	public static final PropertyBool EMIT = PropertyBool.create("emit");
 
 	public BlockThermometer() {
-		super(Material.WOOD);
+		super(Material.IRON);
 		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));

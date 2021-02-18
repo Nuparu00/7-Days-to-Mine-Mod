@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.block;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCar;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
 
@@ -23,6 +24,7 @@ public class BlockPoliceCar extends BlockCar {
 		super(new byte[][][] { { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } },
 				{ { 0, 0, 0 }, { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 }, { 0, 0, 0 } } });
 		CityHelper.cars.add(this);
+		lootTable = ModLootTables.POLICE_CAR;
 		special = true;
 		setHardness(20.0F);
 		setResistance(5.0F);

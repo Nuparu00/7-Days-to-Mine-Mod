@@ -79,7 +79,7 @@ public class ItemPhoto extends Item {
 				return EnumActionResult.PASS;
 			} else {
 				worldIn.setBlockState(pos, ModBlocks.PHOTO.getDefaultState().withProperty(BlockHorizontalBase.FACING,
-						player.getHorizontalFacing().getOpposite()));
+						facing));
 				TileEntity tileEntity = worldIn.getTileEntity(pos);
 				if (tileEntity != null && tileEntity instanceof TileEntityPhoto) {
 					((TileEntityPhoto) tileEntity).setPath(stack.getTagCompound().getString("path"));

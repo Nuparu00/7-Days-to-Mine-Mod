@@ -44,7 +44,7 @@ public class BlockFileCabinet extends BlockTileProvider<TileEntityFileCabinet> i
 	private int weight = 2;
 
 	public BlockFileCabinet() {
-		super(Material.GROUND);
+		super(Material.IRON);
 		setSoundType(SoundType.METAL);
 		this.setHardness(1);
 		this.setResistance(1.5F);

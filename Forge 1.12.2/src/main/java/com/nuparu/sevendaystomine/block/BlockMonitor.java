@@ -38,7 +38,7 @@ public class BlockMonitor extends BlockTileProvider<TileEntityMonitor> {
 	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.25F, 0.0F, 0.0F, 0.6875F, 0.75F, 1F);
 
 	public BlockMonitor() {
-		super(Material.GROUND);
+		super(Material.IRON);
 		this.setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
 		setHardness(1.4F);
 		setResistance(1.0F);

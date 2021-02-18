@@ -86,6 +86,17 @@
 		  "color": 000000,
 		  "link" : 4,
 		  "hover_color" : DD4C1D
+		  },
+		  {
+          "x": 138,
+          "y": 78,
+          "z": 0,
+          "text": "book_minibike.contents.5",
+		  "unlocalized" : true,
+		  "centered": false,
+		  "color": 000000,
+		  "link" : 5,
+		  "hover_color" : DD4C1D
 		  }
       ],
       "images": [
@@ -168,6 +179,30 @@
           "y": 40,
           "z": 0,
           "recipe": "sevendaystomine:minibike_seat"
+        }
+      ]
+    },
+	{
+      "res": "sevendaystomine:textures/gui/books/minibike_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "book_minibike.contents.4",
+		  "unlocalized" : true,
+		  "centered": true,
+		  "color": 000000,
+		  "scale" : 1.25,
+		  "formatting" : ["UNDERLINE"]
+        }
+      ],
+	 "crafting": [
+        {
+          "x": 16,
+          "y": 40,
+          "z": 0,
+          "recipe": "sevendaystomine:minibike_wheels"
         }
       ]
     },

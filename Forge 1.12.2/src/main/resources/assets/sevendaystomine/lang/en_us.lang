@@ -10,8 +10,10 @@ stat.quality.fine.name=Fine
 stat.quality.great.name=Great
 stat.ammo.name=Ammo: 
 stat.capacity.name=Capacity: 
-stat.knwon.name=Known
+stat.known.name=Known
 stat.unknown.name=Unknown
+stat.used.name=Used
+stat.unused.name=Unused
 
 #Materials
 material.none=None
@@ -39,6 +41,7 @@ material.concrete=Concrete
 material.leather=Leather
 material.gasoline=Gasoline
 material.gold=Gold
+material.sand=Sand
 
 #Colors
 color.red=Red
@@ -185,6 +188,8 @@ container.file_cabinet=File Cabinet
 container.cash_register=Cash Register
 container.separator=Electrolytic Cell
 container.flamethrower=Flamethrower
+container.turret=Turret
+container.safe=Safe
 
 gui.warning=WARNING
 mod.new.update=Your 7 Days to Mine version is outdated!
@@ -205,6 +210,7 @@ unlocked.toast=Recipes Unlocked!
 
 horde.bloodmoon.name=Bloodmoon Horde
 horde.wolf.name=Wolf Horde
+horde.generic.name=Horde
 
 
 generator.SEVENDAYS=Default (7D2M)
@@ -403,7 +409,8 @@ book_minibike.author=Maxmilian Vyroubal
 book_minibike.contents.1=1. Chassis
 book_minibike.contents.2=2. Handlebars
 book_minibike.contents.3=3. Seat
-book_minibike.contents.4=4. Assembly
+book_minibike.contents.4=4. Wheels
+book_minibike.contents.5=5. Assembly
 book_minibike.assembly.1=In order to assemble the minibike, you need several parts, like the engine, battery, wheels, handlebars, and seat. While some of the parts you could craft by yourself, some of them you just have to buy. 
 book_minibike.assembly.2=When you have all the parts, place the chassis on the ground and put the parts to their places.
 book_minibike.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
@@ -457,7 +464,8 @@ item.CannedSalmon.name=Can of Salmon
 item.CannedSoup.name=Can of Soup
 item.CannedStock.name=Can of Stock
 item.CannedTuna.name=Can of Tuna
-item.CoffeeBeans.name=Coffee Beans
+item.coffee_beans.name=Coffee Beans
+item.coffee_berry.name=Coffee Berries
 item.Corn.name=Corn
 item.Blueberry.name=Blueberry
 item.Baneberry.name=White Baneberry
@@ -517,7 +525,7 @@ item.WoodenDoorItem.name=Wooden Door
 item.WoodenDoorReinforcedItem.name=Wooden Door Reinforced
 item.locked_door_item.name=Locked Door
 item.RealityWand.name=Reality Wand
-item.MP3Player.name=MP3 Player
+item.MP3Player.name=Audio Player
 item.auger.name=Auger
 item.screwdriver.name=Screwdriver
 item.ram.name=RAM
@@ -705,6 +713,8 @@ item.riot_shield.name=Riot Shield
 item.crude_bow.name=Crude Bow
 item.compound_bow.name=Compound Bow
 item.mre.name=MRE
+item.sand_dust.name=Sand Dust
+item.vomit.name=Vomit
 
 filled_map.city=City Map
 
@@ -733,6 +743,7 @@ tile.DarkOakPlanksReinforcedIron.name=Iron Reinforced Dark Oak Planks
 
 tile.SmallRock.name=Small Rock
 tile.Stick.name=Stick
+tile.paper.name=Paper
 tile.Bush.name=Bush
 tile.Goldenrod.name=Goldenrod
 tile.CoffeePlant.name=Coffee Plant
@@ -975,6 +986,10 @@ tile.redstone_lamp_broken.name=Broken Redstone Lamp
 tile.flamethrower_trap.name=Flamethrower Trap
 tile.metal_spikes.name=Metal Spikes
 tile.police_car.name=Police Car
+tile.flower_pot_enhanced.name=Flower Pot
+tile.sand_layer.name=Sand Layer
+tile.red_sand_layer.name=Sand Layer
+tile.ambulance.name=Ambulance
 
 #Sound Subtitles
 
@@ -1004,6 +1019,12 @@ subtitle.safe.unlock.shot=Safe Unlock
 key.sevendaystomine.category=7 Days to Mine
 key.reload.desc=Gun Reload
 key.accelerate.desc=Vehicle Acceleration
+key.camera.height.increase.desc=Camera Viewport Height Increase
+key.camera.height.decrease.desc=Camera Viewport Height Decrease
+key.camera.width.increase.desc=Camera Viewport Width Increase
+key.camera.width.decrease.desc=Camera Viewport Width Decrease
+key.camera.zoom.desc=Camera Zoom
+key.camera.unzoom.desc=Camera Unzoom
 
 #Advancements
 advancements.survival.root.title=Survival
@@ -1051,7 +1072,7 @@ advancements.cured.description=Cure Stage III infection
 advancements.workbench.title=Metalworking
 advancements.workbench.description=Craft a Workbench.
 advancements.shotgun.title=Pocket Rocket Launcher
-advancements.shotgun.description=Craft a Workbench.
+advancements.shotgun.description=Fire a Shotgun with the Sparking and Explosive enchantments.
 advancements.policeman.title=Police Brutality
 advancements.policeman.description=Kill a Zombie Policeman in close range combat
 advancements.wired.title=Wired

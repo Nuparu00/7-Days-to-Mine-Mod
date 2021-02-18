@@ -21,7 +21,7 @@ public class ItemChainsaw extends ItemFuelTool {
 	@SuppressWarnings("rawtypes")
 	public static final Set effectiveAgainst = Sets.newHashSet(new Block[] {Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG,
 			Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER,
-			Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE, Blocks.WEB});
+			Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE, Blocks.WEB, Blocks.LEAVES, Blocks.LEAVES2});
 
 	@SuppressWarnings("unchecked")
 	public ItemChainsaw(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn) {

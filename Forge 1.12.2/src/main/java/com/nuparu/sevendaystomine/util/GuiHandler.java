@@ -7,6 +7,7 @@ import com.nuparu.sevendaystomine.client.gui.GuiDialogue;
 import com.nuparu.sevendaystomine.client.gui.GuiKeySafeLocked;
 import com.nuparu.sevendaystomine.client.gui.GuiMonitor;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiBackpack;
+import com.nuparu.sevendaystomine.client.gui.inventory.GuiCamera;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiCampfire;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiChemistryStation;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiCombustionGenerator;
@@ -45,6 +46,7 @@ import com.nuparu.sevendaystomine.inventory.ContainerSmall;
 import com.nuparu.sevendaystomine.inventory.ContainerTiny;
 import com.nuparu.sevendaystomine.inventory.ContainerWorkbench;
 import com.nuparu.sevendaystomine.inventory.container.ContainerBackpack;
+import com.nuparu.sevendaystomine.inventory.container.ContainerCamera;
 import com.nuparu.sevendaystomine.inventory.container.ContainerFlamethrower;
 import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.container.ContainerMinibike;
@@ -140,7 +142,15 @@ public class GuiHandler implements IGuiHandler {
 			return null;
 		case 22:
 			return null;
-
+		case 27:
+			if (stack.getItem() == ModItems.ANALOG_CAMERA) {
+				final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player
+						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+				final IItemHandlerNameable playerInventoryWrapper = new NameableCombinedInvWrapper(player.inventory,
+						playerInventory);
+				return new ContainerCamera(playerInventoryWrapper,
+						stack.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, EnumFacing.UP));
+			}
 		}
 
 		return null;
@@ -283,7 +293,19 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiFlamethrower(
 						(ContainerFlamethrower) ((TileEntityItemHandler<?>) tileEntity).createContainer(player));
 			}
+		case 27:
+			if (stack.getItem() == ModItems.ANALOG_CAMERA) {
+				final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player
+						.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+				final IItemHandlerNameable playerInventoryWrapper = new NameableCombinedInvWrapper(player.inventory,
+						playerInventory);
+				return new GuiCamera(
+						new ContainerCamera(playerInventoryWrapper,
+								stack.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, EnumFacing.UP)),
+						stack.getDisplayName());
+			}
 		}
+
 		return null;
 	}
 

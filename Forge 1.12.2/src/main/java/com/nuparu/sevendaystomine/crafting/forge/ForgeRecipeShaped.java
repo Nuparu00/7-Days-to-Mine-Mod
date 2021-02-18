@@ -122,7 +122,7 @@ public class ForgeRecipeShaped implements IForgeRecipe {
 	}
 
 	@Override
-	public void consumeInput(TileEntityForge inv) {
+	public List<ItemStack> consumeInput(TileEntityForge inv) {
 		ItemStack[][] invArray = inv.getActiveInventoryAsArray().clone();
 		for (int m = 0; m <= 2 - width; m++) {
 			for (int n = 0; n <= 2 - height; n++) {
@@ -147,6 +147,7 @@ public class ForgeRecipeShaped implements IForgeRecipe {
 		        }
 			}
 		}
+		return null;
 	}
 
 }

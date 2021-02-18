@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 public class BlockCorpse extends BlockTileProvider<TileEntityCorpse> {
 
 	public BlockCorpse() {
-		super(Material.ROCK);
+		super(Material.WOOD);
 		this.setSoundType(SoundType.SLIME);
 		this.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		this.setHardness(0.7f);

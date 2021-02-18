@@ -72,6 +72,10 @@ public class SoundHelper {
 	public static final SoundEvent HORDE = Utils.Null();
 	@ObjectHolder("gas_leak")
 	public static final SoundEvent GAS_LEAK = Utils.Null();
+	@ObjectHolder("chainsaw.idle")
+	public static final SoundEvent CHAINSAW_IDLE = Utils.Null();
+	@ObjectHolder("chainsaw.cut")
+	public static final SoundEvent CHAINSAW_CUT = Utils.Null();
 	
 	private static List<SoundEvent> sounds = new ArrayList<SoundEvent>();
 	
@@ -105,7 +109,9 @@ public class SoundHelper {
 					createSoundEvent("safe.unlock"),
 					createSoundEvent("entity.human.hurt"),
 					createSoundEvent("horde"),
-					createSoundEvent("gas_leak")
+					createSoundEvent("gas_leak"),
+					createSoundEvent("chainsaw.idle"),
+					createSoundEvent("chainsaw.cut")
 			};
 
 			event.getRegistry().registerAll(soundEvents);

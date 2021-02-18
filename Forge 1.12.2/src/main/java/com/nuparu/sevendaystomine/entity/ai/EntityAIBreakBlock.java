@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.entity.ai;
 
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
+import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.entity.INoiseListener;
 import com.nuparu.sevendaystomine.events.MobBreakEvent;
@@ -18,7 +19,9 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -45,7 +48,16 @@ public class EntityAIBreakBlock extends EntityAIBase {
 			if (!this.theEntity.world.getGameRules().getBoolean("mobGriefing")) {
 				return false;
 			} else {
-
+				if (theEntity.world.rand.nextInt(10) == 0) {
+					RayTraceResult entityRay = Utils.raytraceEntities(theEntity, 2);
+					if (entityRay != null) {
+						if (entityRay.entityHit != null && entityRay.entityHit instanceof EntityLootableCorpse) {
+							entityRay.entityHit.attackEntityFrom(DamageSource.GENERIC, 2);
+							theEntity.swingArm(theEntity.world.rand.nextInt(2) == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+							theEntity.playSound(SoundEvents.ENTITY_GENERIC_EAT, theEntity.world.rand.nextFloat()*0.2f+0.9f, theEntity.world.rand.nextFloat()*0.2f+0.9f);
+						}
+					}
+				}
 				RayTraceResult ray = this.theEntity.rayTraceServer(2, 1F);
 				if (ray != null) {
 					if (ray.getBlockPos() != null) {
@@ -93,7 +105,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
 			if (stepSoundTickCounter % 4.0F == 0.0F) {
 				theEntity.swingArm(world.rand.nextInt(2) == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 			}
-			float m = (theEntity.getBlockBreakSpeed(state, blockPosition)/hardness)/32f;
+			float m = (theEntity.getBlockBreakSpeed(state, blockPosition) / hardness) / 32f;
 
 			if (Utils.damageBlock(world, blockPosition, m, true, this.stepSoundTickCounter % 4.0F == 0.0F)) {
 				world.playEvent(2001, blockPosition, Block.getStateId(world.getBlockState(blockPosition)));

@@ -23,14 +23,14 @@ public class EntityFeralZombie extends EntityBipedalZombie {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250);
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(20.0D);
 	}
 	
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount)
     {
-		return super.attackEntityFrom(source, this.isBurning() ? amount*4 : amount/2);
+		return super.attackEntityFrom(source, this.isBurning() ? amount*4.25f : amount/3);
     }
 	
 	@Override

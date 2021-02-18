@@ -68,6 +68,7 @@ public class BuildingGasStation extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			coverWithSand(world, pos, template, facing, mirror,rand);
 			BlockPos size = template.getSize();
 			template = templatemanager.getTemplate(minecraftserver, REST);
 			if (template == null) {
@@ -82,6 +83,7 @@ public class BuildingGasStation extends Building {
 				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 			}
 			generatePedestal(world, pos, template, facing, mirror);
+			coverWithSand(world, pos, template, facing, mirror,rand);
 		}
 	}
 

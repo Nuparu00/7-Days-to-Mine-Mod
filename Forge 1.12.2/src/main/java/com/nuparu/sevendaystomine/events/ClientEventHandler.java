@@ -8,13 +8,17 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.gui.GuiMainMenuEnhanced;
+import com.nuparu.sevendaystomine.client.gui.GuiPlayerUI;
 import com.nuparu.sevendaystomine.client.gui.GuiRedirect;
 import com.nuparu.sevendaystomine.client.gui.GuiUpdate;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.init.ModBiomes;
+import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 import com.nuparu.sevendaystomine.item.IScrapable;
+import com.nuparu.sevendaystomine.item.ItemAnalogCamera;
 import com.nuparu.sevendaystomine.item.ItemGun;
+import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.proxy.ClientProxy;
 import com.nuparu.sevendaystomine.proxy.CommonProxy;
 import com.nuparu.sevendaystomine.util.ConfigHandler;
@@ -35,13 +39,16 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
@@ -50,6 +57,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.MouseEvent;
@@ -70,6 +78,8 @@ public class ClientEventHandler {
 
 	@SideOnly(Side.CLIENT)
 	public static PositionedSoundRecord menuMusic_1;
+	
+	public static boolean takingPhoto;
 
 	public static void init() {
 		menuMusic_0 = new PositionedSoundRecord(SoundHelper.MENU_00.getSoundName(), SoundCategory.MUSIC, 1f, 1f, true,
@@ -87,6 +97,49 @@ public class ClientEventHandler {
 				if (Utils.getCrosshairSpread(mc.player) != -1) {
 					event.setCanceled(true);
 				}
+			}
+		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	@SideOnly(Side.CLIENT)
+	public void onRenderGameOverlayEvent(RenderGameOverlayEvent.Pre event) {
+		if (event.isCancelable() && event.getType() == ElementType.ALL) {
+			Minecraft mc = Minecraft.getMinecraft();
+			EntityPlayer player = mc.player;
+			if (player == null)
+				return;
+			ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+			if (!stack.isEmpty() && stack.getItem() == ModItems.ANALOG_CAMERA) {
+				if (player.getItemInUseCount() > 0 || takingPhoto) {
+					event.setCanceled(true);
+				}
+				if(takingPhoto) return;
+				
+				double dW = 1-ItemAnalogCamera.getWidth(stack, player);
+				double dH = 1-ItemAnalogCamera.getHeight(stack, player);
+				
+				ScaledResolution res = event.getResolution();
+				
+				int xMin = (int) (0 + res.getScaledWidth()*dW/2);
+				int yMin = (int) (0 + res.getScaledHeight()*dH/2);
+				int xMax = (int) (res.getScaledWidth()-32 - res.getScaledWidth()*dW/2);
+				int yMax = (int) (res.getScaledHeight()-32 - res.getScaledHeight()*dH/2);
+				
+				GL11.glPushMatrix();
+				GL11.glEnable(GL11.GL_BLEND);
+				OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				mc.renderEngine.bindTexture(GuiPlayerUI.UI_TEX);
+				mc.ingameGUI.drawTexturedModalRect(xMin,yMin,0,39,32,32);
+				mc.ingameGUI.drawTexturedModalRect(xMax,yMin,34,39,32,32);
+				
+				mc.ingameGUI.drawTexturedModalRect(xMin,yMax,0,73,32,32);
+				mc.ingameGUI.drawTexturedModalRect(xMax,yMax,34,73,32,32);
+				
+				mc.fontRenderer.drawString(ItemAnalogCamera.getZoom(stack, player)+"x", xMin+5, yMax+25-mc.fontRenderer.FONT_HEIGHT, 0xffffff);
+				GL11.glDisable(GL11.GL_BLEND);
+				GL11.glPopMatrix();
 			}
 		}
 	}
@@ -175,8 +228,7 @@ public class ClientEventHandler {
 			event.setGreen(MathUtils.clamp(event.getGreen() + 0.05f * mult, 0, 1));
 			event.setBlue(MathUtils.clamp(event.getBlue() + 0.02f * mult, 0, 1));
 		}
-		if ((biome instanceof BiomeWastelandBase) && mat != Material.WATER
-				&& mat != Material.LAVA) {
+		if ((biome instanceof BiomeWastelandBase) && mat != Material.WATER && mat != Material.LAVA) {
 			event.setRed(MathUtils.clamp(event.getRed() - 0.05f, 0, 1));
 			event.setGreen(MathUtils.clamp(event.getGreen() - 0.13f, 0, 1));
 			event.setBlue(MathUtils.clamp(event.getBlue() - 0.28f, 0, 1));
@@ -191,8 +243,7 @@ public class ClientEventHandler {
 		IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(event.getEntity().world,
 				event.getEntity(), (float) event.getRenderPartialTicks());
 		Material mat = iblockstate.getMaterial();
-		if ((biome instanceof BiomeWastelandBase) && mat != Material.WATER
-				&& mat != Material.LAVA) {
+		if ((biome instanceof BiomeWastelandBase) && mat != Material.WATER && mat != Material.LAVA) {
 			event.setDensity(event.getDensity() / 4f);
 			GlStateManager.setFog(GlStateManager.FogMode.EXP);
 			/*
@@ -212,6 +263,10 @@ public class ClientEventHandler {
 		if (player == null)
 			return;
 		ItemStack stack = player.getHeldItemMainhand();
+		if(!stack.isEmpty() && stack.getItem() instanceof ItemAnalogCamera) {
+			event.setNewfov((float) (event.getNewfov()/ItemAnalogCamera.getZoom(stack, player)));
+			return;
+		}
 		if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun)) {
 			stack = player.getHeldItemOffhand();
 			if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun))
@@ -251,9 +306,9 @@ public class ClientEventHandler {
 			mat = scrapable.getMaterial();
 			weight = scrapable.getWeight();
 		}
-		
-		if(mat != null && mat != EnumMaterial.NONE) {
-			event.getToolTip().add(weight+"x"+mat.getLocalizedName());
+
+		if (mat != null && mat != EnumMaterial.NONE) {
+			event.getToolTip().add(weight + "x" + mat.getLocalizedName());
 		}
 	}
 

@@ -17,6 +17,7 @@ import com.nuparu.sevendaystomine.block.BlockCodeSafe;
 import com.nuparu.sevendaystomine.block.BlockCupboard;
 import com.nuparu.sevendaystomine.block.BlockGarbage;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
+import com.nuparu.sevendaystomine.block.BlockSandLayer;
 import com.nuparu.sevendaystomine.block.BlockTrashCan;
 import com.nuparu.sevendaystomine.block.BlockWheels;
 import com.nuparu.sevendaystomine.block.BlockWritingTable;
@@ -55,6 +56,7 @@ import com.nuparu.sevendaystomine.world.gen.city.EnumCityType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.BlockHopper;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.IEntityLivingData;
@@ -76,6 +78,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 
@@ -112,13 +115,14 @@ public class Building {
 	}
 
 	public void generate(World world, BlockPos pos, EnumFacing facing, boolean mirror, Random rand) {
-		if(res == null) return;
+		if (res == null)
+			return;
 		if (!world.isRemote) {
 
 			WorldServer worldserver = (WorldServer) world;
 			MinecraftServer minecraftserver = world.getMinecraftServer();
 			TemplateManager templatemanager = worldserver.getStructureTemplateManager();
-			
+
 			Template template = templatemanager.getTemplate(minecraftserver, res);
 			if (template == null) {
 				return;
@@ -131,20 +135,20 @@ public class Building {
 			PlacementSettings placementsettings = (new PlacementSettings())
 					.setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot).setIgnoreEntities(false)
 					.setChunk((ChunkPos) null).setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
-			
-			generateTemplate(world,pos,mirror,facing,placementsettings,template,hasPedestal);
-/*
-			template.addBlocksToWorld(world, pos, placementsettings);
-			Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
-			for (Entry<BlockPos, String> entry : map.entrySet()) {
-				handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
-			}
-			generatePedestal(world, pos, template, facing, mirror);*/
+
+			generateTemplate(world, pos, mirror, facing, placementsettings, template, hasPedestal, rand);
+			/*
+			 * template.addBlocksToWorld(world, pos, placementsettings); Map<BlockPos,
+			 * String> map = template.getDataBlocks(pos, placementsettings); for
+			 * (Entry<BlockPos, String> entry : map.entrySet()) { handleDataBlock(world,
+			 * facing, entry.getKey(), entry.getValue(), mirror); } generatePedestal(world,
+			 * pos, template, facing, mirror);
+			 */
 		}
 	}
 
 	public void generateTemplate(World world, BlockPos pos, boolean mirror, EnumFacing facing,
-			PlacementSettings placementsettings, Template template, boolean pedestal) {
+			PlacementSettings placementsettings, Template template, boolean pedestal, Random rand) {
 		template.addBlocksToWorld(world, pos, placementsettings);
 		Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
 		for (Entry<BlockPos, String> entry : map.entrySet()) {
@@ -153,6 +157,7 @@ public class Building {
 		if (pedestal) {
 			generatePedestal(world, pos, template, facing, mirror);
 		}
+		coverWithSand(world, pos, template, facing, mirror, rand);
 	}
 
 	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror) {
@@ -181,8 +186,8 @@ public class Building {
 			case "cardboard": {
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				if (world.rand.nextInt(5) == 0) {
-					world.setBlockState(pos, ModBlocks.CARDBOARD_BOX.getDefaultState().withProperty(BlockCardboardBox.FACING,
-							EnumFacing.getHorizontal(world.rand.nextInt(4))));
+					world.setBlockState(pos, ModBlocks.CARDBOARD_BOX.getDefaultState()
+							.withProperty(BlockCardboardBox.FACING, EnumFacing.getHorizontal(world.rand.nextInt(4))));
 					TileEntityCardboard te = (TileEntityCardboard) world.getTileEntity(pos);
 					te.setLootTable(ModLootTables.CARDBOARD, world.rand.nextLong());
 					te.fillWithLoot(null);
@@ -442,6 +447,13 @@ public class Building {
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				break;
 			}
+			case "trapped_chest": {
+				TileEntityChest te = (TileEntityChest) world.getTileEntity(pos.down());
+				te.setLootTable(ModLootTables.TRAPPED_CHEST, world.rand.nextLong());
+				te.fillWithLoot(null);
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
 			case "bandit": {
 				EntityBandit bandit = new EntityBandit(world);
 				bandit.enablePersistence();
@@ -543,7 +555,8 @@ public class Building {
 	 * do not require overriding this, though it is encouraged.
 	 */
 	public BlockPos getDimensions(World world, EnumFacing facing) {
-		if(res == null) return BlockPos.ORIGIN;
+		if (res == null)
+			return BlockPos.ORIGIN;
 		if (!world.isRemote) {
 			WorldServer worldserver = (WorldServer) world;
 			MinecraftServer minecraftserver = world.getMinecraftServer();
@@ -606,6 +619,62 @@ public class Building {
 		}
 	}
 
+	public void coverWithSand(World world, BlockPos pos, Template template, EnumFacing facing, boolean mirror,
+			Random rand) {
+
+		Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
+		BlockPos size = template.transformedSize(rot);
+		int minY = pos.getY();
+		pos = new BlockPos(pos.getX(), minY + 33, pos.getZ());
+		for (int i = 0; i < size.getX(); i++) {
+			for (int j = 0; j < size.getZ(); j++) {
+				if (rand.nextInt(5) == 0)
+					continue;
+				int x = i;
+				int z = j;
+
+				if (mirror) {
+					if (facing == EnumFacing.EAST || facing == EnumFacing.SOUTH) {
+						x = -x;
+					}
+					if (facing == EnumFacing.WEST || facing == EnumFacing.SOUTH) {
+						z = -z;
+					}
+				} else {
+					if (facing == EnumFacing.NORTH || facing == EnumFacing.EAST) {
+						x = -x;
+					}
+					if (facing == EnumFacing.SOUTH || facing == EnumFacing.EAST) {
+						z = -z;
+					}
+				}
+
+				BlockPos pos2 = pos.add(x, 0, z);
+				Biome biome = world.getBiome(pos2);
+
+				if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY))
+					continue;
+				
+				IBlockState sand = ModBlocks.SAND_LAYER.getDefaultState();
+				if (biome.topBlock.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND) {
+					sand = ModBlocks.RED_SAND_LAYER.getDefaultState();
+				}
+				
+				for (; pos2.getY() > minY-1; pos2 = pos2.down()) {
+
+					IBlockState state = world.getBlockState(pos2);
+					if (state.getMaterial() != Material.AIR) {
+						if (Utils.isSolid(world, pos2, state)) {
+							world.setBlockState(pos2.up(),
+									sand.withProperty(BlockSandLayer.LAYERS, 1 + rand.nextInt(2)));
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+
 	public Building setAllowedBiomes(Biome... biomes) {
 		this.allowedBiomes = new HashSet<Biome>(Arrays.asList(biomes));
 		return this;
@@ -630,13 +699,13 @@ public class Building {
 		this.hasPedestal = hasPedestal;
 		return this;
 	}
-	
+
 	public Building setCanBeMirrored(boolean canBeMirrored) {
 		this.canBeMirrored = canBeMirrored;
 		return this;
 	}
-	
+
 	public ResourceLocation getBookshelfLootTable(Random rand) {
-		return rand.nextInt(10) == 0 ? ModLootTables.BOOKSHELF_RARE : ModLootTables.BOOKSHELF_COMMON;
+		return rand.nextInt(12) == 0 ? ModLootTables.BOOKSHELF_RARE : ModLootTables.BOOKSHELF_COMMON;
 	}
 }

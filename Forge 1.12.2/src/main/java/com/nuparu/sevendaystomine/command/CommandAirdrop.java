@@ -15,6 +15,7 @@ import com.nuparu.sevendaystomine.world.gen.city.City;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -67,15 +68,25 @@ public class CommandAirdrop extends CommandBase {
 
 		if (world.isRemote)
 			return;
-		if (args.length == 0) {
-			BlockPos pos = Utils.getAirdropPos(world);
-			EntityAirdrop e = new EntityAirdrop(world, sender.getPosition());
+		BlockPos pos = Utils.getAirdropPos(world);
+		if(args.length == 3) {
+			try {
+				pos = CommandBase.parseBlockPos(sender, args, 0, true);
+			} catch (NumberInvalidException e) {
+				e.printStackTrace();
+			}
+		}
+		if (args.length == 0 || args.length == 3) {
+			
+
+			EntityAirdrop e = new EntityAirdrop(world, world.getSpawnPoint().up(255));
+			world.spawnEntity(e);
+			e.setPosition(pos.getX(), pos.getY(), pos.getZ());
 			sender.sendMessage(new TextComponentTranslation("airdrop.message",
 					pos.getX() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1),
 					pos.getZ() + MathUtils.getIntInRange(world.rand, 32, 128) * (world.rand.nextBoolean() ? 1 : -1)));
 			System.out.println(pos.toString());
-			world.spawnEntity(e);
-			e.setPosition(pos.getX(), pos.getY(), pos.getZ());
+			//e.setPosition(pos.getX(), pos.getY(), pos.getZ());
 		}
 
 	}

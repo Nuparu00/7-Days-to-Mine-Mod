@@ -11,6 +11,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.gui.GuiBook;
 import com.nuparu.sevendaystomine.client.gui.GuiCodeSafeLocked;
 import com.nuparu.sevendaystomine.client.gui.GuiGun;
+import com.nuparu.sevendaystomine.client.gui.GuiKeySafeLocked;
 import com.nuparu.sevendaystomine.client.gui.GuiMp3;
 import com.nuparu.sevendaystomine.client.gui.GuiPhoto;
 import com.nuparu.sevendaystomine.client.gui.GuiPlayerUI;
@@ -63,7 +64,7 @@ import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityGlobeRend
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityMetalSpikesRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityOldChestRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityPhotoRenderer;
-import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySedanRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCarRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityShieldRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySleepingBagRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySolarPanelRenderer;
@@ -142,7 +143,10 @@ import com.nuparu.sevendaystomine.util.client.MP3Helper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -157,9 +161,11 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -359,7 +365,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStreetSign.class, new TileEntityStreetSignRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPhoto.class, new TileEntityPhotoRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBigSignMaster.class, new TileEntityBigSignRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCar.class, new TileEntitySedanRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCar.class, new TileEntityCarRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAirplaneRotor.class,
 				new TileEntityAirplaneRotorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarPanel.class, new TileEntitySolarPanelRenderer());
@@ -375,8 +381,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMetalSpikes.class, new TileEntityMetalSpikesRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShield.class, new TileEntityShieldRenderer());
 
-		ForgeHooksClient.registerTESRItemStack(ModItems.RIOT_SHIELD, 0,
-				TileEntityShield.class);
+		ForgeHooksClient.registerTESRItemStack(ModItems.RIOT_SHIELD, 0, TileEntityShield.class);
 	}
 
 	@Override
@@ -385,8 +390,14 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	void initKeybindings() {
-		keyBindings = new KeyBinding[1];
+		keyBindings = new KeyBinding[7];
 		keyBindings[0] = new KeyBinding("key.reload.desc", Keyboard.KEY_R, "key.sevendaystomine.category");
+		keyBindings[1] = new KeyBinding("key.camera.width.increase.desc", Keyboard.KEY_NUMPAD6, "key.sevendaystomine.category");
+		keyBindings[2] = new KeyBinding("key.camera.width.decrease.desc", Keyboard.KEY_NUMPAD4, "key.sevendaystomine.category");
+		keyBindings[3] = new KeyBinding("key.camera.height.increase.desc", Keyboard.KEY_NUMPAD8, "key.sevendaystomine.category");
+		keyBindings[4] = new KeyBinding("key.camera.height.decrease.desc", Keyboard.KEY_NUMPAD2, "key.sevendaystomine.category");
+		keyBindings[5] = new KeyBinding("key.camera.zoom.desc", Keyboard.KEY_ADD, "key.sevendaystomine.category");
+		keyBindings[6] = new KeyBinding("key.camera.unzoom.desc", Keyboard.KEY_SUBTRACT, "key.sevendaystomine.category");
 
 		for (int i = 0; i < keyBindings.length; ++i) {
 			ClientRegistry.registerKeyBinding(keyBindings[i]);
@@ -404,6 +415,9 @@ public class ClientProxy extends CommonProxy {
 		switch (id) {
 		case 0:
 			mc.displayGuiScreen(new GuiCodeSafeLocked(te, new BlockPos(x, y, z)));
+			return;
+		case 1:
+			mc.displayGuiScreen(new GuiKeySafeLocked(te, new BlockPos(x, y, z)));
 			return;
 		}
 	}
@@ -444,11 +458,13 @@ public class ClientProxy extends CommonProxy {
 		}
 	}
 
-	public void tryToTakePhoto() {
-		Minecraft mc = Minecraft.getMinecraft();
+	public void schedulePhoto() {
+		/*Minecraft mc = Minecraft.getMinecraft();
 		if (mc != null && mc.player != null) {
 			CameraHelper.INSTANCE.saveScreenshot(mc.displayWidth, mc.displayHeight, mc.getFramebuffer(), mc.player);
-		}
+		}*/
+
+		ClientEventHandler.takingPhoto = true;
 	}
 
 	@Override
@@ -535,5 +551,14 @@ public class ClientProxy extends CommonProxy {
 			mapSoundPositions.remove(is);
 		}
 
+	}
+
+	@Override
+	public boolean isHittingBlock(EntityPlayer player) {
+		if (player instanceof EntityPlayerSP) {
+			PlayerControllerMP controller = Minecraft.getMinecraft().playerController;
+			return ObfuscationReflectionHelper.getPrivateValue(PlayerControllerMP.class, controller, "field_78778_j");
+		}
+		return super.isHittingBlock(player);
 	}
 }

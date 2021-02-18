@@ -139,8 +139,11 @@ import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -203,9 +206,10 @@ public class CommonProxy {
 		new ChemistryRecipeManager();
 		new SeparatorRecipeManager();
 
-		registerOreDictionary();
+
 		registerTileEntities();
 		registerEntities();
+		registerOreDictionary();
 		ModBiomes.init();
 
 		// Registers advancement criteria
@@ -223,6 +227,15 @@ public class CommonProxy {
 
 		FurnaceRecipes.instance().addSmelting(ModItems.BOTTLED_MURKY_WATER, new ItemStack(ModItems.BOTTLED_WATER), 2);
 		FurnaceRecipes.instance().addSmelting(ModItems.CANNED_MURKY_WATER, new ItemStack(ModItems.CANNED_WATER), 2);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.MARBLE_COBBLESTONE), new ItemStack(ModBlocks.MARBLE), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.BASALT_COBBLESTONE), new ItemStack(ModBlocks.BASALT), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.RHYOLITE_COBBLESTONE), new ItemStack(ModBlocks.RHYOLITE), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.MARBLE_BRICKS), new ItemStack(ModBlocks.MARBLE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.BASALT_BRICKS), new ItemStack(ModBlocks.BASALT_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.RHYOLITE_BRICKS), new ItemStack(ModBlocks.RHYOLITE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.GRANITE_BRICKS), new ItemStack(ModBlocks.GRANITE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.ANDESITE_BRICKS), new ItemStack(ModBlocks.ANDESITE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.DIORITE_BRICKS), new ItemStack(ModBlocks.DIORITE_BRICKS_CRACKED), 1);
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
@@ -250,8 +263,8 @@ public class CommonProxy {
 		OreDictionary.registerOre("ingotBrass", ModItems.INGOT_BRASS);
 		OreDictionary.registerOre("ingotBronze", ModItems.INGOT_BRONZE);
 		OreDictionary.registerOre("ingotCopper", ModItems.INGOT_COPPER);
-		OreDictionary.registerOre("ingotGold", ModItems.INGOT_GOLD);
-		OreDictionary.registerOre("ingotIron", ModItems.INGOT_IRON);
+		//OreDictionary.registerOre("ingotGold", ModItems.INGOT_GOLD);
+		//OreDictionary.registerOre("ingotIron", ModItems.INGOT_IRON);
 		OreDictionary.registerOre("ingotLead", ModItems.INGOT_LEAD);
 		OreDictionary.registerOre("ingotSteel", ModItems.INGOT_STEEL);
 		OreDictionary.registerOre("ingotTin", ModItems.INGOT_TIN);
@@ -506,6 +519,8 @@ public class CommonProxy {
 		LootTableList.register(ModLootTables.COFFIN);
 		LootTableList.register(ModLootTables.ZOMBIE_FERAL);
 		LootTableList.register(ModLootTables.ZOMBIE_SOLDIER);
+		LootTableList.register(ModLootTables.TRAPPED_CHEST);
+		LootTableList.register(ModLootTables.POLICE_CAR);
 	}
 
 	public void openClientSideGui(int id, int x, int y, int z) {
@@ -520,7 +535,7 @@ public class CommonProxy {
 
 	}
 
-	public void tryToTakePhoto() {
+	public void schedulePhoto() {
 
 	}
 
@@ -556,5 +571,13 @@ public class CommonProxy {
 
 	public void stopLoudSound(BlockPos blockPosIn) {
 
+	}
+	
+	public boolean isHittingBlock(EntityPlayer player) {
+		if(player instanceof EntityPlayerMP) {
+			PlayerInteractionManager manager = ((EntityPlayerMP) player).interactionManager;
+			return ObfuscationReflectionHelper.getPrivateValue(PlayerInteractionManager.class, manager, "field_73088_d");
+		}
+		return false;
 	}
 }

@@ -19,7 +19,7 @@ public class ItemFirstAidKit extends Item {
 	
 	public ItemFirstAidKit() {
 		setMaxDamage(0);
-		maxStackSize = 16;
+		maxStackSize = 8;
 		setCreativeTab(SevenDaysToMine.TAB_MEDICINE);
 	}
 

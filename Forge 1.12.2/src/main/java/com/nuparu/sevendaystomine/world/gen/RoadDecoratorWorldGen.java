@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.block.BlockGarbage;
+import com.nuparu.sevendaystomine.block.BlockPaper;
+import com.nuparu.sevendaystomine.block.BlockSandLayer;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedChunk;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
@@ -21,6 +23,7 @@ import com.nuparu.sevendaystomine.world.gen.feature.WorldGenLookoutBurnt;
 import com.nuparu.sevendaystomine.world.gen.feature.WorldGenStick;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -35,6 +38,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.items.IItemHandler;
 
@@ -82,7 +86,8 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 						Block block = state.getBlock();
 						Material material = state.getMaterial();
 						if (block == ModBlocks.ASPHALT) {
-							if (rand.nextInt(300) == 0) {
+							Biome biome = world.getBiome(pos);
+							if (rand.nextInt(400) == 0) {
 								world.setBlockState(pos.up(), ModBlocks.GARBAGE.getDefaultState()
 										.withProperty(BlockGarbage.FACING, EnumFacing.HORIZONTALS[rand.nextInt(4)]));
 								TileEntity te = world.getTileEntity(pos.up());
@@ -95,6 +100,17 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 							} else if (rand.nextInt(300) == 0) {
 								CityHelper.placeRandomCar(world, pos.up(), EnumFacing.HORIZONTALS[rand.nextInt(4)],true,rand);
 								break;
+							}
+							else if (rand.nextInt(2) == 0 && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY)) {
+								IBlockState sand = ModBlocks.SAND_LAYER.getDefaultState();
+								if(biome.topBlock.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND) {
+									sand = ModBlocks.RED_SAND_LAYER.getDefaultState();
+								}
+								world.setBlockState(pos.up(), sand.withProperty(BlockSandLayer.LAYERS, 1+rand.nextInt(2)));
+								
+							}else if (rand.nextInt(80) == 0 ) {
+								world.setBlockState(pos.up(), ModBlocks.PAPER.getDefaultState()
+										.withProperty(BlockPaper.FACING, EnumFacing.getHorizontal(rand.nextInt(4))));
 							}
 							else if(rand.nextInt(2048) == 0) {
 								int count = 2+world.rand.nextInt(6);

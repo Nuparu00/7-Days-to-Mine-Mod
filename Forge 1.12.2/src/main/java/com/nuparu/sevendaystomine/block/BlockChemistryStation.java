@@ -32,7 +32,7 @@ public class BlockChemistryStation extends BlockTileProvider<TileEntityChemistry
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
 	public BlockChemistryStation() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		setHardness(3.0F);
 		setResistance(7.0F);

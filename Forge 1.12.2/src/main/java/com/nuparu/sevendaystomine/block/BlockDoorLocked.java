@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -45,7 +46,7 @@ public class BlockDoorLocked extends BlockDoorBase {
 	public IStateMapper getStateMapper() {
 		return new StateMap.Builder().ignore(POWERED).build();
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasCustomItemMesh() {
@@ -62,23 +63,51 @@ public class BlockDoorLocked extends BlockDoorBase {
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		return new ItemStack(ModItems.LOCKED_DOOR_ITEM);
 	}
-	
-	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? net.minecraft.init.Items.AIR
-				: ModItems.LOCKED_DOOR_ITEM;
-    }
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (System.currentTimeMillis() >= nextSoundAllowed && !playerIn.isSneaking()) {
-			nextSoundAllowed = System.currentTimeMillis()+500l;
-			worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundHelper.DOOR_LOCKED, SoundCategory.BLOCKS,
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? net.minecraft.init.Items.AIR
+				: ModItems.LOCKED_DOOR_ITEM;
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+			EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (System.currentTimeMillis() >= nextSoundAllowed && !player.isSneaking()) {
+			nextSoundAllowed = System.currentTimeMillis() + 500l;
+			world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundHelper.DOOR_LOCKED, SoundCategory.BLOCKS,
 					0.75f + MathUtils.getFloatInRange(0, 0.25f), 0.8f + MathUtils.getFloatInRange(0, 0.2f), false);
 		}
 		return false;
+	}
+
+	public void unlock(World world, BlockPos pos, IBlockState state) {
+		BlockPos bottom = pos;
+		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER) {
+			bottom = pos.down();
+		}
+		System.out.println(bottom);
+		EnumFacing facing = state.getValue(BlockDoor.FACING);
+		boolean open = state.getValue(BlockDoor.OPEN);
+		boolean powered = state.getValue(BlockDoor.POWERED);
+		EnumHingePosition hinge = state.getValue(BlockDoor.HINGE);
+
+		world.setBlockState(bottom.up(),
+				Blocks.OAK_DOOR.getDefaultState().withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER)
+						.withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.OPEN, open)
+						.withProperty(BlockDoor.POWERED, powered).withProperty(BlockDoor.HINGE, hinge));
+
+		world.setBlockState(bottom,
+				Blocks.OAK_DOOR.getDefaultState().withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER)
+						.withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.OPEN, open)
+						.withProperty(BlockDoor.POWERED, powered).withProperty(BlockDoor.HINGE, hinge));
+		
+		world.markBlockRangeForRenderUpdate(bottom, bottom.up());
+		world.notifyBlockUpdate(bottom, world.getBlockState(bottom), world.getBlockState(bottom), 3);
+		world.scheduleBlockUpdate(bottom,this,0,0);
+		world.notifyBlockUpdate(bottom.up(), world.getBlockState(bottom.up()), world.getBlockState(bottom.up()), 3);
+		world.scheduleBlockUpdate(bottom.up(),this,0,0);
+
 	}
 
 	@Override

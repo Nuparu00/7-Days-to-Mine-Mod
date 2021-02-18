@@ -43,10 +43,10 @@ import net.minecraft.world.storage.MapDecoration;
 
 public class BuildingSettlement extends Building {
 
-	private static final ResourceLocation FARM = new ResourceLocation(SevenDaysToMine.MODID, "settlement_farm");
-	private static final ResourceLocation HOUSES = new ResourceLocation(SevenDaysToMine.MODID, "settlement_houses");
-	private static final ResourceLocation BARRACKS = new ResourceLocation(SevenDaysToMine.MODID, "settlement_barracks");
-	private static final ResourceLocation PUB = new ResourceLocation(SevenDaysToMine.MODID, "settlement_pub");
+	private ResourceLocation FARM = new ResourceLocation(SevenDaysToMine.MODID, "settlement_farm");
+	private ResourceLocation HOUSES = new ResourceLocation(SevenDaysToMine.MODID, "settlement_houses");
+	private ResourceLocation BARRACKS = new ResourceLocation(SevenDaysToMine.MODID, "settlement_barracks");
+	private ResourceLocation PUB = new ResourceLocation(SevenDaysToMine.MODID, "settlement_pub");
 
 	public BuildingSettlement(int weight) {
 		this(weight, 2);
@@ -54,6 +54,16 @@ public class BuildingSettlement extends Building {
 
 	public BuildingSettlement(int weight, int yOffset) {
 		super(null, weight, yOffset);
+		canBeMirrored = false;
+		this.pedestalState = Blocks.STONE.getDefaultState();
+	}
+	
+	public BuildingSettlement(int weight, int yOffset, ResourceLocation farm, ResourceLocation houses, ResourceLocation barracks, ResourceLocation pub) {
+		super(null, weight, yOffset);
+		this.FARM = farm;
+		this.HOUSES = houses;
+		this.BARRACKS = barracks;
+		this.PUB = pub;
 		canBeMirrored = false;
 		this.pedestalState = Blocks.STONE.getDefaultState();
 	}
@@ -77,28 +87,28 @@ public class BuildingSettlement extends Building {
 					.setMirror(mirror ? Mirror.LEFT_RIGHT : Mirror.NONE).setRotation(rot).setIgnoreEntities(false)
 					.setChunk((ChunkPos) null).setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
 
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 
 			template = templatemanager.getTemplate(minecraftserver, HOUSES);
 			if (template == null) {
 				return;
 			}
 			pos = pos.offset(facing, -26);
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 			
 			template = templatemanager.getTemplate(minecraftserver, PUB);
 			if (template == null) {
 				return;
 			}
 			pos = pos.offset(facing.rotateY(), mirror ? 26 : -26);
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 			
 			template = templatemanager.getTemplate(minecraftserver, BARRACKS);
 			if (template == null) {
 				return;
 			}
 			pos = pos.offset(facing, 26);
-			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);
+			this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true,rand);
 		}
 	}
 

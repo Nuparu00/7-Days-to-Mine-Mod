@@ -58,7 +58,7 @@ public class BuildingAirport extends Building {
 			for(int i = 0; i < 7;i++) {
 				Template template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"airport_a"+(i+1)));
 				if(template != null) {
-					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);	
+					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true, rand);	
 				}
 				pos = pos.offset(facing.rotateY(),mirror ? 32 : -32);
 			}
@@ -66,7 +66,7 @@ public class BuildingAirport extends Building {
 			for(int i = 0; i < 7;i++) {
 				Template template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"airport_b"+(7-i)));
 				if(template != null) {
-					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);	
+					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true, rand);	
 				}
 				pos = pos.offset(facing.rotateY(),mirror ? -32 : 32);
 			}
@@ -74,7 +74,7 @@ public class BuildingAirport extends Building {
 			for(int i = 0; i < 7;i++) {
 				Template template = templatemanager.getTemplate(minecraftserver, new ResourceLocation(SevenDaysToMine.MODID,"airport_c"+(i+1)));
 				if(template != null) {
-					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true);	
+					this.generateTemplate(worldserver, pos, mirror, facing, placementsettings, template, true, rand);	
 				}
 				pos = pos.offset(facing.rotateY(),mirror ? 32 : -32);
 			}

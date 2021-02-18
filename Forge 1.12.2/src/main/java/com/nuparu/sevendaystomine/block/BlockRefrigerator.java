@@ -43,7 +43,7 @@ public class BlockRefrigerator extends BlockTileProvider<TileEntityRefrigerator>
 			"half", BlockRefrigerator.EnumRefrigeratorHalf.class);
 
 	public BlockRefrigerator() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		setSoundType(SoundType.METAL);
 		setHardness(2.0F);
 		setResistance(10.0F);

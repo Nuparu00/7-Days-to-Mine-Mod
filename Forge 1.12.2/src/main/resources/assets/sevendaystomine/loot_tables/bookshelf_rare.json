@@ -9,12 +9,12 @@
             "entries": [
                 {
                     "type": "item",
-                    "weight": 55,
+                    "weight": 40,
                     "name": "minecraft:paper"
                 },
                 {
                     "type": "item",
-                    "weight": 50,
+                    "weight": 120,
                     "name": "minecraft:book"
                 },      
                 {
@@ -58,13 +58,19 @@
                     "name": "minecraft:map",
 					"functions": [
                         {
-                            "function": "sevendaystomine:city_map"
+                            "function": "sevendaystomine:city_map",
+                     "conditions":[
+                        {
+                           "condition":"random_chance",
+                           "chance":0.75
+                        }
+                     ]
                         }
                     ]
                 },
                 {
                     "type": "empty",
-                    "weight": 500
+                    "weight": 520
                 },
                 {
                     "type": "item",

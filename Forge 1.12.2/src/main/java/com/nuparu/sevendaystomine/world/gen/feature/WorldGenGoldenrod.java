@@ -31,7 +31,7 @@ public class WorldGenGoldenrod extends WorldGenerator
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
     	Biome biome = worldIn.getBiome(position);
-		if(biome instanceof BiomeWastelandBase) return false;
+    	if(biome instanceof BiomeWastelandBase || biome.getBaseHeight() > 0.25f || biome.getTemperature(position) < 0.2f || biome.getRainfall() < 0.2f) return false;
         for (int i = 0; i < 64; ++i)
         {
             BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));

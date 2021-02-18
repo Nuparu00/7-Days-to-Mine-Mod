@@ -1,6 +1,6 @@
 {
-	"parent": "sevendaystomine:item/liquidincan",
-	"textures": {
-		"3": "sevendaystomine:blocks/murky_water_still"
-	}
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "sevendaystomine:items/canned_murky_water"
+    }
 }

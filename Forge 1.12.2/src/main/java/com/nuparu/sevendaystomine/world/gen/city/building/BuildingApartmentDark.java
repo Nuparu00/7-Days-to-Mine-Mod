@@ -110,6 +110,7 @@ public class BuildingApartmentDark extends Building{
 					handleDataBlock(world, facing, entry.getKey(), entry.getValue(), mirror);
 				}
 			}
+			coverWithSand(world, pos, template, facing, mirror,rand);
 
 		}
 	}
