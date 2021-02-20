@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.entity;
 
 import java.util.UUID;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.ai.EntityAIBreakBlock;
 import com.nuparu.sevendaystomine.entity.ai.EntityAIInfectedAttack;
 import com.nuparu.sevendaystomine.init.ModLootTables;
@@ -195,7 +196,7 @@ public class EntityZombieBase extends EntityMob {
 			if (nightRun) {
 				BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 				int light = this.world.getLight(pos, true);
-				if (light < 10) {
+				if (ModConfig.mobs.zombiesRunMode == 2 || (ModConfig.mobs.zombiesRunMode == 1 && light < 10)) {
 					if (!speed.hasModifier(NIGHT_SPEED_BOOST)) {
 						speed.applyModifier(NIGHT_SPEED_BOOST);
 					}

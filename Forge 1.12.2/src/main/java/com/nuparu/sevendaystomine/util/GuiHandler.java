@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.client.gui.GuiMonitor;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiBackpack;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiCamera;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiCampfire;
+import com.nuparu.sevendaystomine.client.gui.inventory.GuiCar;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiChemistryStation;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiCombustionGenerator;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiComputer;
@@ -28,6 +29,7 @@ import com.nuparu.sevendaystomine.client.gui.inventory.GuiTurretAdvanced;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiTurretBase;
 import com.nuparu.sevendaystomine.client.gui.inventory.GuiWorkbench;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
+import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.entity.EntityHuman;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
@@ -47,6 +49,7 @@ import com.nuparu.sevendaystomine.inventory.ContainerTiny;
 import com.nuparu.sevendaystomine.inventory.ContainerWorkbench;
 import com.nuparu.sevendaystomine.inventory.container.ContainerBackpack;
 import com.nuparu.sevendaystomine.inventory.container.ContainerCamera;
+import com.nuparu.sevendaystomine.inventory.container.ContainerCar;
 import com.nuparu.sevendaystomine.inventory.container.ContainerFlamethrower;
 import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.container.ContainerMinibike;
@@ -95,9 +98,14 @@ public class GuiHandler implements IGuiHandler {
 		}
 		if (ID == 17) {
 			Entity entity = world.getEntityByID(y);
-			if (entity != null && entity instanceof EntityMinibike) {
-				EntityMinibike minibike = (EntityMinibike) entity;
-				return new ContainerMinibike(player.inventory, minibike);
+			if (entity != null) {
+				if (entity instanceof EntityMinibike) {
+					EntityMinibike minibike = (EntityMinibike) entity;
+					return new ContainerMinibike(player.inventory, minibike);
+				} else if (entity instanceof EntityCar) {
+					EntityCar car = (EntityCar) entity;
+					return new ContainerCar(player.inventory, car);
+				}
 			}
 		}
 		if (ID == 18) {
@@ -182,9 +190,15 @@ public class GuiHandler implements IGuiHandler {
 		}
 		if (ID == 17) {
 			Entity entity = world.getEntityByID(y);
-			if (entity != null && entity instanceof EntityMinibike) {
-				EntityMinibike minibike = (EntityMinibike) entity;
-				return new GuiMinibike(player.inventory, minibike, new ContainerMinibike(player.inventory, minibike));
+			if (entity != null) {
+				if (entity instanceof EntityMinibike) {
+					EntityMinibike minibike = (EntityMinibike) entity;
+					return new GuiMinibike(player.inventory, minibike,
+							new ContainerMinibike(player.inventory, minibike));
+				} else if (entity instanceof EntityCar) {
+					EntityCar car = (EntityCar) entity;
+					return new GuiCar(player.inventory, car, new ContainerCar(player.inventory, car));
+				}
 			}
 		}
 		if (ID == 18) {

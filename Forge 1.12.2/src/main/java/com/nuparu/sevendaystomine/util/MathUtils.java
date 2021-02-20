@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.util;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -125,5 +126,22 @@ public class MathUtils {
 	public static double roundToNDecimal(double d, int places) {
 		double fac = Math.pow(10, places);
 		return Math.round(d*fac)/fac;
+	}
+	
+	
+	public static double getSpeedBlocksPerTicks(Entity entity) {
+		double x = entity.posX - entity.prevPosX;
+		double z = entity.posZ - entity.prevPosZ;
+		return Math.sqrt(x*x+z*z);
+	}
+	public static double getSpeedMetersPerSecond(Entity entity) {
+		return getSpeedBlocksPerTicks(entity)*20;
+	}
+	public static double getSpeedKilometersPerHour(Entity entity) {
+		return getSpeedMetersPerSecond(entity)*3.6;
+	}
+	
+	public static double getSpeedMilesPerHour(Entity entity) {
+		return getSpeedMetersPerSecond(entity)*2.23694;
 	}
 }

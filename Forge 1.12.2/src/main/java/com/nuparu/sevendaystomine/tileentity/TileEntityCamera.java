@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.electricity.network.INetwork;
 import com.nuparu.sevendaystomine.entity.EntityCameraView;
 import com.nuparu.sevendaystomine.network.PacketManager;
@@ -36,7 +37,7 @@ public class TileEntityCamera extends TileEntity implements ITickable, INetwork 
 
 	@Override
 	public void update() {
-		if (cameraView == null && world != null) {
+		if (cameraView == null && ModConfig.players.allowCameras && world != null) {
 			cameraView = new EntityCameraView(world, pos.getX(), pos.getY(), pos.getZ(), this);
 			if (!world.isRemote) {
 				world.spawnEntity(cameraView);
@@ -122,7 +123,7 @@ public class TileEntityCamera extends TileEntity implements ITickable, INetwork 
 	}
 
 	public EntityCameraView getCameraView(EntityPlayer player) {
-		if (on) {
+		if (on && cameraView != null && ModConfig.players.allowCameras) {
 			viewers.add(player);
 			cameraView.prevRotationYaw = cameraView.rotationYaw;
 			cameraView.rotationYaw = cameraView.initRotation + getHeadRotation() * cameraView.direction;

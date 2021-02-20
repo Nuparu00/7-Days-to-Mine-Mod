@@ -225,7 +225,7 @@ public class WorldEventHandler {
 			}
 
 		} else {
-			if (ModConfig.players.customSky && world.provider.getDimension() == 0) {
+			if (ModConfig.client.customSky && world.provider.getDimension() == 0) {
 				SevenDaysToMine.proxy.setSkyRenderer(world);
 				SevenDaysToMine.proxy.setCloudRenderer(world);
 			}

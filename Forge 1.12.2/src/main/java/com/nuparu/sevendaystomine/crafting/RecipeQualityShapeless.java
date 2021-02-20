@@ -3,6 +3,7 @@ package com.nuparu.sevendaystomine.crafting;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,7 +55,7 @@ public class RecipeQualityShapeless extends ShapelessRecipes {
 					stack.setTagCompound(new NBTTagCompound());
 				}
 				stack.getTagCompound().setInteger("Quality", (int) Math
-						.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1), 600));
+						.min(Math.max(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality), 1), 600));
 
 			}
 		}

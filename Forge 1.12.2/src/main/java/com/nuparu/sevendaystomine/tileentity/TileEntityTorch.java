@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.tileentity;
 
 import com.nuparu.sevendaystomine.block.BlockTorchEnhanced;
+import com.nuparu.sevendaystomine.config.ModConfig;
 
 import net.minecraft.util.ITickable;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,7 +10,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityTorch extends TileEntity implements ITickable {
-	public int temp = 22000;
+	public int age = 0;
 
 	public TileEntityTorch() {
 
@@ -17,22 +18,20 @@ public class TileEntityTorch extends TileEntity implements ITickable {
 
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		this.temp = compound.getInteger("temp");
+		this.age = compound.getInteger("age");
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setInteger("temp", this.temp);
+		compound.setInteger("age", this.age);
 		return compound;
 	}
 
 	@Override
 	public void update() {
 		if (world != null) {
-			if (this.temp <= 0 || (world.isRaining() && world.canSeeSky(this.pos))) {
+			if ((this.age++ >= ModConfig.world.torchBurnTime && ModConfig.world.torchBurnTime != -1) || (ModConfig.world.torchRainExtinguish && world.isRaining() && world.canSeeSky(this.pos))) {
 				BlockTorchEnhanced.extinguish(world, pos);
-			} else {
-				--temp;
 			}
 		}
 	}

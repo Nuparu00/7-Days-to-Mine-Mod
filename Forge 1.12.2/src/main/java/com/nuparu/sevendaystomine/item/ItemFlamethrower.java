@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.init.ModItems;
@@ -87,11 +88,11 @@ public class ItemFlamethrower extends ItemGun {
 		int ammo = nbt.getInteger("Ammo");
 		boolean flag = playerIn.isCreative();
 		if (ammo > 0 || flag) {
-			float velocity = getSpeed() * (1f + ((float) getQuality(itemstack) / (float) ItemQuality.MAX_QUALITY));
+			float velocity = getSpeed() * (1f + ((float) getQuality(itemstack) / (float) ModConfig.players.maxQuality));
 			for (int i = 0; i < getProjectiles(); i++) {
 				EntityFlame shot = new EntityFlame(worldIn, playerIn, velocity,
 						((float) getSpread(playerIn, handIn) / (playerIn.isSneaking() ? 1.5f : 1f)),
-						(int) Math.ceil(30 * (1f + ((float) getQuality(itemstack) / (float) ItemQuality.MAX_QUALITY))));
+						(int) Math.ceil(30 * (1f + ((float) getQuality(itemstack) / (float) ModConfig.players.maxQuality))));
 				if (!worldIn.isRemote) {
 					worldIn.spawnEntity(shot);
 				}

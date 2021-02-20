@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.client.Minecraft;
@@ -21,9 +22,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemQuality extends Item implements IQuality {
-
-	public static final int MAX_QUALITY = 600;
-	public static final double XP_PER_QUALITY_POINT = 5;
 
 	public ItemQuality() {
 
@@ -93,7 +91,8 @@ public class ItemQuality extends Item implements IQuality {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		NBTTagCompound nbt = stack.getTagCompound();
-		nbt.setInteger("Quality",(int) MathUtils.clamp(player.experienceTotal / XP_PER_QUALITY_POINT, 1, MAX_QUALITY));
+		nbt.setInteger("Quality", (int) MathUtils.clamp(player.experienceTotal / ModConfig.players.xpPerQuality, 1,
+				ModConfig.players.maxQuality));
 
 		return stack;
 	}
@@ -107,9 +106,10 @@ public class ItemQuality extends Item implements IQuality {
 
 		return stack;
 	}
-	
+
 	/*
-	 * Static version of ItemQuality#getQuality(), should replace the non-static one in the future
+	 * Static version of ItemQuality#getQuality(), should replace the non-static one
+	 * in the future
 	 */
 	public static int getQualityForStack(ItemStack stack) {
 		NBTTagCompound nbt = stack.getTagCompound();
@@ -145,11 +145,11 @@ public class ItemQuality extends Item implements IQuality {
 			return super.getRGBDurabilityForDisplay(stack);
 		}
 	}
-	
+
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
-		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT),
-				ItemQuality.MAX_QUALITY));
+		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality),
+				ModConfig.players.maxQuality));
 	}
-	
+
 }

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.capability.ExtendedInventoryProvider;
 import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SchedulePhotoMessage;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -60,13 +61,15 @@ public class ItemAnalogCamera extends Item {
 				if (inv == null)
 					return;
 				ItemStack paper = inv.getStackInSlot(0);
-				if(paper.isEmpty() || paper.getItem() != Items.PAPER) {
-					worldIn.playSound(null, new BlockPos(player), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, worldIn.rand.nextFloat()*0.2f+0.9f,
-							worldIn.rand.nextFloat()*0.2f+1.9f);
+				if (paper.isEmpty() || paper.getItem() != Items.PAPER) {
+					worldIn.playSound(null, new BlockPos(player), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS,
+							worldIn.rand.nextFloat() * 0.2f + 0.9f, worldIn.rand.nextFloat() * 0.2f + 1.9f);
 					return;
 				}
-				if (!worldIn.isRemote) {
-					PacketManager.schedulePhoto.sendTo(new SchedulePhotoMessage(), (EntityPlayerMP)player);
+				if (ModConfig.players.allowPhotos) {
+					if (!worldIn.isRemote) {
+						PacketManager.schedulePhoto.sendTo(new SchedulePhotoMessage(), (EntityPlayerMP) player);
+					}
 				}
 				paper.shrink(1);
 			} else if (player.isSneaking()) {
@@ -96,7 +99,7 @@ public class ItemAnalogCamera extends Item {
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound compound) {
 		return new ExtendedInventoryProvider(1, "camera");
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
@@ -120,46 +123,46 @@ public class ItemAnalogCamera extends Item {
 		nbt.setDouble("zoom", 1);
 		return stack;
 	}
-	
+
 	public static double getWidth(ItemStack stack, @Nullable EntityPlayer player) {
 		if (stack.getTagCompound() == null) {
-			setupDimensions(stack,player);
+			setupDimensions(stack, player);
 		}
 		return stack.getTagCompound().getDouble("width");
 	}
-	
+
 	public static double getHeight(ItemStack stack, @Nullable EntityPlayer player) {
 		if (stack.getTagCompound() == null) {
-			setupDimensions(stack,player);
+			setupDimensions(stack, player);
 		}
 		return stack.getTagCompound().getDouble("height");
 	}
-	
+
 	public static double getZoom(ItemStack stack, @Nullable EntityPlayer player) {
 		if (stack.getTagCompound() == null) {
-			setupDimensions(stack,player);
+			setupDimensions(stack, player);
 		}
 		return stack.getTagCompound().getDouble("zoom");
 	}
-	
+
 	public static void setWidth(double width, ItemStack stack, @Nullable EntityPlayer player) {
 		if (stack.getTagCompound() == null) {
-			setupDimensions(stack,player);
+			setupDimensions(stack, player);
 		}
-		stack.getTagCompound().setDouble("width",width);
+		stack.getTagCompound().setDouble("width", width);
 	}
-	
+
 	public static void setHeight(double height, ItemStack stack, @Nullable EntityPlayer player) {
 		if (stack.getTagCompound() == null) {
-			setupDimensions(stack,player);
+			setupDimensions(stack, player);
 		}
-		stack.getTagCompound().setDouble("height",height);
+		stack.getTagCompound().setDouble("height", height);
 	}
-	
+
 	public static void setZoom(double zoom, ItemStack stack, @Nullable EntityPlayer player) {
 		if (stack.getTagCompound() == null) {
-			setupDimensions(stack,player);
+			setupDimensions(stack, player);
 		}
-		stack.getTagCompound().setDouble("zoom",zoom);
+		stack.getTagCompound().setDouble("zoom", zoom);
 	}
 }

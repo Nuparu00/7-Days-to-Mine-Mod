@@ -6,6 +6,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.item.IQuality;
 import com.nuparu.sevendaystomine.item.ItemFuelTool;
 import com.nuparu.sevendaystomine.item.ItemGun;
@@ -32,7 +33,7 @@ public class RandomQualityFunction extends LootFunction {
 			return stack;
 
 		IQuality quality = (IQuality) item;
-		quality.setQuality(stack, 1+(int)(MathUtils.bias(rand.nextDouble(),0.35)*(ItemQuality.MAX_QUALITY-1)));
+		quality.setQuality(stack, 1+(int)(MathUtils.bias(rand.nextDouble(),0.35)*(ModConfig.players.maxQuality-1)));
 
 		if (item instanceof ItemGun) {
 			((ItemGun) item).initNBT(stack);

@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 
 import java.util.List;
 
@@ -93,8 +94,8 @@ public class ItemQualityTool extends ItemTool implements IQuality {
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
 		setQuality(itemstack,
-				(int) Math.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1),
-						ItemQuality.MAX_QUALITY));
+				(int) Math.min(Math.max(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality), 1),
+						ModConfig.players.maxQuality));
 	}
 
 	@Override
@@ -147,11 +148,11 @@ public class ItemQualityTool extends ItemTool implements IQuality {
 	}
 
 	public double getAttackDamageModified(ItemStack stack) {
-		return this.attackDamage * (1+((float)getQuality(stack) / (float)ItemQuality.MAX_QUALITY));
+		return this.attackDamage * (1+((float)getQuality(stack) / (float)ModConfig.players.maxQuality));
 	}
 	
 	public double getAttackSpeedModified(ItemStack stack) {
-		return this.speed / (1+((float)getQuality(stack) / (float)ItemQuality.MAX_QUALITY));
+		return this.speed / (1+((float)getQuality(stack) / (float)ModConfig.players.maxQuality));
 	}
 
 	@Override

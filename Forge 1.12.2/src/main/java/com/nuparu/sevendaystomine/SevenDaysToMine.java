@@ -13,7 +13,6 @@ import com.nuparu.sevendaystomine.capability.IExtendedChunk;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
 import com.nuparu.sevendaystomine.client.renderer.RenderGlobalEnhanced;
-import com.nuparu.sevendaystomine.command.CommandAStar;
 import com.nuparu.sevendaystomine.command.CommandAirdrop;
 import com.nuparu.sevendaystomine.command.CommandAirport;
 import com.nuparu.sevendaystomine.command.CommandGenerateCity;
@@ -85,7 +84,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(modid = SevenDaysToMine.MODID, version = SevenDaysToMine.VERSION, useMetadata = true)
 public class SevenDaysToMine {
 	public static final String MODID = "sevendaystomine";
-	public static final String VERSION = "Beta 1.0 Pre-release 2.6.5";
+	public static final String VERSION = "Beta 1.0 Pre-release 2.6.6";
 
 	static final String CLIENT_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.ClientProxy";
 	static final String SERVER_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.CommonProxy";
@@ -427,7 +426,6 @@ public class SevenDaysToMine {
 		event.registerServerCommand(new CommandAirdrop());
 		event.registerServerCommand(new CommandInfect());
 		event.registerServerCommand(new CommandAirport());
-		event.registerServerCommand(new CommandAStar());
 		event.registerServerCommand(new CommandLocateModded());
 
 		proxy.serverStarting(event);

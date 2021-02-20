@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.tileentity;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -47,7 +48,7 @@ public class TileEntityWheels extends TileEntity {
 
 	public ItemStack generateItemStack() {
 		ItemStack is = new ItemStack(ModBlocks.WHEELS);
-		this.stack = ItemQuality.setQualityForStack(is, MathUtils.getIntInRange(1, ItemQuality.MAX_QUALITY));
+		this.stack = ItemQuality.setQualityForStack(is, MathUtils.getIntInRange(1, ModConfig.players.maxQuality));
 		return is;
 	}
 

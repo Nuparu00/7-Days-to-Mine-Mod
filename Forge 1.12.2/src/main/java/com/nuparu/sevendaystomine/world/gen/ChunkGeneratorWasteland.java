@@ -1,6 +1,5 @@
 package com.nuparu.sevendaystomine.world.gen;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -8,16 +7,9 @@ import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
-import com.nuparu.sevendaystomine.init.ModLootTables;
-import com.nuparu.sevendaystomine.item.EnumMaterial;
-import com.nuparu.sevendaystomine.pathfinding.AStar;
-import com.nuparu.sevendaystomine.tileentity.TileEntityGarbage;
-import com.nuparu.sevendaystomine.util.ItemUtils;
-import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.SimplexNoise;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.City;
-import com.nuparu.sevendaystomine.world.gen.city.CitySavedData;
 import com.nuparu.sevendaystomine.world.gen.structure.MapGenWastelandScatteredFeature;
 
 import net.minecraft.block.Block;
@@ -27,7 +19,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -35,15 +26,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeBeach;
-import net.minecraft.world.biome.BiomeOcean;
-import net.minecraft.world.biome.BiomeStoneBeach;
-import net.minecraft.world.biome.BiomeSwamp;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
 import net.minecraft.world.gen.ChunkGeneratorSettings;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.MapGenCaves;
 import net.minecraft.world.gen.MapGenRavine;
@@ -58,7 +44,6 @@ import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraft.world.gen.structure.StructureOceanMonument;
 import net.minecraft.world.gen.structure.WoodlandMansion;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.items.IItemHandler;
 
 /*
  * Modified version of Vanilla's net.minecraft.world.gen.ChunkGeneratorOverworld, it extends the original class so it can be used with

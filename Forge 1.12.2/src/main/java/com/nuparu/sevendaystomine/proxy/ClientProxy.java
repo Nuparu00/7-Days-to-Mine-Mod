@@ -38,6 +38,7 @@ import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirdropFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderAirplaneFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBlindZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderBloatedZombieFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderCarFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderChlorineGrenadeFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFeralZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFlameFactory;
@@ -76,12 +77,14 @@ import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWindTurbi
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWoodenLogSpikeRenderer;
 import com.nuparu.sevendaystomine.client.sound.PositionedLoudSound;
 import com.nuparu.sevendaystomine.client.toast.NotificationToast;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.entity.EntityAirplane;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
+import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFeralZombie;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
@@ -329,6 +332,7 @@ public class ClientProxy extends CommonProxy {
 				RenderFragmentationGrenadeFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityMolotov.class, RenderMolotovFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityFeralZombie.class, RenderFeralZombieFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityCar.class, RenderCarFactory.INSTANCE);
 
 	}
 
@@ -390,14 +394,22 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	void initKeybindings() {
-		keyBindings = new KeyBinding[7];
+		keyBindings = new KeyBinding[9];
 		keyBindings[0] = new KeyBinding("key.reload.desc", Keyboard.KEY_R, "key.sevendaystomine.category");
-		keyBindings[1] = new KeyBinding("key.camera.width.increase.desc", Keyboard.KEY_NUMPAD6, "key.sevendaystomine.category");
-		keyBindings[2] = new KeyBinding("key.camera.width.decrease.desc", Keyboard.KEY_NUMPAD4, "key.sevendaystomine.category");
-		keyBindings[3] = new KeyBinding("key.camera.height.increase.desc", Keyboard.KEY_NUMPAD8, "key.sevendaystomine.category");
-		keyBindings[4] = new KeyBinding("key.camera.height.decrease.desc", Keyboard.KEY_NUMPAD2, "key.sevendaystomine.category");
+		keyBindings[1] = new KeyBinding("key.camera.width.increase.desc", Keyboard.KEY_NUMPAD6,
+				"key.sevendaystomine.category");
+		keyBindings[2] = new KeyBinding("key.camera.width.decrease.desc", Keyboard.KEY_NUMPAD4,
+				"key.sevendaystomine.category");
+		keyBindings[3] = new KeyBinding("key.camera.height.increase.desc", Keyboard.KEY_NUMPAD8,
+				"key.sevendaystomine.category");
+		keyBindings[4] = new KeyBinding("key.camera.height.decrease.desc", Keyboard.KEY_NUMPAD2,
+				"key.sevendaystomine.category");
 		keyBindings[5] = new KeyBinding("key.camera.zoom.desc", Keyboard.KEY_ADD, "key.sevendaystomine.category");
-		keyBindings[6] = new KeyBinding("key.camera.unzoom.desc", Keyboard.KEY_SUBTRACT, "key.sevendaystomine.category");
+		keyBindings[6] = new KeyBinding("key.camera.unzoom.desc", Keyboard.KEY_SUBTRACT,
+				"key.sevendaystomine.category");
+
+		keyBindings[7] = new KeyBinding("key.accelerate.desc", Keyboard.KEY_W, "key.sevendaystomine.category");
+		keyBindings[8] = new KeyBinding("key.decelerate.desc", Keyboard.KEY_S, "key.sevendaystomine.category");
 
 		for (int i = 0; i < keyBindings.length; ++i) {
 			ClientRegistry.registerKeyBinding(keyBindings[i]);
@@ -459,12 +471,14 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	public void schedulePhoto() {
-		/*Minecraft mc = Minecraft.getMinecraft();
-		if (mc != null && mc.player != null) {
-			CameraHelper.INSTANCE.saveScreenshot(mc.displayWidth, mc.displayHeight, mc.getFramebuffer(), mc.player);
-		}*/
-
-		ClientEventHandler.takingPhoto = true;
+		/*
+		 * Minecraft mc = Minecraft.getMinecraft(); if (mc != null && mc.player != null)
+		 * { CameraHelper.INSTANCE.saveScreenshot(mc.displayWidth, mc.displayHeight,
+		 * mc.getFramebuffer(), mc.player); }
+		 */
+		if (ModConfig.players.allowPhotos) {
+			ClientEventHandler.takingPhoto = true;
+		}
 	}
 
 	@Override

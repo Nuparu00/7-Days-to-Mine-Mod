@@ -23,6 +23,7 @@ import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityBloatedZombie;
 import com.nuparu.sevendaystomine.entity.EntityBurntZombie;
+import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFeralZombie;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
@@ -120,7 +121,6 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityWheels;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWindTurbine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenLogSpike;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenSpikes;
-import com.nuparu.sevendaystomine.util.ConfigHandler;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.VersionChecker;
@@ -183,7 +183,6 @@ public class CommonProxy {
 	}
 
 	public void preInit(FMLPreInitializationEvent event) {
-		ConfigHandler.loadConfig(event);
 		TickHandler.init(Side.SERVER);
 
 		mgr = new ScriptEngineManager(null);
@@ -385,6 +384,7 @@ public class CommonProxy {
 		registerEntity(EntityMolotov.class, "molotov", 32, 30, true);
 		registerEntity(EntityZombieMiner.class, "zombie_miner", 64, 1, true, 0x574F45, 0x685452);
 		registerEntity(EntityFeralZombie.class, "feral_zombie", 64, 1, true, 0x5D623F, 0x6D3826);
+		registerEntity(EntityCar.class, "car", 64, 1, true);
 		/*
 		 * addEntitySpawn(EntityReanimatedCorpse.class, 1000, 1, 7,
 		 * EnumCreatureType.MONSTER, Utils.combine(BiomeDictionary.getBiomes(Type.LUSH),

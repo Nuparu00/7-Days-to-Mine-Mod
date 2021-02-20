@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.item.IReloadable;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.util.Utils;

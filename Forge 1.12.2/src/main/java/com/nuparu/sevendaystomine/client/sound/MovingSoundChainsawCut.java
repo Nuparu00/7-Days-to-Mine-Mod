@@ -34,7 +34,7 @@ public class MovingSoundChainsawCut extends MovingSound {
 	public void update() {
 		ItemStack stack = this.player.getHeldItem(EnumHand.MAIN_HAND);
 		NBTTagCompound nbt = stack.getTagCompound();
-		if (this.player.isDead || System.currentTimeMillis()-PlayerEventHandler.getLastTimeHittingBlock() > 500 || stack.isEmpty() || stack.getItem() != ModItems.CHAINSAW) {
+		if (this.player.isDead || System.currentTimeMillis()-PlayerEventHandler.getLastTimeHittingBlock() > 500 || stack.isEmpty() || (stack.getItem() != ModItems.CHAINSAW && stack.getItem() != ModItems.AUGER)) {
 			this.donePlaying = true;
 			PlayerEventHandler.nextChainsawCutSound = System.currentTimeMillis();
 		}

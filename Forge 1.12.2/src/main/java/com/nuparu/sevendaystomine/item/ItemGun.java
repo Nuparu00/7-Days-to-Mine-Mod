@@ -8,6 +8,7 @@ import com.google.common.collect.Multimap;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.events.TickHandler;
@@ -147,7 +148,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 		NBTTagCompound nbt = stack.getTagCompound();
 		if (nbt != null) {
 			if (nbt.hasKey("Quality")) {
-				return getFullDamage() * ((float) nbt.getInteger("Quality") / (float) ItemQuality.MAX_QUALITY);
+				return getFullDamage() * ((float) nbt.getInteger("Quality") / (float) ModConfig.players.maxQuality);
 			}
 		}
 		return getFullDamage();
@@ -182,7 +183,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
 		setQuality(itemstack, (int) (int) Math
-				.min(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), ItemQuality.MAX_QUALITY));
+				.min(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality), ModConfig.players.maxQuality));
 		initNBT(itemstack);
 	}
 
@@ -237,8 +238,8 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 			if (player != null) {
 				setQuality(stack,
 						(int) (int) Math.min(
-								Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1),
-								ItemQuality.MAX_QUALITY));
+								Math.max(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality), 1),
+								ModConfig.players.maxQuality));
 				stack.getTagCompound().setInteger("Capacity", getMaxAmmo());
 				stack.getTagCompound().setInteger("Ammo", 0);
 				stack.getTagCompound().setInteger("ReloadTime", 90000);
@@ -332,7 +333,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 		if (ammo > 0 || flag) {
 
-			float velocity = getSpeed() * (1f + ((float) getQuality(itemstack) / (float) ItemQuality.MAX_QUALITY));
+			float velocity = getSpeed() * (1f + ((float) getQuality(itemstack) / (float) ModConfig.players.maxQuality));
 			boolean explosive = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.explosive, itemstack) != 0;
 			boolean sparking = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.sparking, itemstack) != 0;
 			if (sparking && explosive && (playerIn instanceof EntityPlayerMP)
@@ -397,7 +398,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		double spread_local = spread * mult * (2d - ((double) quality / (ItemQuality.MAX_QUALITY)));
+		double spread_local = spread * mult * (2d - ((double) quality / (ModConfig.players.maxQuality)));
 		return (spread_local
 				* (((double) (Math.abs(player.motionX) + Math.abs(player.motionY) + Math.abs(player.motionZ)))))
 				* (1-(EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack)-EnchantmentHelper.getEnchantmentLevel(ModEnchantments.strabismus, stack))*0.2 );
@@ -415,7 +416,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		return (spread * mult * (1.2d - ((double) quality / (ItemQuality.MAX_QUALITY + 1)) * 0.9))
+		return (spread * mult * (1.2d - ((double) quality / (ModConfig.players.maxQuality + 1)) * 0.9))
 				* (1-(EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack)-EnchantmentHelper.getEnchantmentLevel(ModEnchantments.strabismus, stack))*0.2 );
 	}
 

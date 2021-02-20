@@ -16,9 +16,9 @@ public class ItemAK47 extends ItemGun {
 		this.setSpeed(24f);
 		this.setRecoil(3f);
 		this.setCounterDef(0);
-		this.setCross(22);
+		this.setCross(24);
 		this.setReloadTime(1500);
-		this.setDelay(15);
+		this.setDelay(6);
 		this.setFOVFactor(1.35f);
 		this.setType(EnumGun.RIFLE);
 		this.setLength(EnumLength.LONG);

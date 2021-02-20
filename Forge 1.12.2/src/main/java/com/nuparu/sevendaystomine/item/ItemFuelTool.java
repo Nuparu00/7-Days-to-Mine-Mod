@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -148,8 +149,8 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 			ItemStack stack = new ItemStack(this, 1, 0);
 			if (player != null) {
 				setQuality(stack,
-						(int) Math.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1),
-								ItemQuality.MAX_QUALITY));
+						(int) Math.min(Math.max(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality), 1),
+								ModConfig.players.maxQuality));
 				NBTTagCompound nbt = stack.getTagCompound();
 				nbt.setInteger("FuelMax", 1000);
 				nbt.setInteger("FuelCurrent", 0);

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 import com.nuparu.sevendaystomine.item.IScrapable;
 import com.nuparu.sevendaystomine.util.ItemUtils;
@@ -90,7 +91,7 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 		}
 		if (weight == 0)
 			return false;
-		resultItem = new ItemStack(ItemUtils.INSTANCE.getScrapResult(mat), (int) Math.ceil(weight / 2f));
+		resultItem = new ItemStack(ItemUtils.INSTANCE.getScrapResult(mat), (int) Math.ceil(weight * ModConfig.players.scrapCoefficient));
 		if (!this.resultItem.isEmpty()) {
 
 			return true;

@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.proxy.ClientProxy;
+import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -50,7 +51,6 @@ public class GuiPlayerUI {
 			
 			if (player == null)
 				return;
-
 
 			GL11.glPushMatrix();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

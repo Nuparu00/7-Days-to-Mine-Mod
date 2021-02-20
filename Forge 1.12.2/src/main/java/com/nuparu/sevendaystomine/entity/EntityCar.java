@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.inventory.itemhandler.CarInventoryHandler;
 import com.nuparu.sevendaystomine.inventory.itemhandler.MinibikeInventoryHandler;
 import com.nuparu.sevendaystomine.item.IQuality;
 import com.nuparu.sevendaystomine.item.ItemQuality;
@@ -51,39 +52,36 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class EntityMinibike extends EntityLivingBase implements IControllable {
+public class EntityCar extends EntityLivingBase implements IControllable {
 
-	private static final DataParameter<Boolean> ENGINE = EntityDataManager.<Boolean>createKey(EntityMinibike.class,
+	private static final DataParameter<Boolean> ENGINE = EntityDataManager.<Boolean>createKey(EntityCar.class,
 			DataSerializers.BOOLEAN);
 
-	private static final DataParameter<Boolean> BATTERY = EntityDataManager.<Boolean>createKey(EntityMinibike.class,
+	private static final DataParameter<Boolean> BATTERY = EntityDataManager.<Boolean>createKey(EntityCar.class,
 			DataSerializers.BOOLEAN);
 
-	private static final DataParameter<Boolean> WHEELS = EntityDataManager.<Boolean>createKey(EntityMinibike.class,
+	private static final DataParameter<Boolean> WHEELS = EntityDataManager.<Boolean>createKey(EntityCar.class,
 			DataSerializers.BOOLEAN);
 
-	private static final DataParameter<Boolean> SEAT = EntityDataManager.<Boolean>createKey(EntityMinibike.class,
+	private static final DataParameter<Boolean> SEAT = EntityDataManager.<Boolean>createKey(EntityCar.class,
 			DataSerializers.BOOLEAN);
 
-	private static final DataParameter<Boolean> HANDLES = EntityDataManager.<Boolean>createKey(EntityMinibike.class,
-			DataSerializers.BOOLEAN);
-
-	private static final DataParameter<Boolean> CHEST = EntityDataManager.<Boolean>createKey(EntityMinibike.class,
+	private static final DataParameter<Boolean> HANDLES = EntityDataManager.<Boolean>createKey(EntityCar.class,
 			DataSerializers.BOOLEAN);
 
 	private static final DataParameter<Integer> CHASSIS_QUALITY = EntityDataManager
-			.<Integer>createKey(EntityMinibike.class, DataSerializers.VARINT);
+			.<Integer>createKey(EntityCar.class, DataSerializers.VARINT);
 
 	private static final DataParameter<Integer> CALCULATED_QUALITY = EntityDataManager
-			.<Integer>createKey(EntityMinibike.class, DataSerializers.VARINT);
+			.<Integer>createKey(EntityCar.class, DataSerializers.VARINT);
 
-	private static final DataParameter<Boolean> CHARGED = EntityDataManager.<Boolean>createKey(EntityMinibike.class,
+	private static final DataParameter<Boolean> CHARGED = EntityDataManager.<Boolean>createKey(EntityCar.class,
 			DataSerializers.BOOLEAN);
 
-	private static final DataParameter<Float> FUEL = EntityDataManager.<Float>createKey(EntityMinibike.class,
+	private static final DataParameter<Float> FUEL = EntityDataManager.<Float>createKey(EntityCar.class,
 			DataSerializers.FLOAT);
 
-	private static final DataParameter<BlockPos> OLD_POS = EntityDataManager.<BlockPos>createKey(EntityMinibike.class,
+	private static final DataParameter<BlockPos> OLD_POS = EntityDataManager.<BlockPos>createKey(EntityCar.class,
 			DataSerializers.BLOCK_POS);
 
 	public final static UUID SPEED_MODIFIER_UUID = UUID.fromString("294093da-54f0-4c1b-9dbb-13b77534a84c");
@@ -98,14 +96,14 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 
 	public static final float MAX_FUEL = 5000;
 
-	public EntityMinibike(World world) {
+	public EntityCar(World world) {
 		super(world);
-		this.setSize(0.8F, 0.75F);
+		this.setSize(2.75F, 1.5F);
 		this.stepHeight = 1.25f;
 		initInventory();
 	}
 
-	public EntityMinibike(World worldIn, double x, double y, double z) {
+	public EntityCar(World worldIn, double x, double y, double z) {
 		this(worldIn);
 		this.setPosition(x, y, z);
 		this.motionX = 0.0D;
@@ -117,7 +115,7 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	}
 
 	protected void initInventory() {
-		this.inventory = new MinibikeInventoryHandler(getInventorySize(), this);
+		this.inventory = new CarInventoryHandler(getInventorySize(), this);
 	}
 
 	@Override
@@ -128,7 +126,6 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		this.dataManager.register(WHEELS, false);
 		this.dataManager.register(SEAT, false);
 		this.dataManager.register(HANDLES, false);
-		this.dataManager.register(CHEST, false);
 		this.dataManager.register(CHARGED, false);
 		this.dataManager.register(CHASSIS_QUALITY, 1);
 		this.dataManager.register(CALCULATED_QUALITY, -1);
@@ -182,14 +179,6 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 
 	public boolean getHandles() {
 		return this.dataManager.get(HANDLES);
-	}
-
-	protected void setChest(boolean state) {
-		this.dataManager.set(CHEST, state);
-	}
-
-	public boolean getChest() {
-		return this.dataManager.get(CHEST);
 	}
 
 	protected void setChassisQuality(int quality) {
@@ -253,9 +242,7 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		if (compound.hasKey("handles", Constants.NBT.TAG_BYTE)) {
 			this.setHandles(compound.getBoolean("handles"));
 		}
-		if (compound.hasKey("chest", Constants.NBT.TAG_BYTE)) {
-			this.setChest(compound.getBoolean("chest"));
-		}
+
 		if (compound.hasKey("chassis_quality", Constants.NBT.TAG_INT)) {
 			this.setChassisQuality(compound.getInteger("chassis_quality"));
 		}
@@ -288,7 +275,6 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		compound.setBoolean("wheels", getWheels());
 		compound.setBoolean("seat", getSeat());
 		compound.setBoolean("handles", getHandles());
-		compound.setBoolean("chest", getChest());
 		compound.setInteger("chassis_quality", getChassisQuality());
 		compound.setInteger("calculated_quality", getCalculatedQuality());
 		compound.setBoolean("charged", getCharged());
@@ -346,7 +332,7 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 
 	@Override
 	protected boolean canFitPassenger(Entity passenger) {
-		return getChest() ? this.getPassengers().size() < 1 : this.getPassengers().size() < 2;
+		return this.getPassengers().size() < 4;
 	}
 
 	@Override
@@ -355,8 +341,13 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	}
 
 	@Override
+	public boolean canBePushed() {
+		return false;
+	}
+	
+	@Override
 	public double getMountedYOffset() {
-		return (double) this.height * 0.5D;
+		return -0.02D;
 	}
 
 	@Override
@@ -388,7 +379,6 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 		this.setSeat(getInventory().getStackInSlot(2).getItem() == ModItems.MINIBIKE_SEAT);
 		this.setBattery(getInventory().getStackInSlot(3).getItem() == ModItems.CAR_BATTERY);
 		this.setEngine(getInventory().getStackInSlot(4).getItem() == ModItems.SMALL_ENGINE);
-		this.setChest(getInventory().getStackInSlot(5).getItem() == Item.getItemFromBlock(Blocks.CHEST));
 
 		int quality = -1;
 
@@ -507,9 +497,6 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 			this.setFuel(0);
 		}
 
-		this.prevPosX = this.posX;
-		this.prevPosY = this.posY;
-		this.prevPosZ = this.posZ;
 		int i = 5;
 		double d0 = 0.0D;
 
@@ -532,20 +519,21 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 					 */
 				}
 				if (state.isSideSolid(world, pos, EnumFacing.UP)) {
-					double d2 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D);
-					double d4 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D);
+					double d2 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D)*5;
+					double d4 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D)*5;
 					for (int j = 0; j < 10; j++) {
 						world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX + rand.nextDouble() * 0.2,
 								posY + rand.nextDouble() * 0.2, posZ + rand.nextDouble() * 0.2, motionX, motionY,
 								motionZ, Block.getStateId(state));
 					}
+					System.out.println(d2 + " "  + d4);
 				}
 				if (world.rand.nextInt(15) == 0) {
 					this.setFuel((this.getFuel() - (10F / ItemUtils.getQuality(getInventory().getStackInSlot(4)))));
 				}
 
 			}
-			if (d9 > 0.4) {
+			if (d9 > 0.4 && false) {
 
 				double d2 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D);
 				double d4 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D);
@@ -573,7 +561,7 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	}
 
 	public void travel(float strafe, float vertical, float forward) {
-		if (this.isBeingRidden() && this.canBeSteered() && this.isComplete() && this.getFuel() > 0 && getCharged()) {
+		if (this.isBeingRidden() && this.canBeSteered() && (true || (this.isComplete() && this.getFuel() > 0 && getCharged()))) {
 			EntityLivingBase entitylivingbase = (EntityLivingBase) this.getControllingPassenger();
 
 			strafe = entitylivingbase.moveStrafing * 0.5F;
@@ -662,25 +650,28 @@ public class EntityMinibike extends EntityLivingBase implements IControllable {
 	@Override
 	public void updatePassenger(Entity passenger) {
 		if (this.isPassenger(passenger)) {
-			float f = 0.0F;
+			float f = 0.18F;
+			float g = -0.4F;
 			float f1 = (float) ((this.isDead ? 0.009999999776482582D : this.getMountedYOffset())
 					+ passenger.getYOffset());
 
-			if (this.getPassengers().size() > 1) {
+
 				int i = this.getPassengers().indexOf(passenger);
 
-				if (i == 0) {
-					f = 0.2F;
-				} else {
-					f = -0.6F;
+				if(i > 1) {
+					f = -0.6f;
+				}
+				
+				if(i % 2 == 1) {
+					g = 0.4F;
 				}
 
 				if (passenger instanceof EntityAnimal) {
 					f = (float) ((double) f + 0.2D);
 				}
-			}
+			
 
-			Vec3d vec3d = (new Vec3d((double) f, 0.0D, 0.0D))
+			Vec3d vec3d = (new Vec3d((double) f, 0.0D, g))
 					.rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
 			passenger.setPosition(this.posX + vec3d.x, this.posY + (double) f1, this.posZ + vec3d.z);
 			passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);

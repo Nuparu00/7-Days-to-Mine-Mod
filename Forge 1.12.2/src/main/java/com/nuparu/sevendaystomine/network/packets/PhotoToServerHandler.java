@@ -5,6 +5,7 @@ import java.io.File;
 import org.apache.commons.io.FilenameUtils;
 
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.util.photo.PhotoCatcherServer;
 
@@ -21,6 +22,7 @@ public class PhotoToServerHandler implements IMessageHandler<PhotoToServerMessag
 
 	@Override
 	public IMessage onMessage(PhotoToServerMessage message, MessageContext ctx) {
+		if (!ModConfig.players.allowPhotos) return null;
 		EntityPlayer player = ctx.getServerHandler().player;
 
 		File file = PhotoCatcherServer.addBytesToMap(message.getBytes(), message.getID(), message.getParts(),

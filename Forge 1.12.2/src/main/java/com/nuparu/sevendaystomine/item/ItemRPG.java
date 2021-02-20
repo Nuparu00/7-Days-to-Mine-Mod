@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.entity.EntityRocket;
 import com.nuparu.sevendaystomine.entity.EntityShot;
@@ -97,7 +98,7 @@ public class ItemRPG extends ItemGun {
 		int ammo = nbt.getInteger("Ammo");
 		boolean flag = playerIn.isCreative();
 		if (ammo > 0 || flag) {
-			float velocity = getSpeed() * (1f+((float)getQuality(itemstack) / (float)ItemQuality.MAX_QUALITY));
+			float velocity = getSpeed() * (1f+((float)getQuality(itemstack) / (float)ModConfig.players.maxQuality));
 			for (int i = 0; i <  getProjectiles()*(EnchantmentHelper.getEnchantmentLevel(ModEnchantments.multishot, itemstack)+1); i++) {
 				EntityRocket shot = new EntityRocket(worldIn, playerIn, velocity, ((float) getSpread(playerIn, handIn) / (playerIn.isSneaking() ? 1.5f : 1f)));
 				if (!worldIn.isRemote) {

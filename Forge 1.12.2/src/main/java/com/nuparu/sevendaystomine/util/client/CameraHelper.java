@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.events.ClientEventHandler;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemAnalogCamera;
@@ -38,7 +39,9 @@ public class CameraHelper {
 	public static final CameraHelper INSTANCE = new CameraHelper();
 
 	public void saveScreenshot(int width, int height, Framebuffer buffer, EntityPlayer playerIn) {
-		saveScreenshot((String) null, width, height, buffer);
+		if (ModConfig.players.allowPhotos) {
+			saveScreenshot((String) null, width, height, buffer);
+		}
 	}
 
 	public void saveScreenshot(String screenshotName, int width, int height, Framebuffer buffer) {
@@ -48,10 +51,11 @@ public class CameraHelper {
 			return;
 		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 		if (!stack.isEmpty() && stack.getItem() == ModItems.ANALOG_CAMERA) {
-			double dW = 1-ItemAnalogCamera.getWidth(stack, player);
-			double dH = 1-ItemAnalogCamera.getHeight(stack, player);
-			
-			saveScreenshot(screenshotName, (int)(width*dW/2d), (int)(height*dH/2d), (int)(width-width*dW/2d), (int)(height-height*dH/2d), width, height, buffer);
+			double dW = 1 - ItemAnalogCamera.getWidth(stack, player);
+			double dH = 1 - ItemAnalogCamera.getHeight(stack, player);
+
+			saveScreenshot(screenshotName, (int) (width * dW / 2d), (int) (height * dH / 2d),
+					(int) (width - width * dW / 2d), (int) (height - height * dH / 2d), width, height, buffer);
 		}
 	}
 

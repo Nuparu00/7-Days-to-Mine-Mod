@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.util.MathUtils;
 
@@ -99,7 +100,7 @@ public class ItemQualityBow extends ItemBow implements IQuality {
                         {
                             entityarrow.setFire(100);
                         }
-                        entityarrow.setDamage(damageMultiplier*entityarrow.getDamage()*(1f + MathUtils.bias(((float) getQuality(stack) / (float) ItemQuality.MAX_QUALITY),0.4)));
+                        entityarrow.setDamage(damageMultiplier*entityarrow.getDamage()*(1f + MathUtils.bias(((float) getQuality(stack) / (float) ModConfig.players.maxQuality),0.4)));
                         stack.damageItem(1, entityplayer);
 
                         if (flag1 || entityplayer.capabilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW))
@@ -157,8 +158,8 @@ public class ItemQualityBow extends ItemBow implements IQuality {
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
 		setQuality(itemstack,
-				(int) Math.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1),
-						ItemQuality.MAX_QUALITY));
+				(int) Math.min(Math.max(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality), 1),
+						ModConfig.players.maxQuality));
 	}
 
 	@Override

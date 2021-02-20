@@ -13,6 +13,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.item.ItemQuality;
 import com.nuparu.sevendaystomine.item.ItemRecipeBook;
 
@@ -71,7 +72,7 @@ public class RecipeLockedShapeless extends ShapelessRecipes {
 			return false;
 
 		IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
-		return iep.hasRecipe(recipe) && super.matches(inv, worldIn);
+		return (!ModConfig.players.recipeBooksRequired || iep.hasRecipe(recipe)) && super.matches(inv, worldIn);
 
 	}
 	
@@ -108,7 +109,7 @@ public class RecipeLockedShapeless extends ShapelessRecipes {
 					stack.setTagCompound(new NBTTagCompound());
 				}
 				stack.getTagCompound().setInteger("Quality", (int) Math
-						.min(Math.max(Math.floor(player.experienceTotal / ItemQuality.XP_PER_QUALITY_POINT), 1), 600));
+						.min(Math.max(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality), 1), 600));
 			}
 		}
 		return stack;

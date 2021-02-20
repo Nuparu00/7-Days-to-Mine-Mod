@@ -1,32 +1,23 @@
 package com.nuparu.sevendaystomine.events;
 
-import java.awt.Color;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.lwjgl.opengl.GL11;
 
-import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.gui.GuiMainMenuEnhanced;
 import com.nuparu.sevendaystomine.client.gui.GuiPlayerUI;
-import com.nuparu.sevendaystomine.client.gui.GuiRedirect;
-import com.nuparu.sevendaystomine.client.gui.GuiUpdate;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
-import com.nuparu.sevendaystomine.init.ModBiomes;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 import com.nuparu.sevendaystomine.item.IScrapable;
 import com.nuparu.sevendaystomine.item.ItemAnalogCamera;
 import com.nuparu.sevendaystomine.item.ItemGun;
-import com.nuparu.sevendaystomine.potions.Potions;
-import com.nuparu.sevendaystomine.proxy.ClientProxy;
-import com.nuparu.sevendaystomine.proxy.CommonProxy;
-import com.nuparu.sevendaystomine.util.ConfigHandler;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.VanillaManager;
 import com.nuparu.sevendaystomine.util.VanillaManager.VanillaScrapableItem;
-import com.nuparu.sevendaystomine.util.VersionChecker;
 import com.nuparu.sevendaystomine.util.dialogue.SubtitleHelper;
 import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBase;
 
@@ -37,13 +28,11 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
-import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -51,20 +40,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
@@ -147,21 +132,9 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onGuiOpen(GuiOpenEvent e) {
-		if (e.getGui() instanceof GuiMainMenu && !(e.getGui() instanceof GuiMainMenuEnhanced)) {
-
-			/*
-			 * if (CommonProxy.getVersionChecker().shouldOpen() && !VersionChecker.didOpen)
-			 * { VersionChecker.didOpen = true; if (ConfigHandler.menu == true) {
-			 * e.setGui(new GuiRedirect(new GuiUpdate(new GuiMainMenuEnhanced(), -1)));
-			 * return; } e.setGui(new GuiRedirect(new GuiUpdate(new GuiMainMenu(), -1)));
-			 * 
-			 * } else { if (ConfigHandler.menu == true) {
-			 */
+		if (ModConfig.client.customMenu && e.getGui() instanceof GuiMainMenu && !(e.getGui() instanceof GuiMainMenuEnhanced)) {
 			e.setGui(new GuiMainMenuEnhanced());
-			// }
-			// }
 		}
-
 	}
 
 	@SubscribeEvent
@@ -170,7 +143,7 @@ public class ClientEventHandler {
 		if (event.getSound().getSoundLocation().getResourcePath().equals("music.menu")) {
 			Minecraft mc = Minecraft.getMinecraft();
 			if (mc.player == null) {
-				if (ConfigHandler.menu == true) {
+				if (ModConfig.client.customMenu == true) {
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(new Date());
 					SoundManager sm = event.getManager();

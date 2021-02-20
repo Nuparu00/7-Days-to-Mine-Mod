@@ -19,6 +19,7 @@ import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
 import com.nuparu.sevendaystomine.client.sound.MovingSoundChainsawCut;
 import com.nuparu.sevendaystomine.client.sound.MovingSoundChainsawIdle;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
@@ -96,7 +97,7 @@ public class PlayerEventHandler {
 	public Field f_allInventories;
 
 	protected static long nextChainsawIdleSound = 0l;
-	public static  long nextChainsawCutSound = 0l;
+	public static long nextChainsawCutSound = 0l;
 	protected static long lastTimeHittingBlock = 0l;
 
 	/*
@@ -335,7 +336,7 @@ public class PlayerEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerBreakSpeed(PlayerEvent.BreakSpeed event) {
-		float speed = event.getOriginalSpeed() / 32f;
+		float speed = event.getOriginalSpeed() / (ModConfig.players.immersiveBlockBreaking ? 32f : 1f);
 		ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
 		Item item = stack.getItem();
 		if (!stack.isEmpty() && item instanceof IQuality) {
@@ -357,6 +358,8 @@ public class PlayerEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
+		if (!ModConfig.players.survivalGuide)
+			return;
 		final EntityPlayer player = event.player;
 		final ItemStack stack = new ItemStack(ModItems.SURVIVAL_GUIDE);
 		final NBTTagCompound entityData = player.getEntityData();
@@ -444,18 +447,19 @@ public class PlayerEventHandler {
 			EntityPlayer player = (EntityPlayer) livingEntity;
 			ItemStack activeStack = player.getHeldItem(EnumHand.MAIN_HAND);
 			NBTTagCompound nbt = activeStack.getTagCompound();
-			if (activeStack.isEmpty() || activeStack.getItem() != ModItems.CHAINSAW)
+			if (activeStack.isEmpty() || (activeStack.getItem() != ModItems.CHAINSAW || activeStack.getItem() != ModItems.AUGER))
 				return;
-			if (nbt != null && nbt.hasKey("FuelMax") &&  nbt.getInteger("FuelMax") > 0) {
-				if(SevenDaysToMine.proxy.isHittingBlock(player)) {
+			if (nbt != null && nbt.hasKey("FuelMax") && nbt.getInteger("FuelMax") > 0) {
+				if (SevenDaysToMine.proxy.isHittingBlock(player)) {
 					lastTimeHittingBlock = System.currentTimeMillis();
 				}
-				
+
 				if (System.currentTimeMillis() > nextChainsawIdleSound) {
 					Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundChainsawIdle(player));
 					nextChainsawIdleSound = System.currentTimeMillis() + 3000l;
 				}
-				if (System.currentTimeMillis() > nextChainsawCutSound && System.currentTimeMillis()-getLastTimeHittingBlock() <= 500 ) {
+				if (System.currentTimeMillis() > nextChainsawCutSound
+						&& System.currentTimeMillis() - getLastTimeHittingBlock() <= 500) {
 					Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundChainsawCut(player));
 					nextChainsawCutSound = System.currentTimeMillis() + 1600l;
 				}
