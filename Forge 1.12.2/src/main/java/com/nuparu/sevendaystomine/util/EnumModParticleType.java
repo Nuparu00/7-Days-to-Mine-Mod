@@ -3,7 +3,8 @@ package com.nuparu.sevendaystomine.util;
 public enum EnumModParticleType {
 
 	BLOOD("blood",49),
-	VOMIT("vomit",50);
+	VOMIT("vomit",50),
+	MUZZLE_FLASH("muzzle_flash",50);
 	
 	String name;
 	private int id;

@@ -8,10 +8,12 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.Maps;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 
 import net.minecraft.client.Minecraft;
@@ -28,8 +30,14 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Timer;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -174,8 +182,10 @@ public class RenderUtils {
 		GL11.glScissor(x * scale, (r.getScaledHeight() - y - height) * scale, width * scale, height * scale);
 	}
 
+	public static EntityRendererVanilla erv = null;
+
 	public static void renderView(Minecraft mc, Entity entityView, int width, int height, int resWidth, int resHeight,
-			float x, float y, float z) {
+			float x, float y, float z, float partialTicks) {
 		GuiScreen gui = mc.currentScreen;
 		if (mc.skipRenderWorld)
 			return;
@@ -203,22 +213,11 @@ public class RenderUtils {
 		GL11.glPushMatrix();
 		Framebuffer frameBuffer = null;
 		try {
-
 			GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			GL11.glPushMatrix();
 			GL11.glMatrixMode(GL11.GL_PROJECTION);
 			GL11.glPushMatrix();
-
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GL11.glLoadIdentity();
-
-			GL11.glOrtho(0.0D, 1.0, 1.0, 0.0, -10.0, 10.0);
-			GL11.glEnable(GL11.GL_CULL_FACE);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glDisable(GL11.GL_LIGHTING);
 
 			final float ALPHA_TEST_THRESHOLD = 0.1F;
 			GL11.glAlphaFunc(GL11.GL_GREATER, ALPHA_TEST_THRESHOLD);
@@ -230,7 +229,16 @@ public class RenderUtils {
 			// mc.getRenderPartialTicks()
 
 			// entityRenderer.loadShader(new ResourceLocation("shaders/post/green.json"));
-			mc.entityRenderer.updateCameraAndRender(1, System.nanoTime());
+			// mc.entityRenderer.updateCameraAndRender(1, System.nanoTime());
+			if (ModConfig.client.useVanillaCameraRendering) {
+				if (erv == null) {
+					erv = new EntityRendererVanilla(mc, mc.getResourceManager());
+				}
+				erv.updateShaderGroupSize(resWidth, resHeight);
+				erv.updateCameraAndRender(1, System.nanoTime(),frameBuffer,resWidth,resHeight);
+			} else {
+				mc.entityRenderer.updateCameraAndRender(1, System.nanoTime());
+			}
 
 			renderFrameBuffer(frameBuffer, width, height, true, x, y, z);
 
@@ -240,12 +248,12 @@ public class RenderUtils {
 			if (frameBuffer != null) {
 				frameBuffer.deleteFramebuffer();
 			}
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GL11.glPopMatrix();
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glPopMatrix();
-			GL11.glPopAttrib();
 		}
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glPopMatrix();
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPopMatrix();
+		GL11.glPopAttrib();
 
 		GL11.glPopMatrix();
 		ForgeHooksClient.setRenderPass(pass);
@@ -258,52 +266,48 @@ public class RenderUtils {
 
 	public static void renderFrameBuffer(Framebuffer fbo, int width, int height, boolean p_178038_3_, float x, float y,
 			float z) {
-		if (OpenGlHelper.isFramebufferEnabled()) {
-			GlStateManager.colorMask(true, true, true, false);
-			GlStateManager.disableDepth();
-			GlStateManager.depthMask(false);
-			GlStateManager.matrixMode(5889);
-			GlStateManager.loadIdentity();
-			GlStateManager.ortho(0.0D, (double) width, (double) height, 0.0D, 1000.0D, 3000.0D);
-			GlStateManager.matrixMode(5888);
-			GlStateManager.loadIdentity();
-			// z has to -2000 or less
-			GlStateManager.translate(0, 0, z);
-			GlStateManager.viewport((int) x, (int) y, width, height);
-			GlStateManager.enableTexture2D();
-			GlStateManager.disableLighting();
-			GlStateManager.disableAlpha();
+		GlStateManager.colorMask(true, true, true, false);
+		GlStateManager.disableDepth();
+		GlStateManager.depthMask(false);
+		GlStateManager.matrixMode(5889);
+		GlStateManager.loadIdentity();
+		GlStateManager.ortho(0.0D, (double) width, (double) height, 0.0D, 1000.0D, 3000.0D);
+		GlStateManager.matrixMode(5888);
+		GlStateManager.loadIdentity();
+		// z has to -2000 or less
+		GlStateManager.translate(0, 0, z);
+		GlStateManager.viewport((int) x, (int) y, width, height);
+		GlStateManager.enableTexture2D();
+		GlStateManager.disableLighting();
+		GlStateManager.disableAlpha();
 
-			if (p_178038_3_) {
-				GlStateManager.disableBlend();
-				GlStateManager.enableColorMaterial();
-			}
-
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			fbo.bindFramebufferTexture();
-			float f = (float) width;
-			float f1 = (float) height;
-			float f2 = (float) fbo.framebufferWidth / (float) fbo.framebufferTextureWidth;
-			float f3 = (float) fbo.framebufferHeight / (float) fbo.framebufferTextureHeight;
-
-			Tessellator tessellator = Tessellator.getInstance();
-			BufferBuilder bufferbuilder = tessellator.getBuffer();
-			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-			bufferbuilder.pos(0.0D, (double) f1, 0.0D).tex(0.0D, 0.0D).color(255, 255, 255, 255).endVertex();
-			bufferbuilder.pos((double) f, (double) f1, 0.0D).tex((double) f2, 0.0D).color(255, 255, 255, 255)
-					.endVertex();
-			bufferbuilder.pos((double) f, 0.0D, 0.0D).tex((double) f2, (double) f3).color(255, 255, 255, 255)
-					.endVertex();
-			bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, (double) f3).color(255, 255, 255, 255).endVertex();
-
-			tessellator.draw();
-
-			fbo.unbindFramebufferTexture();
-			GlStateManager.depthMask(true);
-			GlStateManager.colorMask(true, true, true, true);
-			GlStateManager.viewport(0, 0, Minecraft.getMinecraft().displayWidth,
-					Minecraft.getMinecraft().displayHeight);
+		if (p_178038_3_) {
+			GlStateManager.disableBlend();
+			GlStateManager.enableColorMaterial();
 		}
+
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		fbo.bindFramebufferTexture();
+		float f = (float) width;
+		float f1 = (float) height;
+		float f2 = (float) fbo.framebufferWidth / (float) fbo.framebufferTextureWidth;
+		float f3 = (float) fbo.framebufferHeight / (float) fbo.framebufferTextureHeight;
+
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+		bufferbuilder.pos(0.0D, (double) f1, 0.0D).tex(0.0D, 0.0D).color(255, 255, 255, 255).endVertex();
+		bufferbuilder.pos((double) f, (double) f1, 0.0D).tex((double) f2, 0.0D).color(255, 255, 255, 255).endVertex();
+		bufferbuilder.pos((double) f, 0.0D, 0.0D).tex((double) f2, (double) f3).color(255, 255, 255, 255).endVertex();
+		bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, (double) f3).color(255, 255, 255, 255).endVertex();
+
+		tessellator.draw();
+
+		fbo.unbindFramebufferTexture();
+		GlStateManager.depthMask(true);
+		GlStateManager.colorMask(true, true, true, true);
+		GlStateManager.viewport(0, 0, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+
 	}
 
 	public static Color getColorAt(ResourceLocation res, int x, int y) {
@@ -328,7 +332,7 @@ public class RenderUtils {
 		return null;
 
 	}
-	
+
 	public static Color getColorAt(ResourceLocation res, double relativeX, double relativeY) {
 		InputStream is = null;
 		BufferedImage image;
@@ -337,8 +341,8 @@ public class RenderUtils {
 			is = Minecraft.getMinecraft().getResourceManager().getResource(res).getInputStream();
 			image = ImageIO.read(is);
 
-			int x = (int)Math.round(relativeX*image.getWidth());
-			int y = (int)Math.round(relativeY*image.getHeight());
+			int x = (int) Math.round(relativeX * image.getWidth());
+			int y = (int) Math.round(relativeY * image.getHeight());
 			int rgb = image.getRGB(x, y);
 			return new Color(rgb, true);
 
@@ -354,4 +358,43 @@ public class RenderUtils {
 		return null;
 
 	}
+
+	public static void drawQuad(Vec3d v1, Vec3d v2, Vec3d v3, Vec3d v4, ResourceLocation res, double angle) {
+		if (angle % 360 != 0) {
+			v1 = rotatePoint(v1, Vec3d.ZERO, angle);
+			v2 = rotatePoint(v2, Vec3d.ZERO, angle);
+			v3 = rotatePoint(v3, Vec3d.ZERO, angle);
+			v4 = rotatePoint(v4, Vec3d.ZERO, angle);
+		}
+
+		GlStateManager.pushMatrix();
+		GlStateManager.disableDepth();
+		GlStateManager.enableBlend();
+		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(res);
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder worldrenderer = tessellator.getBuffer();
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		worldrenderer.pos(v1.x, v1.y, v1.z).tex(0.0D, 1.0D).endVertex();
+		worldrenderer.pos(v2.x, v2.y, v2.z).tex(1.0D, 1.0D).endVertex();
+		worldrenderer.pos(v3.x, v3.y, v3.z).tex(1.0D, 0.0D).endVertex();
+		worldrenderer.pos(v4.x, v4.y, v4.z).tex(0.0D, 0.0D).endVertex();
+		tessellator.draw();
+		GlStateManager.enableDepth();
+		GlStateManager.disableBlend();
+		GlStateManager.popMatrix();
+	}
+
+	public static Vec3d rotatePoint(Vec3d point, Vec3d origin, double angle) {
+		double s = Math.sin(angle);
+		double c = Math.cos(angle);
+
+		point.subtract(origin);
+
+		double x = point.x * c - point.y * s;
+		double y = point.x * s + point.y * c;
+
+		return new Vec3d(x + origin.x, y + origin.y, point.z);
+	}
+
 }

@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.client.renderer.entity;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
+import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.client.Minecraft;
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class LayerZombiePolicemanGlow<T extends EntityZombieBase> implements LayerRenderer<T> {
+public class LayerZombiePolicemanGlow<T extends EntityZombiePoliceman> implements LayerRenderer<T> {
 
 	private final ResourceLocation TEXTURE;
 	private final RenderCorpse<T> renderer;
@@ -35,7 +36,7 @@ public class LayerZombiePolicemanGlow<T extends EntityZombieBase> implements Lay
 		renderer.bindTexture(TEXTURE);
 		GlStateManager.enableBlend();
 		GlStateManager.enableAlpha();
-		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ZERO);
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_DST_ALPHA);
 
 		if (entitylivingbaseIn.isInvisible()) {
 			GlStateManager.depthMask(false);
@@ -48,7 +49,7 @@ public class LayerZombiePolicemanGlow<T extends EntityZombieBase> implements Lay
 		int k = i / 65536;
 		GlStateManager.disableLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1-((float)entitylivingbaseIn.getVomitTimer()/EntityZombiePoliceman.RECHARGE_TIME));
 		Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
 		this.renderer.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw,
 				headPitch, scale);

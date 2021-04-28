@@ -40,6 +40,7 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.BlockTrapDoor;
+import net.minecraft.block.BlockVine;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.BlockWallSign;
 import net.minecraft.block.material.Material;
@@ -856,20 +857,36 @@ public class Street {
 		world.setBlockState(top,
 				ModBlocks.FAKE_ANVIL.getDefaultState().withProperty(BlockFakeAnvil.FACING, facing.rotateY()));
 		world.setBlockState(top.up(), Blocks.STONE_SLAB.getDefaultState());
+		
+		BlockPos lamp = null;
+		
 		if (!end) {
 			world.setBlockState(top.offset(facing.rotateY()),
 					Blocks.HOPPER.getDefaultState().withProperty(BlockHopper.FACING, facing.rotateY()));
-			world.setBlockState(top.offset(facing.rotateY(), 2), ModBlocks.REDSTONE_LAMP_BROKEN.getDefaultState());
+			lamp = top.offset(facing.rotateY(), 2);
+			
+			world.setBlockState(lamp, ModBlocks.REDSTONE_LAMP_BROKEN.getDefaultState());
 
 			world.setBlockState(top.offset(facing.rotateY()).up(), Blocks.STONE_SLAB.getDefaultState());
-			world.setBlockState(top.offset(facing.rotateY(), 2).up(), Blocks.STONE_SLAB.getDefaultState());
+			world.setBlockState(lamp.up(), Blocks.STONE_SLAB.getDefaultState());
 		} else {
 			world.setBlockState(top.offset(facing.rotateYCCW()),
 					Blocks.HOPPER.getDefaultState().withProperty(BlockHopper.FACING, facing.rotateYCCW()));
-			world.setBlockState(top.offset(facing.rotateYCCW(), 2), ModBlocks.REDSTONE_LAMP_BROKEN.getDefaultState());
+			lamp = top.offset(facing.rotateYCCW(), 2);
+			world.setBlockState(lamp, ModBlocks.REDSTONE_LAMP_BROKEN.getDefaultState());
 
 			world.setBlockState(top.offset(facing.rotateYCCW()).up(), Blocks.STONE_SLAB.getDefaultState());
-			world.setBlockState(top.offset(facing.rotateYCCW(), 2).up(), Blocks.STONE_SLAB.getDefaultState());
+			world.setBlockState(lamp.up(), Blocks.STONE_SLAB.getDefaultState());
+		}
+		for(EnumFacing facing : EnumFacing.HORIZONTALS) {
+			BlockPos vineStart = lamp.offset(facing);
+			IBlockState toReplace = world.getBlockState(vineStart);
+			IBlockState vineState = Blocks.VINE.getDefaultState().withProperty(BlockVine.getPropertyFor(facing.getOpposite()), true);
+			while(city.rand.nextBoolean() && toReplace.getBlock() == Blocks.AIR && vineStart.getY() > 0) {
+				world.setBlockState(vineStart, vineState);
+				vineStart=vineStart.down();
+				toReplace = world.getBlockState(vineStart);
+			}
 		}
 	}
 

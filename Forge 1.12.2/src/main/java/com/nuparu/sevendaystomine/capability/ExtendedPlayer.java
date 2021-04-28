@@ -42,6 +42,8 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	int wolfHorde;
 	// Last generic horde
 	int horde;
+	//block drinking counter
+	int drinkCounter;
 
 	public ExtendedPlayer() {
 		thirst = MAX_THIRST;
@@ -134,6 +136,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		bloodmoon = nbt.getInteger("bloodmoon");
 		wolfHorde = nbt.getInteger("wolfHorde");
 		horde = nbt.getInteger("horde");
+		drinkCounter = nbt.getInteger("drinkCounter");
 
 		recipes.clear();
 		NBTTagList list = nbt.getTagList("recipes", Constants.NBT.TAG_STRING);
@@ -153,6 +156,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		nbt.setInteger("bloodmoon", bloodmoon);
 		nbt.setInteger("wolfHorde", wolfHorde);
 		nbt.setInteger("horde", horde);
+		nbt.setInteger("drinkCounter", drinkCounter);
 
 		NBTTagList list = new NBTTagList();
 		for (String rec : recipes) {
@@ -256,6 +260,17 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	@Override
 	public boolean isInfected() {
 		return infectionTime != -1;
+	}
+
+	@Override
+	public void setDrinkCounter(int i) {
+		drinkCounter = i;
+		onDataChanged();
+	}
+
+	@Override
+	public int getDrinkCounter() {
+		return drinkCounter;
 	}
 
 }

@@ -1,10 +1,12 @@
 package com.nuparu.sevendaystomine.events;
 
+import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.entity.IControllable;
 import com.nuparu.sevendaystomine.item.ItemAnalogCamera;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.CameraDimensionsMessage;
 import com.nuparu.sevendaystomine.network.packets.ControllableKeyUpdateMessage;
+import com.nuparu.sevendaystomine.network.packets.HonkMessage;
 import com.nuparu.sevendaystomine.proxy.ClientProxy;
 import com.nuparu.sevendaystomine.util.ReloadHelper;
 
@@ -46,6 +48,15 @@ public class KeyEventHandler {
 						PacketManager.cameraDimensions.sendToServer(new CameraDimensionsMessage(0,0,0.1));
 					} else if (keyBindings[6].isPressed()) {
 						PacketManager.cameraDimensions.sendToServer(new CameraDimensionsMessage(0,0,-0.1));
+					}
+				}
+			}
+			if(keyBindings[7].isPressed()) {
+				Entity riding = player.getRidingEntity();
+				if(riding != null && riding instanceof EntityCar) {
+					if(riding.getPassengers().indexOf(player) == 0) {
+						System.out.println("Beep beep");
+						PacketManager.honk.sendToServer(new HonkMessage());
 					}
 				}
 			}

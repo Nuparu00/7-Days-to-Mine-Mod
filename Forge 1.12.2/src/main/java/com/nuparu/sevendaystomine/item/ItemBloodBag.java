@@ -1,17 +1,21 @@
 package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.potions.Potions;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class ItemBloodBag extends Item {
 	
@@ -37,12 +41,19 @@ public class ItemBloodBag extends Item {
 			int dur = this.getMaxItemUseDuration(stack) - timeLeft;
 			if (dur <= this.getMaxItemUseDuration(stack) * 0.1f) {
 				if (!entityplayer.capabilities.isCreativeMode) {
+					NBTTagCompound nbt = stack.getTagCompound();
+					if(nbt != null && nbt.hasKey("donor", Constants.NBT.TAG_STRING)) {
+						String uuid = nbt.getString("donor");
+						if(!worldIn.isRemote && !uuid.equals(entityplayer.getUniqueID().toString())) {
+							ModTriggers.BLOOD_BOND.trigger((EntityPlayerMP) entityplayer);
+						}
+					}
 					stack.shrink(1);
 					if (stack.isEmpty()) {
 						entityplayer.inventory.deleteStack(stack);
 					}
 				}
-				entityplayer.heal(6f);
+				entityplayer.heal(4);
 			}
 		}
 	}

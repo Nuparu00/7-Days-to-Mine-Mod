@@ -15,7 +15,13 @@ import net.minecraft.client.Minecraft;
 public class BreakSyncHandler implements IMessageHandler<BreakSyncMessage, BreakSyncMessage> {
 	@SideOnly(Side.CLIENT)
 	public BreakSyncMessage onMessage(BreakSyncMessage message, MessageContext ctx) {
-		handleClient(message.getNBT());
+		Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			@Override
+			public void run() {
+				handleClient(message.getNBT());
+			}
+		});
+
 		return null;
 	}
 

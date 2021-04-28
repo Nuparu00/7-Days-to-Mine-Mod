@@ -28,19 +28,31 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class CameraDimensionsHandler implements IMessageHandler<CameraDimensionsMessage, CameraDimensionsMessage> {
 
-
 	@Override
 	public CameraDimensionsMessage onMessage(CameraDimensionsMessage message, MessageContext ctx) {
 		EntityPlayer player = ctx.getServerHandler().player;
-		ItemStack stack = player.getHeldItemMainhand();
-		if(stack.isEmpty()) return null;
-		
-		if(!(stack.getItem() instanceof ItemAnalogCamera)) return null;
-		
-		ItemAnalogCamera.setWidth(MathHelper.clamp(message.deltaWidth+ItemAnalogCamera.getWidth(stack, player),0.25,1), stack, player);
-		ItemAnalogCamera.setHeight(MathHelper.clamp(message.deltaHeight+ItemAnalogCamera.getHeight(stack, player),0.25,1), stack, player);
-		ItemAnalogCamera.setZoom(MathUtils.roundToNDecimal(MathHelper.clamp(message.deltaZoom+ItemAnalogCamera.getZoom(stack, player),1,4),1), stack, player);
-		
+		player.getServer().addScheduledTask(new Runnable() {
+			@Override
+			public void run() {
+				ItemStack stack = player.getHeldItemMainhand();
+				if (stack.isEmpty())
+					return;
+
+				if (!(stack.getItem() instanceof ItemAnalogCamera))
+					return;
+
+				ItemAnalogCamera.setWidth(
+						MathHelper.clamp(message.deltaWidth + ItemAnalogCamera.getWidth(stack, player), 0.25, 1), stack,
+						player);
+				ItemAnalogCamera.setHeight(
+						MathHelper.clamp(message.deltaHeight + ItemAnalogCamera.getHeight(stack, player), 0.25, 1),
+						stack, player);
+				ItemAnalogCamera.setZoom(
+						MathUtils.roundToNDecimal(
+								MathHelper.clamp(message.deltaZoom + ItemAnalogCamera.getZoom(stack, player), 1, 4), 1),
+						stack, player);
+			}
+		});
 		return null;
 	}
 }

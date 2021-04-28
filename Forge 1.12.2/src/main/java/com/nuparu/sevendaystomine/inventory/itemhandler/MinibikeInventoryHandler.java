@@ -31,4 +31,9 @@ public class MinibikeInventoryHandler extends ItemStackHandler {
 			this.minibike.onInventoryChanged(this);
 		}
 	}
+	
+	@Override
+	public int getSlotLimit(int slot) {
+		return 1;
+	}
 }

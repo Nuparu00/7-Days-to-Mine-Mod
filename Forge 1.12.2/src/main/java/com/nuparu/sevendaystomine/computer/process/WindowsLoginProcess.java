@@ -64,7 +64,6 @@ public class WindowsLoginProcess extends TickingProcess {
 				password = "";
 			}
 			computerTE.markDirty();
-			computerTE.killProcess(this);
 		}
 
 	}

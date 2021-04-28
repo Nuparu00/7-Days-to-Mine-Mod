@@ -55,34 +55,30 @@ public class City {
 	public City(World world, BlockPos start, EnumCityType type, Random rand) {
 		this.start = start;
 		this.type = type;
-		this.rand =rand;
-		int height = Utils.getTopSolidGroundHeight(new BlockPos(this.start.getX(), 0, this.start.getZ()),
-				world);
-		this.start = new BlockPos(this.start.getX(), height, this.start.getZ());
+		this.rand = rand;
+		this.start = new BlockPos(this.start.getX(), 255, this.start.getZ());
 
 		this.world = world;
 		this.unclaimedStreetNames = new ArrayList<String>(CityHelper.streets);
 		this.name = CityHelper.getRandomCityName(this.rand);
-		this.roadsLimit = MathUtils.getIntInRange(rand, 8, Math.max(8, ModConfig.world.maxCitySize));
-		CitySavedData.get(world).addCity(start);
+		this.roadsLimit = MathUtils.getIntInRange(rand, 8, Math.max(8, ModConfig.worldGen.maxCitySize));
 		roadsLimit = Math.round(roadsLimit * type.populationMultiplier);
 	}
-	
+
 	public static City foundCity(World world, ChunkPos pos, Random rand) {
-		return foundCity(world,new BlockPos(pos.x * 16  + 8,0,pos.z * 16  + 8), rand);
+		return foundCity(world, new BlockPos(pos.x * 16 + 8, 0, pos.z * 16 + 8), rand);
 	}
 
 	public static City foundCity(World world, BlockPos pos) {
-		return foundCity(world,pos,new Random(world.getSeed() + (pos.getX() / 16) - (pos.getZ() / 16)));
+		return foundCity(world, pos, new Random(world.getSeed() + (pos.getX() / 16) - (pos.getZ() / 16)));
 	}
-	
-	public static City foundCity(World world, BlockPos pos,Random rand) {
+
+	public static City foundCity(World world, BlockPos pos, Random rand) {
 		Biome biome = world.getBiome(pos);
 		EnumCityType type = EnumCityType.TOWN;
 		if (biome.getHeightVariation() <= 0.15 && rand.nextInt(3) == 0) {
 			type = EnumCityType.VILLAGE;
-		} 
-		else if (rand.nextInt(2) == 0) {
+		} else if (rand.nextInt(2) == 0) {
 			type = EnumCityType.CITY;
 		}
 		return new City(world, pos, type, rand);
@@ -93,8 +89,15 @@ public class City {
 		if (!areAllStreetsFound()) {
 			prepareStreets();
 		}
-		this.population = this.roadsLimit * (MathUtils.getIntInRange(rand, 512, 2048));
+		if (this.name.equals("Caprica City")) {
+			this.population = 50298;
+		} else {
+			this.population = this.roadsLimit
+					* (MathUtils.getIntInRange(rand, 128, 1024) * (type == EnumCityType.METROPOLIS ? 32
+							: (type == EnumCityType.CITY ? 16 : (type == EnumCityType.TOWN ? 2 : 1))));
+		}
 		generate();
+		CitySavedData.get(world).addCity(this);
 		if (!world.isRemote) {
 			Utils.getLogger().info(this.name + " generated at " + start.getX() + " " + start.getZ() + " within "
 					+ (System.currentTimeMillis() - timeStamp) + "ms with " + streets.size() + " streets");
@@ -116,7 +119,8 @@ public class City {
 			if (getStreetsCount() < this.roadsLimit) {
 				BlockPos blockpos = bp_start.offset(facing, type.roadLength - 1);
 				Biome biome = world.getBiome(blockpos);
-				if (BiomeDictionary.hasType(biome,BiomeDictionary.Type.OCEAN)) continue;
+				if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN))
+					continue;
 				int height = Utils.getTopSolidGroundHeight(blockpos, world);
 				int deltaHeight = bp_start.getY() - height;
 				if (deltaHeight <= Street.MAX_SLOPE) {
@@ -191,7 +195,6 @@ public class City {
 
 		streets.add(street);
 		street.streetIndex = streets.size();
-		CitySavedData.get(world).addCity(street.start);
 		try {
 			streetsQueue.put(street);
 		} catch (InterruptedException e) {

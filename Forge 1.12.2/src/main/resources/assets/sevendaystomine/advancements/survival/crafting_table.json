@@ -32,7 +32,10 @@
          "sevendaystomine:birch_slab",
          "sevendaystomine:jungle_slab",
          "sevendaystomine:acacia_slab",
-         "sevendaystomine:dark_oak_slab"
+         "sevendaystomine:dark_oak_slab",
+		 "sevendaystomine:crude_club",
+		 "sevendaystomine:crude_bow",
+		 "sevendaystomine:wooden_club"
       ],
       "experience":1
    },

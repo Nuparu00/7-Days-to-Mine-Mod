@@ -1,0 +1,32 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "II   ",
+    "ITI  ",
+    " ICG ",
+    "  GPG",
+    "   GP"
+  ],
+  "key": {
+    "P": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "I": {
+      "item": "sevendaystomine:scrapiron"
+    },
+    "G": {
+      "item": "sevendaystomine:gas_canister"
+    },
+    "C": {
+      "item": "sevendaystomine:emptycan"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:rocket",
+    "count":2
+  },
+  "recipe": "rocket"
+}

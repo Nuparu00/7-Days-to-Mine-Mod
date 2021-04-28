@@ -106,7 +106,7 @@
 		  "unlocalized" : true,
 		  "centered": false,
 		  "color": 000000,
-		  "link" : 3,
+		  "link" : 4,
 		  "hover_color" : DD4C1D
 		  }
       ],
@@ -299,6 +299,28 @@
 	{
       "res": "sevendaystomine:textures/gui/books/ammo_base.png",
       "texts": [
+      {
+          "x": 64,
+          "y": 70,
+          "z": 0,
+          "text": "book_ammo.contents.6",
+		  "unlocalized" : true,
+		  "centered": true,
+		  "color": 000000,
+		  "scale" : 1.15,
+		  "formatting" : ["UNDERLINE"]
+        },
+		{
+          "x": 16,
+          "y": 85,
+          "z": 0,
+		  "width" : 110,
+          "text": "book_ammo.shotgun.1",
+		  "unlocalized" : true,
+		  "centered": false,
+		  "color": 000000,
+		  "scale" : 1
+        },
         {
           "x": 188,
           "y": 70,
@@ -342,6 +364,20 @@
         },
         {
           "x": 138,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:bullet_shotgun"
+        }
+      ]
+    },
+	{
+      "res": "sevendaystomine:textures/gui/books/ammo_base.png",
+      "texts": [
+         
+      ],
+      "crafting": [
+        {
+          "x": 16,
           "y": 10,
           "z": 0,
           "recipe": "sevendaystomine:book_ammo"

@@ -29,6 +29,8 @@ public class ModEnchantments {
 	public static final Enchantment small_mag = null;
 	@ObjectHolder(SevenDaysToMine.MODID+":strabismus")
 	public static final Enchantment strabismus = null;
+	@ObjectHolder(SevenDaysToMine.MODID+":jamming")
+	public static final Enchantment jamming = null;
 	
 	public static final EnumEnchantmentType GUNS = EnumHelper.addEnchantmentType("GUNS", (item) -> item instanceof ItemGun);
 
@@ -45,6 +47,7 @@ public class ModEnchantments {
 			registry.register(new EnchantmentMultishot());
 			registry.register(new EnchantmentSmallMag());
 			registry.register(new EnchantmentStrabismus());
+			registry.register(new EnchantmentJamming());
 		}
 	}
 }

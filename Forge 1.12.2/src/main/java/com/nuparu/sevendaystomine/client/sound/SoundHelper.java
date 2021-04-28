@@ -76,6 +76,12 @@ public class SoundHelper {
 	public static final SoundEvent CHAINSAW_IDLE = Utils.Null();
 	@ObjectHolder("chainsaw.cut")
 	public static final SoundEvent CHAINSAW_CUT = Utils.Null();
+	@ObjectHolder("honk")
+	public static final SoundEvent HONK = Utils.Null();
+	@ObjectHolder("minibike.idle")
+	public static final SoundEvent MINIBIKE_IDLE = Utils.Null();
+	@ObjectHolder("car.accelerate")
+	public static final SoundEvent CAR_ACCELERATE = Utils.Null();
 	
 	private static List<SoundEvent> sounds = new ArrayList<SoundEvent>();
 	
@@ -111,7 +117,10 @@ public class SoundHelper {
 					createSoundEvent("horde"),
 					createSoundEvent("gas_leak"),
 					createSoundEvent("chainsaw.idle"),
-					createSoundEvent("chainsaw.cut")
+					createSoundEvent("chainsaw.cut"),
+					createSoundEvent("honk"),
+					createSoundEvent("minibike.idle"),
+					createSoundEvent("car.accelerate")
 			};
 
 			event.getRegistry().registerAll(soundEvents);

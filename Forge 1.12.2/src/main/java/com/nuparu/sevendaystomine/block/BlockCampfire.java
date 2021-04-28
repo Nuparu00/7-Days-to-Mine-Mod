@@ -6,6 +6,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCampfire;
+import com.nuparu.sevendaystomine.tileentity.TileEntityForge;
 import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -22,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 	private final boolean isBurning;
-    private static boolean keepInventory;
+	private static boolean keepInventory;
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0D, 0.0D, 0D, 1D, 0.25D, 1D);
 
@@ -45,25 +48,22 @@ public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 		setHarvestLevel("pickaxe", 0);
 		setTickRandomly(false);
 		useNeighborBrightness = false;
-		if(isBurning) {
+		if (isBurning) {
 			setLightLevel(0.675F);
-		}
-		else {
+		} else {
 			setLightLevel(0);
 		}
 	}
-	
+
 	@Override
-	public EnumPushReaction getMobilityFlag(IBlockState state)
-    {
-        return EnumPushReaction.DESTROY;
-    }
-	
+	public EnumPushReaction getMobilityFlag(IBlockState state) {
+		return EnumPushReaction.DESTROY;
+	}
+
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
@@ -80,7 +80,7 @@ public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
@@ -110,7 +110,7 @@ public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 	public TileEntityCampfire createTileEntity(World world, IBlockState state) {
 		return new TileEntityCampfire();
 	}
-	
+
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
@@ -118,7 +118,7 @@ public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if (tileentity instanceof TileEntityCampfire) {
-				((TileEntityCampfire) tileentity).setCustomInventoryName(stack.getDisplayName());
+				((TileEntityCampfire) tileentity).setDisplayName(stack.getDisplayName());
 			}
 		}
 	}
@@ -129,8 +129,10 @@ public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if (tileentity instanceof TileEntityCampfire) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityCampfire) tileentity);
-				worldIn.updateComparatorOutputLevel(pos, this);
+				NonNullList<ItemStack> drops = ((TileEntityCampfire) tileentity).getDrops();
+				for (ItemStack stack : drops) {
+					worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack));
+				}
 			}
 		}
 
@@ -159,53 +161,45 @@ public class BlockCampfire extends BlockTileProvider<TileEntityCampfire> {
 			double d2 = (double) pos.getZ() + 0.5D;
 			double d3 = rand.nextDouble() * 0.2D - 0.1D;
 
-			if (rand.nextInt(15) == 0)
-	        {
+			if (rand.nextInt(15) == 0) {
 				worldIn.playSound((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D,
-						SoundHelper.CAMPFIRE_CRACKLING, SoundCategory.BLOCKS, 0.75f+MathUtils.getFloatInRange(0, 0.25f), 0.8f+MathUtils.getFloatInRange(0, 0.2f), false);
+						SoundHelper.CAMPFIRE_CRACKLING, SoundCategory.BLOCKS,
+						0.75f + MathUtils.getFloatInRange(0, 0.25f), 0.8f + MathUtils.getFloatInRange(0, 0.2f), false);
 			}
 			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2 + d3, 0.0D, 0.0D, 0.0D);
 			worldIn.spawnParticle(EnumParticleTypes.FLAME, d0, d1, d2 + d3, 0.0D, 0.0D, 0.0D);
 
 		}
 	}
-	
-	public static void setState(boolean burning, World worldIn, BlockPos pos)
-    {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        keepInventory = true;
 
-        if (burning)
-        {
-            worldIn.setBlockState(pos, ModBlocks.CAMPFIRE_LIT.getDefaultState(), 3);
-        }
-        else
-        {
-            worldIn.setBlockState(pos, ModBlocks.CAMPFIRE.getDefaultState(), 3);
-        }
+	public static void setState(boolean burning, World worldIn, BlockPos pos) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+		keepInventory = true;
 
-        keepInventory = false;
+		if (burning) {
+			worldIn.setBlockState(pos, ModBlocks.CAMPFIRE_LIT.getDefaultState(), 3);
+		} else {
+			worldIn.setBlockState(pos, ModBlocks.CAMPFIRE.getDefaultState(), 3);
+		}
 
-        if (tileentity != null)
-        {
-            tileentity.validate();
-            worldIn.setTileEntity(pos, tileentity);
-        }
-    }
-	
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        if (!this.canBlockStay(worldIn, pos))
-        {
-        	worldIn.getBlockState(pos).getBlock().dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 1);
-    		worldIn.setBlockToAir(pos);
-        }
-    }
-	
-	public boolean canBlockStay(World worldIn, BlockPos pos)
-    {
-        IBlockState state = worldIn.getBlockState(pos.down());
-        return state.getMaterial() != Material.AIR && !worldIn.getBlockState(pos.up()).getMaterial().isLiquid();
-    }
+		keepInventory = false;
+
+		if (tileentity != null) {
+			tileentity.validate();
+			worldIn.setTileEntity(pos, tileentity);
+		}
+	}
+
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if (!this.canBlockStay(worldIn, pos)) {
+			worldIn.getBlockState(pos).getBlock().dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 1);
+			worldIn.setBlockToAir(pos);
+		}
+	}
+
+	public boolean canBlockStay(World worldIn, BlockPos pos) {
+		IBlockState state = worldIn.getBlockState(pos.down());
+		return state.getMaterial() != Material.AIR && !worldIn.getBlockState(pos.up()).getMaterial().isLiquid();
+	}
 
 }

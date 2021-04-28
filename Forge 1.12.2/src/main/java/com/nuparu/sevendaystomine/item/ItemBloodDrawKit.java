@@ -1,18 +1,26 @@
 package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
+import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.DamageSources;
+import com.nuparu.sevendaystomine.util.Utils;
 
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class ItemBloodDrawKit extends Item {
@@ -33,16 +41,46 @@ public class ItemBloodDrawKit extends Item {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
+		
 		if (entityLiving instanceof EntityPlayer) {
-			EntityPlayer entityplayer = (EntityPlayer) entityLiving;
+			EntityPlayer entityPlayer = (EntityPlayer) entityLiving;
 			int dur = this.getMaxItemUseDuration(stack) - timeLeft;
 			if (dur <= this.getMaxItemUseDuration(stack) * 0.1f) {
 				ItemStack bloodBag = new ItemStack(ModItems.BLOOD_BAG);
-				if (!entityplayer.inventory.addItemStackToInventory(bloodBag)) {
-					entityplayer.dropItem(bloodBag, false);
+
+				
+				EntityLivingBase toHurt = entityPlayer;
+				
+				RayTraceResult entityRay = Utils.raytraceEntities(entityLiving, 2);
+				if (entityRay != null) {
+					if (entityRay.entityHit != null && entityRay.entityHit instanceof EntityLivingBase) {
+						EntityLivingBase clickedLiving  =  (EntityLivingBase)entityRay.entityHit;
+						if(!(clickedLiving instanceof EntityMob) && !(clickedLiving instanceof EntityPlayer)) 
+						{
+							toHurt = clickedLiving;
+						}
+						else if((clickedLiving instanceof EntityPlayer) && !((EntityPlayer)clickedLiving).isCreative() && !((EntityPlayer)clickedLiving).isSpectator()) {
+							toHurt = clickedLiving;	
+						}
+					}
 				}
-				entityplayer.attackEntityFrom(DamageSources.bleeding, 4);
+				
+				if(toHurt instanceof EntityPlayer) {
+					if(bloodBag.getTagCompound() == null) {
+						bloodBag.setTagCompound(new NBTTagCompound());
+					}
+					bloodBag.getTagCompound().setString("donor",toHurt.getUniqueID().toString());
+				}
+				
+				if(!world.isRemote && toHurt != entityPlayer) {
+					ModTriggers.MOSCO.trigger((EntityPlayerMP) entityPlayer);
+				}
+				
+				if (!entityPlayer.inventory.addItemStackToInventory(bloodBag)) {
+					entityPlayer.dropItem(bloodBag, false);
+				}
+				toHurt.attackEntityFrom(DamageSources.bleeding, 4);
 			}
 		}
 	}

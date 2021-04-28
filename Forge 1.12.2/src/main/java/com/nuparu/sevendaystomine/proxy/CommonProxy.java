@@ -12,11 +12,11 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.computer.process.ProcessRegistry;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.crafting.campfire.CampfireRecipeManager;
 import com.nuparu.sevendaystomine.crafting.chemistry.ChemistryRecipeManager;
 import com.nuparu.sevendaystomine.crafting.forge.ForgeRecipeManager;
 import com.nuparu.sevendaystomine.crafting.separator.SeparatorRecipeManager;
-import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.entity.EntityAirplane;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
@@ -27,6 +27,7 @@ import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFeralZombie;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
+import com.nuparu.sevendaystomine.entity.EntityFlare;
 import com.nuparu.sevendaystomine.entity.EntityFragmentationGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
 import com.nuparu.sevendaystomine.entity.EntityFrostbittenWorker;
@@ -51,13 +52,13 @@ import com.nuparu.sevendaystomine.entity.EntityZombiePoliceman;
 import com.nuparu.sevendaystomine.entity.EntityZombieSoldier;
 import com.nuparu.sevendaystomine.entity.EntityZombieWolf;
 import com.nuparu.sevendaystomine.events.LoudSoundEvent;
-import com.nuparu.sevendaystomine.events.MobBreakEvent;
 import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.loot.function.CityMapFunction;
+import com.nuparu.sevendaystomine.loot.function.RandomColorFunction;
 import com.nuparu.sevendaystomine.loot.function.RandomQualityFunction;
 import com.nuparu.sevendaystomine.tileentity.TileEntityAirplaneRotor;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBackpack;
@@ -115,12 +116,12 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityTrashBin;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTrashCan;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTurretAdvanced;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTurretBase;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTurret;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWallClock;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWheels;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWindTurbine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenLogSpike;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenSpikes;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWorkbench;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.util.VersionChecker;
@@ -128,12 +129,8 @@ import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -165,7 +162,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -205,7 +201,6 @@ public class CommonProxy {
 		new ChemistryRecipeManager();
 		new SeparatorRecipeManager();
 
-
 		registerTileEntities();
 		registerEntities();
 		registerOreDictionary();
@@ -226,23 +221,36 @@ public class CommonProxy {
 
 		FurnaceRecipes.instance().addSmelting(ModItems.BOTTLED_MURKY_WATER, new ItemStack(ModItems.BOTTLED_WATER), 2);
 		FurnaceRecipes.instance().addSmelting(ModItems.CANNED_MURKY_WATER, new ItemStack(ModItems.CANNED_WATER), 2);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.MARBLE_COBBLESTONE), new ItemStack(ModBlocks.MARBLE), 1);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.BASALT_COBBLESTONE), new ItemStack(ModBlocks.BASALT), 1);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.RHYOLITE_COBBLESTONE), new ItemStack(ModBlocks.RHYOLITE), 1);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.MARBLE_BRICKS), new ItemStack(ModBlocks.MARBLE_BRICKS_CRACKED), 1);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.BASALT_BRICKS), new ItemStack(ModBlocks.BASALT_BRICKS_CRACKED), 1);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.RHYOLITE_BRICKS), new ItemStack(ModBlocks.RHYOLITE_BRICKS_CRACKED), 1);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.GRANITE_BRICKS), new ItemStack(ModBlocks.GRANITE_BRICKS_CRACKED), 1);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.ANDESITE_BRICKS), new ItemStack(ModBlocks.ANDESITE_BRICKS_CRACKED), 1);
-		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.DIORITE_BRICKS), new ItemStack(ModBlocks.DIORITE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.MARBLE_COBBLESTONE),
+				new ItemStack(ModBlocks.MARBLE), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.BASALT_COBBLESTONE),
+				new ItemStack(ModBlocks.BASALT), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.RHYOLITE_COBBLESTONE),
+				new ItemStack(ModBlocks.RHYOLITE), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.MARBLE_BRICKS),
+				new ItemStack(ModBlocks.MARBLE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.BASALT_BRICKS),
+				new ItemStack(ModBlocks.BASALT_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.RHYOLITE_BRICKS),
+				new ItemStack(ModBlocks.RHYOLITE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.GRANITE_BRICKS),
+				new ItemStack(ModBlocks.GRANITE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.ANDESITE_BRICKS),
+				new ItemStack(ModBlocks.ANDESITE_BRICKS_CRACKED), 1);
+		FurnaceRecipes.instance().addSmelting(Item.getItemFromBlock(ModBlocks.DIORITE_BRICKS),
+				new ItemStack(ModBlocks.DIORITE_BRICKS_CRACKED), 1);
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
 
-		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER,
-				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
-		EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER,
-				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+		if (ModConfig.world.removeVanillaZommbies) {
+			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER,
+					ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+			EntityRegistry.removeSpawn(EntityHusk.class, EnumCreatureType.MONSTER,
+					ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER,
+					ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+		}
 
 	}
 
@@ -262,8 +270,8 @@ public class CommonProxy {
 		OreDictionary.registerOre("ingotBrass", ModItems.INGOT_BRASS);
 		OreDictionary.registerOre("ingotBronze", ModItems.INGOT_BRONZE);
 		OreDictionary.registerOre("ingotCopper", ModItems.INGOT_COPPER);
-		//OreDictionary.registerOre("ingotGold", ModItems.INGOT_GOLD);
-		//OreDictionary.registerOre("ingotIron", ModItems.INGOT_IRON);
+		// OreDictionary.registerOre("ingotGold", ModItems.INGOT_GOLD);
+		// OreDictionary.registerOre("ingotIron", ModItems.INGOT_IRON);
 		OreDictionary.registerOre("ingotLead", ModItems.INGOT_LEAD);
 		OreDictionary.registerOre("ingotSteel", ModItems.INGOT_STEEL);
 		OreDictionary.registerOre("ingotTin", ModItems.INGOT_TIN);
@@ -275,6 +283,11 @@ public class CommonProxy {
 		OreDictionary.registerOre("oreLead", ModBlocks.ORE_LEAD);
 		OreDictionary.registerOre("orePotassium", ModBlocks.ORE_POTASSIUM);
 		OreDictionary.registerOre("oreMercury", ModBlocks.ORE_CINNABAR);
+		
+
+		OreDictionary.registerOre("blockSteel", ModBlocks.STEEL_BLOCK);
+		OreDictionary.registerOre("blockBronze", ModBlocks.BRONZE_BLOCK);
+		OreDictionary.registerOre("blockLead", ModBlocks.LEAD_BLOCK);
 	}
 
 	public void registerTileEntities() {
@@ -339,9 +352,8 @@ public class CommonProxy {
 		registerTileEntity(TileEntityFlamethrower.class, "flamethrower");
 		registerTileEntity(TileEntityMetalSpikes.class, "metal_spikes");
 		registerTileEntity(TileEntityShield.class, "riot_shield");
-		
-		
-		
+		registerTileEntity(TileEntityWorkbench.class, "workbench");
+
 	}
 
 	public void registerTileEntity(Class<? extends TileEntity> te, String name) {
@@ -350,7 +362,6 @@ public class CommonProxy {
 
 	private static int entityID = 0;
 
-	@SuppressWarnings("unchecked")
 	public void registerEntities() {
 		registerEntity(EntityShot.class, "shot", 128, 1, true);
 		registerEntity(EntityMountableBlock.class, "mountable_block", 64, 20, false);
@@ -385,6 +396,7 @@ public class CommonProxy {
 		registerEntity(EntityZombieMiner.class, "zombie_miner", 64, 1, true, 0x574F45, 0x685452);
 		registerEntity(EntityFeralZombie.class, "feral_zombie", 64, 1, true, 0x5D623F, 0x6D3826);
 		registerEntity(EntityCar.class, "car", 64, 1, true);
+		registerEntity(EntityFlare.class, "flare", 32, 30, true);
 		/*
 		 * addEntitySpawn(EntityReanimatedCorpse.class, 1000, 1, 7,
 		 * EnumCreatureType.MONSTER, Utils.combine(BiomeDictionary.getBiomes(Type.LUSH),
@@ -428,26 +440,19 @@ public class CommonProxy {
 						.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
 								BiomeDictionary.getBiomes(BiomeDictionary.Type.CONIFEROUS))
 						.stream().toArray(Biome[]::new));
-		
+
 		addEntitySpawn(EntityZombieWolf.class, 20, 1, 3, EnumCreatureType.MONSTER,
 				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD)).stream().toArray(Biome[]::new));
 
 		addEntitySpawn(EntityBurntZombie.class, 20, 1, 2, EnumCreatureType.MONSTER,
-				Arrays.asList(ModBiomes.BURNT_FOREST, ModBiomes.BURNT_JUNGLE, ModBiomes.WASTELAND).stream().toArray(Biome[]::new));
-		
+				Arrays.asList(ModBiomes.BURNT_FOREST, ModBiomes.BURNT_JUNGLE, ModBiomes.WASTELAND).stream()
+						.toArray(Biome[]::new));
+
 		addEntitySpawn(EntityZombieMiner.class, 30, 1, 1, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
-		
-		addEntitySpawn(EntityFeralZombie.class, 1, 1, 1, EnumCreatureType.MONSTER,
-				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
-		
 
-		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER,
-				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
-		EntityRegistry.removeSpawn(EntityHusk.class, EnumCreatureType.MONSTER,
-				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
-		EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityFeralZombie.class, 1, 1, 1, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 	}
 
@@ -488,6 +493,7 @@ public class CommonProxy {
 	public void registerLootTables() {
 		LootFunctionManager.registerFunction(new RandomQualityFunction.Serializer());
 		LootFunctionManager.registerFunction(new CityMapFunction.Serializer());
+		LootFunctionManager.registerFunction(new RandomColorFunction.Serializer());
 
 		LootTableList.register(ModLootTables.AIRDROP);
 		LootTableList.register(ModLootTables.DRESSER);
@@ -572,12 +578,17 @@ public class CommonProxy {
 	public void stopLoudSound(BlockPos blockPosIn) {
 
 	}
-	
+
 	public boolean isHittingBlock(EntityPlayer player) {
-		if(player instanceof EntityPlayerMP) {
+		if (player instanceof EntityPlayerMP) {
 			PlayerInteractionManager manager = ((EntityPlayerMP) player).interactionManager;
-			return ObfuscationReflectionHelper.getPrivateValue(PlayerInteractionManager.class, manager, "field_73088_d");
+			return ObfuscationReflectionHelper.getPrivateValue(PlayerInteractionManager.class, manager,
+					"field_73088_d");
 		}
 		return false;
+	}
+
+	public void playMovingSound(int id, Entity enttiy) {
+
 	}
 }

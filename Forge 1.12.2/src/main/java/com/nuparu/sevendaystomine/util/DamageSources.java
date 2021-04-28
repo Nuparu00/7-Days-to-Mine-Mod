@@ -16,7 +16,7 @@ public class DamageSources {
 			.setDamageBypassesArmor();
 	public static DamageSource bleeding = new DamageSource("bleeding").setDifficultyScaled().setDamageIsAbsolute().setDamageBypassesArmor();
 	public static DamageSource blade = new DamageSource("blade").setDifficultyScaled().setDamageIsAbsolute();
-	public static DamageSource infection = new DamageSource("infection").setDifficultyScaled().setDamageIsAbsolute();
+	public static DamageSource infection = new DamageSource("infection").setDifficultyScaled().setDamageIsAbsolute().setDamageBypassesArmor();
 	public static DamageSource chlorinePoison = new DamageSource("chlorine_poisoning").setDifficultyScaled().setDamageIsAbsolute()
 			.setDamageBypassesArmor();
 	

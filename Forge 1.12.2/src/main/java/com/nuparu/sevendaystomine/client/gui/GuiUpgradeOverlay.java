@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,7 +38,7 @@ public class GuiUpgradeOverlay extends Gui {
 				RayTraceResult objectPosition = entity.rayTrace(5, 1);
 				if (objectPosition != null) {
 					BlockPos blockPos = objectPosition.getBlockPos();
-					if (blockPos != null) {
+					if (blockPos != null && stack.getTagCompound() != null && stack.getTagCompound().hasKey("Percent", Constants.NBT.TAG_FLOAT)) {
 						if (stack.getTagCompound().getFloat("Percent") != 0) {
 						//IBlockState state = world.getBlockState(blockPos);
 						//if (state.getBlock() instanceof IUpgradeable || VanillaManager.getVanillaUpgrade(state) != null) {

@@ -101,19 +101,6 @@ public class BuildingBrickHouse extends Building {
 			CityHelper.placeRandomCar(world, pos, facing.rotateY(), world.rand);
 			break;
 		}
-		case "workbench": {
-			IBlockState state = Blocks.AIR.getDefaultState();
-			int r = world.rand.nextInt(100);
-			if (r <= 3) {
-				state = ModBlocks.WORKBENCH.getDefaultState().withProperty(BlockWorkbench.FACING, facing);
-			}
-			else if(r <= 30) {
-				state = Blocks.CRAFTING_TABLE.getDefaultState();
-			}
-				
-			world.setBlockState(pos, state);
-			break;
-		}
 		case "table": {
 			IBlockState state = null;
 			switch (variant) {

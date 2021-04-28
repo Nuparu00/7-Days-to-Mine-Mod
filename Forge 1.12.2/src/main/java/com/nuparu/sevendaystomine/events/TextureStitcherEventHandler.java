@@ -16,5 +16,7 @@ public class TextureStitcherEventHandler {
 		event.getMap().registerSprite(new ResourceLocation(SevenDaysToMine.MODID,"entity/particles/vomit"));
 		event.getMap().registerSprite(new ResourceLocation(SevenDaysToMine.MODID,"items/empty_backpack_slot"));
 		event.getMap().registerSprite(new ResourceLocation(SevenDaysToMine.MODID,"items/empty_paper_slot"));
+		event.getMap().registerSprite(new ResourceLocation(SevenDaysToMine.MODID,"entity/particles/muzzle_flash"));
+		event.getMap().registerSprite(new ResourceLocation(SevenDaysToMine.MODID,"items/empty_scrap_slot"));
 	  }
 }

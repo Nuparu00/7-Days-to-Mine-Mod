@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.util.SimplexNoise;
 import com.nuparu.sevendaystomine.util.Utils;
@@ -89,7 +90,7 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 					net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
 			strongholdGenerator = (MapGenStronghold) net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(
 					strongholdGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.STRONGHOLD);
-			
+
 			mineshaftGenerator = (MapGenMineshaft) net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(
 					mineshaftGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT);
 			scatteredFeatureGenerator = (MapGenScatteredFeature) net.minecraftforge.event.terraingen.TerrainGen
@@ -211,7 +212,7 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 			for (int j = 0; j < 16; ++j) {
 				double value = Math.abs(getNoiseValue((x << 4) + i, (z << 4) + j, 0));
 				if (value < 0.005d) {
-					for (int k = 80; k >= 63; --k) {
+					for (int k = ModConfig.worldGen.roadMaxY; k >= ModConfig.worldGen.roadMinY; --k) {
 						Biome biome = biomesIn[j + i * 16];
 						IBlockState state = primer.getBlockState(i, k, j);
 						Block block = state.getBlock();
@@ -220,16 +221,16 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 								|| BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
 							continue;
 
-						for (int l = 1; l < 4; l++) {
-							primer.setBlockState(i, k + l, j, Blocks.AIR.getDefaultState());
-						}
 						if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.RIVER) && rand.nextInt(4096) == 0) {
 							break;
 						}
 						if (block == Blocks.STONE) {
+							for (int l = 1; l < 4; l++) {
+								primer.setBlockState(i, k + l, j, Blocks.AIR.getDefaultState());
+							}
 							primer.setBlockState(i, k, j, ModBlocks.ASPHALT.getDefaultState());
 							break;
-						} else if (k == 63 && block == Blocks.AIR) {
+						} else if (k == ModConfig.worldGen.roadMinY && block == Blocks.AIR) {
 							primer.setBlockState(i, k + 1, j, ModBlocks.ASPHALT.getDefaultState());
 							if (value < 0.001d && rand.nextInt(10) == 0) {
 								for (int k2 = k; k2 > 0; --k2) {
@@ -248,46 +249,36 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 				}
 			}
 		}
-		/*int xx = x*16;
-		int zz = z*16;
-		
-		List<ChunkPos> poses = Utils.getClosestCityCities(world, x, z);
-		if(poses.size() > 1) {
-			for(ChunkPos cpo1 : poses) {
-				for(ChunkPos cpo2 : poses) {
-					if(cpo1==cpo2) continue;
-			BlockPos start = cpo1.getBlock(8, 255, 8);
-			BlockPos end = cpo2.getBlock(8, 255, 8);
-			for (int i = 0; i < 16; ++i) {
-				for (int j = 0; j < 16; ++j) {
-					BlockPos pos = new BlockPos(xx+i,255,zz+j);
-					if(isPointOnLine(start,end,pos,0.00001)) {
-					world.setBlockState(pos, ModBlocks.ASPHALT.getDefaultState());
-						System.out.println(pos.toString());
-					}
-				}
-			}}
-			}
-		}*/
+		/*
+		 * int xx = x*16; int zz = z*16;
+		 * 
+		 * List<ChunkPos> poses = Utils.getClosestCityCities(world, x, z);
+		 * if(poses.size() > 1) { for(ChunkPos cpo1 : poses) { for(ChunkPos cpo2 :
+		 * poses) { if(cpo1==cpo2) continue; BlockPos start = cpo1.getBlock(8, 255, 8);
+		 * BlockPos end = cpo2.getBlock(8, 255, 8); for (int i = 0; i < 16; ++i) { for
+		 * (int j = 0; j < 16; ++j) { BlockPos pos = new BlockPos(xx+i,255,zz+j);
+		 * if(isPointOnLine(start,end,pos,0.00001)) { world.setBlockState(pos,
+		 * ModBlocks.ASPHALT.getDefaultState()); System.out.println(pos.toString()); } }
+		 * }} } }
+		 */
 	}
-	
-	public static boolean isPointOnLine(BlockPos pt1, BlockPos pt2, BlockPos pt, double epsilon)
-	{
-	  if (pt.getX() - Math.max(pt1.getX(), pt2.getX()) > epsilon || 
-	      Math.min(pt1.getX(), pt2.getX()) - pt.getX() > epsilon || 
-	      pt.getZ() - Math.max(pt1.getZ(), pt2.getZ()) > epsilon || 
-	      Math.min(pt1.getZ(), pt2.getZ()) - pt.getZ() > epsilon)
-	    return false;
 
-	  if (Math.abs(pt2.getX() - pt1.getX()) < epsilon)
-	    return Math.abs(pt1.getX() - pt.getX()) < epsilon || Math.abs(pt2.getX() - pt.getX()) < epsilon;
-	  if (Math.abs(pt2.getZ() - pt1.getZ()) < epsilon)
-	    return Math.abs(pt1.getZ() - pt.getZ()) < epsilon || Math.abs(pt2.getZ() - pt.getZ()) < epsilon;
+	public static boolean isPointOnLine(BlockPos pt1, BlockPos pt2, BlockPos pt, double epsilon) {
+		if (pt.getX() - Math.max(pt1.getX(), pt2.getX()) > epsilon
+				|| Math.min(pt1.getX(), pt2.getX()) - pt.getX() > epsilon
+				|| pt.getZ() - Math.max(pt1.getZ(), pt2.getZ()) > epsilon
+				|| Math.min(pt1.getZ(), pt2.getZ()) - pt.getZ() > epsilon)
+			return false;
 
-	  double x = pt1.getX() + (pt.getZ() - pt1.getZ()) * (pt2.getX() - pt1.getX()) / (pt2.getZ() - pt1.getZ());
-	  double y = pt1.getZ() + (pt.getX() - pt1.getX()) * (pt2.getZ() - pt1.getZ()) / (pt2.getX() - pt1.getX());
+		if (Math.abs(pt2.getX() - pt1.getX()) < epsilon)
+			return Math.abs(pt1.getX() - pt.getX()) < epsilon || Math.abs(pt2.getX() - pt.getX()) < epsilon;
+		if (Math.abs(pt2.getZ() - pt1.getZ()) < epsilon)
+			return Math.abs(pt1.getZ() - pt.getZ()) < epsilon || Math.abs(pt2.getZ() - pt.getZ()) < epsilon;
 
-	  return Math.abs(pt.getX() - x) < epsilon || Math.abs(pt.getZ() - y) < epsilon;
+		double x = pt1.getX() + (pt.getZ() - pt1.getZ()) * (pt2.getX() - pt1.getX()) / (pt2.getZ() - pt1.getZ());
+		double y = pt1.getZ() + (pt.getX() - pt1.getX()) * (pt2.getZ() - pt1.getZ()) / (pt2.getX() - pt1.getX());
+
+		return Math.abs(pt.getX() - x) < epsilon || Math.abs(pt.getZ() - y) < epsilon;
 	}
 
 	public double getNoiseValue(int x, int y, int z) {
@@ -319,14 +310,10 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 		this.setBlocksInChunk(x, z, chunkprimer);
 		this.biomesForGeneration = this.world.getBiomeProvider().getBiomes(this.biomesForGeneration, x * 16, z * 16, 16,
 				16);
-		
-		 if (this.mapFeaturesEnabled) { this.generateRoads(x, z, chunkprimer,
-		 this.biomesForGeneration); }
-		 
 
-		
-		
-		this.replaceBiomeBlocks(x, z, chunkprimer, this.biomesForGeneration);
+		if (this.mapFeaturesEnabled && ModConfig.worldGen.generateRoads) {
+			this.generateRoads(x, z, chunkprimer, this.biomesForGeneration);
+		}
 
 		this.replaceBiomeBlocks(x, z, chunkprimer, this.biomesForGeneration);
 
@@ -574,8 +561,7 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 
 		Random rand2 = new Random((long) x * k + (long) z * l ^ this.world.getSeed());
 
-		if (Utils.canCityBeGeneratedhere(world, x, z)) {
-			System.out.println("GENERATING CITY");
+		if (Utils.canCityBeGeneratedHere(world, x, z)) {
 			City city = City.foundCity(world, chunkpos, rand2);
 			city.startCityGen();
 		}
@@ -604,28 +590,31 @@ public class ChunkGeneratorOverworldEnhanced extends ChunkGeneratorOverworld {
 			}
 		} // Forge: End ICE
 
-		//if (!a) {
-			//ChunkPos city = Utils.getClosestCity(world, x, z);
-			//if(city != null) {
-			/*BlockPos[] poses = new AStar(world, Utils.getTopGroundBlock(new BlockPos(i+8, 0, j+8), world, true, true).up(),
-					Utils.getTopGroundBlock(new BlockPos(city.x*16 + 8, 0, city.z*16 + 8), world, true, true).up()).getPath();
-
-			if (poses != null) {
-				for (BlockPos pos : poses) {
-					world.setBlockState(pos, Blocks.RED_SANDSTONE.getDefaultState());
-				}
-			}*/
-			//Utils.generateDiagonal(world,Utils.getTopGroundBlock(new BlockPos(i+8, 0, j+8),world, true, true),Utils.getTopGroundBlock(new BlockPos(city.x*16 + 8, 0, city.z*16 + 8), world, true, true).up());
-			//a = !a;
-		//}
-		//}
+		// if (!a) {
+		// ChunkPos city = Utils.getClosestCity(world, x, z);
+		// if(city != null) {
+		/*
+		 * BlockPos[] poses = new AStar(world, Utils.getTopGroundBlock(new BlockPos(i+8,
+		 * 0, j+8), world, true, true).up(), Utils.getTopGroundBlock(new
+		 * BlockPos(city.x*16 + 8, 0, city.z*16 + 8), world, true,
+		 * true).up()).getPath();
+		 * 
+		 * if (poses != null) { for (BlockPos pos : poses) { world.setBlockState(pos,
+		 * Blocks.RED_SANDSTONE.getDefaultState()); } }
+		 */
+		// Utils.generateDiagonal(world,Utils.getTopGroundBlock(new BlockPos(i+8, 0,
+		// j+8),world, true, true),Utils.getTopGroundBlock(new BlockPos(city.x*16 + 8,
+		// 0, city.z*16 + 8), world, true, true).up());
+		// a = !a;
+		// }
+		// }
 
 		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, flag);
 
 		BlockFalling.fallInstantly = false;
 
 	}
-	
+
 	boolean a = false;
 
 	/**

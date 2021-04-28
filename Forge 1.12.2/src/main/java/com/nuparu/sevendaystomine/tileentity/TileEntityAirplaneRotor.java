@@ -353,7 +353,7 @@ public class TileEntityAirplaneRotor extends TileEntity implements ITickable, IV
 
 	@Override
 	public long getRequiredPower() {
-		return 150;
+		return 25;
 	}
 
 	@Override

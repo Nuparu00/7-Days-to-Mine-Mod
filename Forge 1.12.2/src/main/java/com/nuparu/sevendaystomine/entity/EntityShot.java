@@ -6,11 +6,14 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityHuman.EnumSex;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.BulletImpactMessage;
 import com.nuparu.sevendaystomine.util.DamageSources;
+import com.nuparu.sevendaystomine.util.EnumModParticleType;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;
@@ -39,6 +42,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 
 public class EntityShot extends Entity implements IProjectile {
@@ -279,6 +283,7 @@ public class EntityShot extends Entity implements IProjectile {
 			} else {
 				damagesource = DamageSources.causeShotDamage(this, this.getShooter());
 			}
+			
 
 			if ((this.isBurning() || sparking) && !(entity instanceof EntityEnderman)) {
 				entity.setFire(10);
@@ -352,18 +357,18 @@ public class EntityShot extends Entity implements IProjectile {
 				}
 				// this.world.playEvent(2001, blockpos, Block.getStateId(iblockstate));
 
-				if (iblockstate.getMaterial() == Material.GLASS) {
-					this.world.destroyBlock(blockpos, false);
-				} else {
-					if (!Utils.damageBlock(world, blockpos,
+				if (ModConfig.mobs.bulletsBreakBlocks) {
+					if (iblockstate.getMaterial() == Material.GLASS) {
+						this.world.destroyBlock(blockpos, false);
+					} else if (!Utils.damageBlock(world, blockpos,
 							(float) (damage / iblockstate.getBlockHardness(world, blockpos)) * BLOCK_DAMAGE_BASE,
 							true)) {
 						PacketManager.bulletImpact.sendToDimension(
 								new BulletImpactMessage(posX, posY, posZ, motionX, motionY, motionZ, blockpos),
 								world.provider.getDimension());
 					}
-
 				}
+
 			}
 
 		}

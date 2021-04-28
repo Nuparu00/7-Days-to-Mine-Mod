@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "blocks/noteblock",
-		"1": "blocks/anvil_base",
+		"1": "sevendaystomine:blocks/anvil_base_rusty",
 		"2": "blocks/stone",
 		"3": "blocks/hardened_clay_stained_cyan",
 		"4": "blocks/wool_colored_black",

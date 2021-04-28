@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.client.gui.inventory;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.item.EnumQuality;
 
@@ -22,6 +23,8 @@ public class GuiMinibike extends GuiContainer {
 	protected InventoryPlayer playerInventory;
 	protected EntityMinibike minibike;
 
+	boolean chestPrev = false;
+
 	public GuiMinibike(InventoryPlayer playerInventory, EntityMinibike minibike, Container container) {
 		super(container);
 		this.playerInventory = playerInventory;
@@ -31,14 +34,16 @@ public class GuiMinibike extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = minibike.getDisplayName().getUnformattedText();
-		int calculated = minibike.getCalculatedQuality();
-		if (calculated > 0) {
-			EnumQuality quality = EnumQuality.getFromQuality(calculated);
-			s = quality.getColor()
-					+ SevenDaysToMine.proxy.localize("stat.quality." + quality.name().toLowerCase() + ".name") + " "
-					+ s;
-		} else {
-			s = SevenDaysToMine.proxy.localize("stat.unfinished.name") + " " + s;
+		if (ModConfig.players.qualitySystem) {
+			int calculated = minibike.getCalculatedQuality();
+			if (calculated > 0) {
+				EnumQuality quality = EnumQuality.getFromQuality(calculated);
+				s = quality.getColor()
+						+ SevenDaysToMine.proxy.localize("stat.quality." + quality.name().toLowerCase() + ".name") + " "
+						+ s;
+			} else {
+				s = SevenDaysToMine.proxy.localize("stat.unfinished.name") + " " + s;
+			}
 		}
 		this.fontRenderer.drawString(s, 87 - (this.fontRenderer.getStringWidth(s) / 2), 6, 4210752);
 		this.fontRenderer.drawString(
@@ -52,15 +57,16 @@ public class GuiMinibike extends GuiContainer {
 		mc.getTextureManager().bindTexture(resourceLocation);
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;
-		drawTexturedModalRect(marginHorizontal, marginVertical, 0, 0, xSize, ySize);
-		
-		if (this.minibike.getChest()) {
+		drawTexturedModalRect(marginHorizontal, marginVertical, 0, 0, 176, ySize);
+
+		boolean chest = this.minibike.getChest(); 
+		if (chest) {
 			this.drawTexturedModalRect(marginHorizontal + 175, marginVertical + 6, 176, 0, 66, 67);
 		}
 
 		int i = (this.width - this.xSize) / 2;
 		int j = (this.height - this.ySize) / 2;
-		drawEntityOnScreen(i + (this.xSize / 2), j + 60, 32, (float) (i + 51) - mouseX, (float) (j + 75 - 50) - mouseY,
+		drawEntityOnScreen(i + ((this.xSize+(chest ? -66 : 0)) / 2), j + 66, 32, (float) (i + 51) - mouseX, (float) (j + 75 - 50) - mouseY,
 				this.minibike);
 	}
 
@@ -75,6 +81,16 @@ public class GuiMinibike extends GuiContainer {
 		if (minibike.isDead) {
 			Minecraft.getMinecraft().currentScreen = null;
 		}
+		boolean chest = this.minibike.getChest();
+		if (chestPrev != chest) {
+			if (chest) {
+				xSize = 246;
+			} else {
+				xSize = 176;
+			}
+			this.initGui();
+		}
+		chestPrev = chest;
 	}
 
 	public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, Entity ent) {

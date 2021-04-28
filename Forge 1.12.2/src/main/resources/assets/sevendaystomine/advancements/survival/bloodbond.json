@@ -1,0 +1,28 @@
+{
+   "display":{
+      "icon":{
+         "item":"sevendaystomine:bloodbag"
+      },
+      "title":{
+         "translate":"advancements.bloodbond.title"
+      },
+      "description":{
+         "translate":"advancements.bloodbond.description"
+      }
+   },
+   "frame": "goal",
+   "rewards":{
+      "experience":10
+   },
+   "parent":"sevendaystomine:survival/mosco",
+   "criteria":{
+      "bloodbond":{
+         "trigger":"blood_bond"
+      }
+   },
+   "requirements":[
+      [
+         "bloodbond"
+      ]
+   ]
+}

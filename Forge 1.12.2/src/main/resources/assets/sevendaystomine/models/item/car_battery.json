@@ -3,7 +3,7 @@
 	"textures": {
 		"0": "blocks/shulker_top_blue",
 		"1": "blocks/shulker_top_red",
-		"2": "blocks/anvil_base",
+		"2": "sevendaystomine:blocks/anvil_base_rusty",
 		"3": "sevendaystomine:blocks/rustymetal",
 		"4": "sevendaystomine:items/battery_label"
 	},
@@ -90,7 +90,7 @@
 			"to": [12, 6, 4.99],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 10], "texture": "#4"},
-				"south": {"uv": [0, 0, 8, 5], "texture": "#missing"}
+				"south": {"uv": [0, 0, 8, 0], "texture": "#missing"}
 			}
 		}
 	],

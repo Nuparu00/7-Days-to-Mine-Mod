@@ -180,6 +180,7 @@ public class EntityLootableCorpse extends Entity {
 
 		boolean flag = false;
 		for (Entity entity : this.world.getEntitiesWithinAABBExcludingEntity(this, getCollisionBoundingBox())) {
+			if(entity instanceof EntityPlayer) continue;
 			if (!this.isPassenger(entity) && entity.canBeCollidedWith()) {
 				flag = true;
 			}

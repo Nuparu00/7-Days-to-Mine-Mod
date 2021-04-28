@@ -129,8 +129,17 @@ computer.app.transit=Transit IDE
 computer.app.transit.desc=IDE for Ni developers
 computer.mac.create_account=Create Your Computer Account
 computer.mac.create_account_desc=Enter a name and password to create your account.
+computer.app.epidemic=Epidemic
 computer.epidemic.new_game=New Game
+computer.epidemic.main_menu=Main Menu
 computer.epidemic.start=Start
+computer.app.epidemic.win=VICTORY
+computer.app.epidemic.lost=DEFEAT
+computer.app.epidemic.win.epilog=%1$s has successfully eliminated all human life on Earth in %2$s days.
+computer.app.epidemic.lost.vaccine=%1$s has been eradicated in %2$s days.
+computer.app.epidemic.lost.died=%1$s has died off after %2$s days.
+computer.app.epidemic.lost.info.killed=Your disease has killed %1$s people (%2$s%%).
+computer.app.epidemic.lost.info.vaccine=The vaccine was (%1$s%%) complete.
 
 #Status Effects
 
@@ -156,6 +165,7 @@ enchantment.big_mag=Big Mag
 enchantment.multishot=Multishot
 enchantment.small_mag=Curse of Emptiness
 enchantment.strabismus=Curse of Cross Eyeing
+enchantment.jamming=Curse of Jamming
 
 #GUI
 
@@ -243,6 +253,7 @@ book_magnum.title=.44 Magnum
 book_mp5.title=MP5
 book_auger.title=Auger
 book_hunting_rifle.title=Hunting Rifle
+book_rocket.title=Rocket
 
 #Books
 book.contents=Contents
@@ -253,13 +264,15 @@ survival_guide.tools.1=Tools are really important. One could say that they are w
 survival_guide.tools.2=rocks and wood, so you have to make do with these.
 survival_guide.contents.2=2. Primitive Clothes
 survival_guide.clothing.1=Clothing can give additional resistance to different environmental influences. Of course, you won't be able to make 100%% cotton clothing, but you can make one, for example, from plants.
-survival_guide.contents.3=3. Quality
+survival_guide.contents.3=3. Primitive Weapons
+survival_guide.weapons.1=A weapon is a tool that's primary use is to inflict damage. Now you might be thinking that weapons made out of sticks can't be lethal and you would wrong. It just takes a really loooooong time to kill someone with them.
+survival_guide.contents.4=4. Quality
 survival_guide.quality.1=Depending on how skillful you are the items you craft can have different quality. The quality of an item can affect how efficient/accurate and/or durable the item is. Getting more experience is the key to better items.
 survival_guide.quality.2=Right now, there are recognized these 6 tiers of quality:
 survival_guide.quality.3=Keep in mind that certain medical conditions such as death may negatively affect your crafting skill.
-survival_guide.contents.4=4. Campfire
+survival_guide.contents.5=5. Campfire
 survival_guide.campfire.1=Fire is important. It gives you light and heat during nights and allows you to cook, grill, bake, distillate, etc.. It is one of the first things you should try to acquire.
-survival_guide.contents.5=5. Shelter
+survival_guide.contents.6=6. Shelter
 survival_guide.shelter.1=While you could make a shelter from basically anything, the best starter choice is wood. Chop down a few trees and craft some frame blocks
 survival_guide.shelter.2=for your shelter, that you can later upgrade using your axe and some planks.
 survival_guide.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
@@ -311,13 +324,14 @@ book_ammo.contents.2=2. 9x19mm
 book_ammo.contents.3=3. 10x25mm
 book_ammo.contents.4=4. 7,62x39mm
 book_ammo.contents.5=5. .44 Mag
-book_ammo.contents.6=6. 5,56x45mm
+book_ammo.contents.6=6. Shotgun Shell
 book_ammo.parts.1=Almost all types of bullets, except for shotgun shells, are made from bullet casing, bullet tip, and some gunpowder. It is quite simple to make them in large numbers if you have at least one piece of each one.
 book_ammo.parts.2=Simply just create a mold of each one, get a forge, some material and you have your bullet parts. The bullet tip is made of lead while the casing is made out of brass.
 book_ammo.pistol.1=9x19mm (or just 9mm) bullets are used by a pistol. They are not hard to make as they do not need very much gunpowder.
 book_ammo.smg.1=10x25mm (or just 10mm) bullets are used by MP5 Sub-Machine Gun.
 book_ammo.sniper.1=7,62x39mm (or just 7,62mm) bullets are probably the most widely used bullets because it used by almost all rifles.
 book_ammo.magnum.1=.44 Magnum (or just .44 Mag) is ammunition designed for revolver and its variants.
+book_ammo.shotgun.1=Cylindrical cartridge containing 10 pellet-like projectiles.
 book_ammo.dontdistribute.1=Copying and distribution of this book is strictly prohibited without permission.
 book_ammo.copyright=Copyright © 2020 by Maxmilian Vyroubal All rights reserved.
 
@@ -637,7 +651,7 @@ item.photo_cell.name=Photovoltaic Cell
 item.potassium.name=Potassium Nitrate
 item.gas_canister.name=Gas Can
 item.shotgun_receiver.name=Shotgun Receiver
-item.shotgun_parts.name=Shotgun Parts
+item.shotgun_parts.name=Shotgun Pump
 item.shotgun_stock.name=Shotgun Stock
 item.shotgun_stock_short.name=Shotgun Short Stock
 item.shotgun_barrel.name=Shotgun Barrel
@@ -648,6 +662,7 @@ item.book_magnum.name=Blueprint
 item.book_mp5.name=Blueprint
 item.book_auger.name=Blueprint
 item.book_hunting_rifle.name=Blueprint
+item.book_rocket.name=Blueprint
 item.bullet_magnum.name=.44 Magnum Bullet
 item.magnum_frame.name=.44 Magnum Frame
 item.magnum_grip.name=.44 Magnum Grip
@@ -715,6 +730,10 @@ item.compound_bow.name=Compound Bow
 item.mre.name=MRE
 item.sand_dust.name=Sand Dust
 item.vomit.name=Vomit
+item.rocket.name=Rocket
+item.car_chassis.name=Car Chassis
+item.flare.name=Flare
+item.soda.name=Soda
 
 filled_map.city=City Map
 
@@ -871,7 +890,7 @@ tile.sink_faucet.name=Sink Faucet
 tile.metal_ladder.name=Metal Ladder
 tile.radiator.name=Radiator
 
-tile.dark_bricks.name=Dark Bricks
+tile.dark_bricks.name=Dark Brick
 tile.cinder.name=Cinder Blocks
 tile.backpack_normal.name=Backpack
 tile.backpack_army.name=Backpack
@@ -944,7 +963,7 @@ tile.generator_combustion.name=Coal Generator
 tile.thermometer.name=Thermometer
 
 tile.brick_block_mossy.name=Mossy Bricks
-tile.dark_bricks_mossy.name=Mossy Dark Bricks
+tile.dark_bricks_mossy.name=Mossy Dark Brick
 
 tile.file_cabinet.name=File Cabinet
 tile.cash_register.name=Cash Register
@@ -990,6 +1009,22 @@ tile.flower_pot_enhanced.name=Flower Pot
 tile.sand_layer.name=Sand Layer
 tile.red_sand_layer.name=Sand Layer
 tile.ambulance.name=Ambulance
+tile.steel_block.name=Steel Block
+tile.bronze_block.name=Bronze Block
+tile.lead_block.name=Lead Block
+tile.copper_block.name=Copper Block
+tile.dark_bricks_slab.name=Dark Brick Slab
+tile.dark_bricks_slab_double.name=Double Dark Brick Slab
+tile.dark_bricks_stairs.name=Dark Brick Stairs
+tile.dark_bricks_mossy_slab.name=Mossy Dark Brick Slab
+tile.dark_bricks_mossy_slab_double.name=Mossy Double Dark Brick Slab
+tile.dark_bricks_mossy_stairs.name=Mossy Dark Brick Stairs
+tile.brick_mossy_stairs.name=Mossy Brick Stairs
+tile.brick_mossy_slab.name=Mossy Brick Slab
+tile.brick_mossy_slab_double.name=Mossy Brick Slab
+tile.stone_brick_stairs_cracked.name=Cracked Stone Brick Stairs
+tile.asphalt_slab.name=Asphalt Slab
+tile.brass_block.name=Brass Block
 
 #Sound Subtitles
 
@@ -1014,11 +1049,20 @@ subtitle.shotgun.shot=Shotgun Shot
 subtitle.mp5.shot=MP5 Shot
 subtitle.flamethrower.shot=Flamethrower Shot
 subtitle.safe.unlock.shot=Safe Unlock
+subtitle.entity.human.hurt=Human Hurt
+subtitle.horde=Horde
+subtitle.gas_leak=Gas Leak
+subtitle.chainsaw.idle=Chainsaw Idle
+subtitle.chainsaw.cut=Chainsaw Cut
+subtitle.honk=Honk
+subtitle.minibike.idle=Minibike Idle
+subtitle.car.accelerate=Car Accelerate
+subtitle.safe.unlock=Safe Unlock
 
 #Keybinding
 key.sevendaystomine.category=7 Days to Mine
 key.reload.desc=Gun Reload
-key.accelerate.desc=Vehicle Acceleration
+key.honk.desc=Car Honk
 key.camera.height.increase.desc=Camera Viewport Height Increase
 key.camera.height.decrease.desc=Camera Viewport Height Decrease
 key.camera.width.increase.desc=Camera Viewport Width Increase
@@ -1028,12 +1072,12 @@ key.camera.unzoom.desc=Camera Unzoom
 
 #Advancements
 advancements.survival.root.title=Survival
-advancements.survival.root.description=Survival in the ruins of the old world
-advancements.smallstone.title=Rock by rock
+advancements.survival.root.description=Survival in the midst of a zombie apocalypse
+advancements.smallstone.title=Rock by Rock
 advancements.smallstone.description=Collect your first rock
-advancements.stoneaxe.title=It's sharp
+advancements.stoneaxe.title=It's Sharp
 advancements.stoneaxe.description=Use rock, fiber and sticks to make an axe
-advancements.stoneshovel.title=Ace of spades
+advancements.stoneshovel.title=Ace of Spades
 advancements.stoneshovel.description=Use rock, fiber and sticks to make a shovel
 advancements.crafting_table.title=Woodworking
 advancements.crafting_table.description=Make a crafting table out of a wood
@@ -1043,7 +1087,7 @@ advancements.pistol.title=Small Arms
 advancements.pistol.description=Get a pistol
 advancements.rifle.title=Military Issue
 advancements.rifle.description=Get a rifle
-advancements.woodenclub.title=Right off the bat
+advancements.woodenclub.title=Right Off the Bat
 advancements.woodenclub.description=Make a Wooden Club out of a wood
 advancements.spikedclub.title=Illegal Modification
 advancements.spikedclub.description=Make a Spiked Club
@@ -1090,7 +1134,21 @@ advancements.compound_bow.description=Craft a Compound Bow
 advancements.auger.title=It isn't a Pick
 advancements.auger.description=But you can get maple syrup with it
 advancements.chainsaw.title=Chained Saw
-advancements.chainsaw.description=It can't hurt anyone this way
+advancements.chainsaw.description=It can't hurt you this way
+advancements.flare.title=On Demand Delivery
+advancements.flare.description=Use a flare to request an airdrop
+advancements.mosco.title=El Mosco
+advancements.mosco.description=Use the Blood Draw Kit to get someone else's blood
+advancements.bloodbond.title=Blood Bond
+advancements.bloodbond.description=Use blood of another player
+advancements.reitwagen.title=Reitwagen
+advancements.reitwagen.description=Obtain a Minibike Chassis
+advancements.road_trip.title=Road Trip
+advancements.road_trip.description=Drive a car with 3 other passengers
+advancements.know_it_all.title=Mr. Know It All
+advancements.know_it_all.description=Read every recipe book and blueprint
+advancements.locksmith.title=Locksmith
+advancements.locksmith.description=Unlock a safe
 
 #Entities
 entity.reanimated_corpse.name=Reanimated Corpse
@@ -1123,20 +1181,28 @@ entity.zombie_wolf.name=Zombie Wolf
 entity.zombie_pig.name=Zombie Pig
 entity.zombie_miner.name=Zombie Miner
 entity.feral_zombie.name=Feral Zombie
+entity.car.name=Car
 
 #Fluids
 fluid.gasoline=Gasoline
 fluid.mercury=Mercury
 
 
-JEI
-jei.information.workbench=Workbench is a more advanced version of Crafting Table, that offers 5x5 crafting grid. Requires the "Metalworking" recipe book.
+#JEI
+jei.information.workbench=Workbench is a more advanced version of Crafting Table, that offers 5x5 crafting grid. Requires the "Metalworking" recipe book. Shidt-click to open the "decreafting grid" instead.
 jei.information.separator=Electrolytic cell is a device that breaks down complex substances into simpler substances.
 jei.information.stone_axe=Stone Axe is a basic universal tool. Used not only as a mining tool but also as a block upgrade and repair tool.
 jei.information.wind_turbine=Converts wind's energy into electricity. The higher it is placed, the more electricity is generated. Provides extra electricity during rain and storms. Must not be obstructed.
 jei.information.solar_panel=Converts sunlight's energy into electricity. The higher the sun is on the sky, the more electricity is generated. Should be faced to EAST or WEST for maximal efficiency. Must not be obstructed.
 jei.information.gas_generator=Converts heat energy, obtained from burning gas, into electricity. The higher the temperature, the more electricity is generated. Prone to overheating. Recommended using water or ice as a coolant, or using thermometers to turn the generator off if the temperature reaches critical levels.
 jei.information.combustion_generator=Converts heat energy, obtained from burning, into electricity. The higher the temperature, the more electricity is generated. Prone to overheating. Recommended using water or ice as a coolant, or using thermometers to turn the generator off if the temperature reaches critical levels.
+jei.information.forge=Furnace-like block used for smelting (not only) metals into various items. Requires molds to operate.
+jei.information.campfire=Furnace-like block used for cooking various items. Requires cookware (like pots) to operate.
+jei.information.camera=A device used for monitoring some area. Requires a connection to a computer.
+jei.information.battery_station=A device that can store up to 10000J worth of electricity.
+jei.information.stethoscope=An item, that was originally intended for medical use. Can be used to find the correct combination of a code safe.
+jei.information.blood_draw_kit=An item, that can be used to extract your (or someone else's) blood.
+jei.information.thermometer=Fires a Redstone signal when a block is about to reach a critical temperature.
 
 #DIALOGUES
 
@@ -1149,3 +1215,14 @@ survivor.trade.response=Sure. Let's deal!
 survivor.generic.a.b.response=Nothing really.
 survivor.generic.a.c.response=Sorry, I don't.
 survivor.generic.a.d.response=I don't have time for you.
+
+#Config
+sevendaystomine.client.tooltip=Client-side settings
+sevendaystomine.mobs.tooltip=Entities related settings
+sevendaystomine.players.tooltip=Players related settings
+sevendaystomine.world.tooltip=World settings
+sevendaystomine.worldgen.tooltip=World Generation settings
+
+
+
+

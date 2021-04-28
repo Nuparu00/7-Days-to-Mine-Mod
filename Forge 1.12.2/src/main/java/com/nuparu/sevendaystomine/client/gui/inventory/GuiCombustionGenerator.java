@@ -17,7 +17,6 @@ public class GuiCombustionGenerator extends GuiContainer {
 			"textures/gui/container/generator_combustion.png");
 
 	TileEntityGeneratorBase tileEntity;
-
 	public GuiCombustionGenerator(ContainerGenerator container) {
 		super(container);
 		this.tileEntity = (TileEntityGeneratorBase) container.callbacks;
@@ -37,6 +36,7 @@ public class GuiCombustionGenerator extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		this.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(resourceLocation);
 		int marginHorizontal = (width - xSize) / 2;
@@ -49,12 +49,12 @@ public class GuiCombustionGenerator extends GuiContainer {
 	}
 
 	private int getBurnLeftScaled(int pixels) {
-		int i = this.tileEntity.getCurrentBurnTime();
+		int i = tileEntity.getField(1);
 		if (i == 0) {
 			i = 200;
 		}
 
-		return this.tileEntity.getBurnTime() * pixels / i;
+		return tileEntity.getField(0) * pixels / i;
 	}
 
 }

@@ -3,12 +3,14 @@ package com.nuparu.sevendaystomine.tileentity;
 import java.util.Iterator;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.electricity.ElectricConnection;
 import com.nuparu.sevendaystomine.electricity.IVoltage;
 import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
+import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.material.Material;
@@ -21,6 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -62,10 +65,17 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 			}
 			if (temperature < temperatureLimit) {
 
-				temperature += (0.0002 * hot);
+				temperature += (0.0002 * (hot+0.1));
+			}
+			if(!world.isRemote && ++soundCounter >= 90) {
+				world.playSound(null, pos, SoundHelper.MINIBIKE_IDLE, SoundCategory.BLOCKS, MathUtils.getFloatInRange(0.95f, 1.05f), MathUtils.getFloatInRange(0.95f, 1.05f));
+				soundCounter = 0;
 			}
 
 			flag = true;
+		}
+		else if(!world.isRemote) {
+			soundCounter = 90;
 		}
 
 		ItemStack itemstack = this.inventory.getStackInSlot(0);
@@ -87,7 +97,7 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 		}
 
 		if (temperature > 0) {
-			temperature -= (0.00001 * ((2 * cold) + air));
+			temperature -= (0.000001 * ((2 * cold) + air/2));
 		}
 
 		if (temperature > 1) {
@@ -130,7 +140,7 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 	@Override
 	public long getPowerPerUpdate() {
-		long out = isBurning() ? (long) (basePower + (basePower * temperature)) : 0;
+		long out = isBurning() ? (long) (basePower + (basePower * 8*temperature)) : 0;
 		if (out > getMaxOutput()) {
 			out = getMaxOutput();
 		}

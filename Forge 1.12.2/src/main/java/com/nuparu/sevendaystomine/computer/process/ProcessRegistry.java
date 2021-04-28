@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.computer.process.epidemic.EpidemicProcess;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -32,9 +33,7 @@ public class ProcessRegistry {
 		TickingProcess process = null;
 		try {
 			process = clazz.newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return process;

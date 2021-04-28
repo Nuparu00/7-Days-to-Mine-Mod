@@ -8,9 +8,12 @@ import com.nuparu.sevendaystomine.entity.EntityRocket;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemGun.EnumWield;
+import com.nuparu.sevendaystomine.network.PacketManager;
+import com.nuparu.sevendaystomine.network.packets.ApplyRecoilMessage;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -110,8 +113,8 @@ public class ItemRPG extends ItemGun {
 			worldIn.playSound(null, new BlockPos(playerIn), getShotSound(), SoundCategory.PLAYERS, getShotSoundVolume(),
 					getShotSoundPitch());
 			playerIn.swingArm(handIn);
-			if (worldIn.isRemote) {
-				SevenDaysToMine.proxy.addRecoil(getRecoil(), playerIn);
+			if (playerIn instanceof EntityPlayerMP) {
+				PacketManager.applyRecoil.sendTo(new ApplyRecoilMessage(getRecoil(),handIn==EnumHand.MAIN_HAND, false), (EntityPlayerMP) playerIn);
 			}
 
 			if (!flag) {

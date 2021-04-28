@@ -69,5 +69,8 @@ public interface IExtendedPlayer {
 	
 	public void setHorde(int i);
 	public int getHorde();
+	
+	public void setDrinkCounter(int i);
+	public int getDrinkCounter();
 
 }

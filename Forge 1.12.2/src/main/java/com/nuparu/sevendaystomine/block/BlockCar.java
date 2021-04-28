@@ -3,8 +3,10 @@ package com.nuparu.sevendaystomine.block;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.electricity.IBattery;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.item.ItemBattery;
@@ -37,6 +39,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
@@ -314,8 +317,8 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> implemen
 			if (battery.getTagCompound() == null) {
 				battery.setTagCompound(new NBTTagCompound());
 			}
-			NBTTagCompound nbt = battery.getTagCompound();
-			nbt.setInteger("voltage", MathHelper.getInt(world.rand, ItemBattery.MAX_VOLTAGE/2, ItemBattery.MAX_VOLTAGE));
+			IBattery bat = (IBattery)battery.getItem();
+			bat.setVoltage(battery, world, ThreadLocalRandom.current().nextLong(bat.getCapacity(battery, world)));
 			items.add(battery);
 		}
 		items.add(new ItemStack(ModItems.IRON_PIPE,1+world.rand.nextInt(5)));
@@ -365,6 +368,11 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> implemen
 		return true;
 	}
 
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	}
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IStateMapper getStateMapper() {

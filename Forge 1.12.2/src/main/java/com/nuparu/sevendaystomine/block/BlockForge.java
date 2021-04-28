@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.tileentity.TileEntityFileCabinet;
 import com.nuparu.sevendaystomine.tileentity.TileEntityForge;
 
 import net.minecraft.block.BlockHorizontal;
@@ -15,6 +16,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
@@ -25,6 +27,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -122,11 +125,13 @@ public class BlockForge extends BlockTileProvider<TileEntityForge> {
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		if (!keepInventory) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
+			TileEntity te = worldIn.getTileEntity(pos);
 
-			if (tileentity instanceof TileEntityForge) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityForge) tileentity);
-				worldIn.updateComparatorOutputLevel(pos, this);
+			if (te instanceof TileEntityForge) {
+				NonNullList<ItemStack> drops = ((TileEntityForge) te).getDrops();
+				for (ItemStack stack : drops) {
+					worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack));
+				}
 			}
 		}
 
@@ -222,7 +227,7 @@ public class BlockForge extends BlockTileProvider<TileEntityForge> {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if (tileentity instanceof TileEntityForge) {
-				((TileEntityForge) tileentity).setCustomInventoryName(stack.getDisplayName());
+				((TileEntityForge) tileentity).setDisplayName(stack.getDisplayName());
 			}
 		}
 	}

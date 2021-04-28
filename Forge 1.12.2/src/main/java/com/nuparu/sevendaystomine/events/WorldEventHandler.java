@@ -35,6 +35,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -315,13 +316,19 @@ public class WorldEventHandler {
 		if (fuel.isEmpty())
 			return;
 		Item item = fuel.getItem();
+		if(item == Items.PAPER) {
+			event.setBurnTime(20);
+		}
+		if(item == Items.BOOK) {
+			event.setBurnTime(80);
+		}
 		if (item instanceof IScrapable) {
 			IScrapable scrapable = (IScrapable) item;
 			if (scrapable.getMaterial() == EnumMaterial.WOOD) {
 				event.setBurnTime(200 * scrapable.getWeight());
 			}
 		}
-		if (item instanceof ItemBlock) {
+		else if (item instanceof ItemBlock) {
 			ItemBlock itemBlock = (ItemBlock) item;
 			Block block = itemBlock.getBlock();
 			if (block instanceof IScrapable) {
@@ -331,7 +338,7 @@ public class WorldEventHandler {
 				}
 			}
 		}
-		if (VanillaManager.getVanillaScrapable(item) != null) {
+		else if (VanillaManager.getVanillaScrapable(item) != null) {
 			VanillaManager.VanillaScrapableItem scrapable = VanillaManager.getVanillaScrapable(item);
 			if (scrapable.getMaterial() == EnumMaterial.WOOD) {
 				event.setBurnTime(200 * scrapable.getWeight());

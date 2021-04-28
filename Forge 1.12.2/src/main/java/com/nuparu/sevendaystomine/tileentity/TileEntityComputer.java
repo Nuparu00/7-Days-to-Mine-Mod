@@ -32,6 +32,7 @@ import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.SyncTileEntityMessage;
 import com.nuparu.sevendaystomine.util.ModConstants;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,10 +66,11 @@ public class TileEntityComputer extends TileEntityLockableLoot
 	private TileEntityMonitor monitorTE = null;
 
 	// Machine variables
+	public boolean on = false;
 	private EnumState state = EnumState.OFF;
 	private EnumSystem system = EnumSystem.NONE;
 	private long voltage = 0;
-	private long capacity = 1000;
+	private long capacity = 60;
 
 	// processes
 	private ArrayList<TickingProcess> processes = new ArrayList<TickingProcess>();
@@ -113,16 +115,26 @@ public class TileEntityComputer extends TileEntityLockableLoot
 		this.system = system;
 	}
 
+	public void turnOn() {
+		this.on = true;
+		this.markForUpdate();
+	}
+
+	public void turnOff() {
+		this.on = false;
+		this.markForUpdate();
+	}
+
 	public void startComputer() {
 		setState(EnumState.BOOT_SCREEN);
 		processes.clear();
 		startProcess(new BootingProcess());
 	}
 
-	public void turnOff() {
+	public void stopComputer() {
 		setState(EnumState.OFF);
 		processes.clear();
-		this.markDirty();
+		this.markForUpdate();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -143,7 +155,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 			}
 		}
 		processes.add(process);
-		this.markDirty();
+		this.markForUpdate();
 	}
 
 	public void startProcess(NBTTagCompound nbt, boolean sync) {
@@ -166,7 +178,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 			}
 
 			if (flag) {
-				this.markDirty();
+				this.markForUpdate();
 				return;
 			}
 			if (sync) {
@@ -184,7 +196,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 
 	public void killProcess(TickingProcess process) {
 		processes.remove(process);
-		this.markDirty();
+		this.markForUpdate();
 	}
 
 	public TickingProcess getProcessByUUID(UUID id) {
@@ -202,7 +214,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 	}
 
 	public void onBootFinished() {
-		if(hardDrive == null) {
+		if (hardDrive == null) {
 			hardDrive = new HardDrive(this);
 		}
 		setState(EnumState.LOGIN);
@@ -236,6 +248,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 	}
 
 	public void onLogin(WindowsLoginProcess process) {
+		if(verifyPassword(process.password)) {
 		setState(EnumState.NORMAL);
 		switch (system) {
 		default:
@@ -247,6 +260,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 			break;
 		}
 		killProcess(process);
+		}
 	}
 
 	public void onAccountCreated(CreateAccountProcess process) {
@@ -275,11 +289,13 @@ public class TileEntityComputer extends TileEntityLockableLoot
 			return;
 		}
 		if (isOn()) {
-			if ((!isCompleted() || this.voltage < this.getRequiredPower())) {
-				turnOff();
+			if (!on || !isCompleted() || this.voltage < this.getRequiredPower()) {
+				stopComputer();
 				return;
 			}
 			this.voltage -= this.getRequiredPower();
+		} else if (on && isCompleted() && this.voltage > this.getRequiredPower()) {
+			this.startComputer();
 		}
 		if (!world.isRemote) {
 			for (TickingProcess process : getProcessesList()) {
@@ -301,6 +317,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 		this.username = compound.getString("username");
 		this.password = compound.getString("password");
 		this.hint = compound.getString("hint");
+		this.on = compound.getBoolean("on");
 		this.setRegistered(compound.getBoolean("registered"));
 
 		NBTTagList list = compound.getTagList("processes", Constants.NBT.TAG_COMPOUND);
@@ -368,6 +385,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 		compound.setString("username", username);
 		compound.setString("password", password);
 		compound.setString("hint", hint);
+		compound.setBoolean("on", on);
 
 		compound.setBoolean("registered", isRegistered());
 		NBTTagList list = new NBTTagList();
@@ -580,6 +598,15 @@ public class TileEntityComputer extends TileEntityLockableLoot
 		}
 	}
 
+	public void markForUpdate() {
+		if (world != null && pos != null) {
+			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+			world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+		}
+		this.markDirty();
+	}
+
 	public TileEntityMonitor getMonitorTE() {
 		return monitorTE;
 	}
@@ -778,7 +805,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 
 	@Override
 	public long getRequiredPower() {
-		return 256;
+		return 12;
 	}
 
 	@Override
@@ -804,6 +831,8 @@ public class TileEntityComputer extends TileEntityLockableLoot
 
 	@Override
 	public long tryToSendPower(long power, ElectricConnection connection) {
+		if (!on)
+			return 0;
 		long canBeAdded = capacity - voltage;
 		long delta = Math.min(canBeAdded, power);
 		long lost = 0;

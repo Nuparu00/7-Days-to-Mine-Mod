@@ -10,6 +10,8 @@ import org.apache.commons.io.IOUtils;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockCar;
+import com.nuparu.sevendaystomine.config.ModConfig;
+import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCarMaster;
 import com.nuparu.sevendaystomine.util.Utils;
@@ -126,17 +128,12 @@ public class CityHelper {
 		// buildings.add(new BuildingOvergrownHouse(new
 		// ResourceLocation(SevenDaysToMine.MODID,"overgrown_house")));
 
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartment"), 40, -1,
-				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE_SMOOTH))
-						.setAllowedCityTypes(EnumCityType.CITY));
 		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house"), 40, -2));
-		buildings.add(
-				new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house_damaged"), 40, -2));
+
 		buildings.add(new BuildingBrickHouse(
 				new ResourceLocation(SevenDaysToMine.MODID, "brick_house_damaged_inverted"), 40, -2));
 		buildings.add(new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house_dead"), 40, -2));
-		buildings.add(new BuildingApartmentDark(new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_bottom"),
-				50, -1));
+		
 		buildings.add(new BuildingGrayHouse(new ResourceLocation(SevenDaysToMine.MODID, "gray_house"), 20, -1));
 		buildings.add(new BuildingGasStation(new ResourceLocation(SevenDaysToMine.MODID, "gas_station_1"), 10, -1));
 		buildings.add(
@@ -146,15 +143,7 @@ public class CityHelper {
 		buildings.add(new BuildingFarm(new ResourceLocation(SevenDaysToMine.MODID, "farm"), 30, 0,
 				Blocks.STONE.getDefaultState()).setAllowedCityTypes(EnumCityType.TOWN, EnumCityType.VILLAGE));
 		buildings.add(new BuildingChurch(new ResourceLocation(SevenDaysToMine.MODID, "church_front"), 5, -1));
-		buildings.add(new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_0"),
-				new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_1"), 20, -1));
-		buildings
-				.add(new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_undamaged_0"),
-						new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_undamaged_1"), 20, -1));
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartments_ruins_overgrown"), 20, -1)
-				.setAllowedCityTypes(EnumCityType.CITY));
-		buildings.add(new BuildingHospital(new ResourceLocation(SevenDaysToMine.MODID, "hospital_front_left"), 6, -1));
-		buildings.add(new BuildingOffice(new ResourceLocation(SevenDaysToMine.MODID, "office_building_right"), 10, -1));
+
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "menu_house"), 20, -4)
 				.setAllowedCityTypes(EnumCityType.TOWN, EnumCityType.VILLAGE));
 		buildings
@@ -165,7 +154,40 @@ public class CityHelper {
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "book_store"), 10, -1)
 				.setAllowedCityTypes(EnumCityType.CITY).setCanBeMirrored(false));
 		buildings.add(new BuildingConstructionSite(40));
-		buildings.add(new BuildingCemetery(10, -3));
+		buildings.add(new BuildingCemetery(18, 0));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "condo"), 20, -1)
+				.setAllowedCityTypes(EnumCityType.CITY, EnumCityType.TOWN));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "parking_lot"), 10, 0) {
+			@Override
+			public BlockPos getDimensions(World world, EnumFacing facing) {
+				return super.getDimensions(world, facing).add(2, 0, 2);
+			}
+		}.setAllowedCityTypes(EnumCityType.CITY).setPedestal(ModBlocks.STRUCTURE_STONE.getDefaultState()));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "fire_station"), 20, -1)
+				.setAllowedCityTypes(EnumCityType.CITY, EnumCityType.TOWN)
+				.setPedestal(ModBlocks.STRUCTURE_STONE.getDefaultState()));
+
+		if (!ModConfig.worldGen.smallStructuresOnly) {
+			buildings.add(new BuildingApartmentDark(new ResourceLocation(SevenDaysToMine.MODID, "apartment_dark_bottom"),
+					50, -1));
+			buildings.add(
+					new BuildingHospital(new ResourceLocation(SevenDaysToMine.MODID, "hospital_front_left"), 6, -1));
+			buildings.add(
+					new BuildingOffice(new ResourceLocation(SevenDaysToMine.MODID, "office_building_right"), 10, -1));
+			buildings.add(
+					new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_undamaged_0"),
+							new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_undamaged_1"), 20, -1));
+			buildings
+					.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartments_ruins_overgrown"), 20, -1)
+							.setAllowedCityTypes(EnumCityType.CITY));
+			buildings.add(
+					new BuildingBrickHouse(new ResourceLocation(SevenDaysToMine.MODID, "brick_house_damaged"), 40, -2));
+			buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "apartment"), 40, -1, Blocks.STONE
+					.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE_SMOOTH))
+							.setAllowedCityTypes(EnumCityType.CITY));
+			buildings.add(new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_0"),
+					new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_1"), 20, -1));
+		}
 	}
 
 	public int getBuildingsCount() {

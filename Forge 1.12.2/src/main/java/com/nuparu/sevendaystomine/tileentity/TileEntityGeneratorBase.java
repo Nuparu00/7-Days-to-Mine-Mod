@@ -15,6 +15,7 @@ import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 import com.nuparu.sevendaystomine.util.ITemperature;
 import com.nuparu.sevendaystomine.util.ModConstants;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -56,13 +57,15 @@ public abstract class TileEntityGeneratorBase extends TileEntityItemHandler<Item
 
 	protected double temperature = 0;
 	protected double temperatureLimit = 0.6;
-	protected static final double basePower = 250;
+	protected static final double basePower = 6;
 
 
 	public boolean isBurning = false;
 
 	protected long capacity = 100000l;
 	protected long voltage = 0;
+	
+	public int soundCounter = 90;
 
 	public TileEntityGeneratorBase() {
 
@@ -94,7 +97,10 @@ public abstract class TileEntityGeneratorBase extends TileEntityItemHandler<Item
 		temperature = compound.getDouble("temperature");
 		temperatureLimit = compound.getDouble("tempLimit");
 		voltage = compound.getLong("voltage");
-
+		
+		this.burnTime = compound.getInteger("BurnTime");
+		this.currentBurnTime = Utils.getItemBurnTime(this.getInventory().getStackInSlot(0));
+		
 		if (compound.hasKey("inputs", Constants.NBT.TAG_COMPOUND)) {
 			inputs.clear();
 			NBTTagCompound in = compound.getCompoundTag("inputs");
@@ -125,6 +131,7 @@ public abstract class TileEntityGeneratorBase extends TileEntityItemHandler<Item
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 
+		compound.setInteger("BurnTime", (short) this.burnTime);
 		compound.setBoolean("isBurning", isBurning);
 		compound.setDouble("temperature", temperature);
 		compound.setDouble("temperatureLimit", temperatureLimit);
@@ -242,7 +249,7 @@ public abstract class TileEntityGeneratorBase extends TileEntityItemHandler<Item
 
 	@Override
 	public long getMaxOutput() {
-		return 300;
+		return 120;
 	}
 
 	@Override
@@ -367,4 +374,33 @@ public abstract class TileEntityGeneratorBase extends TileEntityItemHandler<Item
         return inventory.getDisplayName();
     }
 	
+	public int getField(int id) {
+		switch (id) {
+		case 0:
+			return this.burnTime;
+		case 1:
+			return this.currentBurnTime;
+		case 2:
+			return (int) this.voltage;
+		default:
+			return 0;
+		}
+	}
+
+	public void setField(int id, int value) {
+		switch (id) {
+		case 0:
+			this.burnTime = value;
+			break;
+		case 1:
+			this.currentBurnTime = value;
+			break;
+		case 3:
+			this.voltage = value;
+		}
+	}
+
+	public int getFieldCount() {
+		return 3;
+	}
 }

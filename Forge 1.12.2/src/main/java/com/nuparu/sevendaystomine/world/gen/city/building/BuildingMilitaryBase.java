@@ -127,26 +127,6 @@ public class BuildingMilitaryBase extends Building {
 	@Override
 	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror) {
 		switch (data) {
-		case "map": {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			for (int i = -1; i < 2; i++) {
-				for (int j = 0; j < 2; j++) {
-					BlockPos pos2 = pos.down(1 + j).offset(facing, i);
-					List<EntityItemFrame> list = world.getEntitiesWithinAABB(EntityItemFrame.class,
-							new AxisAlignedBB(pos2, pos2.add(1, 1, 1)));
-					if (list.isEmpty())
-						continue;
-					EntityItemFrame frame = list.get(0);
-					int x = pos.getX() + (256 * i * (mirror ? -1 : 1));
-					int z = pos.getZ() + (256 * j);
-					ItemStack stack = ItemMap.setupNewMap(world, x, z, (byte) 1, true, true);
-					Utils.renderBiomePreviewMap(world, stack);
-					MapData.addTargetDecoration(stack, pos, "+", MapDecoration.Type.TARGET_X);
-					frame.setDisplayedItem(stack);
-				}
-			}
-			break;
-		}
 		default:
 			super.handleDataBlock(world, facing, pos, data, mirror);
 		}

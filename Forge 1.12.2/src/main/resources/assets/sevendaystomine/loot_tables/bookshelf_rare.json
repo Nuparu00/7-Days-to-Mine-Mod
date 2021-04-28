@@ -9,12 +9,12 @@
             "entries": [
                 {
                     "type": "item",
-                    "weight": 40,
+                    "weight": 50,
                     "name": "minecraft:paper"
                 },
                 {
                     "type": "item",
-                    "weight": 120,
+                    "weight": 150,
                     "name": "minecraft:book"
                 },      
                 {
@@ -41,6 +41,11 @@
                     "type": "item",
                     "weight": 20,
                     "name": "sevendaystomine:book_magnum"
+                },      
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:book_rocket"
                 },      
                 {
                     "type": "item",
@@ -86,7 +91,8 @@
                                 "sevendaystomine:marksman",
                                  "sevendaystomine:big_mag",
                                  "sevendaystomine:strabismus",
-                                 "sevendaystomine:small_mag"
+                                 "sevendaystomine:small_mag",
+                        "sevendaystomine:jamming"
                             ]
                         }
                     ]

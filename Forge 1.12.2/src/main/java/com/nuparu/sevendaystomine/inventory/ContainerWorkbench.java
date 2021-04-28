@@ -2,6 +2,9 @@ package com.nuparu.sevendaystomine.inventory;
 
 import com.nuparu.sevendaystomine.crafting.workbench.WorkbenchCraftingManager;
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCampfire;
+import com.nuparu.sevendaystomine.tileentity.TileEntityWorkbench;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,6 +21,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 public class ContainerWorkbench extends Container {
 	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 5, 5);
@@ -27,32 +32,35 @@ public class ContainerWorkbench extends Container {
 	private BlockPos pos;
 	public EntityPlayer player;
 
-	public ContainerWorkbench(EntityPlayer player, World worldIn, BlockPos posIn) {
-		this.worldObj = worldIn;
+	public ContainerWorkbench(EntityPlayer player, IItemHandlerNameable playerInventory, IItemHandlerNameable combinedInvWrapper,
+			TileEntityWorkbench workbench, BlockPos posIn) {
+		this.worldObj = workbench.getWorld();
 		this.player = player;
 		this.pos = posIn;
+		craftMatrix = new InventoryCrafting(this, 5, 5);
+		craftResult = new InventoryCraftResult();
 		this.addSlotToContainer(new SlotWorkbenchCrafting(player, this.craftMatrix, this.craftResult, 0, 134, 44));
 
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
-				this.addSlotToContainer(new Slot(this.craftMatrix,j + i * 5, 8 + j * 18, 7 + i * 18));
+				this.addSlotToContainer(new Slot(this.craftMatrix, j + i * 5, 8 + j * 18, 7 + i * 18));
 			}
 		}
 
-		bindPlayerInventory(player.inventory);
+		bindPlayerInventory(playerInventory);
 		this.onCraftMatrixChanged(this.craftMatrix);
 
 	}
 
-	protected void bindPlayerInventory(InventoryPlayer playerInventory) {
+	protected void bindPlayerInventory(IItemHandlerNameable playerInventory) {
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
-				this.addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 106 + i * 18));
+				this.addSlotToContainer(new SlotItemHandler(playerInventory, j + i * 9 + 9, 8 + j * 18, 106 + i * 18));
 			}
 		}
 
 		for (int k = 0; k < 9; ++k) {
-			this.addSlotToContainer(new Slot(player.inventory, k, 8 + k * 18, 164));
+			this.addSlotToContainer(new SlotItemHandler(playerInventory, k, 8 + k * 18, 164));
 		}
 	}
 
@@ -62,7 +70,37 @@ public class ContainerWorkbench extends Container {
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
 		this.slotChangedCraftingGrid(this.worldObj, this.player, this.craftMatrix, this.craftResult);
 	}
-	
+
+	@Override
+	protected void slotChangedCraftingGrid(World p_192389_1_, EntityPlayer p_192389_2_, InventoryCrafting p_192389_3_,
+			InventoryCraftResult p_192389_4_) {
+		if (!p_192389_1_.isRemote) {
+			boolean flag = false;
+			for (int i = 0; i < p_192389_3_.getSizeInventory(); i++) {
+				if (!p_192389_3_.getStackInSlot(i).isEmpty()) {
+					flag = true;
+					break;
+				}
+			}
+
+			EntityPlayerMP entityplayermp = (EntityPlayerMP) p_192389_2_;
+			ItemStack itemstack = ItemStack.EMPTY;
+			//if (flag) {
+				IRecipe irecipe = CraftingManager.findMatchingRecipe(p_192389_3_, p_192389_1_);
+
+				if (irecipe != null
+						&& (irecipe.isDynamic() || !p_192389_1_.getGameRules().getBoolean("doLimitedCrafting")
+								|| entityplayermp.getRecipeBook().isUnlocked(irecipe))) {
+					p_192389_4_.setRecipeUsed(irecipe);
+					itemstack = irecipe.getCraftingResult(p_192389_3_);
+				}
+			//}
+
+			p_192389_4_.setInventorySlotContents(0, itemstack);
+			entityplayermp.connection.sendPacket(new SPacketSetSlot(this.windowId, 0, itemstack));
+		}
+	}
+
 	/**
 	 * Called when the container is closed.
 	 */
@@ -90,7 +128,7 @@ public class ContainerWorkbench extends Container {
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = this.inventorySlots.get(index);
-
+		System.out.println(index);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
@@ -98,20 +136,20 @@ public class ContainerWorkbench extends Container {
 			if (index == 0) {
 				itemstack1.getItem().onCreated(itemstack1, this.worldObj, playerIn);
 
-				if (!this.mergeItemStack(itemstack1, 10, 46, true)) {
+				if (!this.mergeItemStack(itemstack1, 26, 62, true)) {
 					return ItemStack.EMPTY;
 				}
 
 				slot.onSlotChange(itemstack1, itemstack);
-			} else if (index >= 10 && index < 37) {
-				if (!this.mergeItemStack(itemstack1, 37, 46, false)) {
+			} else if (index >= 26 && index < 53) {
+				if (!this.mergeItemStack(itemstack1, 53, 62, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (index >= 37 && index < 46) {
-				if (!this.mergeItemStack(itemstack1, 10, 37, false)) {
+			} else if (index >= 53 && index < 62) {
+				if (!this.mergeItemStack(itemstack1, 26, 53, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!this.mergeItemStack(itemstack1, 10, 46, false)) {
+			} else if (!this.mergeItemStack(itemstack1, 26, 62, false)) {
 				return ItemStack.EMPTY;
 			}
 

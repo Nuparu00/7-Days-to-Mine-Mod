@@ -116,9 +116,9 @@ public class VanillaManager {
 		if(!ModConfig.players.disableVanillaBlocksAndItems) return; 
 		RecipeManager.removeRecipe(Blocks.FURNACE);
 		RecipeManager.removeRecipe(Blocks.PLANKS);
-		RecipeManager.removeRecipe(Blocks.IRON_BARS);
-		RecipeManager.removeRecipe(Blocks.IRON_TRAPDOOR);
-		RecipeManager.removeRecipe(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
+		//RecipeManager.removeRecipe(Blocks.IRON_BARS);
+		//RecipeManager.removeRecipe(Blocks.IRON_TRAPDOOR);
+		//RecipeManager.removeRecipe(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
 		RecipeManager.removeItem(Items.WOODEN_SWORD);
 		RecipeManager.removeItem(Items.WOODEN_AXE);
 		RecipeManager.removeItem(Items.WOODEN_PICKAXE);
@@ -129,8 +129,8 @@ public class VanillaManager {
 		RecipeManager.removeItem(Items.STONE_PICKAXE);
 		RecipeManager.removeItem(Items.STONE_SHOVEL);
 		RecipeManager.removeItem(Items.STONE_HOE);
-		RecipeManager.removeRecipe(net.minecraft.init.Blocks.IRON_BLOCK);
-		RecipeManager.removeRecipe(net.minecraft.init.Blocks.GOLD_BLOCK);
+		//RecipeManager.removeRecipe(net.minecraft.init.Blocks.IRON_BLOCK);
+		//RecipeManager.removeRecipe(net.minecraft.init.Blocks.GOLD_BLOCK);
 		RecipeManager.removeRecipe(Items.IRON_CHESTPLATE);
 		RecipeManager.removeRecipe(Items.IRON_HELMET);
 		RecipeManager.removeRecipe(Items.IRON_BOOTS);
@@ -273,9 +273,10 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(Blocks.IRON_TRAPDOOR, EnumMaterial.IRON).setWeight(4));
 		vanillaScrapables.add(new VanillaScrapableItem(Blocks.COAL_BLOCK, EnumMaterial.CARBON).setWeight(9));
 		vanillaScrapables.add(new VanillaScrapableItem(Blocks.SAND, EnumMaterial.SAND).setWeight(9));
-		vanillaScrapables.add(new VanillaScrapableItem(ModBlocks.SAND_LAYER, EnumMaterial.SAND).setWeight(1));
+
 
 		ItemUtils.INSTANCE.addSmallestBit(EnumMaterial.CARBON, Items.COAL);
+		ItemUtils.INSTANCE.addSmallestBit(EnumMaterial.MERCURY, ModBlocks.ORE_CINNABAR);
 	}
 
 	public static VanillaScrapableItem getVanillaScrapable(Item item) {

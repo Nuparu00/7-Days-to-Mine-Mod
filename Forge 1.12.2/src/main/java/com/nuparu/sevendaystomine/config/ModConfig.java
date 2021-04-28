@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.gui.EnumHudPosition;
 
 @Config(modid = SevenDaysToMine.MODID, category="")
 @Config.LangKey("sevendaystomine.config.title")
@@ -14,14 +15,32 @@ public class ModConfig {
 
 	public static CategoryPlayer players = new CategoryPlayer();
 	public static CategoryWorld world = new CategoryWorld();
+	public static CategoryWorldGen worldGen = new CategoryWorldGen();
 	public static CategoryClient client = new CategoryClient();
 	public static CategoryMobs mobs = new CategoryMobs();
 	
 	public static class CategoryClient {
+		@Config.RequiresMcRestart
 		@Config.Comment("Should use custom sky (for bloodmons,etc..)")
 		public boolean customSky = true;
 		@Config.Comment("Should use the custom menu?")
 		public boolean customMenu = true;
+		@Config.Comment("Should use the custom player renderer (used for aiming in 3rd person, rotating the player while riding the minibike, etc..)?")
+		public boolean customPlayerRenderer = true;
+		@Config.Comment("Should use custom hand rendeing in first person (with guns)? Not recommended to turn off, as results might be questionable. Could be useful with mods that affect hand rendering (maybe something like Vivecraft)")
+		public boolean customGunHands = true;
+		@Config.Comment("Should the camera roll while turning a minibike?")
+		public boolean minibikeCameraRoll = true;
+		@Config.Comment("Should draw the muzzle flash?")
+		public boolean muzzleFlash = true;
+		@Config.Comment("Thirst and stamina bar position")
+		public EnumHudPosition hudPosition = EnumHudPosition.LEFT_BOTTOM;
+		@Config.Comment("Should use vanilla code for rendering CCTV cameras instead of the code possibly injected by mods like Optfine")
+		public boolean useVanillaCameraRendering = true;
+		@Config.Comment("Should use custom particles?")
+		public boolean particles = true;
+		@Config.Comment("Should use draw the void-fog-like particles in burnt biomes?")
+		public boolean burntForestParticles = true;
 	}
 
 	public static class CategoryPlayer {
@@ -52,12 +71,32 @@ public class ModConfig {
 		@Config.Comment("Maximal possible Quality")
 		@Config.RangeInt(min = 0) 
 		public int maxQuality = 600;
+		@Config.Comment("Should use the thirst system?")
+		public boolean thirstSystem = true;
+		@Config.Comment("Should use the stamina system?")
+		public boolean staminaSystem = true;
+		@Config.Comment("Should use the quality system?")
+		public boolean qualitySystem = true;
+		@Config.Comment("The larger the value, the less likely a player is to get infected")
+		@Config.RangeInt(min = 1) 
+		public int infectionChanceModifier = 6;
+		@Config.Comment("Should add the backpack slot to the player inventory (does not affect the texture, if you turn this off, you should used a resourcepack where the slot is removed from the texture)")
+		public boolean backpackSlot = true;
 	}
 	
 	public static class CategoryMobs {
 		@Config.Comment("Zombies run mode: 0 = never run, 1 = run in the dark, 2 = always run")
 		@Config.RangeInt(min = 0, max = 2)
 		public int zombiesRunMode = 1;
+		@Config.Comment("Can zombies break blocks?")
+		public boolean zombiesBreakBlocks = true;
+		@Config.Comment("Can bullets break blocks?")
+		public boolean bulletsBreakBlocks = true;
+		@Config.Comment("Should zombies attack animals?")
+		public boolean zombiesAttackAnimals = true;
+		@Config.Comment("The larger the value, the less likely an entity is to start bleeding")
+		@Config.RangeInt(min = 1) 
+		public int bleedingChanceModifier = 10;
 	}
 	
 	public static class CategoryWorld {
@@ -110,9 +149,62 @@ public class ModConfig {
 		@Config.Comment("How many days between individual bloodmoons (0 = disabled)")
 		@Config.RangeInt(min = 0)
 		public int airdropFrequency = 3;
+		@Config.Comment("Should remove vanilla zombies (and skeletons, husks)?")
+		@Config.RequiresMcRestart
+		public boolean removeVanillaZommbies = true;
+		
+	}
+	
+	public static class CategoryWorldGen {
+	
 		@Config.RangeInt(min = 0)
 		@Config.Comment("How many streets can a city have")
 		public int maxCitySize = 14;
+		@Config.Comment("How many chunks between potential City locations")
+		public int citySpacing = 32;
+		@Config.Comment("Should generate roads?")
+		public boolean generateRoads = true;
+		@Config.RangeInt(min = 0)
+		public int roadMinY = 63;
+		@Config.RangeInt(min = 0)
+		public int roadMaxY = 80;
+		
+		@Config.Comment("Should generate a pedestal under structures (so they don't float)?")
+		public boolean structurePedestal = true;
+		@Config.Comment("Should generate snow/sand cover in snowy/sandy biomes?")
+		public boolean snowSandCover = true;
+		@Config.Comment("Should generate only the smaller structures?")
+		@Config.RequiresMcRestart
+		public boolean smallStructuresOnly = false;
+		
+		@Config.RangeDouble(min = 0)
+		@Config.Comment("The higher the value, the rarer scattered structures are (0 = disabled)")
+		public double scattereedStructureChanceModifier = 1;
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The miminal distance between scattered structures squared (100 = 10 blocks)")
+		public int minScatteredDistanceSq = 120000;
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The miminal in chunks from the nearest city")
+		public int minScatteredDistanceFromCities = 16;
+		
+		@Config.RangeInt(min = 0)
+		@Config.Comment("How common Copper Ore is (0 = disabled)")
+		public int copperOreGenerationRate = 34;
+		@Config.RangeInt(min = 0)
+		@Config.Comment("How common Tin Ore is (0 = disabled)")
+		public int tinOreGenerationRate = 29;
+		@Config.RangeInt(min = 0)
+		@Config.Comment("How common Zinc Ore is (0 = disabled)")
+		public int zincOreGenerationRate = 22;
+		@Config.RangeInt(min = 0)
+		@Config.Comment("How common Lead Ore is (0 = disabled)")
+		public int leadOreGenerationRate = 25;
+		@Config.RangeInt(min = 0)
+		@Config.Comment("How common Potassium Ore is (0 = disabled)")
+		public int potassiumOreGenerationRate = 20;
+		@Config.RangeInt(min = 0)
+		@Config.Comment("How common Cinnabar Ore is (0 = disabled)")
+		public int cinnabarOreGenerationRate = 16;
 		
 	}
 

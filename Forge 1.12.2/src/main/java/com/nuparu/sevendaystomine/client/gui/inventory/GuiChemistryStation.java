@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.client.gui.inventory;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.inventory.ContainerCampfire;
 import com.nuparu.sevendaystomine.inventory.ContainerChemistryStation;
 import com.nuparu.sevendaystomine.tileentity.TileEntityChemistryStation;
 
@@ -17,18 +18,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiChemistryStation extends GuiContainer {
 	private static final ResourceLocation resourceLocation = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/gui/container/chemistry_station.png");
-	InventoryPlayer playerInventory;
-	TileEntityChemistryStation tileEntity;
+	ContainerChemistryStation container;
 
-	public GuiChemistryStation(InventoryPlayer playerInventory, IInventory tileEntity) {
-		super(new ContainerChemistryStation(playerInventory, tileEntity));
-		this.playerInventory = playerInventory;
-		this.tileEntity = (TileEntityChemistryStation) tileEntity;
+	public GuiChemistryStation(ContainerChemistryStation container) {
+		super(container);
+		this.container = container;
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String s = tileEntity.getDisplayName().getUnformattedText();
+		String s = container.chemistry.getDisplayName().getUnformattedText();
 		this.fontRenderer.drawString(s, 8, 6, 4210752);
 		this.fontRenderer.drawString(
 				new TextComponentTranslation("container.inventory", new Object[0]).getUnformattedText(), 8,
@@ -42,7 +41,7 @@ public class GuiChemistryStation extends GuiContainer {
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;
 		drawTexturedModalRect(marginHorizontal, marginVertical, 0, 0, xSize, ySize);
-		if (TileEntityChemistryStation.isBurning(this.tileEntity)) {
+		if (TileEntityChemistryStation.isBurning(this.container.chemistry)) {
 			int k = this.getBurnLeftScaled(13);
 			this.drawTexturedModalRect(marginHorizontal + 89, marginVertical + 59 - k, 176, 12 - k, 14, k + 1);
 		}
@@ -59,20 +58,20 @@ public class GuiChemistryStation extends GuiContainer {
 	}
 
 	private int getProgressLevel(int progressIndicatorPixelWidth) {
-		int ticksGrindingItemSoFar = tileEntity.getField(2);
-		int ticksPerItem = tileEntity.getField(3);
+		int ticksGrindingItemSoFar = container.chemistry.getField(2);
+		int ticksPerItem = container.chemistry.getField(3);
 		return ticksPerItem != 0 && ticksGrindingItemSoFar != 0
 				? ticksGrindingItemSoFar * progressIndicatorPixelWidth / ticksPerItem
 				: 0;
 	}
 
 	private int getBurnLeftScaled(int pixels) {
-		int i = this.tileEntity.getField(1);
+		int i = this.container.chemistry.getField(1);
 		if (i == 0) {
 			i = 200;
 		}
 
-		return this.tileEntity.getField(0) * pixels / i;
+		return this.container.chemistry.getField(0) * pixels / i;
 	}
 
 }

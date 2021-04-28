@@ -25,11 +25,12 @@ public class ForgeRecipeShapeless implements IForgeRecipe {
 	}
 
 	@Override
-	public boolean matches(TileEntityForge inv, World worldIn) {
+	public ForgeResult matches(TileEntityForge inv, World worldIn) {
 		List<ItemStackWrapper> listInv = ItemStackWrapper.wrapList(inv.getActiveInventory(), false);
 		List<ItemStackWrapper> listIng = ItemStackWrapper.wrapList(ingredients, false);
 
-		if(listInv.size() != listIng.size()) return false;
+		if(listInv.size() != listIng.size()) 
+			return new ForgeResult(false,null);
 		
 		Iterator<ItemStackWrapper> itInv = listInv.iterator();
 		Iterator<ItemStackWrapper> itIng = listIng.iterator();
@@ -48,11 +49,11 @@ public class ForgeRecipeShapeless implements IForgeRecipe {
 			}
 		}
 		if(listInv.size() != 0 || listIng.size() != 0) {
-			return false;
+			return new ForgeResult(false,null);
 		}
 		
-		
-		return true;
+
+		return new ForgeResult(true,null);
 		
 	}
 

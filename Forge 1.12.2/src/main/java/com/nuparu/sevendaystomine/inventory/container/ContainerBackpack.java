@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.inventory.container;
 
+import com.nuparu.sevendaystomine.block.BlockSafe;
 import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.item.ItemBackpack;
@@ -9,6 +10,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.SlotItemHandler;
@@ -27,7 +30,14 @@ public class ContainerBackpack extends Container {
 					this.addSlotToContainer(new SlotItemHandler(backpack, j + i * 3, 8 + (j + 3) * 18, 18 + i * 18) {
 						public boolean isItemValid(ItemStack stack)
 					    {
-					        return !stack.isEmpty() && !(stack.getItem() instanceof ItemBackpack);
+							if(stack.isEmpty()) return false;
+							Item item = stack.getItem();
+							if(item instanceof ItemBackpack) return false;
+							if(item instanceof ItemBlock) {
+								ItemBlock block = (ItemBlock)item;
+								if(block.getBlock() instanceof BlockSafe)return false;
+							}
+							return true;
 					    }
 					});
 				}

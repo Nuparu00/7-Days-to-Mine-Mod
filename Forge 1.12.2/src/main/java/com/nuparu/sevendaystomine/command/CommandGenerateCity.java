@@ -43,12 +43,12 @@ public class CommandGenerateCity extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "generateCity";
+		return "generatecity";
 	}
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/generateCity <x> <y> <z> [metropolis : urban : rural : village]";
+		return "/generatecity <x> <y> <z> [metropolis : urban : rural : village]";
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

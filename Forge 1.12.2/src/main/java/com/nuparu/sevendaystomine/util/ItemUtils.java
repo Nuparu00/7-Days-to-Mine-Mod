@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,10 @@ public class ItemUtils {
 	public void addScrapResult(EnumMaterial mat, Item item) {
 		scrapResults.put(mat, item);
 		addSmallestBit(mat,item);
+	}
+	
+	public void addSmallestBit(EnumMaterial mat, Block block) {
+		addSmallestBit(mat,Item.getItemFromBlock(block));
 	}
 	
 	public void addSmallestBit(EnumMaterial mat, Item item) {

@@ -1,10 +1,12 @@
 package com.nuparu.sevendaystomine.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 
@@ -12,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,11 +29,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRecipeBook extends ItemGuide {
+	
+	public static final ArrayList<String> RECIPES = new ArrayList<String>();
+	
 	private String recipe;
 
 	public ItemRecipeBook(ResourceLocation data, String recipe) {
 		super(data);
 		this.recipe = recipe;
+		RECIPES.add(recipe);
 	}
 
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
@@ -45,6 +52,11 @@ public class ItemRecipeBook extends ItemGuide {
 			}
 			iep.unlockRecipe(recipe);
 			setRead(stack, true);
+			
+			if(!worldIn.isRemote && iep.getRecipes().containsAll(RECIPES)) {
+				ModTriggers.KNOW_IT_ALL.trigger((EntityPlayerMP) playerIn);
+			}
+			
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		} else {
 			return super.onItemRightClick(worldIn, playerIn, handIn);

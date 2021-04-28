@@ -37,97 +37,97 @@ public class ItemQualityBow extends ItemBow implements IQuality {
 
 	public double damageMultiplier = 1d;
 	public float powerMultiplier = 1f;
-	
+
 	public ItemQualityBow(double damageMultiplier, float powerMultiplier) {
 		super();
 		this.damageMultiplier = damageMultiplier;
 		this.powerMultiplier = powerMultiplier;
 	}
-	
+
 	@Override
-	 public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
-    {
-        if (entityLiving instanceof EntityPlayer)
-        {
-            EntityPlayer entityplayer = (EntityPlayer)entityLiving;
-            boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack itemstack = this.findAmmo(entityplayer);
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if (entityLiving instanceof EntityPlayer) {
+			EntityPlayer entityplayer = (EntityPlayer) entityLiving;
+			boolean flag = entityplayer.capabilities.isCreativeMode
+					|| EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+			ItemStack itemstack = this.findAmmo(entityplayer);
 
-            int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
-            if (i < 0) return;
+			int i = this.getMaxItemUseDuration(stack) - timeLeft;
+			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i,
+					!itemstack.isEmpty() || flag);
+			if (i < 0)
+				return;
 
-            if (!itemstack.isEmpty() || flag)
-            {
-                if (itemstack.isEmpty())
-                {
-                    itemstack = new ItemStack(Items.ARROW);
-                }
+			if (!itemstack.isEmpty() || flag) {
+				if (itemstack.isEmpty()) {
+					itemstack = new ItemStack(Items.ARROW);
+				}
 
-                float f = getArrowVelocity(i);
+				float f = getArrowVelocity(i);
 
-                if ((double)f >= 0.1D)
-                {
-                    boolean flag1 = entityplayer.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow && ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
+				if ((double) f >= 0.1D) {
+					boolean flag1 = entityplayer.capabilities.isCreativeMode
+							|| (itemstack.getItem() instanceof ItemArrow
+									&& ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
 
-                    if (!worldIn.isRemote)
-                    {
-                        ItemArrow itemarrow = (ItemArrow)(itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW);
-                        EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
-                        entityarrow = this.customizeArrow(entityarrow);
-                        entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F * powerMultiplier, 1.0F);
+					if (!worldIn.isRemote) {
+						ItemArrow itemarrow = (ItemArrow) (itemstack.getItem() instanceof ItemArrow
+								? itemstack.getItem()
+								: Items.ARROW);
+						EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
+						entityarrow = this.customizeArrow(entityarrow);
+						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F,
+								f * 3.0F * powerMultiplier, 1.0F);
 
-                        if (f == 1.0F)
-                        {
-                            entityarrow.setIsCritical(true);
-                        }
+						if (f == 1.0F) {
+							entityarrow.setIsCritical(true);
+						}
 
-                        int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
+						int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
 
-                        if (j > 0)
-                        {
-                            entityarrow.setDamage((entityarrow.getDamage() + (double)j * 0.5D + 0.5D));
-                        }
+						if (j > 0) {
+							entityarrow.setDamage((entityarrow.getDamage() + (double) j * 0.5D + 0.5D));
+						}
 
-                        int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
+						int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
 
-                        if (k > 0)
-                        {
-                            entityarrow.setKnockbackStrength(k);
-                        }
+						if (k > 0) {
+							entityarrow.setKnockbackStrength(k);
+						}
 
-                        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0)
-                        {
-                            entityarrow.setFire(100);
-                        }
-                        entityarrow.setDamage(damageMultiplier*entityarrow.getDamage()*(1f + MathUtils.bias(((float) getQuality(stack) / (float) ModConfig.players.maxQuality),0.4)));
-                        stack.damageItem(1, entityplayer);
+						if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) {
+							entityarrow.setFire(100);
+						}
+						entityarrow.setDamage(damageMultiplier * entityarrow.getDamage() * (1f + MathUtils
+								.bias(ModConfig.players.qualitySystem ? ((float) getQuality(stack) / (float) ModConfig.players.maxQuality) : 1, 0.4)));
+						stack.damageItem(1, entityplayer);
 
-                        if (flag1 || entityplayer.capabilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW))
-                        {
-                            entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
-                        }
+						if (flag1 || entityplayer.capabilities.isCreativeMode
+								&& (itemstack.getItem() == Items.SPECTRAL_ARROW
+										|| itemstack.getItem() == Items.TIPPED_ARROW)) {
+							entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+						}
 
-                        worldIn.spawnEntity(entityarrow);
-                    }
+						worldIn.spawnEntity(entityarrow);
+					}
 
-                    worldIn.playSound((EntityPlayer)null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					worldIn.playSound((EntityPlayer) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ,
+							SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F,
+							1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-                    if (!flag1 && !entityplayer.capabilities.isCreativeMode)
-                    {
-                        itemstack.shrink(1);
+					if (!flag1 && !entityplayer.capabilities.isCreativeMode) {
+						itemstack.shrink(1);
 
-                        if (itemstack.isEmpty())
-                        {
-                            entityplayer.inventory.deleteStack(itemstack);
-                        }
-                    }
+						if (itemstack.isEmpty()) {
+							entityplayer.inventory.deleteStack(itemstack);
+						}
+					}
 
-                    entityplayer.addStat(StatList.getObjectUseStats(this));
-                }
-            }
-        }
-    }
+					entityplayer.addStat(StatList.getObjectUseStats(this));
+				}
+			}
+		}
+	}
 
 	public int getQuality(ItemStack stack) {
 		NBTTagCompound nbt = stack.getTagCompound();
@@ -173,16 +173,21 @@ public class ItemQualityBow extends ItemBow implements IQuality {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
+		if (!ModConfig.players.qualitySystem)
+			return super.getItemStackDisplayName(itemstack);
 		EnumQuality quality = getQualityTierFromStack(itemstack);
 		return quality.color + SevenDaysToMine.proxy.localize(this.getUnlocalizedName() + ".name");
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		int quality = getQuality(stack);
-		EnumQuality tier = getQualityTierFromInt(quality);
-		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
-		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		if (ModConfig.players.qualitySystem) {
+			int quality = getQuality(stack);
+			EnumQuality tier = getQualityTierFromInt(quality);
+			tooltip.add(
+					tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
+			tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		}
 	}
 
 	@Override
@@ -200,6 +205,7 @@ public class ItemQualityBow extends ItemBow implements IQuality {
 
 	@Override
 	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		if(!ModConfig.players.qualitySystem) return super.getRGBDurabilityForDisplay(stack);
 		switch (getQualityTierFromStack(stack)) {
 		case FLAWLESS:
 			return 0xA300A3;
@@ -218,13 +224,13 @@ public class ItemQualityBow extends ItemBow implements IQuality {
 			return super.getRGBDurabilityForDisplay(stack);
 		}
 	}
-	
+
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
-    {
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
 		Item thisItem = toRepair.getItem();
 		Item repairWith = repair.getItem();
-        return (thisItem == ModItems.CRUDE_BOW && repairWith == Items.STICK) || (thisItem == ModItems.COMPOUND_BOW && repairWith == ModItems.IRON_PIPE);
-    }
+		return (thisItem == ModItems.CRUDE_BOW && repairWith == Items.STICK)
+				|| (thisItem == ModItems.COMPOUND_BOW && repairWith == ModItems.IRON_PIPE);
+	}
 
 }

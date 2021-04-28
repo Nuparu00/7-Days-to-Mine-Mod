@@ -32,4 +32,9 @@ public class CarInventoryHandler extends ItemStackHandler {
 			this.car.onInventoryChanged(this);
 		}
 	}
+
+	@Override
+	public int getSlotLimit(int slot) {
+		return 1;
+	}
 }

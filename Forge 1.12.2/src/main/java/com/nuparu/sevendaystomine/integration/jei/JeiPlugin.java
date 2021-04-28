@@ -54,7 +54,7 @@ public class JeiPlugin implements IModPlugin {
 		final IIngredientRegistry ingredientRegistry = registry.getIngredientRegistry();
 		final IJeiHelpers helpers = registry.getJeiHelpers();
 		IRecipeTransferRegistry recipeTransfer = registry.getRecipeTransferRegistry();
-		
+
 		registry.addRecipes(ForgeRecipeMaker.getRecipes(helpers),"Forge");
 		registry.addRecipeCatalyst(new ItemStack(ModBlocks.FORGE), "Forge");
 		registry.addRecipeClickArea(GuiForge.class, 115, 38, 24, 17, "Forge");
@@ -82,6 +82,13 @@ public class JeiPlugin implements IModPlugin {
 		registry.addIngredientInfo(new ItemStack(ModBlocks.SOLAR_PANEL), VanillaTypes.ITEM, "jei.information.solar_panel");
 		registry.addIngredientInfo(new ItemStack(ModBlocks.GENERATOR_COMBUSTION), VanillaTypes.ITEM, "jei.information.combustion_generator");
 		registry.addIngredientInfo(new ItemStack(ModBlocks.GENERATOR_GAS), VanillaTypes.ITEM, "jei.information.gas_generator");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.FORGE), VanillaTypes.ITEM, "jei.information.forge");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.CAMPFIRE), VanillaTypes.ITEM, "jei.information.campfire");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.CAMERA), VanillaTypes.ITEM, "jei.information.camera");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.BATTERY_STATION), VanillaTypes.ITEM, "jei.information.battery_station");
+		registry.addIngredientInfo(new ItemStack(ModItems.STETHOSCOPE), VanillaTypes.ITEM, "jei.information.stethoscope");
+		registry.addIngredientInfo(new ItemStack(ModItems.BLOOD_DRAW_KIT), VanillaTypes.ITEM, "jei.information.blood_draw_kit");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.THERMOMETER), VanillaTypes.ITEM, "jei.information.thermometer");
 	}
 	
 }

@@ -100,25 +100,6 @@ public class PlayerEventHandler {
 	public static long nextChainsawCutSound = 0l;
 	protected static long lastTimeHittingBlock = 0l;
 
-	/*
-	 * @SideOnly(Side.CLIENT)
-	 * 
-	 * @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
-	 * public void onEvent(EntityViewRenderEvent.FogDensity event) { Entity entity =
-	 * event.getEntity(); World world = entity.world; if
-	 * (Utils.isInsideBlock(entity, ModBlocks.GASOLINE)) {
-	 * GlStateManager.setFog(GlStateManager.FogMode.EXP); event.setDensity(2F); }
-	 * else { event.setDensity(-1F); } event.setCanceled(true); }
-	 * 
-	 * @SideOnly(Side.CLIENT)
-	 * 
-	 * @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
-	 * public void onEvent(EntityViewRenderEvent.FogColors event) { Entity entity =
-	 * event.getEntity(); World world = entity.world; if
-	 * (Utils.isInsideBlock(entity, ModBlocks.GASOLINE)) { event.setRed(0.5f);
-	 * event.setGreen(0.3f); event.setBlue(0.2f); } }
-	 */
-
 	@SubscribeEvent
 	public void onBlockPlaced(PlayerInteractEvent.RightClickBlock event) {
 		World world = event.getWorld();
@@ -187,6 +168,7 @@ public class PlayerEventHandler {
 		if (!(event.getEntity() instanceof EntityPlayer)) {
 			return;
 		}
+		if(!ModConfig.players.backpackSlot)return;
 		final EntityPlayer player = (EntityPlayer) event.getEntity();
 
 		IItemHandler extendedInv = player.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, null);
@@ -283,30 +265,31 @@ public class PlayerEventHandler {
 				BlockPos blockpos = ray.getBlockPos();
 				IBlockState state = world.getBlockState(blockpos);
 				if (state.getMaterial() == Material.WATER) {
+					// System.out.println("DDD");
 					flag = true;
 				} else if (state.getBlock() instanceof BlockCauldron) {
 					int level = state.getValue(BlockCauldron.LEVEL);
 					if (level > 0) {
-						flag = true;
-						if (!world.isRemote) {
-							world.setBlockState(blockpos, state.withProperty(BlockCauldron.LEVEL, level - 1));
-						}
+						flag = true;/*
+									 * if (!world.isRemote) { world.setBlockState(blockpos,
+									 * state.withProperty(BlockCauldron.LEVEL, level - 1)); }
+									 */
 					}
 				}
 				if (flag) {
 					world.playSound(player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_DRINK,
 							SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.1F + 0.9F, false);
 					if (!world.isRemote) {
-						ep.addThirst(35);
-						ep.addStamina(20);
-						player.removePotionEffect(Potions.thirst);
-
-						if (world.rand.nextInt(10) == 0) {
-							PotionEffect effect = new PotionEffect(Potions.dysentery, world.rand.nextInt(4000) + 18000,
-									4, false, false);
-							effect.setCurativeItems(new ArrayList<ItemStack>());
-							player.addPotionEffect(effect);
-						}
+						/*
+						 * ep.addThirst(35); ep.addStamina(20);
+						 * player.removePotionEffect(Potions.thirst);
+						 * 
+						 * if (world.rand.nextInt(10) == 0) { PotionEffect effect = new
+						 * PotionEffect(Potions.dysentery, world.rand.nextInt(4000) + 18000, 4, false,
+						 * false); effect.setCurativeItems(new ArrayList<ItemStack>());
+						 * player.addPotionEffect(effect); }
+						 */
+						ep.setDrinkCounter(ep.getDrinkCounter() + 10);
 					}
 				}
 			}
@@ -336,11 +319,15 @@ public class PlayerEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerBreakSpeed(PlayerEvent.BreakSpeed event) {
-		float speed = event.getOriginalSpeed() / (ModConfig.players.immersiveBlockBreaking ? 32f : 1f);
-		ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
-		Item item = stack.getItem();
-		if (!stack.isEmpty() && item instanceof IQuality) {
-			speed = speed * (1 + (float) ((IQuality) item).getQuality(stack) / 128f);
+		float speed = event.getOriginalSpeed()
+				/ (ModConfig.players.immersiveBlockBreaking && event.getState().getMaterial() != Material.CIRCUITS ? 32f
+						: 1f);
+		if (ModConfig.players.qualitySystem) {
+			ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+			Item item = stack.getItem();
+			if (!stack.isEmpty() && item instanceof IQuality) {
+				speed = speed * (1 + (float) ((IQuality) item).getQuality(stack) / 128f);
+			}
 		}
 
 		event.setNewSpeed(speed);
@@ -382,19 +369,20 @@ public class PlayerEventHandler {
 	public void onAnvilUpdate(AnvilUpdateEvent event) {
 		ItemStack left = event.getLeft();
 		ItemStack right = event.getRight();
-
-		if (left.getItem() instanceof IQuality && right.getItem() == left.getItem()) {
-			ItemStack stack = left.copy();
-			int l = ItemQuality.getQualityForStack(left);
-			int r = ItemQuality.getQualityForStack(right);
-			ItemQuality.setQualityForStack(stack, Math.max(l, r) + 6);
-			l = left.getItemDamage();
-			r = right.getItemDamage();
-			int m = r < l ? right.getMaxDamage() : left.getMaxDamage();
-			stack.setItemDamage(Math.max(l, r) - (m - Math.min(l, r)));
-			event.setOutput(stack);
-			event.setCost(1);
-			event.setMaterialCost(1);
+		if (ModConfig.players.qualitySystem) {
+			if (left.getItem() instanceof IQuality && right.getItem() == left.getItem()) {
+				ItemStack stack = left.copy();
+				int l = ItemQuality.getQualityForStack(left);
+				int r = ItemQuality.getQualityForStack(right);
+				ItemQuality.setQualityForStack(stack, Math.max(l, r) + 6);
+				l = left.getItemDamage();
+				r = right.getItemDamage();
+				int m = r < l ? right.getMaxDamage() : left.getMaxDamage();
+				stack.setItemDamage(Math.max(l, r) - (m - Math.min(l, r)));
+				event.setOutput(stack);
+				event.setCost(1);
+				event.setMaterialCost(1);
+			}
 		}
 	}
 
@@ -415,10 +403,12 @@ public class PlayerEventHandler {
 		if (event.player.world.isRemote)
 			return;
 		ItemStack stack = event.crafting;
-		if (stack.getItem() instanceof IQuality) {
-			if (!event.player.isCreative()) {
-				Utils.consumeXp(event.player, MathHelper
-						.floor(event.player.experienceTotal * (event.player.world.rand.nextDouble() * 0.04 + 0.01)));
+		if (ModConfig.players.qualitySystem) {
+			if (stack.getItem() instanceof IQuality) {
+				if (!event.player.isCreative()) {
+					Utils.consumeXp(event.player, MathHelper.floor(
+							event.player.experienceTotal * (event.player.world.rand.nextDouble() * 0.04 + 0.01)));
+				}
 			}
 		}
 	}
@@ -447,7 +437,8 @@ public class PlayerEventHandler {
 			EntityPlayer player = (EntityPlayer) livingEntity;
 			ItemStack activeStack = player.getHeldItem(EnumHand.MAIN_HAND);
 			NBTTagCompound nbt = activeStack.getTagCompound();
-			if (activeStack.isEmpty() || (activeStack.getItem() != ModItems.CHAINSAW || activeStack.getItem() != ModItems.AUGER))
+			if (activeStack.isEmpty()
+					|| (activeStack.getItem() != ModItems.CHAINSAW && activeStack.getItem() != ModItems.AUGER))
 				return;
 			if (nbt != null && nbt.hasKey("FuelMax") && nbt.getInteger("FuelMax") > 0) {
 				if (SevenDaysToMine.proxy.isHittingBlock(player)) {

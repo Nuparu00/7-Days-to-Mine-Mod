@@ -6,8 +6,10 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityScreenProjectorRenderer;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.electricity.ElectricConnection;
 import com.nuparu.sevendaystomine.electricity.IVoltage;
+import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemGun;
@@ -18,6 +20,7 @@ import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.ModConstants;
 import com.nuparu.sevendaystomine.util.PrefabHelper;
 import com.nuparu.sevendaystomine.util.Utils;
+import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -47,12 +50,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -69,7 +75,13 @@ public class RenderEventHandler {
 
 	private EnumHandPos handPos = EnumHandPos.NONE;
 	private boolean aiming = false;
+	private boolean scoping = false;
 	private ItemGun gun = null;
+
+	public static int mainMuzzleFlash = 0;
+	public static double mainMuzzleFlashAngle = 0;
+	public static int sideMuzzleFlash = 0;
+	public static double sideMuzzleFlashAngle = 0;
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -77,73 +89,136 @@ public class RenderEventHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder worldrenderer = tessellator.getBuffer();
-		GlStateManager.pushAttrib();
+		GlStateManager.pushMatrix();
 
 		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
 		SevenDaysToMine.renderGlobalEnhanced.drawBlockDamageTexture(tessellator, worldrenderer,
 				mc.getRenderViewEntity(), event.getPartialTicks());
 		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
-		GlStateManager.popAttrib();
+
+		GlStateManager.popMatrix();
 
 	}
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void renderHandEvent(RenderWorldLastEvent event) {
+		if (!ModConfig.client.customGunHands)
+			return;
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = mc.player;
-		AbstractClientPlayer abstractclientplayer = mc.player;
+		aiming = false;
+		scoping = false;
+		gun = null;
 		if (player == null) {
+			handPos = EnumHandPos.NONE;
 			return;
 		}
-		if (handPos != EnumHandPos.NONE) {
-			boolean flag = mc.getRenderViewEntity() instanceof EntityLivingBase
-					&& ((EntityLivingBase) mc.getRenderViewEntity()).isPlayerSleeping();
-			flag = false;
-			if (mc.gameSettings.thirdPersonView == 0 && !flag && !mc.gameSettings.hideGUI
-					&& !mc.playerController.isSpectator()) {
-				net.minecraftforge.client.ForgeHooksClient.setRenderPass(-10);
-				float f1 = abstractclientplayer.getSwingProgress(event.getPartialTicks());
-				float f2 = abstractclientplayer.prevRotationPitch
-						+ (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch)
-								* event.getPartialTicks();
+		ItemStack main = player.getHeldItemMainhand();
+		ItemStack sec = player.getHeldItemOffhand();
+		if ((main == null || main.isEmpty()) && (sec == null || sec.isEmpty())) {
+			handPos = EnumHandPos.NONE;
+			return;
+		}
+		Item item_main = main.getItem();
+		Item item_sec = sec.getItem();
+		if (item_main == null && item_sec == null) {
+			handPos = EnumHandPos.NONE;
+			return;
+		}
 
-				int i = Minecraft.getMinecraft().world.getCombinedLight(new BlockPos(abstractclientplayer.posX,
-						abstractclientplayer.posY + (double) abstractclientplayer.getEyeHeight(),
-						abstractclientplayer.posZ), 0);
-				float e = (float) (i & 65535);
-				float e1 = (float) (i >> 16);
+		ItemGun gun_main = null;
+		ItemGun gun_sec = null;
 
-				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, e, e1);
-				RenderHelper.enableStandardItemLighting();
-				Minecraft.getMinecraft().entityRenderer.enableLightmap();
+		if (item_main instanceof ItemGun) {
+			gun_main = (ItemGun) item_main;
+		} else if (item_main == ModItems.ANALOG_CAMERA && player.getItemInUseCount() > 0
+				|| ClientEventHandler.takingPhoto) {
+			return;
 
-				GlStateManager.translate(0f, player.getEyeHeight() + 0.1F, 0f);
-				GlStateManager.rotate(player.rotationYaw - 180, 0.0F, -1.0F, 0.0F);
-				GlStateManager.rotate(player.rotationPitch, -1.0F, 0.0F, 0.0F);
-				GlStateManager.pushMatrix();
-				GlStateManager.scale(0.5f, 0.5f, 0.5f);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GlStateManager.disableBlend();
-				GlStateManager.translate(0f, 0.05f, 0f);
-				renderArms((AbstractClientPlayer) (player), f2, f1, 1f, event.getPartialTicks());
-				GlStateManager.enableBlend();
-				GlStateManager.popMatrix();
+		}
+		if (item_sec instanceof ItemGun) {
+			gun_sec = (ItemGun) item_sec;
+		}
 
-				GlStateManager.pushMatrix();
-				GlStateManager.scale(0.5f, 0.5f, 0.5f);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GlStateManager.disableBlend();
+		if (gun_main == null && gun_sec == null) {
+			handPos = EnumHandPos.NONE;
+			return;
+		}
 
-				renderItems();
-
-				GlStateManager.enableBlend();
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GlStateManager.popMatrix();
-				Minecraft.getMinecraft().entityRenderer.disableLightmap();
-				RenderHelper.disableStandardItemLighting();
+		if (gun_main != null && gun_main.getWield() == EnumWield.DUAL) {
+			if (gun_sec == null) {
+				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
+				scoping = (mc.gameSettings.keyBindAttack.isKeyDown() && gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
+				gun = gun_main;
+				handPos = EnumHandPos.PISTOL_ONE;
+				return;
+			}
+			if (gun_sec.getWield() == EnumWield.DUAL) {
+				handPos = EnumHandPos.PISTOL_DUAL;
+				return;
 			}
 		}
+		if (gun_sec != null && gun_sec.getWield() == EnumWield.DUAL) {
+			aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
+					&& gun_sec.getFOVFactor(sec) != 1);
+			scoping = (mc.gameSettings.keyBindAttack.isKeyDown() && gun_sec.getScoped()
+					&& gun_sec.getFOVFactor(sec) != 1);
+			gun = gun_sec;
+			handPos = EnumHandPos.PISTOL_ONE;
+			return;
+		}
+		if (gun_main != null) {
+			EnumWield wield = gun_main.getWield();
+			if (wield == EnumWield.ONE_HAND) {
+				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
+				scoping = (mc.gameSettings.keyBindAttack.isKeyDown() && gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
+				gun = gun_main;
+				handPos = EnumHandPos.LONG_ONE;
+				return;
+			}
+			if (wield == EnumWield.TWO_HAND) {
+				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
+				scoping = (mc.gameSettings.keyBindAttack.isKeyDown() && gun_main.getScoped()
+						&& gun_main.getFOVFactor(main) != 1);
+				gun = gun_main;
+				handPos = EnumHandPos.LONG_ONE;
+				return;
+			}
+		}
+
+		if (gun_sec != null) {
+			EnumWield wield = gun_sec.getWield();
+			if (wield == EnumWield.ONE_HAND) {
+				aiming = gun_main != null ? false
+						: (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
+								&& gun_sec.getFOVFactor(sec) != 1);
+				scoping = gun_main != null ? false
+						: (mc.gameSettings.keyBindAttack.isKeyDown() && gun_sec.getScoped()
+								&& gun_sec.getFOVFactor(sec) != 1);
+				gun = gun_sec;
+				handPos = EnumHandPos.LONG_ONE;
+				return;
+			}
+			if (wield == EnumWield.TWO_HAND) {
+				aiming = gun_main != null ? false
+						: (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
+								&& gun_sec.getFOVFactor(sec) != 1);
+				scoping = gun_main != null ? false
+						: (mc.gameSettings.keyBindAttack.isKeyDown() && gun_sec.getScoped()
+								&& gun_sec.getFOVFactor(sec) != 1);
+				gun = gun_sec;
+				handPos = EnumHandPos.LONG_ONE;
+				return;
+			}
+		}
+
+		handPos = EnumHandPos.NONE;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -180,14 +255,59 @@ public class RenderEventHandler {
 	@SideOnly(Side.CLIENT)
 	public void renderItem(EnumHandSide hand, float x, float y, float z, float rotX, float rotY, float rotZ,
 			ItemStack stack) {
+		if (stack.isEmpty() || !(stack.getItem() instanceof ItemGun))
+			return;
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = mc.player;
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(0.25f, -0.75F, -0.6f);
+
+		ItemGun gun = (ItemGun) stack.getItem();
+
+		Vec3d aim = gun.getAimPosition();
+
+		double w = gun.getMuzzleFlashSize();
+		double h = gun.getMuzzleFlashSize();
+		Vec3d flash = gun.getMuzzleFlashPositionMain();
+
 		ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
 		if (hand == EnumHandSide.LEFT) {
 			transform = ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
+			flash = gun.getMuzzleFlashPositionSide();
 		}
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(0.25f, -0.75F, -0.6f);
+
+		boolean main = hand == EnumHandSide.RIGHT && mainMuzzleFlash > 0;
+		boolean side = hand == EnumHandSide.LEFT && sideMuzzleFlash > 0;
+		if (ModConfig.client.muzzleFlash && !scoping && (main || side)) {
+			Minecraft.getMinecraft().entityRenderer.disableLightmap();
+
+			GlStateManager.pushMatrix();
+			if (aiming && gun != null) {
+				GlStateManager.translate(aim.x, aim.y, aim.z);
+				flash = gun.getMuzzleFlashAimPosition();
+			}
+			
+			GlStateManager.translate(flash.x, flash.y, flash.z);
+			RenderUtils.drawQuad(new Vec3d(-w / 2, -h / 2, 0), new Vec3d(w / 2, -h / 2, 0), new Vec3d(w / 2, h / 2, 0),
+					new Vec3d(-w / 2, h / 2, 0),
+					new ResourceLocation(SevenDaysToMine.MODID, "textures/entity/particles/muzzle_flash.png"),main ? mainMuzzleFlashAngle : sideMuzzleFlashAngle);
+			GlStateManager.popMatrix();
+			if (main) {
+				mainMuzzleFlash--;
+			} else {
+				sideMuzzleFlash--;
+			}
+			Minecraft.getMinecraft().entityRenderer.enableLightmap();
+			
+			int i = Minecraft.getMinecraft().world.getCombinedLight(new BlockPos(player.posX,
+					player.posY + (double) player.getEyeHeight(),
+					player.posZ), 0)+64;
+			float e = (float) (i & 65535);
+			float e1 = (float) (i >> 16);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, e, e1);
+		}
+
 		GlStateManager.rotate(45, 0.0F, 1.0F, 0.0F);
 		GlStateManager.translate(x, y, z);
 		GlStateManager.rotate(rotX, 1F, 0.0F, 0.0F);
@@ -195,15 +315,7 @@ public class RenderEventHandler {
 		GlStateManager.rotate(rotZ, 0F, 0.0F, 1.0F);
 
 		if (aiming && gun != null) {
-			/*
-			 * if (this.handPos == EnumHandPos.PISTOL_ONE) { GlStateManager.translate(-0.2,
-			 * 0.1,-0.25); GlStateManager.rotate(0, 0.0F, 1, 0.0F); } else {
-			 * GlStateManager.translate(-0.43, 0.1, 0); GlStateManager.rotate(0, 0.0F, 1,
-			 * 0.0F); }
-			 */
-			Vec3d pos = gun.getAimPosition();
-			// Vec3d pos = new Vec3d(-0.025, -0.025, -0.4);
-			GlStateManager.translate(pos.x, pos.y, pos.z);
+			GlStateManager.translate(aim.x, aim.y, aim.z);
 		}
 
 		// GlStateManager.disableDepth();
@@ -232,111 +344,71 @@ public class RenderEventHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	@SubscribeEvent(priority = EventPriority.LOWEST)
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void renderHandEvent(RenderHandEvent event) {
+
+		
+		if (!ModConfig.client.customGunHands)
+			return;
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = mc.player;
-		aiming = false;
-		gun = null;
+		AbstractClientPlayer abstractclientplayer = mc.player;
+
 		if (player == null) {
-			handPos = EnumHandPos.NONE;
 			return;
 		}
-		ItemStack main = player.getHeldItemMainhand();
-		ItemStack sec = player.getHeldItemOffhand();
-		if ((main == null || main.isEmpty()) && (sec == null || sec.isEmpty())) {
-			handPos = EnumHandPos.NONE;
-			return;
-		}
-		Item item_main = main.getItem();
-		Item item_sec = sec.getItem();
-		if (item_main == null && item_sec == null) {
-			handPos = EnumHandPos.NONE;
-			return;
-		}
+		
+		if (handPos != EnumHandPos.NONE) {
+			boolean flag = mc.getRenderViewEntity() instanceof EntityLivingBase
+					&& ((EntityLivingBase) mc.getRenderViewEntity()).isPlayerSleeping();
+			flag = false;
+			if (mc.gameSettings.thirdPersonView == 0 && !flag && !mc.gameSettings.hideGUI
+					&& !mc.playerController.isSpectator()) {
+				event.setCanceled(true);
+				
+				if(scoping) {
+					return;
+				}
+				
+				net.minecraftforge.client.ForgeHooksClient.setRenderPass(-10);
+				float f1 = abstractclientplayer.getSwingProgress(event.getPartialTicks());
+				float f2 = abstractclientplayer.prevRotationPitch
+						+ (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch)
+								* event.getPartialTicks();
 
-		ItemGun gun_main = null;
-		ItemGun gun_sec = null;
+				int i = Minecraft.getMinecraft().world.getCombinedLight(new BlockPos(abstractclientplayer.posX,
+						abstractclientplayer.posY + (double) abstractclientplayer.getEyeHeight(),
+						abstractclientplayer.posZ), 0);
+				float e = (float) (i & 65535);
+				float e1 = (float) (i >> 16);
 
-		if (item_main instanceof ItemGun) {
-			gun_main = (ItemGun) item_main;
-		} else if (item_main == ModItems.ANALOG_CAMERA && player.getItemInUseCount() > 0
-				|| ClientEventHandler.takingPhoto) {
-			event.setCanceled(true);
-			return;
 
-		}
-		if (item_sec instanceof ItemGun) {
-			gun_sec = (ItemGun) item_sec;
-		}
+				GlStateManager.translate(0,0.1,-0.1);
+				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, e, e1);
+				RenderHelper.enableStandardItemLighting();
+				Minecraft.getMinecraft().entityRenderer.enableLightmap();
+				GlStateManager.pushMatrix();
+				GlStateManager.scale(0.5f, 0.5f, 0.5f);
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				GlStateManager.disableBlend();
+				GlStateManager.translate(0f, 0.05f, 0f);
+				renderArms((AbstractClientPlayer) (player), f2, f1, 1f, event.getPartialTicks());
+				GlStateManager.enableBlend();
+				GlStateManager.popMatrix();
 
-		if (gun_main == null && gun_sec == null) {
-			handPos = EnumHandPos.NONE;
-			return;
-		}
+				GlStateManager.pushMatrix();
+				GlStateManager.scale(0.5f, 0.5f, 0.5f);
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				GlStateManager.disableBlend();
 
-		event.setCanceled(true);
+				renderItems();
+				GlStateManager.enableBlend();
+				GlStateManager.popMatrix();
+				Minecraft.getMinecraft().entityRenderer.disableLightmap();
 
-		if (gun_main != null && gun_main.getWield() == EnumWield.DUAL) {
-			if (gun_sec == null) {
-				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
-						&& gun_main.getFOVFactor(main) != 1);
-				gun = gun_main;
-				handPos = EnumHandPos.PISTOL_ONE;
-				return;
-			}
-			if (gun_sec.getWield() == EnumWield.DUAL) {
-				handPos = EnumHandPos.PISTOL_DUAL;
-				return;
-			}
-		}
-		if (gun_sec != null && gun_sec.getWield() == EnumWield.DUAL) {
-			aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
-					&& gun_sec.getFOVFactor(sec) != 1);
-			gun = gun_sec;
-			handPos = EnumHandPos.PISTOL_ONE;
-			return;
-		}
-		if (gun_main != null) {
-			EnumWield wield = gun_main.getWield();
-			if (wield == EnumWield.ONE_HAND) {
-				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
-						&& gun_main.getFOVFactor(main) != 1);
-				gun = gun_main;
-				handPos = EnumHandPos.LONG_ONE;
-				return;
-			}
-			if (wield == EnumWield.TWO_HAND) {
-				aiming = (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_main.getScoped()
-						&& gun_main.getFOVFactor(main) != 1);
-				gun = gun_main;
-				handPos = EnumHandPos.LONG_ONE;
-				return;
 			}
 		}
-
-		if (gun_sec != null) {
-			EnumWield wield = gun_sec.getWield();
-			if (wield == EnumWield.ONE_HAND) {
-				aiming = gun_main != null ? false
-						: (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
-								&& gun_sec.getFOVFactor(sec) != 1);
-				gun = gun_sec;
-				handPos = EnumHandPos.LONG_ONE;
-				return;
-			}
-			if (wield == EnumWield.TWO_HAND) {
-				aiming = gun_main != null ? false
-						: (mc.gameSettings.keyBindAttack.isKeyDown() && !gun_sec.getScoped()
-								&& gun_sec.getFOVFactor(sec) != 1);
-				gun = gun_sec;
-				handPos = EnumHandPos.LONG_ONE;
-				return;
-			}
-		}
-
-		handPos = EnumHandPos.NONE;
-
+		
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -471,12 +543,12 @@ public class RenderEventHandler {
 				double y = player.prevPosY + (player.posY - player.prevPosY) * (double) event.getPartialTicks();
 				double z = player.prevPosZ + (player.posZ - player.prevPosZ) * (double) event.getPartialTicks();
 
-				GL11.glPushMatrix();
-				GL11.glDisable(GL11.GL_TEXTURE_2D);
+				GlStateManager.pushMatrix();
+				GlStateManager.disableTexture2D();
 				GlStateManager.enableBlend();
 				// GlStateManager.enableAlpha();
-				GL11.glTranslated(-x, -y, -z);
-				GL11.glBegin(GL11.GL_QUADS);
+				GlStateManager.translate(-x, -y, -z);
+				GlStateManager.glBegin(GL11.GL_QUADS);
 				float alpha = MathUtils.clamp((float) Math.sin(System.currentTimeMillis() / 1000d), 0.35f, 0.75f);
 				renderQuad(xMin, yMax, zMin, xMax, yMax, zMax, alpha, false);
 				renderQuad(xMax, yMin, zMin, xMin, yMin, zMax, alpha, false);
@@ -486,11 +558,11 @@ public class RenderEventHandler {
 
 				renderQuad(xMax, yMax, zMin, xMax, yMin, zMax, alpha, true);
 				renderQuad(xMin, yMin, zMin, xMin, yMax, zMax, alpha, true);
-				GL11.glEnd();
+				GlStateManager.glEnd();
 				GlStateManager.disableBlend();
 				// GlStateManager.disableAlpha();
-				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				GL11.glPopMatrix();
+				GlStateManager.enableTexture2D();
+				GlStateManager.popMatrix();
 			}
 		}
 	}
@@ -498,7 +570,7 @@ public class RenderEventHandler {
 	@SideOnly(Side.CLIENT)
 	public void renderQuad(double x1, double y1, double z1, double x2, double y2, double z2, float alpha,
 			boolean opposite) {
-		GL11.glColor4f(0.0f, 1.0f, 0.0f, alpha);
+		GlStateManager.color(0.0f, 1.0f, 0.0f, alpha);
 		if (!opposite) {
 			GL11.glVertex3d(x1, y2, z2);
 			GL11.glVertex3d(x2, y2, z2);
@@ -903,6 +975,18 @@ public class RenderEventHandler {
 				GlStateManager.popMatrix();
 			}
 		}
+
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onPlayerRideRenderPre(RenderPlayerEvent.Pre e) {
+
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onPlayerRideRenderPost(RenderPlayerEvent.Post e) {
 
 	}
 

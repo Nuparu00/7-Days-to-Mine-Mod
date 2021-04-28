@@ -1,11 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "blocks/anvil_base",
+		"0": "sevendaystomine:blocks/anvil_base_rusty",
 		"1": "blocks/glass_black",
 		"2": "blocks/hardened_clay_stained_cyan",
 		"3": "blocks/redstone_lamp_off",
-		"particle": "blocks/anvil_base"
+		"particle": "sevendaystomine:blocks/anvil_base_rusty"
 	},
 	"elements": [
 		{

@@ -59,14 +59,14 @@ public class BlockComputer extends BlockTileProvider<TileEntityComputer> {
 				if (TE != null && TE instanceof TileEntityComputer) {
 					TileEntityComputer computerTE = (TileEntityComputer) TE;
 					if (computerTE.getSystem() != EnumSystem.NONE && computerTE.isCompleted()) {
-						if (computerTE.isOn()) {
+						if (computerTE.on) {
 							computerTE.turnOff();
 							TextComponentTranslation text = new TextComponentTranslation("computer.turn.off");
 							text.getStyle().setColor(TextFormatting.GREEN);
 							playerIn.sendMessage(text);
 							return true;
 						} else {
-							computerTE.startComputer();
+							computerTE.turnOn();
 							TextComponentTranslation text = new TextComponentTranslation("computer.turn.on");
 							text.getStyle().setColor(TextFormatting.GREEN);
 							playerIn.sendMessage(text);

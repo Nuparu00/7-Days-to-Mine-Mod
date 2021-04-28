@@ -17,6 +17,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -33,7 +34,12 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -107,11 +113,14 @@ public class EntityZombieBase extends EntityMob {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void applyEntityAI() {
 		this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] { EntityPigZombie.class }));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, true));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
+		if (ModConfig.mobs.zombiesAttackAnimals) {
+			this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityAnimal.class, true));
+		}
 	}
 
 	@Override
@@ -208,10 +217,10 @@ public class EntityZombieBase extends EntityMob {
 			}
 		}
 	}
-	
+
 	public float getBlockBreakSpeed(IBlockState state, BlockPos pos) {
 		Block block = state.getBlock();
-		
+
 		float f = 0.1f;
 
 		if (this.isPotionActive(MobEffects.HASTE)) {
@@ -246,20 +255,19 @@ public class EntityZombieBase extends EntityMob {
 		if (!this.onGround) {
 			f /= 5.0F;
 		}
-		
-		if(Utils.isBloodmoonProper(this.world)) {
-			f*=2;
+
+		if (Utils.isBloodmoonProper(this.world)) {
+			f *= 2;
 		}
-		
+
 		if (speed.hasModifier(BLOODMOON_SPEED_BOOST)) {
-			f*=1.5f;
+			f *= 1.5f;
 		}
-		
-		
+
 		ItemStack stack = this.getHeldItem(EnumHand.MAIN_HAND);
-		if(!stack.isEmpty()) {
-			if(ForgeHooks.isToolEffective(world, pos, stack)) {
-				f*=2.5f;
+		if (!stack.isEmpty()) {
+			if (ForgeHooks.isToolEffective(world, pos, stack)) {
+				f *= 2.5f;
 			}
 		}
 
@@ -372,8 +380,45 @@ public class EntityZombieBase extends EntityMob {
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if (source.isExplosion()) {
-			amount *= 2;
+			amount *= 2.2;
 		}
 		return this.isEntityInvulnerable(source) ? false : super.attackEntityFrom(source, amount);
+	}
+
+	@Override
+	public void onKillEntity(EntityLivingBase entityLivingIn) {
+		super.onKillEntity(entityLivingIn);
+		
+		if (this.world.getDifficulty() != EnumDifficulty.HARD && this.rand.nextBoolean()) {
+			return;
+		}
+		EntityZombieBase zombie = null;
+		
+		if (entityLivingIn instanceof EntitySoldier) {
+			zombie = new EntityZombieSoldier(this.world);
+		}
+		else if (entityLivingIn instanceof EntitySoldier) {
+			zombie = new EntityInfectedSurvivor(this.world);
+		}
+		else if (entityLivingIn instanceof EntityPig && this.rand.nextBoolean()) {
+			zombie = new EntityZombiePig(this.world);
+		}
+		else if (entityLivingIn instanceof EntityWolf && this.rand.nextBoolean()) {
+			zombie = new EntityZombieWolf(this.world);
+		}
+		
+		if (zombie != null) {
+			zombie.copyLocationAndAnglesFrom(entityLivingIn);
+			this.world.removeEntity(entityLivingIn);
+			zombie.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(zombie)), null);
+
+			if (entityLivingIn.hasCustomName()) {
+				zombie.setCustomNameTag(entityLivingIn.getCustomNameTag());
+				zombie.setAlwaysRenderNameTag(entityLivingIn.getAlwaysRenderNameTag());
+			}
+
+			this.world.spawnEntity(zombie);
+			this.world.playEvent((EntityPlayer) null, 1026, new BlockPos(this), 0);
+		}
 	}
 }

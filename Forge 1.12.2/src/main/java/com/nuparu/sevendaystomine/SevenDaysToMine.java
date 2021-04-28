@@ -17,6 +17,7 @@ import com.nuparu.sevendaystomine.command.CommandAirdrop;
 import com.nuparu.sevendaystomine.command.CommandAirport;
 import com.nuparu.sevendaystomine.command.CommandGenerateCity;
 import com.nuparu.sevendaystomine.command.CommandGetBlockBreak;
+import com.nuparu.sevendaystomine.command.CommandHydrate;
 import com.nuparu.sevendaystomine.command.CommandInfect;
 import com.nuparu.sevendaystomine.command.CommandLocateModded;
 import com.nuparu.sevendaystomine.command.CommandPlaceLegacyPrefab;
@@ -46,6 +47,7 @@ import com.nuparu.sevendaystomine.world.gen.CornWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.GoldenrodWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.OreWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.RoadDecoratorWorldGen;
+import com.nuparu.sevendaystomine.world.gen.RoadGenerationWorldGen;
 import com.nuparu.sevendaystomine.world.gen.SmallFeatureWorldGenerator;
 import com.nuparu.sevendaystomine.world.gen.StructureGenerator;
 import com.nuparu.sevendaystomine.world.gen.city.CityHelper;
@@ -84,7 +86,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(modid = SevenDaysToMine.MODID, version = SevenDaysToMine.VERSION, useMetadata = true)
 public class SevenDaysToMine {
 	public static final String MODID = "sevendaystomine";
-	public static final String VERSION = "Beta 1.0 Pre-release 2.6.6";
+	public static final String VERSION = "Beta 1.0 Pre-release 7.12";
 
 	static final String CLIENT_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.ClientProxy";
 	static final String SERVER_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.CommonProxy";
@@ -197,18 +199,18 @@ public class SevenDaysToMine {
 	public static final ItemArmor.ArmorMaterial FIBER = EnumHelper.addArmorMaterial("fiber", "sevendaystomine:fiber", 2,
 			new int[] { 1, 1, 1, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 	public static final ItemArmor.ArmorMaterial STEEL_ARMOR = EnumHelper.addArmorMaterial("steel",
-			"sevendaystomine:steel", 25, new int[] { 3, 4, 3, 3 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1);
+			"sevendaystomine:steel", 25, new int[] { 3, 4, 3, 3 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3);
 	public static final ItemArmor.ArmorMaterial LEATHER_IRON_ARMOR = EnumHelper.addArmorMaterial("leather_iron",
 			"sevendaystomine:leather_iron", 12, new int[] { 2, 3, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
 	public static final ItemArmor.ArmorMaterial IRON_ARMOR = EnumHelper.addArmorMaterial("iron", "Iron", 15,
-			new int[] { 2, 3, 3, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
+			new int[] { 2, 3, 3, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1);
 	public static final ItemArmor.ArmorMaterial LEATHER_ARMOR = EnumHelper.addArmorMaterial("leather", "Leather", 15,
 			new int[] { 1, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 
 	public static final ItemArmor.ArmorMaterial SCRAP_ARMOR = EnumHelper.addArmorMaterial("scrap",
 			"sevendaystomine:scrap", 10, new int[] { 2, 2, 2, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
 	public static final ItemArmor.ArmorMaterial MILITARY_ARMOR = EnumHelper.addArmorMaterial("military",
-			"sevendaystomine:military", 30, new int[] { 4, 4, 3, 3 }, 2, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 3);
+			"sevendaystomine:military", 30, new int[] { 5, 6, 4, 4 }, 2, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 5);
 
 	public static final Block[] BLOCKS = new Block[] { ModBlocks.OAK_FRAME, ModBlocks.BIRCH_FRAME,
 			ModBlocks.SPRUCE_FRAME, ModBlocks.JUNGLE_FRAME, ModBlocks.ACACIA_FRAME, ModBlocks.DARKOAK_FRAME,
@@ -270,7 +272,12 @@ public class SevenDaysToMine {
 			ModBlocks.CALENDAR, ModBlocks.FLAMETHOWER, ModBlocks.METAL_SPIKES, ModBlocks.BOOKSHELF_SPRUCE,
 			ModBlocks.BOOKSHELF_BIRCH, ModBlocks.BOOKSHELF_JUNGLE, ModBlocks.BOOKSHELF_ACACIA,
 			ModBlocks.BOOKSHELF_DARK_OAK, ModBlocks.POLICE_CAR, ModBlocks.FLOWER_POT_ENHANCED, ModBlocks.PAPER,
-			ModBlocks.SAND_LAYER, ModBlocks.RED_SAND_LAYER, ModBlocks.AMBULANCE};
+			ModBlocks.SAND_LAYER, ModBlocks.RED_SAND_LAYER, ModBlocks.AMBULANCE, ModBlocks.STEEL_BLOCK,
+			ModBlocks.BRONZE_BLOCK, ModBlocks.LEAD_BLOCK, ModBlocks.COPPER_BLOCK, ModBlocks.DARK_BRICKS_SLAB,
+			ModBlocks.DARK_BRICKS_SLAB_DOUBLE, ModBlocks.DARK_BRICKS_STAIRS, ModBlocks.DARK_BRICKS_MOSSY_SLAB,
+			ModBlocks.DARK_BRICKS_MOSSY_SLAB_DOUBLE, ModBlocks.DARK_BRICKS_MOSSY_STAIRS, ModBlocks.BRICKS_MOSSY_STAIRS,
+			ModBlocks.BRICK_MOSSY_SLAB, ModBlocks.BRICK_MOSSY_SLAB_DOUBLE, ModBlocks.STONE_BRICK_STAIRS_CRACCKED,
+			ModBlocks.ASPHALT_SLAB, ModBlocks.ASPHALT_SLAB_DOUBLE, ModBlocks.BRASS_BLOCK };
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -336,7 +343,8 @@ public class SevenDaysToMine {
 			ModItems.LEATHER_HELMET, ModItems.LEATHER_CHESTPLATE, ModItems.LEATHER_LEGGINGS, ModItems.LEATHER_BOOTS,
 			ModItems.FRAGMENTATION_GRENADE, ModItems.MOLOTOV, ModItems.MILITARY_HELMET, ModItems.MILITARY_CHESTPLATE,
 			ModItems.MILITARY_LEGGINGS, ModItems.MILITARY_BOOTS, ModItems.RIOT_SHIELD, ModItems.CRUDE_BOW,
-			ModItems.COMPOUND_BOW, ModItems.MRE, ModItems.SAND_DUST, ModItems.VOMIT, ModItems.ROCKET};
+			ModItems.COMPOUND_BOW, ModItems.MRE, ModItems.SAND_DUST, ModItems.VOMIT, ModItems.ROCKET,
+			ModItems.CAR_CHASSIS, ModItems.ROCKET_SCHEMATICS, ModItems.FLARE, ModItems.SODA};
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
@@ -370,7 +378,8 @@ public class SevenDaysToMine {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		GameRegistry.registerWorldGenerator(new RoadDecoratorWorldGen(), Integer.MIN_VALUE);
+		GameRegistry.registerWorldGenerator(new RoadGenerationWorldGen(), Integer.MIN_VALUE);
+		GameRegistry.registerWorldGenerator(new RoadDecoratorWorldGen(), -1);
 		GameRegistry.registerWorldGenerator(new StructureGenerator(), 0);
 		GameRegistry.registerWorldGenerator(new OreWorldGenerator(), 1);
 		GameRegistry.registerWorldGenerator(new SmallFeatureWorldGenerator(), 2);
@@ -427,6 +436,7 @@ public class SevenDaysToMine {
 		event.registerServerCommand(new CommandInfect());
 		event.registerServerCommand(new CommandAirport());
 		event.registerServerCommand(new CommandLocateModded());
+		event.registerServerCommand(new CommandHydrate());
 
 		proxy.serverStarting(event);
 

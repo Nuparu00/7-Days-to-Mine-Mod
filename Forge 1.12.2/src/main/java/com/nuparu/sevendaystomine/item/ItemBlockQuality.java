@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -60,6 +61,7 @@ public class ItemBlockQuality extends ItemBlock implements IQuality {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(ItemStack itemstack) {
+		if (!ModConfig.players.qualitySystem) return super.getItemStackDisplayName(itemstack);
 		EnumQuality quality = getQualityTierFromStack(itemstack);
 		return quality.color + SevenDaysToMine.proxy.localize(this.getUnlocalizedName() + ".name");
 	}
@@ -67,10 +69,12 @@ public class ItemBlockQuality extends ItemBlock implements IQuality {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (ModConfig.players.qualitySystem) {
 		int quality = getQuality(stack);
 		EnumQuality tier = getQualityTierFromInt(quality);
 		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
 		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		}
 	}
 
 	@Override

@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.nuparu.sevendaystomine.init.ModFluids;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 
 public class ForgeRecipeManager {
 	private static ForgeRecipeManager INSTANCE;
@@ -97,6 +100,7 @@ public class ForgeRecipeManager {
 		HashMap<EnumMaterial, Integer> glass = new HashMap<EnumMaterial, Integer>();
 		cement.put(EnumMaterial.SAND, 1);
 		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.GLASS_SCRAP), new ItemStack(ModItems.MOLD_INGOT), glass));
+		addRecipe(new ForgeRecipeMaterial(new ItemStack(ModItems.GLASS_SCRAP), new ItemStack(ModItems.MOLD_INGOT), glass));
 
 		addMaterialRecipe(new ItemStack(ModItems.EMPTY_JAR), new ItemStack(ModItems.EMPTY_JAR_MOLD),
 				new EnumMaterialWrapper(EnumMaterial.GLASS, 3));
@@ -124,7 +128,11 @@ public class ForgeRecipeManager {
 				new ItemStack(ModItems.HUNTING_RIFLE_BARREL_MOLD), new EnumMaterialWrapper(EnumMaterial.IRON, 3));
 		addMaterialRecipe(new ItemStack(ModItems.HUNTING_RIFLE_BOLT), new ItemStack(ModItems.HUNTING_RIFLE_BOLT_MOLD),
 				new EnumMaterialWrapper(EnumMaterial.IRON, 4));
-
+		
+		addMaterialRecipe(FluidUtil.getFilledBucket(new FluidStack(ModFluids.MERCURY, 1000)), new ItemStack(Items.BUCKET),
+				new EnumMaterialWrapper(EnumMaterial.MERCURY, 48));
+		
+		
 		// addRecipe(new CampfireRecipeShapeless(new ItemStack(Items.STICK),new
 		// ItemStack(Items.ARROW),new ArrayList(Arrays.asList(new
 		// ItemStack(Items.COAL),new ItemStack(Items.PAPER)))));

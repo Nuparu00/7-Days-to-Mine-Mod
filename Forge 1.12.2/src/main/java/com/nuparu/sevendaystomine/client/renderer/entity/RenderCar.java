@@ -1,10 +1,14 @@
 package com.nuparu.sevendaystomine.client.renderer.entity;
 
+import org.lwjgl.opengl.GL11;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.model.ModelCar;
 import com.nuparu.sevendaystomine.client.model.ModelMinibike;
 import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.entity.EntityMinibike;
+import com.nuparu.sevendaystomine.util.MathUtils;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -57,12 +61,13 @@ public class RenderCar extends Render<EntityCar> {
 
 	protected void preRenderCallback(EntityCar entity, float partialTicks) {
 		ModelCar model = modelCar;
-		float rotation = entity.wheelAnglePrev + (entity.wheelAngle -
-		entity.wheelAnglePrev) * partialTicks;
+		float rotation = Utils.lerp(entity.wheelAnglePrev, entity.wheelAngle, partialTicks);
 		if (rotation != 0) {
 			model.setRotationAngle(model.getFrontWheels(), rotation, 0, 0);
 			model.setRotationAngle(model.getRearWheels(), rotation, 0, 0);
 		}
+		model.setRotationAngle(model.steering_wheel_axis,0f,0,Utils.lerp(entity.getTurningPrev(),entity.getTurning(),partialTicks)*0.0174533f*3);
+		//GL11.glRotated(Utils.lerp(minibike.getTurningPrev(),minibike.getTurning(),partialTicks), 0, 0, 1);
 	}
 
 	public void setupTranslation(double p_188309_1_, double p_188309_3_, double p_188309_5_) {

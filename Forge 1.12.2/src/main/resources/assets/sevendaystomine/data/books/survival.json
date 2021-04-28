@@ -97,6 +97,17 @@
 		  "color": 000000,
 		  "link" : 5,
 		  "hover_color" : DD4C1D
+		  },
+		  {
+          "x": 138,
+          "y": 88,
+          "z": 0,
+          "text": "survival_guide.contents.6",
+		  "unlocalized" : true,
+		  "centered": false,
+		  "color": 000000,
+		  "link" : 6,
+		  "hover_color" : DD4C1D
 		  }
       ],
       "images": [
@@ -203,6 +214,47 @@
         }
       ]
     },
+    {
+      "res": "sevendaystomine:textures/gui/books/survival_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "survival_guide.contents.3",
+		  "unlocalized" : true,
+		  "centered": true,
+		  "color": 000000,
+		  "scale" : 1.05,
+		  "formatting" : ["UNDERLINE"]
+        },
+		{
+          "x": 16,
+          "y": 35,
+          "z": 0,
+		  "width" : 110,
+          "text": "survival_guide.weapons.1",
+		  "unlocalized" : true,
+		  "centered": false,
+		  "color": 000000,
+		  "scale" : 1
+        }
+      ],
+	  "crafting": [
+        {
+          "x": 138,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:crude_club"
+        },
+		{
+          "x": 138,
+          "y": 70,
+          "z": 0,
+          "recipe": "sevendaystomine:crude_bow"
+        }
+      ]
+    },
 	{
       "res": "sevendaystomine:textures/gui/books/survival_base.png",
       "texts": [
@@ -210,7 +262,7 @@
           "x": 186,
           "y": 20,
           "z": 0,
-          "text": "survival_guide.contents.3",
+          "text": "survival_guide.contents.4",
 		  "unlocalized" : true,
 		  "centered": true,
 		  "color": 000000,
@@ -345,7 +397,7 @@
           "x": 186,
           "y": 20,
           "z": 0,
-          "text": "survival_guide.contents.4",
+          "text": "survival_guide.contents.5",
 		  "unlocalized" : true,
 		  "centered": true,
 		  "color": 000000,
@@ -375,7 +427,7 @@
           "x": 64,
           "y": 70,
           "z": 0,
-          "text": "survival_guide.contents.5",
+          "text": "survival_guide.contents.6",
 		  "unlocalized" : true,
 		  "centered": true,
 		  "color": 000000,

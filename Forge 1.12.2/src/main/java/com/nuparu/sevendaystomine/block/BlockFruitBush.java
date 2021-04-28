@@ -2,6 +2,9 @@ package com.nuparu.sevendaystomine.block;
 
 import java.util.Random;
 
+import com.nuparu.sevendaystomine.entity.EntityCar;
+import com.nuparu.sevendaystomine.entity.EntityMinibike;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
@@ -157,6 +160,10 @@ public class BlockFruitBush extends net.minecraft.block.BlockBush implements IGr
 	}
 
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+		if(entityIn instanceof EntityCar || entityIn instanceof EntityMinibike) {
+			worldIn.destroyBlock(pos, false);
+			return;
+		}
 		entityIn.setInWeb();
 	}
 

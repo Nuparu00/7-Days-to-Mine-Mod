@@ -14,6 +14,8 @@ import com.nuparu.sevendaystomine.network.packets.ControllableKeyUpdateHandler;
 import com.nuparu.sevendaystomine.network.packets.ControllableKeyUpdateMessage;
 import com.nuparu.sevendaystomine.network.packets.DialogueSelectionHandler;
 import com.nuparu.sevendaystomine.network.packets.DialogueSelectionMessage;
+import com.nuparu.sevendaystomine.network.packets.HonkHandler;
+import com.nuparu.sevendaystomine.network.packets.HonkMessage;
 import com.nuparu.sevendaystomine.network.packets.KillProcessHandler;
 import com.nuparu.sevendaystomine.network.packets.KillProcessMessage;
 import com.nuparu.sevendaystomine.network.packets.OpenGuiClientHandler;
@@ -83,6 +85,7 @@ public class PacketManager {
 	public static SimpleNetworkWrapper bulletImpact;
 	public static SimpleNetworkWrapper schedulePhoto;
 	public static SimpleNetworkWrapper cameraDimensions;
+	public static SimpleNetworkWrapper honk;
 
 	private static int discriminator = 0;
 
@@ -175,5 +178,7 @@ public class PacketManager {
 		
 		cameraDimensions = NetworkRegistry.INSTANCE.newSimpleChannel("cameraDimensions");
 		cameraDimensions.registerMessage(new CameraDimensionsHandler(), CameraDimensionsMessage.class, discriminator++, Side.SERVER);
+		honk = NetworkRegistry.INSTANCE.newSimpleChannel("honk");
+		honk.registerMessage(new HonkHandler(), HonkMessage.class, discriminator++, Side.SERVER);
 	}
 }

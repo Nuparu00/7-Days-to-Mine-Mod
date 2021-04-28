@@ -470,9 +470,10 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 			y = sr.getScaledHeight() - (rand.nextFloat() * sr.getScaledHeight()) / 2;
 			motionY = -motionY;
 		}
+		
 
 		return new Dust(x, y, motionX, motionY, MathUtils.getFloatInRange(0.017528f, 0.80f),
-				MathUtils.getFloatInRange(0.25f, 1f), rgb, this);
+				MathUtils.getFloatInRange(0.1f, 0.5f), rgb, this);
 	}
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -520,7 +521,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 		int j = this.width / 2 - i / 2;
 		int k = 15;
 
-		this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
+		//this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
 		this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.drawTexturedModalRect(j, k + 0, 0, 0, 155, 44);
@@ -627,7 +628,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 				this.lifeSpan = 0;
 			}
 			else if(opacity < 1 && RANDOM.nextInt(20) == 0) {
-				opacity = (float) MathHelper.clamp(opacity+RANDOM.nextFloat()*0.05, 0, 1);
+				//opacity = (float) MathHelper.clamp(opacity+RANDOM.nextFloat()*0.1, 0, 1);
 			}
 			if(mouseX-x < -500) {
 				motionX+=MathUtils.getFloatInRange(-0.0071258f, 0.0005f);

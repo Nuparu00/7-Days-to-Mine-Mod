@@ -33,6 +33,8 @@ import com.nuparu.sevendaystomine.util.client.CameraHelper;
 import com.nuparu.sevendaystomine.util.client.RenderUtils;
 import com.nuparu.sevendaystomine.world.MiscSavedData;
 import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBase;
+import com.nuparu.sevendaystomine.world.gen.city.CityData;
+import com.nuparu.sevendaystomine.world.gen.city.CitySavedData;
 import com.nuparu.sevendaystomine.world.horde.BloodmoonHorde;
 import com.nuparu.sevendaystomine.world.horde.GenericHorde;
 import com.nuparu.sevendaystomine.world.horde.HordeSavedData;
@@ -211,17 +213,15 @@ public class TickHandler {
 					}
 				}
 
-			} else {
-				if (entityRenderer.getShaderGroup() != null
-						&& entityRenderer.getShaderGroup().getShaderGroupName().equals(bleedShaderRes.toString())) {
+			} else if (entityRenderer.getShaderGroup() != null) {
+
+				if (entityRenderer.getShaderGroup().getShaderGroupName().equals(bleedShaderRes.toString())) {
 					entityRenderer.stopUseShader();
 				}
-				if (entityRenderer.getShaderGroup() != null
-						&& entityRenderer.getShaderGroup().getShaderGroupName().equals(drunkShaderRes.toString())) {
+				if (entityRenderer.getShaderGroup().getShaderGroupName().equals(drunkShaderRes.toString())) {
 					entityRenderer.stopUseShader();
 				}
-				if (entityRenderer.getShaderGroup() != null
-						&& entityRenderer.getShaderGroup().getShaderGroupName().equals(nightShaderRes.toString())) {
+				if (entityRenderer.getShaderGroup().getShaderGroupName().equals(nightShaderRes.toString())) {
 					entityRenderer.stopUseShader();
 				}
 			}
@@ -299,17 +299,25 @@ public class TickHandler {
 						horde.addTarget(playerMP);
 						horde.start();
 						iep.setWolfHorde(day);
-					} else if (world.rand.nextDouble() < ModConfig.world.genericHordeChance && !iep.hasHorde(world)) {
-						GenericHorde horde = new GenericHorde(new BlockPos(player), world, player);
-						horde.addTarget(playerMP);
-						horde.start();
-						iep.setHorde(day);
+					} else if (!iep.hasHorde(world)) {
+						CitySavedData csd = CitySavedData.get(world);
+						CityData city = csd.getClosestCity(new BlockPos(player), 100);
+
+						if (world.rand.nextDouble() < ModConfig.world.genericHordeChance
+								* (city == null ? 1 : (1 + ((10 * city.getZombieLevel() / 1024f))))) {
+							GenericHorde horde = new GenericHorde(new BlockPos(player), world, player);
+							if (city != null && city.getZombieLevel() > 0) {
+								city.setZombieLevel(city.getZombieLevel() - (horde.waves * horde.getZombiesInWave()));
+							}
+							horde.addTarget(playerMP);
+							horde.start();
+							iep.setHorde(day);
+						}
 					}
 				}
 
 				if (Utils.isBloodmoon(Utils.getDay(world) - 1) && time < 1000) {
 					ModTriggers.BLOODMOON_SURVIVAL.trigger(playerMP);
-
 				}
 			}
 			if (extendedPlayer.isInfected()) {
@@ -383,25 +391,25 @@ public class TickHandler {
 				KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), false);
 				player.setSprinting(false);
 			}
-			// System.out.println("C " + iep.getStamina());
+			if (ModConfig.client.burntForestParticles) {
+				for (int l = 0; l < 500*SevenDaysToMine.proxy.getParticleLevel(); ++l) {
+					int i1 = MathHelper.floor(player.posX) + world.rand.nextInt(16) - world.rand.nextInt(16);
+					int j1 = MathHelper.floor(player.posY) + world.rand.nextInt(16) - world.rand.nextInt(16);
+					int k1 = MathHelper.floor(player.posZ) + world.rand.nextInt(16) - world.rand.nextInt(16);
+					BlockPos pos = new BlockPos(i1, j1, k1);
+					Biome biome = world.getBiome(pos);
 
-			for (int l = 0; l < 1000; ++l) {
-				int i1 = MathHelper.floor(player.posX) + world.rand.nextInt(16) - world.rand.nextInt(16);
-				int j1 = MathHelper.floor(player.posY) + world.rand.nextInt(16) - world.rand.nextInt(16);
-				int k1 = MathHelper.floor(player.posZ) + world.rand.nextInt(16) - world.rand.nextInt(16);
-				BlockPos pos = new BlockPos(i1, j1, k1);
-				Biome biome = world.getBiome(pos);
+					if ((biome instanceof BiomeWastelandBase) && ((BiomeWastelandBase) biome).floatingParticles()) {
+						if (world.rand.nextInt(8) > Math.abs(world.getHeight(pos).getY() - j1)) {
+							IBlockState block = world.getBlockState(pos);
 
-				if ((biome instanceof BiomeWastelandBase) && ((BiomeWastelandBase) biome).floatingParticles()) {
-					if (world.rand.nextInt(8) > Math.abs(world.getHeight(pos).getY() - j1)) {
-						IBlockState block = world.getBlockState(pos);
+							if (block.getMaterial() == Material.AIR) {
 
-						if (block.getMaterial() == Material.AIR) {
-
-							world.spawnParticle(EnumParticleTypes.SUSPENDED_DEPTH,
-									(double) ((float) i1 + world.rand.nextFloat()),
-									(double) ((float) j1 + world.rand.nextFloat()),
-									(double) ((float) k1 + world.rand.nextFloat()), 0.0D, 0.0D, 0.0D);
+								world.spawnParticle(EnumParticleTypes.SUSPENDED_DEPTH,
+										(double) ((float) i1 + world.rand.nextFloat()),
+										(double) ((float) j1 + world.rand.nextFloat()),
+										(double) ((float) k1 + world.rand.nextFloat()), 0.0D, -1D, 0.0D);
+							}
 						}
 					}
 				}
@@ -423,38 +431,60 @@ public class TickHandler {
 		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			extendedPlayer.setThirst(1000);
 			extendedPlayer.setStamina(1000);
+			extendedPlayer.setDrinkCounter(0);
 			return;
 		}
-		if (extendedPlayer.getThirst() > 0) {
-			if (world.rand.nextInt(25) == 0) {
-				extendedPlayer.consumeThirst((int) 1);
-			}
-		}
 
-		if (player.isSprinting()) {
-			if (extendedPlayer.getStamina() > 0) {
-				if (world.rand.nextInt(3) == 0) {
-					extendedPlayer.consumeStamina(2);
+		if (ModConfig.players.thirstSystem) {
+			if (extendedPlayer.getDrinkCounter() >= 20) {
+				extendedPlayer.setDrinkCounter(0);
+				extendedPlayer.addThirst(35);
+				extendedPlayer.addStamina(20);
+				player.removePotionEffect(Potions.thirst);
+
+				if (world.rand.nextInt(10) == 0) {
+					PotionEffect effect = new PotionEffect(Potions.dysentery, world.rand.nextInt(4000) + 18000, 0,
+							false, false);
+					effect.setCurativeItems(new ArrayList<ItemStack>());
+					player.addPotionEffect(effect);
 				}
+			} else if (extendedPlayer.getDrinkCounter() > 0) {
+				extendedPlayer.setDrinkCounter(extendedPlayer.getDrinkCounter() - 1);
+			}
 
-				if (world.rand.nextInt(35) == 0) {
+			if (extendedPlayer.getThirst() > 0) {
+				if (world.rand.nextInt(25) == 0) {
 					extendedPlayer.consumeThirst((int) 1);
 				}
 			}
-
-		} else if (extendedPlayer.getThirst() >= 100 && world.rand.nextInt(8) == 0
-				&& player.distanceWalkedModified - player.prevDistanceWalkedModified <= 0.05) {
-			extendedPlayer.addStamina(1);
+			if (extendedPlayer.getThirst() <= 0) {
+				PotionEffect effect = new PotionEffect(Potions.thirst, 4, 4, false, false);
+				effect.setCurativeItems(new ArrayList<ItemStack>());
+				player.addPotionEffect(effect);
+			}
 		}
 
-		if (extendedPlayer.getStamina() <= 0) {
-			player.setSprinting(false);
-		}
+		if (ModConfig.players.staminaSystem) {
+			if (player.isSprinting()) {
+				if (ModConfig.players.staminaSystem && extendedPlayer.getStamina() > 0) {
+					if (world.rand.nextInt(3) == 0) {
+						extendedPlayer.consumeStamina(2);
+					}
 
-		if (extendedPlayer.getThirst() <= 0) {
-			PotionEffect effect = new PotionEffect(Potions.thirst, 4, 4, false, false);
-			effect.setCurativeItems(new ArrayList<ItemStack>());
-			player.addPotionEffect(effect);
+					if (ModConfig.players.thirstSystem && world.rand.nextInt(35) == 0) {
+						extendedPlayer.consumeThirst((int) 1);
+					}
+				}
+
+			} else if ((extendedPlayer.getThirst() >= 100 || !ModConfig.players.thirstSystem)
+					&& world.rand.nextInt(8) == 0
+					&& player.distanceWalkedModified - player.prevDistanceWalkedModified <= 0.05) {
+				extendedPlayer.addStamina(1);
+			}
+
+			if (extendedPlayer.getStamina() <= 0) {
+				player.setSprinting(false);
+			}
 		}
 
 	}

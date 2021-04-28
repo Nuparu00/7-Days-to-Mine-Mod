@@ -18,6 +18,7 @@ import com.nuparu.sevendaystomine.client.gui.GuiPlayerUI;
 import com.nuparu.sevendaystomine.client.gui.GuiSubtitles;
 import com.nuparu.sevendaystomine.client.gui.GuiUpgradeOverlay;
 import com.nuparu.sevendaystomine.client.particle.ParticleBlood;
+import com.nuparu.sevendaystomine.client.particle.ParticleMuzzleFlash;
 import com.nuparu.sevendaystomine.client.particle.ParticleVomit;
 import com.nuparu.sevendaystomine.client.renderer.CloudRenderer;
 import com.nuparu.sevendaystomine.client.renderer.RenderGlobalEnhanced;
@@ -42,6 +43,7 @@ import com.nuparu.sevendaystomine.client.renderer.factory.RenderCarFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderChlorineGrenadeFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFeralZombieFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFlameFactory;
+import com.nuparu.sevendaystomine.client.renderer.factory.RenderFlareFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderFragmentationGrenadeFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderHumanFactory;
 import com.nuparu.sevendaystomine.client.renderer.factory.RenderInfectedSurvivorFactory;
@@ -60,12 +62,12 @@ import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityAirplaneR
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityBigSignRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCalendarRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCameraRenderer;
+import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCarRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityFlagRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityGlobeRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityMetalSpikesRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityOldChestRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityPhotoRenderer;
-import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityCarRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityShieldRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySleepingBagRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntitySolarPanelRenderer;
@@ -75,6 +77,8 @@ import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityTurretBas
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWallClockRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWindTurbineRenderer;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityWoodenLogSpikeRenderer;
+import com.nuparu.sevendaystomine.client.sound.MovingSoundCarIdle;
+import com.nuparu.sevendaystomine.client.sound.MovingSoundMinibikeIdle;
 import com.nuparu.sevendaystomine.client.sound.PositionedLoudSound;
 import com.nuparu.sevendaystomine.client.toast.NotificationToast;
 import com.nuparu.sevendaystomine.config.ModConfig;
@@ -88,6 +92,7 @@ import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFeralZombie;
 import com.nuparu.sevendaystomine.entity.EntityFlame;
+import com.nuparu.sevendaystomine.entity.EntityFlare;
 import com.nuparu.sevendaystomine.entity.EntityFragmentationGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFrigidHunter;
 import com.nuparu.sevendaystomine.entity.EntityFrostbittenWorker;
@@ -115,9 +120,7 @@ import com.nuparu.sevendaystomine.events.KeyEventHandler;
 import com.nuparu.sevendaystomine.events.RenderEventHandler;
 import com.nuparu.sevendaystomine.events.TextureStitcherEventHandler;
 import com.nuparu.sevendaystomine.events.TickHandler;
-import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
-import com.nuparu.sevendaystomine.item.ItemClothing;
 import com.nuparu.sevendaystomine.item.ItemGuide;
 import com.nuparu.sevendaystomine.item.ItemRecipeBook;
 import com.nuparu.sevendaystomine.tileentity.TileEntityAirplaneRotor;
@@ -136,17 +139,14 @@ import com.nuparu.sevendaystomine.tileentity.TileEntitySolarPanel;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTurretAdvanced;
 import com.nuparu.sevendaystomine.tileentity.TileEntityTurretBase;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTurret;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWallClock;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWindTurbine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenLogSpike;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
-import com.nuparu.sevendaystomine.util.client.CameraHelper;
 import com.nuparu.sevendaystomine.util.client.MP3Helper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -164,13 +164,10 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -235,16 +232,17 @@ public class ClientProxy extends CommonProxy {
 		// Tries to inject our own RenderPlayer
 		f_skinMap = ObfuscationReflectionHelper.findField(RenderManager.class, "field_178636_l");
 		RenderManager rm = FMLClientHandler.instance().getClient().getRenderManager();
+		if (ModConfig.client.customPlayerRenderer) {
+			try {
+				Map<String, RenderPlayer> skinMap = (Map<String, RenderPlayer>) f_skinMap.get(rm);
+				skinMap.put("default", new RenderPlayerEnhanced(rm, false, skinMap.get("default")));
+				skinMap.put("slim", new RenderPlayerEnhanced(rm, true, skinMap.get("slim")));
 
-		try {
-			Map<String, RenderPlayer> skinMap = (Map<String, RenderPlayer>) f_skinMap.get(rm);
-			skinMap.put("default", new RenderPlayerEnhanced(rm, false, skinMap.get("default")));
-			skinMap.put("slim", new RenderPlayerEnhanced(rm, true, skinMap.get("slim")));
-
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		}
 
 		Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
@@ -333,6 +331,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityMolotov.class, RenderMolotovFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityFeralZombie.class, RenderFeralZombieFactory.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityCar.class, RenderCarFactory.INSTANCE);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFlare.class, RenderFlareFactory.INSTANCE);
 
 	}
 
@@ -385,7 +384,10 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMetalSpikes.class, new TileEntityMetalSpikesRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShield.class, new TileEntityShieldRenderer());
 
-		ForgeHooksClient.registerTESRItemStack(ModItems.RIOT_SHIELD, 0, TileEntityShield.class);
+		for(int i = ModItems.RIOT_SHIELD.getMaxDamage(); i >= 0; i--) {
+			ForgeHooksClient.registerTESRItemStack(ModItems.RIOT_SHIELD, i, TileEntityShield.class);
+		}
+		
 	}
 
 	@Override
@@ -394,7 +396,7 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	void initKeybindings() {
-		keyBindings = new KeyBinding[9];
+		keyBindings = new KeyBinding[8];
 		keyBindings[0] = new KeyBinding("key.reload.desc", Keyboard.KEY_R, "key.sevendaystomine.category");
 		keyBindings[1] = new KeyBinding("key.camera.width.increase.desc", Keyboard.KEY_NUMPAD6,
 				"key.sevendaystomine.category");
@@ -407,9 +409,7 @@ public class ClientProxy extends CommonProxy {
 		keyBindings[5] = new KeyBinding("key.camera.zoom.desc", Keyboard.KEY_ADD, "key.sevendaystomine.category");
 		keyBindings[6] = new KeyBinding("key.camera.unzoom.desc", Keyboard.KEY_SUBTRACT,
 				"key.sevendaystomine.category");
-
-		keyBindings[7] = new KeyBinding("key.accelerate.desc", Keyboard.KEY_W, "key.sevendaystomine.category");
-		keyBindings[8] = new KeyBinding("key.decelerate.desc", Keyboard.KEY_S, "key.sevendaystomine.category");
+		keyBindings[7] = new KeyBinding("key.honk.desc", Keyboard.KEY_SPACE, "key.sevendaystomine.category");
 
 		for (int i = 0; i < keyBindings.length; ++i) {
 			ClientRegistry.registerKeyBinding(keyBindings[i]);
@@ -485,7 +485,7 @@ public class ClientProxy extends CommonProxy {
 	public void addRecoil(float recoil, EntityPlayer shooter) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc != null && mc.player != null) {
-			if (mc.player == shooter) {
+			if (mc.player == shooter && mc.getRenderViewEntity() == shooter) {
 				TickHandler.recoil += recoil;
 			}
 		}
@@ -496,9 +496,13 @@ public class ClientProxy extends CommonProxy {
 
 	}
 
+	/*
+	 * Maybe should check ParticleManager.registerParticle in the future
+	 */
 	@Override
 	public void spawnParticle(World world, EnumModParticleType type, double x, double y, double z, double xMotion,
 			double yMotion, double zMotion) {
+		if(!ModConfig.client.particles)return;
 		IParticleFactory factory = getParticleFactory(type);
 		if (factory != null) {
 			Particle particle = factory.createParticle(0, world, x, y, z, xMotion, yMotion, zMotion, 0);
@@ -514,6 +518,8 @@ public class ClientProxy extends CommonProxy {
 			return new ParticleBlood.Factory();
 		case VOMIT:
 			return new ParticleVomit.Factory();
+		case MUZZLE_FLASH:
+			return new ParticleMuzzleFlash.Factory();
 		default:
 			break;
 		}
@@ -574,5 +580,23 @@ public class ClientProxy extends CommonProxy {
 			return ObfuscationReflectionHelper.getPrivateValue(PlayerControllerMP.class, controller, "field_78778_j");
 		}
 		return super.isHittingBlock(player);
+	}
+
+	@Override
+	public void playMovingSound(int id, Entity entity) {
+
+		switch (id) {
+		case 0:
+			if (entity instanceof EntityMinibike) {
+				Minecraft.getMinecraft().getSoundHandler()
+						.playSound(new MovingSoundMinibikeIdle((EntityMinibike) entity));
+			}
+			break;
+		case 1:
+			if (entity instanceof EntityCar) {
+				Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundCarIdle((EntityCar) entity));
+			}
+			break;
+		}
 	}
 }

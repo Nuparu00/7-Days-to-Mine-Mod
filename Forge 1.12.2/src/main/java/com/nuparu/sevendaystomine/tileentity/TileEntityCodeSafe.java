@@ -2,6 +2,8 @@ package com.nuparu.sevendaystomine.tileentity;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.block.BlockCodeSafe;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
@@ -86,6 +88,7 @@ public class TileEntityCodeSafe extends TileEntitySafe {
 	}
 
 	public void unlock() {
+		super.unlock();
 		world.playSound(null, pos, SoundHelper.SAFE_UNLOCK, SoundCategory.BLOCKS, 0.9f + world.rand.nextFloat() / 4f,
 				0.9f + world.rand.nextFloat() / 4f);
 		locked = false;
@@ -113,8 +116,13 @@ public class TileEntityCodeSafe extends TileEntitySafe {
 		return this.correctCode;
 	}
 
-	public void setSelectedCode(int code) {
+	public void setSelectedCode(int code, @Nullable EntityPlayerMP player ) {
 		this.selectedCode = code;
+		boolean prevState = locked;
+		tryToUnlock();
+		if(player != null && prevState == true && !locked) {
+			ModTriggers.SAFE_UNLOCK.trigger(player);
+		}
 		markDirty();
 	}
 

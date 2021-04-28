@@ -7,8 +7,11 @@ import com.nuparu.sevendaystomine.entity.EntityFlame;
 import com.nuparu.sevendaystomine.entity.EntityShot;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.ItemGun.EnumWield;
+import com.nuparu.sevendaystomine.network.PacketManager;
+import com.nuparu.sevendaystomine.network.packets.ApplyRecoilMessage;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +30,7 @@ public class ItemFlamethrower extends ItemGun {
 		setMaxAmmo(500);
 		setFullDamage(20f);
 		setSpeed(0.18f);
-		setRecoil(0.15f);
+		setRecoil(3f);
 		setCounterDef(0);
 		setCross(22);
 		setReloadTime(1500);
@@ -101,8 +104,8 @@ public class ItemFlamethrower extends ItemGun {
 			worldIn.playSound(null, new BlockPos(playerIn), getShotSound(), SoundCategory.PLAYERS, getShotSoundVolume(),
 					getShotSoundPitch());
 			playerIn.swingArm(handIn);
-			if (worldIn.isRemote) {
-				SevenDaysToMine.proxy.addRecoil(getRecoil(), playerIn);
+			if (playerIn instanceof EntityPlayerMP) {
+				PacketManager.applyRecoil.sendTo(new ApplyRecoilMessage(getRecoil(),handIn==EnumHand.MAIN_HAND, false), (EntityPlayerMP) playerIn);
 			}
 
 			if (!flag) {

@@ -2,7 +2,9 @@ package com.nuparu.sevendaystomine.inventory;
 
 import com.nuparu.sevendaystomine.crafting.chemistry.ChemistryRecipeManager;
 import com.nuparu.sevendaystomine.crafting.chemistry.IChemistryRecipe;
+import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.item.ItemScrap;
+import com.nuparu.sevendaystomine.tileentity.TileEntityCampfire;
 import com.nuparu.sevendaystomine.tileentity.TileEntityChemistryStation;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,72 +17,82 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 public class ContainerChemistryStation extends Container {
-	public final IInventory tileEntity;
-
+	public final TileEntityChemistryStation chemistry;
+	public CombinedInvWrapper blockInventory;
+	public IItemHandlerNameable playerInventory;
+	
 	private int cookTime;
 	private int totalCookTime;
 	private int burnTime;
 	private int currentItemBurnTime;
 
-	public ContainerChemistryStation(InventoryPlayer playerInventory, final IInventory tileEntity) {
-		this.tileEntity = tileEntity;
+	public ContainerChemistryStation(IItemHandlerNameable playerInventory, CombinedInvWrapper combinedInvWrapper,
+			TileEntityChemistryStation chemistry, EntityPlayer player) {
+		this.chemistry = chemistry;
+		this.playerInventory = playerInventory;
+		this.blockInventory = combinedInvWrapper;
 
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.EnumSlots.INPUT_SLOT.ordinal(), 78, 11) {
+		this.addSlotToContainer(new SlotItemHandler(combinedInvWrapper, TileEntityChemistryStation.EnumSlots.INPUT_SLOT.ordinal(), 78, 11) {
 			@Override
 			public void onSlotChanged() {
-				tileEntity.markDirty();
+				chemistry.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.EnumSlots.INPUT_SLOT2.ordinal(), 97, 11) {
+		this.addSlotToContainer(new SlotItemHandler(combinedInvWrapper, TileEntityChemistryStation.EnumSlots.INPUT_SLOT2.ordinal(), 97, 11) {
 			@Override
 			public void onSlotChanged() {
-				tileEntity.markDirty();
+				chemistry.markDirty();
 			}
 		});
 
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.EnumSlots.INPUT_SLOT3.ordinal(), 78, 29) {
+		this.addSlotToContainer(new SlotItemHandler(combinedInvWrapper, TileEntityChemistryStation.EnumSlots.INPUT_SLOT3.ordinal(), 78, 29) {
 			@Override
 			public void onSlotChanged() {
-				tileEntity.markDirty();
+				chemistry.markDirty();
 			}
 		});
-		this.addSlotToContainer(new Slot(tileEntity, TileEntityChemistryStation.EnumSlots.INPUT_SLOT4.ordinal(), 97, 29) {
+		this.addSlotToContainer(new SlotItemHandler(combinedInvWrapper, TileEntityChemistryStation.EnumSlots.INPUT_SLOT4.ordinal(), 97, 29) {
 			@Override
 			public void onSlotChanged() {
-				tileEntity.markDirty();
+				chemistry.markDirty();
 			}
 		});
-		this.addSlotToContainer(new SlotChemistryOutput(playerInventory.player, tileEntity,
+		this.addSlotToContainer(new SlotChemistryOutput(player, combinedInvWrapper,
 				TileEntityChemistryStation.EnumSlots.OUTPUT_SLOT.ordinal(), 148, 42) {
 			@Override
 			public void onSlotChanged() {
-				tileEntity.markDirty();
+				chemistry.markDirty();
 			}
 		});
-		this.addSlotToContainer(new SlotChemistryFuel(tileEntity, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal(), 88, 63) {
+		this.addSlotToContainer(new SlotItemHandler(combinedInvWrapper, TileEntityChemistryStation.EnumSlots.FUEL_SLOT.ordinal(), 88, 63) {
 			@Override
 			public void onSlotChanged() {
-				tileEntity.markDirty();
+				chemistry.markDirty();
 			}
 		});
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
-				this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				this.addSlotToContainer(new SlotItemHandler(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
 		for (int k = 0; k < 9; ++k) {
-			this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 142));
+			this.addSlotToContainer(new SlotItemHandler(playerInventory, k, 8 + k * 18, 142));
 		}
 	}
 
 	@Override
 	public void addListener(IContainerListener listener) {
 		super.addListener(listener);
-		listener.sendAllWindowProperties(this, this.tileEntity);
+		listener.sendWindowProperty(this, 2, chemistry.getField(2));
+		listener.sendWindowProperty(this, 0, chemistry.getField(0));
+		listener.sendWindowProperty(this, 1, chemistry.getField(1));
+		listener.sendWindowProperty(this, 3, chemistry.getField(3));
 	}
 
 	public void detectAndSendChanges() {
@@ -89,36 +101,36 @@ public class ContainerChemistryStation extends Container {
 		for (int i = 0; i < this.listeners.size(); ++i) {
 			IContainerListener icontainerlistener = this.listeners.get(i);
 
-			if (this.cookTime != this.tileEntity.getField(2)) {
-				icontainerlistener.sendWindowProperty(this, 2, this.tileEntity.getField(2));
+			if (this.cookTime != chemistry.getField(2)) {
+				icontainerlistener.sendWindowProperty(this, 2, chemistry.getField(2));
 			}
 
-			if (this.burnTime != this.tileEntity.getField(0)) {
-				icontainerlistener.sendWindowProperty(this, 0, this.tileEntity.getField(0));
+			if (this.burnTime != chemistry.getField(0)) {
+				icontainerlistener.sendWindowProperty(this, 0, chemistry.getField(0));
 			}
 
-			if (this.currentItemBurnTime != this.tileEntity.getField(1)) {
-				icontainerlistener.sendWindowProperty(this, 1, this.tileEntity.getField(1));
+			if (this.currentItemBurnTime != chemistry.getField(1)) {
+				icontainerlistener.sendWindowProperty(this, 1, chemistry.getField(1));
 			}
 
-			if (this.totalCookTime != this.tileEntity.getField(3)) {
-				icontainerlistener.sendWindowProperty(this, 3, this.tileEntity.getField(3));
+			if (this.totalCookTime != chemistry.getField(3)) {
+				icontainerlistener.sendWindowProperty(this, 3, chemistry.getField(3));
 			}
 		}
 
-		this.cookTime = this.tileEntity.getField(2);
-		this.burnTime = this.tileEntity.getField(0);
-		this.currentItemBurnTime = this.tileEntity.getField(1);
-		this.totalCookTime = this.tileEntity.getField(3);
+		this.cookTime = chemistry.getField(2);
+		this.burnTime = chemistry.getField(0);
+		this.currentItemBurnTime = chemistry.getField(1);
+		this.totalCookTime = chemistry.getField(3);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int id, int data) {
-		this.tileEntity.setField(id, data);
+		this.chemistry.setField(id, data);
 	}
 
 	public boolean canInteractWith(EntityPlayer playerIn) {
-		return this.tileEntity.isUsableByPlayer(playerIn);
+		return this.chemistry.isUsableByPlayer(playerIn);
 	}
 
 	@Override

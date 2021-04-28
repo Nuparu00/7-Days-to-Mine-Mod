@@ -67,7 +67,7 @@ public class EntityZombiePig extends EntityZombieBase {
 
 	@Nullable
 	protected ResourceLocation getLootTable() {
-		return LootTableList.ENTITIES_PIG;
+		return null;
 	}
 
 	@Override

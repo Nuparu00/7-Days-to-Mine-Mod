@@ -1,11 +1,14 @@
 package com.nuparu.sevendaystomine.item;
 
+import javax.annotation.Nullable;
+
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.init.ModItems;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 
 public class ItemSniperRifle extends ItemGun {
 
@@ -46,4 +49,22 @@ public class ItemSniperRifle extends ItemGun {
 		return SoundHelper.PISTOL_DRYSHOT;
 	}
 
+	@Override
+	public Vec3d getMuzzleFlashPositionMain() {
+		return new Vec3d(0.08, 0.28, -1.8);
+	}
+	@Override
+	public Vec3d getMuzzleFlashPositionSide() {
+		return new Vec3d(-0.04, 0.42, -1.8);
+	}
+	@Override
+	@Nullable
+	public Vec3d getMuzzleFlashAimPosition() {
+		return null;
+	}
+	
+	@Override
+	public double getMuzzleFlashSize() {
+		return 1;
+	}
 }

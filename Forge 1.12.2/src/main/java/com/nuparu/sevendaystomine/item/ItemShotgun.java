@@ -6,6 +6,7 @@ import com.nuparu.sevendaystomine.init.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 
 public class ItemShotgun extends ItemGun {
 
@@ -46,4 +47,22 @@ public class ItemShotgun extends ItemGun {
 		return SoundHelper.PISTOL_DRYSHOT;
 	}
 
+	@Override
+	public Vec3d getMuzzleFlashPositionMain() {
+		return new Vec3d(-0.05, 0.35, -1.8);
+	}
+	@Override
+	public Vec3d getMuzzleFlashPositionSide() {
+		return new Vec3d(-0.05, 0.35, -1.8);
+	}
+	@Override
+	public Vec3d getMuzzleFlashAimPosition() {
+		return new Vec3d(0.15, 0.35, -1.4);
+	}
+	
+	@Override
+	public double getMuzzleFlashSize() {
+		return 1;
+	}
+	
 }

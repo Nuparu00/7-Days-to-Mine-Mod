@@ -64,6 +64,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBoat;
@@ -73,6 +74,8 @@ import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
@@ -330,8 +333,8 @@ public class Utils {
 				break;
 			}
 			if (solid && state.isFullCube() && material.blocksMovement()
-					&& (!ignoreFoliage
-							|| (!block.isLeaves(state, world, blockpos1) && !block.isFoliage(world, blockpos1) && !(block instanceof BlockLog)))
+					&& (!ignoreFoliage || (!block.isLeaves(state, world, blockpos1)
+							&& !block.isFoliage(world, blockpos1) && !(block instanceof BlockLog)))
 					&& material != Material.SNOW) {
 				blockpos = blockpos1;
 				break;
@@ -343,12 +346,12 @@ public class Utils {
 
 		return blockpos;
 	}
-	
+
 	public static BlockPos getTopBiomeGroundBlock(BlockPos pos, World world) {
 		Chunk chunk = world.getChunkFromBlockCoords(pos);
 		BlockPos blockpos;
 		BlockPos blockpos1;
-		
+
 		Biome biome = world.getBiome(pos);
 
 		for (blockpos = new BlockPos(pos.getX(), chunk.getTopFilledSegment() + 16, pos.getZ()); blockpos
@@ -362,8 +365,8 @@ public class Utils {
 				blockpos = blockpos1;
 				break;
 			}
-			if(blockpos1.getY() <= 63) {
-				return new BlockPos(0,-1,0);
+			if (blockpos1.getY() <= 63) {
+				return new BlockPos(0, -1, 0);
 			}
 		}
 
@@ -992,62 +995,65 @@ public class Utils {
 
 		player.experience -= amount / (float) player.xpBarCap();
 	}
-	
-	public static boolean canCityBeGeneratedhere(World world, int chunkX, int chunkZ) {
-		if(chunkX % 32 != 0 || chunkZ % 32 != 0) return false;
+
+	public static boolean canCityBeGeneratedHere(World world, int chunkX, int chunkZ) {
+		if (chunkX % ModConfig.worldGen.citySpacing != 0 || chunkZ % ModConfig.worldGen.citySpacing != 0)
+			return false;
 		Random rand = new Random(world.getSeed());
 		long k = rand.nextLong() / 2L * 2L + 1L;
 		long l = rand.nextLong() / 2L * 2L + 1L;
 		rand.setSeed((long) chunkX * k + (long) chunkZ * l ^ world.getSeed());
-		
-		Biome biome = world.getChunkFromChunkCoords(chunkX, chunkZ).getBiome(new BlockPos(16*chunkX+8,255,16*chunkZ+8), world.getBiomeProvider());
-		if (BiomeDictionary.hasType(biome,BiomeDictionary.Type.OCEAN)) return false;
+
+		Biome biome = world.getChunkFromChunkCoords(chunkX, chunkZ)
+				.getBiome(new BlockPos(16 * chunkX + 8, 255, 16 * chunkZ + 8), world.getBiomeProvider());
+		if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN))
+			return false;
 		return rand.nextInt(16) == 0;
 	}
-	
+
 	public static List<ChunkPos> getClosestCities(World world, int chunkX, int chunkZ, int dst) {
 		List<ChunkPos> poses = new ArrayList<ChunkPos>();
 		for (int i = -dst; i < dst; i++) {
 			for (int j = -dst; j < dst; j++) {
 				int cX = chunkX + i;
 				int cZ = chunkZ + j;
-				if (Utils.canCityBeGeneratedhere(world, cX, cZ)) {
-					poses.add(new ChunkPos(cX,cZ));
+				if (Utils.canCityBeGeneratedHere(world, cX, cZ)) {
+					poses.add(new ChunkPos(cX, cZ));
 				}
 			}
 		}
 		return poses;
 	}
-	
+
 	public static boolean isCityInArea(World world, int chunkX, int chunkZ, int dst) {
 		for (int i = -dst; i < dst; i++) {
 			for (int j = -dst; j < dst; j++) {
 				int cX = chunkX + i;
 				int cZ = chunkZ + j;
-				if (Utils.canCityBeGeneratedhere(world, cX, cZ)) {
+				if (Utils.canCityBeGeneratedHere(world, cX, cZ)) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	public static ChunkPos getClosestCity(World world, int chunkX, int chunkZ) {
-		
+
 		ChunkPos nearest = null;
 		double nearestDst = Double.MAX_VALUE;
-		List<ChunkPos> cities = getClosestCities(world,chunkX,chunkZ,128);
-		for(ChunkPos pos : cities) {
-			double dst = (pos.x-chunkX) + (pos.z-chunkZ);
-			if(dst < nearestDst) {
+		List<ChunkPos> cities = getClosestCities(world, chunkX, chunkZ, 128);
+		for (ChunkPos pos : cities) {
+			double dst = (pos.x - chunkX) + (pos.z - chunkZ);
+			if (dst < nearestDst) {
 				nearestDst = dst;
 				nearest = pos;
 			}
 		}
-		
+
 		return nearest;
 	}
-	
+
 	public static void generateDiagonal(World world, BlockPos start, BlockPos end) {
 		int minX = Math.min(start.getX(), end.getX());
 		int minZ = Math.min(start.getZ(), end.getZ());
@@ -1060,81 +1066,131 @@ public class Utils {
 
 		for (double d = 0; d < dif.lengthVector(); d++) {
 			Vec3d vec2 = vec.scale(d);
-			world.setBlockState(new BlockPos(minX + vec2.x, 200, minZ + vec2.z),
-					Blocks.IRON_BLOCK.getDefaultState());
+			world.setBlockState(new BlockPos(minX + vec2.x, 200, minZ + vec2.z), Blocks.IRON_BLOCK.getDefaultState());
 		}
 		world.setBlockState(new BlockPos(minX, 50, minZ), Blocks.REDSTONE_BLOCK.getDefaultState());
 		world.setBlockState(new BlockPos(maxX, 50, maxZ), Blocks.GOLD_BLOCK.getDefaultState());
 
 	}
+
+	public static RayTraceResult raytraceEntities(Entity entity, double dst) {
+
+		Entity pointedEntity = null;
+
+		Vec3d vec3d = entity.getPositionEyes(1);
+
+		RayTraceResult r = rayTraceServer(entity,dst, 1);
+		double d1 = dst;
+		if (r != null && r.typeOfHit == RayTraceResult.Type.BLOCK) {
+			d1 = r.hitVec.distanceTo(vec3d);
+		}
+
+		Vec3d vec3d1 = entity.getLook(1.0F);
+		Vec3d vec3d2 = vec3d.addVector(vec3d1.x * dst, vec3d1.y * dst, vec3d1.z * dst);
+		List<Entity> list = entity.world
+				.getEntitiesInAABBexcluding(
+						entity, entity.getEntityBoundingBox().expand(vec3d1.x * dst, vec3d1.y * dst, vec3d1.z * dst)
+								.grow(1.0D, 1.0D, 1.0D),
+						Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>() {
+							public boolean apply(@Nullable Entity p_apply_1_) {
+								return p_apply_1_ != null && p_apply_1_.canBeCollidedWith();
+							}
+						}));
+
+		Vec3d vec3d3 = null;
+		double d2 = d1;
+		for (int j = 0; j < list.size(); ++j) {
+			Entity entity1 = list.get(j);
+			AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox()
+					.grow((double) entity1.getCollisionBorderSize());
+			RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d, vec3d2);
+
+			if (axisalignedbb.contains(vec3d)) {
+				if (d2 >= 0.0D) {
+					pointedEntity = entity1;
+					vec3d3 = raytraceresult == null ? vec3d : raytraceresult.hitVec;
+					d2 = 0.0D;
+				}
+			} else if (raytraceresult != null) {
+				double d3 = vec3d.distanceTo(raytraceresult.hitVec);
+
+				if (d3 < d2 || d2 == 0.0D) {
+					if (entity1.getLowestRidingEntity() == entity.getLowestRidingEntity()
+							&& !entity1.canRiderInteract()) {
+						if (d2 == 0.0D) {
+							pointedEntity = entity1;
+							vec3d3 = raytraceresult.hitVec;
+						}
+					} else {
+						pointedEntity = entity1;
+						vec3d3 = raytraceresult.hitVec;
+						d2 = d3;
+					}
+				}
+			}
+		}
+
+		if (pointedEntity != null) {
+			return new RayTraceResult(pointedEntity, vec3d3);
+		}
+		vec3d3 = new Vec3d(0, -1, 0);
+		return new RayTraceResult(RayTraceResult.Type.MISS, vec3d3, (EnumFacing) null, new BlockPos(vec3d3));
+	}
 	
-	public static RayTraceResult raytraceEntities(EntityZombieBase entity, double dst) {
+	public static RayTraceResult rayTraceServer(Entity entity, double blockReachDistance, float partialTicks) {
+		Vec3d vec3 = getPositionEyesServer(entity,partialTicks);
+		Vec3d vec31 = entity.getLook(partialTicks);
+		Vec3d vec32 = vec3.addVector(vec31.x * blockReachDistance, vec31.y * blockReachDistance,
+				vec31.z * blockReachDistance);
+		return entity.world.rayTraceBlocks(vec3, vec32, false, false, true);
+	}
+	
+	public static Vec3d getPositionEyesServer(Entity entity,float partialTicks) {
+		if (partialTicks == 1.0F) {
+			return new Vec3d(entity.posX, entity.posY + (double) entity.getEyeHeight(), entity.posZ);
+		} else {
+			double d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
+			double d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks
+					+ (double) entity.getEyeHeight();
+			double d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks;
+			return new Vec3d(d0, d1, d2);
+		}
+	}
 
-        Entity pointedEntity = null;
-		
-        Vec3d vec3d = entity.getPositionEyes(1);
-        
-        RayTraceResult r = entity.rayTraceServer(dst, 1);
-        double d1 = dst;
-        if(r != null && r.typeOfHit == RayTraceResult.Type.BLOCK) {
-        	d1= r.hitVec.distanceTo(vec3d);
-        }
-        
-        Vec3d vec3d1 = entity.getLook(1.0F);
-        Vec3d vec3d2 = vec3d.addVector(vec3d1.x * dst, vec3d1.y * dst, vec3d1.z * dst);
-        List<Entity> list = entity.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().expand(vec3d1.x * dst, vec3d1.y * dst, vec3d1.z * dst).grow(1.0D, 1.0D, 1.0D), Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>()
-        {
-            public boolean apply(@Nullable Entity p_apply_1_)
-            {
-                return p_apply_1_ != null && p_apply_1_.canBeCollidedWith();
-            }
-        }));
-        
-        Vec3d vec3d3 = null;
-        double d2 = d1;
-        for (int j = 0; j < list.size(); ++j)
-        {
-            Entity entity1 = list.get(j);
-            AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow((double)entity1.getCollisionBorderSize());
-            RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d, vec3d2);
+	public static boolean hasItemStack(EntityPlayer player, ItemStack itemStack) {
+		int count = 0;
+		for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++) {
+			ItemStack stack = player.inventory.getStackInSlot(slot);
+			if (stack != null && stack.getItem() == itemStack.getItem()) {
+				count += stack.getCount();
+			}
+		}
+		return count >= itemStack.getCount();
+	}
 
-            if (axisalignedbb.contains(vec3d))
-            {
-                if (d2 >= 0.0D)
-                {
-                    pointedEntity = entity1;
-                    vec3d3 = raytraceresult == null ? vec3d : raytraceresult.hitVec;
-                    d2 = 0.0D;
-                }
-            }
-            else if (raytraceresult != null)
-            {
-                double d3 = vec3d.distanceTo(raytraceresult.hitVec);
+	public static void removeItemStack(InventoryPlayer inv, ItemStack itemStack) {
+		int count = itemStack.getCount();
+		for (int slot = 0; slot < inv.getSizeInventory(); slot++) {
+			ItemStack stack = inv.getStackInSlot(slot);
+			if (stack != null && stack.getItem() == itemStack.getItem()) {
+				int decrease = Math.min(count, stack.getCount());
+				inv.decrStackSize(slot, decrease);
+				count -= decrease;
+				if (count <= 0) {
+					break;
+				}
+			}
+		}
+	}
 
-                if (d3 < d2 || d2 == 0.0D)
-                {
-                    if (entity1.getLowestRidingEntity() == entity.getLowestRidingEntity() && !entity1.canRiderInteract())
-                    {
-                        if (d2 == 0.0D)
-                        {
-                            pointedEntity = entity1;
-                            vec3d3 = raytraceresult.hitVec;
-                        }
-                    }
-                    else
-                    {
-                        pointedEntity = entity1;
-                        vec3d3 = raytraceresult.hitVec;
-                        d2 = d3;
-                    }
-                }
-            }
-        }
-        
-        if(pointedEntity != null) {
-        	return new RayTraceResult(pointedEntity, vec3d3);
-        }
-        vec3d3 = new Vec3d(0,-1,0);
-        return new RayTraceResult(RayTraceResult.Type.MISS, vec3d3, (EnumFacing)null, new BlockPos(vec3d3));
+	@Nullable
+	public static IRecipe getRecipesForStack(ItemStack stack, World worldIn) {
+		for (IRecipe irecipe : CraftingManager.REGISTRY) {
+			if (ItemStack.areItemsEqualIgnoreDurability(stack, irecipe.getRecipeOutput())) {
+				return irecipe;
+			}
+		}
+
+		return null;
 	}
 }

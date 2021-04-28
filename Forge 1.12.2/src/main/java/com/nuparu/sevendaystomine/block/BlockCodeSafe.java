@@ -96,7 +96,7 @@ public class BlockCodeSafe extends BlockSafe<TileEntityCodeSafe> {
 							Random rand = worldIn.rand;
 							selectedCode = rand.nextInt(1000);
 						}
-						safe.setSelectedCode(selectedCode);
+						safe.setSelectedCode(selectedCode,null);
 						safe.setInit(true);
 						return;
 					}
@@ -122,7 +122,7 @@ public class BlockCodeSafe extends BlockSafe<TileEntityCodeSafe> {
 			}
 			if (!safe.locked && !playerIn.isSneaking()) {
 				playerIn.openGui(SevenDaysToMine.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
-			} else {
+			} else if (worldIn.isRemote) {
 				SevenDaysToMine.proxy.openClientSideGui(0, pos.getX(), pos.getY(), pos.getZ());
 			}
 		}

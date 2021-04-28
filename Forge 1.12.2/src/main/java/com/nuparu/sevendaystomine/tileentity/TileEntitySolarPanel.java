@@ -25,8 +25,9 @@ import net.minecraftforge.common.util.Constants;
 public class TileEntitySolarPanel extends TileEntity implements ITickable, IVoltage {
 	private List<ElectricConnection> inputs = new ArrayList<ElectricConnection>();
 	private List<ElectricConnection> outputs = new ArrayList<ElectricConnection>();
-	private long capacity = 1000l;
+	private long capacity = 100l;
 	private long voltage = 0;
+	public int tickCounter = 0;
 
 	public EnumFacing facing;
 
@@ -41,10 +42,12 @@ public class TileEntitySolarPanel extends TileEntity implements ITickable, IVolt
 			this.facing = world.getBlockState(pos).getValue(BlockSolarPanel.FACING).getOpposite();
 			markDirty();
 		}
+
+		if(world.isRemote)return;
 		Chunk chunk = world.getChunkFromBlockCoords(pos);
 		int skylight = chunk.getLightFor(EnumSkyBlock.SKY, pos);
-		if (skylight >= 11) {
-			long delta = (long) (Math.sin((world.getCelestialAngle(0) + 0.25f) * 2 * Math.PI) * 180f * (skylight / 15f));
+		if (tickCounter++ >= 10 && skylight >= 11) {
+			long delta = (long) (Math.sin((world.getCelestialAngle(0) + 0.25f) * 2 * Math.PI) * 15f * (skylight / 15f));
 			if(facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) {
 				delta*=0.66f;
 			}
@@ -53,6 +56,7 @@ public class TileEntitySolarPanel extends TileEntity implements ITickable, IVolt
 			if (voltagePrev != voltage) {
 				flag = true;
 			}
+			tickCounter = 0;
 		}
 		
 		Iterator<ElectricConnection> iterator = outputs.iterator();
@@ -134,6 +138,7 @@ public class TileEntitySolarPanel extends TileEntity implements ITickable, IVolt
 				outputs.add(connection);
 			}
 		}
+		tickCounter = compound.getInteger("tickCounter");
 
 	}
 
@@ -162,6 +167,7 @@ public class TileEntitySolarPanel extends TileEntity implements ITickable, IVolt
 
 		compound.setTag("inputs", in);
 		compound.setTag("outputs", out);
+		compound.setInteger("tickCounter", tickCounter);
 
 		return compound;
 	}
@@ -201,7 +207,7 @@ public class TileEntitySolarPanel extends TileEntity implements ITickable, IVolt
 
 	@Override
 	public long getMaxOutput() {
-		return 256;
+		return 5;
 	}
 
 	@Override

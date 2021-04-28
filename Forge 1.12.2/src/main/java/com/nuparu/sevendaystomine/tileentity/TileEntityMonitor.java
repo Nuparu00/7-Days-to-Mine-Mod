@@ -30,7 +30,7 @@ public class TileEntityMonitor extends TileEntity implements ITickable, IVoltage
 
 	private boolean on = false;
 	private long voltage = 0;
-	private long capacity = 800;
+	private long capacity = 40;
 	private BlockPos compPos = BlockPos.ORIGIN;
 	private TileEntityComputer computerTE;
 
@@ -124,7 +124,7 @@ public class TileEntityMonitor extends TileEntity implements ITickable, IVoltage
 		Block block = state.getBlock();
 		NBTTagCompound nbt = this.writeToNBT(new NBTTagCompound());
 		if (computerTE != null) {
-			if (on && computerTE.isOn() && computerTE.isCompleted() && this.voltage >= this.getRequiredPower()) {
+			if (this.isOn() && computerTE.isOn() && computerTE.isCompleted()) {
 				EnumSystem system = computerTE.getSystem();
 				if (system == EnumSystem.NONE) {
 					if (block != ModBlocks.MONITOR_OFF) {
@@ -231,6 +231,10 @@ public class TileEntityMonitor extends TileEntity implements ITickable, IVoltage
 			}
 		}
 
+	}
+	
+	public boolean isOn() {
+		return this.on && this.voltage >= this.getRequiredPower();
 	}
 
 	private IBlockState applyPropertiesToState(Block newState, IBlockState oldState) {
@@ -362,7 +366,7 @@ public class TileEntityMonitor extends TileEntity implements ITickable, IVoltage
 
 	@Override
 	public long getRequiredPower() {
-		return 128;
+		return 6;
 	}
 
 	@Override
@@ -388,6 +392,7 @@ public class TileEntityMonitor extends TileEntity implements ITickable, IVoltage
 
 	@Override
 	public long tryToSendPower(long power, ElectricConnection connection) {
+		if(!this.on) return 0;
 		long canBeAdded = capacity - voltage;
 		long delta = Math.min(canBeAdded, power);
 		long lost = 0;

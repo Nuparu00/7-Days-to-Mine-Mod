@@ -144,7 +144,7 @@ public class TileEntityEnergyPole extends TileEntity implements ITickable, IVolt
 
 	@Override
 	public long getMaxOutput() {
-		return 600;
+		return 100;
 	}
 
 	@Override
@@ -220,6 +220,7 @@ public class TileEntityEnergyPole extends TileEntity implements ITickable, IVolt
 
 	@Override
 	public void update() {
+		if(world.isRemote)return;
 		if (this.voltage > 0) {
 			int radius = (int) Math.ceil(ModConstants.PASSIVE_CONSUMER_RADIUS);
 			int radiusSq = radius * radius;
@@ -273,9 +274,9 @@ public class TileEntityEnergyPole extends TileEntity implements ITickable, IVolt
 			}
 		}
 
-		if (this.voltage > 0) {
-			this.voltage *= (1 - ModConstants.DROP_PER_TICK);
-		}
+		/*
+		 * if (this.voltage > 0) { this.voltage *= (1 - ModConstants.DROP_PER_TICK); }
+		 */
 
 	}
 

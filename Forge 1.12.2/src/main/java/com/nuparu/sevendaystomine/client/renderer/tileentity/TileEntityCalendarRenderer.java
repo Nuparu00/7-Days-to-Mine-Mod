@@ -29,8 +29,13 @@ public class TileEntityCalendarRenderer extends TileEntitySpecialRenderer<TileEn
 		FontRenderer fontrenderer = this.getFontRenderer();
 		EntityPlayer player = Minecraft.getMinecraft().player;
 
-		int mod = Utils.getDay(player.world) % ModConfig.world.bloodmoonFrequency;
-		int i = mod == 0 ? 0 : ModConfig.world.bloodmoonFrequency - (mod);
+		String text = "?";
+
+		if (ModConfig.world.bloodmoonFrequency > 0 && ModConfig.world.bloodmoonFrequency <= 999) {
+			int mod = Utils.getDay(player.world) % ModConfig.world.bloodmoonFrequency;
+			int i = mod == 0 ? 0 : ModConfig.world.bloodmoonFrequency - (mod);
+			text = i + "";
+		}
 
 		GlStateManager.pushMatrix();
 
@@ -61,7 +66,7 @@ public class TileEntityCalendarRenderer extends TileEntitySpecialRenderer<TileEn
 		GlStateManager.translate(0.03125F, 0.4F, -0.437F);
 
 		GlStateManager.scale(0.0625, -0.0625, -0.0625);
-		fontrenderer.drawString(i + "", -fontrenderer.getStringWidth(i + "") / 2, 0, 0x000000);
+		fontrenderer.drawString(text, -fontrenderer.getStringWidth(text) / 2, 0, 0x000000);
 		GlStateManager.popMatrix();
 
 	}

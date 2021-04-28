@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -81,7 +82,7 @@ public class ZombieWolfHorde extends Horde {
 		super.onZombieKill(zombie);
 		if (bossInfo == null)
 			return;
-		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class ZombieWolfHorde extends Horde {
 		super.addZombie(zombie);
 		if (bossInfo == null)
 			return;
-		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
 	}
 
 	@Override
@@ -120,7 +121,7 @@ public class ZombieWolfHorde extends Horde {
 		zombies.clear();
 		BlockPos origin = getSpawnOrigin();
 		for (int i = 0; i < ModConfig.world.wolfHordeZombiesPerWave; i++) {
-			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin).up(), world, true);
+			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin), world, true).up();
 			HordeEntry entry = getHordeEntry(world.rand);
 			if (entry != null) {
 				EntityZombieBase zombie = entry.spawn(world, pos);
@@ -132,7 +133,7 @@ public class ZombieWolfHorde extends Horde {
 				zombiesInWave++;
 			}
 		}
-		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
 		data.markDirty();
 	}
 

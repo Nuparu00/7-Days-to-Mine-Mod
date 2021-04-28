@@ -39,7 +39,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemQualityHoe extends ItemHoe implements IQuality{
+public class ItemQualityHoe extends ItemHoe implements IQuality {
 
 	public ItemQualityHoe(ToolMaterial material) {
 		super(material);
@@ -81,7 +81,7 @@ public class ItemQualityHoe extends ItemHoe implements IQuality{
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 		int i = 0;
-		if (stack.getTagCompound() != null) {
+		if (ModConfig.players.qualitySystem && stack.getTagCompound() != null) {
 			i = getQuality(stack);
 		}
 		return super.getMaxDamage(stack) + i;
@@ -89,16 +89,21 @@ public class ItemQualityHoe extends ItemHoe implements IQuality{
 
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
+		if (!ModConfig.players.qualitySystem)
+			return super.getItemStackDisplayName(itemstack);
 		EnumQuality quality = getQualityTierFromStack(itemstack);
 		return quality.color + SevenDaysToMine.proxy.localize(this.getUnlocalizedName() + ".name");
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		int quality = getQuality(stack);
-		EnumQuality tier = getQualityTierFromInt(quality);
-		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
-		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		if (ModConfig.players.qualitySystem) {
+			int quality = getQuality(stack);
+			EnumQuality tier = getQualityTierFromInt(quality);
+			tooltip.add(
+					tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
+			tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		}
 	}
 
 	@Override
@@ -113,13 +118,13 @@ public class ItemQualityHoe extends ItemHoe implements IQuality{
 			items.add(stack);
 		}
 	}
-	
+
 	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
 		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 
 		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
-					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.toolMaterial.getAttackDamage(), 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER,
+					"Weapon modifier", (double) this.toolMaterial.getAttackDamage(), 0));
 			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
 					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", 1, 0));
 		}
@@ -128,21 +133,24 @@ public class ItemQualityHoe extends ItemHoe implements IQuality{
 	}
 
 	public double getAttackDamageModified(ItemStack stack) {
-		return this.toolMaterial.getAttackDamage() * (1+((float)getQuality(stack) / (float)ModConfig.players.maxQuality));
+		return this.toolMaterial.getAttackDamage()
+				* (1 + ((float) getQuality(stack) / (float) ModConfig.players.maxQuality));
 	}
-	
+
 	public double getAttackSpeedModified(ItemStack stack) {
-		return 1 / (1+((float)getQuality(stack) / (float)ModConfig.players.maxQuality));
+		return 1 / (1 + ((float) getQuality(stack) / (float) ModConfig.players.maxQuality));
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack)
-	{
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot,
+			ItemStack stack) {
 		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
-		if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
-		{
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", getAttackDamageModified(stack), 0));
-			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", getAttackSpeedModified(stack), 0));
+		if (!ModConfig.players.qualitySystem) return super.getAttributeModifiers(equipmentSlot, stack);
+		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER,
+					"Weapon modifier", getAttackDamageModified(stack), 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
+					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", getAttackSpeedModified(stack), 0));
 		}
 
 		return multimap;
@@ -150,6 +158,8 @@ public class ItemQualityHoe extends ItemHoe implements IQuality{
 
 	@Override
 	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		if(!ModConfig.players.qualitySystem) return super.getRGBDurabilityForDisplay(stack);
+		
 		switch (getQualityTierFromStack(stack)) {
 		case FLAWLESS:
 			return 0xA300A3;
@@ -168,5 +178,5 @@ public class ItemQualityHoe extends ItemHoe implements IQuality{
 			return super.getRGBDurabilityForDisplay(stack);
 		}
 	}
-	
+
 }

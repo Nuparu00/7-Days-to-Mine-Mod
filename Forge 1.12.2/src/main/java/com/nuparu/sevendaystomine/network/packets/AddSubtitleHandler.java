@@ -17,21 +17,25 @@ public class AddSubtitleHandler implements IMessageHandler<AddSubtitleMessage, I
 
 	@Override
 	public IMessage onMessage(AddSubtitleMessage message, MessageContext ctx) {
-		int entityID = message.getEntityID();
-		double duration = message.getDuration();
-		String dialogue = message.getDialogue();
+		Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			@Override
+			public void run() {
+				int entityID = message.getEntityID();
+				double duration = message.getDuration();
+				String dialogue = message.getDialogue();
 
-		EntityPlayer player = SevenDaysToMine.proxy.getPlayerEntityFromContext(ctx);
-		World world = player.world;
+				EntityPlayer player = SevenDaysToMine.proxy.getPlayerEntityFromContext(ctx);
+				World world = player.world;
 
-		Entity entity = world.getEntityByID(entityID);
-		if (entity == null || !(entity instanceof EntityHuman))
-			return null;
+				Entity entity = world.getEntityByID(entityID);
+				if (entity == null || !(entity instanceof EntityHuman))
+					return;
 
-		EntityHuman human = (EntityHuman) entity;
+				EntityHuman human = (EntityHuman) entity;
 
-		SubtitleHelper.INSTANCE.addSubtitleToQueue(new Subtitle(human, dialogue, duration));
-
+				SubtitleHelper.INSTANCE.addSubtitleToQueue(new Subtitle(human, dialogue, duration));
+			}
+		});
 		return null;
 	}
 

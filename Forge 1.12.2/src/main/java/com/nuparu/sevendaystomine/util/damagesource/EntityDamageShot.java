@@ -10,7 +10,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 public class EntityDamageShot extends EntityDamageSourceIndirect {
 	public EntityDamageShot(String name, Entity transmitter, Entity indirectSource) {
 		super(name, transmitter, indirectSource);
-		this.setDamageBypassesArmor();
+		this.setProjectile();
 	}
 
 	@Override

@@ -1,10 +1,12 @@
 package com.nuparu.sevendaystomine.client.gui.inventory;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.item.EnumQuality;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -26,24 +28,33 @@ public class GuiCar extends GuiContainer {
 		super(container);
 		this.playerInventory = playerInventory;
 		this.car = car;
+		this.xSize = 242;
 	}
+	
+	@Override
+	public void initGui()
+    {
+		super.initGui();
+    }
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = car.getDisplayName().getUnformattedText();
-		int calculated = car.getCalculatedQuality();
-		if (calculated > 0) {
-			EnumQuality quality = EnumQuality.getFromQuality(calculated);
-			s = quality.getColor()
-					+ SevenDaysToMine.proxy.localize("stat.quality." + quality.name().toLowerCase() + ".name") + " "
-					+ s;
-		} else {
-			s = SevenDaysToMine.proxy.localize("stat.unfinished.name") + " " + s;
+		if (ModConfig.players.qualitySystem) {
+			int calculated = car.getCalculatedQuality();
+			if (calculated > 0) {
+				EnumQuality quality = EnumQuality.getFromQuality(calculated);
+				s = quality.getColor()
+						+ SevenDaysToMine.proxy.localize("stat.quality." + quality.name().toLowerCase() + ".name") + " "
+						+ s;
+			} else {
+				s = SevenDaysToMine.proxy.localize("stat.unfinished.name") + " " + s;
+			}
 		}
 		this.fontRenderer.drawString(s, 87 - (this.fontRenderer.getStringWidth(s) / 2), 6, 4210752);
 		this.fontRenderer.drawString(
 				new TextComponentTranslation("container.inventory", new Object[0]).getUnformattedText(), 8,
-				ySize - 96 + 2, 4210752);
+				ySize - 96 + 4, 4210752);
 	}
 
 	@Override
@@ -52,12 +63,14 @@ public class GuiCar extends GuiContainer {
 		mc.getTextureManager().bindTexture(resourceLocation);
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;
-		drawTexturedModalRect(marginHorizontal, marginVertical, 0, 0, xSize, ySize);
+		drawTexturedModalRect(marginHorizontal, marginVertical, 0, 0, 176, ySize);
 		this.drawTexturedModalRect(marginHorizontal + 175, marginVertical + 6, 176, 0, 66, 67);
-
+		
+		ScaledResolution sr = new ScaledResolution(mc);
+		
 		int i = (this.width - this.xSize) / 2;
 		int j = (this.height - this.ySize) / 2;
-		drawEntityOnScreen(i + (this.xSize / 2), j + 60, 24, (float) (i + 51) - mouseX, (float) (j + 75 - 50) - mouseY,
+		drawEntityOnScreen(i + ((this.xSize-66) / 2), j + 66, 23, (float) (i + 51) - mouseX, (float) (j + 75 - 50) - mouseY,
 				this.car);
 	}
 

@@ -30,7 +30,7 @@ public class BlockSmallRock extends BlockPickable {
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.<EnumType>create("variant",
 			BlockSmallRock.EnumType.class);
 
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.1875D, 0.6875D);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.2125D, 0.0D, 0.3125D, 0.6875D, 0.1875D, 0.6875D);
 
 	public BlockSmallRock() {
 		super(Material.GROUND);

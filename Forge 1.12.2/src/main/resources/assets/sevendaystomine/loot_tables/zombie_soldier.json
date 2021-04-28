@@ -65,6 +65,11 @@
             },
             {
                "type":"item",
+               "weight":1,
+               "name":"sevendaystomine:flare"
+            },
+            {
+               "type":"item",
                "weight":10,
                "name":"sevendaystomine:cloth",
                "functions":[

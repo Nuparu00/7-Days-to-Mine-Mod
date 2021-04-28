@@ -22,6 +22,9 @@ public class BlockBurntPlanksSlab extends BlockSlabBase {
 	public BlockBurntPlanksSlab(boolean isdouble) {
 		super(Material.WOOD, isdouble);
 		setSoundType(SoundType.WOOD);
+		setHardness(2.5f);
+		setResistance(7.5f);
+		setHarvestLevel("axe", 0);
 		if (!isdouble) {
 			setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 		}

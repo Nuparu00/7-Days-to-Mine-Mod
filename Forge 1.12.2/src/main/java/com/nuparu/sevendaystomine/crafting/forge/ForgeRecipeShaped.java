@@ -49,18 +49,18 @@ public class ForgeRecipeShaped implements IForgeRecipe {
 	}
 
 	@Override
-	public boolean matches(TileEntityForge inv, World worldIn) {
+	public ForgeResult matches(TileEntityForge inv, World worldIn) {
 		ItemStack[][] invArray = inv.getActiveInventoryAsArray().clone();
 		for (int i = 0; i <= 2 - width; i++) {
 			for (int j = 0; j <= 2 - height; j++) {
 				if(checkMatch(invArray,i,j)) {
-					return true;
+					return new ForgeResult(true,null);
 				}
 
 			}
 		}
 
-		return false;
+		return new ForgeResult(false,null);
 	}
 	
 	private boolean checkMatch(ItemStack[][] invArray, int x, int y) {

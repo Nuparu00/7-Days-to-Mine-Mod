@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public interface IForgeRecipe {
-	 boolean matches(TileEntityForge inv, World worldIn);
+	 ForgeResult matches(TileEntityForge inv, World worldIn);
 	 ItemStack getResult();
 	 public ItemStack getOutput(TileEntityForge tileEntity);
 	 public ItemStack getMold();

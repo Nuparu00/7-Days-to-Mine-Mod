@@ -8,13 +8,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-public class SlotCampfireOutput extends Slot {
+public class SlotCampfireOutput extends SlotItemHandler {
 	/** The player that is using the GUI where this slot resides. */
 	private final EntityPlayer player;
 	private int removeCount;
 
-	public SlotCampfireOutput(EntityPlayer player, IInventory inventoryIn, int slotIndex, int xPosition,
+	public SlotCampfireOutput(EntityPlayer player, IItemHandler inventoryIn, int slotIndex, int xPosition,
 			int yPosition) {
 		super(inventoryIn, slotIndex, xPosition, yPosition);
 		this.player = player;

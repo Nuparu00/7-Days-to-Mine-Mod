@@ -46,21 +46,13 @@ public class TileEntityGlobeRenderer extends TileEntitySpecialRenderer<TileEntit
 		}
 
 		short short1 = 0;
+		
 
-		if (s == 2) {
-			short1 = 180;
-		}
-
-		if (s == 3) {
-			short1 = 0;
-		}
-
-		if (s == 5) {
-			short1 = 90;
-		}
-
-		if (s == 4) {
-			short1 = -90;
+		switch(s) {
+		case 0 : short1 = 0; break;
+		case 1 : short1 = 270; break;
+		case 2 : short1 = 180; break;
+		case 3 : short1 = 90; break;
 		}
 		if (destroyStage >= 0) {
 			this.bindTexture(DESTROY_STAGES[destroyStage]);

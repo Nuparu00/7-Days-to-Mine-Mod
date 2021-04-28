@@ -116,7 +116,7 @@ public class BlockRazorWire extends BlockTileProvider<TileEntityWoodenSpikes> im
 
 	public boolean canBlockStay(World worldIn, BlockPos pos) {
 		IBlockState state = worldIn.getBlockState(pos.down());
-		return state.isBlockNormalCube() && !worldIn.getBlockState(pos.up()).getMaterial().isLiquid();
+		return state.isSideSolid(worldIn, pos.down(), EnumFacing.UP) && !worldIn.getBlockState(pos.up()).getMaterial().isLiquid();
 	}
 
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {

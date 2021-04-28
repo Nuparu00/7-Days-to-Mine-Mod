@@ -73,7 +73,7 @@ public class GuiBatteryStation extends GuiContainer {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		if (isPointInRegion(7, 4, 40, 80, mouseX, mouseY) || isPointInRegion(135, 4, 168, 80, mouseX, mouseY) ) {
+		if (isPointInRegion(7, 4, 40, 80, mouseX, mouseY) || isPointInRegion(135, 4, 40, 80, mouseX, mouseY) ) {
 			/*if (tileEntity.getTank().getFluidAmount() > 0) {
 				List<String> tooltip = new ArrayList<String>();
 				tooltip.add(tileEntity.getTank().getFluidAmount() + "mB");

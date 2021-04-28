@@ -1,0 +1,28 @@
+{
+   "display":{
+      "icon":{
+         "item":"sevendaystomine:book_minibike"
+      },
+      "title":{
+         "translate":"advancements.know_it_all.title"
+      },
+      "description":{
+         "translate":"advancements.know_it_all.description"
+      },
+      "frame":"challenge"
+   },
+   "rewards":{
+      "experience":50
+   },
+   "parent":"sevendaystomine:survival/root",
+   "criteria":{
+      "know_it_all":{
+         "trigger":"know_it_all"
+      }
+   },
+   "requirements":[
+      [
+         "know_it_all"
+      ]
+   ]
+}

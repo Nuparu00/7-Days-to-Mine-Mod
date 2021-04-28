@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.world.gen.city.building;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
@@ -20,7 +21,9 @@ import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.block.BlockSandLayer;
 import com.nuparu.sevendaystomine.block.BlockTrashCan;
 import com.nuparu.sevendaystomine.block.BlockWheels;
+import com.nuparu.sevendaystomine.block.BlockWorkbench;
 import com.nuparu.sevendaystomine.block.BlockWritingTable;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.entity.EntityBlindZombie;
 import com.nuparu.sevendaystomine.entity.EntityPlaguedNurse;
@@ -60,8 +63,11 @@ import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.monster.EntityVindicator;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemMap;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -70,6 +76,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -78,6 +85,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.storage.MapData;
+import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
@@ -542,6 +551,38 @@ public class Building {
 				}
 				break;
 			}
+			case "workbench": {
+				IBlockState state = Blocks.AIR.getDefaultState();
+				int r = world.rand.nextInt(100);
+				if (r <= 2) {
+					state = ModBlocks.WORKBENCH.getDefaultState().withProperty(BlockHorizontalBase.FACING, facing);
+				} else if (r <= 30) {
+					state = Blocks.CRAFTING_TABLE.getDefaultState();
+				}
+
+				world.setBlockState(pos, state);
+				break;
+			}
+			case "map": {
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				for (int i = -1; i < 2; i++) {
+					for (int j = 0; j < 2; j++) {
+						BlockPos pos2 = pos.down(1 + j).offset(facing, i);
+						List<EntityItemFrame> list = world.getEntitiesWithinAABB(EntityItemFrame.class,
+								new AxisAlignedBB(pos2, pos2.add(1, 1, 1)));
+						if (list.isEmpty())
+							continue;
+						EntityItemFrame frame = list.get(0);
+						int x = pos.getX() + (256 * i * (mirror ? -1 : 1));
+						int z = pos.getZ() + (256 * j);
+						ItemStack stack = ItemMap.setupNewMap(world, x, z, (byte) 1, true, true);
+						Utils.renderBiomePreviewMap(world, stack);
+						MapData.addTargetDecoration(stack, pos, "+", MapDecoration.Type.TARGET_X);
+						frame.setDisplayedItem(stack);
+					}
+				}
+				break;
+			}
 			}
 		} catch (Exception e) {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -578,7 +619,7 @@ public class Building {
 	 * structure proper
 	 */
 	public void generatePedestal(World world, BlockPos pos, Template template, EnumFacing facing, boolean mirror) {
-		if (!hasPedestal)
+		if (!hasPedestal || !ModConfig.worldGen.structurePedestal)
 			return;
 		Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
 		BlockPos size = template.transformedSize(rot);
@@ -621,7 +662,8 @@ public class Building {
 
 	public void coverWithSand(World world, BlockPos pos, Template template, EnumFacing facing, boolean mirror,
 			Random rand) {
-
+		if (!ModConfig.worldGen.snowSandCover)
+			return;
 		Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
 		BlockPos size = template.transformedSize(rot);
 		int minY = pos.getY();
@@ -652,15 +694,14 @@ public class Building {
 				BlockPos pos2 = pos.add(x, 0, z);
 				Biome biome = world.getBiome(pos2);
 
-				if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY))
+				if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) || biome.topBlock.getBlock() != Blocks.SAND)
 					continue;
-				
 				IBlockState sand = ModBlocks.SAND_LAYER.getDefaultState();
 				if (biome.topBlock.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND) {
 					sand = ModBlocks.RED_SAND_LAYER.getDefaultState();
 				}
-				
-				for (; pos2.getY() > minY-1; pos2 = pos2.down()) {
+
+				for (; pos2.getY() > minY - 1; pos2 = pos2.down()) {
 
 					IBlockState state = world.getBlockState(pos2);
 					if (state.getMaterial() != Material.AIR) {

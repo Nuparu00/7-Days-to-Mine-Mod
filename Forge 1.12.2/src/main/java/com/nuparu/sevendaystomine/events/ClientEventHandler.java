@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.client.gui.GuiMainMenuEnhanced;
 import com.nuparu.sevendaystomine.client.gui.GuiPlayerUI;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.config.ModConfig;
+import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.item.EnumMaterial;
 import com.nuparu.sevendaystomine.item.IScrapable;
@@ -33,6 +34,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -42,6 +44,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.GuiIngameForge;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -210,7 +213,7 @@ public class ClientEventHandler {
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
-	public void onEvent(FogDensity event) {
+	public void onFogDensity(FogDensity event) {
 
 		Biome biome = event.getEntity().world.getBiome(new BlockPos(event.getEntity()));
 		IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(event.getEntity().world,
@@ -257,7 +260,7 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void itemToolTip(ItemTooltipEvent event) {
+	public void onItmemTooltip(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
 		if (stack.isEmpty())
 			return;
@@ -282,6 +285,20 @@ public class ClientEventHandler {
 
 		if (mat != null && mat != EnumMaterial.NONE) {
 			event.getToolTip().add(weight + "x" + mat.getLocalizedName());
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
+		if(!ModConfig.client.minibikeCameraRoll) return;
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		if(player == null) return;
+		Entity riding = player.getRidingEntity();
+		
+		if(riding != null && riding instanceof EntityMinibike) {
+    		EntityMinibike minibike = (EntityMinibike)riding;
+    		event.setRoll(event.getRoll()+(Utils.lerp(minibike.getTurningPrev(), minibike.getTurning(), (float)event.getRenderPartialTicks()))/8f);
 		}
 	}
 

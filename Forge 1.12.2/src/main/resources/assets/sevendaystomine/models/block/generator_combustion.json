@@ -3,7 +3,7 @@
 	"textures": {
 		"0": "sevendaystomine:blocks/rustymetal",
 		"1": "blocks/concrete_powder_blue",
-		"2": "blocks/anvil_base",
+		"2": "sevendaystomine:blocks/anvil_base_rusty",
 		"3": "blocks/hardened_clay_stained_yellow",
 		"4": "blocks/wool_colored_black",
 		"5": "blocks/wool_colored_white",

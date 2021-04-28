@@ -523,4 +523,44 @@ public class ModBlocks {
 	public static final Block PAPER = new BlockPaper().setRegistryName("paper").setUnlocalizedName("paper");
 	public static final Block SAND_LAYER = new BlockSandLayer().setRegistryName("sand_layer").setUnlocalizedName("sand_layer");
 	public static final Block RED_SAND_LAYER = new BlockSandLayer().setRegistryName("red_sand_layer").setUnlocalizedName("red_sand_layer");
+	public static final Block STEEL_BLOCK = new BlockMetal(EnumMaterial.STEEL,54).setRegistryName("steel_block").setUnlocalizedName("steel_block").setHardness(6.0F).setResistance(12.0F);
+	public static final Block BRONZE_BLOCK = new BlockMetal(EnumMaterial.BRONZE,54).setRegistryName("bronze_block").setUnlocalizedName("bronze_block").setHardness(2F).setResistance(5.0F);
+	public static final Block LEAD_BLOCK = new BlockMetal(EnumMaterial.LEAD,54).setRegistryName("lead_block").setUnlocalizedName("lead_block").setHardness(4.0F).setResistance(11.0F);
+	public static final Block COPPER_BLOCK = new BlockMetal(EnumMaterial.COPPER,54).setRegistryName("copper_block").setUnlocalizedName("copper_block").setHardness(1.5F).setResistance(3.0F);
+	public static final Block BRASS_BLOCK = new BlockMetal(EnumMaterial.BRASS,54).setRegistryName("brass_block").setUnlocalizedName("brass_block").setHardness(1.9F).setResistance(4.0F);
+	
+	public static final Block DARK_BRICKS_SLAB = new BlockDarkBricksSlab(false).setRegistryName("dark_bricks_slab")
+			.setUnlocalizedName("dark_bricks_slab");
+	public static final Block DARK_BRICKS_SLAB_DOUBLE = new BlockDarkBricksSlab(true)
+			.setRegistryName("dark_bricks_slab_double").setUnlocalizedName("dark_bricks_slab_double");
+	public static final Block DARK_BRICKS_STAIRS = new BlockStairsBase(DARK_BRICKS.getDefaultState())
+			.setRegistryName("dark_bricks_stairs").setUnlocalizedName("dark_bricks_stairs")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	
+	public static final Block DARK_BRICKS_MOSSY_SLAB = new BlockDarkBricksMossySlab(false).setRegistryName("dark_bricks_mossy_slab")
+			.setUnlocalizedName("dark_bricks_mossy_slab");
+	public static final Block DARK_BRICKS_MOSSY_SLAB_DOUBLE = new BlockDarkBricksMossySlab(true)
+			.setRegistryName("dark_bricks_mossy_slab_double").setUnlocalizedName("dark_bricks_mossy_slab_double");
+	
+	public static final Block DARK_BRICKS_MOSSY_STAIRS = new BlockStairsBase(DARK_BRICKS_MOSSY.getDefaultState())
+			.setRegistryName("dark_bricks_mossy_stairs").setUnlocalizedName("dark_bricks_mossy_stairs")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	
+	public static final Block BRICKS_MOSSY_STAIRS = new BlockStairsBase(BRICK_MOSSY.getDefaultState())
+			.setRegistryName("brick_mossy_stairs").setUnlocalizedName("brick_mossy_stairs")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	
+	public static final Block BRICK_MOSSY_SLAB = new BlockBrickMossySlab(false).setRegistryName("brick_mossy_slab")
+			.setUnlocalizedName("brick_mossy_slab");
+	public static final Block BRICK_MOSSY_SLAB_DOUBLE = new BlockBrickMossySlab(true)
+			.setRegistryName("brick_mossy_slab_double").setUnlocalizedName("brick_mossy_slab_double");
+	
+	public static final Block STONE_BRICK_STAIRS_CRACCKED = new BlockStairsBase(Blocks.STONEBRICK.getDefaultState())
+			.setRegistryName("stone_brick_stairs_cracked").setUnlocalizedName("stone_brick_stairs_cracked")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	
+	public static final Block ASPHALT_SLAB = new BlockAsphaltSlab(false).setRegistryName("asphalt_slab")
+			.setUnlocalizedName("asphalt_slab");
+	public static final Block ASPHALT_SLAB_DOUBLE = new BlockAsphaltSlab(true)
+			.setRegistryName("asphalt_slab_double").setUnlocalizedName("asphalt_slab_double");
 }

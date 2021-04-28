@@ -3,11 +3,13 @@ package com.nuparu.sevendaystomine.world.gen;
 import java.util.Arrays;
 import java.util.Random;
 
+import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockGarbage;
 import com.nuparu.sevendaystomine.block.BlockPaper;
 import com.nuparu.sevendaystomine.block.BlockSandLayer;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedChunk;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
 import com.nuparu.sevendaystomine.init.ModBiomes;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -50,22 +52,15 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
 		switch (world.provider.getDimension()) {
-		case -1:
-			generateNether(world, random, chunkX, chunkZ);
-			break;
 		case 0:
 			generateOverworld(world, random, chunkX, chunkZ);
 			break;
-		case 1:
-			generateEnd(world, random, chunkX, chunkZ);
-			break;
+
 		}
 	}
 
-	private void generateNether(World world, Random rand, int chunkX, int blockZ) {
-	}
-
 	private void generateOverworld(World world, Random rand, int chunkX, int chunkZ) {
+		if(!ModConfig.worldGen.generateRoads) return;
 		if (world.getWorldType() == WorldType.FLAT) {
 			return;
 		}
@@ -101,7 +96,7 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 								CityHelper.placeRandomCar(world, pos.up(), EnumFacing.HORIZONTALS[rand.nextInt(4)],true,rand);
 								break;
 							}
-							else if (rand.nextInt(2) == 0 && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY)) {
+							else if (rand.nextInt(2) == 0 && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && biome.topBlock.getBlock() == Blocks.SAND) {
 								IBlockState sand = ModBlocks.SAND_LAYER.getDefaultState();
 								if(biome.topBlock.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND) {
 									sand = ModBlocks.RED_SAND_LAYER.getDefaultState();
@@ -127,10 +122,6 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 				}
 			}
 		}
-	}
-
-	private void generateEnd(World world, Random rand, int chunkX, int blockZ) {
-
 	}
 
 	public static double getNoiseValue(int x, int y, int z) {

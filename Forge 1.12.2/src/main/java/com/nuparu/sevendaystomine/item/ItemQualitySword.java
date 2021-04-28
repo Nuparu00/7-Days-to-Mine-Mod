@@ -37,7 +37,7 @@ public class ItemQualitySword extends Item implements IQuality {
 	private final float attackDamage;
 	private final Item.ToolMaterial material;
 	public double speed;
-	
+
 	public EnumLength length = EnumLength.LONG;
 
 	public ItemQualitySword(Item.ToolMaterial material) {
@@ -48,22 +48,22 @@ public class ItemQualitySword extends Item implements IQuality {
 		this.attackDamage = 3.0F + material.getAttackDamage();
 		speed = ItemQualityTool.DEFAULT_SPEED;
 	}
-	
+
 	public ItemQualitySword(Item.ToolMaterial material, EnumLength length) {
 		this(material);
 		this.length = length;
 	}
-	
+
 	public ItemQualitySword(Item.ToolMaterial material, double speed) {
 		this(material);
 		this.speed = speed;
 	}
-	
+
 	public ItemQualitySword(Item.ToolMaterial material, EnumLength length, double speed) {
-		this(material,length);
+		this(material, length);
 		this.speed = speed;
 	}
-	
+
 	public ItemQualitySword setAttackSpeed(double speed) {
 		this.speed = speed;
 		return this;
@@ -102,13 +102,14 @@ public class ItemQualitySword extends Item implements IQuality {
 
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
-		setQuality(itemstack, (int) (int) Math.min(Math.max(Math.floor(player.experienceTotal/ModConfig.players.xpPerQuality), 1),600));
+		setQuality(itemstack, (int) (int) Math
+				.min(Math.max(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality), 1), 600));
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 		int i = 0;
-		if (stack.getTagCompound() != null) {
+		if (ModConfig.players.qualitySystem && stack.getTagCompound() != null) {
 			i = getQuality(stack);
 		}
 		return super.getMaxDamage(stack) + i;
@@ -116,16 +117,20 @@ public class ItemQualitySword extends Item implements IQuality {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
+		if(!ModConfig.players.qualitySystem) return super.getItemStackDisplayName(itemstack);
 		EnumQuality quality = getQualityTierFromStack(itemstack);
 		return quality.color + SevenDaysToMine.proxy.localize(this.getUnlocalizedName() + ".name");
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		int quality = getQuality(stack);
-		EnumQuality tier = getQualityTierFromInt(quality);
-		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
-		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		if (ModConfig.players.qualitySystem) {
+			int quality = getQuality(stack);
+			EnumQuality tier = getQualityTierFromInt(quality);
+			tooltip.add(
+					tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
+			tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		}
 	}
 
 	@Override
@@ -135,7 +140,7 @@ public class ItemQualitySword extends Item implements IQuality {
 			EntityPlayer player = Minecraft.getMinecraft().player;
 			ItemStack stack = new ItemStack(this, 1, 0);
 			if (player != null) {
-				ItemQuality.setQualityForPlayer(stack,player);
+				ItemQuality.setQualityForPlayer(stack, player);
 			}
 			items.add(stack);
 		}
@@ -228,7 +233,7 @@ public class ItemQualitySword extends Item implements IQuality {
 	 */
 	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
 		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
-
+		
 		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
 			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
 					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.attackDamage, 0));
@@ -240,22 +245,24 @@ public class ItemQualitySword extends Item implements IQuality {
 	}
 
 	public double getAttackDamageModified(ItemStack stack) {
-		return this.attackDamage * (1+((float)getQuality(stack) / (float)ModConfig.players.maxQuality));
+		return this.attackDamage * (1 + ((float) getQuality(stack) / (float) ModConfig.players.maxQuality));
 	}
-	
+
 	public double getAttackSpeedModified(ItemStack stack) {
-		return this.speed / (1+((float)getQuality(stack) / (float)ModConfig.players.maxQuality));
+		return this.speed / (1 + ((float) getQuality(stack) / (float) ModConfig.players.maxQuality));
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack)
-	{
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot,
+			ItemStack stack) {
+		if(!ModConfig.players.qualitySystem) return super.getAttributeModifiers(equipmentSlot, stack);
 		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 
-		if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
-		{
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", getAttackDamageModified(stack), 0));
-			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", getAttackSpeedModified(stack), 0));
+		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER,
+					"Weapon modifier", getAttackDamageModified(stack), 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
+					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", getAttackSpeedModified(stack), 0));
 		}
 
 		return multimap;
@@ -264,9 +271,11 @@ public class ItemQualitySword extends Item implements IQuality {
 	public boolean canDestroyBlockInCreative(World world, BlockPos pos, ItemStack stack, EntityPlayer player) {
 		return false;
 	}
-	
+
 	@Override
 	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		if (!ModConfig.players.qualitySystem)
+			return super.getRGBDurabilityForDisplay(stack);
 		switch (getQualityTierFromStack(stack)) {
 		case FLAWLESS:
 			return 0xA300A3;

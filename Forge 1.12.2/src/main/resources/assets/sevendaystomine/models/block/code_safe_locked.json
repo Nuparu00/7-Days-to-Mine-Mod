@@ -2,10 +2,10 @@
     "parent": "block/block",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "blocks/anvil_base",
+		"0": "sevendaystomine:blocks/anvil_base_rusty",
 		"1": "sevendaystomine:blocks/rustymetal",
 		"2": "blocks/stone_slab_top",
-		"particle": "blocks/anvil_base"
+		"particle": "sevendaystomine:blocks/anvil_base_rusty"
 	},
 	"elements": [
 		{

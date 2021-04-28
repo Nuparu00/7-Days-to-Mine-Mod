@@ -138,13 +138,5 @@ public class BlockCookware extends BlockPickable {
 		return item;
 	}
 	
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(ModBlocks.COOKING_POT);
-	}
-
-	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(ModBlocks.COOKING_POT);
-	}
 
 }

@@ -28,7 +28,8 @@ public class ModelCar extends ModelBase {
 	private final ModelRenderer bone9;
 	private final ModelRenderer backRightDoor;
 	private final ModelRenderer bone11;
-	private final ModelRenderer bone12;
+	private final ModelRenderer steering_wheel;
+	public final ModelRenderer steering_wheel_axis;
 	private final ModelRenderer bone13;
 	private final ModelRenderer frontWheels;
 	private final ModelRenderer rearWheels;
@@ -60,7 +61,7 @@ public class ModelCar extends ModelBase {
 		frontLeftDoor = new ModelRenderer(this);
 		frontLeftDoor.setRotationPoint(13.5F, 22.5F, -13.0F);
 		frontLeftDoor.cubeList.add(new ModelBox(frontLeftDoor, 0, 0, -0.5F, -11.5F, 0.0F, 1, 9, 18, 0.0F, false));
-		frontLeftDoor.cubeList.add(new ModelBox(frontLeftDoor, 67, 62, -0.5F, -21.5F, 17.0F, 1, 10, 1, 0.0F, false));
+		frontLeftDoor.cubeList.add(new ModelBox(frontLeftDoor, 67, 62, -0.5F, -21.5F, 16.0F, 1, 10, 1, 0.0F, false));
 		frontLeftDoor.cubeList.add(new ModelBox(frontLeftDoor, 0, 0, -0.5F, -22.5F, 11.0F, 1, 1, 7, 0.0F, false));
 
 		bone5 = new ModelRenderer(this);
@@ -84,7 +85,7 @@ public class ModelCar extends ModelBase {
 		backLeftDoor = new ModelRenderer(this);
 		backLeftDoor.setRotationPoint(13.5F, 22.5F, 2.0F);
 		backLeftDoor.cubeList.add(new ModelBox(backLeftDoor, 55, 127, -0.5F, -11.5F, 3.0F, 1, 9, 15, 0.0F, false));
-		backLeftDoor.cubeList.add(new ModelBox(backLeftDoor, 0, 62, -0.5F, -21.5F, 3.0F, 1, 10, 1, 0.0F, false));
+		backLeftDoor.cubeList.add(new ModelBox(backLeftDoor, 0, 62, -0.5F, -21.5F, 2.0F, 1, 10, 1, 0.0F, false));
 		backLeftDoor.cubeList.add(new ModelBox(backLeftDoor, 22, 134, -0.5F, -22.5F, 3.0F, 1, 1, 12, 0.0F, false));
 
 		bone9 = new ModelRenderer(this);
@@ -105,11 +106,16 @@ public class ModelCar extends ModelBase {
 		setRotationAngle(bone11, 0.6981F, 0.0F, 0.0F);
 		bone11.cubeList.add(new ModelBox(bone11, 16, 39, -0.48F, -0.1852F, 8.0F, 1, 12, 1, 0.0F, false));
 
-		bone12 = new ModelRenderer(this);
-		bone12.setRotationPoint(7.0F, 17.5F, -13.0F);
-		setRotationAngle(bone12, 0.6109F, 0.0F, 0.0F);
-		bone12.cubeList.add(new ModelBox(bone12, 0, 0, -0.5F, -2.9575F, 1.7207F, 1, 1, 2, 0.0F, false));
-		bone12.cubeList.add(new ModelBox(bone12, 8, 8, -1.5F, -3.9575F, 3.7207F, 3, 3, 1, 0.0F, false));
+		steering_wheel = new ModelRenderer(this);
+		steering_wheel.setRotationPoint(7.0F, 13.0425F, -11.5293F);
+		setRotationAngle(steering_wheel, 0.6109F, 0.0F, 0.0F);
+		
+
+		steering_wheel_axis = new ModelRenderer(this);
+		steering_wheel_axis.setRotationPoint(0.0F, 0.0F, 0.0F);
+		steering_wheel.addChild(steering_wheel_axis);
+		steering_wheel_axis.cubeList.add(new ModelBox(steering_wheel_axis, 0, 0, -0.5F, -0.5F, -1.75F, 1, 1, 2, 0.0F, false));
+		steering_wheel_axis.cubeList.add(new ModelBox(steering_wheel_axis, 8, 8, -1.5F, -1.5F, 0.25F, 3, 3, 1, 0.0F, false));
 
 		bone13 = new ModelRenderer(this);
 		bone13.setRotationPoint(0.0F, 24.0F, 0.0F);
@@ -171,10 +177,11 @@ public class ModelCar extends ModelBase {
 			frontRightDoor.render(f5);
 			backLeftDoor.render(f5);
 			backRightDoor.render(f5);
-			bone12.render(f5);
 			bone13.render(f5);
-			if (car.getWheels()) {
+			if (car.getWheelsFront()) {
 				frontWheels.render(f5);
+			}
+			if (car.getWheelsBack()) {
 				rearWheels.render(f5);
 			}
 			if (car.getEngine()) {
@@ -183,11 +190,19 @@ public class ModelCar extends ModelBase {
 			if (car.getSeat()) {
 				seats.render(f5);
 			}
+			if(car.getHandles()) {
+				getSteering_wheel().render(f5);
+			}
+			
 			GlStateManager.pushMatrix();
 			GlStateManager.rotate(180, 0, 1, 0);
 			GlStateManager.translate(-0.3, 0.75, 0.8075);
 			GlStateManager.scale(f5/10, f5/10, f5/10);
 			mc.fontRenderer.drawString(MathUtils.roundToNDecimal(MathUtils.getSpeedKilometersPerHour(entity),1) + " km/h", 0, 0, 0x000000);
+
+			GlStateManager.translate(0, 15, 0);
+			mc.fontRenderer.drawString((int)Math.round((car.getHealth()/car.getMaxHealth())*100) + "%", 0, 0, 0x000000);
+			GlStateManager.translate(0, -15, 0);
 			//mc.fontRenderer.drawString(car.getFuel()+"", 0, 0, 0x000000);
 
 			GlStateManager.translate(0,10,45);
@@ -215,6 +230,10 @@ public class ModelCar extends ModelBase {
 
 	public ModelRenderer getRearWheels() {
 		return rearWheels;
+	}
+
+	public ModelRenderer getSteering_wheel() {
+		return steering_wheel;
 	}
 
 }

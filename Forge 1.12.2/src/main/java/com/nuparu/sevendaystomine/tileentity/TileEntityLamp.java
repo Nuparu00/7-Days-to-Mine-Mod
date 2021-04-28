@@ -17,7 +17,7 @@ import net.minecraftforge.common.util.Constants;
 public class TileEntityLamp extends TileEntity implements ITickable, IVoltage {
 
 	private long voltage = 0;
-	private long capacity = 300;
+	private long capacity = 30;
 
 	private boolean on = false;
 
@@ -77,7 +77,7 @@ public class TileEntityLamp extends TileEntity implements ITickable, IVoltage {
 
 	@Override
 	public long getRequiredPower() {
-		return 10;
+		return 1;
 	}
 
 	@Override

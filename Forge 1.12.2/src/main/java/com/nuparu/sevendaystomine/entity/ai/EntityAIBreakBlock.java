@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.entity.ai;
 
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.entity.INoiseListener;
@@ -45,7 +46,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
 	public boolean shouldExecute() {
 		if (theEntity.getAttackTarget() != null
 				|| ((theEntity instanceof INoiseListener) && ((INoiseListener) theEntity).getCurrentNoise() != null)) {
-			if (!this.theEntity.world.getGameRules().getBoolean("mobGriefing")) {
+			if (!this.theEntity.world.getGameRules().getBoolean("mobGriefing") || !ModConfig.mobs.zombiesBreakBlocks) {
 				return false;
 			} else {
 				if (theEntity.world.rand.nextInt(10) == 0) {

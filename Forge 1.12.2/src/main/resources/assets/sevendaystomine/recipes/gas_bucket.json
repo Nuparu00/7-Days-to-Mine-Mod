@@ -1,0 +1,20 @@
+{
+	"type": "sevendaystomine:crafting_quality_shaped",
+	"pattern": [
+		"GG",
+		"GG"
+	],
+	"key": {
+		"G": {
+			"item": "sevendaystomine:gas_canister"
+		}
+	},
+	"result": {
+		"type": "minecraft:item_nbt",
+		"item": "forge:bucketFilled",
+		"nbt": {
+			"FluidName": "gasoline",
+			"Amount": 1000
+		}
+	}
+}

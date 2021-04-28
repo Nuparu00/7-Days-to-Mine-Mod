@@ -3,11 +3,19 @@ package com.nuparu.sevendaystomine.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockChemistryStation;
 import com.nuparu.sevendaystomine.crafting.chemistry.ChemistryRecipeManager;
 import com.nuparu.sevendaystomine.crafting.chemistry.IChemistryRecipe;
+import com.nuparu.sevendaystomine.inventory.ContainerCampfire;
 import com.nuparu.sevendaystomine.inventory.ContainerChemistryStation;
+import com.nuparu.sevendaystomine.inventory.IContainerCallbacks;
+import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
+import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
+import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
+import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -29,35 +37,50 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.storage.loot.ILootContainer;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
-public class TileEntityChemistryStation extends TileEntityLockableLoot implements ITickable, ISidedInventory {
+public class TileEntityChemistryStation extends TileEntity implements IContainerCallbacks, ILootContainer, ITickable {
 
+	private static final ITextComponent DEFAULT_NAME = new TextComponentTranslation("container.chemistry");
+	
 	public enum EnumSlots {
 		INPUT_SLOT, INPUT_SLOT2, INPUT_SLOT3, INPUT_SLOT4, OUTPUT_SLOT, FUEL_SLOT
 	}
 
-	private static final int[] slotsTop = new int[] { EnumSlots.INPUT_SLOT.ordinal(), EnumSlots.INPUT_SLOT2.ordinal(),
-			EnumSlots.INPUT_SLOT3.ordinal(), EnumSlots.INPUT_SLOT4.ordinal() };
-	private static final int[] slotsBottom = new int[] { EnumSlots.OUTPUT_SLOT.ordinal() };
-	private static final int[] slotsSides = new int[] { EnumSlots.FUEL_SLOT.ordinal() };
-
-	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(6, ItemStack.EMPTY);
 	private int burnTime;
 	private int currentItemBurnTime;
 	private int cookTime;
 	private int totalCookTime;
-	private String customName;
 
 	private IChemistryRecipe currentRecipe = null;
+	
+	private final ItemHandlerNameable HANDLER_INPUT = new ItemHandlerNameable(4, DEFAULT_NAME);
+	private final ItemHandlerNameable HANDLER_OUTPUT = new ItemHandlerNameable(1, DEFAULT_NAME);
+	private final ItemHandlerNameable HANDLER_FUEL = new ItemHandlerNameable(1, DEFAULT_NAME){
+		@Override
+	    public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+	    {
+	        return !stack.isEmpty();
+	    }
+	};
 
 	public TileEntityChemistryStation() {
 
@@ -71,10 +94,10 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 			--this.burnTime;
 		}
 		if (!this.world.isRemote) {
-			ItemStack itemstack = this.inventory.get(EnumSlots.FUEL_SLOT.ordinal());
+			ItemStack itemstack = this.getInventory().getStackInSlot(EnumSlots.FUEL_SLOT.ordinal());
 			if (this.isBurning() || hasFuel() && !isInputEmpty()) {
 				if (!this.isBurning() && this.canSmelt()) {
-					this.burnTime = getItemBurnTime(itemstack);
+					this.burnTime = Utils.getItemBurnTime(itemstack);
 					this.currentItemBurnTime = this.burnTime;
 
 					if (this.isBurning()) {
@@ -86,11 +109,11 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 
 							if (itemstack.isEmpty()) {
 								ItemStack item1 = item.getContainerItem(itemstack);
-								this.inventory.set(EnumSlots.FUEL_SLOT.ordinal(), item1);
+								this.getInventory().setStackInSlot(EnumSlots.FUEL_SLOT.ordinal(), item1);
 							}
 						}
-						this.totalCookTime = this.getCookTime(null);
 					}
+					this.totalCookTime = this.getCookTime(null);
 				}
 
 				if (this.isBurning() && this.canSmelt()) {
@@ -110,18 +133,22 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 		}
 
 		if (flag1) {
-			this.markDirty();
+			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.notifyBlockUpdate(pos, getState(), getState(), 3);
+			world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+			markDirty();
 		}
 
-		world.markBlockRangeForRenderUpdate(pos, pos);
-		world.notifyBlockUpdate(pos, getState(), getState(), 3);
-		world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
-		markDirty();
+
 
 	}
-
+	
+	private IBlockState getState() {
+		return world.getBlockState(pos);
+	}
+	
 	private boolean canSmelt() {
-		if (!getOutputSlot().isEmpty() && getOutputSlot().getCount() > this.getInventoryStackLimit())
+		if (!getOutputSlot().isEmpty() && getOutputSlot().getCount() > 64)
 			return false;
 		if (isInputEmpty() || !hasFuel())
 			return false;
@@ -131,7 +158,7 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 				if (!getOutputSlot().isEmpty() && !ItemStack.areItemsEqual(getOutputSlot(), output)) {
 					continue;
 				}
-				if (getOutputSlot().getCount() + output.getCount() <= this.getInventoryStackLimit()) {
+				if (getOutputSlot().getCount() + output.getCount() <= 64) {
 					currentRecipe = recipe;
 					return true;
 				}
@@ -153,14 +180,14 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 
 			ItemStack currentOutput = getOutputSlot();
 			if (currentOutput.isEmpty()) {
-				setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), recipeToUse.getOutput(this));
+				getInventory().setStackInSlot(EnumSlots.OUTPUT_SLOT.ordinal(), recipeToUse.getOutput(this));
 
 			} else {
 				if (ItemStack.areItemsEqual(currentOutput, recipeToUse.getOutput(this)) && currentOutput.getCount()
-						+ recipeToUse.getOutput(this).getCount() <= getInventoryStackLimit()) {
+						+ recipeToUse.getOutput(this).getCount() <= 64) {
 
 					currentOutput.grow(recipeToUse.getOutput(this).getCount());
-					setInventorySlotContents(EnumSlots.OUTPUT_SLOT.ordinal(), currentOutput);
+					getInventory().setStackInSlot(EnumSlots.OUTPUT_SLOT.ordinal(), currentOutput);
 				}
 			}
 			consumeInput(recipeToUse);
@@ -173,32 +200,26 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 	}
 
 	public boolean isInputEmpty() {
-		return (getStackInSlot(EnumSlots.INPUT_SLOT.ordinal()).isEmpty()
-				&& getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal()).isEmpty()
-				&& getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal()).isEmpty()
-				&& getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal()).isEmpty());
+		return (getInventory().getStackInSlot(EnumSlots.INPUT_SLOT.ordinal()).isEmpty()
+				&& getInventory().getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal()).isEmpty()
+				&& getInventory().getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal()).isEmpty()
+				&& getInventory().getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal()).isEmpty());
 	}
 
 	public boolean hasFuel() {
-		return !getStackInSlot(EnumSlots.FUEL_SLOT.ordinal()).isEmpty();
+		return !getInventory().getStackInSlot(EnumSlots.FUEL_SLOT.ordinal()).isEmpty();
 	}
 
 	public ItemStack getOutputSlot() {
-		return getStackInSlot(EnumSlots.OUTPUT_SLOT.ordinal());
+		return getInventory().getStackInSlot(EnumSlots.OUTPUT_SLOT.ordinal());
 	}
 
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		this.inventory = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
-		ItemStackHelper.loadAllItems(compound, this.inventory);
 		this.burnTime = compound.getInteger("BurnTime");
 		this.cookTime = compound.getInteger("CookTime");
 		this.totalCookTime = compound.getInteger("CookTimeTotal");
-		this.currentItemBurnTime = getItemBurnTime(this.inventory.get(1));
-
-		if (compound.hasKey("CustomName", 8)) {
-			this.customName = compound.getString("CustomName");
-		}
+		this.currentItemBurnTime = Utils.getItemBurnTime(this.getInventory().getStackInSlot(1));
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -206,11 +227,6 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 		compound.setInteger("BurnTime", (short) this.burnTime);
 		compound.setInteger("CookTime", (short) this.cookTime);
 		compound.setInteger("CookTimeTotal", (short) this.totalCookTime);
-		ItemStackHelper.saveAllItems(compound, this.inventory);
-
-		if (this.hasCustomName()) {
-			compound.setString("CustomName", this.customName);
-		}
 
 		return compound;
 	}
@@ -219,36 +235,22 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 		return 600;
 	}
 
-	@Override
-	public int getSizeInventory() {
-		return this.inventory.size();
-	}
-
-	public NonNullList<ItemStack> getInventory() {
-		return this.inventory;
-	}
-	
-	@Override
-	protected NonNullList<ItemStack> getItems() {
-		return inventory;
-	}
-
 	public List<ItemStack> getActiveInventory() {
 		List<ItemStack> list = new ArrayList<ItemStack>();
-		list.add(getStackInSlot(EnumSlots.INPUT_SLOT.ordinal()));
-		list.add(getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal()));
-		list.add(getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal()));
-		list.add(getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal()));
+		list.add(getInventory().getStackInSlot(EnumSlots.INPUT_SLOT.ordinal()));
+		list.add(getInventory().getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal()));
+		list.add(getInventory().getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal()));
+		list.add(getInventory().getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal()));
 		return list;
 	}
 
 	public ItemStack[][] getActiveInventoryAsArray() {
 		ItemStack[][] array = new ItemStack[2][2];
 
-		array[0][0] = getStackInSlot(EnumSlots.INPUT_SLOT.ordinal());
-		array[0][1] = getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal());
-		array[1][0] = getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal());
-		array[1][1] = getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal());
+		array[0][0] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT.ordinal());
+		array[0][1] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal());
+		array[1][0] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal());
+		array[1][1] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal());
 
 		return array;
 	}
@@ -257,80 +259,35 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 		return this.currentRecipe;
 	}
 
-	@Override
-	public boolean isEmpty() {
-		for (ItemStack itemstack : this.inventory) {
-			if (!itemstack.isEmpty()) {
-				return false;
-			}
-		}
-
-		return true;
+	@SideOnly(Side.CLIENT)
+	public static boolean isBurning(TileEntityChemistryStation inventory) {
+		return inventory.getField(0) > 0;
 	}
 
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		return this.inventory.get(index);
+	public boolean isBurning() {
+		return this.burnTime > 0;
 	}
 
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		return ItemStackHelper.getAndSplit(this.inventory, index, count);
+	public static boolean isItemFuel(ItemStack stack) {
+		return Utils.getItemBurnTime(stack) > 0;
 	}
 
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		return ItemStackHelper.getAndRemove(this.inventory, index);
+	public CombinedInvWrapper getInventory() {
+		return new CombinedInvWrapper(this.HANDLER_INPUT, this.HANDLER_OUTPUT, this.HANDLER_FUEL);
+	}
+	
+	public NonNullList<ItemStack> getDrops() {
+		return Utils.dropItemHandlerContents(getInventory(), getWorld().rand);
 	}
 
-	public void setInventorySlotContents(int index, ItemStack stack) {
-		ItemStack itemstack = this.inventory.get(index);
-		boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack)
-				&& ItemStack.areItemStackTagsEqual(stack, itemstack);
-		this.inventory.set(index, stack);
-
-		if (stack.getCount() > this.getInventoryStackLimit()) {
-			stack.setCount(this.getInventoryStackLimit());
-		}
-
-		if (index == 0 && !flag) {
-			this.totalCookTime = this.getCookTime(stack);
-			this.cookTime = 0;
-			this.markDirty();
-		}
+	public void setDisplayName(String displayName) {
+		HANDLER_INPUT.setDisplayName(new TextComponentString(displayName));
+	}
+	
+	public ITextComponent getDisplayName() {
+		return HANDLER_INPUT.getDisplayName();
 	}
 
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
-		if (this.world.getTileEntity(this.pos) != this) {
-			return false;
-		} else {
-			return player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
-					(double) this.pos.getZ() + 0.5D) <= 64.0D;
-		}
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return (index != EnumSlots.OUTPUT_SLOT.ordinal());
-	}
-
-	@Override
 	public int getField(int id) {
 		switch (id) {
 		case 0:
@@ -346,7 +303,6 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 		}
 	}
 
-	@Override
 	public void setField(int id, int value) {
 		switch (id) {
 		case 0:
@@ -363,133 +319,61 @@ public class TileEntityChemistryStation extends TileEntityLockableLoot implement
 		}
 	}
 
-	@Override
 	public int getFieldCount() {
 		return 4;
 	}
 
 	@Override
-	public void clear() {
-		this.inventory.clear();
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 	}
 
 	@Override
-	public String getName() {
-		return this.hasCustomName() ? this.customName : "container.chemistry";
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return this.customName != null && !this.customName.isEmpty();
-	}
-
-	public void setCustomInventoryName(String name) {
-		this.customName = name;
-	}
-
-	@Override
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-		return new ContainerChemistryStation(playerInventory, this);
-	}
-
-	@Override
-	public String getGuiID() {
-		return SevenDaysToMine.MODID + ":chemistry";
-	}
-
-	private IBlockState getState() {
-		return world.getBlockState(pos);
-	}
-
-	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
-		return side == EnumFacing.DOWN ? slotsBottom : (side == EnumFacing.UP ? slotsTop : slotsSides);
-	}
-
-	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-		return this.isItemValidForSlot(index, itemStackIn);
-	}
-
-	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		if (direction == EnumFacing.DOWN && index == 1) {
-			Item item = stack.getItem();
-			if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
-				return false;
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			switch(facing) {
+			case UP : return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(HANDLER_INPUT);
+			case DOWN : return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(HANDLER_OUTPUT);
+			case NORTH :
+			case WEST :
+			case SOUTH :
+			case EAST : return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(HANDLER_FUEL);
 			}
-
 		}
 
-		return true;
+		return null;
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static boolean isBurning(IInventory inventory) {
-		return inventory.getField(0) > 0;
+	@Override
+	public ResourceLocation getLootTable() {
+		return null;
 	}
 
-	public boolean isBurning() {
-		return this.burnTime > 0;
+	@Override
+	public void onContainerOpened(EntityPlayer player) {
 	}
 
-	public static int getItemBurnTime(ItemStack stack) {
-		if (stack.isEmpty()) {
-			return 0;
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+	}
+	
+	public ContainerChemistryStation createContainer(EntityPlayer player) {
+		final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player
+				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+		final IItemHandlerNameable playerInventoryWrapper = new NameableCombinedInvWrapper(player.inventory,
+				playerInventory);
+
+		return new ContainerChemistryStation(playerInventoryWrapper, getInventory(), this, player);
+	}
+
+	@Override
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		if (this.world.getTileEntity(this.pos) != this) {
+			return false;
 		} else {
-			int burnTime = net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(stack);
-			if (burnTime >= 0)
-				return burnTime;
-			Item item = stack.getItem();
-
-			if (item == Item.getItemFromBlock(Blocks.WOODEN_SLAB)) {
-				return 150;
-			} else if (item == Item.getItemFromBlock(Blocks.WOOL)) {
-				return 100;
-			} else if (item == Item.getItemFromBlock(Blocks.CARPET)) {
-				return 67;
-			} else if (item == Item.getItemFromBlock(Blocks.LADDER)) {
-				return 300;
-			} else if (item == Item.getItemFromBlock(Blocks.WOODEN_BUTTON)) {
-				return 100;
-			} else if (Block.getBlockFromItem(item).getDefaultState().getMaterial() == Material.WOOD) {
-				return 300;
-			} else if (item == Item.getItemFromBlock(Blocks.COAL_BLOCK)) {
-				return 16000;
-			} else if (item instanceof ItemTool && "WOOD".equals(((ItemTool) item).getToolMaterialName())) {
-				return 200;
-			} else if (item instanceof ItemSword && "WOOD".equals(((ItemSword) item).getToolMaterialName())) {
-				return 200;
-			} else if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe) item).getMaterialName())) {
-				return 200;
-			} else if (item == Items.STICK) {
-				return 100;
-			} else if (item != Items.BOW && item != Items.FISHING_ROD) {
-				if (item == Items.SIGN) {
-					return 200;
-				} else if (item == Items.COAL) {
-					return 1600;
-				} else if (item == Items.LAVA_BUCKET) {
-					return 20000;
-				} else if (item != Item.getItemFromBlock(Blocks.SAPLING) && item != Items.BOWL) {
-					if (item == Items.BLAZE_ROD) {
-						return 2400;
-					} else if (item instanceof ItemDoor && item != Items.IRON_DOOR) {
-						return 200;
-					} else {
-						return item instanceof ItemBoat ? 400 : 0;
-					}
-				} else {
-					return 100;
-				}
-			} else {
-				return 300;
-			}
+			return player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
+					(double) this.pos.getZ() + 0.5D) <= 64.0D;
 		}
-	}
-
-	public static boolean isItemFuel(ItemStack stack) {
-		return getItemBurnTime(stack) > 0;
 	}
 
 }

@@ -1,14 +1,18 @@
 package com.nuparu.sevendaystomine.inventory;
 
+import com.nuparu.sevendaystomine.tileentity.TileEntityCampfire;
+
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-public class SlotForgeFuel extends Slot
+public class SlotForgeFuel extends SlotItemHandler
 {
-    public SlotForgeFuel(IInventory inventoryIn, int slotIndex, int xPosition, int yPosition)
+    public SlotForgeFuel(IItemHandler inventoryIn, int slotIndex, int xPosition, int yPosition)
     {
         super(inventoryIn, slotIndex, xPosition, yPosition);
     }
@@ -18,7 +22,7 @@ public class SlotForgeFuel extends Slot
      */
     public boolean isItemValid(ItemStack stack)
     {
-        return TileEntityFurnace.isItemFuel(stack) || isBucket(stack);
+        return TileEntityCampfire.isItemFuel(stack) || isBucket(stack);
     }
 
     public int getItemStackLimit(ItemStack stack)

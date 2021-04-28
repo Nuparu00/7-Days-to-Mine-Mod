@@ -20,6 +20,7 @@ import com.nuparu.sevendaystomine.item.ItemBloodDrawKit;
 import com.nuparu.sevendaystomine.item.ItemBlueberry;
 import com.nuparu.sevendaystomine.item.ItemBlueprint;
 import com.nuparu.sevendaystomine.item.ItemCannedFood;
+import com.nuparu.sevendaystomine.item.ItemCarChassis;
 import com.nuparu.sevendaystomine.item.ItemChainsaw;
 import com.nuparu.sevendaystomine.item.ItemChlorineGrenade;
 import com.nuparu.sevendaystomine.item.ItemChristmasHat;
@@ -36,6 +37,7 @@ import com.nuparu.sevendaystomine.item.ItemEmptyCan;
 import com.nuparu.sevendaystomine.item.ItemEmptyJar;
 import com.nuparu.sevendaystomine.item.ItemFirstAidKit;
 import com.nuparu.sevendaystomine.item.ItemFlamethrower;
+import com.nuparu.sevendaystomine.item.ItemFlare;
 import com.nuparu.sevendaystomine.item.ItemFoodBitable;
 import com.nuparu.sevendaystomine.item.ItemFragmentationGrenade;
 import com.nuparu.sevendaystomine.item.ItemGuide;
@@ -130,7 +132,7 @@ public class ModItems {
 			.setUnlocalizedName("StoneAxe");
 	public static final Item STONE_SHOVEL = new ItemStoneShovel(SevenDaysToMine.STONE_TOOLS, -1f, 8f)
 			.setRegistryName("StoneShovel").setUnlocalizedName("StoneShovel");
-	public static final Item BONE_SHIV = new ItemQualitySword(SevenDaysToMine.BONE_TOOLS).setRegistryName("BoneShiv")
+	public static final Item BONE_SHIV = new ItemQualitySword(SevenDaysToMine.BONE_TOOLS,EnumLength.SHORT).setRegistryName("BoneShiv")
 			.setUnlocalizedName("BoneShiv");
 	public static final Item CRUDE_CLUB = new ItemClub(SevenDaysToMine.CRUDE_TOOLS, -3.14d).setRegistryName("CrudeClub")
 			.setUnlocalizedName("CrudeClub");
@@ -403,6 +405,8 @@ public class ModItems {
 			.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
 	public static final Item MINIBIKE_CHASSIS = new ItemMinibikeChassis().setRegistryName("minibike_chassis")
 			.setUnlocalizedName("minibike_chassis").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
+	public static final Item CAR_CHASSIS = new ItemCarChassis().setRegistryName("car_chassis")
+			.setUnlocalizedName("car_chassis").setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY).setMaxStackSize(1);
 
 	public static final Item FIBER_CHESTPLATE = new ItemArmorBase(SevenDaysToMine.FIBER, 0, EntityEquipmentSlot.CHEST,
 			"fiber_chestplate");
@@ -540,6 +544,10 @@ public class ModItems {
 	public static final Item AUGER_SCHEMATICS = new ItemBlueprint(
 			new ResourceLocation(SevenDaysToMine.MODID, "data/books/auger.json"), "auger").setRegistryName("book_auger")
 					.setUnlocalizedName("book_auger");
+	
+	public static final Item ROCKET_SCHEMATICS = new ItemBlueprint(
+			new ResourceLocation(SevenDaysToMine.MODID, "data/books/rocket.json"), "rocket").setRegistryName("book_rocket")
+					.setUnlocalizedName("book_rocket");
 
 	public static final Item MICROPHONE = new Item().setRegistryName("microphone").setUnlocalizedName("microphone");
 	public static final Item BULLET_TIP = new ItemScrapable(EnumMaterial.LEAD, 1).setRegistryName("bullet_tip")
@@ -702,4 +710,8 @@ public class ModItems {
 	
 	public static final Item VOMIT = new Item().setRegistryName("vomit")
 			.setUnlocalizedName("vomit");
+	public static final Item FLARE = new ItemFlare().setRegistryName("flare")
+			.setUnlocalizedName("flare");
+	public static final Item SODA = new ItemCoffeeDrink(0, 300, 150).setRegistryName("soda")
+			.setUnlocalizedName("soda").setContainerItem(EMPTY_CAN);
 }

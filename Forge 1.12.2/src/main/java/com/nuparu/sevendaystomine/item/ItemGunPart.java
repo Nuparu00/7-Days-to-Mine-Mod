@@ -4,12 +4,15 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 
 public class ItemGunPart extends ItemQualityScrapable {
 
+	public String name;
+	
 	public ItemGunPart(String name, EnumMaterial mat) {
 		super(mat);
 		setMaxStackSize(1);
 		setCreativeTab(SevenDaysToMine.TAB_FORGING);
 		setRegistryName(name);
 		setUnlocalizedName(name);
+		this.name = name;
 	}
 
 	public ItemGunPart(String name, EnumMaterial mat, int weight) {
@@ -18,5 +21,6 @@ public class ItemGunPart extends ItemQualityScrapable {
 		setCreativeTab(SevenDaysToMine.TAB_FORGING);
 		setRegistryName(name);
 		setUnlocalizedName(name);
+		this.name = name;
 	}
 }

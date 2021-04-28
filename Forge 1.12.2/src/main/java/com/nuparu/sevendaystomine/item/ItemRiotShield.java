@@ -2,9 +2,13 @@ package com.nuparu.sevendaystomine.item;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShield;
@@ -18,7 +22,8 @@ public class ItemRiotShield extends ItemShield {
 	public static final List<ItemStack> ingots = OreDictionary.getOres("ingotIron");
 	
 	public ItemRiotShield() {
-		
+     super();
+     this.setMaxDamage(500);
 	}
 	
 	@Override
@@ -41,5 +46,11 @@ public class ItemRiotShield extends ItemShield {
         	return ItemStack.areItemsEqual(stack, repair);
         }
         return false;
+    }
+	
+	@Override
+	 public boolean isShield(ItemStack stack, @Nullable EntityLivingBase entity)
+    {
+        return stack.getItem() instanceof ItemShield;
     }
 }

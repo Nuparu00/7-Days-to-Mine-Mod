@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.tileentity.TileEntityForge.EnumSlots;
 
@@ -40,6 +41,7 @@ public abstract class TileEntitySafe extends TileEntityItemHandler<ItemHandlerNa
 	private String customName;
 	public boolean locked = true;
 	public boolean init = false;
+	
 
 
 	public TileEntitySafe() {
@@ -52,12 +54,10 @@ public abstract class TileEntitySafe extends TileEntityItemHandler<ItemHandlerNa
 
 	@Override
 	public void onContainerOpened(EntityPlayer player) {
-
 	}
 
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
-
 	}
 
 	@Override

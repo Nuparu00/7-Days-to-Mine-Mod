@@ -80,21 +80,36 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 						GlStateManager.rotate(-90, 1, 0, 0);
 						GlStateManager.rotate(90, 0, 0, -1);
 						GlStateManager.scale(0.215, 0.215, 0.215);
+					} else if (item == ModItems.SLEDGEHAMMER) {
+						GlStateManager.translate(0.1, 0.6, 0.2);
+						GlStateManager.scale(0.75, 0.75, 0.75);
+						//GlStateManager.rotate(-90, 0, 1,0 );
+						GlStateManager.rotate(180, 0, 0,1 );
+						GlStateManager.rotate(-45, 0, 0,1 );
 					} else if (item instanceof ItemClub) {
 						GlStateManager.translate(-0.215, 0, 0.16);
 						GlStateManager.scale(0.625, 0.625, 0.625);
 					} else if (item instanceof ItemQualitySword) {
-						GlStateManager.translate(-0.225, 0.2, 0.16);
-						GlStateManager.rotate(-90, 0, 1, 0);
+						GlStateManager.translate(-0.215, 1, 0.16);
+						GlStateManager.scale(0.75, 0.75, 0.75);
+						GlStateManager.rotate(-90, 0, 1,0 );
+						GlStateManager.rotate(180, 0, 0,1 );
 					}
 					else if (item instanceof ItemStoneShovel) {
 						GlStateManager.translate(-0.225, 0.25, 0.16);
 						GlStateManager.scale(0.875, 0.875, 0.875);
 					}
+					else if (item == ModItems.IRON_AXE) {
+						GlStateManager.rotate(180, 1, 0, 0);
+						GlStateManager.rotate(90, 0, 1, 0);
+						GlStateManager.rotate(45, -1, 0, 0);
+						GlStateManager.translate(0.16, -0.1, 0.2);
+					}
 					else if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemBow || item instanceof ItemHoe) {
 						GlStateManager.translate(0.75, 0.45, -0.2825);
 						GlStateManager.rotate(90, 0, 0, 1);
-					} else {
+					} 
+					else {
 						GlStateManager.translate(0, 0.2, 0.16);
 					}
 					Event event = new RenderHolsteredItemEvent(player, cache.longItem,
@@ -125,6 +140,18 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 						GlStateManager.translate(-0.3, 0.8, 0);
 						GlStateManager.rotate(-90, 1, 0, 0);
 						GlStateManager.scale(0.3625, 0.3625, 0.3625);
+					} else if (item == ModItems.BONE_SHIV) {
+						GlStateManager.translate(0, 0.5, 0);
+						GlStateManager.rotate(
+								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleX),
+								1, 0, 0);
+						GlStateManager.rotate(
+								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleY),
+								0, 1, 0);
+						GlStateManager.translate(0, -0.7, 0);
+						GlStateManager.translate(-0.255, 0.925, -0.025);
+						GlStateManager.rotate(90, 0, 1, 0);
+						GlStateManager.scale(0.2625, 0.2625, 0.2625);
 					}
 					else if (item instanceof ItemQualitySword) {
 						GlStateManager.translate(0, 0.7, 0);
@@ -192,9 +219,21 @@ public class LayerGuns implements LayerRenderer<EntityPlayer> {
 								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleY),
 								0, 1, 0);
 						GlStateManager.translate(0, -0.7, 0);
-						GlStateManager.translate(0.24, 0.8, 0);
+						GlStateManager.translate(-0.255, 0.925, -0.025);
 						GlStateManager.rotate(-90, 1, 0, 0);
 						GlStateManager.scale(0.3625, 0.3625, 0.3625);
+					}else if (item == ModItems.BONE_SHIV) {
+						GlStateManager.translate(0, 0.5, 0);
+						GlStateManager.rotate(
+								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleX),
+								1, 0, 0);
+						GlStateManager.rotate(
+								(float) Math.toDegrees(this.playerRenderer.getMainModel().bipedRightLeg.rotateAngleY),
+								0, 1, 0);
+						GlStateManager.translate(0, -0.7, 0);
+						GlStateManager.translate(0.255, 0.925, -0.025);
+						GlStateManager.rotate(90, 0, 1, 0);
+						GlStateManager.scale(0.2625, 0.2625, 0.2625);
 					}
 					else if (item instanceof ItemQualitySword) {
 						GlStateManager.translate(0, 0.7, 0);

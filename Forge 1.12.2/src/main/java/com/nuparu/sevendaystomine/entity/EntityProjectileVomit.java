@@ -8,9 +8,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityHuman.EnumSex;
 import com.nuparu.sevendaystomine.util.DamageSources;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
+import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.block.Block;
@@ -33,6 +35,7 @@ import net.minecraft.network.play.server.SPacketChangeGameState;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -352,14 +355,14 @@ public class EntityProjectileVomit extends Entity implements IProjectile {
 				if (iblockstate.getMaterial() != Material.AIR) {
 					block.onEntityCollidedWithBlock(this.world, blockpos, iblockstate, this);
 				}
-				this.world.playEvent(2001, blockpos, Block.getStateId(iblockstate));
 				if (iblockstate.getMaterial() == Material.GLASS) {
 					this.world.destroyBlock(blockpos, false);
-				} else {
+				} else if(ModConfig.mobs.zombiesBreakBlocks){
 					Utils.damageBlock(world, blockpos,
 							(float) (damage / iblockstate.getBlockHardness(world, blockpos)) * BLOCK_DAMAGE_BASE, true);
 
 				}
+				world.playSound(null, raytraceResultIn.hitVec.x, raytraceResultIn.hitVec.y, raytraceResultIn.hitVec.z, SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.HOSTILE, MathUtils.getFloatInRange(0.8f, 1.2f), MathUtils.getFloatInRange(0.8f, 1.2f));
 			}
 		}
 		this.setDead();

@@ -98,17 +98,16 @@ public class EntityFlame extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if (this.ticksAlive >= 2) {
+		if (this.ticksAlive >= 2 && rand.nextInt(4) == 0) {
 			this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D,
 					new int[0]);
 		}
-		if (this.ticksAlive >= 10) {
-			this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D,
-					new int[0]);
-		}
-		if (this.ticksAlive >= lifetime) {
+		else if (this.ticksAlive >= lifetime/2 && rand.nextInt(4) == 0) {
 
 			this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D,
+					new int[0]);
+		} else if (this.ticksAlive >= 10 && rand.nextInt(4) == 0) {
+			this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D,
 					new int[0]);
 		}
 		if (this.isInWater()) {

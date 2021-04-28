@@ -9,8 +9,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.block.BlockMercury;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
+import com.nuparu.sevendaystomine.entity.EntityCar;
 import com.nuparu.sevendaystomine.entity.EntityHuman;
+import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
@@ -18,7 +21,9 @@ import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.AbstractSkeleton;
@@ -32,12 +37,15 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.EntityVex;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -45,6 +53,7 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -75,6 +84,9 @@ public class LivingEventHandler {
 		EntityLivingBase entity = event.getEntityLiving();
 		World world = entity.world;
 
+		if (entity instanceof EntityMinibike || entity instanceof EntityCar)
+			return;
+
 		if (entity.getIsInvulnerable()) {
 			return;
 		}
@@ -87,7 +99,7 @@ public class LivingEventHandler {
 				return;
 			}
 			if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityZombieBase) {
-				if (world.rand.nextInt(8) == 0) {
+				if (world.rand.nextInt(ModConfig.players.infectionChanceModifier*(getArmorItemsCount(player)+1)) == 0) {
 					Utils.infectPlayer(player, 0);
 				}
 			}
@@ -107,7 +119,7 @@ public class LivingEventHandler {
 			return;
 		}
 
-		if (!world.isRemote && amount >= (entity.getMaxHealth() / 100 * 20) && world.rand.nextInt(16) == 0) {
+		if (!world.isRemote && amount >= (entity.getMaxHealth() / 100 * 20) && world.rand.nextInt(ModConfig.mobs.bleedingChanceModifier*(getArmorItemsCount(entity)+1)) == 0) {
 			PotionEffect effect = new PotionEffect(Potions.bleeding, Integer.MAX_VALUE, 1, false, false);
 			effect.setCurativeItems(new ArrayList<ItemStack>());
 			entity.addPotionEffect(effect);
@@ -173,6 +185,22 @@ public class LivingEventHandler {
 					new ItemStack(Items.SADDLE), false);
 
 		}
+	}
+
+	@SubscribeEvent
+	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+		if (!ModConfig.mobs.zombiesAttackAnimals)
+			return;
+		Entity entity = event.getEntity();
+		if (entity instanceof EntityAnimal || entity instanceof EntityVillager) {
+			EntityCreature creature = (EntityCreature) entity;
+			creature.tasks.addTask(3, new EntityAIAvoidEntity<EntityZombieBase>(creature, EntityZombieBase.class, 6.0F, 1.0D, 1.2D));
+		}
+
+	}
+	
+	public static int getArmorItemsCount(EntityLivingBase living) {
+		return (living.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty() ? 0 : 2)+(living.getItemStackFromSlot(EntityEquipmentSlot.CHEST).isEmpty() ? 0 : 3)+(living.getItemStackFromSlot(EntityEquipmentSlot.LEGS).isEmpty() ? 0 : 2)+(living.getItemStackFromSlot(EntityEquipmentSlot.FEET).isEmpty() ? 0 : 1);
 	}
 
 }

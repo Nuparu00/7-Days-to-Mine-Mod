@@ -135,7 +135,7 @@ public class BloodmoonHorde extends Horde {
 		super.onZombieKill(zombie);
 		if (bossInfo == null)
 			return;
-		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class BloodmoonHorde extends Horde {
 		super.addZombie(zombie);
 		if (bossInfo == null)
 			return;
-		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public class BloodmoonHorde extends Horde {
 				zombiesInWave++;
 			}
 		}
-		bossInfo.setPercent((float) zombies.size() / (float) zombiesInWave);
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
 		data.markDirty();
 	}
 

@@ -47,7 +47,7 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 		Item main = mainStack.getItem();
 		int reloadTime = 0;
 
-		if (main instanceof IReloadable) {
+		if (main != null && main instanceof IReloadable) {
 			reloadableMain = (IReloadable) main;
 			mainBullet = getReloadItem(player.inventory, reloadableMain.getReloadItem(mainStack));
 			if (!mainBullet.isEmpty()) {
@@ -58,7 +58,7 @@ public class ReloadHandler implements IMessageHandler<ReloadMessage, ReloadMessa
 			}
 		}
 		Item sec = secStack.getItem();
-		if (sec instanceof IReloadable) {
+		if (sec != null && sec instanceof IReloadable) {
 			reloadableSec = (IReloadable) sec;
 			secBullet = getReloadItem(player.inventory, reloadableSec.getReloadItem(secStack));
 			if (!secBullet.isEmpty()) {

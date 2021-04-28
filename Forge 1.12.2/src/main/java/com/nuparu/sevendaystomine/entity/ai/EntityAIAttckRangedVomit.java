@@ -118,7 +118,7 @@ public class EntityAIAttckRangedVomit extends EntityAIBase {
 		float f = MathHelper.sqrt(d0) / this.attackRadius;
 		float lvt_5_1_ = MathHelper.clamp(f, 0.1F, 1.0F);
 		this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget, lvt_5_1_);
-		entityHost.setVomitTimer(60);
+		entityHost.setVomitTimer(EntityZombiePoliceman.RECHARGE_TIME);
 
 	}
 }

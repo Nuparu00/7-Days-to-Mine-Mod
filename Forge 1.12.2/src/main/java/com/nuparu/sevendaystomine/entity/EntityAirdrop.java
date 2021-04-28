@@ -80,22 +80,34 @@ public class EntityAirdrop extends Entity {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		
-		this.prevPosX = this.posX;
-		this.prevPosY = this.posY;
-		this.prevPosZ = this.posZ;
+
 		this.age++;
 
 		if (this.age >= 48000) {
 			this.setDead();
 		}
-
+		
+		if (getLanded() && getSmokeTime() > 0) {
+			for (int i = 0; i < world.rand.nextInt(4) + 1; i++) {
+				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY + height, this.posZ,
+						MathUtils.getFloatInRange(-0.1f, 0.1f), MathUtils.getFloatInRange(0.2f, 0.5f),
+						MathUtils.getFloatInRange(-0.1f, 0.1f));
+				world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY + height, this.posZ,
+						MathUtils.getFloatInRange(-0.1f, 0.1f), MathUtils.getFloatInRange(0.2f, 0.5f),
+						MathUtils.getFloatInRange(-0.1f, 0.1f));
+			}
+			setSmokeTime(getSmokeTime() - 1);
+		}
+		
+		if(world.isRemote) return;
+		
 		if (!onGround) {
 			if (!getLanded()) {
 				this.motionY = -0.0625;
 			} else {
 				this.motionY = -0.1911;
 			}
+			this.markVelocityChanged();
 		} else {
 			this.motionY = 0;
 			if (!this.world.isRemote) {
@@ -109,18 +121,9 @@ public class EntityAirdrop extends Entity {
 			this.motionX *= 0.5D;
 			this.motionY *= 0.5D;
 			this.motionZ *= 0.5D;
+			this.markVelocityChanged();
 		}
-		if (getLanded() && getSmokeTime() > 0) {
-			for (int i = 0; i < world.rand.nextInt(4) + 1; i++) {
-				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY + height, this.posZ,
-						MathUtils.getFloatInRange(-0.1f, 0.1f), MathUtils.getFloatInRange(0.2f, 0.5f),
-						MathUtils.getFloatInRange(-0.1f, 0.1f));
-				world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY + height, this.posZ,
-						MathUtils.getFloatInRange(-0.1f, 0.1f), MathUtils.getFloatInRange(0.2f, 0.5f),
-						MathUtils.getFloatInRange(-0.1f, 0.1f));
-			}
-			setSmokeTime(getSmokeTime() - 1);
-		}
+
 		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
 	}

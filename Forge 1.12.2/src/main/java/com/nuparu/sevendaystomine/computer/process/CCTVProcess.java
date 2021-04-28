@@ -43,7 +43,7 @@ public class CCTVProcess extends WindowedProcess {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void render(float partialTicks) {
-		drawWindow(getTitle(), new ColorRGBA(0d, 0d, 0d), new ColorRGBA(0.8, 0.8, 0.8));
+		drawWindow(getTitle(), new ColorRGBA(0.1d, 0.1d, 0.1d), new ColorRGBA(0.8, 0.8, 0.8));
 		ScaledResolution r = new ScaledResolution(Screen.mc);
 		int scale = r.getScaleFactor();
 
@@ -55,7 +55,7 @@ public class CCTVProcess extends WindowedProcess {
 			if (view != null) {
 				RenderUtils.renderView(Screen.mc, view, (int) Math.round(width * scale),
 						(int) Math.round((height - (Screen.screen.ySize * title_bar_height)) * scale),
-						Screen.mc.displayWidth, Screen.mc.displayHeight, (int) Math.round(x * scale), yy, -2000);
+						Screen.mc.displayWidth, Screen.mc.displayHeight, (int) Math.round(x * scale), yy, -2000, partialTicks);
 				GL11.glPopMatrix();
 			}
 			else if(isNotHidden((int) (x + width / 2), (int) (y + (Screen.screen.ySize * title_bar_height) + 2))) {

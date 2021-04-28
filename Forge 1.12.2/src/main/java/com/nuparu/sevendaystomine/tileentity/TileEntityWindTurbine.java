@@ -30,6 +30,7 @@ public class TileEntityWindTurbine extends TileEntity implements ITickable, IVol
 	public float angle;
 	public float anglePrev;
 	public float wind;
+	public int tickCounter = 0;
 
 	public EnumFacing facing;
 
@@ -51,14 +52,14 @@ public class TileEntityWindTurbine extends TileEntity implements ITickable, IVol
 		}
 
 		float windPrev = wind;
-		wind = getWindAccess()/2f;
-
+		wind = getWindAccess() / 2f;
 		if (wind >= 0.5f) {
 			long voltagePrev = voltage;
-			wind = (1 + (wind * (pos.getY() / 63)))
-					* (1 + world.rainingStrength*2 + world.thunderingStrength*5);
-			voltage = MathUtils.clamp(capacity + (long) (wind), 0, capacity);
-
+			wind = (1 + (wind * (pos.getY() / 63))) * (4 + world.rainingStrength * 3 + world.thunderingStrength * 5);
+			if (tickCounter++ >= 20) {
+				voltage = MathUtils.clamp(voltage + (long) (wind), 0, capacity);
+				tickCounter = 0;
+			}
 			if (voltage != voltagePrev || windPrev != wind) {
 				flag = true;
 			}
@@ -164,6 +165,7 @@ public class TileEntityWindTurbine extends TileEntity implements ITickable, IVol
 				outputs.add(connection);
 			}
 		}
+		tickCounter = compound.getInteger("tickCounter");
 
 	}
 
@@ -193,6 +195,7 @@ public class TileEntityWindTurbine extends TileEntity implements ITickable, IVol
 
 		compound.setTag("inputs", in);
 		compound.setTag("outputs", out);
+		compound.setInteger("tickCounter", tickCounter);
 
 		return compound;
 	}
@@ -232,7 +235,7 @@ public class TileEntityWindTurbine extends TileEntity implements ITickable, IVol
 
 	@Override
 	public long getMaxOutput() {
-		return 512;
+		return 5;
 	}
 
 	@Override

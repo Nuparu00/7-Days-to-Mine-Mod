@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 
 import java.util.Random;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 
 import net.minecraft.block.BlockStone;
@@ -49,17 +50,17 @@ public class OreWorldGenerator implements IWorldGenerator {
 
 	private void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
-		addOreSpawn(ModBlocks.ORE_COPPER.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 12, 32, 10,
+		addOreSpawn(ModBlocks.ORE_COPPER.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 12, ModConfig.worldGen.copperOreGenerationRate, 10,
 				138, stonePredicate);
-		addOreSpawn(ModBlocks.ORE_TIN.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 8, 29, 6, 96,
+		addOreSpawn(ModBlocks.ORE_TIN.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 8, ModConfig.worldGen.tinOreGenerationRate, 6, 96,
 				stonePredicate);
-		addOreSpawn(ModBlocks.ORE_ZINC.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 8, 29, 0, 90,
+		addOreSpawn(ModBlocks.ORE_ZINC.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 8, ModConfig.worldGen.zincOreGenerationRate, 0, 90,
 				stonePredicate);
-		addOreSpawn(ModBlocks.ORE_LEAD.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 5, 34, 0, 76,
+		addOreSpawn(ModBlocks.ORE_LEAD.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 5, ModConfig.worldGen.leadOreGenerationRate, 0, 76,
 				stonePredicate);
-		addOreSpawn(ModBlocks.ORE_POTASSIUM.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 8, 20,
+		addOreSpawn(ModBlocks.ORE_POTASSIUM.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 8, ModConfig.worldGen.potassiumOreGenerationRate,
 				32, 128, stonePredicate);
-		addOreSpawn(ModBlocks.ORE_CINNABAR.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 4, 16,
+		addOreSpawn(ModBlocks.ORE_CINNABAR.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 16, 16, 4, ModConfig.worldGen.cinnabarOreGenerationRate,
 				24, 96, stonePredicate);
 
 	}

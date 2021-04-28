@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom": { "model": "sevendaystomine:brick_mossy_slab_bottom" },
+        "half=top": { "model": "sevendaystomine:brick_mossy_slab_upper" }
+    }
+}

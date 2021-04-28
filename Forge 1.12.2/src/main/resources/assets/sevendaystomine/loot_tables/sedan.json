@@ -293,17 +293,50 @@
                 {
                     "type": "item",
                     "weight": 6,
-                    "name": "sevendaystomine:jacket"
+                    "name": "sevendaystomine:jacket",
+               "functions":[
+                  {
+                     "function":"sevendaystomine:random_color",
+                     "conditions":[
+                        {
+                           "condition":"random_chance",
+                           "chance":0.75
+                        }
+                     ]
+                  }
+               ]
                 },
                 {
                     "type": "item",
                     "weight": 5,
-                    "name": "sevendaystomine:coat"
+                    "name": "sevendaystomine:coat",
+               "functions":[
+                  {
+                     "function":"sevendaystomine:random_color",
+                     "conditions":[
+                        {
+                           "condition":"random_chance",
+                           "chance":0.75
+                        }
+                     ]
+                  }
+               ]
                 },
                 {
                     "type": "item",
                     "weight": 6,
-                    "name": "sevendaystomine:jumper"
+                    "name": "sevendaystomine:jumper",
+               "functions":[
+                  {
+                     "function":"sevendaystomine:random_color",
+                     "conditions":[
+                        {
+                           "condition":"random_chance",
+                           "chance":0.75
+                        }
+                     ]
+                  }
+               ]
                 },
                 {
                     "type": "empty",

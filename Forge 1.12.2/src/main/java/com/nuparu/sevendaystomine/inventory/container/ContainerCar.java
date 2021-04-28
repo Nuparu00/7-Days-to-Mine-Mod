@@ -25,10 +25,10 @@ public class ContainerCar extends Container {
 	protected EntityCar car;
 	protected InventoryPlayer playerInventory;
 	protected ItemStackHandler inventory;
-	
+
 	public boolean addedChest = false;
 	public ArrayList<Slot> chestSlots = new ArrayList<Slot>();
-	
+
 	public ContainerCar(InventoryPlayer playerInventory, EntityCar car) {
 		this.playerInventory = playerInventory;
 		this.car = car;
@@ -37,10 +37,11 @@ public class ContainerCar extends Container {
 
 		this.addSlotToContainer(new SlotMinibike(inventory, 0, 8, 8, ModItems.MINIBIKE_HANDLES));
 		this.addSlotToContainer(new SlotMinibike(inventory, 1, 8, 26, Item.getItemFromBlock(ModBlocks.WHEELS)));
-		this.addSlotToContainer(new SlotMinibike(inventory, 2, 8, 44, ModItems.MINIBIKE_SEAT));
+		this.addSlotToContainer(new SlotMinibike(inventory, 2, 8, 44, Item.getItemFromBlock(ModBlocks.ARMCHAIR_BROWN)));
 
 		this.addSlotToContainer(new SlotMinibike(inventory, 3, 152, 8, ModItems.CAR_BATTERY));
 		this.addSlotToContainer(new SlotMinibike(inventory, 4, 152, 26, ModItems.SMALL_ENGINE));
+		this.addSlotToContainer(new SlotMinibike(inventory, 5, 152, 44, Item.getItemFromBlock(ModBlocks.WHEELS)));
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
@@ -55,21 +56,21 @@ public class ContainerCar extends Container {
 	}
 
 	public void bindChest() {
-			addedChest = true;
-			int l = 0;
-			for (int i = 0; i < 3; ++i) {
-				for (int j = 0; j < 3; ++j) {
+		addedChest = true;
+		int l = 0;
+		for (int i = 0; i < 3; ++i) {
+			for (int j = 0; j < 3; ++j) {
 
-					Slot slot = new SlotItemHandler(inventory, 6 + l, 180 + j * 18, 14 + i * 18);
-					this.chestSlots.add(slot);
-					this.addSlotToContainer(slot);
-					l++;
-				}
+				Slot slot = new SlotItemHandler(inventory, 6 + l, 180 + j * 18, 14 + i * 18);
+				this.chestSlots.add(slot);
+				this.addSlotToContainer(slot);
+				l++;
 			}
+		}
 	}
-	
+
 	public void unbindChest() {
-	
+
 	}
 
 	@Override
@@ -85,9 +86,9 @@ public class ContainerCar extends Container {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 			Item item = itemstack.getItem();
-
-			if (index < 7) {
-				if (!this.mergeItemStack(itemstack1, 7, 41, true)) {
+			System.out.println(index);
+			if (index < 6) {
+				if (!this.mergeItemStack(itemstack1, 6, 40, true)) {
 					return ItemStack.EMPTY;
 				}
 				slot.onSlotChange(itemstack1, itemstack);
@@ -95,53 +96,45 @@ public class ContainerCar extends Container {
 					car.updateInventory();
 				}
 			} else {
+				boolean flag = false;
 				if (item == ModItems.SMALL_ENGINE) {
-					if (!this.mergeItemStack(itemstack1, 0, 6, true)) {
-						return ItemStack.EMPTY;
+					if (this.mergeItemStack(itemstack1, 0, 6, true)) {
+						slot.onSlotChange(itemstack1, itemstack);
+						flag = true;
 					}
-					slot.onSlotChange(itemstack1, itemstack);
+				} else if (item == ModItems.MINIBIKE_HANDLES) {
+					if (this.mergeItemStack(itemstack1, 0, 6, true)) {
+						slot.onSlotChange(itemstack1, itemstack);
+						flag = true;
+					}
+				} else if (item == Item.getItemFromBlock(ModBlocks.ARMCHAIR_BROWN)) {
+					if (this.mergeItemStack(itemstack1, 0, 6, true)) {
+						slot.onSlotChange(itemstack1, itemstack);
+						flag = true;
+					}
+				} else if (item == ModItems.CAR_BATTERY) {
+					if (this.mergeItemStack(itemstack1, 0, 6, true)) {
+						slot.onSlotChange(itemstack1, itemstack);
+						flag = true;
+					}
+				} else if (item == Item.getItemFromBlock(ModBlocks.WHEELS)) {
+					if (this.mergeItemStack(itemstack1, 0, 6, true)) {
+						slot.onSlotChange(itemstack1, itemstack);
+						flag = true;
+					}
 				}
-				if (item == ModItems.MINIBIKE_HANDLES) {
-					if (!this.mergeItemStack(itemstack1, 0, 6, true)) {
-						return ItemStack.EMPTY;
+				if (!flag) {
+					if (index <= 32) {
+						if (!this.mergeItemStack(itemstack1, 33, 41, true)) {
+							return ItemStack.EMPTY;
+						}
+						slot.onSlotChange(itemstack1, itemstack);
+					} else if (index <= 41) {
+						if (!this.mergeItemStack(itemstack1, 7, 32, true)) {
+							return ItemStack.EMPTY;
+						}
+						slot.onSlotChange(itemstack1, itemstack);
 					}
-					slot.onSlotChange(itemstack1, itemstack);
-				}
-				if (item == ModItems.MINIBIKE_SEAT) {
-					if (!this.mergeItemStack(itemstack1, 0, 6, true)) {
-						return ItemStack.EMPTY;
-					}
-					slot.onSlotChange(itemstack1, itemstack);
-				}
-				if (item == ModItems.CAR_BATTERY) {
-					if (!this.mergeItemStack(itemstack1, 0, 6, true)) {
-						return ItemStack.EMPTY;
-					}
-					slot.onSlotChange(itemstack1, itemstack);
-				}
-				if (item == Item.getItemFromBlock(ModBlocks.WHEELS)) {
-					if (!this.mergeItemStack(itemstack1, 0, 6, true)) {
-						return ItemStack.EMPTY;
-					}
-					slot.onSlotChange(itemstack1, itemstack);
-				}
-				if (item == Item.getItemFromBlock(Blocks.CHEST)) {
-					if (!this.mergeItemStack(itemstack1, 0, 6, true)) {
-						return ItemStack.EMPTY;
-					}
-					slot.onSlotChange(itemstack1, itemstack);
-				}
-
-				if (index <= 32) {
-					if (!this.mergeItemStack(itemstack1, 33, 41, true)) {
-						return ItemStack.EMPTY;
-					}
-					slot.onSlotChange(itemstack1, itemstack);
-				} else if (index <= 41) {
-					if (!this.mergeItemStack(itemstack1, 6, 32, true)) {
-						return ItemStack.EMPTY;
-					}
-					slot.onSlotChange(itemstack1, itemstack);
 				}
 			}
 

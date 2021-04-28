@@ -9,6 +9,7 @@ import com.nuparu.sevendaystomine.entity.ai.EntityAISwell;
 import com.nuparu.sevendaystomine.init.ModLootTables;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.util.MathUtils;
+import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLiving;
@@ -28,14 +29,17 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -47,13 +51,16 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 	private static final DataParameter<Integer> ANIMATION = EntityDataManager
 			.<Integer>createKey(EntityBipedalZombie.class, DataSerializers.VARINT);
 
+	private static final DataParameter<Integer> VOMIT_TIMER = EntityDataManager
+			.<Integer>createKey(EntityBipedalZombie.class, DataSerializers.VARINT);
+
 	private int lastActiveTime;
 	private int timeSinceIgnited;
 	private int fuseTime = 30;
 
 	private float explosionRadius = 3;
-
-	private int vomitTimer = 60;
+	
+	public static final int RECHARGE_TIME = 100;
 
 	public EntityZombiePoliceman(World worldIn) {
 		super(worldIn);
@@ -67,6 +74,7 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 		super.entityInit();
 		this.dataManager.register(STATE, Integer.valueOf(-1));
 		this.dataManager.register(ANIMATION, Integer.valueOf(0));
+		this.dataManager.register(VOMIT_TIMER, Integer.valueOf(0));
 	}
 
 	@Override
@@ -216,16 +224,32 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 	}
 
 	public int getVomitTimer() {
-		return vomitTimer;
+
+		return this.dataManager.get(VOMIT_TIMER);
 	}
-	
+
 	@Override
-	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
-    {
-    }
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+	}
 
 	public void setVomitTimer(int vomitTimer) {
-		this.vomitTimer = vomitTimer;
+		this.dataManager.set(VOMIT_TIMER, vomitTimer);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		if (compound.hasKey("vomit_timer", Constants.NBT.TAG_INT)) {
+			setVomitTimer(compound.getInteger("vomit_timer"));
+		}
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
+		compound.setInteger("vomit_timer", getVomitTimer());
+
+		return compound;
 	}
 
 	public enum EnumAnimationState {

@@ -6,12 +6,14 @@ import java.util.List;
 
 import com.nuparu.sevendaystomine.electricity.ElectricConnection;
 import com.nuparu.sevendaystomine.electricity.EnumDeviceType;
+import com.nuparu.sevendaystomine.electricity.IBattery;
 import com.nuparu.sevendaystomine.electricity.IVoltage;
 import com.nuparu.sevendaystomine.inventory.container.ContainerBatteryStation;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSmall;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
+import com.nuparu.sevendaystomine.item.ItemBattery;
 import com.nuparu.sevendaystomine.util.ModConstants;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -34,27 +36,57 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityBatteryStation extends TileEntityItemHandler<ItemStackHandler> implements ITickable, IVoltage {
 	private List<ElectricConnection> inputs = new ArrayList<ElectricConnection>();
 	private List<ElectricConnection> outputs = new ArrayList<ElectricConnection>();
-	private long capacity = 100000000l;
+	private long capacity = 10000;
 	private long voltage = 0;
-	
+
 	public TileEntityBatteryStation() {
-		
+
 	}
-	
+
 	@Override
 	public void update() {
-		
-		
-		//System.out.println(voltage + " " + world.isRemote);
-		
+
+		// System.out.println(voltage + " " + world.isRemote);
+		if(world.isRemote)return;
 		boolean flag = false;
-		
+
+		if (voltage < capacity) {
+			ItemStack input = inventory.getStackInSlot(0);
+			if (!input.isEmpty() && input.getItem() instanceof IBattery) {
+				IBattery battery = (IBattery) input.getItem();
+				long inputVoltage = battery.getVoltage(input, world);
+				if (inputVoltage > 0) {
+					long deltaVoltage = Math.min((capacity - voltage), Math.min(10, inputVoltage));
+					if (deltaVoltage > 0) {
+						battery.drainVoltage(input, world, deltaVoltage);
+						this.voltage += deltaVoltage;
+						flag = true;
+					}
+				}
+			}
+		}
+
+		ItemStack output = inventory.getStackInSlot(1);
+		if (!output.isEmpty() && output.getItem() instanceof IBattery) {
+			IBattery battery = (IBattery) output.getItem();
+			long outputVoltage = battery.getVoltage(output, world);
+			long outputCapacity = battery.getCapacity(output, world);
+			if (outputVoltage < outputCapacity) {
+				long deltaVoltage = Math.min((outputCapacity - outputVoltage), Math.min(10, voltage));
+				if (deltaVoltage > 0) {
+					this.voltage -= (deltaVoltage - battery.tryToAddVoltage(output, world, deltaVoltage));
+					flag = true;
+				}
+
+			}
+		}
+
 		Iterator<ElectricConnection> iterator = outputs.iterator();
 		while (iterator.hasNext()) {
 			ElectricConnection connection = iterator.next();
 			IVoltage voltage = connection.getTo(world);
 			if (voltage != null) {
-				long l = voltage.tryToSendPower(getOutputForConnection(connection),connection);
+				long l = voltage.tryToSendPower(getOutputForConnection(connection), connection);
 				this.voltage -= l;
 				if (l != 0) {
 					flag = true;
@@ -76,24 +108,34 @@ public class TileEntityBatteryStation extends TileEntityItemHandler<ItemStackHan
 		}
 
 		if (flag) {
-			this.markDirty();
+			this.markForUpdate();
 		}
 	}
 	
+	public void markForUpdate() {
+        if (world != null && pos != null) {
+            world.markBlockRangeForRenderUpdate(pos, pos);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+            world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+        }
+        this.markDirty();
+    }
+
 	@Override
 	protected ItemStackHandler createInventory() {
 		return new ItemStackHandler(2);
 	}
-	
+
 	@Override
 	public ContainerBatteryStation createContainer(EntityPlayer player) {
-		final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-		final IItemHandlerNameable playerInventoryWrapper = new NameableCombinedInvWrapper(player.inventory, playerInventory);
+		final IItemHandlerModifiable playerInventory = (IItemHandlerModifiable) player
+				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+		final IItemHandlerNameable playerInventoryWrapper = new NameableCombinedInvWrapper(player.inventory,
+				playerInventory);
 
-		return new ContainerBatteryStation(playerInventoryWrapper, inventory,player, this);
+		return new ContainerBatteryStation(playerInventoryWrapper, inventory, player, this);
 	}
-	
-	
+
 	@Override
 	public NBTTagCompound getUpdateTag() {
 		return this.writeToNBT(new NBTTagCompound());
@@ -108,7 +150,9 @@ public class TileEntityBatteryStation extends TileEntityItemHandler<ItemStackHan
 	public void onDataPacket(net.minecraft.network.NetworkManager net,
 			net.minecraft.network.play.server.SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
-		world.notifyBlockUpdate(pos, Blocks.AIR.getDefaultState(), world.getBlockState(pos), 1);
+		world.markBlockRangeForRenderUpdate(pos, pos);
+        world.notifyBlockUpdate(pos, Blocks.AIR.getDefaultState(), world.getBlockState(pos), 1);
+        world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
 	}
 
 	@Override
@@ -168,7 +212,7 @@ public class TileEntityBatteryStation extends TileEntityItemHandler<ItemStackHan
 
 		return compound;
 	}
-	
+
 	@Override
 	public EnumDeviceType getDeviceType() {
 		return EnumDeviceType.STORAGE;
@@ -176,12 +220,12 @@ public class TileEntityBatteryStation extends TileEntityItemHandler<ItemStackHan
 
 	@Override
 	public int getMaximalInputs() {
-		return 4;
+		return 16;
 	}
 
 	@Override
 	public int getMaximalOutputs() {
-		return 4;
+		return 164;
 	}
 
 	@Override
@@ -204,7 +248,7 @@ public class TileEntityBatteryStation extends TileEntityItemHandler<ItemStackHan
 
 	@Override
 	public long getMaxOutput() {
-		return 300;
+		return 80;
 	}
 
 	@Override
@@ -290,6 +334,9 @@ public class TileEntityBatteryStation extends TileEntityItemHandler<ItemStackHan
 		}
 		long realDelta = delta - lost;
 		this.voltage += realDelta;
+		if(realDelta > 0) {
+			markForUpdate();
+		}
 
 		return delta;
 	}
@@ -309,20 +356,21 @@ public class TileEntityBatteryStation extends TileEntityItemHandler<ItemStackHan
 	@Override
 	public void onContainerOpened(EntityPlayer player) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer player) {
-		return this.world.getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64;
+		return this.world.getTileEntity(this.pos) == this
+				&& player.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64;
 	}
-	
+
 	public NonNullList<ItemStack> getDrops() {
 		return Utils.dropItemHandlerContents(inventory, getWorld().rand);
 	}

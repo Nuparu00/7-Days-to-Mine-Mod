@@ -16,9 +16,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemDoorBase extends Item {
+public class ItemDoorBase extends ItemScrapable {
 ;
 	public ItemDoorBase() {
+		super(EnumMaterial.WOOD,3);
 	}
 	
 	public Block getDoor() {

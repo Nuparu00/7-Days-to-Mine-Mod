@@ -202,5 +202,26 @@
       "sounds":[  
          "sevendaystomine:chainsaw.cut"
       ]
+   },
+   "honk":{  
+      "category":"player",
+      "subtitle":"subtitle.honk",
+      "sounds":[  
+         "sevendaystomine:honk"
+      ]
+   },
+   "minibike.idle":{  
+      "category":"player",
+      "subtitle":"subtitle.minibike.idle",
+      "sounds":[  
+         "sevendaystomine:minibike.idle"
+      ]
+   },
+   "car.accelerate":{  
+      "category":"player",
+      "subtitle":"subtitle.car.accelerate",
+      "sounds":[  
+         "sevendaystomine:car.accelerate"
+      ]
    }
 }

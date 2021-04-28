@@ -42,7 +42,7 @@ public class TileEntitySeparator extends TileEntityItemHandler<ItemHandlerNameab
 	private static final int INVENTORY_SIZE = 3;
 	private static final ITextComponent DEFAULT_NAME = new TextComponentTranslation("container.separator");
 	private long voltage = 0;
-	private long capacity = 1000;
+	private long capacity = 200;
 	private int cookTime;
 	private int totalCookTime;
 
@@ -330,7 +330,7 @@ public class TileEntitySeparator extends TileEntityItemHandler<ItemHandlerNameab
 
 	@Override
 	public long getRequiredPower() {
-		return 200;
+		return 20;
 	}
 
 	@Override

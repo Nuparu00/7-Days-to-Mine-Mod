@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockGoldenrod extends BlockBush {
 
 	public BlockGoldenrod() {
-		setHardness(0.01F);
+		setHardness(0.0002F);
 		setResistance(0.02F);
 		setLightLevel(0.0F);
 		setSoundType(SoundType.PLANT);

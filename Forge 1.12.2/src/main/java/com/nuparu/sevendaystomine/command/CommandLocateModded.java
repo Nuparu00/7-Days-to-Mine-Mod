@@ -20,9 +20,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraft.world.World;
 
 public class CommandLocateModded extends CommandBase {
@@ -57,7 +60,6 @@ public class CommandLocateModded extends CommandBase {
 		return 4;
 	}
 
-
 	@Override
 	public void execute(MinecraftServer server, final ICommandSender sender, String[] args) throws CommandException {
 		final World world = sender.getEntityWorld();
@@ -67,8 +69,7 @@ public class CommandLocateModded extends CommandBase {
 		} else {
 			if (args.length < 3) {
 				sender.sendMessage(new TextComponentString(TextFormatting.RED + "Missing arguments"));
-				sender.sendMessage(new TextComponentString("\u00a7C" + "<x>" + "\u00a7C" + "<y>" + "\u00a7C" + "<z>"
-						+ "\u00a7C" + "<dim>" + "\u00a7C" + "<damage>"));
+				sender.sendMessage(new TextComponentString("\u00a7C" + "<x>" + "\u00a7C" + "<y>" + "\u00a7C" + "<z>"));
 				return;
 			}
 
@@ -77,16 +78,25 @@ public class CommandLocateModded extends CommandBase {
 
 			int chunkX = from.getX() >> 4;
 			int chunkZ = from.getZ() >> 4;
-			
-			List<ChunkPos> poses = Utils.getClosestCities(world, chunkX, chunkZ,128);
-			if(poses.isEmpty()) {
+
+			List<ChunkPos> poses = Utils.getClosestCities(world, chunkX, chunkZ, 128);
+			if (poses.isEmpty()) {
 				sender.sendMessage(new TextComponentString("No city located"));
-				
-			}
-			else {
-				for(ChunkPos pos : poses) {
-					sender.sendMessage(
-							new TextComponentString("City is located at " + (pos.x * 16) + " " + (pos.z * 16)));
+
+			} else {
+				for (ChunkPos pos : poses) {
+					int x = (pos.x * 16);
+					int z = (pos.z * 16);
+					TextComponentString componenet = new TextComponentString(
+							"City is located at " + x + " " + z);
+					Style style = new Style().setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/tp " + x + " " + 120 + " " + z) {
+						@Override
+						public Action getAction() {
+							return Action.RUN_COMMAND;
+						}
+						});
+					componenet.setStyle(style);
+					sender.sendMessage(componenet);
 				}
 			}
 

@@ -3,6 +3,9 @@ package com.nuparu.sevendaystomine.client.renderer.entity;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.lwjgl.opengl.GL11;
+
+import com.nuparu.sevendaystomine.entity.EntityMinibike;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -15,6 +18,7 @@ import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
@@ -22,8 +26,12 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
+/*
+ * Modified version of Minecraft's net.minecraft.client.renderer.entity.RenderPlayer
+ */
 public class RenderPlayerEnhanced extends RenderPlayer {
 
 	public RenderPlayerEnhanced(RenderManager renderManager) {
@@ -111,6 +119,23 @@ public class RenderPlayerEnhanced extends RenderPlayer {
                     }
 
                     f2 = f1 - f;
+                    
+                    /*
+                     * Minibike body rotation
+                     */
+            		if(entitylivingbase instanceof EntityMinibike) {
+            		EntityMinibike minibike = (EntityMinibike)entitylivingbase;
+            		Vec3d forward = minibike.getForward();
+            		Vec3d vec3d = (new Vec3d((double) 0.2, 0.0D, 0.0D))
+        					.rotateYaw(-minibike.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
+            		
+            		GL11.glTranslated(vec3d.x, 3*(minibike.getMountedYOffset()), vec3d.z);
+            		GL11.glTranslated(x,y,z);
+
+            		GL11.glRotated(-Utils.lerp(minibike.getTurningPrev(), minibike.getTurning(), partialTicks), forward.x, 0, forward.z);;
+            		GL11.glTranslated(-vec3d.x, -3*(minibike.getMountedYOffset()),-vec3d.z);
+            		GL11.glTranslated(-x,-y,-z);
+            		}
                 }
 
                 float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;

@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -21,6 +22,8 @@ public class BlockDryGround extends BlockFalling implements IBlockBase {
 
 	public BlockDryGround() {
 		super(Material.GROUND);
+		this.setSoundType(SoundType.GROUND);
+		this.setHardness(0.65F);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	}
 

@@ -39,7 +39,7 @@ public abstract class DesktopProcess extends TickingProcess {
 		super.tick();
 		if (this.shutdown) {
 			if (computerTE != null) {
-				computerTE.turnOff();
+				computerTE.stopComputer();
 			}
 		}
 	}

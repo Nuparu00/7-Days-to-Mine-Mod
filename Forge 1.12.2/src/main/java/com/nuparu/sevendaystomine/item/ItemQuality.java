@@ -60,6 +60,7 @@ public class ItemQuality extends Item implements IQuality {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(ItemStack itemstack) {
+		if (!ModConfig.players.qualitySystem) return super.getItemStackDisplayName(itemstack);
 		EnumQuality quality = getQualityTierFromStack(itemstack);
 		return quality.color + SevenDaysToMine.proxy.localize(this.getUnlocalizedName() + ".name");
 	}
@@ -67,10 +68,13 @@ public class ItemQuality extends Item implements IQuality {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		int quality = getQuality(stack);
-		EnumQuality tier = getQualityTierFromInt(quality);
-		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
-		tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		if (ModConfig.players.qualitySystem) {
+			int quality = getQuality(stack);
+			EnumQuality tier = getQualityTierFromInt(quality);
+			tooltip.add(
+					tier.color + SevenDaysToMine.proxy.localize("stat.quality." + tier.name().toLowerCase() + ".name"));
+			tooltip.add(tier.color + SevenDaysToMine.proxy.localize("stat.quality.name") + quality);
+		}
 	}
 
 	@Override
@@ -148,8 +152,11 @@ public class ItemQuality extends Item implements IQuality {
 
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer player) {
-		setQuality(itemstack, (int) (int) Math.min(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality),
-				ModConfig.players.maxQuality));
+		if (this.getQuality(itemstack) <= 0) {
+			setQuality(itemstack,
+					(int) (int) Math.min(Math.floor(player.experienceTotal / ModConfig.players.xpPerQuality),
+							ModConfig.players.maxQuality));
+		}
 	}
 
 }
