@@ -105,6 +105,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 
 public class Utils {
@@ -449,8 +450,11 @@ public class Utils {
 		if (breakData != null && breakData.getState() >= 1f && breakBlock) {
 			data.setBreakData(pos, world, 0);
 			if (block instanceof IUpgradeable) {
-				IBlockState prev = ((IUpgradeable) block).getPrev(world, pos);
-				world.setBlockState(pos, prev);
+				IBlockState prev = ((IUpgradeable) block).getPrev(world, pos, state);
+				if (prev != null) {
+					world.setBlockState(pos, prev);
+					((IUpgradeable) block).onDowngrade(world, pos, state);
+				}
 				return true;
 			}
 			world.destroyBlock(pos, false);
@@ -1079,7 +1083,7 @@ public class Utils {
 
 		Vec3d vec3d = entity.getPositionEyes(1);
 
-		RayTraceResult r = rayTraceServer(entity,dst, 1);
+		RayTraceResult r = rayTraceServer(entity, dst, 1);
 		double d1 = dst;
 		if (r != null && r.typeOfHit == RayTraceResult.Type.BLOCK) {
 			d1 = r.hitVec.distanceTo(vec3d);
@@ -1136,16 +1140,16 @@ public class Utils {
 		vec3d3 = new Vec3d(0, -1, 0);
 		return new RayTraceResult(RayTraceResult.Type.MISS, vec3d3, (EnumFacing) null, new BlockPos(vec3d3));
 	}
-	
+
 	public static RayTraceResult rayTraceServer(Entity entity, double blockReachDistance, float partialTicks) {
-		Vec3d vec3 = getPositionEyesServer(entity,partialTicks);
+		Vec3d vec3 = getPositionEyesServer(entity, partialTicks);
 		Vec3d vec31 = entity.getLook(partialTicks);
 		Vec3d vec32 = vec3.addVector(vec31.x * blockReachDistance, vec31.y * blockReachDistance,
 				vec31.z * blockReachDistance);
 		return entity.world.rayTraceBlocks(vec3, vec32, false, false, true);
 	}
-	
-	public static Vec3d getPositionEyesServer(Entity entity,float partialTicks) {
+
+	public static Vec3d getPositionEyesServer(Entity entity, float partialTicks) {
 		if (partialTicks == 1.0F) {
 			return new Vec3d(entity.posX, entity.posY + (double) entity.getEyeHeight(), entity.posZ);
 		} else {
@@ -1185,7 +1189,7 @@ public class Utils {
 
 	@Nullable
 	public static IRecipe getRecipesForStack(ItemStack stack, World worldIn) {
-		for (IRecipe irecipe : CraftingManager.REGISTRY) {
+		for (IRecipe irecipe : ForgeRegistries.RECIPES) {
 			if (ItemStack.areItemsEqualIgnoreDurability(stack, irecipe.getRecipeOutput())) {
 				return irecipe;
 			}

@@ -249,7 +249,6 @@ public class TileEntityForge extends TileEntity implements IContainerCallbacks, 
 						int delta = Math.min(slot.getMaxStackSize() - slot.getCount(), stack.getCount());
 						slot.grow(delta);
 						stack.shrink(delta);
-						break;
 					}
 				}
 				if (!stack.isEmpty()) {

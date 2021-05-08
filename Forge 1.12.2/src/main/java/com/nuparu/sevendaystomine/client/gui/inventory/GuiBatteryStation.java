@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.inventory.container.ContainerBatteryStation;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSmall;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.tileentity.TileEntityBatteryStation;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

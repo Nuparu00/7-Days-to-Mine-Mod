@@ -2,10 +2,10 @@ package com.nuparu.sevendaystomine.client.gui.inventory;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.inventory.container.ContainerCamera;
 import com.nuparu.sevendaystomine.inventory.container.ContainerSmall;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

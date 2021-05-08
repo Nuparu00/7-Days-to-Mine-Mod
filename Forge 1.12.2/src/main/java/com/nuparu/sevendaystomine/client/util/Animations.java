@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.client;
+package com.nuparu.sevendaystomine.client.util;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Animation;

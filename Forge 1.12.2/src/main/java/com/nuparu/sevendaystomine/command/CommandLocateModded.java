@@ -1,10 +1,12 @@
 package com.nuparu.sevendaystomine.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
@@ -47,7 +49,7 @@ public class CommandLocateModded extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "<x> <y> <z>";
+		return "<x> <y> <z> [maxDst]";
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -67,9 +69,10 @@ public class CommandLocateModded extends CommandBase {
 		if (world.isRemote) {
 
 		} else {
-			if (args.length < 3) {
+			if (args.length < 3 || args.length > 4) {
 				sender.sendMessage(new TextComponentString(TextFormatting.RED + "Missing arguments"));
-				sender.sendMessage(new TextComponentString("\u00a7C" + "<x>" + "\u00a7C" + "<y>" + "\u00a7C" + "<z>"));
+				sender.sendMessage(new TextComponentString(
+						"\u00a7C" + "<x>" + "\u00a7C" + "<y>" + "\u00a7C" + "<z>" + "\u00a7C" + "[maxDst]"));
 				return;
 			}
 
@@ -79,27 +82,40 @@ public class CommandLocateModded extends CommandBase {
 			int chunkX = from.getX() >> 4;
 			int chunkZ = from.getZ() >> 4;
 
-			List<ChunkPos> poses = Utils.getClosestCities(world, chunkX, chunkZ, 128);
-			if (poses.isEmpty()) {
-				sender.sendMessage(new TextComponentString("No city located"));
+			final int maxDst = args.length == 4 ? Math.abs(Integer.parseInt(args[3])) : 128;
 
-			} else {
-				for (ChunkPos pos : poses) {
-					int x = (pos.x * 16);
-					int z = (pos.z * 16);
-					TextComponentString componenet = new TextComponentString(
-							"City is located at " + x + " " + z);
-					Style style = new Style().setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/tp " + x + " " + 120 + " " + z) {
-						@Override
-						public Action getAction() {
-							return Action.RUN_COMMAND;
+			new Thread() {
+				@Override
+				public void run() {
+					List<ChunkPos> poses = Utils.getClosestCities(world, chunkX, chunkZ, maxDst);
+					if (poses.isEmpty()) {
+						sender.sendMessage(new TextComponentString("No city located"));
+
+					} else {
+						for (ChunkPos pos : poses) {
+							int x = (pos.x * 16);
+							int z = (pos.z * 16);
+							TextComponentString componenet = new TextComponentString("City is located at " + x + " " + z
+									+ " ("
+									+ Math.round(Math.sqrt(Math.pow(pos.x - chunkX, 2) + Math.pow(pos.z - chunkZ, 2)))
+									+ " chunks)");
+							Style style = new Style().setClickEvent(
+									new ClickEvent(Action.RUN_COMMAND, "/tp " + x + " " + 120 + " " + z) {
+										@Override
+										public Action getAction() {
+											return Action.RUN_COMMAND;
+										}
+									});
+							if (world.getChunkFromChunkCoords(pos.x, pos.z).isTerrainPopulated()) {
+								style.setColor(TextFormatting.GREEN);
+							}
+							componenet.setStyle(style);
+							sender.sendMessage(componenet);
 						}
-						});
-					componenet.setStyle(style);
-					sender.sendMessage(componenet);
+					}
 				}
-			}
 
+			}.start();
 		}
 	}
 
@@ -107,7 +123,7 @@ public class CommandLocateModded extends CommandBase {
 	@Override
 	public List getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,
 			@Nullable BlockPos pos) {
-		return args.length > 0 && args.length <= 3 ? getTabCompletionCoordinate(args, 0, pos)
-				: (args.length < 6 ? getTabCompletionCoordinate(args, 1, pos) : null);
+		return (args.length > 0 && args.length <= 3) ? getTabCompletionCoordinate(args, 0, pos)
+				:  (args.length == 4 ? Arrays.asList("32","64","128") : null);
 	}
 }

@@ -41,6 +41,10 @@ public class ModConfig {
 		public boolean particles = true;
 		@Config.Comment("Should use draw the void-fog-like particles in burnt biomes?")
 		public boolean burntForestParticles = true;
+		@Config.Comment("Should render the fog in the wasteland/burnt biomes?")
+		public boolean wastelandFog = true;
+		@Config.Comment("Should use the molotov flame entites spawn the flame particles?")
+		public boolean molotovParticles = true;
 	}
 
 	public static class CategoryPlayer {
@@ -82,6 +86,13 @@ public class ModConfig {
 		public int infectionChanceModifier = 6;
 		@Config.Comment("Should add the backpack slot to the player inventory (does not affect the texture, if you turn this off, you should used a resourcepack where the slot is removed from the texture)")
 		public boolean backpackSlot = true;
+		@Config.Comment("Can a player break their legs on fall?")
+		public boolean fragileLegs = true;
+		@Config.Comment("Does the baneberry give the poison status effect?")
+		public boolean extraPoisonousBerries = false;
+		
+		@Config.Comment("The duration of the individual infection stages")
+		public int[] infectionStagesDuration = new int[] {24000,24000,24000,24000,24000,24000,24000};
 	}
 	
 	public static class CategoryMobs {
@@ -152,6 +163,16 @@ public class ModConfig {
 		@Config.Comment("Should remove vanilla zombies (and skeletons, husks)?")
 		@Config.RequiresMcRestart
 		public boolean removeVanillaZommbies = true;
+
+		@Config.Comment("The minimal distance from player that a horde can spawn")
+		@Config.RangeInt(min = 0)
+		public int hordeMinDistance = 30;
+		@Config.Comment("The maximal distance from player that a horde can spawn")
+		@Config.RangeInt(min = 0)
+		public int hordeMaxDistance = 30;
+		@Config.Comment("The delay in ticks between individual waves")
+		@Config.RangeInt(min = 0)
+		public int hordeWaveDelay = 200;
 		
 	}
 	
@@ -172,7 +193,9 @@ public class ModConfig {
 		@Config.Comment("Should generate a pedestal under structures (so they don't float)?")
 		public boolean structurePedestal = true;
 		@Config.Comment("Should generate snow/sand cover in snowy/sandy biomes?")
-		public boolean snowSandCover = true;
+		public boolean snowSandBuildingCover = true;
+		@Config.Comment("Should generate sand cover in sadny biomes over the intercity roads?")
+		public boolean sandRoadCover = true;
 		@Config.Comment("Should generate only the smaller structures?")
 		@Config.RequiresMcRestart
 		public boolean smallStructuresOnly = false;
@@ -205,7 +228,50 @@ public class ModConfig {
 		@Config.RangeInt(min = 0)
 		@Config.Comment("How common Cinnabar Ore is (0 = disabled)")
 		public int cinnabarOreGenerationRate = 16;
-		
+		@Config.Comment("The minimal number of Large Rocks in a chunk)")
+		public int largeRockGenerationRateMin = 0;
+		@Config.Comment("The maximal number of Large Rocks in a chunk)")
+		public int largeRockGenerationRateMax = 2;
+		@Config.Comment("The minimal number of Small Rocks in a chunk)")
+		public int smallRockGenerationRateMin = 0;
+		@Config.Comment("The maximal number of Small Rocks in a chunk)")
+		public int smallRockGenerationRateMax = 4;
+		@Config.Comment("The minimal number of Sticks in a chunk)")
+		public int stickGenerationRateMin = 0;
+		@Config.Comment("The maximal number of Sticks in a chunk)")
+		public int stickGenerationRateMax = 5;
+		@Config.Comment("The minimal number of the (modded) Dead Bushes in a chunk)")
+		public int deadBushGenerationRateMin = 0;
+		@Config.Comment("The maximal number of the (modded) Dead Bushes in a chunk)")
+		public int deadBushGenerationRateMax = 2;
+		@Config.Comment("The minimal number of Cinder Blocks in a chunk)")
+		public int cinderBlockGenerationRateMin = 0;
+		@Config.Comment("The maximal number of Cinder Blocks in a chunk)")
+		public int cinderBlockGenerationRateMax = 6;
+		@Config.Comment("The minimal number of Berry Bushes in a chunk)")
+		public int berryGenerationRateMin = 0;
+		@Config.Comment("The maximal number of Berry Bushes in a chunk)")
+		public int berryGenerationRateMax = 6;
+		@Config.Comment("The minimal number of Goldenrod Plants in a chunk)")
+		public int goldenrodGenerationRateMin = 0;
+		@Config.Comment("The maximal number of Goldenrod Plants in a chunk)")
+		public int goldenrodGenerationRateMax = 3;
+		@Config.Comment("The minimal number of Corn Plants in a chunk)")
+		public int cornGenerationRateMin = 0;
+		@Config.Comment("The maximal number of Corn Plants in a chunk)")
+		public int cornGenerationRateMax = 4;
+		@Config.RequiresMcRestart
+		@Config.Comment("The weighted probability of the Burnt Forest biome")
+		public int burntForestWeight = 2;
+		@Config.RequiresMcRestart
+		@Config.Comment("The weighted probability of the Burnt Jungle biome")
+		public int burntJungleWeight = 2;
+		@Config.RequiresMcRestart
+		@Config.Comment("The weighted probability of the Dead Forest biome")
+		public int deadForestWeight = 1;
+		@Config.RequiresMcRestart
+		@Config.Comment("The weighted probability of the Wasteland biome")
+		public int wastelandWeight = 1;
 	}
 
 	@Mod.EventBusSubscriber(modid = SevenDaysToMine.MODID)

@@ -163,7 +163,7 @@ public class CityHelper {
 				return super.getDimensions(world, facing).add(2, 0, 2);
 			}
 		}.setAllowedCityTypes(EnumCityType.CITY).setPedestal(ModBlocks.STRUCTURE_STONE.getDefaultState()));
-		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "fire_station"), 20, -1)
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "fire_station"), 18, -1)
 				.setAllowedCityTypes(EnumCityType.CITY, EnumCityType.TOWN)
 				.setPedestal(ModBlocks.STRUCTURE_STONE.getDefaultState()));
 

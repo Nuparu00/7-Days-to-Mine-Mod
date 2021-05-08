@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.renderer.tileentity.TileEntityScreenProjectorRenderer;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.electricity.ElectricConnection;
 import com.nuparu.sevendaystomine.electricity.IVoltage;
@@ -20,7 +21,6 @@ import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.ModConstants;
 import com.nuparu.sevendaystomine.util.PrefabHelper;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

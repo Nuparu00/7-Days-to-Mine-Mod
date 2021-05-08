@@ -38,8 +38,6 @@ public class ZombieWolfHorde extends Horde {
 			new TextComponentTranslation("horde.wolf.name"), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS))
 					.setDarkenSky(true);
 
-	public static final int MIN_DISTANCE = 30;
-
 	public ZombieWolfHorde(World world) {
 		super(world);
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 10));
@@ -139,23 +137,17 @@ public class ZombieWolfHorde extends Horde {
 
 	public BlockPos getSpawnOrigin() {
 		double angle = 2.0 * Math.PI * world.rand.nextDouble();
-		double dist = MIN_DISTANCE + world.rand.nextDouble()*10;
+		double dist = ModConfig.world.hordeMinDistance + world.rand.nextDouble() * (ModConfig.world.hordeMaxDistance-ModConfig.world.hordeMinDistance);
 		double x = center.getX() + dist * Math.cos(angle);
 		double z = center.getZ() + dist * Math.sin(angle);
-		
-		return new BlockPos(x,0,z);
+
+		return new BlockPos(x, 0, z);
 	}
 
 	public BlockPos getSpawn(BlockPos origin) {
 		double x = world.rand.nextDouble() - 0.5;
 		double y = world.rand.nextDouble() - 0.5;
 		double z = world.rand.nextDouble() - 0.5;
-
-		double mag = Math.sqrt(x * x + y * y + z * z);
-		x /= mag;
-		y /= mag;
-		z /= mag;
-
 		double d = world.rand.nextDouble() * 1.5;
 		return origin.add(x * d, y * d, z * d);
 	}

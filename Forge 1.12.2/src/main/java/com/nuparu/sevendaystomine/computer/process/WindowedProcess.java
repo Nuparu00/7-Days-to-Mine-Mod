@@ -7,6 +7,7 @@ import com.nuparu.sevendaystomine.client.gui.monitor.IDraggable;
 import com.nuparu.sevendaystomine.client.gui.monitor.IScreenElement;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.computer.application.Application;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.network.PacketManager;
@@ -17,7 +18,6 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;

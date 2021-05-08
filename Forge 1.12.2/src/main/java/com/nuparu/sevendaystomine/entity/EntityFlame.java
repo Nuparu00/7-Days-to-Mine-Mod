@@ -1,5 +1,7 @@
 package com.nuparu.sevendaystomine.entity;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,7 +54,7 @@ public class EntityFlame extends EntityThrowable {
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
 		this.motionY = (double) (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
 		this.shoot(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F * spread);
-		this.lifetime=lifetime;
+		this.lifetime = lifetime;
 
 	}
 
@@ -98,17 +100,18 @@ public class EntityFlame extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if (this.ticksAlive >= 2 && rand.nextInt(4) == 0) {
-			this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D,
-					new int[0]);
-		}
-		else if (this.ticksAlive >= lifetime/2 && rand.nextInt(4) == 0) {
+		if (ModConfig.client.molotovParticles) {
+			if (this.ticksAlive >= 2 && rand.nextInt(4) == 0) {
+				this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D,
+						new int[0]);
+			} else if (this.ticksAlive >= lifetime / 2 && rand.nextInt(4) == 0) {
 
-			this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D,
-					new int[0]);
-		} else if (this.ticksAlive >= 10 && rand.nextInt(4) == 0) {
-			this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D,
-					new int[0]);
+				this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D,
+						0.0D, new int[0]);
+			} else if (this.ticksAlive >= 10 && rand.nextInt(4) == 0) {
+				this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D,
+						0.0D, new int[0]);
+			}
 		}
 		if (this.isInWater()) {
 			this.setDead();
@@ -123,7 +126,7 @@ public class EntityFlame extends EntityThrowable {
 	public float getGravityVelocity() {
 		return gravity;
 	}
-	
+
 	public void setGravityVelocity(float g) {
 		gravity = g;
 	}
@@ -136,18 +139,18 @@ public class EntityFlame extends EntityThrowable {
 	public int getBrightnessForRender(float partialTicks) {
 		return 15728880;
 	}
+
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound)
-    {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 
 		super.writeEntityToNBT(compound);
 		compound.setFloat("gravity", gravity);
-    }
+	}
+
 	@Override
-    public void readEntityFromNBT(NBTTagCompound compound)
-    {
+	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		gravity = compound.getFloat("gravity");
-    }
+	}
 
 }

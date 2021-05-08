@@ -377,5 +377,10 @@ public class TileEntitySeparator extends TileEntityItemHandler<ItemHandlerNameab
 	public boolean isPassive() {
 		return true;
 	}
-
+	
+	@Override
+	public boolean disconnect(IVoltage voltage) {
+		return false;
+	}
+	
 }

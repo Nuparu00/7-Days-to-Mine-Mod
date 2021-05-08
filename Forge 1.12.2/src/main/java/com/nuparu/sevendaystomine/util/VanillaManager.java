@@ -129,6 +129,13 @@ public class VanillaManager {
 		RecipeManager.removeItem(Items.STONE_PICKAXE);
 		RecipeManager.removeItem(Items.STONE_SHOVEL);
 		RecipeManager.removeItem(Items.STONE_HOE);
+		
+		RecipeManager.removeItem(Items.IRON_SWORD);
+		RecipeManager.removeItem(Items.IRON_AXE);
+		RecipeManager.removeItem(Items.IRON_PICKAXE);
+		RecipeManager.removeItem(Items.IRON_SHOVEL);
+		RecipeManager.removeItem(Items.IRON_HOE);
+		
 		//RecipeManager.removeRecipe(net.minecraft.init.Blocks.IRON_BLOCK);
 		//RecipeManager.removeRecipe(net.minecraft.init.Blocks.GOLD_BLOCK);
 		RecipeManager.removeRecipe(Items.IRON_CHESTPLATE);

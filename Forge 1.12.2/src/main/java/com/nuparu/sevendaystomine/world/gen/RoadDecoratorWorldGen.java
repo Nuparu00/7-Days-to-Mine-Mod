@@ -96,7 +96,7 @@ public class RoadDecoratorWorldGen implements IWorldGenerator {
 								CityHelper.placeRandomCar(world, pos.up(), EnumFacing.HORIZONTALS[rand.nextInt(4)],true,rand);
 								break;
 							}
-							else if (rand.nextInt(2) == 0 && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && biome.topBlock.getBlock() == Blocks.SAND) {
+							else if (ModConfig.worldGen.sandRoadCover && rand.nextInt(2) == 0 && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && biome.topBlock.getBlock() == Blocks.SAND) {
 								IBlockState sand = ModBlocks.SAND_LAYER.getDefaultState();
 								if(biome.topBlock.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND) {
 									sand = ModBlocks.RED_SAND_LAYER.getDefaultState();

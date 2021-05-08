@@ -81,6 +81,7 @@ import com.nuparu.sevendaystomine.client.sound.MovingSoundCarIdle;
 import com.nuparu.sevendaystomine.client.sound.MovingSoundMinibikeIdle;
 import com.nuparu.sevendaystomine.client.sound.PositionedLoudSound;
 import com.nuparu.sevendaystomine.client.toast.NotificationToast;
+import com.nuparu.sevendaystomine.client.util.MP3Helper;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.entity.EntityAirplane;
@@ -143,7 +144,6 @@ import com.nuparu.sevendaystomine.tileentity.TileEntityWallClock;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWindTurbine;
 import com.nuparu.sevendaystomine.tileentity.TileEntityWoodenLogSpike;
 import com.nuparu.sevendaystomine.util.EnumModParticleType;
-import com.nuparu.sevendaystomine.util.client.MP3Helper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;

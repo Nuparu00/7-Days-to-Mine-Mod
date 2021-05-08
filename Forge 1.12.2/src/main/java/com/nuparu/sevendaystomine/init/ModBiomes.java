@@ -1,5 +1,6 @@
 package com.nuparu.sevendaystomine.init;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.world.biome.BiomeBurntForest;
 import com.nuparu.sevendaystomine.world.biome.BiomeBurntJungle;
 import com.nuparu.sevendaystomine.world.biome.BiomeBurntTaiga;
@@ -35,16 +36,16 @@ public static final Biome BURNT_FOREST = new BiomeBurntForest();
 	public static final Biome WASTELAND_BEACH = new BiomeWastelandBeach((new Biome.BiomeProperties("Wasteland Beach")).setBaseHeight(0.0F).setHeightVariation(0.025F).setTemperature(0.8F).setRainfall(0.4F).setWaterColor(0x404736));
 	
 	public static void init() {
-		register(BURNT_FOREST, "Burnt Forest", BiomeType.WARM, 2, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.FOREST);
-		register(BURNT_JUNGLE, "Burnt Jungle", BiomeType.WARM, 2, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.JUNGLE, Type.DENSE);
-		register(WASTELAND, "Wasteland", BiomeType.DESERT, 1, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
+		register(BURNT_FOREST, "Burnt Forest", BiomeType.WARM, ModConfig.worldGen.burntForestWeight, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.FOREST);
+		register(BURNT_JUNGLE, "Burnt Jungle", BiomeType.WARM, ModConfig.worldGen.burntJungleWeight, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.JUNGLE, Type.DENSE);
+		register(WASTELAND, "Wasteland", BiomeType.DESERT, ModConfig.worldGen.wastelandWeight, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY);
 		register(WASTELAND_RIVER, "Wasteland River", BiomeType.DESERT, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.RIVER);
 		register(BURNT_TAIGA, "Burnt Cold Taiga", BiomeType.ICY, Type.COLD, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.SNOWY);
 		register(WASTELAND_OCEAN, "Wasteland Ocean", BiomeType.COOL, Type.OCEAN, Type.DEAD, Type.WASTELAND, Type.WATER);
 		register(WASTELAND_DEEP_OCEAN, "Wasteland Deep Ocean", BiomeType.COOL, Type.OCEAN, Type.DEAD, Type.WASTELAND, Type.WATER);
 		register(WASTELAND_DESERT, "Wasteland Desert", BiomeType.DESERT, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.SANDY);
 		register(WASTELAND_BEACH, "Wasteland Beach", BiomeType.DESERT, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.BEACH);
-		register(WASTELAND_FOREST, "Dead Forest", BiomeType.WARM, 1, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.FOREST);
+		register(WASTELAND_FOREST, "Dead Forest", BiomeType.WARM, ModConfig.worldGen.deadForestWeight, Type.DRY, Type.DEAD, Type.WASTELAND, Type.SPOOKY, Type.FOREST);
 	}
 
 	public static void register(Biome biome, String name, BiomeType type, int weight, Type... types) {

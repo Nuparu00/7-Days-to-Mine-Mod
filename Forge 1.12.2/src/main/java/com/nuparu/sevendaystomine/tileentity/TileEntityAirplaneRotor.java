@@ -49,95 +49,104 @@ public class TileEntityAirplaneRotor extends TileEntity implements ITickable, IV
 
 	@Override
 	public void update() {
+
+		boolean dirty = false;
+
+
 		anglePrev = angle;
 
 		if (facing == null) {
 			this.facing = world.getBlockState(pos).getValue(BlockAirplaneRotor.FACING).getOpposite();
-			markDirty();
+			dirty = true;
 		}
-		
+
 		if (thrust < 0f) {
 			thrust = 0f;
-			markDirty();
+			dirty = true;
 		}
 
 		if (on) {
 			if (voltage >= getRequiredPower()) {
+				float thrustOld = thrust;
 				if (thrust < 1f * (voltage / getRequiredPower())) {
-
 					thrust += 0.01f;
-					markDirty();
-
 				}
-				if (thrust > 1f * (voltage / getRequiredPower())) {
-					thrust = 1f;
-					markDirty();
+				else {
+					thrust = 1f * (voltage / getRequiredPower());
 				}
+				if(Math.abs(thrust-thrustOld) >= 0.001) {
+					dirty = true;
+				}
+				voltage-=getRequiredPower();
 			}
-			voltage--;
 		}
 		if (!on || voltage < getRequiredPower()) {
 			if (thrust > 0.004) {
-				thrust -= 0.004f;
-				markDirty();
+				thrust -= 0.1f;
+				dirty = true;
 			} else {
 				thrust = 0;
-				markDirty();
+				dirty = true;
 			}
 
 		}
 
-		if(thrust == 0) return;
-		
-		final double maxForce = 0.25 * thrust;
-		range = (float)Math.PI * thrust;
-		speed = (float) (3.6 * (thrust));
-		angle += (speed*6.4f);
-		markDirty();
-		
-		
-		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, getEntitySearchBox());
-		if (entities.isEmpty())
-			return;
-		
-		
-		System.out.println(getEntitySearchBox().toString());
+		if (thrust != 0) {
 
-		double angle = Math.toRadians(getBlowAngle() - 90);
-		final Vec3d blockPos = MathUtils.getConeApex(pos, angle);
-		final Vec3d basePos = MathUtils.getConeBaseCenter(pos, angle, range);
-		final Vec3d coneAxis = new Vec3d(basePos.x - blockPos.x, basePos.y - blockPos.y, basePos.z - blockPos.z);
+			final double maxForce = thrust*0.004;
+			range = (float) Math.PI * thrust*0.4f;
+			speed = (float) (3.6 * (thrust));
+			angle += 45;
+			dirty = true;
 
-		for (Entity entity : entities) {
+			List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, getEntitySearchBox());
 
-			if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).capabilities.isFlying) {
+			if (!entities.isEmpty()) {
 
-				Vec3d directionVec = new Vec3d(entity.posX - blockPos.x, entity.posY - blockPos.y,
-						entity.posZ - blockPos.z);
+				double angle = Math.toRadians(getBlowAngle() - 90);
+				final Vec3d blockPos = MathUtils.getConeApex(pos, angle);
+				final Vec3d basePos = MathUtils.getConeBaseCenter(pos, angle, range);
+				final Vec3d coneAxis = new Vec3d(basePos.x - blockPos.x, basePos.y - blockPos.y,
+						basePos.z - blockPos.z);
 
-				if (MathUtils.isInCone(coneAxis, directionVec, 0.6)) {
-					final double distToOrigin = directionVec.lengthVector();
-					final double force = (1.0 - distToOrigin / range) * maxForce;
-					if (force <= 0)
-						continue;
-					Vec3d normal = directionVec.normalize();
-					entity.motionX += force * normal.x;
-					entity.motionZ += force * normal.z;
+				for (Entity entity : entities) {
+
+					if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).capabilities.isFlying) {
+
+						Vec3d directionVec = new Vec3d(entity.posX - blockPos.x, entity.posY - blockPos.y,
+								entity.posZ - blockPos.z);
+
+						if (MathUtils.isInCone(coneAxis, directionVec, 0.6)) {
+							final double distToOrigin = directionVec.lengthVector();
+							final double force = (1.0 - distToOrigin / range) * maxForce;
+							if (force <= 0)
+								continue;
+							Vec3d normal = directionVec.normalize();
+							entity.motionX += force * normal.x;
+							entity.motionZ += force * normal.z;
+						}
+					}
+				}
+				BlockPos front = pos.offset(facing);
+				List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class,
+						new AxisAlignedBB((double) front.getX(), (double) front.getY(), (double) front.getZ(),
+								(double) (front.getX() + 1), (double) (front.getY() + 1), (double) (front.getZ() + 1)));
+				for (int i = 0; i < list.size(); i++) {
+					EntityLivingBase entity = list.get(i);
+
+					entity.attackEntityFrom(DamageSources.blade, 3);
+
 				}
 			}
-		}
-		BlockPos front = pos.offset(facing);
-		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class,
-				new AxisAlignedBB((double) front.getX(), (double) front.getY(), (double) front.getZ(),
-						(double) (front.getX() + 1), (double) (front.getY() + 1), (double) (front.getZ() + 1)));
-		for (int i = 0; i < list.size(); i++) {
-			EntityLivingBase entity = list.get(i);
-
-			entity.attackEntityFrom(DamageSources.blade, 3);
 
 		}
-
-		markDirty();
+		if(dirty) {
+			markDirty();
+			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+			world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+		}
+		
 	}
 
 	@Override
@@ -242,13 +251,14 @@ public class TileEntityAirplaneRotor extends TileEntity implements ITickable, IV
 	}
 
 	private AxisAlignedBB getEntitySearchBox() {
-		if(windBB != null) {
+		windBB = null;
+		if (windBB != null) {
 			return windBB;
 		}
-		windBB = new AxisAlignedBB(pos.getX() -range , pos.getY()-2, pos.getZ() - range, pos.getX() + 1 + range,
-				pos.getY() + 3, pos.getZ() + 1 + range);	
-		
-		
+		BlockPos posStart = pos.offset(facing).offset(facing.rotateYCCW(),1).down(1);
+		BlockPos posEnd = pos.offset(facing,(int) range).offset(facing.rotateY(),1).up(1);
+		windBB = new AxisAlignedBB(posStart.getX() ,posStart.getY(),posStart.getZ(),posEnd.getX()+1,posEnd.getY()+1,posEnd.getZ()+1);
+
 		return windBB;
 	}
 
@@ -266,7 +276,7 @@ public class TileEntityAirplaneRotor extends TileEntity implements ITickable, IV
 			return 0d;
 
 		}
-		
+
 	}
 
 	@Override
@@ -353,7 +363,7 @@ public class TileEntityAirplaneRotor extends TileEntity implements ITickable, IV
 
 	@Override
 	public long getRequiredPower() {
-		return 25;
+		return 60;
 	}
 
 	@Override
@@ -400,6 +410,33 @@ public class TileEntityAirplaneRotor extends TileEntity implements ITickable, IV
 
 	@Override
 	public boolean isPassive() {
+		return false;
+	}
+
+	@Override
+	public boolean disconnect(IVoltage voltage) {
+		for (ElectricConnection input : getInputs()) {
+			if (input.getFrom().equals(voltage.getPos())) {
+				this.inputs.remove(input);
+				markDirty();
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+				return true;
+			}
+		}
+
+		for (ElectricConnection output : getOutputs()) {
+			if (output.getTo().equals(voltage.getPos())) {
+				System.out.println("DDD");
+				this.outputs.remove(output);
+				markDirty();
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+				return true;
+			}
+		}
 		return false;
 	}
 

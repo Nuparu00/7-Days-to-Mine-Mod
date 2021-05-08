@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import com.nuparu.sevendaystomine.client.gui.GuiMonitor;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 import com.nuparu.sevendaystomine.computer.process.WindowedProcess;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;

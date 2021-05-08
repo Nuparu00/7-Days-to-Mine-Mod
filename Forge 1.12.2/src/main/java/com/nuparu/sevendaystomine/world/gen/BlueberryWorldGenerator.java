@@ -2,6 +2,8 @@ package com.nuparu.sevendaystomine.world.gen;
 
 import java.util.Random;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
+import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.world.gen.feature.WorldGenBlueberry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -42,9 +44,7 @@ public class BlueberryWorldGenerator implements IWorldGenerator {
 		if (world.getWorldType() == WorldType.FLAT) {
 			return;
 		}
-		int MIN = 0;
-		int MAX = 7;
-		int num = MIN + rand.nextInt(MAX - MIN);
+		int num = MathUtils.getIntInRange(rand, ModConfig.worldGen.berryGenerationRateMin, ModConfig.worldGen.berryGenerationRateMax+1);
 		for (int i = 0; i < num; i++) {
 			int randX = blockX + rand.nextInt(16);
 			int randZ = blockZ + rand.nextInt(16);

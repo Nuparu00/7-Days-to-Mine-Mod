@@ -4,10 +4,10 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.client.gui.monitor.IScreenElement;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.computer.process.TickingProcess;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

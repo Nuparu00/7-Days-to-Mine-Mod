@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
 import com.nuparu.sevendaystomine.util.Utils;
 import com.nuparu.sevendaystomine.world.gen.city.building.Building;
@@ -23,7 +24,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class Horde {
-	public static final int WAVE_DELAY = 200;
 
 	// Living zombies
 	public List<EntityZombieBase> zombies = new ArrayList<EntityZombieBase>();
@@ -61,7 +61,7 @@ public abstract class Horde {
 
 	public void start() {
 		--waves;
-		waveTimer = WAVE_DELAY;
+		waveTimer = ModConfig.world.hordeWaveDelay;
 	}
 
 	public void update() {

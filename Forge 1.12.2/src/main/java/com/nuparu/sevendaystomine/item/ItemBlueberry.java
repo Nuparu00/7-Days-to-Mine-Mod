@@ -1,16 +1,19 @@
 package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -35,7 +38,9 @@ public class ItemBlueberry extends ItemFood implements net.minecraftforge.common
             {
                 CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos.up(), itemstack);
             }
-
+            worldIn.playSound((EntityPlayer) null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+					SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS,
+					MathUtils.getFloatInRange(0.9f, 1.1f), MathUtils.getFloatInRange(0.9f, 1.1f));
             itemstack.shrink(1);
             return EnumActionResult.SUCCESS;
         }

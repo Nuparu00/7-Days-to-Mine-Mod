@@ -15,8 +15,10 @@ import com.nuparu.sevendaystomine.capability.IItemHandlerExtended;
 import com.nuparu.sevendaystomine.client.renderer.RenderGlobalEnhanced;
 import com.nuparu.sevendaystomine.command.CommandAirdrop;
 import com.nuparu.sevendaystomine.command.CommandAirport;
+import com.nuparu.sevendaystomine.command.CommandCure;
 import com.nuparu.sevendaystomine.command.CommandGenerateCity;
 import com.nuparu.sevendaystomine.command.CommandGetBlockBreak;
+import com.nuparu.sevendaystomine.command.CommandHorde;
 import com.nuparu.sevendaystomine.command.CommandHydrate;
 import com.nuparu.sevendaystomine.command.CommandInfect;
 import com.nuparu.sevendaystomine.command.CommandLocateModded;
@@ -24,6 +26,7 @@ import com.nuparu.sevendaystomine.command.CommandPlaceLegacyPrefab;
 import com.nuparu.sevendaystomine.command.CommandPlacePrefab;
 import com.nuparu.sevendaystomine.command.CommandSavePrefab;
 import com.nuparu.sevendaystomine.command.CommandSetBlockBreak;
+import com.nuparu.sevendaystomine.command.CommandSetQuality;
 import com.nuparu.sevendaystomine.crafting.RecipeManager;
 import com.nuparu.sevendaystomine.enchantment.ModEnchantments;
 import com.nuparu.sevendaystomine.events.ClientEventHandler;
@@ -86,7 +89,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(modid = SevenDaysToMine.MODID, version = SevenDaysToMine.VERSION, useMetadata = true)
 public class SevenDaysToMine {
 	public static final String MODID = "sevendaystomine";
-	public static final String VERSION = "Beta 1.0 Pre-release 7.12";
+	public static final String VERSION = "Beta 1.0 Pre-release 9.4";
 
 	static final String CLIENT_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.ClientProxy";
 	static final String SERVER_PROXY_CLASS = "com.nuparu.sevendaystomine.proxy.CommonProxy";
@@ -277,7 +280,8 @@ public class SevenDaysToMine {
 			ModBlocks.DARK_BRICKS_SLAB_DOUBLE, ModBlocks.DARK_BRICKS_STAIRS, ModBlocks.DARK_BRICKS_MOSSY_SLAB,
 			ModBlocks.DARK_BRICKS_MOSSY_SLAB_DOUBLE, ModBlocks.DARK_BRICKS_MOSSY_STAIRS, ModBlocks.BRICKS_MOSSY_STAIRS,
 			ModBlocks.BRICK_MOSSY_SLAB, ModBlocks.BRICK_MOSSY_SLAB_DOUBLE, ModBlocks.STONE_BRICK_STAIRS_CRACCKED,
-			ModBlocks.ASPHALT_SLAB, ModBlocks.ASPHALT_SLAB_DOUBLE, ModBlocks.BRASS_BLOCK };
+			ModBlocks.ASPHALT_SLAB, ModBlocks.ASPHALT_SLAB_DOUBLE, ModBlocks.BRASS_BLOCK,
+			ModBlocks.WOODEN_DOOR_IRON_REINFORCED };
 
 	public static final Item[] ITEMS = new Item[] { ModItems.IRON_SCRAP, ModItems.BRASS_SCRAP, ModItems.LEAD_SCRAP,
 			ModItems.EMPTY_CAN, ModItems.STONE_AXE, ModItems.PLANK_WOOD, ModItems.SMALL_STONE, ModItems.PLANT_FIBER,
@@ -287,64 +291,65 @@ public class SevenDaysToMine {
 			ModItems.CANNED_BEEF, ModItems.CANNED_CATFOOD, ModItems.CANNED_CHICKEN, ModItems.CANNED_CHILI,
 			ModItems.CANNED_DOGFOOD, ModItems.CANNED_HAM, ModItems.CANNED_LAMB, ModItems.CANNED_MISO,
 			ModItems.CANNED_PASTA, ModItems.CANNED_PEARS, ModItems.CANNED_PEAS, ModItems.CANNED_SALMON,
-			ModItems.CANNED_SOUP, ModItems.CANNED_STOCK, ModItems.CANNED_TUNA, ModItems.COFFEE_BERRY,
-			ModItems.COFFEE_BEANS, ModItems.CORN, ModItems.BLUEBERRY, ModItems.BANEBERRY, ModItems.BANDAGE,
-			ModItems.BANDAGE_ADVANCED, ModItems.FIRST_AID_KIT, ModItems.BLOOD_BAG, ModItems.BLOOD_DRAW_KIT,
+			ModItems.CANNED_SOUP, ModItems.CANNED_STOCK, ModItems.CANNED_TUNA, ModItems.COFFEE_BEANS, ModItems.CORN,
+			ModItems.BLUEBERRY, ModItems.BANEBERRY, ModItems.COFFEE_BERRY, ModItems.BANDAGE, ModItems.BANDAGE_ADVANCED,
+			ModItems.FIRST_AID_KIT, ModItems.BLOOD_BAG, ModItems.BLOOD_DRAW_KIT,
 			/* ModItems.INGOT_IRON, */ ModItems.INGOT_LEAD, ModItems.INGOT_BRASS, ModItems.INGOT_STEEL,
 			ModItems.INGOT_COPPER, ModItems.INGOT_TIN, ModItems.INGOT_ZINC, ModItems.INGOT_BRONZE,
 			/* ModItems.INGOT_GOLD, */ ModItems.MOLD_INGOT, ModItems.CLOTH, ModItems.ANTIBIOTICS, ModItems.CONCRETE_MIX,
 			ModItems.BONE_SHIV, ModItems.CEMENT, ModItems.CRUDE_CLUB, ModItems.WOODEN_CLUB,
 			ModItems.IRON_REINFORCED_CLUB, ModItems.BARBED_CLUB, ModItems.SPIKED_CLUB, ModItems.CLAWHAMMER,
-			ModItems.WRENCH, ModItems.KITCHEN_KNIFE, ModItems.ARMY_KNIFE, ModItems.MACHETE, ModItems.PISTOL,
-			ModItems.NINE_MM_BULLET, ModItems.FRIDGE, ModItems.SLEEPING_BAG, ModItems.WOODEN_DOOR_ITEM,
-			ModItems.WOODEN_DOOR_REINFORCED_ITEM, ModItems.AK47, ModItems.HUNTING_RIFLE, ModItems.SEVEN_MM_BULLET,
-			ModItems.AUGER, ModItems.REALITY_WAND, ModItems.MP3_PLAYER, ModItems.SCREWDRIVER, ModItems.RAM,
-			ModItems.CPU, ModItems.HDD, ModItems.GPU, ModItems.MOTHERBOARD, ModItems.POWER_SUPPLY, ModItems.DISC,
-			ModItems.LINUX_DISC, ModItems.MAC_DISC, ModItems.WIN10_DISC, ModItems.WIN7_DISC, ModItems.WIN8_DISC,
-			ModItems.WIN98_DISC, ModItems.WINXP_DISC, ModItems.LOCKED_DOOR_ITEM, ModItems.WIRE, ModItems.STREET_SIGN,
-			ModItems.PHOTO, ModItems.ANALOG_CAMERA, ModItems.SHORTS, ModItems.CAR_BATTERY, ModItems.SMALL_ENGINE,
-			ModItems.MINIBIKE_CHASSIS, ModItems.MINIBIKE_HANDLES, ModItems.MINIBIKE_SEAT, ModItems.SKIRT,
-			ModItems.JEANS, ModItems.SHORTS_LONG, ModItems.JACKET, ModItems.JUMPER, ModItems.SHIRT,
-			ModItems.SHORT_SLEEVED_SHIRT, ModItems.T_SHIRT_0, ModItems.T_SHIRT_1, ModItems.COAT, ModItems.FIBER_HAT,
-			ModItems.FIBER_CHESTPLATE, ModItems.FIBER_LEGGINGS, ModItems.FIBER_BOOTS, ModItems.STEEL_HELMET,
-			ModItems.STEEL_CHESTPLATE, ModItems.STEEL_LEGGINGS, ModItems.STEEL_BOOTS, ModItems.IRON_AXE, ModItems.CENT,
-			ModItems.BACKPACK, ModItems.LEATHER_IRON_BOOTS, ModItems.LEATHER_IRON_CHESTPLATE,
-			ModItems.LEATHER_IRON_HELMET, ModItems.LEATHER_IRON_LEGGINGS, ModItems.VOLTMETER, ModItems.CHAINSAW,
-			ModItems.COPPER_PICKAXE, ModItems.BRONZE_PICKAXE, ModItems.IRON_PICKAXE, ModItems.STEEL_PICKAXE,
-			ModItems.COPPER_AXE, ModItems.BRONZE_AXE, ModItems.STEEL_AXE, ModItems.COPPER_SHOVEL,
-			ModItems.BRONZE_SHOVEL, ModItems.IRON_SHOVEL, ModItems.STEEL_SHOVEL, ModItems.BOOK_FORGING,
-			ModItems.IRON_PIPE, ModItems.SCRAP_PICKAXE, ModItems.SCRAP_SHOVEL, ModItems.SCRAP_AXE, ModItems.CIRCUIT,
-			ModItems.LINK_TOOL, ModItems.SURVIVAL_GUIDE, ModItems.MICROPHONE, ModItems.BULLET_TIP,
-			ModItems.BULLET_CASING, ModItems.MOLDY_BREAD, ModItems.SLEDGEHAMMER, ModItems.PISTOL_SLIDE,
-			ModItems.PISTOL_TRIGGER, ModItems.PISTOL_GRIP, ModItems.SNIPER_RIFLE_BARREL, ModItems.SNIPER_RIFLE_PARTS,
-			ModItems.SNIPER_RIFLE_SCOPE, ModItems.SNIPER_RIFLE_STOCK, ModItems.SNIPER_RIFLE_TRIGGER,
-			ModItems.SCRAP_BOOTS, ModItems.SCRAP_CHESTPLATE, ModItems.SCRAP_HELMET, ModItems.SCRAP_LEGGINGS,
-			ModItems.SNIPER_RIFLE, ModItems.SHOTGUN, ModItems.SHOTGUN_SAWED_OFF, ModItems.BELLOWS, ModItems.BOOK_AMMO,
-			ModItems.BULLET_TIP_MOLD, ModItems.BULLET_CASING_MOLD, ModItems.TEN_MM_BULLET, ModItems.BOOK_COMPUTERS,
-			ModItems.BOOK_CONCRETE, ModItems.CEMENT_MOLD, ModItems.BOOK_ELECTRICITY, ModItems.MAGNET,
-			ModItems.PHOTO_CELL, ModItems.BOOK_CHEMISTRY, ModItems.POTASSIUM, ModItems.BOOK_METALWORKING,
-			ModItems.BOOK_PISTOL, ModItems.BOOK_MINIBIKE, ModItems.GAS_CANISTER, ModItems.SHOTGUN_SCHEMATICS,
-			ModItems.SHOTGUN_BARREL, ModItems.SHOTGUN_BARREL_SHORT, ModItems.SHOTGUN_PARTS, ModItems.SHOTGUN_RECEIVER,
-			ModItems.SHOTGUN_STOCK, ModItems.SHOTGUN_STOCK_SHORT, ModItems.SNIPER_SCHEMATICS, ModItems.MAGNUM,
-			ModItems.MAGNUM_SCOPED, ModItems.FLAMETHROWER, ModItems.MP5, ModItems.RPG, ModItems.M4,
-			ModItems.MAGNUM_BULLET, ModItems.MAGNUM_FRAME, ModItems.MAGNUM_CYLINDER, ModItems.MAGNUM_GRIP,
-			ModItems.MAGNUM_SCHEMATICS, ModItems.MP5_BARREL, ModItems.MP5_STOCK, ModItems.MP5_TRIGGER,
-			ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL, ModItems.AUGER_BLADE, ModItems.NIGHT_VISION_DEVICE,
-			ModItems.CHRISTMAS_HAT, ModItems.BERET, ModItems.STETHOSCOPE, ModItems.BLOODMOON, ModItems.SCRAP_HOE,
-			ModItems.COPPER_HOE, ModItems.BRONZE_HOE, ModItems.IRON_HOE, ModItems.STEEL_HOE, ModItems.AUGER_HANDLES,
-			ModItems.AUGER_SCHEMATICS, ModItems.HUNTING_RIFLE_BARREL, ModItems.HUNTING_RIFLE_BOLT,
-			ModItems.HUNTING_RIFLE_PARTS, ModItems.HUNTING_RIFLE_STOCK, ModItems.HUNTING_RIFLE_SCHEMATICS,
-			ModItems.EMPTY_JAR_MOLD, ModItems.HUNTING_RIFLE_BARREL_MOLD, ModItems.HUNTING_RIFLE_BOLT_MOLD,
-			ModItems.MP5_STOCK_MOLD, ModItems.MP5_BARREL_MOLD, ModItems.MP5_TRIGGER_MOLD, ModItems.PISTOL_BARREL_MOLD,
-			ModItems.PISTOL_TRIGGER_MOLD, ModItems.SNIPER_RIFLE_STOCK_MOLD, ModItems.SNIPER_RIFLE_TRIGGER_MOLD,
-			ModItems.SHOTGUN_BARREL_MOLD, ModItems.SHOTGUN_RECEIVER_MOLD, ModItems.SHOTGUN_SHORT_BARREL_MOLD,
-			ModItems.SALT, ModItems.CHLORINE_TANK, ModItems.NATRIUM_TANK, ModItems.CHLORINE_GRENADE,
-			ModItems.IRON_HELMET, ModItems.IRON_CHESTPLATE, ModItems.IRON_LEGGINGS, ModItems.IRON_BOOTS,
-			ModItems.LEATHER_HELMET, ModItems.LEATHER_CHESTPLATE, ModItems.LEATHER_LEGGINGS, ModItems.LEATHER_BOOTS,
-			ModItems.FRAGMENTATION_GRENADE, ModItems.MOLOTOV, ModItems.MILITARY_HELMET, ModItems.MILITARY_CHESTPLATE,
-			ModItems.MILITARY_LEGGINGS, ModItems.MILITARY_BOOTS, ModItems.RIOT_SHIELD, ModItems.CRUDE_BOW,
-			ModItems.COMPOUND_BOW, ModItems.MRE, ModItems.SAND_DUST, ModItems.VOMIT, ModItems.ROCKET,
-			ModItems.CAR_CHASSIS, ModItems.ROCKET_SCHEMATICS, ModItems.FLARE, ModItems.SODA};
+			ModItems.WRENCH, ModItems.KITCHEN_KNIFE, ModItems.ARMY_KNIFE, ModItems.MACHETE, ModItems.SLEDGEHAMMER,
+			ModItems.FRIDGE, ModItems.SLEEPING_BAG, ModItems.WOODEN_DOOR_ITEM, ModItems.WOODEN_DOOR_REINFORCED_ITEM,
+			ModItems.AUGER, ModItems.REALITY_WAND, ModItems.RAM, ModItems.CPU, ModItems.HDD, ModItems.GPU,
+			ModItems.MOTHERBOARD, ModItems.POWER_SUPPLY, ModItems.DISC, ModItems.LINUX_DISC, ModItems.MAC_DISC,
+			ModItems.WIN10_DISC, ModItems.WIN7_DISC, ModItems.WIN8_DISC, ModItems.WIN98_DISC, ModItems.WINXP_DISC,
+			ModItems.LOCKED_DOOR_ITEM, ModItems.WIRE, ModItems.STREET_SIGN, ModItems.PHOTO, ModItems.ANALOG_CAMERA,
+			ModItems.SHORTS, ModItems.CAR_BATTERY, ModItems.SMALL_ENGINE, ModItems.MINIBIKE_CHASSIS,
+			ModItems.MINIBIKE_HANDLES, ModItems.MINIBIKE_SEAT, ModItems.SKIRT, ModItems.JEANS, ModItems.SHORTS_LONG,
+			ModItems.JACKET, ModItems.JUMPER, ModItems.SHIRT, ModItems.SHORT_SLEEVED_SHIRT, ModItems.T_SHIRT_0,
+			ModItems.T_SHIRT_1, ModItems.COAT, ModItems.FIBER_HAT, ModItems.FIBER_CHESTPLATE, ModItems.FIBER_LEGGINGS,
+			ModItems.FIBER_BOOTS, ModItems.STEEL_HELMET, ModItems.STEEL_CHESTPLATE, ModItems.STEEL_LEGGINGS,
+			ModItems.STEEL_BOOTS, ModItems.CENT, ModItems.BACKPACK, ModItems.LEATHER_IRON_HELMET,
+			ModItems.LEATHER_IRON_CHESTPLATE, ModItems.LEATHER_IRON_BOOTS, ModItems.LEATHER_IRON_LEGGINGS,
+			ModItems.VOLTMETER, ModItems.CHAINSAW, ModItems.SCRAP_SHOVEL, ModItems.SCRAP_PICKAXE, ModItems.SCRAP_AXE,
+			ModItems.COPPER_SHOVEL, ModItems.COPPER_PICKAXE, ModItems.COPPER_AXE, ModItems.BRONZE_SHOVEL,
+			ModItems.BRONZE_PICKAXE, ModItems.BRONZE_AXE, ModItems.IRON_SHOVEL, ModItems.IRON_AXE,
+			ModItems.IRON_PICKAXE, ModItems.STEEL_SHOVEL, ModItems.STEEL_PICKAXE, ModItems.STEEL_AXE,
+			ModItems.BOOK_FORGING, ModItems.IRON_PIPE, ModItems.CIRCUIT, ModItems.LINK_TOOL, ModItems.SURVIVAL_GUIDE,
+			ModItems.MICROPHONE, ModItems.BULLET_TIP, ModItems.BULLET_CASING, ModItems.MOLDY_BREAD,
+			ModItems.PISTOL_SLIDE, ModItems.PISTOL_TRIGGER, ModItems.PISTOL_GRIP, ModItems.SNIPER_RIFLE_BARREL,
+			ModItems.SNIPER_RIFLE_PARTS, ModItems.SNIPER_RIFLE_SCOPE, ModItems.SNIPER_RIFLE_STOCK,
+			ModItems.SNIPER_RIFLE_TRIGGER, ModItems.SCRAP_HELMET, ModItems.SCRAP_CHESTPLATE, ModItems.SCRAP_LEGGINGS,
+			ModItems.SCRAP_BOOTS, ModItems.IRON_HELMET, ModItems.IRON_CHESTPLATE, ModItems.IRON_LEGGINGS,
+			ModItems.IRON_BOOTS, ModItems.LEATHER_HELMET, ModItems.LEATHER_CHESTPLATE, ModItems.LEATHER_LEGGINGS,
+			ModItems.LEATHER_BOOTS, ModItems.MILITARY_HELMET, ModItems.MILITARY_CHESTPLATE, ModItems.MILITARY_LEGGINGS,
+			ModItems.MILITARY_BOOTS, ModItems.SNIPER_RIFLE, ModItems.PISTOL, ModItems.AK47, ModItems.HUNTING_RIFLE,
+			ModItems.SHOTGUN, ModItems.SHOTGUN_SAWED_OFF, ModItems.BELLOWS, ModItems.BOOK_AMMO,
+			ModItems.BULLET_TIP_MOLD, ModItems.BULLET_CASING_MOLD, ModItems.BOOK_COMPUTERS, ModItems.BOOK_CONCRETE,
+			ModItems.CEMENT_MOLD, ModItems.BOOK_ELECTRICITY, ModItems.MAGNET, ModItems.PHOTO_CELL,
+			ModItems.BOOK_CHEMISTRY, ModItems.POTASSIUM, ModItems.BOOK_METALWORKING, ModItems.BOOK_PISTOL,
+			ModItems.BOOK_MINIBIKE, ModItems.GAS_CANISTER, ModItems.SHOTGUN_SCHEMATICS, ModItems.SHOTGUN_BARREL,
+			ModItems.SHOTGUN_BARREL_SHORT, ModItems.SHOTGUN_PARTS, ModItems.SHOTGUN_RECEIVER, ModItems.SHOTGUN_STOCK,
+			ModItems.SHOTGUN_STOCK_SHORT, ModItems.SNIPER_SCHEMATICS, ModItems.MAGNUM, ModItems.MAGNUM_SCOPED,
+			ModItems.FLAMETHROWER, ModItems.MP5, ModItems.RPG, ModItems.M4, ModItems.TEN_MM_BULLET,
+			ModItems.SEVEN_MM_BULLET, ModItems.NINE_MM_BULLET, ModItems.MAGNUM_BULLET, ModItems.MAGNUM_FRAME,
+			ModItems.MAGNUM_CYLINDER, ModItems.MAGNUM_GRIP, ModItems.MAGNUM_SCHEMATICS, ModItems.MP5_BARREL,
+			ModItems.MP5_STOCK, ModItems.MP5_TRIGGER, ModItems.MP5_SCHEMATICS, ModItems.SHOTGUN_SHELL,
+			ModItems.AUGER_BLADE, ModItems.NIGHT_VISION_DEVICE, ModItems.CHRISTMAS_HAT, ModItems.BERET,
+			ModItems.BLOODMOON, ModItems.SCRAP_HOE, ModItems.COPPER_HOE, ModItems.BRONZE_HOE, ModItems.IRON_HOE,
+			ModItems.STEEL_HOE, ModItems.AUGER_HANDLES, ModItems.AUGER_SCHEMATICS, ModItems.HUNTING_RIFLE_BARREL,
+			ModItems.HUNTING_RIFLE_BOLT, ModItems.HUNTING_RIFLE_PARTS, ModItems.HUNTING_RIFLE_STOCK,
+			ModItems.HUNTING_RIFLE_SCHEMATICS, ModItems.EMPTY_JAR_MOLD, ModItems.HUNTING_RIFLE_BARREL_MOLD,
+			ModItems.HUNTING_RIFLE_BOLT_MOLD, ModItems.MP5_STOCK_MOLD, ModItems.MP5_BARREL_MOLD,
+			ModItems.MP5_TRIGGER_MOLD, ModItems.PISTOL_BARREL_MOLD, ModItems.PISTOL_TRIGGER_MOLD,
+			ModItems.SNIPER_RIFLE_STOCK_MOLD, ModItems.SNIPER_RIFLE_TRIGGER_MOLD, ModItems.SHOTGUN_BARREL_MOLD,
+			ModItems.SHOTGUN_RECEIVER_MOLD, ModItems.SHOTGUN_SHORT_BARREL_MOLD, ModItems.SALT, ModItems.CHLORINE_TANK,
+			ModItems.NATRIUM_TANK, ModItems.CHLORINE_GRENADE, ModItems.FRAGMENTATION_GRENADE, ModItems.MOLOTOV,
+			ModItems.RIOT_SHIELD, ModItems.CRUDE_BOW, ModItems.COMPOUND_BOW, ModItems.MRE, ModItems.SAND_DUST,
+			ModItems.VOMIT, ModItems.ROCKET, ModItems.CAR_CHASSIS, ModItems.ROCKET_SCHEMATICS, ModItems.STETHOSCOPE,
+			ModItems.FLARE, ModItems.SODA, ModItems.WOODEN_DOOR_IRON_REINFORCED_ITEM, ModItems.SCREWDRIVER,
+			ModItems.MP3_PLAYER };
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
@@ -437,6 +442,9 @@ public class SevenDaysToMine {
 		event.registerServerCommand(new CommandAirport());
 		event.registerServerCommand(new CommandLocateModded());
 		event.registerServerCommand(new CommandHydrate());
+		event.registerServerCommand(new CommandHorde());
+		event.registerServerCommand(new CommandCure());
+		event.registerServerCommand(new CommandSetQuality());
 
 		proxy.serverStarting(event);
 

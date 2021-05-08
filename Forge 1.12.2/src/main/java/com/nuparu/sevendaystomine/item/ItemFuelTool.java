@@ -18,6 +18,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -72,9 +73,9 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 
 			stack.getTagCompound().setBoolean("Reloading", false);
 			int toReload = getCapacity(stack,player) - getAmmo(stack,player);
-			int reload = Math.min((int)Math.floor(toReload/20), Utils.getItemCount(player.inventory, bullet.getItem()));
+			int reload = Math.min((int)Math.floor(toReload/5), Utils.getItemCount(player.inventory, bullet.getItem()));
 
-			setAmmo(stack, player, getAmmo(stack, player) + reload * 20);
+			setAmmo(stack, player, getAmmo(stack, player) + reload * 5);
 			player.inventory.clearMatchingItems(bullet.getItem(), -1, reload, null);
 		}
 	}
@@ -173,7 +174,7 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 
 	@Override
 	public SoundEvent getReloadSound() {
-		return SoundHelper.AK47_RELOAD;
+		return SoundEvents.ITEM_BUCKET_FILL;
 	}
 
 	@Override

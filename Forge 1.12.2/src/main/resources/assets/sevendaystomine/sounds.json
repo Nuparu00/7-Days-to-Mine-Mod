@@ -223,5 +223,19 @@
       "sounds":[  
          "sevendaystomine:car.accelerate"
       ]
+   },
+   "magnum.shot":{  
+      "category":"player",
+      "subtitle":"subtitle.magnum.shot",
+      "sounds":[  
+         "sevendaystomine:magnum.shot"
+      ]
+   },
+   "m4.shot":{  
+      "category":"player",
+      "subtitle":"subtitle.m4.shot",
+      "sounds":[  
+         "sevendaystomine:m4.shot"
+      ]
    }
 }

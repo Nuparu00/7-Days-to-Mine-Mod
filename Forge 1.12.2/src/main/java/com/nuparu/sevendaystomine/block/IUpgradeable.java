@@ -10,8 +10,9 @@ public interface IUpgradeable {
 
 public ItemStack[] getItems();
 public SoundEvent getSound();
-public IBlockState getPrev(World world, BlockPos pos);
+public IBlockState getPrev(World world, BlockPos pos, IBlockState original);
 public IBlockState getResult(World world, BlockPos pos);
 public void onUpgrade(World world, BlockPos pos, IBlockState oldState);
+public void onDowngrade(World world, BlockPos pos, IBlockState oldState);
 
 }

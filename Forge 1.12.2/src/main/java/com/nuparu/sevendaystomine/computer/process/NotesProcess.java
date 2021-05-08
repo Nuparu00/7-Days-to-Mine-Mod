@@ -7,12 +7,12 @@ import org.lwjgl.opengl.GL11;
 import com.nuparu.sevendaystomine.client.gui.monitor.IScreenElement;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.TextField;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.MathUtils;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

@@ -9,16 +9,16 @@
             "entries": [
            	 	{
                     "type": "empty",
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "weight": 25,
-                    "name": "minecraft:paper"
+                    "weight": 75
                 },
                 {
                     "type": "item",
                     "weight": 50,
+                    "name": "minecraft:paper"
+                },
+                {
+                    "type": "item",
+                    "weight": 75,
                     "name": "minecraft:book"
                 },
                 {

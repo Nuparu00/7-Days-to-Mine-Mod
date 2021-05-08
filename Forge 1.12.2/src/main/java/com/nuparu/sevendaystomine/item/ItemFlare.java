@@ -5,6 +5,7 @@ import com.nuparu.sevendaystomine.advancements.ModTriggers;
 import com.nuparu.sevendaystomine.entity.EntityChlorineGrenade;
 import com.nuparu.sevendaystomine.entity.EntityFlare;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,7 +24,7 @@ public class ItemFlare extends Item {
 	
 	public ItemFlare(){
 		this.setMaxStackSize(1);
-		this.setCreativeTab(SevenDaysToMine.TAB_MATERIALS);
+		this.setCreativeTab(CreativeTabs.TOOLS);
 	}
 
 	@Override

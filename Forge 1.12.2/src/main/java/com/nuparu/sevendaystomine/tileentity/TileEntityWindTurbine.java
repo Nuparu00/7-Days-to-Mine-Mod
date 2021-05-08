@@ -337,4 +337,31 @@ public class TileEntityWindTurbine extends TileEntity implements ITickable, IVol
 		return false;
 	}
 
+	@Override
+	public boolean disconnect(IVoltage voltage) {
+		for(ElectricConnection input : getInputs()) {
+			if(input.getFrom().equals(voltage.getPos())) {
+				this.inputs.remove(input);
+				markDirty();
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+				return true;
+			}
+		}
+		
+		for(ElectricConnection output : getOutputs()) {
+			if(output.getTo().equals(voltage.getPos())) {
+				System.out.println("DDD");
+				this.outputs.remove(output);
+				markDirty();
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

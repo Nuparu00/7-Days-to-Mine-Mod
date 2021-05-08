@@ -37,28 +37,33 @@ public class CityMapFunction extends LootFunction {
 	}
 
 	@Override
-	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {	
+	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		WorldServer world = context.getWorld();
 
 		List<EntityPlayer> players = world.playerEntities;
 		BlockPos pos;
-		if(players.size()==0){
-		pos = world.getSpawnPoint();
+		if (players.size() == 0) {
+			pos = world.getSpawnPoint();
+		} else {
+			pos = new BlockPos(players.get(rand.nextInt(players.size())));
 		}
-		else {
-		pos = new BlockPos(players.get(rand.nextInt(players.size())));
-		}
-		List<ChunkPos> cities = Utils.getClosestCities(context.getWorld(),pos.getX()>>4,pos.getZ()>>4,256);
-		if(cities.size()==0) return new ItemStack(Items.MAP);
-		
-		ChunkPos city = cities.get(rand.nextInt(cities.size()));
-		ItemStack stack2 = ItemMap.setupNewMap(context.getWorld(), city.x*16+8, city.z*16+8, (byte) 1, true, true);
-		ItemMap.renderBiomePreviewMap(world, stack2);
-		stack2.setTranslatableName("filled_map.city");
-		MapData.addTargetDecoration(stack2, city.getBlock(8, 128, 8), "+", MapDecoration.Type.MANSION);
-		Utils.renderBiomePreviewMap(context.getWorld(), stack2);
+		try {
+			List<ChunkPos> cities = Utils.getClosestCities(context.getWorld(), pos.getX() >> 4, pos.getZ() >> 4, 256);
+			if (cities.size() == 0)
+				return new ItemStack(Items.MAP);
 
-		return stack2;
+			ChunkPos city = cities.get(rand.nextInt(cities.size()));
+			ItemStack stack2 = ItemMap.setupNewMap(context.getWorld(), city.x * 16 + 8, city.z * 16 + 8, (byte) 1, true,
+					true);
+			ItemMap.renderBiomePreviewMap(world, stack2);
+			stack2.setTranslatableName("filled_map.city");
+			MapData.addTargetDecoration(stack2, city.getBlock(8, 128, 8), "+", MapDecoration.Type.MANSION);
+			Utils.renderBiomePreviewMap(context.getWorld(), stack2);
+
+			return stack2;
+		} catch (Exception e) {
+			return stack;
+		}
 	}
 
 	public static class Serializer extends LootFunction.Serializer<CityMapFunction> {

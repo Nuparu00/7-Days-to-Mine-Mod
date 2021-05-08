@@ -9,7 +9,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "weight": 50,
+                    "weight": 100,
                     "name": "minecraft:paper"
                 },
                 {
@@ -75,7 +75,7 @@
                 },
                 {
                     "type": "empty",
-                    "weight": 520
+                    "weight": 525
                 },
                 {
                     "type": "item",

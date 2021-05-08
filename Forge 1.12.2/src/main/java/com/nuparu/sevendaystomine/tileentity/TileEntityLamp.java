@@ -181,4 +181,8 @@ public class TileEntityLamp extends TileEntity implements ITickable, IVoltage {
 		this.markDirty();
 	}
 
+	@Override
+	public boolean disconnect(IVoltage voltage) {
+		return false;
+	}
 }

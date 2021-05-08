@@ -51,7 +51,7 @@ public class BlockUpgradeable extends BlockBase implements IUpgradeable {
 		return this;    
 	}
 
-	public IBlockState getPrev(World world, BlockPos pos) {
+	public IBlockState getPrev(World world, BlockPos pos, IBlockState original) {
 		return prev;
 	}
 
@@ -62,6 +62,11 @@ public class BlockUpgradeable extends BlockBase implements IUpgradeable {
 	@Override
 	public void onUpgrade(World world, BlockPos pos, IBlockState oldState) {
 
+	}
+
+	@Override
+	public void onDowngrade(World world, BlockPos pos, IBlockState oldState) {
+		
 	}
 
 }

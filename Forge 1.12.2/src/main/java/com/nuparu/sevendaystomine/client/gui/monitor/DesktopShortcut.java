@@ -5,6 +5,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.computer.application.Application;
 import com.nuparu.sevendaystomine.computer.process.DesktopProcess;
 import com.nuparu.sevendaystomine.computer.process.TickingProcess;
@@ -13,7 +14,6 @@ import com.nuparu.sevendaystomine.computer.process.WindowsDesktopProcess;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer.EnumSystem;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.MathUtils;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

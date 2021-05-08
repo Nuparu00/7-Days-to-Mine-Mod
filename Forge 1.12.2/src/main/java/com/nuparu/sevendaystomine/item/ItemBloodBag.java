@@ -39,7 +39,7 @@ public class ItemBloodBag extends Item {
 		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer entityplayer = (EntityPlayer) entityLiving;
 			int dur = this.getMaxItemUseDuration(stack) - timeLeft;
-			if (dur <= this.getMaxItemUseDuration(stack) * 0.1f) {
+			if (dur >= this.getMaxItemUseDuration(stack) * 0.05f) {
 				if (!entityplayer.capabilities.isCreativeMode) {
 					NBTTagCompound nbt = stack.getTagCompound();
 					if(nbt != null && nbt.hasKey("donor", Constants.NBT.TAG_STRING)) {
@@ -60,7 +60,7 @@ public class ItemBloodBag extends Item {
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack itemStack) {
-		return 82000;
+		return 200;
 	}
 
 	@Override

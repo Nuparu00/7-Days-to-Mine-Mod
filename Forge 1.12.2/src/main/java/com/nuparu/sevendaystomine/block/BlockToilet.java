@@ -62,12 +62,11 @@ public class BlockToilet extends BlockTileProvider<TileEntityToilet> implements 
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
@@ -104,69 +103,71 @@ public class BlockToilet extends BlockTileProvider<TileEntityToilet> implements 
 
 		super.breakBlock(worldIn, pos, state);
 	}
-	
+
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state,
 			int fortune) {
 		Random rand = world instanceof World ? ((World) world).rand : RANDOM;
-
-		drops.add(new ItemStack(ModItems.IRON_PIPE, rand.nextInt(2)*(fortune+1)));
+		if (rand.nextInt(3) == 0) {
+			drops.add(new ItemStack(ModItems.IRON_PIPE, rand.nextInt(1) * (fortune + 1)));
+		} else {
+			drops.add(new ItemStack(ModItems.IRON_SCRAP, rand.nextInt(2) * (fortune + 1)));
+		}
 	}
-	
+
 	/**
-     * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
-     * blockstate.
-     */
-    public IBlockState withRotation(IBlockState state, Rotation rot)
-    {
-        return state.withProperty(BlockHorizontalBase.FACING, rot.rotate((EnumFacing)state.getValue(BlockHorizontalBase.FACING)));
-    }
+	 * Returns the blockstate with the given rotation from the passed blockstate. If
+	 * inapplicable, returns the passed blockstate.
+	 */
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(BlockHorizontalBase.FACING,
+				rot.rotate((EnumFacing) state.getValue(BlockHorizontalBase.FACING)));
+	}
 
-    /**
-     * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
-     * blockstate.
-     */
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
-    {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(BlockHorizontalBase.FACING)));
-    }
+	/**
+	 * Returns the blockstate with the given mirror of the passed blockstate. If
+	 * inapplicable, returns the passed blockstate.
+	 */
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation((EnumFacing) state.getValue(BlockHorizontalBase.FACING)));
+	}
 
-    /**
-     * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
-     * IBlockstate
-     */
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return this.getDefaultState().withProperty(BlockHorizontalBase.FACING, placer.getHorizontalFacing().getOpposite());
-    }
+	/**
+	 * Called by ItemBlocks just before a block is actually set in the world, to
+	 * allow for adjustments to the IBlockstate
+	 */
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(BlockHorizontalBase.FACING,
+				placer.getHorizontalFacing().getOpposite());
+	}
 
-    /**
-     * Convert the given metadata into a BlockState for this Block
-     */
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(BlockHorizontalBase.FACING, EnumFacing.getHorizontal(meta));
-    }
+	/**
+	 * Convert the given metadata into a BlockState for this Block
+	 */
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(BlockHorizontalBase.FACING, EnumFacing.getHorizontal(meta));
+	}
 
-    /**
-     * Convert the BlockState into the correct metadata value
-     */
-    public int getMetaFromState(IBlockState state)
-    {
-        return ((EnumFacing)state.getValue(BlockHorizontalBase.FACING)).getHorizontalIndex();
-    }
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	public int getMetaFromState(IBlockState state) {
+		return ((EnumFacing) state.getValue(BlockHorizontalBase.FACING)).getHorizontalIndex();
+	}
 
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, new IProperty[] {BlockHorizontalBase.FACING});
-    }
-    
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { BlockHorizontalBase.FACING });
+	}
+
 	@Override
 	public List<ItemStack> getItems(World world, BlockPos pos, IBlockState oldState, EntityPlayer player) {
 		List<ItemStack> items = new ArrayList<ItemStack>();
-		items.add(new ItemStack(ModItems.IRON_PIPE,1+world.rand.nextInt(2)));
-		items.add(new ItemStack(ModItems.IRON_SCRAP,1+world.rand.nextInt(2)));
-		
+		if (world.rand.nextInt(2) == 0) {
+			items.add(new ItemStack(ModItems.IRON_PIPE, 1 + world.rand.nextInt(2)));
+		}
+		items.add(new ItemStack(ModItems.IRON_SCRAP, 1 + world.rand.nextInt(2)));
+
 		return items;
 	}
 
@@ -174,11 +175,15 @@ public class BlockToilet extends BlockTileProvider<TileEntityToilet> implements 
 	public SoundEvent getSound() {
 		return SoundEvents.BLOCK_ANVIL_LAND;
 	}
+	
+	@Override
+	public float getUpgradeRate(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return 5;
+	}
 
 	@Override
 	public void onSalvage(World world, BlockPos pos, IBlockState oldState) {
 		world.destroyBlock(pos, false);
 	}
-
 
 }

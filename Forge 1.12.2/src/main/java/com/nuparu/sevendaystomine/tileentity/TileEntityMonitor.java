@@ -414,5 +414,10 @@ public class TileEntityMonitor extends TileEntity implements ITickable, IVoltage
 	public boolean isPassive() {
 		return true;
 	}
+	
+	@Override
+	public boolean disconnect(IVoltage voltage) {
+		return false;
+	}
 
 }

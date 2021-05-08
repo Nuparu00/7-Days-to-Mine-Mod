@@ -5,13 +5,13 @@ import org.lwjgl.opengl.GL11;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.block.BlockPhoto;
 import com.nuparu.sevendaystomine.block.BlockScreenProjector;
+import com.nuparu.sevendaystomine.client.util.ResourcesHelper;
+import com.nuparu.sevendaystomine.client.util.ResourcesHelper.Image;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.PhotoRequestMessage;
 import com.nuparu.sevendaystomine.tileentity.TileEntityPhoto;
 import com.nuparu.sevendaystomine.tileentity.TileEntityScreenProjector;
 import com.nuparu.sevendaystomine.tileentity.TileEntityStreetSign;
-import com.nuparu.sevendaystomine.util.client.ResourcesHelper;
-import com.nuparu.sevendaystomine.util.client.ResourcesHelper.Image;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

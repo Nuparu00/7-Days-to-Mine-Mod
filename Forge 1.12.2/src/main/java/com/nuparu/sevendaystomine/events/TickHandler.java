@@ -17,6 +17,8 @@ import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.ExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
+import com.nuparu.sevendaystomine.client.util.CameraHelper;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.init.ModBiomes;
@@ -28,9 +30,8 @@ import com.nuparu.sevendaystomine.potions.Potions;
 import com.nuparu.sevendaystomine.util.DamageSources;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.OpenSimplexNoise;
+import com.nuparu.sevendaystomine.util.PlayerUtils;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.CameraHelper;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 import com.nuparu.sevendaystomine.world.MiscSavedData;
 import com.nuparu.sevendaystomine.world.biome.BiomeWastelandBase;
 import com.nuparu.sevendaystomine.world.gen.city.CityData;
@@ -315,33 +316,24 @@ public class TickHandler {
 						}
 					}
 				}
-
-				if (Utils.isBloodmoon(Utils.getDay(world) - 1) && time < 1000) {
+				if (Utils.isBloodmoon(day- 1) && time < 1000 && iep.getLastBloodmoonSurvivalCheck() < day) {
 					ModTriggers.BLOODMOON_SURVIVAL.trigger(playerMP);
+					iep.setLastBloodmoonSurvivalCheck(day);
 				}
 			}
 			if (extendedPlayer.isInfected()) {
 				int time = extendedPlayer.getInfectionTime();
 				extendedPlayer.setInfectionTime(time + 1);
 				PotionEffect effect = player.getActivePotionEffect(Potions.infection);
-
-				if (time < ExtendedPlayer.INFECTION_STAGE_TWO_START && (effect == null || effect.getAmplifier() != 0)) {
-					player.addPotionEffect(new PotionEffect(Potions.infection, 24000));
+				int amplifier = PlayerUtils.getInfectionStage(time);
+				int timeLeft = PlayerUtils.getCurrentInectionStageRemainingTime(time);
+				
+				if(effect == null || effect.getAmplifier() != amplifier) {
+					player.addPotionEffect(new PotionEffect(Potions.infection, Math.min(24000, timeLeft),amplifier));
 				}
-				if (time >= ExtendedPlayer.INFECTION_STAGE_TWO_START
-						&& time < ExtendedPlayer.INFECTION_STAGE_THREE_START
-						&& (effect == null || effect.getAmplifier() != 1)) {
-					player.addPotionEffect(new PotionEffect(Potions.infection, 24000, 1));
-				}
-				if (time >= ExtendedPlayer.INFECTION_STAGE_THREE_START
-						&& time < ExtendedPlayer.INFECTION_STAGE_FOUR_START
-						&& (effect == null || effect.getAmplifier() != 2)) {
-					player.addPotionEffect(new PotionEffect(Potions.infection, 24000, 2));
-				}
-				if (time >= ExtendedPlayer.INFECTION_STAGE_FOUR_START
-						&& (player.getActivePotionEffect(Potions.infection) == null)) {
+				
+				if(amplifier == PlayerUtils.getNumberOfstages()-1) {
 					player.attackEntityFrom(DamageSources.infection, 1);
-
 				}
 			}
 

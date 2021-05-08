@@ -9,12 +9,12 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.entity.EntityHuman;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.DialogueSelectionMessage;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 import com.nuparu.sevendaystomine.util.dialogue.Dialogue;
 import com.nuparu.sevendaystomine.util.dialogue.DialogueTree;
 import com.nuparu.sevendaystomine.util.dialogue.Dialogues;

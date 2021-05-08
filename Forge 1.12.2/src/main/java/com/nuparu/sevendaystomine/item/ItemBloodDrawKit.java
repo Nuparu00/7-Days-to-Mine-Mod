@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 public class ItemBloodDrawKit extends Item {
 
 	public ItemBloodDrawKit() {
-		setMaxDamage(0);
+		setMaxDamage(16);
 		maxStackSize = 16;
 		setCreativeTab(SevenDaysToMine.TAB_MEDICINE);
 	}
@@ -42,52 +42,57 @@ public class ItemBloodDrawKit extends Item {
 
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
-		
+
 		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer entityPlayer = (EntityPlayer) entityLiving;
 			int dur = this.getMaxItemUseDuration(stack) - timeLeft;
-			if (dur <= this.getMaxItemUseDuration(stack) * 0.1f) {
+			if (dur >= this.getMaxItemUseDuration(stack) * 0.05f) {
 				ItemStack bloodBag = new ItemStack(ModItems.BLOOD_BAG);
 
-				
 				EntityLivingBase toHurt = entityPlayer;
-				
+
 				RayTraceResult entityRay = Utils.raytraceEntities(entityLiving, 2);
 				if (entityRay != null) {
 					if (entityRay.entityHit != null && entityRay.entityHit instanceof EntityLivingBase) {
-						EntityLivingBase clickedLiving  =  (EntityLivingBase)entityRay.entityHit;
-						if(!(clickedLiving instanceof EntityMob) && !(clickedLiving instanceof EntityPlayer)) 
-						{
+						EntityLivingBase clickedLiving = (EntityLivingBase) entityRay.entityHit;
+						if (!(clickedLiving instanceof EntityMob) && !(clickedLiving instanceof EntityPlayer)) {
+							toHurt = clickedLiving;
+						} else if ((clickedLiving instanceof EntityPlayer)
+								&& !((EntityPlayer) clickedLiving).isCreative()
+								&& !((EntityPlayer) clickedLiving).isSpectator()) {
 							toHurt = clickedLiving;
 						}
-						else if((clickedLiving instanceof EntityPlayer) && !((EntityPlayer)clickedLiving).isCreative() && !((EntityPlayer)clickedLiving).isSpectator()) {
-							toHurt = clickedLiving;	
-						}
 					}
 				}
-				
-				if(toHurt instanceof EntityPlayer) {
-					if(bloodBag.getTagCompound() == null) {
+
+				if (toHurt instanceof EntityPlayer) {
+					if (bloodBag.getTagCompound() == null) {
 						bloodBag.setTagCompound(new NBTTagCompound());
 					}
-					bloodBag.getTagCompound().setString("donor",toHurt.getUniqueID().toString());
+					bloodBag.getTagCompound().setString("donor", toHurt.getUniqueID().toString());
 				}
-				
-				if(!world.isRemote && toHurt != entityPlayer) {
+
+				if (!world.isRemote && toHurt != entityPlayer) {
 					ModTriggers.MOSCO.trigger((EntityPlayerMP) entityPlayer);
 				}
-				
+
 				if (!entityPlayer.inventory.addItemStackToInventory(bloodBag)) {
 					entityPlayer.dropItem(bloodBag, false);
 				}
 				toHurt.attackEntityFrom(DamageSources.bleeding, 4);
+				if (entityPlayer instanceof EntityPlayerMP) {
+					stack.attemptDamageItem(1, world.rand, (EntityPlayerMP) entityLiving);
+					if(stack.getItemDamage() >= this.getMaxDamage()) {
+						stack.setCount(0);
+					}
+				}
 			}
 		}
 	}
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack itemStack) {
-		return 82000;
+		return 200;
 	}
 
 	@Override

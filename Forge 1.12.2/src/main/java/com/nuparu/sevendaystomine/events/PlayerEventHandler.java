@@ -320,7 +320,7 @@ public class PlayerEventHandler {
 	@SubscribeEvent
 	public void onPlayerBreakSpeed(PlayerEvent.BreakSpeed event) {
 		float speed = event.getOriginalSpeed()
-				/ (ModConfig.players.immersiveBlockBreaking && event.getState().getMaterial() != Material.CIRCUITS ? 32f
+				/ (ModConfig.players.immersiveBlockBreaking && (event.getState().getMaterial() != Material.CIRCUITS && event.getState().getMaterial() != Material.WEB) ? 32f
 						: 1f);
 		if (ModConfig.players.qualitySystem) {
 			ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();

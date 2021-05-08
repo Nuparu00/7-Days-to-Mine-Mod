@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.crafting.RecipeManager;
 import com.nuparu.sevendaystomine.util.book.BookData.CraftingMatrix;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

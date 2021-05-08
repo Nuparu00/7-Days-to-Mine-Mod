@@ -29,7 +29,7 @@ public class BlockBurntPlanks extends BlockUpgradeable {
 	}
 
 	@Override
-	public IBlockState getPrev(World world, BlockPos pos) {
+	public IBlockState getPrev(World world, BlockPos pos, IBlockState original) {
 		return ModBlocks.BURNT_FRAME.getDefaultState();
 	}
 	

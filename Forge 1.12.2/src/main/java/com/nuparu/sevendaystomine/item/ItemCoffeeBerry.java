@@ -4,6 +4,7 @@ import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.init.ModBlocks;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 public class ItemCoffeeBerry extends ItemFood implements net.minecraftforge.common.IPlantable {
 	public ItemCoffeeBerry() {
 		super(1, 0.3f, false);
-		this.setCreativeTab(SevenDaysToMine.TAB_MATERIALS);
+		this.setCreativeTab(CreativeTabs.FOOD);
 	}
 
 	/**

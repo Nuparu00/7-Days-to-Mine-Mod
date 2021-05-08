@@ -41,4 +41,9 @@ public class EnchantmentJamming extends Enchantment {
         return super.canApplyTogether(ench);
     }
 	
+	@Override
+	public boolean isCurse() {
+		return true;
+	}
+	
 }

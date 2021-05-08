@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "blocks/hardened_clay_stained_cyan",
-		"1": "blocks/anvil_base",
+		"1": "sevendaystomine:blocks/anvil_base_rusty",
 		"2": "blocks/stone",
-		"particle": "blocks/hardened_clay_stained_cyan"
+		"particle": "sevendaystomine:blocks/anvil_base_rusty"
 	},
 	"elements": [
 		{

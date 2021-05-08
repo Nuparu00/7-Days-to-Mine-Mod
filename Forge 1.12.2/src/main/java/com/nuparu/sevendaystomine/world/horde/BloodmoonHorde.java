@@ -39,8 +39,6 @@ public class BloodmoonHorde extends Horde {
 
 	public EntityPlayer player;
 
-	public static final int MIN_DISTANCE = 30;
-
 	public BloodmoonHorde(World world) {
 		super(world);
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 20));
@@ -62,7 +60,7 @@ public class BloodmoonHorde extends Horde {
 				entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frozen_lumberjack"), 7));
 			}
 		}
-		if (Utils.getDay(world) > 2 * ModConfig.world.bloodmoonFrequency) {
+		if (ModConfig.world.bloodmoonFrequency > 0 && Utils.getDay(world) > 2 * ModConfig.world.bloodmoonFrequency) {
 			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "feral_zombie"),
 					Math.min(5, (int) Math.floor(Utils.getDay(world) / ModConfig.world.bloodmoonFrequency) - 1)));
 		}
@@ -93,7 +91,7 @@ public class BloodmoonHorde extends Horde {
 			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frostbitten_worker"), 15));
 			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "frozen_lumberjack"), 7));
 		}
-		if (Utils.getDay(world) > 2 * ModConfig.world.bloodmoonFrequency) {
+		if (ModConfig.world.bloodmoonFrequency > 0 && Utils.getDay(world) > 2 * ModConfig.world.bloodmoonFrequency) {
 			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "feral_zombie"),
 					Math.min(5, (int) Math.floor(Utils.getDay(world) / ModConfig.world.bloodmoonFrequency) - 1)));
 		}
@@ -192,6 +190,8 @@ public class BloodmoonHorde extends Horde {
 	}
 
 	public int getZombiesInWave() {
+		if (ModConfig.world.bloodmoonFrequency <= 0)
+			return ModConfig.world.bloodmoonHordeZombiesPerWaveMax;
 		return (int) MathHelper.clampedLerp(ModConfig.world.bloodmoonHordeZombiesPerWaveMin,
 				ModConfig.world.bloodmoonHordeZombiesPerWaveMax,
 				((int) (Math.floor(Utils.getDay(world) / ModConfig.world.bloodmoonFrequency))-1) / 5);
@@ -199,7 +199,7 @@ public class BloodmoonHorde extends Horde {
 
 	public BlockPos getSpawnOrigin() {
 		double angle = 2.0 * Math.PI * world.rand.nextDouble();
-		double dist = MIN_DISTANCE + world.rand.nextDouble() * 10;
+		double dist = ModConfig.world.hordeMinDistance + world.rand.nextDouble() * (ModConfig.world.hordeMaxDistance-ModConfig.world.hordeMinDistance);
 		double x = center.getX() + dist * Math.cos(angle);
 		double z = center.getZ() + dist * Math.sin(angle);
 
@@ -210,12 +210,6 @@ public class BloodmoonHorde extends Horde {
 		double x = world.rand.nextDouble() - 0.5;
 		double y = world.rand.nextDouble() - 0.5;
 		double z = world.rand.nextDouble() - 0.5;
-
-		double mag = Math.sqrt(x * x + y * y + z * z);
-		x /= mag;
-		y /= mag;
-		z /= mag;
-
 		double d = world.rand.nextDouble() * 1.5;
 		return origin.add(x * d, y * d, z * d);
 	}

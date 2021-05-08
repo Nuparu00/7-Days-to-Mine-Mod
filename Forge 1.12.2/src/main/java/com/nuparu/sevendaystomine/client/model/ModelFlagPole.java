@@ -10,7 +10,7 @@ public class ModelFlagPole extends ModelBase {
 
 	public ModelFlagPole() {
 		textureWidth = 64;
-		textureHeight = 64;
+		textureHeight = 32;
 
 		flag = new ModelRenderer(this);
 		flag.setRotationPoint(0.0F, 24.0F, 0.0F);

@@ -161,6 +161,32 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 	public ResourceLocation getLootTable() {
 		return null;
 	}
+	
+	@Override
+	public boolean disconnect(IVoltage voltage) {
+		for(ElectricConnection input : getInputs()) {
+			if(input.getFrom().equals(voltage.getPos())) {
+				this.inputs.remove(input);
+				markDirty();
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+				return true;
+			}
+		}
+		
+		for(ElectricConnection output : getOutputs()) {
+			if(output.getTo().equals(voltage.getPos())) {
+				this.outputs.remove(output);
+				markDirty();
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public Container createContainer(EntityPlayer player) {

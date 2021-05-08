@@ -854,5 +854,10 @@ public class TileEntityComputer extends TileEntityLockableLoot
 	public boolean isPassive() {
 		return true;
 	}
+	
+	@Override
+	public boolean disconnect(IVoltage voltage) {
+		return false;
+	}
 
 }

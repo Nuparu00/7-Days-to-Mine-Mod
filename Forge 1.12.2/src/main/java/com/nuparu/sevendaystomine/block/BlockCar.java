@@ -317,19 +317,26 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> implemen
 			if (battery.getTagCompound() == null) {
 				battery.setTagCompound(new NBTTagCompound());
 			}
-			IBattery bat = (IBattery)battery.getItem();
+			IBattery bat = (IBattery) battery.getItem();
 			bat.setVoltage(battery, world, ThreadLocalRandom.current().nextLong(bat.getCapacity(battery, world)));
 			items.add(battery);
 		}
-		items.add(new ItemStack(ModItems.IRON_PIPE,1+world.rand.nextInt(5)));
-		items.add(new ItemStack(ModItems.IRON_SCRAP,1+world.rand.nextInt(5)));
-		
+		if (world.rand.nextDouble() < 0.25) {
+			items.add(new ItemStack(ModItems.IRON_PIPE, world.rand.nextInt(3)));
+		}
+		items.add(new ItemStack(ModItems.IRON_SCRAP, 1 + world.rand.nextInt(5)));
+
 		return items;
 	}
 
 	@Override
 	public SoundEvent getSound() {
 		return SoundEvents.BLOCK_ANVIL_LAND;
+	}
+	
+	@Override
+	public float getUpgradeRate(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return 1;
 	}
 
 	@Override
@@ -372,7 +379,7 @@ public abstract class BlockCar extends BlockTileProvider<TileEntityCar> implemen
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IStateMapper getStateMapper() {

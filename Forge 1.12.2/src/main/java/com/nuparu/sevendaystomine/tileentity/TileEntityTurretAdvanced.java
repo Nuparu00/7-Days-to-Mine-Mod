@@ -3,14 +3,10 @@ package com.nuparu.sevendaystomine.tileentity;
 import java.util.Arrays;
 
 import com.nuparu.sevendaystomine.inventory.container.ContainerTurretAdvanced;
-import com.nuparu.sevendaystomine.inventory.container.ContainerTurretBase;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 import com.nuparu.sevendaystomine.item.ItemCircuit;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTurret.AITurretBase;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTurret.AITurretShoot;
-import com.nuparu.sevendaystomine.tileentity.TileEntityTurret.AITurretTarget;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

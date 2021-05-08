@@ -42,24 +42,21 @@ public class BlockGasoline extends BlockFluidFinite implements IBlockBase {
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 
 		super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+		for (EnumFacing side : EnumFacing.HORIZONTALS) {
+
+			BlockPos off = pos.offset(side, 1);
+			IBlockState iblockstate = worldIn.getBlockState(off);
+			if (iblockstate.getMaterial() == Material.FIRE
+					|| iblockstate.getMaterial() == Material.LAVA || iblockstate.getBlock() instanceof BlockMagma) {
+				worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState());
+
+			}
+		}
 	}
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 		super.updateTick(worldIn, pos, state, rand);
-		if (rand.nextInt(10) <= 7) {
-			for (EnumFacing side : EnumFacing.HORIZONTALS) {
-
-				BlockPos off = pos.offset(side, 1);
-				IBlockState iblockstate = worldIn.getBlockState(off);
-				if (iblockstate.getMaterial() == Material.FIRE
-						|| iblockstate.getMaterial() == Material.LAVA || iblockstate.getBlock() instanceof BlockMagma) {
-					worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState());
-
-				}
-			}
-
-		}
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import com.nuparu.sevendaystomine.block.BlockCampfire;
 import com.nuparu.sevendaystomine.block.BlockCookware;
 import com.nuparu.sevendaystomine.crafting.campfire.CampfireRecipeManager;
 import com.nuparu.sevendaystomine.crafting.campfire.ICampfireRecipe;
+import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.inventory.ContainerCampfire;
 import com.nuparu.sevendaystomine.inventory.ContainerForge;
 import com.nuparu.sevendaystomine.inventory.IContainerCallbacks;
@@ -90,7 +91,7 @@ public class TileEntityCampfire extends TileEntity implements IContainerCallback
 		@Override
 	    public boolean isItemValid(int slot, @Nonnull ItemStack stack)
 	    {
-	        return !stack.isEmpty() && ((stack.getItem() instanceof ItemBlock && ((ItemBlock)stack.getItem()).getBlock() instanceof BlockCookware) || stack.getItem() instanceof ItemCookware || stack.getItem() instanceof ItemBucket);
+	        return !stack.isEmpty() && ((stack.getItem() instanceof ItemBlock && ((ItemBlock)stack.getItem()).getBlock() instanceof BlockCookware) || stack.getItem() instanceof ItemCookware || stack.getItem() instanceof ItemBucket || stack.getItem() == ModItems.COOKING_GRILL);
 	    }
 	};
 

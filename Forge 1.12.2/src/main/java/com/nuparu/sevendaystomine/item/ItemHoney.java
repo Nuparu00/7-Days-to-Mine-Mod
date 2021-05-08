@@ -4,6 +4,7 @@ import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.ExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.potions.Potions;
+import com.nuparu.sevendaystomine.util.PlayerUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,7 +22,7 @@ public class ItemHoney extends ItemDrink {
 		super.onFoodEaten(stack, worldIn, player);
 		IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
 		int time = iep.getInfectionTime();
-		if (player instanceof EntityPlayerMP && time < ExtendedPlayer.INFECTION_STAGE_TWO_START) {
+		if (player instanceof EntityPlayerMP && PlayerUtils.getInfectionStage(time) == 0) {
 			player.removePotionEffect(Potions.infection);
 			iep.setInfectionTime(-1);
 		}

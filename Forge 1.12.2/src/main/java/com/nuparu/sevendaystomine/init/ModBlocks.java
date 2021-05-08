@@ -162,7 +162,7 @@ public class ModBlocks {
 			.setRegistryName("wooden_door_reinforced").setUnlocalizedName("wooden_door_reinforced");
 	public static final Block LOCKED_DOOR = new BlockDoorLocked().setRegistryName("locked_door")
 			.setUnlocalizedName("locked_door");
-	public static final Block WOODEN_DOOR_IRON_REINFORCED = new BlockWoodenDoorReinforced()
+	public static final Block WOODEN_DOOR_IRON_REINFORCED = new BlockWoodenDoorIronReinforced()
 			.setRegistryName("wooden_door_iron_reinforced").setUnlocalizedName("wooden_door_iron_reinforced");
 
 	public static final Block TRAFFIC_LIGHT = new BlockTrafficLight().setRegistryName("TrafficLight")

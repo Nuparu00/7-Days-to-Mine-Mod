@@ -23,6 +23,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
@@ -130,7 +131,7 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 	}
 
 	public boolean matchesAnyOtherRecipe(InventoryCrafting inv, World worldIn) {
-		Iterator<IRecipe> recipes = CraftingManager.REGISTRY.iterator();
+		Iterator<IRecipe> recipes = ForgeRegistries.RECIPES.iterator();
 		while (recipes.hasNext()) {
 			IRecipe recipe = recipes.next();
 			if (!(recipe instanceof RecipesScraps)) {

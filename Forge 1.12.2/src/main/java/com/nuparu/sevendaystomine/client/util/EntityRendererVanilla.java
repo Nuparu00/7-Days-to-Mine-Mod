@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.client;
+package com.nuparu.sevendaystomine.client.util;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;

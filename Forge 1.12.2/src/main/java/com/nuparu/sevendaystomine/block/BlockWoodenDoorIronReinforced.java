@@ -7,6 +7,7 @@ import com.nuparu.sevendaystomine.init.ModBlocks;
 import com.nuparu.sevendaystomine.init.ModItems;
 
 import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -26,19 +27,21 @@ public class BlockWoodenDoorIronReinforced extends BlockDoorBase implements IUpg
 		super(Material.WOOD);
 		this.setHardness(3.2F);
 		this.setResistance(4.0F);
+		this.setHarvestLevel("pickaxe", 1);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean hasCustomStateMapper() {
+	public boolean hasCustomStateMapper() {
 		return true;
 	}
+
 	@Override
-    @SideOnly(Side.CLIENT)
-    public IStateMapper getStateMapper(){
+	@SideOnly(Side.CLIENT)
+	public IStateMapper getStateMapper() {
 		return new StateMap.Builder().ignore(POWERED).build();
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasCustomItemMesh() {
@@ -52,16 +55,20 @@ public class BlockWoodenDoorIronReinforced extends BlockDoorBase implements IUpg
 	}
 
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
-    {
-        return new ItemStack(ModItems.WOODEN_DOOR_ITEM);
-    }
-	
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(ModItems.WOODEN_DOOR_ITEM);
+	}
+
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? net.minecraft.init.Items.AIR : ModItems.WOODEN_DOOR_ITEM;
-    }
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? net.minecraft.init.Items.AIR
+				: ModItems.WOODEN_DOOR_ITEM;
+	}
+
+	@Override
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
+		return 0;
+	}
 
 	@Override
 	public ItemStack[] getItems() {
@@ -74,27 +81,35 @@ public class BlockWoodenDoorIronReinforced extends BlockDoorBase implements IUpg
 	}
 
 	@Override
-	public IBlockState getPrev(World world, BlockPos pos) {
-		IBlockState oldState = world.getBlockState(pos);
+	public IBlockState getPrev(World world, BlockPos pos, IBlockState original) {
 
-		return ModBlocks.WOODEN_DOOR.getDefaultState().withProperty(FACING, oldState.getValue(FACING))
-				.withProperty(OPEN, oldState.getValue(OPEN)).withProperty(HINGE, oldState.getValue(HINGE))
-				.withProperty(POWERED, oldState.getValue(POWERED)).withProperty(HALF, oldState.getValue(HALF));
+		return ModBlocks.WOODEN_DOOR_REINFORCED.getDefaultState().withProperty(FACING, original.getValue(FACING))
+				.withProperty(OPEN, original.getValue(OPEN)).withProperty(HINGE, original.getValue(HINGE))
+				.withProperty(POWERED, original.getValue(POWERED)).withProperty(HALF, original.getValue(HALF));
 	}
 
 	@Override
 	public IBlockState getResult(World world, BlockPos pos) {
-		IBlockState oldState = world.getBlockState(pos);
-
-		return ModBlocks.WOODEN_DOOR_IRON_REINFORCED.getDefaultState().withProperty(FACING, oldState.getValue(FACING))
-				.withProperty(OPEN, oldState.getValue(OPEN)).withProperty(HINGE, oldState.getValue(HINGE))
-				.withProperty(POWERED, oldState.getValue(POWERED)).withProperty(HALF, oldState.getValue(HALF));
+		return null;
 	}
 
 	@Override
 	public void onUpgrade(World world, BlockPos pos, IBlockState oldState) {
 		// TODO Auto-generated method stub
-		
+
+	}
+	
+	@Override
+	public void onDowngrade(World world, BlockPos pos, IBlockState oldState) {
+		EnumDoorHalf half = oldState.getValue(HALF);
+		if (half == EnumDoorHalf.LOWER) {
+			pos = pos.up();
+			half = EnumDoorHalf.UPPER;
+		} else if (half == EnumDoorHalf.UPPER) {
+			pos = pos.down();
+			half = EnumDoorHalf.LOWER;
+		}
+		world.setBlockState(pos, getPrev(world,pos,oldState).withProperty(HALF, half));
 	}
 
 }

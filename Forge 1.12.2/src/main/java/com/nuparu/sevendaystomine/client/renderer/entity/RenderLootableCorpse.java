@@ -3,9 +3,9 @@ package com.nuparu.sevendaystomine.client.renderer.entity;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.entity.EntityLootableCorpse;
 import com.nuparu.sevendaystomine.entity.EntityZombieBase;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;

@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.client;
+package com.nuparu.sevendaystomine.client.util;
 
 import java.io.File;
 import java.io.IOException;

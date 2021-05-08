@@ -21,13 +21,13 @@ import com.nuparu.sevendaystomine.util.Utils;
 import net.minecraft.entity.EntityTracker;
 
 public class ExtendedPlayer implements IExtendedPlayer {
-
-	public static final int INFECTION_STAGE_TWO_START = 48000;
-	public static final int INFECTION_STAGE_THREE_START = 96000;
-	public static final int INFECTION_STAGE_FOUR_START = 144000;
-
 	public static final int MAX_THIRST = 780;
 	public static final int MAX_STAMINA = 780;
+
+	List<String> recipes = new ArrayList<String>();
+	EntityPlayer player;
+	int survivedBloodmoons = 0;
+	int lastBloodmoonSurvivalCheck = 0;
 
 	int thirst = 780;
 	int stamina = 780;
@@ -49,10 +49,6 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		thirst = MAX_THIRST;
 		stamina = MAX_STAMINA;
 	}
-
-	List<String> recipes = new ArrayList<String>();
-
-	EntityPlayer player;
 
 	public void setThirst(int thirst) {
 		this.thirst = MathHelper.clamp(thirst, 0, MAX_STAMINA);
@@ -137,6 +133,8 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		wolfHorde = nbt.getInteger("wolfHorde");
 		horde = nbt.getInteger("horde");
 		drinkCounter = nbt.getInteger("drinkCounter");
+		survivedBloodmoons = nbt.getInteger("survivedBloodmoons");
+		lastBloodmoonSurvivalCheck = nbt.getInteger("lastBloodmoonSurvivalCheck");
 
 		recipes.clear();
 		NBTTagList list = nbt.getTagList("recipes", Constants.NBT.TAG_STRING);
@@ -144,7 +142,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 			recipes.add(list.getStringTagAt(i));
 		}
 	}
-
+	
 	public NBTTagCompound writeNBT(NBTTagCompound nbt) {
 		nbt.setInteger("thirst", thirst);
 		nbt.setInteger("stamina", stamina);
@@ -157,6 +155,8 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		nbt.setInteger("wolfHorde", wolfHorde);
 		nbt.setInteger("horde", horde);
 		nbt.setInteger("drinkCounter", drinkCounter);
+		nbt.setInteger("survivedBloodmoons", survivedBloodmoons);
+		nbt.setInteger("lastBloodmoonSurvivalCheck", lastBloodmoonSurvivalCheck);
 
 		NBTTagList list = new NBTTagList();
 		for (String rec : recipes) {
@@ -271,6 +271,28 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	@Override
 	public int getDrinkCounter() {
 		return drinkCounter;
+	}
+
+	@Override
+	public void setSurvivedBloodmoons(int i) {
+		survivedBloodmoons = i;
+		onDataChanged();
+	}
+
+	@Override
+	public int getSurvivedBloodmons() {
+		return survivedBloodmoons;
+	}
+
+	@Override
+	public void setLastBloodmoonSurvivalCheck(int i) {
+		lastBloodmoonSurvivalCheck = i;
+		onDataChanged();
+	}
+
+	@Override
+	public int getLastBloodmoonSurvivalCheck() {
+		return lastBloodmoonSurvivalCheck;
 	}
 
 }

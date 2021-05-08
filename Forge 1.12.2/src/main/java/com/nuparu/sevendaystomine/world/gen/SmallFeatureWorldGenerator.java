@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.world.gen;
 
 import java.util.Random;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.world.gen.feature.WorldGenBush;
 import com.nuparu.sevendaystomine.world.gen.feature.WorldGenCinderBlock;
@@ -50,27 +51,27 @@ public class SmallFeatureWorldGenerator implements IWorldGenerator {
 		if (world.getWorldType() == WorldType.FLAT) {
 			return;
 		}
-		for (int i = 0; i < MathUtils.getIntInRange(rand, 1, 6); i++) {
+		for (int i = 0; i < MathUtils.getIntInRange(rand, ModConfig.worldGen.smallRockGenerationRateMin, ModConfig.worldGen.smallRockGenerationRateMax+1); i++) {
 			int randX = blockX + rand.nextInt(16);
 			int randZ = blockZ + rand.nextInt(16);
 			smallRock.generate(world, rand, new BlockPos(randX, 24, randZ));
 		}
-		for (int i = 0; i < MathUtils.getIntInRange(rand, 1, 4); i++) {
+		for (int i = 0; i < MathUtils.getIntInRange(rand, ModConfig.worldGen.largeRockGenerationRateMin, ModConfig.worldGen.largeRockGenerationRateMax+1); i++) {
 			int randX = blockX + rand.nextInt(16);
 			int randZ = blockZ + rand.nextInt(16);
 			rock.generate(world, rand, new BlockPos(randX, 24, randZ));
 		}
-		for (int i = 0; i < MathUtils.getIntInRange(rand, 1, 5); i++) {
+		for (int i = 0; i < MathUtils.getIntInRange(rand, ModConfig.worldGen.stickGenerationRateMin, ModConfig.worldGen.stickGenerationRateMax+1); i++) {
 			int randX = blockX + rand.nextInt(16);
 			int randZ = blockZ + rand.nextInt(16);
 			stick.generate(world, rand, new BlockPos(randX, 24, randZ));
 		}
-		for (int i = 0; i < MathUtils.getIntInRange(rand, 0, 4); i++) {
+		for (int i = 0; i < MathUtils.getIntInRange(rand, ModConfig.worldGen.deadBushGenerationRateMin, ModConfig.worldGen.deadBushGenerationRateMax+1); i++) {
 			int randX = blockX + rand.nextInt(16);
 			int randZ = blockZ + rand.nextInt(16);
 			bush.generate(world, rand, new BlockPos(randX, 24, randZ));
 		}
-		for (int i = 0; i < MathUtils.getIntInRange(rand, 0, 6); i++) {
+		for (int i = 0; i < MathUtils.getIntInRange(rand, ModConfig.worldGen.cinderBlockGenerationRateMin, ModConfig.worldGen.cinderBlockGenerationRateMax+1); i++) {
 			int randX = blockX + rand.nextInt(16);
 			int randZ = blockZ + rand.nextInt(16);
 			cinder.generate(world, rand, new BlockPos(randX, 24, randZ));

@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,7 +39,7 @@ public class MovingSoundChainsawCut extends MovingSound {
 			this.donePlaying = true;
 			PlayerEventHandler.nextChainsawCutSound = System.currentTimeMillis();
 		}
-		if (nbt != null && !nbt.hasKey("FuelMax") || nbt.getInteger("FuelMax") == 0) {
+		if (nbt == null || !nbt.hasKey("FuelMax",Constants.NBT.TAG_INT) || nbt.getInteger("FuelMax") == 0) {
 			return;
 		}
 

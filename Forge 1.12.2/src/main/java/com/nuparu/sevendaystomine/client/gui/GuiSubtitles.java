@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL11;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.util.Utils;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 import com.nuparu.sevendaystomine.util.dialogue.Subtitle;
 import com.nuparu.sevendaystomine.util.dialogue.SubtitleHelper;
 

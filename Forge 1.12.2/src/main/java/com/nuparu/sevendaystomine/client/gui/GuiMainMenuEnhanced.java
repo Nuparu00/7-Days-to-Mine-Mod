@@ -21,6 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
 import com.google.common.collect.Lists;
@@ -81,13 +82,16 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 	private static final ResourceLocation minecraftTitleTextures = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/gui/title/minecraft_7d.png");
 	/** An array of all the paths to the panorama pictures. */
-	public static final ResourceLocation BGR_DEF = new ResourceLocation(SevenDaysToMine.MODID,
-			"textures/gui/title/background/background_0.png");
+	public static final ResourceLocation BGR_DAY = new ResourceLocation(SevenDaysToMine.MODID,
+			"textures/gui/title/background/background_day.png");
 	public static final ResourceLocation BGR_SNOW = new ResourceLocation(SevenDaysToMine.MODID,
-			"textures/gui/title/background/background_1.png");
-	public static final ResourceLocation BGR_FIRE = new ResourceLocation(SevenDaysToMine.MODID,
-			"textures/gui/title/background/background_2.png");
-	public static ResourceLocation background = BGR_DEF;
+			"textures/gui/title/background/background_snow.png");
+	public static final ResourceLocation BGR_BLOODMOON = new ResourceLocation(SevenDaysToMine.MODID,
+			"textures/gui/title/background/background_bloodmoon.png");
+	public static final ResourceLocation BGR_NIGHT = new ResourceLocation(SevenDaysToMine.MODID,
+			"textures/gui/title/background/background_night.png");
+
+	public static ResourceLocation background = BGR_DAY;
 	public int bgr = 0;
 	public static final String field_96138_a = "Please click " + TextFormatting.UNDERLINE + "here"
 			+ TextFormatting.RESET + " for more information.";
@@ -155,6 +159,13 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 			this.openGLWarning2 = I18n.format("title.oldgl2");
 			this.openGLWarningLink = "https://help.mojang.com/customer/portal/articles/325948?ref=game";
 		}
+		
+		background = BGR_DAY;
+		bgr = 0;
+		if (MathUtils.getIntInRange(0, 50) == 0) {
+			background = BGR_NIGHT;
+			bgr = 3;
+		}
 
 	}
 
@@ -165,10 +176,12 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 		// dusts.addAll(dustsToAdd);
 
 		if (drawing && drawDustMode) {
+			for(int i = 0; i < (GuiScreen.isShiftKeyDown() ? 5 : 1); i++) {
 			Dust dust = summonDust(RANDOM, sr);
 			dust.x = mX;
 			dust.y = mY;
 			dusts.add(dust);
+			}
 		}
 
 	}
@@ -228,8 +241,6 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 		}
 
 		dusts.clear();
-		background = BGR_DEF;
-		bgr = 0;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		int month = calendar.get(2) + 1;
@@ -248,7 +259,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 
 		else if (month == 10 && day == 31) {
 			this.splashText = "OOoooOOOoooo! Spooky!";
-			background = BGR_FIRE;
+			background = BGR_BLOODMOON;
 			bgr = 2;
 		}
 
@@ -443,37 +454,41 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 	public Dust summonDust(Random rand, ScaledResolution sr) {
 		float x = rand.nextFloat() * sr.getScaledWidth();
 		float y = MathUtils.getFloatInRange(0f, 0.75f) * sr.getScaledHeight();
-		float motionX = rand.nextFloat()*0.6f - 0.15f;
+		float motionX = rand.nextFloat() * 0.6f - 0.15f;
 		float motionY = rand.nextFloat();
 		float[] rgb = new float[3];
+		float opacity = MathUtils.getFloatInRange(0.1f, 0.5f);
+		
 		if (bday) {
 			rgb[0] = RANDOM.nextFloat();
 			rgb[1] = RANDOM.nextFloat();
 			rgb[2] = RANDOM.nextFloat();
-		} else if (bgr != 2) {
+		} else {
 			rgb[0] = 0.941F;
 			rgb[1] = 0.902F;
 			rgb[2] = 0.549F;
-			if (bgr == 1) {
+
+			if (bgr == 1 || bgr == 3) {
 				float c = (rgb[0] + rgb[1] + rgb[2]) / 3;
+				if(bgr == 3) {
+					opacity/=2;
+					c*=0.7f;
+				}
 				rgb[0] = c;
 				rgb[1] = c;
 				rgb[2] = c;
 			}
+			else if(bgr == 2) {
+				rgb[0] = rgb[0]/1.2f;
+				rgb[1] = rgb[1]/3;
+				rgb[2] = rgb[2]/5;
+				opacity/=1.5;
+			}
 
-		} else {
-			float c = rand.nextFloat() * 0.5f;
-			rgb[0] = c;
-			rgb[1] = c;
-			rgb[2] = c;
-			x = rand.nextFloat() * sr.getScaledWidth();
-			y = sr.getScaledHeight() - (rand.nextFloat() * sr.getScaledHeight()) / 2;
-			motionY = -motionY;
 		}
-		
 
 		return new Dust(x, y, motionX, motionY, MathUtils.getFloatInRange(0.017528f, 0.80f),
-				MathUtils.getFloatInRange(0.1f, 0.5f), rgb, this);
+				opacity, rgb, this);
 	}
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -521,7 +536,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 		int j = this.width / 2 - i / 2;
 		int k = 15;
 
-		//this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
+		// this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
 		this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.drawTexturedModalRect(j, k + 0, 0, 0, 155, 44);
@@ -626,17 +641,14 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 			if (this.lifeSpan <= 0) {
 				this.opacity -= 0.05f;
 				this.lifeSpan = 0;
+			} else if (opacity < 1 && RANDOM.nextInt(20) == 0) {
+				// opacity = (float) MathHelper.clamp(opacity+RANDOM.nextFloat()*0.1, 0, 1);
 			}
-			else if(opacity < 1 && RANDOM.nextInt(20) == 0) {
-				//opacity = (float) MathHelper.clamp(opacity+RANDOM.nextFloat()*0.1, 0, 1);
+			if (mouseX - x < -500) {
+				motionX += MathUtils.getFloatInRange(-0.0071258f, 0.0005f);
+			} else if (mouseX - x > 500) {
+				motionX += MathUtils.getFloatInRange(-0.0005f, 0.0071258f);
 			}
-			if(mouseX-x < -500) {
-				motionX+=MathUtils.getFloatInRange(-0.0071258f, 0.0005f);
-			}
-			else if(mouseX - x > 500) {
-				motionX+=MathUtils.getFloatInRange(-0.0005f, 0.0071258f);
-			}
-			
 
 			if (this.opacity <= 0) {
 				this.gui.dustsToRemove.add(this);
@@ -649,7 +661,8 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 			GlStateManager.disableDepth();
 			GlStateManager.depthMask(false);
 			GlStateManager.enableBlend();
-			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GlStateManager.enableAlpha();
 			GlStateManager.color(RGB[0], RGB[1], RGB[2], this.opacity);
 			GlStateManager.translate(x, y, 0.0F);
 			GlStateManager.scale(scale, scale, scale);
@@ -664,7 +677,7 @@ public class GuiMainMenuEnhanced extends GuiScreen implements GuiYesNoCallback {
 			tessellator.draw();
 			GlStateManager.depthMask(true);
 			GlStateManager.enableDepth();
-			GlStateManager.color(1.0F, 1.0F, 1.0F, this.opacity);
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 1);
 			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();
 		}

@@ -17,43 +17,43 @@ public class ModelZombieCrawler extends ModelBase {
 	ModelRenderer leftleg;
 
 	public ModelZombieCrawler() {
-		textureWidth = 128;
+		textureWidth = 64;
 		textureHeight = 64;
 
 		head = new ModelRenderer(this, 0, 0);
 		head.addBox(-4F, -8F, -4F, 8, 8, 8);
 		head.setRotationPoint(0F, 23F, -7F);
-		head.setTextureSize(128, 64);
+		head.setTextureSize(64, 64);
 		head.mirror = true;
 		setRotation(head, 0.1115358F, 0F, 0F);
 		body = new ModelRenderer(this, 16, 16);
 		body.addBox(-4F, 0F, -2F, 8, 12, 4);
 		body.setRotationPoint(0F, 22F, -7F);
-		body.setTextureSize(128, 64);
+		body.setTextureSize(64, 64);
 		body.mirror = true;
 		setRotation(body, 1.570796F, 0F, 0F);
 		rightarm = new ModelRenderer(this, 40, 32);
 		rightarm.addBox(-3F, -2F, -2F, 4, 12, 4);
 		rightarm.setRotationPoint(-5F, 22F, -5F);
-		rightarm.setTextureSize(128, 64);
+		rightarm.setTextureSize(64, 64);
 		rightarm.mirror = true;
 		setRotation(rightarm, -1.607975F, 0.1487144F, 0.2602503F);
 		leftarm = new ModelRenderer(this, 40, 16);
 		leftarm.addBox(-1F, -2F, -2F, 4, 12, 4);
 		leftarm.setRotationPoint(5F, 22F, -5F);
-		leftarm.setTextureSize(128, 64);
+		leftarm.setTextureSize(64, 64);
 		leftarm.mirror = true;
 		setRotation(leftarm, -1.45926F, -0.1487144F, -0.2602503F);
 		rightleg = new ModelRenderer(this, 0, 16);
 		rightleg.addBox(-2F, 0F, -2F, 4, 12, 4);
 		rightleg.setRotationPoint(-2F, 22F, 5F);
-		rightleg.setTextureSize(128, 64);
+		rightleg.setTextureSize(64, 64);
 		rightleg.mirror = true;
 		setRotation(rightleg, 1.719511F, -0.1115358F, 0F);
 		leftleg = new ModelRenderer(this, 0, 32);
 		leftleg.addBox(-2F, 0F, -2F, 4, 7, 4);
 		leftleg.setRotationPoint(2F, 22F, 5F);
-		leftleg.setTextureSize(128, 64);
+		leftleg.setTextureSize(64, 64);
 		leftleg.mirror = true;
 		setRotation(leftleg, 1.607975F, 0.1487144F, 0F);
 	}

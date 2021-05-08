@@ -1,15 +1,11 @@
 package com.nuparu.sevendaystomine.tileentity;
 
-import java.util.List;
-
-import com.nuparu.sevendaystomine.electricity.network.INetwork;
 import com.nuparu.sevendaystomine.inventory.container.ContainerTurretBase;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 

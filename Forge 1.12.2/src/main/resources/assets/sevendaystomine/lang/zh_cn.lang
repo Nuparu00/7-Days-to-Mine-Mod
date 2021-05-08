@@ -129,9 +129,18 @@ computer.app.transit=运输IDE
 computer.app.transit.desc=Ni开发者的IDE
 computer.mac.create_account=创建您的计算机帐户
 computer.mac.create_account_desc=输入名称和密码以创建帐户。
+computer.app.epidemic=瘟疫
 computer.epidemic.new_game=新游戏
+computer.epidemic.main_menu=主菜单
 computer.epidemic.start=开始
-
+computer.app.epidemic.win=胜利
+computer.app.epidemic.lost=失败
+computer.app.epidemic.win.epilog=%1$s 成功在 %2$s 天内消灭了地球上所有生命.
+computer.app.epidemic.lost.vaccine=%1$s 在 %2$s 天内在地球上被根除了.
+computer.app.epidemic.lost.died=%1$s 在 %2$s 天后死了.
+computer.app.epidemic.lost.info.killed=你的病毒已经导致 %1$s 人死亡 (%2$s%%).
+computer.app.epidemic.lost.info.vaccine=疫苗接种完全成功了 (%1$s%%) .							 
+								 																	  
 #Status Effects
 
 effect.thirst=口渴
@@ -154,8 +163,9 @@ enchantment.explosive=爆炸
 enchantment.sparking=火花
 enchantment.big_mag=大弹匣
 enchantment.multishot=多重射击
-enchantment.small_mag=空虚的诅咒
-enchantment.strabismus=十字眼诅咒
+enchantment.small_mag=载弹降低
+enchantment.strabismus=准星抖动
+enchantment.jamming=干扰诅咒
 
 #GUI
 
@@ -243,30 +253,33 @@ book_magnum.title=.44 马格南
 book_mp5.title=MP5
 book_auger.title=螺旋钻
 book_hunting_rifle.title=猎枪
+book_rocket.title=火箭发射器
 
 #Books
 book.contents=目录
 survival_guide.subtitle=出了问题怎么生存
-survival_guide.author=Maxmilian Vyroubal
+survival_guide.author=Craig Craigson
 survival_guide.contents.1=1. 原始工具
 survival_guide.tools.1=工具真的很重要。可以说，正是它们使我们人类不同于动物。它们允许我们改变我们的环境。这就是为什么你要做一些！很可能你只有这样的材料
 survival_guide.tools.2=石头和木头，所以你得凑合着用。
 survival_guide.contents.2=2. 原始服装
 survival_guide.clothing.1=衣服可以增加对不同环境影响的抵抗力。当然，你不能做100%的纯棉衣服，但是你可以做一件，例如，用植物做的。
-survival_guide.contents.3=3. 品质
-survival_guide.quality.1=根据你的技术水平，你制作的物品可以有不同的品质。物品的品质会影响物品的效率/准确性和/或耐久性。获得更多的经验是获得更好物品的关键。
+survival_guide.contents.3=3. 原始武器
+survival_guide.weapons.1=武器是一种主要用途是造成伤害的工具。现在你可能认为用棍子做的武器不可能致命，你错了。只是要花很长时间才能和他们一起杀人。
+survival_guide.contents.4=4. 品质
+survival_guide.quality.1=根据你的技术水平，你制作的物品可以有不同的品质。物品的品质会影响物品的效率/准确性和/或耐久性。获得更多的经验是获得更好物品的关键。																																																					   
 survival_guide.quality.2=目前，共有6个品质等级：
 survival_guide.quality.3=请记住，某些医疗条件，如死亡可能会对你的合成技能产生负面影响。
-survival_guide.contents.4=4. 篝火
+survival_guide.contents.5=5. 篝火
 survival_guide.campfire.1=火很重要。它在晚上给你光和热，让你做饭，烧烤，烘焙，蒸馏等。。这是你首先应该尝试获得的东西之一。
-survival_guide.contents.5=5. 庇护所
+survival_guide.contents.6=6. 庇护所
 survival_guide.shelter.1=虽然你可以做一个庇护所，从基本上任何东西，最好的开始选择是木材。砍倒几棵树，制作一些框架方块
 survival_guide.shelter.2=作为你的庇护所，你以后可以用斧头和木板升级。
 survival_guide.dontdistribute.1=未经许可，严禁复制和发行本书。
-survival_guide.copyright=Copyright © 2021 by Maxmilian Vyroubal All rights reserved.
+survival_guide.copyright=Copyright © 2021 by Craig Craigson All rights reserved.
 
 book_forging.subtitle=铁匠、金属制品等
-book_forging.author=Maxmilian Vyroubal
+book_forging.author=Craig Craigson
 book_forging.contents.1=1. 建造锻造厂
 book_forging.contents.2=2. 制作模具
 book_forging.contents.3=3. 铸造金属
@@ -301,11 +314,11 @@ book_forging.metals.bronze.1=铜和锡按2:1比例混合的合金。
 book_forging.metals.steel=钢
 book_forging.metals.steel.1=铁和碳按2:1比例混合的合金。
 book_forging.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_forging.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_forging.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 
 book_ammo.subtitle=从废品到弹药
-book_ammo.author=Maxmilian Vyroubal
+book_ammo.author=Craig Craigson
 book_ammo.contents.1=1. 子弹部分
 book_ammo.contents.2=2. 9x19mm
 book_ammo.contents.3=3. 10x25mm
@@ -318,11 +331,12 @@ book_ammo.pistol.1=手枪使用9x19mm（或仅9mm）子弹。它们不难制造�
 book_ammo.smg.1=MP5冲锋枪使用10x25mm（或仅10mm）子弹。
 book_ammo.sniper.1=7.62x39mm（或仅7.62mm）子弹可能是最广泛使用的子弹，因为几乎所有步枪都使用它。
 book_ammo.magnum.1=.44 马格南 (或只是 .44 弹匣) 是为左轮手枪及其变种设计的弹药。
-book_ammo.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_ammo.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_ammo.shotgun.1=装有10颗弹丸的像圆柱形弹壳。
+book_ammo.dontdistribute.1=未经许可，严禁复制和发行本书。																										   
+book_ammo.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 book_computers.subtitle=初学者编程与计算机
-book_computers.author=Maxmilian Vyroubal
+book_computers.author=Craig Craigson
 book_computers.contents.1=1. 硬件
 book_computers.contents.2=2. 软件
 book_computers.contents.3=3. 编程
@@ -336,10 +350,10 @@ book_computers.programming.2=一般用它来编程。
 book_computers.turrets.1=炮塔是一种自动瞄准目标的装置。它可以是导弹或机关枪。虽然在这里写下如何建造一个并不完全合法，
 book_computers.turrets.2=我们相信您有权保护自己（尽管您不太可能拿到所需的零件）。
 book_computers.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_computers.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_computers.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 book_concrete.subtitle=经久不衰的混凝土
-book_concrete.author=Maxmilian Vyroubal
+book_concrete.author=Craig Craigson
 book_concrete.contents.1=1. 获取水泥
 book_concrete.contents.2=2. 搅拌混凝土
 book_concrete.contents.3=3. 混凝土
@@ -353,10 +367,10 @@ book_concrete.concrete.2=混合到合成桌上。是的，就是这样。但与�
 book_concrete.reinforcing.1=钢筋混凝土是最坚固的块体（不包括基岩）。然而，正因为如此，它需要一段时间才能得到。首先，需要从工作台上的管道创建钢筋框架。然后把钢筋架放在适合你的地方。
 book_concrete.reinforcing.2=抓起一些建筑工具，如石斧、爪锤、扳手等。。，和一些木板和冲压它，直到它没有与木材锉边。找些混凝土混合料，把它填到砖里。现在给它点时间晾干。
 book_concrete.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_concrete.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_concrete.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 book_electricity.subtitle=不惜一切代价获取电力
-book_electricity.author=Maxmilian Vyroubal
+book_electricity.author=Craig Craigson
 book_electricity.contents.1=1. 火力发电机
 book_electricity.contents.2=2. 风能和太阳能电池板
 book_electricity.contents.3=3. 燃气发电机
@@ -370,7 +384,7 @@ book_electricity.solar.2=这种能源的缺点是。。。太依赖太阳了。�
 book_electricity.gas.1=天然气发电机基本上是一个更有效的（有点清洁）版本的煤炭发电机。最大的区别是它不能像煤那样使用固体燃料。相反，它需要汽油。
 book_electricity.conductors.1=导体允许电流从一个设备流向另一个设备。通常，它们是由电线和电线杆组成的系统，不过也可以使用开关和电池站等控制和存储元件。
 book_electricity.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_electricity.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_electricity.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 
 book_chemistry.subtitle=诺贝尔，铼，锕，钛，氧，氮
@@ -383,14 +397,14 @@ book_chemistry.chemistry.1=化学站由一个分馏瓶、一个大冷凝器、�
 book_chemistry.electrolysis.1=电解是一种产生特定反应的方法，否则是不会发生的。一个常见的用法是分隔。电流通过溶液，正离子向溶液中移动
 book_chemistry.electrolysis.2=同时，负离子向阳极移动。
 book_chemistry.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_chemistry.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_chemistry.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 book_metalworking.subtitle=初学者金属加工和机械
-book_metalworking.author=Maxmilian Vyroubal
+book_metalworking.author=Craig Craigson
 book_metalworking.contents.1=1. 工作台
 book_metalworking.workbench.1=Workbench允许您制作比手工制作表更复杂的东西。因为它有更先进的工具（如夹钳），你几乎可以制作从工具到机器的任何东西。
 book_metalworking.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_metalworking.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_metalworking.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 book_pistol.subtitle=装配，射击，死亡
 book_pistol.author=西塞罗·弗莱曼
@@ -402,10 +416,10 @@ book_pistol.ammo.1=这把手枪能射15发子弹。它使用标准北约9x19mm�
 book_pistol.shooting.1=不建议将此枪用作道具或玩具，因为此枪用于快速使用（意味着如果你有弹药-你可以射击，没有任何安全开关）。
 book_pistol.shooting.2=确保你的枪里有足够的弹药。然后你就可以开枪了。与其他一些枪相比，手枪的后坐力相对较小，但是要注意后坐力仍然存在。
 book_pistol.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_pistol.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_pistol.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 book_minibike.subtitle=即使是一个笨蛋也能造一辆微型摩托车。
-book_minibike.author=Maxmilian Vyroubal
+book_minibike.author=Craig Craigson
 book_minibike.contents.1=1. 底盘
 book_minibike.contents.2=2. 车把
 book_minibike.contents.3=3. 座位
@@ -414,7 +428,7 @@ book_minibike.contents.5=5. 装配
 book_minibike.assembly.1=为了组装微型摩托车，你需要几个零件，如发动机、电池、车轮、车把和座椅。有些零件你可以自己制作，有些你只能购买。
 book_minibike.assembly.2=当你有了所有的零件，把底盘放在地上，把零件放回原位。
 book_minibike.dontdistribute.1=未经许可，严禁复制和发行本书。
-book_minibike.copyright=Copyright © 2021 by Maxmilian Vyroubal §eCrazy_Jky §a(translaste)
+book_minibike.copyright=Copyright © 2021 by Craig Craigson §eCrazy_Jky §a(translaste)
 
 
 #Creative Tabs
@@ -648,6 +662,7 @@ item.book_magnum.name=设计蓝图
 item.book_mp5.name=设计蓝图
 item.book_auger.name=设计蓝图
 item.book_hunting_rifle.name=设计蓝图
+item.book_rocket.name=设计蓝图
 item.bullet_magnum.name=.44 马格南 子弹
 item.magnum_frame.name=.44 马格南 框架
 item.magnum_grip.name=.44 马格南 握把
@@ -715,6 +730,10 @@ item.compound_bow.name=复合弓
 item.mre.name=MRE(军粮)
 item.sand_dust.name=沙尘
 item.vomit.name=呕吐物
+item.rocket.name=火箭弹
+item.car_chassis.name=汽车底盘
+item.flare.name=信号弹
+item.soda.name=苏打
 
 filled_map.city=城市地图
 
@@ -990,7 +1009,22 @@ tile.flower_pot_enhanced.name=花盆
 tile.sand_layer.name=沙层
 tile.red_sand_layer.name=红沙层
 tile.ambulance.name=救护车
-
+tile.steel_block.name=钢块
+tile.bronze_block.name=青铜块
+tile.lead_block.name=铅块
+tile.copper_block.name=铜块
+tile.dark_bricks_slab.name=暗砖板
+tile.dark_bricks_slab_double.name=双层暗砖板
+tile.dark_bricks_stairs.name=暗砖楼梯
+tile.dark_bricks_mossy_slab.name=青苔砖
+tile.dark_bricks_mossy_slab_double.name=苔藓双层暗砖板
+tile.dark_bricks_mossy_stairs.name=青苔黑砖楼梯
+tile.brick_mossy_stairs.name=青苔砖楼梯
+tile.brick_mossy_slab.name=青苔砖
+tile.brick_mossy_slab_double.name=青苔砖
+tile.stone_brick_stairs_cracked.name=碎砖楼梯
+tile.asphalt_slab.name=沥青板
+tile.brass_block.name=黄铜块								 
 #Sound Subtitles
 
 subtitle.upgrade_wood=升级木板
@@ -1014,11 +1048,20 @@ subtitle.shotgun.shot=霰弹枪射击声
 subtitle.mp5.shot=MP5 射击声
 subtitle.flamethrower.shot=火焰喷射器射击声
 subtitle.safe.unlock.shot=保险柜 未解锁
+subtitle.entity.human.hurt=人类:受伤
+subtitle.horde=一大群东西
+subtitle.gas_leak=气体泄漏
+subtitle.chainsaw.idle=电锯闲置
+subtitle.chainsaw.cut=链锯切割
+subtitle.honk=喇叭声
+subtitle.minibike.idle=小型摩托车:闲置
+subtitle.car.accelerate=引擎轰鸣声
+subtitle.safe.unlock=安全解锁
 
 #Keybinding
 key.sevendaystomine.category=§4七日杀§e汉化By-Crazy_Jky
 key.reload.desc=枪械装弹
-key.accelerate.desc=车辆加速
+key.accelerate.desc=按喇叭
 key.camera.height.increase.desc=摄影机视角高度增加
 key.camera.height.decrease.desc=摄影机视角高度减少
 key.camera.width.increase.desc=摄影机视角宽度增加
@@ -1091,6 +1134,20 @@ advancements.auger.title=这不是一个选择
 advancements.auger.description=但是你可以用它来买枫糖浆
 advancements.chainsaw.title=链锯
 advancements.chainsaw.description=这样不会伤害任何人
+advancements.flare.title=按需交付
+advancements.flare.description=使用信号弹请求空投
+advancements.mosco.title=你的就是我的
+advancements.mosco.description=用抽血工具取别人的血
+advancements.bloodbond.title=血缘关系
+advancements.bloodbond.description=使用其他玩家的血
+advancements.reitwagen.title=有车一族
+advancements.reitwagen.description=获得一个摩托车底盘
+advancements.road_trip.title=公路旅行
+advancements.road_trip.description=和其他三个乘客一起开车
+advancements.know_it_all.title=万事通先生
+advancements.know_it_all.description=阅读每一本指南书和蓝图
+advancements.locksmith.title=锁匠
+advancements.locksmith.description=安全解锁					
 
 #Entities
 entity.reanimated_corpse.name=复活的尸体
@@ -1123,6 +1180,7 @@ entity.zombie_wolf.name=僵尸狼
 entity.zombie_pig.name=僵尸猪
 entity.zombie_miner.name=僵尸矿工
 entity.feral_zombie.name=野性僵尸
+entity.car.name=汽车
 
 #Fluids
 fluid.gasoline=汽油
@@ -1137,6 +1195,13 @@ jei.information.wind_turbine=把风能转换成电能。放得越高，产生的
 jei.information.solar_panel=把阳光的能量转换成电能。太阳在天空的位置越高，产生的电力就越多。应面向东方或西方以获得最大效率。不得阻碍。
 jei.information.gas_generator=将燃烧气体产生的热能转化为电能。温度越高，产生的电越多。容易过热。建议使用水或冰作为冷却剂，或使用温度计关闭发电机，如果温度达到临界水平。
 jei.information.combustion_generator=将燃烧产生的热能转化为电能。温度越高，产生的电越多。容易过热。建议使用水或冰作为冷却剂，或使用温度计关闭发电机，如果温度达到临界水平。
+jei.information.forge=类似熔炉的方块，用于将金属冶炼成各种物品。需要模具操作。
+jei.information.campfire=用于烹饪各种食物的类似熔炉的方块。需要炊具（如锅）来操作。
+jei.information.camera=用来监视某一区域的装置。需要连接到计算机。
+jei.information.battery_station=一种能储存高达10000焦耳电能的装置。
+jei.information.stethoscope=最初用于医疗的物品。可以用来找到正确的密码组合安全。
+jei.information.blood_draw_kit=可以用来提取你（或其他人）血液的物品。
+jei.information.thermometer=当方块即将达到临界温度时触发红石信号。																									  
 
 #DIALOGUES
 
@@ -1149,4 +1214,11 @@ survivor.trade.response=当然。我们交易吧！
 survivor.generic.a.b.response=没什么。
 survivor.generic.a.c.response=对不起，我没有。
 survivor.generic.a.d.response=我没有时间陪你。
+
+#Config
+sevendaystomine.client.tooltip=客户端设置
+sevendaystomine.mobs.tooltip=实体相关设置
+sevendaystomine.players.tooltip=玩家相关设置
+sevendaystomine.world.tooltip=世界设置
+sevendaystomine.worldgen.tooltip=世界生成器设置
 #汉化By Crazy_Jky QQ:1285988665 日期:2021.2.18 未经允许，禁止二次修改/转载

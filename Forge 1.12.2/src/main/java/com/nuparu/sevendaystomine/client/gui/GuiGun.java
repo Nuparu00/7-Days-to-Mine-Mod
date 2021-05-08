@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.item.IReloadable;
+import com.nuparu.sevendaystomine.item.ItemFuelTool;
 import com.nuparu.sevendaystomine.item.ItemGun;
 import com.nuparu.sevendaystomine.proxy.ClientProxy;
 import com.nuparu.sevendaystomine.util.MathUtils;
@@ -77,7 +78,8 @@ public class GuiGun {
 			if (reloadableMain != null) {
 				int ammoMain = reloadableMain.getAmmo(main, player);
 				int color_main = ammoMain <= 0 ? 0xff0000 : 0xffffff;
-				String text = new StringBuilder(SevenDaysToMine.proxy.localize("stat.ammo.name")).append(ammoMain)
+				boolean fuel = reloadableMain instanceof ItemFuelTool;
+				String text = new StringBuilder(SevenDaysToMine.proxy.localize(fuel ? "stat.fuel.name" : "stat.ammo.name")).append(ammoMain)
 						.append("/").append(reloadableMain.getCapacity(main, player)).toString();
 				mc.fontRenderer.drawString(text,
 						event.getResolution().getScaledWidth() - mc.fontRenderer.getStringWidth(text), 0, color_main);
@@ -86,7 +88,8 @@ public class GuiGun {
 			if (reloadableSec != null) {
 				int ammoSec = reloadableSec.getAmmo(sec, player);
 				int color_sec = ammoSec <= 0 ? 0xff0000 : 0xffffff;
-				String text = new StringBuilder(SevenDaysToMine.proxy.localize("stat.ammo.name")).append(ammoSec)
+				boolean fuel = reloadableMain instanceof ItemFuelTool;
+				String text = new StringBuilder(SevenDaysToMine.proxy.localize(fuel ? "stat.fuel.name" : "stat.ammo.name")).append(ammoSec)
 						.append("/").append(reloadableSec.getCapacity(sec, player)).toString();
 				mc.fontRenderer.drawString(text, 0, 0, color_sec);
 			}

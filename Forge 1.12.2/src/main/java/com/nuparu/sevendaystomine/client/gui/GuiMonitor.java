@@ -8,12 +8,12 @@ import org.lwjgl.opengl.GL30;
 
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.client.renderer.CameraFBO;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.entity.EntityMountableBlock;
 import com.nuparu.sevendaystomine.events.TickHandler;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
 import com.nuparu.sevendaystomine.tileentity.TileEntityMonitor;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

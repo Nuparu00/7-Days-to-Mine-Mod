@@ -7,6 +7,8 @@ import com.nuparu.sevendaystomine.block.IUpgradeable;
 import com.nuparu.sevendaystomine.block.repair.BreakData;
 import com.nuparu.sevendaystomine.block.repair.BreakSavedData;
 import com.nuparu.sevendaystomine.config.ModConfig;
+import com.nuparu.sevendaystomine.electricity.ElectricConnection;
+import com.nuparu.sevendaystomine.electricity.IVoltage;
 import com.nuparu.sevendaystomine.entity.INoiseListener;
 import com.nuparu.sevendaystomine.entity.Noise;
 import com.nuparu.sevendaystomine.init.ModBlocks;
@@ -38,7 +40,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
@@ -70,7 +74,8 @@ public class WorldEventHandler {
 		BlockPos pos = event.pos;
 		if (state.getBlock() instanceof IUpgradeable) {
 			IUpgradeable upgradeable = (IUpgradeable) state.getBlock();
-			world.setBlockState(pos, upgradeable.getPrev(world, pos));
+			world.setBlockState(pos, upgradeable.getPrev(world, pos, state));
+			upgradeable.onDowngrade(world, pos, state);
 			return;
 		} else {
 			VanillaBlockUpgrade upgrade = VanillaManager.getVanillaUpgrade(state);
@@ -108,11 +113,12 @@ public class WorldEventHandler {
 		} else {
 			BreakSavedData.get(world).removeBreakData(pos, world);
 		}
-		if (state.getBlock() instanceof IUpgradeable && ((IUpgradeable) block).getPrev(world, pos) != null && ((IUpgradeable) block).getPrev(world, pos).getBlock() != Blocks.AIR) {
+		if (state.getBlock() instanceof IUpgradeable && ((IUpgradeable) block).getPrev(world, pos, state) != null && ((IUpgradeable) block).getPrev(world, pos, state).getBlock() != Blocks.AIR) {
 			IUpgradeable upgradeable = (IUpgradeable) state.getBlock();
 			event.getDrops().clear();
-			world.setBlockState(pos, upgradeable.getPrev(world, pos));
-			Block prev = upgradeable.getPrev(world, pos).getBlock();
+			world.setBlockState(pos, upgradeable.getPrev(world, pos, state));
+			upgradeable.onDowngrade(world, pos, state);
+			Block prev = upgradeable.getPrev(world, pos, state).getBlock();
 			if (!(prev instanceof IUpgradeable))
 				return;
 			for (ItemStack stack : ((IUpgradeable) prev).getItems()) {
@@ -164,12 +170,13 @@ public class WorldEventHandler {
 	 */
 	@SubscribeEvent
 	public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
+		IBlockState oldState = event.getState();
+		World world = event.getWorld();
 		if (event.getPlayer() instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP) event.getPlayer();
-			World world = event.getWorld();
 			if (player.interactionManager.survivalOrAdventure()) {
 				if (player.getHeldItemMainhand().isEmpty()) {
-					if (event.getState().getMaterial() == Material.GLASS) {
+					if (oldState.getMaterial() == Material.GLASS) {
 						if (event.getWorld().rand.nextInt(5) == 0) {
 							player.attackEntityFrom(DamageSources.sharpGlass, 2.0F);
 
@@ -178,6 +185,16 @@ public class WorldEventHandler {
 				}
 			}
 			BreakSavedData.get(world).removeBreakData(event.getPos(), world);
+		}
+		TileEntity te = world.getTileEntity(event.getPos());
+		if(te != null && te instanceof IVoltage) {
+			IVoltage voltage = (IVoltage)te;
+			List<ElectricConnection> inputs = voltage.getInputs();
+			for(ElectricConnection connection : inputs) {
+				IVoltage from = connection.getFrom(world);
+				if(from == null) continue;
+				from.disconnect(voltage);
+			}
 		}
 	}
 
@@ -316,10 +333,10 @@ public class WorldEventHandler {
 		if (fuel.isEmpty())
 			return;
 		Item item = fuel.getItem();
-		if(item == Items.PAPER) {
-			event.setBurnTime(20);
+		if(item == Items.PAPER || item == Items.FILLED_MAP || item == Items.MAP) {
+			event.setBurnTime(40);
 		}
-		if(item == Items.BOOK) {
+		else if(item == Items.BOOK) {
 			event.setBurnTime(80);
 		}
 		if (item instanceof IScrapable) {
@@ -343,6 +360,9 @@ public class WorldEventHandler {
 			if (scrapable.getMaterial() == EnumMaterial.WOOD) {
 				event.setBurnTime(200 * scrapable.getWeight());
 			}
+		}
+		else if(item == ModItems.CRUDE_BOW) {
+			event.setBurnTime(300);
 		}
 	}
 

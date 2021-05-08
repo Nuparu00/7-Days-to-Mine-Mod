@@ -16,6 +16,7 @@ import com.nuparu.sevendaystomine.block.BlockCardboardBox;
 import com.nuparu.sevendaystomine.block.BlockChestOld;
 import com.nuparu.sevendaystomine.block.BlockCodeSafe;
 import com.nuparu.sevendaystomine.block.BlockCupboard;
+import com.nuparu.sevendaystomine.block.BlockDresser;
 import com.nuparu.sevendaystomine.block.BlockGarbage;
 import com.nuparu.sevendaystomine.block.BlockHorizontalBase;
 import com.nuparu.sevendaystomine.block.BlockSandLayer;
@@ -284,6 +285,15 @@ public class Building {
 				te.setLootTable(ModLootTables.DRESSER, world.rand.nextLong());
 				te.fillWithLoot(null);
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				break;
+			}
+			case "dresser_bottom": {
+				TileEntityDresser te = (TileEntityDresser) world.getTileEntity(pos.up());
+				te.setLootTable(ModLootTables.DRESSER, world.rand.nextLong());
+				te.fillWithLoot(null);
+				IBlockState dresser = world.getBlockState(pos.up());
+				world.setBlockState(pos,
+						world.getBlockState(pos.offset(dresser.getValue(BlockDresser.FACING).getOpposite())));
 				break;
 			}
 			case "dresser_tall": {
@@ -662,7 +672,7 @@ public class Building {
 
 	public void coverWithSand(World world, BlockPos pos, Template template, EnumFacing facing, boolean mirror,
 			Random rand) {
-		if (!ModConfig.worldGen.snowSandCover)
+		if (!ModConfig.worldGen.snowSandBuildingCover)
 			return;
 		Rotation rot = Utils.facingToRotation(facing.rotateYCCW());
 		BlockPos size = template.transformedSize(rot);

@@ -40,7 +40,7 @@ public class ItemWrench extends ItemUpgrader {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, salvageable.getSound(),
 					SoundCategory.BLOCKS, MathUtils.getFloatInRange(0.5f, 0.75f), MathUtils.getFloatInRange(0.9f, 1f));
 			itemstack.getTagCompound().setFloat("Percent",
-					itemstack.getTagCompound().getFloat("Percent") - effect / 30f);
+					itemstack.getTagCompound().getFloat("Percent") - effect*salvageable.getUpgradeRate(worldIn, pos, state, playerIn) / 30f);
 			playerIn.swingArm(hand);
 			if (itemstack.getTagCompound().getFloat("Percent") <= -1F) {
 				itemstack.damageItem(1, playerIn);

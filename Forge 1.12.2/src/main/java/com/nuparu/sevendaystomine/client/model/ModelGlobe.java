@@ -12,12 +12,12 @@ public class ModelGlobe extends ModelBase {
 
 	public ModelGlobe() {
 		textureWidth = 64;
-		textureHeight = 32;
+		textureHeight = 64;
 
 		globe = new ModelRenderer(this, 0, 0);
 		globe.addBox(0F, 0F, 0F, 10, 10, 10);
 		globe.setRotationPoint(-5F, 13F, -5F);
-		globe.setTextureSize(64, 32);
+		globe.setTextureSize(64, 64);
 		globe.mirror = true;
 		setRotation(globe, 0F, 0F, 0F);
 	}

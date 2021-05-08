@@ -13,18 +13,18 @@ public class ModelGlobePole extends ModelBase {
 
 	public ModelGlobePole() {
 		textureWidth = 64;
-		textureHeight = 32;
+		textureHeight = 64;
 
 		Shape1 = new ModelRenderer(this, 0, 22);
 		Shape1.addBox(0F, 0F, 0F, 8, 1, 8);
 		Shape1.setRotationPoint(-4F, 23F, -4F);
-		Shape1.setTextureSize(64, 32);
+		Shape1.setTextureSize(64, 64);
 		Shape1.mirror = true;
 		setRotation(Shape1, 0F, 0F, 0F);
 		Shape2 = new ModelRenderer(this, 42, 0);
 		Shape2.addBox(0F, 0F, 0F, 2, 16, 2);
 		Shape2.setRotationPoint(-1F, 9F, -7F);
-		Shape2.setTextureSize(64, 32);
+		Shape2.setTextureSize(64, 64);
 		Shape2.mirror = true;
 		setRotation(Shape2, 0.4014257F, 0F, 0F);
 

@@ -57,8 +57,8 @@ public class BlockSleepingBag extends BlockHorizontalBase implements ITileEntity
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PART, BlockSleepingBag.EnumPartType.FOOT)
 				.withProperty(OCCUPIED, Boolean.valueOf(false)));
 		this.hasTileEntity = true;
-		this.setHardness(1f);
-		this.setResistance(1f);
+		this.setHardness(0.1f);
+		this.setResistance(0.2f);
 	}
 
 	@Override

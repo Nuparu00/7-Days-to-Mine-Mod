@@ -29,9 +29,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockGlobe extends BlockTileProvider<TileEntityGlobe> {
 
 	public BlockGlobe() {
-		super(Material.IRON);
-		this.setHardness(0.5F);
-		this.setResistance(0.5F);
+		super(Material.CLOTH);
+		this.setHardness(0.01F);
+		this.setResistance(1F);
 		setDefaultState(this.blockState.getBaseState().withProperty(BlockHorizontalBase.FACING, EnumFacing.NORTH));
 	}
 

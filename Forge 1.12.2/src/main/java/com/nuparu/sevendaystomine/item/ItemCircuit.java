@@ -23,10 +23,10 @@ public class ItemCircuit extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		String data = "<null>";
+		String data = SevenDaysToMine.proxy.localize("stat.data.null.name");
 		if(stack.getTagCompound() != null &&  stack.getTagCompound().hasKey("data")) {
 			data = stack.getTagCompound().getString("data");
 		}
-		tooltip.add("Data: " + data);
+		tooltip.add(SevenDaysToMine.proxy.localize("stat.data.name",data));
 	}
 }

@@ -3,9 +3,9 @@ package com.nuparu.sevendaystomine.computer.process;
 import org.lwjgl.opengl.GL11;
 
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Animation;
+import com.nuparu.sevendaystomine.client.util.Animations;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.tileentity.TileEntityComputer;
-import com.nuparu.sevendaystomine.util.client.Animations;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;

@@ -1,4 +1,4 @@
-package com.nuparu.sevendaystomine.util.client;
+package com.nuparu.sevendaystomine.client.util;
 
 import net.minecraftforge.fml.relauncher.SideOnly;
 

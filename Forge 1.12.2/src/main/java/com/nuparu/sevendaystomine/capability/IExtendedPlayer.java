@@ -72,5 +72,11 @@ public interface IExtendedPlayer {
 	
 	public void setDrinkCounter(int i);
 	public int getDrinkCounter();
+	
+	public void setSurvivedBloodmoons(int i);
+	public int getSurvivedBloodmons();
+	
+	public void setLastBloodmoonSurvivalCheck(int i);
+	public int getLastBloodmoonSurvivalCheck();
 
 }

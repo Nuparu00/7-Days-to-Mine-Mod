@@ -175,7 +175,7 @@
                 },
                 {
                     "type": "empty",
-                    "weight": 300
+                    "weight": 100
                 }
             ]
         }

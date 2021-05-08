@@ -2,6 +2,7 @@ package com.nuparu.sevendaystomine.item;
 
 import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.init.ModItems;
+import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,7 +40,7 @@ public class ItemM4 extends ItemGun {
 
 	@Override
 	public SoundEvent getShotSound() {
-		return SoundHelper.AK47_SHOT;
+		return SoundHelper.M4_SHOT;
 	}
 
 	@Override
@@ -63,6 +64,16 @@ public class ItemM4 extends ItemGun {
 	@Override
 	public double getMuzzleFlashSize() {
 		return 1;
+	}
+	
+	@Override
+	public float getShotSoundVolume() {
+		return 1F;
+	}
+	
+	@Override
+	public float getShotSoundPitch() {
+		return MathUtils.getFloatInRange(1f, 1.2f);
 	}
 
 }

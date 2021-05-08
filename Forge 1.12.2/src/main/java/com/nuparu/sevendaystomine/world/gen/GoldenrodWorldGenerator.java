@@ -2,7 +2,9 @@ package com.nuparu.sevendaystomine.world.gen;
 
 import java.util.Random;
 
+import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.init.ModBlocks;
+import com.nuparu.sevendaystomine.util.MathUtils;
 import com.nuparu.sevendaystomine.world.gen.feature.WorldGenGoldenrod;
 
 import net.minecraft.block.BlockBush;
@@ -42,9 +44,7 @@ public class GoldenrodWorldGenerator implements IWorldGenerator {
 		if(world.getWorldType()==WorldType.FLAT) {
 			return;
 		}
-		int MIN = 0;
-		int MAX = 3;
-		int num = MIN + rand.nextInt(MAX - MIN);
+		int num = MathUtils.getIntInRange(rand, ModConfig.worldGen.goldenrodGenerationRateMin, ModConfig.worldGen.goldenrodGenerationRateMax+1);
 		for (int i = 0; i < num; i++) {
 			int randX = blockX + rand.nextInt(16)+8;
 			int randZ = blockZ + rand.nextInt(16)+8;

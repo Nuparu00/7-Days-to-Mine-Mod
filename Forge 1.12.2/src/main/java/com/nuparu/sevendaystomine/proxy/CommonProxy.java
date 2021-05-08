@@ -17,6 +17,11 @@ import com.nuparu.sevendaystomine.crafting.campfire.CampfireRecipeManager;
 import com.nuparu.sevendaystomine.crafting.chemistry.ChemistryRecipeManager;
 import com.nuparu.sevendaystomine.crafting.forge.ForgeRecipeManager;
 import com.nuparu.sevendaystomine.crafting.separator.SeparatorRecipeManager;
+import com.nuparu.sevendaystomine.dispenser.BehaviorThrowFlare;
+import com.nuparu.sevendaystomine.dispenser.BehaviorThrowGasGrenade;
+import com.nuparu.sevendaystomine.dispenser.BehaviorThrowGrenade;
+import com.nuparu.sevendaystomine.dispenser.BehaviorThrowMolotov;
+import com.nuparu.sevendaystomine.dispenser.BehaviorThrowVomit;
 import com.nuparu.sevendaystomine.entity.EntityAirdrop;
 import com.nuparu.sevendaystomine.entity.EntityAirplane;
 import com.nuparu.sevendaystomine.entity.EntityBandit;
@@ -129,12 +134,15 @@ import com.nuparu.sevendaystomine.util.dialogue.DialoguesRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.ICriterionTrigger;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityStray;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -195,6 +203,12 @@ public class CommonProxy {
 		ProcessRegistry.INSTANCE.register();
 		ApplicationRegistry.INSTANCE.register();
 		DialoguesRegistry.INSTANCE.register();
+		
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.FRAGMENTATION_GRENADE, new BehaviorThrowGrenade());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.MOLOTOV, new BehaviorThrowMolotov());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.CHLORINE_GRENADE, new BehaviorThrowGasGrenade());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.FLARE, new BehaviorThrowFlare());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.VOMIT, new BehaviorThrowVomit());
 
 		new CampfireRecipeManager();
 		new ForgeRecipeManager();
@@ -250,6 +264,10 @@ public class CommonProxy {
 					ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER,
 					ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+			EntityRegistry.removeSpawn(EntityZombieVillager.class, EnumCreatureType.MONSTER,
+					ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
+			EntityRegistry.removeSpawn(EntityStray.class, EnumCreatureType.MONSTER,
+							ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 		}
 
 	}

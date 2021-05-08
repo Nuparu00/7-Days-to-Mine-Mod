@@ -8,11 +8,11 @@ import org.lwjgl.opengl.GL11;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.client.gui.monitor.Screen;
 import com.nuparu.sevendaystomine.client.gui.monitor.elements.Button;
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
 import com.nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import com.nuparu.sevendaystomine.entity.EntityCameraView;
 import com.nuparu.sevendaystomine.tileentity.TileEntityCamera;
 import com.nuparu.sevendaystomine.util.ColorRGBA;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
 
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTTagCompound;

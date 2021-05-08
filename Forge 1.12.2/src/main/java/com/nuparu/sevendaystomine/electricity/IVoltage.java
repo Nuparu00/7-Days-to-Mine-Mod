@@ -46,4 +46,7 @@ public interface IVoltage {
 	 * If is passive, the block does not require a direct connection to an energy pole to receive power (like lamps)
 	 */
 	public boolean isPassive();
+	
+	public boolean disconnect(IVoltage voltage);
+	public BlockPos getPos();
 }

@@ -1,10 +1,10 @@
 package com.nuparu.sevendaystomine.client.gui;
 
+import com.nuparu.sevendaystomine.client.util.RenderUtils;
+import com.nuparu.sevendaystomine.client.util.ResourcesHelper;
+import com.nuparu.sevendaystomine.client.util.ResourcesHelper.Image;
 import com.nuparu.sevendaystomine.network.PacketManager;
 import com.nuparu.sevendaystomine.network.packets.PhotoRequestMessage;
-import com.nuparu.sevendaystomine.util.client.RenderUtils;
-import com.nuparu.sevendaystomine.util.client.ResourcesHelper;
-import com.nuparu.sevendaystomine.util.client.ResourcesHelper.Image;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;

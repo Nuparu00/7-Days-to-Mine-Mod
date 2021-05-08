@@ -80,7 +80,7 @@ public class EntityMolotov extends EntityThrowable {
 			facing = result.sideHit;
 		}
 		Vec3i vec = facing.getDirectionVec();
-		System.out.println(vec.toString());
+		//System.out.println(vec.toString());
 		if (!world.isRemote) {
 			for (int i = 0; i < 128; i++) {
 				EntityFlame flame = new EntityFlame(world, posX + width / 2, posY + height / 2, posZ + width / 2, 0, 0,

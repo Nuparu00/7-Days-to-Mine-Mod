@@ -1,7 +1,6 @@
 package com.nuparu.sevendaystomine.tileentity;
 
 import com.nuparu.sevendaystomine.block.BlockWoodenLogSpike;
-import com.nuparu.sevendaystomine.block.BlockWoodenSpikes;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

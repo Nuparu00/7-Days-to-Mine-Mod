@@ -21,6 +21,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -163,7 +164,7 @@ public class EntityLootableCorpse extends Entity {
 		}
 
 		if (!onGround && !onEntity) {
-			 this.motionY -= 0.03999999910593033D;
+			this.motionY -= 0.03999999910593033D;
 		} else {
 			this.motionY = 0;
 		}
@@ -180,7 +181,8 @@ public class EntityLootableCorpse extends Entity {
 
 		boolean flag = false;
 		for (Entity entity : this.world.getEntitiesWithinAABBExcludingEntity(this, getCollisionBoundingBox())) {
-			if(entity instanceof EntityPlayer) continue;
+			if (entity instanceof EntityPlayer)
+				continue;
 			if (!this.isPassenger(entity) && entity.canBeCollidedWith()) {
 				flag = true;
 			}
@@ -280,6 +282,16 @@ public class EntityLootableCorpse extends Entity {
 				SevenDaysToMine.proxy.spawnParticle(this.world, EnumModParticleType.BLOOD, x, y, z,
 						MathUtils.getDoubleInRange(-1d, 1d) / 7d, MathUtils.getDoubleInRange(-0.5d, 1d) / 7d,
 						MathUtils.getDoubleInRange(-1d, 1d) / 7d);
+			}
+		}
+		if (source.getImmediateSource() instanceof EntityPlayerMP) {
+			EntityPlayerMP player = (EntityPlayerMP) source.getImmediateSource();
+			ItemStack s = player.getHeldItemMainhand();
+			if (s.getMaxDamage() > 0) {
+				s.attemptDamageItem(1, rand, player);
+				if (s.getItemDamage() >= s.getMaxDamage()) {
+					s.setCount(0);
+				}
 			}
 		}
 		this.health -= amount;

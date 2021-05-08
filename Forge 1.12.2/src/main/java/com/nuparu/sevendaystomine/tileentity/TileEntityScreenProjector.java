@@ -1,8 +1,8 @@
 package com.nuparu.sevendaystomine.tileentity;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.util.ResourcesHelper.Image;
 import com.nuparu.sevendaystomine.item.ItemPhoto;
-import com.nuparu.sevendaystomine.util.client.ResourcesHelper.Image;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

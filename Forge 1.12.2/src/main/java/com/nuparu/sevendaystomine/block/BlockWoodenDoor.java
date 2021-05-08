@@ -79,7 +79,7 @@ public class BlockWoodenDoor extends BlockDoorBase implements IUpgradeable {
 	}
 
 	@Override
-	public IBlockState getPrev(World world, BlockPos pos) {
+	public IBlockState getPrev(World world, BlockPos pos, IBlockState original) {
 		return Blocks.AIR.getDefaultState();
 	}
 
@@ -118,6 +118,11 @@ public class BlockWoodenDoor extends BlockDoorBase implements IUpgradeable {
 				world.setBlockState(blockPos,getResult(world,blockPos));
 			}
 		}
+	}
+	
+	@Override
+	public void onDowngrade(World world, BlockPos pos, IBlockState oldState) {
+		
 	}
 
 }

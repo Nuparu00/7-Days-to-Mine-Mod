@@ -23,10 +23,10 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.Lists;
 import com.nuparu.sevendaystomine.SevenDaysToMine;
-import com.nuparu.sevendaystomine.util.client.MP3Helper;
-import com.nuparu.sevendaystomine.util.client.MP3Helper.Audio;
-import com.nuparu.sevendaystomine.util.client.MP3Helper.AudioPlayer;
-import com.nuparu.sevendaystomine.util.client.MP3Helper.EnumAudioMode;
+import com.nuparu.sevendaystomine.client.util.MP3Helper;
+import com.nuparu.sevendaystomine.client.util.MP3Helper.Audio;
+import com.nuparu.sevendaystomine.client.util.MP3Helper.AudioPlayer;
+import com.nuparu.sevendaystomine.client.util.MP3Helper.EnumAudioMode;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

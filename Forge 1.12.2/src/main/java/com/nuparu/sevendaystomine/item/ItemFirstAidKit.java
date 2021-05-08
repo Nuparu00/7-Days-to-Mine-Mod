@@ -1,7 +1,10 @@
 package com.nuparu.sevendaystomine.item;
 
+import java.util.ArrayList;
+
 import com.nuparu.sevendaystomine.SevenDaysToMine;
 import com.nuparu.sevendaystomine.potions.Potions;
+import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,6 +59,13 @@ public class ItemFirstAidKit extends Item {
 				}
 				entityplayer.removePotionEffect(Potions.bleeding);
 				entityplayer.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 600, 1));
+				PotionEffect brokeLegEffect = entityplayer.getActivePotionEffect(Potions.brokenLeg);
+				if(brokeLegEffect != null) {
+					entityplayer.removePotionEffect(Potions.brokenLeg);
+					PotionEffect effect = new PotionEffect(Potions.splintedLeg,brokeLegEffect.getDuration(), brokeLegEffect.getAmplifier(), brokeLegEffect.getIsAmbient(), brokeLegEffect.doesShowParticles());
+					effect.setCurativeItems(new ArrayList<ItemStack>());
+					entityplayer.addPotionEffect(effect);
+				}
 			}
 		}
 	}

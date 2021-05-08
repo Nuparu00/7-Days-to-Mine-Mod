@@ -1,6 +1,7 @@
 package com.nuparu.sevendaystomine.events;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -26,6 +27,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -46,15 +48,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -99,7 +104,8 @@ public class LivingEventHandler {
 				return;
 			}
 			if (source.getTrueSource() != null && source.getTrueSource() instanceof EntityZombieBase) {
-				if (world.rand.nextInt(ModConfig.players.infectionChanceModifier*(getArmorItemsCount(player)+1)) == 0) {
+				if (world.rand
+						.nextInt(ModConfig.players.infectionChanceModifier * (getArmorItemsCount(player) + 1)) == 0) {
 					Utils.infectPlayer(player, 0);
 				}
 			}
@@ -119,7 +125,8 @@ public class LivingEventHandler {
 			return;
 		}
 
-		if (!world.isRemote && amount >= (entity.getMaxHealth() / 100 * 20) && world.rand.nextInt(ModConfig.mobs.bleedingChanceModifier*(getArmorItemsCount(entity)+1)) == 0) {
+		if (world.getDifficulty() != EnumDifficulty.PEACEFUL && !world.isRemote && amount >= (entity.getMaxHealth() / 100 * 20)
+				&& world.rand.nextInt(ModConfig.mobs.bleedingChanceModifier * (getArmorItemsCount(entity) + 1)) == 0) {
 			PotionEffect effect = new PotionEffect(Potions.bleeding, Integer.MAX_VALUE, 1, false, false);
 			effect.setCurativeItems(new ArrayList<ItemStack>());
 			entity.addPotionEffect(effect);
@@ -140,9 +147,10 @@ public class LivingEventHandler {
 	@SubscribeEvent
 	public void onEntityFall(LivingFallEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
-		if (living instanceof EntityPlayer && !living.world.isRemote) {
+		if (ModConfig.players.fragileLegs && living instanceof EntityPlayer && !living.world.isRemote) {
 			if (event.getDistance() > 4
 					&& living.world.rand.nextFloat() * (Math.max(256 - (event.getDistance() * 25), 0)) <= 1) {
+				living.removePotionEffect(Potions.splintedLeg);
 				PotionEffect effect = new PotionEffect(Potions.brokenLeg,
 						(int) (MathUtils.getFloatInRange(0.5f, 1.5f) * (500 * event.getDistance())), 0, false, false);
 				effect.setCurativeItems(new ArrayList<ItemStack>());
@@ -188,19 +196,43 @@ public class LivingEventHandler {
 	}
 
 	@SubscribeEvent
+	public void onLivingDrop(LivingDropsEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
+		if (living instanceof EntityAnimal) {
+			DamageSource source = event.getSource();
+			if (source.getImmediateSource() instanceof EntityZombieBase) {
+				Iterator<EntityItem> it = event.getDrops().iterator();
+				while (it.hasNext()) {
+					EntityItem entity = it.next();
+					if (entity.getItem().getItem() instanceof ItemFood) {
+						it.remove();
+					}
+
+				}
+			}
+
+		}
+	}
+
+	@SubscribeEvent
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+
 		if (!ModConfig.mobs.zombiesAttackAnimals)
 			return;
 		Entity entity = event.getEntity();
 		if (entity instanceof EntityAnimal || entity instanceof EntityVillager) {
 			EntityCreature creature = (EntityCreature) entity;
-			creature.tasks.addTask(3, new EntityAIAvoidEntity<EntityZombieBase>(creature, EntityZombieBase.class, 6.0F, 1.0D, 1.2D));
+			creature.tasks.addTask(3,
+					new EntityAIAvoidEntity<EntityZombieBase>(creature, EntityZombieBase.class, 6.0F, 1.0D, 1.2D));
 		}
 
 	}
-	
+
 	public static int getArmorItemsCount(EntityLivingBase living) {
-		return (living.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty() ? 0 : 2)+(living.getItemStackFromSlot(EntityEquipmentSlot.CHEST).isEmpty() ? 0 : 3)+(living.getItemStackFromSlot(EntityEquipmentSlot.LEGS).isEmpty() ? 0 : 2)+(living.getItemStackFromSlot(EntityEquipmentSlot.FEET).isEmpty() ? 0 : 1);
+		return (living.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty() ? 0 : 2)
+				+ (living.getItemStackFromSlot(EntityEquipmentSlot.CHEST).isEmpty() ? 0 : 3)
+				+ (living.getItemStackFromSlot(EntityEquipmentSlot.LEGS).isEmpty() ? 0 : 2)
+				+ (living.getItemStackFromSlot(EntityEquipmentSlot.FEET).isEmpty() ? 0 : 1);
 	}
 
 }

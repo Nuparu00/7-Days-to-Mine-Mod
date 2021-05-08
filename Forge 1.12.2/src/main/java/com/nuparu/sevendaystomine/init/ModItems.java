@@ -31,6 +31,7 @@ import com.nuparu.sevendaystomine.item.ItemClub;
 import com.nuparu.sevendaystomine.item.ItemCoffeeBerry;
 import com.nuparu.sevendaystomine.item.ItemCoffeeDrink;
 import com.nuparu.sevendaystomine.item.ItemConcreteMix;
+import com.nuparu.sevendaystomine.item.ItemCorn;
 import com.nuparu.sevendaystomine.item.ItemDoorBase;
 import com.nuparu.sevendaystomine.item.ItemDrink;
 import com.nuparu.sevendaystomine.item.ItemEmptyCan;
@@ -181,7 +182,7 @@ public class ModItems {
 			.setUnlocalizedName("BottledBeer").setContainerItem(EMPTY_JAR);
 	public static final Item GOLDENROD_TEA = new ItemTea(0, 300, 150).setRegistryName("GoldenrodTea")
 			.setUnlocalizedName("GoldenrodTea").setContainerItem(EMPTY_JAR);
-	public static final Item BOTTLED_COFFEE = new ItemCoffeeDrink(0, 300, 150).setRegistryName("BottledCoffee")
+	public static final Item BOTTLED_COFFEE = new ItemCoffeeDrink(0, 300, 150,1,600).setRegistryName("BottledCoffee")
 			.setUnlocalizedName("BottledCoffee").setContainerItem(EMPTY_JAR);
 	public static final Item JAR_OF_HONEY = new ItemHoney().setRegistryName("JarOfHoney")
 			.setUnlocalizedName("JarOfHoney").setContainerItem(EMPTY_JAR);
@@ -190,41 +191,41 @@ public class ModItems {
 	public static final Item CANNED_WATER = new ItemDrink(0, 250, 50).setRegistryName("CannedWater")
 			.setUnlocalizedName("CannedWater").setContainerItem(EMPTY_CAN);
 
-	public static final Item CANNED_CATFOOD = new ItemCannedFood(3, 0.3f, true, 2).setRegistryName("CannedCatFood")
+	public static final Item CANNED_CATFOOD = new ItemCannedFood(3, 1f, true, 2).setRegistryName("CannedCatFood")
 			.setUnlocalizedName("CannedCatFood");
-	public static final Item CANNED_DOGFOOD = new ItemCannedFood(3, 0.3f, true, 2).setRegistryName("CannedDogFood")
+	public static final Item CANNED_DOGFOOD = new ItemCannedFood(3, 1f, true, 2).setRegistryName("CannedDogFood")
 			.setUnlocalizedName("CannedDogFood");
-	public static final Item CANNED_HAM = new ItemCannedFood(6, 0.9f, true, 3).setRegistryName("CannedHam")
+	public static final Item CANNED_HAM = new ItemCannedFood(6, 2.5f, true, 3).setRegistryName("CannedHam")
 			.setUnlocalizedName("CannedHam");
-	public static final Item CANNED_CHICKEN = new ItemCannedFood(5, 0.7f, true, 4).setRegistryName("CannedChicken")
+	public static final Item CANNED_CHICKEN = new ItemCannedFood(5, 2f, true, 4).setRegistryName("CannedChicken")
 			.setUnlocalizedName("CannedChicken");
-	public static final Item CANNED_CHILI = new ItemCannedFood(4, 0.45f, false, 2).setRegistryName("CannedChili")
+	public static final Item CANNED_CHILI = new ItemCannedFood(4, 2f, false, 2).setRegistryName("CannedChili")
 			.setUnlocalizedName("CannedChili");
-	public static final Item CANNED_MISO = new ItemCannedFood(4, 0.45f, false, 2).setRegistryName("CannedMiso")
+	public static final Item CANNED_MISO = new ItemCannedFood(4, 1.5f, false, 2).setRegistryName("CannedMiso")
 			.setUnlocalizedName("CannedMiso");
-	public static final Item CANNED_PASTA = new ItemCannedFood(5, 0.5f, false, 2).setRegistryName("CannedPasta")
+	public static final Item CANNED_PASTA = new ItemCannedFood(5, 2f, false, 2).setRegistryName("CannedPasta")
 			.setUnlocalizedName("CannedPasta");
-	public static final Item CANNED_PEARS = new ItemCannedFood(4, 0.35f, false, 2).setRegistryName("CannedPears")
+	public static final Item CANNED_PEARS = new ItemCannedFood(4,1.5f, false, 2).setRegistryName("CannedPears")
 			.setUnlocalizedName("CannedPears");
-	public static final Item CANNED_PEAS = new ItemCannedFood(4, 0.35f, false, 2).setRegistryName("CannedPeas")
+	public static final Item CANNED_PEAS = new ItemCannedFood(4, 1.5f, false, 2).setRegistryName("CannedPeas")
 			.setUnlocalizedName("CannedPeas");
-	public static final Item CANNED_SALMON = new ItemCannedFood(5, 0.4f, false, 3).setRegistryName("CannedSalmon")
+	public static final Item CANNED_SALMON = new ItemCannedFood(5, 2f, false, 3).setRegistryName("CannedSalmon")
 			.setUnlocalizedName("CannedSalmon");
-	public static final Item CANNED_SOUP = new ItemCannedFood(5, 0.5f, false, 2).setRegistryName("CannedSoup")
+	public static final Item CANNED_SOUP = new ItemCannedFood(5, 1.75f, false, 2).setRegistryName("CannedSoup")
 			.setUnlocalizedName("CannedSoup");
-	public static final Item CANNED_STOCK = new ItemCannedFood(4, 0.45f, false, 3).setRegistryName("CannedStock")
+	public static final Item CANNED_STOCK = new ItemCannedFood(4, 1.6f, false, 3).setRegistryName("CannedStock")
 			.setUnlocalizedName("CannedStock");
-	public static final Item CANNED_TUNA = new ItemCannedFood(5, 0.4f, false, 3).setRegistryName("CannedTuna")
+	public static final Item CANNED_TUNA = new ItemCannedFood(5, 2f, false, 3).setRegistryName("CannedTuna")
 			.setUnlocalizedName("CannedTuna");
-	public static final Item CANNED_BEEF = new ItemCannedFood(7, 1f, true, 4).setRegistryName("CannedBeef")
+	public static final Item CANNED_BEEF = new ItemCannedFood(7, 2.5f, true, 4).setRegistryName("CannedBeef")
 			.setUnlocalizedName("CannedBeef");
-	public static final Item CANNED_LAMB = new ItemCannedFood(7, 1f, true, 4).setRegistryName("CannedLamb")
+	public static final Item CANNED_LAMB = new ItemCannedFood(7, 2.5f, true, 4).setRegistryName("CannedLamb")
 			.setUnlocalizedName("CannedLamb");
 	
-	public static final Item MRE = new ItemFoodBitable(7, 1f, true, 8).setRegistryName("mre")
+	public static final Item MRE = new ItemFoodBitable(7, 3f, true, 8).setRegistryName("mre")
 			.setUnlocalizedName("mre");
 
-	public static final Item CORN = new ItemFood(1, 0.3f, false).setRegistryName("Corn").setUnlocalizedName("Corn");
+	public static final Item CORN = new ItemCorn().setRegistryName("Corn").setUnlocalizedName("Corn");
 	public static final Item BLUEBERRY = new ItemBlueberry().setRegistryName("Blueberry")
 			.setUnlocalizedName("Blueberry");
 	public static final Item BANEBERRY = new ItemBaneberry().setRegistryName("Baneberry")
@@ -305,6 +306,14 @@ public class ModItems {
 		}
 	}.setRegistryName("WoodenDoorReinforcedItem").setUnlocalizedName("WoodenDoorReinforcedItem")
 			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+	
+	public static final Item WOODEN_DOOR_IRON_REINFORCED_ITEM = new ItemDoorBase() {
+		public Block getDoor() {
+			return ModBlocks.WOODEN_DOOR_IRON_REINFORCED;
+		}
+	}.setRegistryName("wooden_door_iron_reinforced_item").setUnlocalizedName("wooden_door_iron_reinforced_item")
+			.setCreativeTab(SevenDaysToMine.TAB_BUILDING);
+
 
 	public static final Item LOCKED_DOOR_ITEM = new ItemDoorBase() {
 		public Block getDoor() {
@@ -330,7 +339,7 @@ public class ModItems {
 			.setRegistryName("scrap_pickaxe").setUnlocalizedName("scrap_pickaxe");
 
 	public static final Item MP3_PLAYER = new ItemMP3().setRegistryName("MP3Player").setUnlocalizedName("MP3Player")
-			.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
+			.setCreativeTab(CreativeTabs.TOOLS);
 
 	public static final Item RAM = new Item().setRegistryName("ram").setUnlocalizedName("ram").setMaxStackSize(16)
 			.setCreativeTab(SevenDaysToMine.TAB_ELECTRICITY);
@@ -626,11 +635,11 @@ public class ModItems {
 					.setRegistryName("night_vision_device").setUnlocalizedName("night_vision_device");
 
 	public static final Item CHRISTMAS_HAT = new ItemChristmasHat(SevenDaysToMine.FIBER, 0, EntityEquipmentSlot.HEAD)
-			.setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT).setRegistryName("christmas_hat")
+			.setMaxStackSize(1).setCreativeTab(SevenDaysToMine.TAB_CLOTHING).setRegistryName("christmas_hat")
 			.setUnlocalizedName("christmas_hat");
 
 	public static final Item BERET = new ItemBeret(SevenDaysToMine.FIBER, 0, EntityEquipmentSlot.HEAD)
-			.setMaxStackSize(1).setCreativeTab(CreativeTabs.COMBAT).setRegistryName("beret")
+			.setMaxStackSize(1).setCreativeTab(SevenDaysToMine.TAB_CLOTHING).setRegistryName("beret")
 			.setUnlocalizedName("beret");
 
 	public static final Item STETHOSCOPE = new ItemStethoscope().setMaxStackSize(1).setCreativeTab(CreativeTabs.TOOLS)
@@ -690,11 +699,11 @@ public class ModItems {
 	public static final Item NATRIUM_TANK = new Item().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("natrium_tank")
 			.setUnlocalizedName("natrium_tank");
 	
-	public static final Item CHLORINE_GRENADE = new ItemChlorineGrenade().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("chlorine_grenade")
+	public static final Item CHLORINE_GRENADE = new ItemChlorineGrenade().setCreativeTab(CreativeTabs.COMBAT).setRegistryName("chlorine_grenade")
 			.setUnlocalizedName("chlorine_grenade");
-	public static final Item FRAGMENTATION_GRENADE = new ItemFragmentationGrenade().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("fragmentation_grenade")
+	public static final Item FRAGMENTATION_GRENADE = new ItemFragmentationGrenade().setCreativeTab(CreativeTabs.COMBAT).setRegistryName("fragmentation_grenade")
 			.setUnlocalizedName("fragmentation_grenade");
-	public static final Item MOLOTOV = new ItemMolotov().setCreativeTab(SevenDaysToMine.TAB_MATERIALS).setRegistryName("molotov")
+	public static final Item MOLOTOV = new ItemMolotov().setCreativeTab(CreativeTabs.COMBAT).setRegistryName("molotov")
 			.setUnlocalizedName("molotov");
 	
 	public static final Item RIOT_SHIELD = new ItemRiotShield().setRegistryName("riot_shield")
@@ -712,6 +721,6 @@ public class ModItems {
 			.setUnlocalizedName("vomit");
 	public static final Item FLARE = new ItemFlare().setRegistryName("flare")
 			.setUnlocalizedName("flare");
-	public static final Item SODA = new ItemCoffeeDrink(0, 300, 150).setRegistryName("soda")
+	public static final Item SODA = new ItemCoffeeDrink(0, 300, 150,0,3000).setRegistryName("soda")
 			.setUnlocalizedName("soda").setContainerItem(EMPTY_CAN);
 }

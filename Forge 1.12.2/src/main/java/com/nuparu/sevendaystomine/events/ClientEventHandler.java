@@ -215,6 +215,10 @@ public class ClientEventHandler {
 	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
 	public void onFogDensity(FogDensity event) {
 
+		if(!ModConfig.client.wastelandFog) {
+			return;
+		}
+		
 		Biome biome = event.getEntity().world.getBiome(new BlockPos(event.getEntity()));
 		IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(event.getEntity().world,
 				event.getEntity(), (float) event.getRenderPartialTicks());

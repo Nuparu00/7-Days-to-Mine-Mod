@@ -23,6 +23,7 @@ public class MathUtils {
 		return ThreadLocalRandom.current().nextInt(min, max + 1);
 	}
 
+	//Max is exclusive
 	public static int getIntInRange(Random rand, int min, int max) {
 		return min + rand.nextInt(max - min);
 	}

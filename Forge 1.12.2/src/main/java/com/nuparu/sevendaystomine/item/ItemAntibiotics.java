@@ -6,6 +6,7 @@ import com.nuparu.sevendaystomine.capability.CapabilityHelper;
 import com.nuparu.sevendaystomine.capability.ExtendedPlayer;
 import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.potions.Potions;
+import com.nuparu.sevendaystomine.util.PlayerUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,8 +26,8 @@ public class ItemAntibiotics extends ItemFood {
 		super.onFoodEaten(stack, worldIn, player);
 		IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
 		int time = iep.getInfectionTime();
-		if (player instanceof EntityPlayerMP && time >= ExtendedPlayer.INFECTION_STAGE_THREE_START
-				&& time < ExtendedPlayer.INFECTION_STAGE_FOUR_START) {
+		int stage = PlayerUtils.getInfectionStage(time);
+		if (player instanceof EntityPlayerMP && (stage == 2 || stage == 3)) {
 			ModTriggers.CURE.trigger((EntityPlayerMP) player);
 		}
 		player.removePotionEffect(Potions.infection);

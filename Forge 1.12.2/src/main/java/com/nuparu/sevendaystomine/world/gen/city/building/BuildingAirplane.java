@@ -5,7 +5,9 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.block.BlockAirplaneRotor;
 import com.nuparu.sevendaystomine.block.BlockBookshelfEnhanced;
+import com.nuparu.sevendaystomine.block.BlockChemistryStation;
 import com.nuparu.sevendaystomine.block.BlockChestOld;
 import com.nuparu.sevendaystomine.block.BlockCupboard;
 import com.nuparu.sevendaystomine.block.BlockGarbage;
@@ -153,6 +155,25 @@ public class BuildingAirplane extends Building{
 
 	public BlockPos getDimensions(World world, EnumFacing facing) {
 		return BlockPos.ORIGIN;
+	}
+	
+	@Override
+	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror) {
+		switch (data) {
+		case "engine": {
+			IBlockState state = Blocks.AIR.getDefaultState();
+			int r = world.rand.nextInt(10);
+			if (r == 0) {
+				state = ModBlocks.AIRPLANE_ROTOR.getDefaultState().withProperty(BlockAirplaneRotor.FACING,
+						facing.getOpposite());
+			}
+
+			world.setBlockState(pos, state);
+			break;
+		}
+		default:
+			super.handleDataBlock(world, facing, pos, data, mirror);
+		}
 	}
 
 }

@@ -15,6 +15,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.nuparu.sevendaystomine.capability.CapabilityHelper;
+import com.nuparu.sevendaystomine.capability.IExtendedPlayer;
 import com.nuparu.sevendaystomine.config.ModConfig;
 import com.nuparu.sevendaystomine.util.Utils;
 
@@ -143,9 +145,13 @@ public class BloodmoonSurvivalTrigger implements ICriterionTrigger {
 		 */
 		public boolean test(EntityPlayerMP player) {
 			World world = player.world;
-			if(Utils.getDay(world) <= ModConfig.world.bloodmoonFrequency * bloodmoon) return false;
 			int lastDeath = player.getStatFile().readStat(StatList.TIME_SINCE_DEATH);
-			return lastDeath > 10000;
+			if(lastDeath < 10000) return false;
+			IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
+			int survived = iep.getSurvivedBloodmons()+1;
+			iep.setSurvivedBloodmoons(survived);
+			return (ModConfig.world.bloodmoonFrequency > 0 && survived >= bloodmoon);
+
 		}
 	}
 

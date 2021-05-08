@@ -281,7 +281,7 @@ public class EntityFragmentationGrenade extends Entity implements IProjectile {
 		if (++age >= 70) {
 			this.setDead();
 			if (!world.isRemote) {
-				world.createExplosion(getThrower(), posX + width / 2, posY, posZ + width / 2, 4, true);
+				world.createExplosion(getThrower(), posX + width / 2, posY, posZ + width / 2, 2, true);
 			}
 			return;
 		}

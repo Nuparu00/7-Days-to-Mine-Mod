@@ -15,6 +15,8 @@ public interface ISalvageable {
 	public List<ItemStack> getItems(World world, BlockPos pos, IBlockState oldState, EntityPlayer player);
 
 	public SoundEvent getSound();
+	
+	public float getUpgradeRate(World world, BlockPos pos, IBlockState state, EntityPlayer player);
 
 	public void onSalvage(World world, BlockPos pos, IBlockState oldState);
 

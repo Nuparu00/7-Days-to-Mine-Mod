@@ -6,14 +6,17 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.nuparu.sevendaystomine.SevenDaysToMine;
+import com.nuparu.sevendaystomine.client.sound.SoundHelper;
 import com.nuparu.sevendaystomine.electricity.ElectricConnection;
 import com.nuparu.sevendaystomine.electricity.IVoltage;
 import com.nuparu.sevendaystomine.init.ModFluids;
+import com.nuparu.sevendaystomine.init.ModItems;
 import com.nuparu.sevendaystomine.inventory.container.ContainerBatteryStation;
 import com.nuparu.sevendaystomine.inventory.container.ContainerGenerator;
 import com.nuparu.sevendaystomine.inventory.itemhandler.IItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.ItemHandlerNameable;
 import com.nuparu.sevendaystomine.inventory.itemhandler.wraper.NameableCombinedInvWrapper;
+import com.nuparu.sevendaystomine.util.MathUtils;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -27,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -88,7 +92,7 @@ public class TileEntityGasGenerator extends TileEntityGeneratorBase{
 		int packedIce = countAdjacentMats(Material.PACKED_ICE);
 		int snow = countAdjacentMats(Material.SNOW);
 		int fire = countAdjacentMats(Material.FIRE);
-
+		
 		int hot = fire + lava * 2;
 		int cold = snow + packedIce * 2 + ice * 2 + water;
 		temperatureLimit = (float) (0.35 + (hot * 0.65) - (cold * 0.65));
@@ -103,6 +107,11 @@ public class TileEntityGasGenerator extends TileEntityGeneratorBase{
 
 				temperature += (0.0002 * hot);
 			}
+			if(!world.isRemote && ++soundCounter >= 90) {
+				world.playSound(null, pos, SoundHelper.MINIBIKE_IDLE, SoundCategory.BLOCKS, MathUtils.getFloatInRange(0.95f, 1.05f), MathUtils.getFloatInRange(0.95f, 1.05f));
+				soundCounter = 0;
+			}
+
 			flag = true;
 		}
 		if (temperature > 0) {
@@ -123,6 +132,15 @@ public class TileEntityGasGenerator extends TileEntityGeneratorBase{
 						if (fluidStack.amount <= tank.getCapacity() - tank.getFluidAmount()) {
 							tank.fill(fluidStack, true);
 							this.inventory.setStackInSlot(0, new ItemStack(Items.BUCKET));
+						}
+					}
+				}
+				else if (item == ModItems.GAS_CANISTER) {
+					if (250 <= tank.getCapacity() - tank.getFluidAmount()) {
+						tank.fill(new FluidStack(ModFluids.GASOLINE,250), true);
+						stack.shrink(1);
+						if(stack.getCount() <= 0) {
+							this.inventory.setStackInSlot(0, ItemStack.EMPTY);
 						}
 					}
 				}
@@ -224,5 +242,31 @@ public class TileEntityGasGenerator extends TileEntityGeneratorBase{
 	@Override
 	public ResourceLocation getLootTable() {
 		return null;
+	}
+	
+	@Override
+	public boolean disconnect(IVoltage voltage) {
+		for(ElectricConnection input : getInputs()) {
+			if(input.getFrom().equals(voltage.getPos())) {
+				this.inputs.remove(input);
+				markDirty();
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+				return true;
+			}
+		}
+		
+		for(ElectricConnection output : getOutputs()) {
+			if(output.getTo().equals(voltage.getPos())) {
+				this.outputs.remove(output);
+				markDirty();
+				world.markBlockRangeForRenderUpdate(pos, pos);
+				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+				world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+				return true;
+			}
+		}
+		return false;
 	}
 }

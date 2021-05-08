@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "sevendaystomine:blocks/iron_reinforcement",
-		"-1": "blocks/anvil_base",
-		"particle": "sevendaystomine:blocks/iron_reinforcement"
+		"particle": "sevendaystomine:blocks/iron_reinforcement",
+		"-1": "sevendaystomine:blocks/anvil_base_rusty"
 	},
 	"elements": [
 		{

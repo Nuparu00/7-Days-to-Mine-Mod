@@ -1,14 +1,22 @@
 {
-	"type": "sevendaystomine:crafting_quality_shaped",
-	"pattern": [
-		"GG",
-		"GG"
-	],
-	"key": {
-		"G": {
-			"item": "sevendaystomine:gas_canister"
-		}
-	},
+	"type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:gas_canister"
+        },
+        {
+            "item": "sevendaystomine:gas_canister"
+        },
+        {
+            "item": "sevendaystomine:gas_canister"
+        },
+        {
+            "item": "sevendaystomine:gas_canister"
+        },
+        {
+            "item": "minecraft:bucket"
+        }
+    ],
 	"result": {
 		"type": "minecraft:item_nbt",
 		"item": "forge:bucketFilled",

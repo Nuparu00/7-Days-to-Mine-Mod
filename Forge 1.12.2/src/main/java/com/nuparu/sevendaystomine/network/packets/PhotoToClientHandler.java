@@ -3,7 +3,7 @@ package com.nuparu.sevendaystomine.network.packets;
 import java.io.File;
 import java.io.IOException;
 
-import com.nuparu.sevendaystomine.util.client.ResourcesHelper;
+import com.nuparu.sevendaystomine.client.util.ResourcesHelper;
 import com.nuparu.sevendaystomine.util.photo.PhotoCatcherClient;
 
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
