@@ -4,7 +4,8 @@
 		"0": "blocks/log_oak",
 		"1": "blocks/log_oak_top",
 		"2": "blocks/stone_andesite",
-		"3": "blocks/wool_colored_brown"
+		"3": "blocks/wool_colored_brown",
+		"particle": "blocks/log_oak"
 	},
 	"elements": [
 		{

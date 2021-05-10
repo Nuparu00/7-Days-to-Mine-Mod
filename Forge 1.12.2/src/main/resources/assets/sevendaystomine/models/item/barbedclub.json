@@ -3,7 +3,8 @@
 	"textures": {
 		"0": "sevendaystomine:blocks/stripped_wood",
 		"2": "blocks/hardened_clay_stained_brown",
-		"3": "sevendaystomine:blocks/rustyMetal"
+		"3": "sevendaystomine:blocks/rustyMetal",
+		"particle": "sevendaystomine:blocks/stripped_wood"
 	},
 	"elements": [
 		{

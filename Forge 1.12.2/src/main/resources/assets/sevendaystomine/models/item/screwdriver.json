@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "sevendaystomine:blocks/rustymetal",
-		"1": "sevendaystomine:blocks/stripped_wood"
+		"1": "sevendaystomine:blocks/stripped_wood",
+		"particle": "sevendaystomine:blocks/rustymetal"
 	},
 	"elements": [
 		{

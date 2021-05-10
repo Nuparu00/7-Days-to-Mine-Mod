@@ -4,10 +4,7 @@
       {  
          "id":"survivor.electrician.a",
          "dialogues":[  
-            "survivor.trade",
-            "survivor.electrician.a.b",
-			"survivor.electrician.a.c",
-			"survivor.electrician.a.d"
+            "survivor.trade"
          ]
       }
    ]

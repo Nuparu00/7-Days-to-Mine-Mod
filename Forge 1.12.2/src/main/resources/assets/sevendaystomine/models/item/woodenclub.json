@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "sevendaystomine:blocks/stripped_wood",
-		"2": "blocks/hardened_clay_stained_brown"
+		"2": "blocks/hardened_clay_stained_brown",
+		"particle": "sevendaystomine:blocks/stripped_wood"
 	},
 	"elements": [
 		{

@@ -4,7 +4,8 @@
 		"1": "blocks/hardened_clay_stained_red",
 		"2": "blocks/wool_colored_black",
 		"3": "blocks/iron_block",
-		"4": "blocks/hardened_clay_stained_yellow"
+		"4": "blocks/hardened_clay_stained_yellow",
+		"particle": "blocks/iron_block"
 	},
 	"elements": [
 		{

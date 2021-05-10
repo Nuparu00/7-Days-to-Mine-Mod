@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "blocks/iron_block",
-		"2": "blocks/planks_oak"
+		"2": "blocks/planks_oak",
+		"particle": "blocks/iron_block"
 	},
 	"elements": [
 		{

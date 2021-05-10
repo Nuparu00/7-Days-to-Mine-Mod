@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "blocks/anvil_base",
-		"1": "sevendaystomine:blocks/stripped_wood"
+		"1": "sevendaystomine:blocks/stripped_wood",
+		"particle": "blocks/anvil_base"
 	},
 	"elements": [
 		{

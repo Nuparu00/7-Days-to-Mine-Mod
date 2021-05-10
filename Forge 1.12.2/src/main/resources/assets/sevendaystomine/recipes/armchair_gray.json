@@ -1,0 +1,16 @@
+{
+   "type":"minecraft:crafting_shapeless",
+   "group": "armchair",
+    "ingredients": [
+        {
+             "item":"minecraft:wool",
+             "data":7
+        },
+        {
+           "item":"sevendaystomine:sofa_gray"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:armchair_gray"
+   }
+}

@@ -3,7 +3,8 @@
 	"textures": {
 		"0": "blocks/anvil_base",
 		"1": "blocks/hardened_clay_stained_green",
-		"2": "blocks/hardened_clay_stained_lime"
+		"2": "blocks/hardened_clay_stained_lime",
+		"particle": "blocks/anvil_base"
 	},
 	"elements": [
 		{

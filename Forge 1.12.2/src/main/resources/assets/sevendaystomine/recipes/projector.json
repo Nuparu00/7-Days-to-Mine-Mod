@@ -1,0 +1,25 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "ICI",
+      "IOI",
+      "IRI"
+   ],
+   "key":{
+      "I":{
+         "item":"minecraft:iron_ingot"
+      },
+      "R":{
+         "item":"minecraft:redstone"
+      },
+      "O":{
+         "item":"minecraft:redstone_lamp"
+      },
+      "C":{
+         "item":"sevendaystomine:circuit"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:screen_projector"
+   }
+}

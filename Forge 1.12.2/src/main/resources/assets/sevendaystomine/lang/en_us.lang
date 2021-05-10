@@ -839,6 +839,15 @@ tile.ArmchairBlue.name=Blue Armchair
 tile.ArmchairBrown.name=Brown Armchair
 tile.ArmchairPink.name=Pink Armchair
 tile.ArmchairYellow.name=Yellow Armchair
+tile.armchair_cyan.name=Cyan Armchair
+tile.armchair_purple.name=Purple Armchair
+tile.armchair_orange.name=Orange Armchair
+tile.armchair_magenta.name=Magenta Armchair
+tile.armchair_lime.name=Lime Armchair
+tile.armchair_light_blue.name=Light Blue Armchair
+tile.armchair_silver.name=Silver Armchair
+tile.armchair_gray.name=Gray Armchair
+
 tile.throttle.name=Throttle
 
 tile.TrafficLight.name=Traffic Light
@@ -959,7 +968,14 @@ tile.sofa_green.name=Green Sofa
 tile.sofa_blue.name=Blue Sofa
 tile.sofa_brown.name=Brown Sofa
 tile.sofa_pink.name=Pink Sofa
-tile.sofa_yellow.name=Yellow Sofa
+tile.sofa_cyan.name=Cyan Sofa
+tile.sofa_purple.name=Purple Sofa
+tile.sofa_orange.name=Orange Sofa
+tile.sofa_magenta.name=Magenta Sofa
+tile.sofa_lime.name=Lime Sofa
+tile.sofa_light_blue.name=Light Blue Sofa
+tile.sofa_silver.name=Silver Sofa
+tile.sofa_gray.name=Gray Sofa
 
 tile.trash_bin.name=Trash Bin
 tile.wheels.name=Wheels
@@ -1169,7 +1185,7 @@ advancements.reitwagen.description=Obtain a Minibike Chassis
 advancements.road_trip.title=Road Trip
 advancements.road_trip.description=Drive a car with 3 other passengers
 advancements.know_it_all.title=Mr. Know It All
-advancements.know_it_all.description=Read every recipe book and blueprint
+advancements.know_it_all.description=Read all recipe books and blueprints
 advancements.locksmith.title=Locksmith
 advancements.locksmith.description=Unlock a safe
 

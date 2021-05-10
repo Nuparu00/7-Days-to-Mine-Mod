@@ -1,0 +1,26 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "III",
+      "RWR",
+      " G "
+   ],
+   "key":{
+      "I":{
+         "item":"sevendaystomine:scrapiron"
+      },
+      "R":{
+         "item":"minecraft:redstone"
+      },
+      "W":{
+         "item":"sevendaystomine:wire"
+      },
+      "G":{
+         "item":"minecraft:glass"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:lamp",
+      "count":2
+   }
+}

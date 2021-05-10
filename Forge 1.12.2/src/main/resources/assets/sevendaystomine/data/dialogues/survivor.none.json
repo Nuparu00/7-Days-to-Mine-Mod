@@ -4,10 +4,7 @@
       {  
          "id":"survivor.none.a",
          "dialogues":[  
-            "survivor.trade",
-            "survivor.none.a.b",
-			"survivor.none.a.c",
-			"survivor.none.a.d"
+            "survivor.trade"
          ]
       }
    ]
