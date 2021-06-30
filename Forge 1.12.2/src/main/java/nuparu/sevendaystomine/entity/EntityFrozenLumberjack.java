@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.item.ItemQuality;
 
@@ -19,8 +20,8 @@ public class EntityFrozenLumberjack extends EntityBipedalZombie {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(115D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D* ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(115D* ModConfig.players.balanceModifier);
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
 	}
 	

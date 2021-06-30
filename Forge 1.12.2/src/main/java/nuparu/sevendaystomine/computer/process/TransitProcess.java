@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -31,6 +32,7 @@ import nuparu.sevendaystomine.computer.application.ApplicationRegistry;
 import nuparu.sevendaystomine.network.PacketManager;
 import nuparu.sevendaystomine.network.packets.SaveDataMessage;
 import nuparu.sevendaystomine.network.packets.SendPacketMessage;
+import nuparu.sevendaystomine.network.packets.SendRedstoneSignalMessage;
 import nuparu.sevendaystomine.util.ColorRGBA;
 import nuparu.sevendaystomine.util.MathUtils;
 import nuparu.sevendaystomine.util.Tree;
@@ -277,8 +279,11 @@ public class TransitProcess extends WindowedProcess {
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(0, 0, offsetRelativeZ(2));
-		for (int i = 0; i < getOutput().size(); i++) {
-			String out = getOutput().get(i).getFormattedText();
+		//Copy of the origina llist so we do not get ConcurrentModificationException
+		List<ITextComponent> outputFull = new ArrayList<ITextComponent>(getOutput());
+		List<ITextComponent> output = outputFull.subList(Math.max(0,outputFull.size()-4), outputFull.size());
+		for (int i = 0; i < output.size(); i++) {
+			String out = output.get(i).getFormattedText();
 			RenderUtils.drawString(out, left, y + height * (0.75) + Screen.mc.fontRenderer.FONT_HEIGHT * i + 2,
 					0xEBEBEB);
 		}
@@ -390,7 +395,7 @@ public class TransitProcess extends WindowedProcess {
 			// tree.print("-", true);
 			TransitProcess process = this;
 			getOutput().clear();
-			new Thread() {
+			this.computerTE.codeBus = new Thread() {
 				@Override
 				public void run() {
 					try {
@@ -399,7 +404,9 @@ public class TransitProcess extends WindowedProcess {
 						e.printStackTrace();
 					}
 				}
-			}.start();
+			};
+			
+			this.computerTE.codeBus.start();
 
 		}
 	}
@@ -495,6 +502,11 @@ public class TransitProcess extends WindowedProcess {
 	@SideOnly(Side.CLIENT)
 	public void sendPacket(String packet, BlockPos to) {
 		PacketManager.sendPacket.sendToServer(new SendPacketMessage(computerTE.getPos(), to, packet));
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void sendRedstoneSignal(EnumFacing facing, int strength) {
+		PacketManager.redstoneSignal.sendToServer(new SendRedstoneSignalMessage(strength,computerTE.getPos(),facing));
 	}
 
 	public List<ITextComponent> getOutput() {

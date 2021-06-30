@@ -28,7 +28,7 @@ public class BlockRock extends BlockHorizontalBase {
 		setHardness(2.0F);
 		setResistance(3.0F);
 		setSoundType(SoundType.STONE);
-		setHarvestLevel("pickaxe", 1);
+		setHarvestLevel("pickaxe", 0);
 		setCreativeTab(SevenDaysToMine.TAB_BUILDING);
 	}
 

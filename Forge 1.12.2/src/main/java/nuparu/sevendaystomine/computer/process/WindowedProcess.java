@@ -237,7 +237,7 @@ public abstract class WindowedProcess extends TickingProcess implements IDraggab
 		RenderUtils.drawColoredRect(titleBarColor, x, y, width, (Screen.screen.ySize * title_bar_height), 0);
 		RenderUtils.drawColoredRect(bgrColor, x, y + (Screen.screen.ySize * title_bar_height), width,
 				height - (Screen.screen.ySize * title_bar_height), 0);
-		RenderUtils.drawString(title, x, y, 0x000000);
+		RenderUtils.drawString(title, x+1, y+1, 0x000000);
 		GlStateManager.translate(0, 0, -zLevel);
 		GlStateManager.popMatrix();
 	}

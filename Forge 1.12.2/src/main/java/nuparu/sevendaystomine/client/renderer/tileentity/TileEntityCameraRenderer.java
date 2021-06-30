@@ -66,6 +66,9 @@ public class TileEntityCameraRenderer extends TileEntitySpecialRenderer<TileEnti
 		bindTexture(texture);
 		GL11.glRotatef((float) short1, 0.0F, 1.0F, 0.0F);
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
+		if(!te.isOn()) {
+			rotation = 0;
+		}
 		camera.setAngle(rotation);
 		camera.render(null, 0, 0, 0, 0, 0, 0.0625f);
 		GL11.glPopMatrix();

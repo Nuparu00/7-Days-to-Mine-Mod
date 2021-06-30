@@ -1032,8 +1032,8 @@ public class EpidemicProcess extends WindowedProcess {
 
 		if (mapCache.containsKey(res.toString())) {
 			BufferedImage image = mapCache.get(res.toString());
-			int x = (int) Math.round(relativeX * image.getWidth());
-			int y = (int) Math.round(relativeY * image.getHeight());
+			int x = Math.min(image.getWidth()-1,(int) Math.round(relativeX * image.getWidth()));
+			int y = Math.min(image.getHeight()-1,(int) Math.round(relativeY * image.getHeight()));
 			int rgb = image.getRGB(x, y);
 			return new Color(rgb, true);
 		}

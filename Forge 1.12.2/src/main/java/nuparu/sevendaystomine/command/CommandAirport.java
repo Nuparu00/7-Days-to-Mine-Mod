@@ -17,6 +17,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingAirplane;
+import nuparu.sevendaystomine.world.gen.city.building.BuildingHotel;
+import nuparu.sevendaystomine.world.gen.city.building.BuildingLandfill;
 
 public class CommandAirport extends CommandBase {
 	@SuppressWarnings("rawtypes")
@@ -61,10 +63,7 @@ public class CommandAirport extends CommandBase {
 				return;
 			}
 			
-			new BuildingAirplane(40, -4, new ResourceLocation(SevenDaysToMine.MODID, "airplane_tail"),
-					new ResourceLocation(SevenDaysToMine.MODID, "airplane_right_wing"),
-					new ResourceLocation(SevenDaysToMine.MODID, "airplane_left_wing"),
-					new ResourceLocation(SevenDaysToMine.MODID, "airplane_front")).generate(world, parseBlockPos(sender, args, 0, true), EnumFacing.SOUTH, false, world.rand);
+			new BuildingHotel(40, -4).generate(world, parseBlockPos(sender, args, 0, true), EnumFacing.EAST, false, world.rand);
 		}
 	}
 

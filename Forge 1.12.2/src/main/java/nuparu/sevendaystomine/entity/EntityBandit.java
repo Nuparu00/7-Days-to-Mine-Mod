@@ -28,6 +28,7 @@ import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import nuparu.sevendaystomine.SevenDaysToMine;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.item.ItemGun;
 import nuparu.sevendaystomine.item.ItemQuality;
@@ -107,8 +108,8 @@ public class EntityBandit extends EntityHuman implements IMerchant, IRangedAttac
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25000000149011612D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D* ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30D* ModConfig.players.balanceModifier);
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2D);
 	}
 

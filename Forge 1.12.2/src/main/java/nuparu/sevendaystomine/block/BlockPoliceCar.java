@@ -34,6 +34,14 @@ public class BlockPoliceCar extends BlockCar {
 		double height = 1;
 		double width = 1;
 		double length = 1;
+		
+		if(!(world.getTileEntity(pos) instanceof TileEntityCar)) {
+			return FULL_BLOCK_AABB;
+		}
+		
+		if(world == null || pos == null) {
+			return FULL_BLOCK_AABB;
+		}
 
 		TileEntityCar te = (TileEntityCar) world.getTileEntity(pos);
 		TileEntity teUp = world.getTileEntity(pos.up());

@@ -81,13 +81,15 @@ public class ItemAuger extends ItemFuelTool {
 		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 
 		float damage = this.attackDamage;
+		float totalModfier = 1;
 		NBTTagCompound nbt = stack.getTagCompound();
 		if (nbt == null || !nbt.hasKey("FuelCurrent") || nbt.getFloat("FuelCurrent") <= 0) {
 			damage = 1f;
+			totalModfier = 0.33f;
 		}
 		if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
 		{
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage + (damage*(getQuality(stack)/500f)), 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", totalModfier* (this.attackDamage + (damage*(getQuality(stack)/500f))), 0));
 			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316D, 0));
 		}
 

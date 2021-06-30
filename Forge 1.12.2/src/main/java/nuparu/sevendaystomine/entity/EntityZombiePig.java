@@ -16,6 +16,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.util.ItemUtils;
 
 public class EntityZombiePig extends EntityZombieBase {
@@ -38,8 +39,8 @@ public class EntityZombiePig extends EntityZombieBase {
 		super.applyEntityAttributes();
 		range.setBaseValue(32.0D);
 		speed.setBaseValue(0.19D);
-		attack.setBaseValue(3.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(55D);
+		attack.setBaseValue(3.0D * ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(55D* ModConfig.players.balanceModifier);
 		armor.setBaseValue(0.0D);
 	}
 
@@ -178,45 +179,50 @@ public class EntityZombiePig extends EntityZombieBase {
 		super.onDeath(source);
 
 	}
-	
+
 	@Override
-	protected void onDeathUpdate()
-    {
-        ++this.deathTime;
+	protected void onDeathUpdate() {
 
-        if (this.deathTime == 20)
-        {
-            if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean("doMobLoot")))
-            {
-                int i = this.getExperiencePoints(this.attackingPlayer);
-                i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
-                while (i > 0)
-                {
-                    int j = EntityXPOrb.getXPSplit(i);
-                    i -= j;
-                    this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
-                }
-            }
+		if (ModConfig.mobs.zombieCorpses) {
+			++this.deathTime;
 
-            this.setDead();
-            EntityLootableCorpse lootable = new EntityLootableCorpse(world);
-    		lootable.setOriginal(this);
-    		lootable.setPosition(posX, posY, posZ);
-    		isDead = true;
-    		if (!world.isRemote) {
-    			ItemUtils.fillWithLoot(lootable.getInventory(), lootTable, world, rand);
-    			world.spawnEntity(lootable);
-    		}
+			if (this.deathTime == 20) {
+				if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot()
+						&& this.world.getGameRules().getBoolean("doMobLoot"))) {
+					int i = this.getExperiencePoints(this.attackingPlayer);
+					i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
+					while (i > 0) {
+						int j = EntityXPOrb.getXPSplit(i);
+						i -= j;
+						this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
+					}
+				}
 
-            for (int k = 0; k < 20; ++k)
-            {
-                double d2 = this.rand.nextGaussian() * 0.02D;
-                double d0 = this.rand.nextGaussian() * 0.02D;
-                double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1);
-            }
-        }
-    }
+				this.setDead();
+				EntityLootableCorpse lootable = new EntityLootableCorpse(world);
+				lootable.setOriginal(this);
+				lootable.setPosition(posX, posY, posZ);
+				isDead = true;
+				if (!world.isRemote) {
+					ItemUtils.fillWithLoot(lootable.getInventory(), lootTable, world, rand);
+					world.spawnEntity(lootable);
+				}
+
+				for (int k = 0; k < 20; ++k) {
+					double d2 = this.rand.nextGaussian() * 0.02D;
+					double d0 = this.rand.nextGaussian() * 0.02D;
+					double d1 = this.rand.nextGaussian() * 0.02D;
+					this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL,
+							this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
+							this.posY + (double) (this.rand.nextFloat() * this.height),
+							this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2,
+							d0, d1);
+				}
+			}
+		} else {
+			super.onDeathUpdate();
+		}
+	}
 
 	@Override
 	public Vec3d corpseRotation() {

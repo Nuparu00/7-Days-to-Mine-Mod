@@ -101,7 +101,8 @@ public class WorldEventHandler {
 		} else {
 			BreakSavedData.get(world).removeBreakData(pos, world);
 		}
-		if (state.getBlock() instanceof IUpgradeable && ((IUpgradeable) block).getPrev(world, pos, state) != null && ((IUpgradeable) block).getPrev(world, pos, state).getBlock() != Blocks.AIR) {
+		if (state.getBlock() instanceof IUpgradeable && ((IUpgradeable) block).getPrev(world, pos, state) != null
+				&& ((IUpgradeable) block).getPrev(world, pos, state).getBlock() != Blocks.AIR) {
 			IUpgradeable upgradeable = (IUpgradeable) state.getBlock();
 			event.getDrops().clear();
 			world.setBlockState(pos, upgradeable.getPrev(world, pos, state));
@@ -175,12 +176,15 @@ public class WorldEventHandler {
 			BreakSavedData.get(world).removeBreakData(event.getPos(), world);
 		}
 		TileEntity te = world.getTileEntity(event.getPos());
-		if(te != null && te instanceof IVoltage) {
-			IVoltage voltage = (IVoltage)te;
+		if (te != null && te instanceof IVoltage) {
+			IVoltage voltage = (IVoltage) te;
 			List<ElectricConnection> inputs = voltage.getInputs();
-			for(ElectricConnection connection : inputs) {
+			if (inputs == null)
+				return;
+			for (ElectricConnection connection : inputs) {
 				IVoltage from = connection.getFrom(world);
-				if(from == null) continue;
+				if (from == null)
+					continue;
 				from.disconnect(voltage);
 			}
 		}
@@ -321,10 +325,9 @@ public class WorldEventHandler {
 		if (fuel.isEmpty())
 			return;
 		Item item = fuel.getItem();
-		if(item == Items.PAPER || item == Items.FILLED_MAP || item == Items.MAP) {
+		if (item == Items.PAPER || item == Items.FILLED_MAP || item == Items.MAP) {
 			event.setBurnTime(40);
-		}
-		else if(item == Items.BOOK) {
+		} else if (item == Items.BOOK) {
 			event.setBurnTime(80);
 		}
 		if (item instanceof IScrapable) {
@@ -332,8 +335,7 @@ public class WorldEventHandler {
 			if (scrapable.getMaterial() == EnumMaterial.WOOD) {
 				event.setBurnTime(200 * scrapable.getWeight());
 			}
-		}
-		else if (item instanceof ItemBlock) {
+		} else if (item instanceof ItemBlock) {
 			ItemBlock itemBlock = (ItemBlock) item;
 			Block block = itemBlock.getBlock();
 			if (block instanceof IScrapable) {
@@ -342,14 +344,12 @@ public class WorldEventHandler {
 					event.setBurnTime(200 * scrapable.getWeight());
 				}
 			}
-		}
-		else if (VanillaManager.getVanillaScrapable(item) != null) {
+		} else if (VanillaManager.getVanillaScrapable(item) != null) {
 			VanillaManager.VanillaScrapableItem scrapable = VanillaManager.getVanillaScrapable(item);
 			if (scrapable.getMaterial() == EnumMaterial.WOOD) {
 				event.setBurnTime(200 * scrapable.getWeight());
 			}
-		}
-		else if(item == ModItems.CRUDE_BOW) {
+		} else if (item == ModItems.CRUDE_BOW) {
 			event.setBurnTime(300);
 		}
 	}

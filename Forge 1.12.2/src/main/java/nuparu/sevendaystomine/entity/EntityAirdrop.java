@@ -230,9 +230,9 @@ public class EntityAirdrop extends Entity {
 
 		if (!player.isSneaking()) {
 			player.openGui(SevenDaysToMine.instance, 21, this.world, (int) 0, (int) this.getEntityId(), (int) 0);
-		}
-		if(player instanceof EntityPlayerMP) {
-			ModTriggers.AIRDROP_INTERACT.trigger((EntityPlayerMP)player);
+			if(player instanceof EntityPlayerMP) {
+				ModTriggers.AIRDROP_INTERACT.trigger((EntityPlayerMP)player);
+			}
 		}
 		return true;
 	}

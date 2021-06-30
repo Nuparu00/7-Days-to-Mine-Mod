@@ -127,7 +127,11 @@ public class BlockCamera extends BlockTileProvider<TileEntityCamera> {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if (tileentity instanceof TileEntityCamera) {
-				((TileEntityCamera) tileentity).setCustomInventoryName(stack.getDisplayName());
+				TileEntityCamera cam = (TileEntityCamera)tileentity;
+				cam.setCustomInventoryName(stack.getDisplayName());
+				if(stack.getDisplayName().equals("state=off")) {
+					cam.setOn(false);
+				}
 			}
 		}
 	}

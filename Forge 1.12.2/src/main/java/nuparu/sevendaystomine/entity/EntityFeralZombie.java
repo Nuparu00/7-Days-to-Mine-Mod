@@ -5,6 +5,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.init.ModLootTables;
 import nuparu.sevendaystomine.util.Utils;
 
@@ -21,8 +22,8 @@ public class EntityFeralZombie extends EntityBipedalZombie {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8D* ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250* ModConfig.players.balanceModifier);
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(20.0D);
 	}
 	

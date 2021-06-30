@@ -15,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.util.ItemUtils;
 
 public class EntityBurntZombie extends EntityBipedalZombie {
@@ -28,8 +29,8 @@ public class EntityBurntZombie extends EntityBipedalZombie {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.14D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.5D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(65D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.5D* ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(65D* ModConfig.players.balanceModifier);
 	}
 
 	@Override

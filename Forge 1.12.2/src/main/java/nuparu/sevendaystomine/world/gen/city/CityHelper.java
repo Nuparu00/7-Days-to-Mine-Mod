@@ -34,6 +34,7 @@ import nuparu.sevendaystomine.world.gen.city.building.BuildingFarm;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingGasStation;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingGrayHouse;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingHospital;
+import nuparu.sevendaystomine.world.gen.city.building.BuildingHotel;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingOffice;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingOvergrownHouse;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingPoliceStation;
@@ -185,6 +186,7 @@ public class CityHelper {
 							.setAllowedCityTypes(EnumCityType.CITY));
 			buildings.add(new BuildingApartmentBig(new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_0"),
 					new ResourceLocation(SevenDaysToMine.MODID, "apartments_big_1"), 20, -1));
+			buildings.add(new BuildingHotel(18, -2));
 		}
 	}
 

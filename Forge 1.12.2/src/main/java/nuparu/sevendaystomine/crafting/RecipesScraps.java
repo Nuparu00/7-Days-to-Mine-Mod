@@ -91,7 +91,7 @@ public class RecipesScraps extends net.minecraftforge.registries.IForgeRegistryE
 		}
 		if (weight == 0)
 			return false;
-		resultItem = new ItemStack(ItemUtils.INSTANCE.getScrapResult(mat), (int) Math.ceil(weight * ModConfig.players.scrapCoefficient));
+		resultItem = new ItemStack(ItemUtils.INSTANCE.getScrapResult(mat), (int) Math.floor(weight * ModConfig.players.scrapCoefficient));
 		if (!this.resultItem.isEmpty()) {
 
 			return true;

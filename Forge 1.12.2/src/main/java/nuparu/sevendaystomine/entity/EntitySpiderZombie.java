@@ -17,6 +17,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.util.ItemUtils;
 
 public class EntitySpiderZombie extends EntityZombieBase {
@@ -247,6 +248,8 @@ public class EntitySpiderZombie extends EntityZombieBase {
 	@Override
 	protected void onDeathUpdate()
     {
+
+		if (ModConfig.mobs.zombieCorpses) {
         ++this.deathTime;
 
         if (this.deathTime == 20)
@@ -279,6 +282,11 @@ public class EntitySpiderZombie extends EntityZombieBase {
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1);
             }
+        }
+		}
+		
+        else {
+        super.onDeathUpdate();	
         }
     }
 

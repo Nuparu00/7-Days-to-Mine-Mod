@@ -37,30 +37,24 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 			Set<Block> effectiveBlocksIn) {
 		super(attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
 		String toolClass = "";
-        if (this instanceof ItemAuger)
-        {
-            toolClass = "pickaxe";
-        }
-        else if (this instanceof ItemChainsaw)
-        {
-            toolClass = "axe";
-        }
-        ObfuscationReflectionHelper.setPrivateValue(ItemTool.class, this, toolClass, "toolClass");
+		if (this instanceof ItemAuger) {
+			toolClass = "pickaxe";
+		} else if (this instanceof ItemChainsaw) {
+			toolClass = "axe";
+		}
+		ObfuscationReflectionHelper.setPrivateValue(ItemTool.class, this, toolClass, "toolClass");
 	}
 
 	public ItemFuelTool(ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
 		super(materialIn, effectiveBlocksIn);
-		
+
 		String toolClass = "";
-        if (this instanceof ItemAuger)
-        {
-            toolClass = "pickaxe";
-        }
-        else if (this instanceof ItemChainsaw)
-        {
-            toolClass = "axe";
-        }
-        ObfuscationReflectionHelper.setPrivateValue(ItemTool.class, this, toolClass, "toolClass");
+		if (this instanceof ItemAuger) {
+			toolClass = "pickaxe";
+		} else if (this instanceof ItemChainsaw) {
+			toolClass = "axe";
+		}
+		ObfuscationReflectionHelper.setPrivateValue(ItemTool.class, this, toolClass, "toolClass");
 
 	}
 
@@ -93,8 +87,9 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 				&& stack.getTagCompound().hasKey("FuelMax")) {
 
 			stack.getTagCompound().setBoolean("Reloading", false);
-			int toReload = getCapacity(stack,player) - getAmmo(stack,player);
-			int reload = Math.min((int)Math.floor(toReload/5), Utils.getItemCount(player.inventory, bullet.getItem()));
+			int toReload = getCapacity(stack, player) - getAmmo(stack, player);
+			int reload = Math.min((int) Math.floor(toReload / 5),
+					Utils.getItemCount(player.inventory, bullet.getItem()));
 
 			setAmmo(stack, player, getAmmo(stack, player) + reload * 5);
 			player.inventory.clearMatchingItems(bullet.getItem(), -1, reload, null);
@@ -104,9 +99,9 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 	@Override
 	public int getAmmo(ItemStack stack, EntityPlayer player) {
 		if (stack == null || stack.isEmpty() || stack.getTagCompound() == null
-				|| !stack.getTagCompound().hasKey("FuelMax"))
+				|| !stack.getTagCompound().hasKey("FuelCurrent"))
 			return -1;
-		return stack.getTagCompound().getInteger("FuelMax");
+		return stack.getTagCompound().getInteger("FuelCurrent");
 	}
 
 	@Override
@@ -119,16 +114,21 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
-		stack.getTagCompound().setInteger("FuelMax", ammo);
+		stack.getTagCompound().setInteger("FuelCurrent", ammo);
 	}
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
-		if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("FuelCurrent")
-				&& stack.getTagCompound().getInteger("FuelCurrent") < 0F) {
+		if (stack.getTagCompound() != null) {
+			if (stack.getTagCompound().hasKey("FuelCurrent") && stack.getTagCompound().getInteger("FuelCurrent") < 0F) {
 
-			stack.getTagCompound().setInteger("FuelCurrent", 0);
+				stack.getTagCompound().setInteger("FuelCurrent", 0);
+			}
+			if (stack.getTagCompound().hasKey("FuelMax") && stack.getTagCompound().getInteger("FuelMax") != this.getCapacity(stack, null)) {
+
+				stack.getTagCompound().setInteger("FuelMax", this.getCapacity(stack, null));
+			}
 		}
 
 	}
@@ -140,19 +140,17 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 		setAmmo(stack, null, getAmmo(stack, null) - 1);
 		return !worldIn.isRemote;
 	}
-	
+
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack)
-    {
-        return 1-((double)getAmmo(stack,null) / (double)getCapacity(stack,null));
-    }
-	
+	public double getDurabilityForDisplay(ItemStack stack) {
+		return 1 - ((double) getAmmo(stack, null) / (double) getCapacity(stack, null));
+	}
+
 	@Override
-	public boolean showDurabilityBar(ItemStack stack)
-    {
-        return true;
-    }
-	
+	public boolean showDurabilityBar(ItemStack stack) {
+		return true;
+	}
+
 	@SuppressWarnings("null")
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
@@ -160,7 +158,7 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 
 		if (stack == null)
 			return;
-		tooltip.add(getAmmo(stack,null) + "/" + getCapacity(stack,null));
+		tooltip.add(getAmmo(stack, null) + "/" + getCapacity(stack, null));
 	}
 
 	@Override
@@ -175,7 +173,7 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 								ModConfig.players.maxQuality));
 				NBTTagCompound nbt = stack.getTagCompound();
 				nbt.setInteger("FuelMax", 1000);
-				nbt.setInteger("FuelCurrent", 0);
+				nbt.setInteger("FuelCurrent", 1000);
 				nbt.setInteger("ReloadTime", 90000);
 				nbt.setBoolean("Reloading", false);
 			}
@@ -201,6 +199,16 @@ public class ItemFuelTool extends ItemQualityTool implements IReloadable {
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
 		return this.getAmmo(stack, null) > 0 ? super.onLeftClickEntity(stack, player, entity) : true;
+	}
+
+	@Override
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+		NBTTagCompound nbt = stack.getTagCompound();
+		System.out.println(nbt.toString());
+		if (nbt != null && nbt.hasKey("FuelCurrent") && nbt.getInteger("FuelCurrent") > 0) {
+			nbt.setInteger("FuelCurrent", Math.max(0, nbt.getInteger("FuelCurrent") - 1));
+		}
+		return true;
 	}
 
 }

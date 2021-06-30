@@ -9,9 +9,10 @@ public class Methods {
 	public static final Method POW = new MethodPow();
 	public static final Method SQRT = new MethodSqrt();
 	public static final Method GET_WORLD_TICKS = new MethodGetWorldTicks();
+	public static final Method SEND_REDSTONE_SIGNAL = new MethodSendRedstoneSignal();
 	
 	public static final Method[] METHODS = new Method[] {
-			SEND_PACKET, RANDOM, PRINT, SAVE, POW, SQRT, GET_WORLD_TICKS
+			SEND_PACKET, RANDOM, PRINT, SAVE, POW, SQRT, GET_WORLD_TICKS, SEND_REDSTONE_SIGNAL
 	};
 	
 	

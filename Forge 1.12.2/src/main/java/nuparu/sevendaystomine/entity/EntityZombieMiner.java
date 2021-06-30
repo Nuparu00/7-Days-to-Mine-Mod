@@ -31,7 +31,7 @@ public class EntityZombieMiner extends EntityBipedalZombie {
 		super.setEquipmentBasedOnDifficulty(difficulty);
 		if (rand.nextInt(3) != 0)
 			return;
-		this.setHeldItem(EnumHand.MAIN_HAND, ItemQuality.setQualityForStack(new ItemStack(ModItems.IRON_PICKAXE), 1));
+		this.setHeldItem(EnumHand.MAIN_HAND, ItemQuality.setQualityForStack(new ItemStack(rand.nextBoolean() ? ModItems.IRON_PICKAXE : ModItems.SLEDGEHAMMER), 1));
 	}
 	
 	@Override

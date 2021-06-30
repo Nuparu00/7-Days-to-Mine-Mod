@@ -1,103 +1,94 @@
 {
-    "pools": [
-        {
-        	"name" : "common",
-            "rolls": {
-                "min": 1,
-                "max": 4
-            },
-            "entries": [
-                {
-                    "type": "item",
-                    "weight": 100,
-                    "name": "minecraft:paper"
-                },
-                {
-                    "type": "item",
-                    "weight": 150,
-                    "name": "minecraft:book"
-                },      
-                {
-                    "type": "item",
-                    "weight": 15,
-                    "name": "sevendaystomine:book_minibike"
-                },      
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "sevendaystomine:book_auger"
-                },      
-                {
-                    "type": "item",
-                    "weight": 10,
-                    "name": "sevendaystomine:book_shotgun"
-                },      
-                {
-                    "type": "item",
-                    "weight": 10,
-                    "name": "sevendaystomine:book_sniper"
-                },      
-                {
-                    "type": "item",
-                    "weight": 20,
-                    "name": "sevendaystomine:book_magnum"
-                },      
-                {
-                    "type": "item",
-                    "weight": 5,
-                    "name": "sevendaystomine:book_rocket"
-                },      
-                {
-                    "type": "item",
-                    "weight": 20,
-                    "name": "sevendaystomine:book_mp5"
-                },
-                {
-                    "type": "item",
-                    "weight": 10,
-                    "name": "minecraft:writable_book"
-                },
-                {
-                    "type": "item",
-                    "weight": 4,
-                    "name": "minecraft:map",
-					"functions": [
-                        {
-                            "function": "sevendaystomine:city_map",
-                     "conditions":[
-                        {
-                           "condition":"random_chance",
-                           "chance":0.75
-                        }
-                     ]
-                        }
-                    ]
-                },
-                {
-                    "type": "empty",
-                    "weight": 525
-                },
-                {
-                    "type": "item",
-                    "name": "minecraft:enchanted_book",
-                    "weight": 2,
-                    "functions": [
-                        {
-                            "function": "minecraft:enchant_randomly",
-                            "enchantments": [
-                                "sevendaystomine:explosive",
-                                "sevendaystomine:sparking",
-                                "sevendaystomine:fast_reload",
-                                "sevendaystomine:marksman",
-                                 "sevendaystomine:big_mag",
-                                 "sevendaystomine:strabismus",
-                                 "sevendaystomine:small_mag",
-                        "sevendaystomine:jamming"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+	"pools": [{
+		"name": "common",
+		"rolls": {
+			"min": 1,
+			"max": 4
+		},
+		"entries": [{
+				"type": "item",
+				"weight": 100,
+				"name": "minecraft:paper"
+			},
+			{
+				"type": "item",
+				"weight": 150,
+				"name": "minecraft:book"
+			},
+			{
+				"type": "item",
+				"weight": 15,
+				"name": "sevendaystomine:book_minibike"
+			},
+			{
+				"type": "item",
+				"weight": 1,
+				"name": "sevendaystomine:book_auger"
+			},
+			{
+				"type": "item",
+				"weight": 10,
+				"name": "sevendaystomine:book_shotgun"
+			},
+			{
+				"type": "item",
+				"weight": 10,
+				"name": "sevendaystomine:book_sniper"
+			},
+			{
+				"type": "item",
+				"weight": 20,
+				"name": "sevendaystomine:book_magnum"
+			},
+			{
+				"type": "item",
+				"weight": 5,
+				"name": "sevendaystomine:book_rocket"
+			},
+			{
+				"type": "item",
+				"weight": 20,
+				"name": "sevendaystomine:book_mp5"
+			},
+			{
+				"type": "item",
+				"weight": 10,
+				"name": "minecraft:writable_book"
+			},
+			{
+				"type": "item",
+				"weight": 3,
+				"name": "minecraft:map",
+				"functions": [{
+					"function": "sevendaystomine:city_map",
+					"conditions": [{
+						"condition": "random_chance",
+						"chance": 0.75
+					}]
+				}]
+			},
+			{
+				"type": "empty",
+				"weight": 525
+			},
+			{
+				"type": "item",
+				"name": "minecraft:enchanted_book",
+				"weight": 2,
+				"functions": [{
+					"function": "minecraft:enchant_randomly",
+					"enchantments": [
+						"sevendaystomine:explosive",
+						"sevendaystomine:sparking",
+						"sevendaystomine:fast_reload",
+						"sevendaystomine:marksman",
+						"sevendaystomine:big_mag",
+						"sevendaystomine:strabismus",
+						"sevendaystomine:small_mag",
+						"sevendaystomine:jamming"
+					]
+				}]
+			}
+		]
+	}]
 }

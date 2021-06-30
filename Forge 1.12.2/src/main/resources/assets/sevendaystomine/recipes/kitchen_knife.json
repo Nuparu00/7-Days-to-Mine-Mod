@@ -1,0 +1,17 @@
+{
+  "type": "sevendaystomine:crafting_quality_shaped",
+  "pattern": [
+    "SII"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:kitchenknife"
+  }
+}

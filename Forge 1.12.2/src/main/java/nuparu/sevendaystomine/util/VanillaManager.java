@@ -76,31 +76,31 @@ public class VanillaManager {
 		 * Blocks.CONCRETE.setResistance(20F);
 		 */
 
-		Items.PORKCHOP.setMaxStackSize(1);
-		Items.COOKED_PORKCHOP.setMaxStackSize(1);
-		Items.BEEF.setMaxStackSize(1);
-		Items.COOKED_BEEF.setMaxStackSize(1);
-		Items.APPLE.setMaxStackSize(1);
-		;
-		Items.BREAD.setMaxStackSize(1);
-		Items.GOLDEN_APPLE.setMaxStackSize(1);
-		Items.FISH.setMaxStackSize(1);
-		Items.COOKED_FISH.setMaxStackSize(1);
-		Items.CHICKEN.setMaxStackSize(1);
-		Items.COOKED_CHICKEN.setMaxStackSize(1);
-		Items.RABBIT.setMaxStackSize(1);
-		Items.COOKED_RABBIT.setMaxStackSize(1);
-		Items.MUTTON.setMaxStackSize(1);
-		Items.COOKED_MUTTON.setMaxStackSize(1);
-		Items.ROTTEN_FLESH.setMaxStackSize(1);
-		Items.CARROT.setMaxStackSize(1);
-		Items.GOLDEN_CARROT.setMaxStackSize(1);
-		Items.POTATO.setMaxStackSize(1);
-		Items.BAKED_POTATO.setMaxStackSize(1);
-		Items.RABBIT_STEW.setMaxStackSize(1);
-		Items.BEETROOT_SOUP.setMaxStackSize(1);
-		Items.BEETROOT.setMaxStackSize(1);
-
+		if (ModConfig.players.disableFoodStacking) {
+			Items.PORKCHOP.setMaxStackSize(1);
+			Items.COOKED_PORKCHOP.setMaxStackSize(1);
+			Items.BEEF.setMaxStackSize(1);
+			Items.COOKED_BEEF.setMaxStackSize(1);
+			Items.APPLE.setMaxStackSize(1);
+			Items.BREAD.setMaxStackSize(1);
+			Items.GOLDEN_APPLE.setMaxStackSize(1);
+			Items.FISH.setMaxStackSize(1);
+			Items.COOKED_FISH.setMaxStackSize(1);
+			Items.CHICKEN.setMaxStackSize(1);
+			Items.COOKED_CHICKEN.setMaxStackSize(1);
+			Items.RABBIT.setMaxStackSize(1);
+			Items.COOKED_RABBIT.setMaxStackSize(1);
+			Items.MUTTON.setMaxStackSize(1);
+			Items.COOKED_MUTTON.setMaxStackSize(1);
+			Items.ROTTEN_FLESH.setMaxStackSize(1);
+			Items.CARROT.setMaxStackSize(1);
+			Items.GOLDEN_CARROT.setMaxStackSize(1);
+			Items.POTATO.setMaxStackSize(1);
+			Items.BAKED_POTATO.setMaxStackSize(1);
+			Items.RABBIT_STEW.setMaxStackSize(1);
+			Items.BEETROOT_SOUP.setMaxStackSize(1);
+			Items.BEETROOT.setMaxStackSize(1);
+		}
 		/*
 		 * Items.APPLE.setMaxDamage(2); Items.PORKCHOP.setMaxDamage(4);
 		 * Items.COOKED_PORKCHOP.setMaxDamage(4); Items.BEEF.setMaxDamage(4);
@@ -112,12 +112,13 @@ public class VanillaManager {
 	}
 
 	public static void removeVanillaRecipes() {
-		if(!ModConfig.players.disableVanillaBlocksAndItems) return; 
+		if (!ModConfig.players.disableVanillaBlocksAndItems)
+			return;
 		RecipeManager.removeRecipe(Blocks.FURNACE);
 		RecipeManager.removeRecipe(Blocks.PLANKS);
-		//RecipeManager.removeRecipe(Blocks.IRON_BARS);
-		//RecipeManager.removeRecipe(Blocks.IRON_TRAPDOOR);
-		//RecipeManager.removeRecipe(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
+		// RecipeManager.removeRecipe(Blocks.IRON_BARS);
+		// RecipeManager.removeRecipe(Blocks.IRON_TRAPDOOR);
+		// RecipeManager.removeRecipe(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
 		RecipeManager.removeItem(Items.WOODEN_SWORD);
 		RecipeManager.removeItem(Items.WOODEN_AXE);
 		RecipeManager.removeItem(Items.WOODEN_PICKAXE);
@@ -128,15 +129,15 @@ public class VanillaManager {
 		RecipeManager.removeItem(Items.STONE_PICKAXE);
 		RecipeManager.removeItem(Items.STONE_SHOVEL);
 		RecipeManager.removeItem(Items.STONE_HOE);
-		
+
 		RecipeManager.removeItem(Items.IRON_SWORD);
 		RecipeManager.removeItem(Items.IRON_AXE);
 		RecipeManager.removeItem(Items.IRON_PICKAXE);
 		RecipeManager.removeItem(Items.IRON_SHOVEL);
 		RecipeManager.removeItem(Items.IRON_HOE);
-		
-		//RecipeManager.removeRecipe(net.minecraft.init.Blocks.IRON_BLOCK);
-		//RecipeManager.removeRecipe(net.minecraft.init.Blocks.GOLD_BLOCK);
+
+		// RecipeManager.removeRecipe(net.minecraft.init.Blocks.IRON_BLOCK);
+		// RecipeManager.removeRecipe(net.minecraft.init.Blocks.GOLD_BLOCK);
 		RecipeManager.removeRecipe(Items.IRON_CHESTPLATE);
 		RecipeManager.removeRecipe(Items.IRON_HELMET);
 		RecipeManager.removeRecipe(Items.IRON_BOOTS);
@@ -167,16 +168,16 @@ public class VanillaManager {
 		RecipeManager.removeRecipe(Items.DIAMOND_BOOTS);
 		RecipeManager.removeRecipe(Items.DIAMOND_LEGGINGS);
 
-		if(ModConfig.players.disableBlockToIngot) {
-		RecipeManager.removeRecipe(Items.IRON_INGOT);
-		RecipeManager.removeRecipe(Items.IRON_NUGGET);
-		RecipeManager.removeRecipe(Items.GOLD_INGOT);
-		RecipeManager.removeRecipe(Items.GOLD_INGOT);
+		if (ModConfig.players.disableBlockToIngot) {
+			RecipeManager.removeRecipe(Items.IRON_INGOT);
+			RecipeManager.removeRecipe(Items.IRON_NUGGET);
+			RecipeManager.removeRecipe(Items.GOLD_INGOT);
+			RecipeManager.removeRecipe(Items.GOLD_INGOT);
 		}
-		
+
 		RecipeManager.removeSmelting(new ItemStack(Items.GOLD_INGOT), "minecraft");
 		RecipeManager.removeSmelting(new ItemStack(Items.IRON_INGOT), "minecraft");
-		
+
 	}
 
 	public static void addVanillaBlockUpgrades() {
@@ -279,7 +280,6 @@ public class VanillaManager {
 		vanillaScrapables.add(new VanillaScrapableItem(Blocks.IRON_TRAPDOOR, EnumMaterial.IRON).setWeight(4));
 		vanillaScrapables.add(new VanillaScrapableItem(Blocks.COAL_BLOCK, EnumMaterial.CARBON).setWeight(9));
 		vanillaScrapables.add(new VanillaScrapableItem(Blocks.SAND, EnumMaterial.SAND).setWeight(9));
-
 
 		ItemUtils.INSTANCE.addSmallestBit(EnumMaterial.CARBON, Items.COAL);
 		ItemUtils.INSTANCE.addSmallestBit(EnumMaterial.MERCURY, ModBlocks.ORE_CINNABAR);

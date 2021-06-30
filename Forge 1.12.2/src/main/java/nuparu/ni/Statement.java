@@ -188,6 +188,51 @@ public class Statement implements IChainable {
 
 			}
 		}
+		
+		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
+			int index = it.nextIndex();
+			IChainable ic = it.next();
+			if (ic instanceof Operator && ((Operator) ic).value.equals("%")) {
+				if (!it.hasPrevious() || !it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				// previous got us 1? index back, we have to call previous() thrice and next()
+				// twice!
+				IChainable prev = it.previous();
+				if (!it.hasPrevious()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				prev = it.previous();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				IChainable next = it.next();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				next = it.next();
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				next = it.next();
+				if (!prev.hasValue() || !next.hasValue()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+
+				if (!prev.evaluate().isNumerical() || !next.evaluate().isNumerical()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				Value result = prev.evaluate().modulo(next.evaluate());
+
+				// We have to navigate back to the previous elements
+				it.remove();
+				it.previous();
+				it.set(result);
+				it.previous();
+				it.remove();
+
+			}
+		}
 
 		// 
 
@@ -234,6 +279,26 @@ public class Statement implements IChainable {
 
 				Value result = next.evaluate();
 
+				// We have to navigate back to the previous elements
+				it.remove();
+				it.previous();
+				it.set(result);
+			}
+		}
+		
+		for (ListIterator<IChainable> it = modified.listIterator(); it.hasNext();) {
+			int index = it.nextIndex();
+			IChainable ic = it.next();
+			if (ic instanceof Operator && ((Operator) ic).value.equals("!")) {
+				if (!it.hasNext()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+
+				IChainable next = it.next();
+				if (!next.hasValue()) {
+					throw new EvaluationErrorException(this, ic);
+				}
+				Value result = next.evaluate().opposite();
 				// We have to navigate back to the previous elements
 				it.remove();
 				it.previous();
@@ -409,7 +474,7 @@ public class Statement implements IChainable {
 			}
 		}
 
-		if (modified.size() >= 1 && modified.get(0).hasValue()) {
+		if (modified.size() >= 1  && modified.get(0) != null && modified.get(0).hasValue()) {
 			Value value = modified.get(0).evaluate();
 			if (value.isNumerical()) {
 				for (int i = 1; i < modified.size(); i++) {

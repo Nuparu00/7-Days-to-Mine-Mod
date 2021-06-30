@@ -47,6 +47,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -1193,5 +1194,22 @@ public class Utils {
 		}
 
 		return null;
+	}
+	
+	public static EntityPlayer getPlayerFromUUID(UUID parUUID) 
+	{
+	    if (parUUID == null) 
+	    {
+	        return null;
+	    }
+	    List<EntityPlayerMP> allPlayers = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
+	    for (EntityPlayerMP player : allPlayers) 
+	    {
+	        if (player.getPersistentID().equals(parUUID)) 
+	        {
+	            return player;
+	        }
+	    }
+	    return null;
 	}
 }

@@ -3,6 +3,7 @@ package nuparu.sevendaystomine.block.repair;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ReportedException;
@@ -38,6 +40,17 @@ public class RepairManager {
 		repairList.add(repair);
 	}
 
+	public void removeRepair(Block block, Item item) {
+		Iterator<Repair> it = repairList.iterator();
+		while (it.hasNext()) {
+			Repair repair = it.next();
+			if(repair.block == block && repair.getItemStack().getItem() == item) {
+				it.remove();
+				return;
+			}
+		}
+	}
+
 	public Repair getRepair(Block block) {
 		for (Repair repair : repairList) {
 			if (repair.block == block) {
@@ -47,154 +60,120 @@ public class RepairManager {
 		return null;
 	}
 
+	public Repair getRepair(Block block, InventoryPlayer inv) {
+		Repair lastRepair = null;
+		for (Repair repair : repairList) {
+			if (repair.block == block) {
+				lastRepair = repair;
+				for (int slot = 0; slot < inv.getSizeInventory(); slot++) {
+					if (repair.getItemStack().getItem() == inv.getStackInSlot(slot).getItem()) {
+						return repair;
+					}
+				}
+			}
+		}
+		return lastRepair;
+	}
+
 	public static void repairsInit() {
 		try {
-			Map<String, String> map = getRepairsFile();
-			Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, String> pair = it.next();
+			handleMap(readRepairsFile(true));
+		} catch (InvalidRepairInputException | IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			handleMap(readRepairsFile(false));
+		} catch (InvalidRepairInputException | IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void handleMap(Map<String, Map<String, String>> map) {
+		if (map.containsKey("add")) {
+			Iterator<Map.Entry<String, String>> add = map.get("add").entrySet().iterator();
+			while (add.hasNext()) {
+				Map.Entry<String, String> pair = add.next();
 				Block block = Block.getBlockFromName((String) pair.getKey());
 				Item item = Item.getByNameOrId((String) pair.getValue());
 				if (block != null && item != null) {
 					RepairManager.INSTANCE.addRepair(block, item, 0.1f);
 				}
 			}
-		} catch (InvalidRepairInputException | IOException e) {
-			e.printStackTrace();
 		}
-	
+		if (map.containsKey("remove")) {
 
-	}
-
-	@SuppressWarnings("resource")
-	public static Map<String, String> getRepairsFile() throws InvalidRepairInputException, IOException {
-		HashMap<String, String> map = new HashMap<String, String>();
-			InputStream fis = Utils.getInsideFileStream(SevenDaysToMine.MODID.toLowerCase() + "/data/repair.json");
-			InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
-			BufferedReader br = new BufferedReader(isr);
-			String line;
-			int lineIndex = 0;
-
-			while ((line = br.readLine()) != null) {
-				if(lineIndex++ == 0) continue;
-				String[] words = line.split(" ");
-				if (words.length > 2) {
-					br.close();
-					throw new InvalidRepairInputException("There can't be more than 3 elements in repair.json. Please , fix this!");
-				} else if (words.length < 1) {
-					br.close();
-					throw new InvalidRepairInputException("There is not any element in repair.json. Please , fix this!");
-				} else if (words.length == 1) {
-					map.put(words[0], "");
-				} else {
-					map.put(words[0], words[1]);
+			Iterator<Map.Entry<String, String>> remove = map.get("remove").entrySet().iterator();
+			while (remove.hasNext()) {
+				Map.Entry<String, String> pair = remove.next();
+				Block block = Block.getBlockFromName((String) pair.getKey());
+				Item item = Item.getByNameOrId((String) pair.getValue());
+				if (block != null && item != null) {
+					RepairManager.INSTANCE.removeRepair(block, item);
 				}
 			}
-			br.close();
+		}
+	}
+
+	/**
+	 * @param local true = the file inside the .jar file
+	 */
+	public static Map<String, Map<String, String>> readRepairsFile(boolean local)
+			throws InvalidRepairInputException, IOException {
+		HashMap<String, String> add = new HashMap<String, String>();
+		HashMap<String, String> remove = new HashMap<String, String>();
+
+		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+		InputStream fis = null;
+
+		if (local) {
+			fis = Utils.getInsideFileStream(SevenDaysToMine.MODID.toLowerCase() + "/data/repair.json");
+		} else {
+			final File file = new File("./config/sevendaystomine/repair.json");
+			if (file.getParentFile() != null) {
+				file.getParentFile().mkdirs();
+			}
+			file.createNewFile();
+			fis = new FileInputStream(file);
+		}
+
+		InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
+		BufferedReader br = new BufferedReader(isr);
+		String line;
+		int lineIndex = 0;
+
+		while ((line = br.readLine()) != null) {
+			if (lineIndex++ == 0)
+				continue;
+			String[] words = line.split(" ");
+			if (words.length > 3) {
+				br.close();
+				throw new InvalidRepairInputException(
+						"There can't be more than 4 elements in repair.json. Please , fix this!");
+			} else if (words.length < 2) {
+				continue;
+			}
+			String s = "add";
+			if (words.length == 3) {
+				s = words[2];
+			}
+
+			switch (s) {
+			case "add":
+				add.put(words[0], words[1]);
+				break;
+			case "remove":
+				remove.put(words[0], words[1]);
+				break;
+			}
+
+		}
+		br.close();
+
+		map.put("add", add);
+		map.put("remove", remove);
 		return map;
-	}
-
-	public static boolean containsString(Map<String, String> map, String string) {
-		Set<String> keySet = map.keySet();
-		Iterator<String> iterator = keySet.iterator();
-		while (iterator.hasNext()) {
-			String s = iterator.next();
-			if (s.equals(string)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void createDefualtRepairs(File file) {
-		FileWriter fw = null;
-		BufferedWriter bw = null;
-		File f = new File("./config/7days/");
-		f.mkdirs();
-		try {
-			InputStream fis = getClass().getResourceAsStream("/assets/"+SevenDaysToMine.MODID+"/data/repair.json");
-			InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
-			BufferedReader br = new BufferedReader(isr);
-			fw = new FileWriter(file.getAbsolutePath(), true);
-			bw = new BufferedWriter(fw);
-			String line = null;
-			bw.write(SevenDaysToMine.VERSION);
-			bw.newLine();
-			while ((line = br.readLine()) != null) {
-				bw.write(line);
-				bw.newLine();
-			}
-			br.close();
-		} catch (IOException e) {
-			CrashReport crashreport = CrashReport.makeCrashReport(e, "Reading repair.json from the mod file");
-			throw new ReportedException(crashreport);
-		} finally {
-			try {
-				if (bw != null) {
-					bw.close();
-				}
-			} catch (Exception e) {
-				CrashReport crashreport = CrashReport.makeCrashReport(e, "Reading repair.json from the mod file");
-				throw new ReportedException(crashreport);
-			}
-		}
-	}
-
-	public String getFileVersion() {
-		try {
-			InputStream fis = getClass().getResourceAsStream("/assets/"+SevenDaysToMine.MODID+"/data/repair.json");
-			InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
-			BufferedReader br = new BufferedReader(isr);
-			new File("./config/7days/").mkdirs();
-			String version = br.readLine();
-			br.close();
-			return version;
-		} catch (IOException e) {
-			CrashReport crashreport = CrashReport.makeCrashReport(e, "Checking repair.json versions");
-			throw new ReportedException(crashreport);
-		}
-	}
-
-	public boolean matchFileVersion() {
-		return getFileVersion() == null ? false : getFileVersion().equals(SevenDaysToMine.VERSION);
-	}
-
-	public void listAllBlocks() throws InvalidRepairInputException, IOException {
-		final File file = new File("./config/7days/repair.json");
-		if (!file.exists() || !file.isFile() || !matchFileVersion()) {
-			try {
-				Files.deleteIfExists(new File("./config/7days/repair.json").toPath());
-			} catch (IOException e) {
-				CrashReport crashreport = CrashReport.makeCrashReport(e, "Deleting repair.json");
-				throw new ReportedException(crashreport);
-			}
-			createDefualtRepairs(file);
-		}
-		Map<String, String> map = getRepairsFile();
-		BufferedWriter bw = null;
-		try {
-			FileWriter fw = new FileWriter(file.getAbsolutePath(), true);
-			bw = new BufferedWriter(fw);
-			Iterator<Block> iterator = Block.REGISTRY.iterator();
-			while (iterator.hasNext()) {
-				Block block = iterator.next();
-				String s = Block.REGISTRY.getNameForObject(block).toString();
-				if (containsString(map, s) == false) {
-					bw.write(s);
-					bw.newLine();
-				}
-			}
-			fw.close();
-		} catch (Exception e) {
-
-		} finally {
-			try {
-				bw.close();
-				RepairManager.repairsInit();
-			} catch (Exception e) {
-
-			}
-		}
 	}
 
 }

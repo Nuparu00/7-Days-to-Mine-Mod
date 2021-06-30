@@ -78,7 +78,7 @@ public class ItemUpgrader extends ItemQualityTool {
 		Block block = state.getBlock();
 		if (breakData != null && breakData.getState() != 0f) {
 			float damage = breakData.getState();
-			Repair repair = RepairManager.INSTANCE.getRepair(block);
+			Repair repair = RepairManager.INSTANCE.getRepair(block, playerIn.inventory);
 			if (repair != null) {
 				for (int slot = 0; slot < playerIn.inventory.getSizeInventory(); slot++) {
 					ItemStack stack = playerIn.inventory.getStackInSlot(slot);
@@ -90,7 +90,7 @@ public class ItemUpgrader extends ItemQualityTool {
 						if (stack.getCount() < (int) Math.floor(size * 10f)) {
 							continue;
 						}
-						playerIn.inventory.decrStackSize(slot, (int) Math.floor(size * 10f));
+						playerIn.inventory.decrStackSize(slot, (int) Math.ceil(size * 10f));
 						worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundHelper.UPGRADE_WOOD,
 								SoundCategory.BLOCKS, MathUtils.getFloatInRange(0.5f, 0.75f),
 								MathUtils.getFloatInRange(0.9f, 1f));

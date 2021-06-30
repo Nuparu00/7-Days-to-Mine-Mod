@@ -27,6 +27,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.config.ModConfig;
+import nuparu.sevendaystomine.item.ItemFuelTool;
 import nuparu.sevendaystomine.util.EnumModParticleType;
 import nuparu.sevendaystomine.util.MathUtils;
 import nuparu.sevendaystomine.util.Utils;
@@ -276,6 +277,13 @@ public class EntityLootableCorpse extends Entity {
 				s.attemptDamageItem(1, rand, player);
 				if (s.getItemDamage() >= s.getMaxDamage()) {
 					s.setCount(0);
+				}
+			}
+			if (s.getItem() instanceof ItemFuelTool) {
+				NBTTagCompound nbt = s.getTagCompound();
+				System.out.println(nbt.toString());
+				if (nbt != null && nbt.hasKey("FuelCurrent") && nbt.getInteger("FuelCurrent") > 0) {
+					nbt.setInteger("FuelCurrent", Math.max(0, nbt.getInteger("FuelCurrent") - 1));
 				}
 			}
 		}

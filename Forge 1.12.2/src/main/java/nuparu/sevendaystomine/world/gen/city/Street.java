@@ -638,7 +638,7 @@ public class Street {
 						}
 						CityHelper.placeRandomCar(world, pos2, facing2, true, city.rand);
 					} else if (!tunnel && city.rand.nextInt(1) == 0
-							&& BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY)) {
+							&& BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && biome.topBlock.getBlock() == Blocks.SAND) {
 						IBlockState sand = ModBlocks.SAND_LAYER.getDefaultState();
 						if(biome.topBlock.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND) {
 							sand = ModBlocks.RED_SAND_LAYER.getDefaultState();

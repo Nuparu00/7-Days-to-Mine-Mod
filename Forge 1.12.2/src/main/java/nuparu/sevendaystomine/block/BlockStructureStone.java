@@ -10,7 +10,9 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -62,11 +64,16 @@ public class BlockStructureStone extends BlockBase {
 				? Item.getItemFromBlock(Blocks.COBBLESTONE)
 				: Item.getItemFromBlock(Blocks.STONE);
 	}
-	
+
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return false;
+	}
+
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		BlockStone.EnumType type = state.getValue(BlockStone.VARIANT);
-		return new ItemStack(Blocks.STONE,1,type.getMetadata());
+		return new ItemStack(Blocks.STONE, 1, type.getMetadata());
 	}
 
 	@Override

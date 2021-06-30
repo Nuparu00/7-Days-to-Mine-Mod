@@ -111,6 +111,7 @@ airdrop.message=Airdrop has been dropped around X:%1$s Z:%2$s.
 safe.code.less=The digit number %1$s is less than %2$s.
 safe.code.equal=The digit number %1$s is %2$s.
 safe.code.greater=The digit number %1$s is greater than %2$s.
+gun.warning=The item has no NBT data, which most likely means, you gave it yourself using the /give command or the search function in the creative inventory. This will not work! Give yourself the item from the Combat tab, craft it or manually add the NBT data using the NBTExplorer, for example.
 
 #Computer Text
 computer.win10.product_key=It's time to enter the product key
@@ -365,7 +366,7 @@ book_computers.hardware.1=Let's talk first about computer hardware. For a solid 
 book_computers.hardware.2=You might need a screwdriver to open the case.
 book_computers.software.1=The most important part of this topic is an operating system. The operating system provides communication between hardware and individual programs. There are many different operating systems, so you should
 book_computers.software.2=choose one that suits best your needs. You can install any OS on any functional computer without OS by clicking on the computer with its respective installation CD.
-book_computers.programming.1=Programming is not the main topic of this guide, however, let's take a small look at it. On every OS you can find a program called "OpenPCB". The main focus of OpenPCB is the programming of Printed Circuit Boards, but you can
+book_computers.programming.1=Programming is not the main topic of this guide, however, let's take a small look at it. On every OS you can find a program called "Transit". The main focus of Transit is the programming of Printed Circuit Boards, but you can
 book_computers.programming.2=use it for programming in general.
 book_computers.turrets.1=A turret is a device that automatically aims at its target. It can be a missile or machine gun based. Though it is not completely legal to write here how to build one,
 book_computers.turrets.2=we believe that YOU have the right to protect yourself (though it is very unlikely you will get your hands on the required parts).
@@ -1151,7 +1152,7 @@ advancements.automation.description=Craft a turret
 advancements.different.title=I'm Different
 advancements.different.description=It just is not like other turrets
 advancements.cured.title=-1 Days to Die
-advancements.cured.description=Cure Stage III infection
+advancements.cured.description=Cure infection when it is in the final stage
 advancements.workbench.title=Metalworking
 advancements.workbench.description=Get a Workbench.
 advancements.shotgun.title=Pocket Rocket Launcher
@@ -1228,7 +1229,7 @@ fluid.mercury=Mercury
 
 
 #JEI
-jei.information.workbench=Workbench is a more advanced version of Crafting Table, that offers 5x5 crafting grid. Requires the "Metalworking" recipe book. Shidt-click to open the "decreafting grid" instead.
+jei.information.workbench=Workbench is a more advanced version of Crafting Table, that offers 5x5 crafting grid. Requires the "Metalworking" recipe book. Shift-click to open the "decrafting grid" instead.
 jei.information.separator=Electrolytic cell is a device that breaks down complex substances into simpler substances.
 jei.information.stone_axe=Stone Axe is a basic universal tool. Used not only as a mining tool but also as a block upgrade and repair tool.
 jei.information.wind_turbine=Converts wind's energy into electricity. The higher it is placed, the more electricity is generated. Provides extra electricity during rain and storms. Must not be obstructed.

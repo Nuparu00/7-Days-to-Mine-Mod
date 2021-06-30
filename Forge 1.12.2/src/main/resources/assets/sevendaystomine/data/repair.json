@@ -1,7 +1,7 @@
 Beta 1.0 Pre-release ;)
 minecraft:air
 minecraft:stone sevendaystomine:smallstone
-minecraft:grass
+minecraft:grass minecraft:dirt
 minecraft:dirt sevendaystomine:smallstone
 minecraft:cobblestone sevendaystomine:smallstone
 minecraft:planks sevendaystomine:woodplank
@@ -11,7 +11,7 @@ minecraft:flowing_water
 minecraft:water
 minecraft:flowing_lava
 minecraft:lava
-minecraft:sand
+minecraft:sand sevendaystomine:sand_dust
 minecraft:gravel sevendaystomine:smallstone
 minecraft:gold_ore sevendaystomine:smallstone
 minecraft:iron_ore sevendaystomine:smallstone
@@ -374,7 +374,7 @@ sevendaystomine:monitor_win10 sevendaystomine:ironingot
 sevendaystomine:locked_door sevendaystomine:woodplank
 sevendaystomine:boards sevendaystomine:woodplank
 sevendaystomine:toilet minecraft:clay_ball
-sevendaystomine:flag
+sevendaystomine:flag sevendaystomine:cloth
 sevendaystomine:microwave sevendaystomine:ironingot
 sevendaystomine:sink_faucet sevendaystomine:ironingot
 sevendaystomine:metal_ladder sevendaystomine:ironingot
@@ -462,7 +462,7 @@ sevendaystomine:camera sevendaystomine:ironingot
 sevendaystomine:burnt_log sevendaystomine:woodplank
 sevendaystomine:burnt_planks sevendaystomine:woodplank
 sevendaystomine:burnt_frame sevendaystomine:woodplank
-sevendaystomine:dry_ground
+sevendaystomine:dry_ground sevendaystomine:smallstone
 sevendaystomine:burnt_planks_stairs sevendaystomine:woodplank
 sevendaystomine:burnt_planks_slab sevendaystomine:woodplank
 sevendaystomine:burnt_planks_slab_double sevendaystomine:woodplank
@@ -471,8 +471,6 @@ sevendaystomine:burnt_chair sevendaystomine:woodplank
 sevendaystomine:stone_brick_stairs_mossy sevendaystomine:smallstone
 sevendaystomine:radio sevendaystomine:ironingot
 sevendaystomine:globe sevendaystomine:ironingot
-sevendaystomine:mercury
-sevendaystomine:separator
 sevendaystomine:turret_advanced sevendaystomine:ironingot
 sevendaystomine:razor_wire sevendaystomine:ironingot
 sevendaystomine:stand sevendaystomine:ironingot

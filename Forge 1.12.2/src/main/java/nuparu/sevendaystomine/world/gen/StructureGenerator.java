@@ -30,6 +30,7 @@ import nuparu.sevendaystomine.world.gen.city.building.BuildingAirport;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingCargoShip;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingFactory;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingHelicopter;
+import nuparu.sevendaystomine.world.gen.city.building.BuildingLandfill;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingLargeBanditCamp;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingMilitaryBase;
 import nuparu.sevendaystomine.world.gen.city.building.BuildingSettlement;
@@ -41,7 +42,9 @@ public class StructureGenerator implements IWorldGenerator {
 
 	public static void loadBuildings() {
 		buildings.add(new BuildingFactory(new ResourceLocation(SevenDaysToMine.MODID, "factory_garage"), 30)
-				.setAllowedBiomes(ModBiomes.BURNT_FOREST, ModBiomes.WASTELAND));
+				.setAllowedBiomes(ModBiomes.BURNT_FOREST, ModBiomes.WASTELAND, ModBiomes.WASTELAND_FOREST, ModBiomes.WASTELAND_DESERT));
+		buildings.add(new BuildingLandfill(30)
+				.setAllowedBiomes(ModBiomes.BURNT_FOREST, ModBiomes.WASTELAND, ModBiomes.WASTELAND_FOREST, ModBiomes.WASTELAND_DESERT));
 		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "lookout_birch"), 280)
 				.setAllowedBiomes(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST).stream().toArray(Biome[]::new))
 				.setAllowedBlocks(Blocks.GRASS));
@@ -137,6 +140,16 @@ public class StructureGenerator implements IWorldGenerator {
 				.setPedestal(Blocks.STONE.getDefaultState())
 				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.SAVANNA)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruins_0"), 150,-1)
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
+				.setAllowedBlocks(Blocks.GRASS));
+		buildings.add(new Building(new ResourceLocation(SevenDaysToMine.MODID, "ruins_1"), 200,-1)
+				.setAllowedBiomes(Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
+						BiomeDictionary.getBiomes(BiomeDictionary.Type.LUSH)).stream().toArray(Biome[]::new))
 				.setAllowedBlocks(Blocks.GRASS));
 		// buildings.add(new BuildingFarmProcedural(600));
 

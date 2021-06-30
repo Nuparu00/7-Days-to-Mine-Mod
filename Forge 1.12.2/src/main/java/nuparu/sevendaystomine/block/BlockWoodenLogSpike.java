@@ -46,17 +46,19 @@ public class BlockWoodenLogSpike extends BlockTileProvider<TileEntityWoodenLogSp
 		if (!(entityIn instanceof EntityLivingBase) || entityIn.isDead) {
 			return;
 		}
+		float fallDistance = entityIn.fallDistance;
 		entityIn.setInWeb();
 		if (entityIn instanceof EntityPlayer) {
 			if (((EntityPlayer) entityIn).isCreative() || ((EntityPlayer) entityIn).isSpectator()) {
 				return;
 			}
 		}
-		entityIn.attackEntityFrom(DamageSource.GENERIC, 5);
+		if(fallDistance < 1) return;
+		entityIn.attackEntityFrom(DamageSource.GENERIC, 1.5f*fallDistance);
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te != null && te instanceof TileEntityWoodenLogSpike) {
 			TileEntityWoodenLogSpike tileEntity = (TileEntityWoodenLogSpike) te;
-			tileEntity.dealDamage(1);
+			tileEntity.dealDamage((int) Math.ceil(0.5*fallDistance));
 		}
 	}
 

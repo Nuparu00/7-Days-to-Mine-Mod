@@ -59,6 +59,8 @@ public class ModConfig {
 		public boolean survivalGuide = true;
 		@Config.Comment("Makes block breaking slower and more immersive")
 		public boolean immersiveBlockBreaking = true;
+		@Config.Comment("Affects the block breaking speed when immersiveBlockBreaking is true. The higher the number, the slower the breaking is")
+		public float immersiveBlockBreakingModifier = 32;
 		@Config.Comment("Controls how much scrap you get from scrapping in inventory")
 		@Config.RangeDouble(min = 0, max = 1) 
 		public double scrapCoefficient = 0.5;
@@ -91,9 +93,17 @@ public class ModConfig {
 		public boolean fragileLegs = true;
 		@Config.Comment("Does the baneberry give the poison status effect?")
 		public boolean extraPoisonousBerries = false;
+		@Config.Comment("Should disable stacking of certain food items?")
+		@Config.RequiresMcRestart
+		public boolean disableFoodStacking = true;
 		
 		@Config.Comment("The duration of the individual infection stages")
 		public int[] infectionStagesDuration = new int[] {24000,24000,24000,24000,24000,24000,24000};
+		
+		@Config.Comment("Controls the health and damages of mobs, guns, etc...")
+		@Config.RequiresMcRestart
+		@Config.RangeDouble(min = 0) 
+		public double balanceModifier = 1;
 	}
 	
 	public static class CategoryMobs {
@@ -109,6 +119,134 @@ public class ModConfig {
 		@Config.Comment("The larger the value, the less likely an entity is to start bleeding")
 		@Config.RangeInt(min = 1) 
 		public int bleedingChanceModifier = 10;
+		@Config.Comment("Should zombies spawn a corpse on death?")
+		public boolean zombieCorpses = true;
+		
+		@Config.Comment("The spawn weight of the Reanimated Corpse")
+		public int spawnWeightReanimatedCorpse = 70;
+		
+		@Config.Comment("The spawn weight of the Bloated Zombie")
+		public int spawnWeightBloatedZombie = 70;
+		
+		@Config.Comment("The spawn weight of the Plagued Nurse")
+		public int spawnWeightPlaguedNurse = 60;
+		
+		@Config.Comment("The spawn weight of the Zombie Crawler")
+		public int spawnWeightZombieCrawler = 50;
+		
+		@Config.Comment("The spawn weight of the Spider Zombie")
+		public int spawnWeightSpiderZombie = 20;
+		
+		@Config.Comment("The spawn weight of the Frozen Lumberjack")
+		public int spawnWeightFrozenLumberjack = 25;
+		
+		@Config.Comment("The spawn weight of the Frigid Hunter")
+		public int spawnWeightFrigidHunter = 40;
+		
+		@Config.Comment("The spawn weight of the Frostbitten Worker")
+		public int spawnWeightFrostbittenWorker = 40;
+		
+		@Config.Comment("The spawn weight of the Zombie Wolf")
+		public int spawnWeightZombieWolf = 20;
+		
+		@Config.Comment("The spawn weight of the Zombie Pig")
+		public int spawnWeightZombiePig= 20;
+		
+		@Config.Comment("The spawn weight of the Burnt Zombie")
+		public int spawnWeightBurntZombie = 20;
+		
+		@Config.Comment("The spawn weight of the Zombie Miner")
+		public int spawnWeightZombieMiner = 30;
+		
+		@Config.Comment("The spawn weight of the Feral Zombie")
+		public int spawnWeightFeralZombie = 1;
+		
+		@Config.Comment("The minimal number of Reanimated Corpses")
+		public int spawnMinReanimatedCorpse = 3;
+		
+		@Config.Comment("The minimal number of Bloated Zombies")
+		public int spawnMinBloatedZombie = 1;
+		
+		@Config.Comment("The minimal number of Plagued Nurses")
+		public int spawnMinPlaguedNurse = 3;
+		
+		@Config.Comment("The minimal number of Zombie Crawlers")
+		public int spawnMinZombieCrawler = 2;
+		
+		@Config.Comment("The minimal number of Spider Zombies")
+		public int spawnMinSpiderZombie = 1;
+		
+		@Config.Comment("The minimal number of Frozen Lumberjacks")
+		public int spawnMinFrozenLumberjack = 1;
+		
+		@Config.Comment("The minimal number of Frigid Hunters")
+		public int spawnMinFrigidHunter = 1;
+		
+		@Config.Comment("The minimal number of Frostbitten Workers")
+		public int spawnMinFrostbittenWorker = 2;
+		
+		@Config.Comment("The minimal number of Zombie Wolfs")
+		public int spawnMinZombieWolf = 1;
+		
+		@Config.Comment("The minimal number of Zombie Pigs")
+		public int spawnMinZombiePig= 1;
+		
+		@Config.Comment("The minimal number of Burnt Zombies")
+		public int spawnMinBurntZombie = 1;
+		
+		@Config.Comment("The minimal number of Zombie Miners")
+		public int spawnMinZombieMiner = 1;
+		
+		@Config.Comment("The minimal number of Feral Zombies")
+		public int spawnMinFeralZombie = 1;
+		
+		@Config.Comment("The maximal number of Reanimated Corpses")
+		public int spawnMaxReanimatedCorpse = 7;
+		
+		@Config.Comment("The maximal number of Bloated Zombies")
+		public int spawnMaxBloatedZombie = 7;
+		
+		@Config.Comment("The maximal number of Plagued Nurses")
+		public int spawnMaxPlaguedNurse = 7;
+		
+		@Config.Comment("The maximal number of Zombie Crawlers")
+		public int spawnMaxZombieCrawler = 9;
+		
+		@Config.Comment("The maximal number of Spider Zombies")
+		public int spawnMaxSpiderZombie = 2;
+		
+		@Config.Comment("The maximal number of Frozen Lumberjacks")
+		public int spawnMaxFrozenLumberjack = 3;
+		
+		@Config.Comment("The maximal number of Frigid Hunters")
+		public int spawnMaxFrigidHunter = 3;
+		
+		@Config.Comment("The maximal number of Frostbitten Workers")
+		public int spawnMaxFrostbittenWorker = 5;
+		
+		@Config.Comment("The maximal number of Zombie Wolfs")
+		public int spawnMaxZombieWolf = 3;
+		
+		@Config.Comment("The maximal number of Zombie Pigs")
+		public int spawnMaxZombiePig= 3;
+		
+		@Config.Comment("The maximal number of Burnt Zombies")
+		public int spawnMaxBurntZombie = 2;
+		
+		@Config.Comment("The maximal number of Zombie Miners")
+		public int spawnMaxZombieMiner = 1;
+		
+		@Config.Comment("The maximal number of Feral Zombies")
+		public int spawnMaxFeralZombie = 1;
+		
+		@Config.Comment("The knocback resistance of all the zombies")
+		@Config.RangeDouble(min = 0) 
+		public double zombieKnockbackResistance = 0.25;
+		
+		@Config.Comment("Should vanilla (and modded) monsters that attack the player also attack the human NPCs)?")
+		public boolean monstersAttackHumanNPCs = true;
+		
+		
 	}
 	
 	public static class CategoryWorld {
@@ -174,6 +312,9 @@ public class ModConfig {
 		@Config.Comment("The delay in ticks between individual waves")
 		@Config.RangeInt(min = 0)
 		public int hordeWaveDelay = 200;
+		@Config.Comment("The rate of damged blocks decay, how often does the decay update (12000 = every 12000 ticks - twice a day). Non-poisitive values disable the ddecay. Can be overriden by the damageDecayRate gamerule")
+		@Config.RangeInt(min = -1)
+		public int damageDecayRate = 12000;
 		
 	}
 	

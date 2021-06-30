@@ -31,7 +31,10 @@
                     "functions": [
                         {
                             "function": "sevendaystomine:random_quality"
-                        }
+                        },
+                  {
+                     "function":"sevendaystomine:random_ammo"
+                  }
                     ]
                 },
                 {

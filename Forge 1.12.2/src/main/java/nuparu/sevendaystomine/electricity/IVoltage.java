@@ -4,8 +4,9 @@ import java.util.List;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public interface IVoltage {
+public interface IVoltage extends IEnergyStorage {
 
 	public EnumDeviceType getDeviceType();
 	

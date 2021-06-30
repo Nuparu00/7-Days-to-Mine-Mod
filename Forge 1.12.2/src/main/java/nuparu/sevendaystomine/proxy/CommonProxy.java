@@ -104,7 +104,9 @@ import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.init.ModLootTables;
 import nuparu.sevendaystomine.loot.function.CityMapFunction;
+import nuparu.sevendaystomine.loot.function.RandomAmmoFunction;
 import nuparu.sevendaystomine.loot.function.RandomColorFunction;
+import nuparu.sevendaystomine.loot.function.RandomFuelFunction;
 import nuparu.sevendaystomine.loot.function.RandomQualityFunction;
 import nuparu.sevendaystomine.tileentity.TileEntityAirplaneRotor;
 import nuparu.sevendaystomine.tileentity.TileEntityBackpack;
@@ -429,50 +431,50 @@ public class CommonProxy {
 		 * BiomeDictionary.getBiomes(Type.SNOWY)).stream().toArray(Biome[]::new));
 		 */
 
-		addEntitySpawn(EntityReanimatedCorpse.class, 70, 3, 7, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityReanimatedCorpse.class, ModConfig.mobs.spawnWeightReanimatedCorpse, ModConfig.mobs.spawnMinReanimatedCorpse, ModConfig.mobs.spawnMaxReanimatedCorpse, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityBloatedZombie.class, 70, 1, 7, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityBloatedZombie.class, ModConfig.mobs.spawnWeightBloatedZombie, ModConfig.mobs.spawnMinBloatedZombie, ModConfig.mobs.spawnMaxBloatedZombie, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityPlaguedNurse.class, 60, 3, 7, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityPlaguedNurse.class, ModConfig.mobs.spawnWeightPlaguedNurse, ModConfig.mobs.spawnMinPlaguedNurse, ModConfig.mobs.spawnMaxPlaguedNurse, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityZombieCrawler.class, 50, 2, 9, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityZombieCrawler.class, ModConfig.mobs.spawnWeightZombieCrawler, ModConfig.mobs.spawnMinZombieCrawler, ModConfig.mobs.spawnMaxZombieCrawler, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
-		addEntitySpawn(EntityZombiePig.class, 20, 1, 3, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityZombiePig.class, ModConfig.mobs.spawnWeightZombiePig, ModConfig.mobs.spawnMinZombiePig, ModConfig.mobs.spawnMaxZombiePig, EnumCreatureType.MONSTER,
 				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.PLAINS),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST)).stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntitySpiderZombie.class, 20, 1, 2, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntitySpiderZombie.class, ModConfig.mobs.spawnWeightSpiderZombie, ModConfig.mobs.spawnMinSpiderZombie, ModConfig.mobs.spawnMaxSpiderZombie, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 
 		addEntitySpawn(
-				EntityFrozenLumberjack.class, 25, 1, 3, EnumCreatureType.MONSTER, Utils
+				EntityFrozenLumberjack.class, ModConfig.mobs.spawnWeightFrozenLumberjack, ModConfig.mobs.spawnMinFrozenLumberjack, ModConfig.mobs.spawnMaxFrozenLumberjack, EnumCreatureType.MONSTER, Utils
 						.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
 								BiomeDictionary.getBiomes(BiomeDictionary.Type.CONIFEROUS))
 						.stream().toArray(Biome[]::new));
-		addEntitySpawn(EntityFrigidHunter.class, 40, 1, 3, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityFrigidHunter.class, ModConfig.mobs.spawnWeightFrigidHunter, ModConfig.mobs.spawnMinFrigidHunter, ModConfig.mobs.spawnMaxFrigidHunter, EnumCreatureType.MONSTER,
 				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD)).stream().toArray(Biome[]::new));
 		addEntitySpawn(
-				EntityFrostbittenWorker.class, 40, 2, 5, EnumCreatureType.MONSTER, Utils
+				EntityFrostbittenWorker.class, ModConfig.mobs.spawnWeightFrostbittenWorker, ModConfig.mobs.spawnMinFrostbittenWorker, ModConfig.mobs.spawnMaxFrostbittenWorker, EnumCreatureType.MONSTER, Utils
 						.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
 								BiomeDictionary.getBiomes(BiomeDictionary.Type.CONIFEROUS))
 						.stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityZombieWolf.class, 20, 1, 3, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityZombieWolf.class, ModConfig.mobs.spawnWeightZombieWolf, ModConfig.mobs.spawnMinZombieWolf, ModConfig.mobs.spawnMaxZombieWolf, EnumCreatureType.MONSTER,
 				Utils.combine(BiomeDictionary.getBiomes(BiomeDictionary.Type.SNOWY),
 						BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD)).stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityBurntZombie.class, 20, 1, 2, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityBurntZombie.class, ModConfig.mobs.spawnWeightBurntZombie, ModConfig.mobs.spawnMinBurntZombie, ModConfig.mobs.spawnMaxBurntZombie, EnumCreatureType.MONSTER,
 				Arrays.asList(ModBiomes.BURNT_FOREST, ModBiomes.BURNT_JUNGLE, ModBiomes.WASTELAND).stream()
 						.toArray(Biome[]::new));
 
-		addEntitySpawn(EntityZombieMiner.class, 30, 1, 1, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityZombieMiner.class, ModConfig.mobs.spawnWeightZombieMiner, ModConfig.mobs.spawnMinZombieMiner, ModConfig.mobs.spawnMaxZombieMiner, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 
-		addEntitySpawn(EntityFeralZombie.class, 1, 1, 1, EnumCreatureType.MONSTER,
+		addEntitySpawn(EntityFeralZombie.class, ModConfig.mobs.spawnWeightFeralZombie, ModConfig.mobs.spawnMinFeralZombie, ModConfig.mobs.spawnMaxFeralZombie, EnumCreatureType.MONSTER,
 				ForgeRegistries.BIOMES.getValuesCollection().stream().toArray(Biome[]::new));
 	}
 
@@ -514,6 +516,8 @@ public class CommonProxy {
 		LootFunctionManager.registerFunction(new RandomQualityFunction.Serializer());
 		LootFunctionManager.registerFunction(new CityMapFunction.Serializer());
 		LootFunctionManager.registerFunction(new RandomColorFunction.Serializer());
+		LootFunctionManager.registerFunction(new RandomAmmoFunction.Serializer());
+		LootFunctionManager.registerFunction(new RandomFuelFunction.Serializer());
 
 		LootTableList.register(ModLootTables.AIRDROP);
 		LootTableList.register(ModLootTables.DRESSER);

@@ -183,6 +183,30 @@ public class Value implements IChainable {
 		}
 		return null;
 	}
+	
+	public Value modulo(Value other) {
+		if (isNumerical() && other.isNumerical()) {
+			if (isDouble()) {
+				return new Value((double) getRealValue() % (double) other.getRealValue());
+			}
+			if (isFloat()) {
+				return new Value((float) getRealValue() % (float) other.getRealValue());
+			}
+			if (isLong()) {
+				return new Value((long) getRealValue() % (long) other.getRealValue());
+			}
+			if (isShort()) {
+				return new Value((short) getRealValue() % (short) other.getRealValue());
+			}
+			if (isInt()) {
+				return new Value((int) getRealValue() % (int) other.getRealValue());
+			}
+			if (isByte()) {
+				return new Value((byte) getRealValue() % (byte) other.getRealValue());
+			}
+		}
+		return null;
+	}
 
 	@Nullable
 	public Object getRealValue() {
@@ -327,7 +351,7 @@ public class Value implements IChainable {
 		 * NUMERICAL and OBJECT are only intended as argument "wildcards" and should not really veer be used as a real value type
 		 */
 		
-		INT("int", true), STRING("string"), BOOL("bool"), DOUBLE("double", true), FLOAT("float", true),
+		INT("int", true), STRING("string"), BOOL("boolean"), DOUBLE("double", true), FLOAT("float", true),
 		LONG("long", true), BYTE("byte", true), SHORT("short", true), OBJECT("object"), NUMERICAL("numerical", true);
 
 		String name;

@@ -31,14 +31,19 @@ public class ZombieWolfHorde extends Horde {
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 10));
 
 		this.waves = ModConfig.world.wolfHordeWaves;
-		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		List<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>(server.getPlayerList().getPlayers());
-		for(EntityPlayerMP playerMP : players) {
-			if(playerMP.getGameProfile().equals(player.getGameProfile())) continue;
-			if(playerMP.world.provider.getDimension() == world.provider.getDimension()) {
-				if(playerMP.getDistanceSq(player) <= 1024) {
-					this.waves= (int) Math.ceil(waves * 0.8);
-					break;
+		EntityPlayer player = this.getPlayer();
+		if (player != null) {
+			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+			List<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>(server.getPlayerList().getPlayers());
+
+			for (EntityPlayerMP playerMP : players) {
+				if (playerMP.getGameProfile().equals(player.getGameProfile()))
+					continue;
+				if (playerMP.world.provider.getDimension() == world.provider.getDimension()) {
+					if (playerMP.getDistanceSq(player) <= 1024) {
+						this.waves = (int) Math.ceil(waves * 0.8);
+						break;
+					}
 				}
 			}
 		}
@@ -46,7 +51,7 @@ public class ZombieWolfHorde extends Horde {
 
 	public ZombieWolfHorde(BlockPos center, World world, EntityPlayer player) {
 		super(center, world);
-		this.player = player;
+		this.playerID = player.getPersistentID();
 		this.waves = ModConfig.world.wolfHordeWaves;
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_wolf"), 10));
 	}
@@ -68,7 +73,7 @@ public class ZombieWolfHorde extends Horde {
 		super.onZombieKill(zombie);
 		if (bossInfo == null)
 			return;
-		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave, 0, 1));
 	}
 
 	@Override
@@ -76,7 +81,7 @@ public class ZombieWolfHorde extends Horde {
 		super.addZombie(zombie);
 		if (bossInfo == null)
 			return;
-		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave, 0, 1));
 	}
 
 	@Override
@@ -102,9 +107,11 @@ public class ZombieWolfHorde extends Horde {
 	@Override
 	public void start() {
 		super.start();
+		EntityPlayer player = getPlayer();
 		if (player == null)
 			return;
 		zombies.clear();
+		this.center = getCenter();
 		BlockPos origin = getSpawnOrigin();
 		for (int i = 0; i < ModConfig.world.wolfHordeZombiesPerWave; i++) {
 			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin), world, true).up();
@@ -119,13 +126,14 @@ public class ZombieWolfHorde extends Horde {
 				zombiesInWave++;
 			}
 		}
-		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave, 0, 1));
 		data.markDirty();
 	}
 
 	public BlockPos getSpawnOrigin() {
 		double angle = 2.0 * Math.PI * world.rand.nextDouble();
-		double dist = ModConfig.world.hordeMinDistance + world.rand.nextDouble() * (ModConfig.world.hordeMaxDistance-ModConfig.world.hordeMinDistance);
+		double dist = ModConfig.world.hordeMinDistance
+				+ world.rand.nextDouble() * (ModConfig.world.hordeMaxDistance - ModConfig.world.hordeMinDistance);
 		double x = center.getX() + dist * Math.cos(angle);
 		double z = center.getZ() + dist * Math.sin(angle);
 

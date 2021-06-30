@@ -25,7 +25,7 @@ public class ItemAntibiotics extends ItemFood {
 		IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
 		int time = iep.getInfectionTime();
 		int stage = PlayerUtils.getInfectionStage(time);
-		if (player instanceof EntityPlayerMP && (stage == 2 || stage == 3)) {
+		if (player instanceof EntityPlayerMP && (stage >= PlayerUtils.getNumberOfstages()-1)) {
 			ModTriggers.CURE.trigger((EntityPlayerMP) player);
 		}
 		player.removePotionEffect(Potions.infection);

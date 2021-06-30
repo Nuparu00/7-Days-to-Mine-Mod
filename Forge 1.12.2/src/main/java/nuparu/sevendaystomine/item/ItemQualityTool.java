@@ -185,7 +185,7 @@ public class ItemQualityTool extends ItemTool implements IQuality {
 	}
 
 	public double getAttackDamageModified(ItemStack stack) {
-		return this.attackDamage * (1 + ((float) getQuality(stack) / (float) ModConfig.players.maxQuality));
+		return this.attackDamage * (1 + ((float) getQuality(stack) / (float) ModConfig.players.maxQuality)) * ModConfig.players.balanceModifier;
 	}
 
 	public double getAttackSpeedModified(ItemStack stack) {

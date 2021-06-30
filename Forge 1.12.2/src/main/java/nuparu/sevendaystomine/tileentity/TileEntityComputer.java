@@ -27,7 +27,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.energy.CapabilityEnergy;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.computer.HardDrive;
 import nuparu.sevendaystomine.computer.process.BootingProcess;
@@ -64,6 +66,7 @@ public class TileEntityComputer extends TileEntityLockableLoot
 
 	// processes
 	private ArrayList<TickingProcess> processes = new ArrayList<TickingProcess>();
+	public Thread codeBus = null;
 	// Persistent data
 	private boolean registered = false;
 	private String username = "";
@@ -848,6 +851,62 @@ public class TileEntityComputer extends TileEntityLockableLoot
 	@Override
 	public boolean disconnect(IVoltage voltage) {
 		return false;
+	}
+	
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		long toAdd = Math.min(this.capacity-this.voltage, maxReceive);
+		if(!simulate) {
+			this.voltage+=toAdd;
+		}
+		return (int)toAdd;
+	}
+
+	@Override
+	public int extractEnergy(int maxExtract, boolean simulate) {
+		long toExtract = Math.min(this.voltage, maxExtract);
+		if(!simulate) {
+			this.voltage-=toExtract;
+		}
+		return (int)toExtract;
+	}
+
+	@Override
+	public int getEnergyStored() {
+		return (int) this.voltage;
+	}
+
+	@Override
+	public int getMaxEnergyStored() {
+		return (int) this.capacity;
+	}
+
+	@Override
+	public boolean canExtract() {
+		return this.capacity > 0;
+	}
+
+	@Override
+	public boolean canReceive() {
+		return this.voltage < this.capacity;
+	}
+	
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY) {
+			return CapabilityEnergy.ENERGY.cast(this);
+		}
+
+		return super.getCapability(capability, facing);
+	}
+	
+	public void updateRedstoneSignal(EnumFacing facing, int strength) {
+		
 	}
 
 }

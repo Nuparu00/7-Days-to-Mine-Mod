@@ -101,7 +101,7 @@ public class BlockToilet extends BlockTileProvider<TileEntityToilet> implements 
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state,
 			int fortune) {
 		Random rand = world instanceof World ? ((World) world).rand : RANDOM;
-		if (rand.nextInt(3) == 0) {
+		if (rand.nextInt(4) == 0) {
 			drops.add(new ItemStack(ModItems.IRON_PIPE, rand.nextInt(1) * (fortune + 1)));
 		} else {
 			drops.add(new ItemStack(ModItems.IRON_SCRAP, rand.nextInt(2) * (fortune + 1)));

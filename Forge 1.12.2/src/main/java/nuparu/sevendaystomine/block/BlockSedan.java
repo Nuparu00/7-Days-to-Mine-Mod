@@ -33,7 +33,11 @@ public class BlockSedan extends BlockCar {
 		double length = 1;
 		
 		if(!(world.getTileEntity(pos) instanceof TileEntityCar)) {
-			return this.FULL_BLOCK_AABB;
+			return FULL_BLOCK_AABB;
+		}
+		
+		if(world == null || pos == null) {
+			return FULL_BLOCK_AABB;
 		}
 
 		TileEntityCar te = (TileEntityCar) world.getTileEntity(pos);

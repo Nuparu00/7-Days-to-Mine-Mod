@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.entity.ai.EntityAIAttckRangedVomit;
 import nuparu.sevendaystomine.entity.ai.EntityAIBreakBlock;
 import nuparu.sevendaystomine.entity.ai.EntityAIInfectedAttack;
@@ -92,8 +93,8 @@ public class EntityZombiePoliceman extends EntityBipedalZombie implements IRange
 		super.applyEntityAttributes();
 		range.setBaseValue(64.0D);
 		speed.setBaseValue(0.15D);
-		attack.setBaseValue(7.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120D);
+		attack.setBaseValue(7.0D * ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120D* ModConfig.players.balanceModifier);
 		armor.setBaseValue(3.0D);
 	}
 

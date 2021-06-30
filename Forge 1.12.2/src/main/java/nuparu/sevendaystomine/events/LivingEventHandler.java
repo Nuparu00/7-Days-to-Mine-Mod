@@ -2,12 +2,17 @@ package nuparu.sevendaystomine.events;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITarget;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityItem;
@@ -25,6 +30,7 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemFood;
@@ -42,6 +48,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import nuparu.sevendaystomine.SevenDaysToMine;
@@ -112,7 +119,8 @@ public class LivingEventHandler {
 			return;
 		}
 
-		if (world.getDifficulty() != EnumDifficulty.PEACEFUL && !world.isRemote && amount >= (entity.getMaxHealth() / 100 * 20)
+		if (world.getDifficulty() != EnumDifficulty.PEACEFUL && !world.isRemote
+				&& amount >= (entity.getMaxHealth() / 100 * 20)
 				&& world.rand.nextInt(ModConfig.mobs.bleedingChanceModifier * (getArmorItemsCount(entity) + 1)) == 0) {
 			PotionEffect effect = new PotionEffect(Potions.bleeding, Integer.MAX_VALUE, 1, false, false);
 			effect.setCurativeItems(new ArrayList<ItemStack>());
@@ -203,14 +211,37 @@ public class LivingEventHandler {
 
 	@SubscribeEvent
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-
-		if (!ModConfig.mobs.zombiesAttackAnimals)
-			return;
 		Entity entity = event.getEntity();
-		if (entity instanceof EntityAnimal || entity instanceof EntityVillager) {
+
+		if (ModConfig.mobs.zombiesAttackAnimals) {
+			if (entity instanceof EntityAnimal || entity instanceof EntityVillager) {
+				EntityCreature creature = (EntityCreature) entity;
+				creature.tasks.addTask(3,
+						new EntityAIAvoidEntity<EntityZombieBase>(creature, EntityZombieBase.class, 6.0F, 1.0D, 1.2D));
+			}
+		}
+		if (ModConfig.mobs.monstersAttackHumanNPCs && entity instanceof EntityCreature) {
 			EntityCreature creature = (EntityCreature) entity;
-			creature.tasks.addTask(3,
-					new EntityAIAvoidEntity<EntityZombieBase>(creature, EntityZombieBase.class, 6.0F, 1.0D, 1.2D));
+			Set<EntityAITaskEntry> tasks = new LinkedHashSet<EntityAITaskEntry>(creature.targetTasks.taskEntries);
+			Iterator<EntityAITaskEntry> it = tasks.iterator();
+			while (it.hasNext()) {
+				EntityAITaskEntry entry = it.next();
+				if (entry.action instanceof EntityAINearestAttackableTarget) {
+					EntityAINearestAttackableTarget<?> ai = (EntityAINearestAttackableTarget<?>) entry.action;
+					Class<?> targetClass = ObfuscationReflectionHelper
+							.getPrivateValue(EntityAINearestAttackableTarget.class, ai, "field_75307_b");
+					if (targetClass == EntityPlayer.class || targetClass == EntityPlayerMP.class) {
+						boolean shouldCheckSight = ObfuscationReflectionHelper.getPrivateValue(EntityAITarget.class, ai,
+								"field_75297_f");
+						boolean nearbyOnly = ObfuscationReflectionHelper.getPrivateValue(EntityAITarget.class, ai,
+								"field_75303_a");
+						creature.targetTasks.addTask(2, new EntityAINearestAttackableTarget(creature, EntityHuman.class,
+								shouldCheckSight, nearbyOnly));
+					}
+
+				}
+			}
+
 		}
 
 	}

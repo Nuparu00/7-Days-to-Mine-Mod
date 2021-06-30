@@ -58,6 +58,7 @@ import nuparu.sevendaystomine.util.DamageSources;
 import nuparu.sevendaystomine.util.ItemUtils;
 import nuparu.sevendaystomine.util.MathUtils;
 import nuparu.sevendaystomine.util.Utils;
+import nuparu.sevendaystomine.util.Wec2f;
 
 public class EntityCar extends EntityLivingBase implements IControllable {
 
@@ -553,11 +554,21 @@ public class EntityCar extends EntityLivingBase implements IControllable {
 		IBattery bat = (IBattery) item;
 		return bat.getVoltage(battery, world) > 0;
 	}
+	
+    public Wec2f getPitchYawServerSide()
+    {
+        return new Wec2f(this.rotationPitch, this.rotationYaw);
+    }
+    
+    public Vec3d getForwardServerSide()
+    {
+        return Wec2f.fromPitchYawVector(this.getPitchYawServerSide());
+    }
 
 	@Override
 	public void onUpdate() {
 
-		Vec3d forward = this.getForward();
+		Vec3d forward = this.getForwardServerSide();
 		double kmh = 0;
 		if (world.isRemote) {
 			kmh = MathUtils.getSpeedKilometersPerHour(this);

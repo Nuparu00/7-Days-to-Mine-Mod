@@ -3,6 +3,7 @@ package nuparu.sevendaystomine.world.horde;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,7 +28,7 @@ public class BloodmoonHorde extends Horde {
 			new TextComponentTranslation("horde.bloodmoon.name"), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS))
 					.setDarkenSky(true);
 
-	public EntityPlayer player;
+
 
 	public BloodmoonHorde(World world) {
 		super(world);
@@ -57,13 +58,13 @@ public class BloodmoonHorde extends Horde {
 
 		this.waves = ModConfig.world.bloodmoonHordeWaves;
 		if (Utils.isCityInArea(world, (int) (center.getX() * 16), (int) (center.getZ() * 16), 5)) {
-			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 6));
 		}
 	}
 
 	public BloodmoonHorde(BlockPos center, World world, EntityPlayer player) {
 		super(center, world);
-		this.player = player;
+		this.playerID = player.getPersistentID();
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 20));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "bloated_zombie"), 12));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "infected_survivor"), 16));
@@ -102,7 +103,7 @@ public class BloodmoonHorde extends Horde {
 
 		if (Utils.isCityInArea(world, (int) (player.posX * 16), (int) (player.posZ * 16), 5)) {
 			this.waves = (int) Math.ceil(waves * 1.2);
-			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 6));
 		}
 	}
 
@@ -123,7 +124,7 @@ public class BloodmoonHorde extends Horde {
 		super.onZombieKill(zombie);
 		if (bossInfo == null)
 			return;
-		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave, 0, 1));
 	}
 
 	@Override
@@ -131,7 +132,7 @@ public class BloodmoonHorde extends Horde {
 		super.addZombie(zombie);
 		if (bossInfo == null)
 			return;
-		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave, 0, 1));
 	}
 
 	@Override
@@ -157,10 +158,12 @@ public class BloodmoonHorde extends Horde {
 	@Override
 	public void start() {
 		super.start();
+		EntityPlayer player = getPlayer();
 		if (player == null)
 			return;
 		zombies.clear();
 		zombiesInWave = 0;
+		this.center = getCenter();
 		BlockPos origin = getSpawnOrigin();
 		for (int i = 0; i < getZombiesInWave(); i++) {
 			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin), world, true).up();
@@ -169,13 +172,15 @@ public class BloodmoonHorde extends Horde {
 				EntityZombieBase zombie = entry.spawn(world, pos);
 				if (zombie == null)
 					continue;
-				zombie.setAttackTarget(player);
+				if (player != null) {
+					zombie.setAttackTarget(player);
+				}
 				zombie.horde = this;
 				zombies.add(zombie);
 				zombiesInWave++;
 			}
 		}
-		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave,0,1));
+		bossInfo.setPercent(MathHelper.clamp((float) zombies.size() / (float) zombiesInWave, 0, 1));
 		data.markDirty();
 	}
 
@@ -184,12 +189,13 @@ public class BloodmoonHorde extends Horde {
 			return ModConfig.world.bloodmoonHordeZombiesPerWaveMax;
 		return (int) MathHelper.clampedLerp(ModConfig.world.bloodmoonHordeZombiesPerWaveMin,
 				ModConfig.world.bloodmoonHordeZombiesPerWaveMax,
-				((int) (Math.floor(Utils.getDay(world) / ModConfig.world.bloodmoonFrequency))-1) / 5);
+				((int) (Math.floor(Utils.getDay(world) / ModConfig.world.bloodmoonFrequency)) - 1) / 5);
 	}
 
 	public BlockPos getSpawnOrigin() {
 		double angle = 2.0 * Math.PI * world.rand.nextDouble();
-		double dist = ModConfig.world.hordeMinDistance + world.rand.nextDouble() * (ModConfig.world.hordeMaxDistance-ModConfig.world.hordeMinDistance);
+		double dist = ModConfig.world.hordeMinDistance
+				+ world.rand.nextDouble() * (ModConfig.world.hordeMaxDistance - ModConfig.world.hordeMinDistance);
 		double x = center.getX() + dist * Math.cos(angle);
 		double z = center.getZ() + dist * Math.sin(angle);
 
@@ -202,6 +208,15 @@ public class BloodmoonHorde extends Horde {
 		double z = world.rand.nextDouble() - 0.5;
 		double d = world.rand.nextDouble() * 1.5;
 		return origin.add(x * d, y * d, z * d);
+	}
+
+	public BlockPos getCenter() {
+		EntityPlayer player = getPlayer();
+		return player != null ? new BlockPos(player) : this.center;
+	}
+
+	public EntityPlayer getPlayer() {
+		return this.playerID != null ? Utils.getPlayerFromUUID(playerID) : null;
 	}
 
 }

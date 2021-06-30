@@ -3,6 +3,7 @@ package nuparu.sevendaystomine.world.horde;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,8 +27,6 @@ public class GenericHorde extends Horde {
 	private final BossInfoServer bossInfo = (BossInfoServer) (new BossInfoServer(
 			new TextComponentTranslation("horde.generic.name"), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS))
 					.setDarkenSky(true);
-
-	public EntityPlayer player;
 
 	public GenericHorde(World world) {
 		super(world);
@@ -57,13 +56,13 @@ public class GenericHorde extends Horde {
 
 		this.waves = ModConfig.world.genericHordeWaves;
 		if (Utils.isCityInArea(world, (int) (center.getX() * 16), (int) (center.getZ() * 16), 5)) {
-			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 2));
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
 		}
 	}
 
 	public GenericHorde(BlockPos center, World world, EntityPlayer player) {
 		super(center, world);
-		this.player = player;
+		this.playerID = player.getPersistentID();
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "reanimated_corpse"), 20));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "bloated_zombie"), 12));
 		entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "infected_survivor"), 16));
@@ -102,7 +101,7 @@ public class GenericHorde extends Horde {
 
 		if (Utils.isCityInArea(world, (int) (player.posX * 16), (int) (player.posZ * 16), 5)) {
 			this.waves = (int) Math.ceil(waves * 1.2);
-			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 2));
+			entries.add(new HordeEntry(new ResourceLocation(SevenDaysToMine.MODID, "zombie_policeman"), 4));
 		}
 	}
 
@@ -157,10 +156,12 @@ public class GenericHorde extends Horde {
 	@Override
 	public void start() {
 		super.start();
+		EntityPlayer player = getPlayer();
 		if (player == null)
 			return;
 		zombies.clear();
 		zombiesInWave = 0;
+        this.center = getCenter();
 		BlockPos origin = getSpawnOrigin();
 		for (int i = 0; i < getZombiesInWave(); i++) {
 			BlockPos pos = Utils.getTopGroundBlock(getSpawn(origin), world, true).up();
@@ -203,5 +204,4 @@ public class GenericHorde extends Horde {
 		double d = world.rand.nextDouble() * 1.5;
 		return origin.add(x * d, y * d, z * d);
 	}
-
 }

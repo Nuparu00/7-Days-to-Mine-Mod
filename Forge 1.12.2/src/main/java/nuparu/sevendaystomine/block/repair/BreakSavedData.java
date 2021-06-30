@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import nuparu.sevendaystomine.SevenDaysToMine;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.network.PacketManager;
 import nuparu.sevendaystomine.network.packets.BreakSyncMessage;
 
@@ -27,7 +28,7 @@ public class BreakSavedData extends WorldSavedData {
 	}
 
 	public void addBreakData(BlockPos pos, World world, float delta) {
-		if(list == null) {
+		if (list == null) {
 			list = new ArrayList<BreakData>();
 		}
 		if (delta <= 0f) {
@@ -58,7 +59,7 @@ public class BreakSavedData extends WorldSavedData {
 	}
 
 	public void setBreakData(BlockPos pos, World world, float state) {
-		if(list == null) {
+		if (list == null) {
 			list = new ArrayList<BreakData>();
 		}
 		if (state == 0f) {
@@ -90,7 +91,7 @@ public class BreakSavedData extends WorldSavedData {
 	}
 
 	public void removeBreakData(BlockPos pos, World world) {
-		if(list == null) {
+		if (list == null) {
 			list = new ArrayList<BreakData>();
 		}
 		ArrayList<BreakData> list = getList();
@@ -109,7 +110,7 @@ public class BreakSavedData extends WorldSavedData {
 	}
 
 	public BreakData getBreakData(BlockPos pos, int dim) {
-		if(list == null) {
+		if (list == null) {
 			list = new ArrayList<BreakData>();
 		}
 		ArrayList<BreakData> list = getList();
@@ -130,11 +131,16 @@ public class BreakSavedData extends WorldSavedData {
 
 	public void update(World world) {
 		int decayRate = world.getGameRules().getInt("damageDecayRate");
-		if (decayRate <= 0)
+
+		if (decayRate <= 0) {
+			decayRate = ModConfig.world.damageDecayRate;
+		}
+		if (decayRate <= 0) {
 			return;
+		}
 		if (Math.abs(world.getTotalWorldTime() - lastUpdate) <= decayRate)
 			return;
-		if(list == null) {
+		if (list == null) {
 			list = new ArrayList<BreakData>();
 		}
 
@@ -187,7 +193,7 @@ public class BreakSavedData extends WorldSavedData {
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		if(list == null) {
+		if (list == null) {
 			list = new ArrayList<BreakData>();
 		}
 		NBTTagCompound tag = BreakHelper.writeToNBT(list);

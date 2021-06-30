@@ -16,6 +16,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.entity.EntityZombieBase;
 import nuparu.sevendaystomine.util.Utils;
@@ -35,8 +36,9 @@ public abstract class Horde {
 
 	public int waveTimer;
 
-	public EntityPlayer player;
 	public HordeSavedData data;
+
+	public UUID playerID;
 
 	public Horde(World world) {
 		this.world = world;
@@ -68,8 +70,8 @@ public abstract class Horde {
 				zombies.remove(zombie);
 				continue;
 			}
-			if(glow) {
-				zombie.addPotionEffect(new PotionEffect(MobEffects.GLOWING,10000));
+			if (glow) {
+				zombie.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 10000));
 			}
 		}
 
@@ -84,9 +86,10 @@ public abstract class Horde {
 				if (--waveTimer <= 0) {
 					start();
 				}
-			} else {
+			} else if (playerID != null) {
 				HordeSavedData data = HordeSavedData.get(world);
-				if(player != null) {
+				EntityPlayer player = Utils.getPlayerFromUUID(playerID);
+				if (player != null) {
 					player.addExperience(30);
 				}
 				if (data != null) {
@@ -141,6 +144,9 @@ public abstract class Horde {
 		center = BlockPos.fromLong(compound.getLong("center"));
 		startTime = compound.getLong("startTime");
 		waveTimer = compound.getInteger("waveTimer");
+		if(compound.hasKey("playerid",Constants.NBT.TAG_COMPOUND)) {
+			playerID = NBTUtil.getUUIDFromTag(compound.getCompoundTag("playerid"));
+		}
 		zombies.clear();
 	}
 
@@ -151,6 +157,9 @@ public abstract class Horde {
 		compound.setLong("center", center.toLong());
 		compound.setLong("startTime", startTime);
 		compound.setInteger("waveTimer", waveTimer);
+		if (playerID != null) {
+			compound.setTag("playerid", NBTUtil.createUUIDTag(playerID));
+		}
 		return compound;
 	}
 
@@ -175,5 +184,14 @@ public abstract class Horde {
 			return null;
 
 		}
+	}
+
+	public BlockPos getCenter() {
+		EntityPlayer player = getPlayer();
+		return player != null ? new BlockPos(player) : this.center;
+	}
+
+	public EntityPlayer getPlayer() {
+		return this.playerID != null ? Utils.getPlayerFromUUID(playerID) : null;
 	}
 }

@@ -418,8 +418,8 @@ public class Interpreter {
 								return codeBlock;
 							if (t_else.getData().type != EnumTokenType.KEYWORD
 									|| !t_else.getData().value.equals("else")) {
-								codeBlock.printError("Expected \"else\", but did not find any");
-								return codeBlock;
+								//codeBlock.printError("Expected \"else\", but did not find any");
+								break;
 							}
 							bracket = t_else.getChildren().get(0);
 							if (bracket.isLeaf())

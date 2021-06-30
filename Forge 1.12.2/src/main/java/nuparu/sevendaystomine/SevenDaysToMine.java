@@ -54,6 +54,7 @@ import nuparu.sevendaystomine.command.CommandPlacePrefab;
 import nuparu.sevendaystomine.command.CommandSavePrefab;
 import nuparu.sevendaystomine.command.CommandSetBlockBreak;
 import nuparu.sevendaystomine.command.CommandSetQuality;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.crafting.RecipeManager;
 import nuparu.sevendaystomine.enchantment.ModEnchantments;
 import nuparu.sevendaystomine.events.ClientEventHandler;
@@ -88,7 +89,7 @@ import nuparu.sevendaystomine.world.horde.HordeSavedData;
 @Mod(modid = SevenDaysToMine.MODID, version = SevenDaysToMine.VERSION, useMetadata = true, updateJSON = "https://raw.githubusercontent.com/Nuparu00/7-Days-to-Mine/master/update.json")
 public class SevenDaysToMine {
 	public static final String MODID = "sevendaystomine";
-	public static final String VERSION = "1.12.2-1.0.0.1";
+	public static final String VERSION = "1.12.2-1.0.2.5";
 
 	static final String CLIENT_PROXY_CLASS = "nuparu.sevendaystomine.proxy.ClientProxy";
 	static final String SERVER_PROXY_CLASS = "nuparu.sevendaystomine.proxy.CommonProxy";
@@ -177,7 +178,7 @@ public class SevenDaysToMine {
 		}
 	}).setRelevantEnchantmentTypes(ModEnchantments.GUNS);
 	
-	public static final Item.ToolMaterial SMALL_TOOLS = EnumHelper.addToolMaterial("small_tools", 0, 300, 0.5f, 20, 2);
+	public static final Item.ToolMaterial SMALL_TOOLS = EnumHelper.addToolMaterial("small_tools", 0, 300, 0.5f, 15, 2);
 
 	public static final Item.ToolMaterial STONE_TOOLS = EnumHelper.addToolMaterial("stone_tools", 1, 100, 3.5f, 5, 2);
 	public static final Item.ToolMaterial BONE_TOOLS = EnumHelper.addToolMaterial("bone_tools", 1, 100, 2f, 6, 2);

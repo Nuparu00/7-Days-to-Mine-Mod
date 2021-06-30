@@ -2,6 +2,8 @@ package nuparu.sevendaystomine.entity;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -40,6 +42,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import nuparu.sevendaystomine.config.ModConfig;
@@ -121,8 +124,9 @@ public class EntityZombieBase extends EntityMob {
 
 		range.setBaseValue(64.0D);
 		speed.setBaseValue(0.175D);
-		attack.setBaseValue(4.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60D);
+		attack.setBaseValue(4.0D * ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60D* ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(ModConfig.mobs.zombieKnockbackResistance);
 		armor.setBaseValue(0.0D);
 	}
 
@@ -408,4 +412,11 @@ public class EntityZombieBase extends EntityMob {
 			this.world.playEvent((EntityPlayer) null, 1026, new BlockPos(this), 0);
 		}
 	}
+	
+	@Override
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return ModConfig.mobs.zombieCorpses ? null : lootTable;
+    }
 }

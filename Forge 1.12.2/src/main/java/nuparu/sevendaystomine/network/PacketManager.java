@@ -41,6 +41,8 @@ import nuparu.sevendaystomine.network.packets.SchedulePhotoHandler;
 import nuparu.sevendaystomine.network.packets.SchedulePhotoMessage;
 import nuparu.sevendaystomine.network.packets.SendPacketHandler;
 import nuparu.sevendaystomine.network.packets.SendPacketMessage;
+import nuparu.sevendaystomine.network.packets.SendRedstoneSignalHandler;
+import nuparu.sevendaystomine.network.packets.SendRedstoneSignalMessage;
 import nuparu.sevendaystomine.network.packets.StartProcessHandler;
 import nuparu.sevendaystomine.network.packets.StartProcessMessage;
 import nuparu.sevendaystomine.network.packets.SyncIconHandler;
@@ -85,6 +87,7 @@ public class PacketManager {
 	public static SimpleNetworkWrapper schedulePhoto;
 	public static SimpleNetworkWrapper cameraDimensions;
 	public static SimpleNetworkWrapper honk;
+	public static SimpleNetworkWrapper redstoneSignal;
 
 	private static int discriminator = 0;
 
@@ -179,5 +182,8 @@ public class PacketManager {
 		cameraDimensions.registerMessage(new CameraDimensionsHandler(), CameraDimensionsMessage.class, discriminator++, Side.SERVER);
 		honk = NetworkRegistry.INSTANCE.newSimpleChannel("honk");
 		honk.registerMessage(new HonkHandler(), HonkMessage.class, discriminator++, Side.SERVER);
+		
+		redstoneSignal = NetworkRegistry.INSTANCE.newSimpleChannel("redstoneSignal");
+		redstoneSignal.registerMessage(new SendRedstoneSignalHandler(), SendRedstoneSignalMessage.class, discriminator++, Side.SERVER);
 	}
 }

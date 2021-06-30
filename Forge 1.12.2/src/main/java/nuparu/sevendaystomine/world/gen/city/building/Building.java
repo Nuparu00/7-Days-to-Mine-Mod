@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockSand;
@@ -155,6 +156,11 @@ public class Building {
 
 	public void generateTemplate(World world, BlockPos pos, boolean mirror, EnumFacing facing,
 			PlacementSettings placementsettings, Template template, boolean pedestal, Random rand) {
+		generateTemplate(world,pos,mirror,facing,placementsettings,template,pedestal,rand,true);
+	}
+	
+	public void generateTemplate(World world, BlockPos pos, boolean mirror, EnumFacing facing,
+			PlacementSettings placementsettings, Template template, boolean pedestal, Random rand, boolean sand) {
 		template.addBlocksToWorld(world, pos, placementsettings);
 		Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
 		for (Entry<BlockPos, String> entry : map.entrySet()) {
@@ -163,7 +169,9 @@ public class Building {
 		if (pedestal) {
 			generatePedestal(world, pos, template, facing, mirror);
 		}
+		if(sand) {
 		coverWithSand(world, pos, template, facing, mirror, rand);
+		}
 	}
 
 	public void handleDataBlock(World world, EnumFacing facing, BlockPos pos, String data, boolean mirror) {
@@ -508,10 +516,17 @@ public class Building {
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				IBlockState furnaceState = world.getBlockState(pos.down());
 				world.setBlockState(pos.down(), Blocks.AIR.getDefaultState());
-				if (furnaceState.getBlock() != Blocks.FURNACE)
-					break;
+				if (furnaceState.getBlock() == Blocks.FURNACE) {
 				world.setBlockState(pos.down(), ModBlocks.CODE_SAFE.getDefaultState().withProperty(BlockCodeSafe.FACING,
 						furnaceState.getValue(BlockFurnace.FACING)));
+				}
+				else if (furnaceState.getBlock() == Blocks.DISPENSER) {
+					world.setBlockState(pos.down(), ModBlocks.CODE_SAFE.getDefaultState().withProperty(BlockCodeSafe.FACING,
+							furnaceState.getValue(BlockDispenser.FACING)));
+				}
+				else {
+					return;
+				}
 				TileEntityCodeSafe te = (TileEntityCodeSafe) world.getTileEntity(pos.down());
 				ItemUtils.fillWithLoot((IItemHandler) te.getInventory(), ModLootTables.CODE_SAFE, world, world.rand);
 				break;

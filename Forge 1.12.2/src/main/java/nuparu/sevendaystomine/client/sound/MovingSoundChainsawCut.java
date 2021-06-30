@@ -34,7 +34,7 @@ public class MovingSoundChainsawCut extends MovingSound {
 			this.donePlaying = true;
 			PlayerEventHandler.nextChainsawCutSound = System.currentTimeMillis();
 		}
-		if (nbt == null || !nbt.hasKey("FuelMax",Constants.NBT.TAG_INT) || nbt.getInteger("FuelMax") == 0) {
+		if (nbt == null || !nbt.hasKey("FuelCurrent",Constants.NBT.TAG_INT) || nbt.getInteger("FuelCurrent") == 0) {
 			return;
 		}
 

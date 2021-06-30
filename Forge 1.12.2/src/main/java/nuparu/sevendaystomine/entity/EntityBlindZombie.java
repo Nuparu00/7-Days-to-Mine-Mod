@@ -4,6 +4,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.world.World;
+import nuparu.sevendaystomine.config.ModConfig;
 import nuparu.sevendaystomine.entity.ai.EntityAIBreakBlock;
 import nuparu.sevendaystomine.entity.ai.EntityAIMoveTowardsNoise;
 
@@ -33,8 +34,8 @@ public class EntityBlindZombie extends EntityBipedalZombie implements INoiseList
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.16D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D* ModConfig.players.balanceModifier);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70D* ModConfig.players.balanceModifier);
 	}
 
 	@Override

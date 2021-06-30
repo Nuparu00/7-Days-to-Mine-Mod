@@ -30,8 +30,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nuparu.sevendaystomine.SevenDaysToMine;
@@ -121,7 +123,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 	}
 
 	public float getFullDamage() {
-		return fullDamage;
+		return (float) (fullDamage * ModConfig.players.balanceModifier);
 	}
 
 	public EnumGun getType() {
@@ -207,7 +209,8 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
-		if(!ModConfig.players.qualitySystem) return super.getItemStackDisplayName(itemstack);
+		if (!ModConfig.players.qualitySystem)
+			return super.getItemStackDisplayName(itemstack);
 		EnumQuality quality = getQualityTierFromStack(itemstack);
 		return quality.color + SevenDaysToMine.proxy.localize(this.getUnlocalizedName() + ".name");
 	}
@@ -263,6 +266,10 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 	public void onReloadStart(World world, EntityPlayer player, ItemStack stack, int reloadTime) {
 		if (stack == null || world == null || player == null)
 			return;
+		if (stack.getTagCompound() == null) {
+			player.sendMessage(new TextComponentTranslation("gun.warning"));
+			return;
+		}
 		stack.getTagCompound().setLong("NextFire",
 				world.getTotalWorldTime() + (long) Math.ceil((reloadTime / 1000d) * 20));
 	}
@@ -285,6 +292,8 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 
 			setAmmo(stack, player, getAmmo(stack, player) + reload * getShotsPerAmmo());
 			player.inventory.clearMatchingItems(bullet.getItem(), -1, reload, null);
+		} else if(!nbt.hasKey("Capacity") && !nbt.hasKey("Ammo")) {
+			player.sendMessage(new TextComponentTranslation("gun.warning"));
 		}
 	}
 
@@ -297,7 +306,7 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 	}
 
 	@Override
-	public int getCapacity(ItemStack stack, EntityPlayer player) {
+	public int getCapacity(ItemStack stack, @Nullable EntityPlayer player) {
 		if (stack.getTagCompound() == null)
 			return this.getMaxAmmo();
 		NBTTagCompound nbt = stack.getTagCompound();
@@ -407,7 +416,8 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		double spread_local = spread * mult * (2d - ( ModConfig.players.qualitySystem ? (double) quality / (ModConfig.players.maxQuality) : 1));
+		double spread_local = spread * mult
+				* (2d - (ModConfig.players.qualitySystem ? (double) quality / (ModConfig.players.maxQuality) : 1));
 		return (spread_local
 				* (((double) (Math.abs(player.motionX) + Math.abs(player.motionY) + Math.abs(player.motionZ)))))
 				* (1 - (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack)
@@ -426,7 +436,9 @@ public class ItemGun extends Item implements IQuality, IReloadable {
 		ItemStack stack = player.getHeldItem(hand);
 		int quality = getQuality(stack);
 
-		return (spread * mult * (1.2d - (ModConfig.players.qualitySystem ? (double) quality / (ModConfig.players.maxQuality + 1) : 1) * 0.9))
+		return (spread * mult
+				* (1.2d - (ModConfig.players.qualitySystem ? (double) quality / (ModConfig.players.maxQuality + 1) : 1)
+						* 0.9))
 				* (1 - (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.marksman, stack)
 						- EnchantmentHelper.getEnchantmentLevel(ModEnchantments.strabismus, stack)) * 0.2);
 	}

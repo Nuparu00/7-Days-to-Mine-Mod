@@ -13,7 +13,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.energy.CapabilityEnergy;
 import nuparu.sevendaystomine.block.BlockSolarPanel;
 import nuparu.sevendaystomine.electricity.ElectricConnection;
 import nuparu.sevendaystomine.electricity.EnumDeviceType;
@@ -41,7 +43,7 @@ public class TileEntitySolarPanel extends TileEntity implements ITickable, IVolt
 			this.facing = world.getBlockState(pos).getValue(BlockSolarPanel.FACING).getOpposite();
 			markDirty();
 		}
-
+		
 		if(world.isRemote)return;
 		Chunk chunk = world.getChunkFromBlockCoords(pos);
 		int skylight = chunk.getLightFor(EnumSkyBlock.SKY, pos);
@@ -332,6 +334,58 @@ public class TileEntitySolarPanel extends TileEntity implements ITickable, IVolt
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		long toAdd = Math.min(this.capacity-this.voltage, maxReceive);
+		if(!simulate) {
+			this.voltage+=toAdd;
+		}
+		return (int)toAdd;
+	}
+
+	@Override
+	public int extractEnergy(int maxExtract, boolean simulate) {
+		long toExtract = Math.min(this.voltage, maxExtract);
+		if(!simulate) {
+			this.voltage-=toExtract;
+		}
+		return (int)toExtract;
+	}
+
+	@Override
+	public int getEnergyStored() {
+		return (int) this.voltage;
+	}
+
+	@Override
+	public int getMaxEnergyStored() {
+		return (int) this.capacity;
+	}
+
+	@Override
+	public boolean canExtract() {
+		return this.capacity > 0;
+	}
+
+	@Override
+	public boolean canReceive() {
+		return this.voltage < this.capacity;
+	}
+	
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY) {
+			return CapabilityEnergy.ENERGY.cast(this);
+		}
+
+		return super.getCapability(capability, facing);
 	}
 
 }

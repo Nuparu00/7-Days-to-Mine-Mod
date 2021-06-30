@@ -149,7 +149,8 @@ public class PlayerEventHandler {
 		if (!(event.getEntity() instanceof EntityPlayer)) {
 			return;
 		}
-		if(!ModConfig.players.backpackSlot)return;
+		if (!ModConfig.players.backpackSlot)
+			return;
 		final EntityPlayer player = (EntityPlayer) event.getEntity();
 
 		IItemHandler extendedInv = player.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, null);
@@ -246,7 +247,7 @@ public class PlayerEventHandler {
 				BlockPos blockpos = ray.getBlockPos();
 				IBlockState state = world.getBlockState(blockpos);
 				if (state.getMaterial() == Material.WATER) {
-					// 
+					//
 					flag = true;
 				} else if (state.getBlock() instanceof BlockCauldron) {
 					int level = state.getValue(BlockCauldron.LEVEL);
@@ -301,8 +302,10 @@ public class PlayerEventHandler {
 	@SubscribeEvent
 	public void onPlayerBreakSpeed(PlayerEvent.BreakSpeed event) {
 		float speed = event.getOriginalSpeed()
-				/ (ModConfig.players.immersiveBlockBreaking && (event.getState().getMaterial() != Material.CIRCUITS && event.getState().getMaterial() != Material.WEB) ? 32f
-						: 1f);
+				/ (ModConfig.players.immersiveBlockBreaking && (event.getState().getMaterial() != Material.CIRCUITS
+						&& event.getState().getMaterial() != Material.WEB)
+								? ModConfig.players.immersiveBlockBreakingModifier
+								: 1f);
 		if (ModConfig.players.qualitySystem) {
 			ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
 			Item item = stack.getItem();
@@ -421,7 +424,7 @@ public class PlayerEventHandler {
 			if (activeStack.isEmpty()
 					|| (activeStack.getItem() != ModItems.CHAINSAW && activeStack.getItem() != ModItems.AUGER))
 				return;
-			if (nbt != null && nbt.hasKey("FuelMax") && nbt.getInteger("FuelMax") > 0) {
+			if (nbt != null && nbt.hasKey("FuelCurrent") && nbt.getInteger("FuelCurrent") > 0) {
 				if (SevenDaysToMine.proxy.isHittingBlock(player)) {
 					lastTimeHittingBlock = System.currentTimeMillis();
 				}
