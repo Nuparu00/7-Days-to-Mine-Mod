@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=south": { "model": "sevendaystomine:dresser", "y": 180 },
-        "facing=north": { "model": "sevendaystomine:dresser", "y": 0 },
-        "facing=east":  { "model": "sevendaystomine:dresser", "y": 90 },
-        "facing=west":  { "model": "sevendaystomine:dresser", "y": 270 }
-    }
-}

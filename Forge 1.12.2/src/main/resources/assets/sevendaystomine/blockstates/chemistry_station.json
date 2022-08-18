@@ -1,8 +1,0 @@
-{
-    "variants": {
-		"facing=north": { "model": "sevendaystomine:chemistry_station" },
-		"facing=west": { "model": "sevendaystomine:chemistry_station","y":270 },
-		"facing=east": { "model": "sevendaystomine:chemistry_station","y":90 },
-		"facing=south": { "model": "sevendaystomine:chemistry_station","y":180 }
-    }
-}

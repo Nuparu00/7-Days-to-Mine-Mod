@@ -1,7 +1,0 @@
-{
-	"parent": "sevendaystomine:block/reinforcedwood_iron",
-	"textures": {
-		"0": "blocks/planks_big_oak",
-		"particle": "blocks/planks_big_oak"
-	}
-}

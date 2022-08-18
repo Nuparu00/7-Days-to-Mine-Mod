@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=up": { "model": "sevendaystomine:television_broken" },
-        "facing=north": { "model": "sevendaystomine:television_broken" },
-        "facing=west": { "model": "sevendaystomine:television_broken", "y": 270 },
-        "facing=east": { "model": "sevendaystomine:television_broken", "y": 90 },
-        "facing=south": { "model": "sevendaystomine:television_broken", "y": 180 }
-    }
-}

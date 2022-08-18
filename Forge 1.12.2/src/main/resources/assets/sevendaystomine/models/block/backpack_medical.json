@@ -1,7 +1,0 @@
-{
-	"parent": "sevendaystomine:block/backpack",
-	"textures": {
-		"3": "blocks/wool_colored_red",
-		"particle": "blocks/wool_colored_red"
-	}
-}

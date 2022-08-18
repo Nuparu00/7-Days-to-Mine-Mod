@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:sink_faucet" },
-        "facing=south": { "model": "sevendaystomine:sink_faucet", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:sink_faucet", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:sink_faucet", "y": 90 }
-    }
-}
-

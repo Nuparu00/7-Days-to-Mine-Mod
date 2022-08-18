@@ -1,7 +1,0 @@
-{    
-    "parent": "block/cross",
-    "textures": {
-        "cross": "sevendaystomine:blocks/goldenrod_plant",
-		"particle": "sevendaystomine:blocks/goldenrod_plant"
-    }
-}

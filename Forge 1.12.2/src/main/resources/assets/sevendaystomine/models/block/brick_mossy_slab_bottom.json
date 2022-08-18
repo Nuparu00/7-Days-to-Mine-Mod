@@ -1,8 +1,0 @@
-{
-    "parent": "block/half_slab",
-    "textures": {
-        "bottom": "sevendaystomine:blocks/brick_mossy",
-        "top": "sevendaystomine:blocks/brick_mossy",
-        "side": "sevendaystomine:blocks/brick_mossy"
-    }
-}

@@ -1,8 +1,0 @@
-{
-    "parent": "block/outer_stairs",
-    "textures": {
-        "bottom": "sevendaystomine:blocks/dark_brick",
-        "top": "sevendaystomine:blocks/dark_brick",
-        "side": "sevendaystomine:blocks/dark_brick"
-    }
-}

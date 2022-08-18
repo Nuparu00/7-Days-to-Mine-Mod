@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=south": { "model": "sevendaystomine:razor_wire" },
-        "facing=east": { "model": "sevendaystomine:razor_wire", "y": 270 },
-        "facing=west": { "model": "sevendaystomine:razor_wire", "y": 90 },
-        "facing=north": { "model": "sevendaystomine:razor_wire", "y": 180 }
-    }
-}

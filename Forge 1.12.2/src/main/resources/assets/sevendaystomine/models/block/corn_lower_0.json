@@ -1,7 +1,0 @@
-{
-    "parent": "block/cross",
-    "textures": {
-        "cross": "sevendaystomine:blocks/corn_stage_0",
-		"particle": "sevendaystomine:blocks/corn_stage_0"
-    }
-}

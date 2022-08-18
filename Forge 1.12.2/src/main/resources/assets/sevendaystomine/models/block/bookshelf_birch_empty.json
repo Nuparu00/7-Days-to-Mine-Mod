@@ -1,7 +1,0 @@
-{
-	"parent": "sevendaystomine:block/bookshelf_empty",
-	"textures": {
-		"0": "blocks/planks_birch",
-		"particle": "blocks/planks_birch"
-	}
-}

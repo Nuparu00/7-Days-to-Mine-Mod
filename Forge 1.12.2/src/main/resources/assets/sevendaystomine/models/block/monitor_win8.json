@@ -1,6 +1,0 @@
-{
-	"parent": "sevendaystomine:block/monitor_off",
-	"textures": {
-		"1": "sevendaystomine:blocks/computer_8"
-	}
-}

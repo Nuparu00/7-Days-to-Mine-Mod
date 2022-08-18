@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=up": { "model": "sevendaystomine:large_rock" },
-		"facing=south": { "model": "sevendaystomine:large_rock" },
-		"facing=east": { "model": "sevendaystomine:large_rock", "y": 270},
-		"facing=west": { "model": "sevendaystomine:large_rock", "y": 90 },
-		"facing=north": { "model": "sevendaystomine:large_rock", "y": 180 }
-    }
-}

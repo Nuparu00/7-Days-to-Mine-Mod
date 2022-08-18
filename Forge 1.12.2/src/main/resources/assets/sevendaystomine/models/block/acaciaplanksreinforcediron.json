@@ -1,7 +1,0 @@
-{
-	"parent": "sevendaystomine:block/reinforcedwood_iron",
-	"textures": {
-		"0": "blocks/planks_acacia",
-		"particle": "blocks/planks_acacia"
-	}
-}

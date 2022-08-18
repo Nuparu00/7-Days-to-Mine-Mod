@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=up": { "model": "sevendaystomine:computer" },
-        "facing=north": { "model": "sevendaystomine:computer" },
-        "facing=west": { "model": "sevendaystomine:computer", "y": 270 },
-        "facing=east": { "model": "sevendaystomine:computer", "y": 90 },
-        "facing=south": { "model": "sevendaystomine:computer", "y": 180 }
-    }
-}

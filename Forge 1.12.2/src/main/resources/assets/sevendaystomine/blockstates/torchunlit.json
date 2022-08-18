@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=up": { "model": "sevendaystomine:unlit_torch" },
-        "facing=east": { "model": "sevendaystomine:unlit_torch_wall" },
-        "facing=south": { "model": "sevendaystomine:unlit_torch_wall", "y": 90 },
-        "facing=west": { "model": "sevendaystomine:unlit_torch_wall", "y": 180 },
-        "facing=north": { "model": "sevendaystomine:unlit_torch_wall", "y": 270 }
-    }
-}

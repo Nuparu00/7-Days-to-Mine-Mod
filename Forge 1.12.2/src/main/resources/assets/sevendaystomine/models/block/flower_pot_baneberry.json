@@ -1,6 +1,0 @@
-{
-	"parent": "sevendaystomine:block/flower_pot_blueberry",
-	"textures": {
-		"cactus": "sevendaystomine:blocks/baneberry_grown"
-	}
-}

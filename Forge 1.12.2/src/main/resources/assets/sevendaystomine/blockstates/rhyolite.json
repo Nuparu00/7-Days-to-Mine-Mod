@@ -1,5 +1,0 @@
-{
-    "variants": {
-        "normal": [ {"model": "sevendaystomine:rhyolite", "weight": 1},{"model": "sevendaystomine:rhyolite", "y": 90,"weight": 1},{"model": "sevendaystomine:rhyolite", "y": 180, "weight": 1},{"model": "sevendaystomine:rhyolite", "y": 270,"weight": 1}]
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:skeleton_sitting" },
-        "facing=south": { "model": "sevendaystomine:skeleton_sitting", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:skeleton_sitting", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:skeleton_sitting", "y": 90 }
-    }
-}
-

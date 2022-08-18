@@ -1,6 +1,0 @@
-{
-    "parent": "sevendaystomine:item/crude_bow",
-    "textures": {
-        "layer0": "sevendaystomine:items/crude_bow_pulling_0"
-    }
-}
