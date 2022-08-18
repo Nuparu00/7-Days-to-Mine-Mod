@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:golden_apple",
+  "material" : "gold",
+  "weight" : 80,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

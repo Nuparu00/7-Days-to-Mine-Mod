@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "sevendaystomine:scrap_bronze",
+  "material" : "bronze",
+  "weight" : 1,
+  "canBeScrapped" : false,
+  "isScrapBit" : true
+}

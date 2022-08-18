@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:block/radio" },
+        "facing=west": { "model": "sevendaystomine:block/radio", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:block/radio", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:block/radio", "y": 180 }
+    }
+}

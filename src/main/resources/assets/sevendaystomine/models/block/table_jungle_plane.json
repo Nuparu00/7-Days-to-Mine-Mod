@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/table_oak_plane",
+	"textures": {
+		"0": "block/jungle_planks",
+		"particle": "block/jungle_planks"
+	}
+}

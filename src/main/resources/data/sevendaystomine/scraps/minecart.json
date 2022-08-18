@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:minecart",
+  "material" : "iron",
+  "weight" : 50,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

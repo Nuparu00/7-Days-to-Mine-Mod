@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=south": { "model": "sevendaystomine:item/sleeping_bag_white" },
+        "facing=east": { "model": "sevendaystomine:item/sleeping_bag_white", "y": 270 },
+        "facing=west": { "model": "sevendaystomine:item/sleeping_bag_white", "y": 90 },
+        "facing=north": { "model": "sevendaystomine:item/sleeping_bag_white", "y": 180 }
+    }
+}

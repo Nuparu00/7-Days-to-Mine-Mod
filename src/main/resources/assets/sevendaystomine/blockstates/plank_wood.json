@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "facing=north,cross=false": { "model": "sevendaystomine:block/board" },
+        "facing=south,cross=false": { "model": "sevendaystomine:block/board", "y": 180 },
+        "facing=west,cross=false":  { "model": "sevendaystomine:block/board", "y": 270 },
+        "facing=east,cross=false":  { "model": "sevendaystomine:block/board", "y": 90 },
+        "facing=up,cross=false":  { "model": "sevendaystomine:block/board", "x": 270 },
+        "facing=down,cross=false":  { "model": "sevendaystomine:block/board", "x": 90 },
+        "facing=north,cross=true": { "model": "sevendaystomine:block/boards" },
+        "facing=south,cross=true": { "model": "sevendaystomine:block/boards", "y": 180 },
+        "facing=west,cross=true":  { "model": "sevendaystomine:block/boards", "y": 270 },
+        "facing=east,cross=true":  { "model": "sevendaystomine:block/boards", "y": 90 },
+        "facing=up,cross=true":  { "model": "sevendaystomine:block/boards", "x": 270 },
+        "facing=down,cross=true":  { "model": "sevendaystomine:block/boards", "x": 90 }
+    }
+}
+

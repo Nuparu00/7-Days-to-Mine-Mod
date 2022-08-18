@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/moldy_backpack",
+	"textures": {
+		"3": "block/black_wool",
+		"particle": "block/black_wool"
+	}
+}

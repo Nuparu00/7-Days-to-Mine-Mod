@@ -1,0 +1,9 @@
+{
+	"parent": "sevendaystomine:block/writing_table",
+	"textures": {
+		"1": "block/cyan_terracotta",
+		"2": "block/quartz_block_bottom",
+		"3": "block/anvil",
+		"particle": "block/quartz_block_bottom"
+	}
+}

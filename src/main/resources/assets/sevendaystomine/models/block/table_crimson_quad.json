@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/table_oak_quad",
+	"textures": {
+		"0": "block/crimson_planks",
+		"particle": "block/crimson_planks"
+	}
+}

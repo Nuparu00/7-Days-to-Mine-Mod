@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:raw_iron_block",
+  "material" : "iron",
+  "weight" : 90,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

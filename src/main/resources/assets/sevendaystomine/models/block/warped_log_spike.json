@@ -1,0 +1,9 @@
+{
+    "parent": "sevendaystomine:block/log_spike",
+    "textures": {
+        "0": "block/stripped_warped_stem",
+        "1": "block/warped_stem",
+        "2": "block/warped_stem_top",
+        "particle": "block/stripped_warped_stem"
+    }
+}

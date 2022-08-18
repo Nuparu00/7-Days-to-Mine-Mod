@@ -1,0 +1,36 @@
+package nuparu.sevendaystomine.world.level.block;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
+public class PedestrianTrafficLightBlock extends WaterloggableHorizontalBlockBase {
+
+    public VoxelShape NORTH = Block.box(5, 0, 0.5625D*16, 11, 0.75D*16, 1D*16);
+    public VoxelShape SOUTH = Block.box(5, 0, 0D, 11, 0.75D*16, 0.4375D*16);
+    public VoxelShape WEST = Block.box(0.5625D*16, 0.0D, 5, 16, 0.75D*16, 11);
+    public VoxelShape EAST = Block.box(0D, 0.0D, 5, 0.4375D*16, 0.75D*16, 11);
+
+    public PedestrianTrafficLightBlock(Properties p_49795_) {
+        super(p_49795_);
+    }
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
+                               CollisionContext p_220053_4_) {
+        switch (state.getValue(FACING)) {
+            default:
+            case NORTH:
+                return NORTH;
+            case SOUTH:
+                return SOUTH;
+            case WEST:
+                return WEST;
+            case EAST:
+                return EAST;
+        }
+
+    }
+}

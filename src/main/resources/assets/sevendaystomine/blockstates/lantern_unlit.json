@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "sevendaystomine:block/lantern_unlit"
+    },
+    "hanging=true": {
+      "model": "sevendaystomine:block/lantern_unlit_hanging"
+    }
+  }
+}

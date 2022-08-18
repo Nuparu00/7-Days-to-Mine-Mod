@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "type=bottom": { "model": "sevendaystomine:block/catwalk_bottom" },
+        "type=top": { "model": "sevendaystomine:block/catwalk_top" }
+    }
+}

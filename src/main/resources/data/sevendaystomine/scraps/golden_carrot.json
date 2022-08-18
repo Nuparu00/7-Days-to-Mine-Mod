@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:golden_carrot",
+  "material" : "gold",
+  "weight" : "8/9",
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

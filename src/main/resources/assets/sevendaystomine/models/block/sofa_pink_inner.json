@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/sofa_inner",
+	"textures": {
+		"all": "block/pink_wool",
+		"particle": "block/pink_wool"
+	}
+}

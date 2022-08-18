@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=south": { "model": "sevendaystomine:block/dark_oak_log_spike" },
+        "facing=east": { "model": "sevendaystomine:block/dark_oak_log_spike", "y": 270 },
+        "facing=west": { "model": "sevendaystomine:block/dark_oak_log_spike", "y": 90 },
+        "facing=north": { "model": "sevendaystomine:block/dark_oak_log_spike", "y": 180 }
+    }
+}

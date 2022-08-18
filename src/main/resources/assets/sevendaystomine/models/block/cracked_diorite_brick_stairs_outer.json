@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "sevendaystomine:block/stone_diorite_bricks_cracked",
+    "top": "sevendaystomine:block/stone_diorite_bricks_cracked",
+    "side": "sevendaystomine:block/stone_diorite_bricks_cracked"
+  }
+}

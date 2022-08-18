@@ -1,0 +1,9 @@
+{
+    "parent": "sevendaystomine:block/log_spike",
+    "textures": {
+        "0": "block/stripped_jungle_log",
+        "1": "block/jungle_log",
+        "2": "block/jungle_log_top",
+        "particle": "block/stripped_jungle_log"
+    }
+}

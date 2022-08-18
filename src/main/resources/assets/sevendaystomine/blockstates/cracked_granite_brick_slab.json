@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "sevendaystomine:block/cracked_granite_brick_slab"
+    },
+    "type=double": {
+      "model": "sevendaystomine:block/cracked_granite_bricks"
+    },
+    "type=top": {
+      "model": "sevendaystomine:block/cracked_granite_brick_slab_top"
+    }
+  }
+}

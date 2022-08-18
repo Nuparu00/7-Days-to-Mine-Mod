@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=south": { "model": "sevendaystomine:block/trash_can" },
+        "facing=east": { "model": "sevendaystomine:block/trash_can", "y": 270 },
+        "facing=west": { "model": "sevendaystomine:block/trash_can", "y": 90 },
+        "facing=north": { "model": "sevendaystomine:block/trash_can", "y": 180 }
+    }
+}

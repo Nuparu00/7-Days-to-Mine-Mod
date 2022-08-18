@@ -1,0 +1,8 @@
+{    
+    "parent": "block/cross",
+    "render_type": "cutout_mipped",
+    "textures": {
+        "cross": "sevendaystomine:block/goldenrod_plant",
+		"particle": "sevendaystomine:block/goldenrod_plant"
+    }
+}

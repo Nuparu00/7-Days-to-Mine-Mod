@@ -1,0 +1,10 @@
+{
+  "src": "sevendaystomine",
+  "from": "sevendaystomine:reinforced_concrete",
+  "to": "sevendaystomine:reinforced_concrete_cracked_0",
+  "direction" : "DOWNGRADE_ONLY",
+  "sound" : "minecraft:block.stone.break",
+  "ingredients": [
+
+  ]
+}

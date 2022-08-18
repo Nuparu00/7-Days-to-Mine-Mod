@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "sevendaystomine:small_stone",
+  "material" : "stone",
+  "weight" : 1,
+  "canBeScrapped" : false,
+  "isScrapBit" : true
+}

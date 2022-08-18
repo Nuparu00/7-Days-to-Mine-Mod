@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=west": { "model": "sevendaystomine:block/globe_base" },
+        "facing=south": { "model": "sevendaystomine:block/globe_base", "y": 270 },
+        "facing=north": { "model": "sevendaystomine:block/globe_base", "y": 90 },
+        "facing=east": { "model": "sevendaystomine:block/globe_base", "y": 180 }
+    }
+}

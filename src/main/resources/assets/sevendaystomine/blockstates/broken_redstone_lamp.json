@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "sevendaystomine:block/broken_redstone_lamp" }
+    }
+}

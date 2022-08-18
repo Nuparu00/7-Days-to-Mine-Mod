@@ -1,0 +1,15 @@
+{
+  "src": "sevendaystomine",
+  "from": "sevendaystomine:burnt_planks_reinforced",
+  "to": "sevendaystomine:oak_planks_reinforced",
+  "direction" : "UPGRADE_ONLY",
+  "sound" : "minecraft:block.wood.place",
+  "ingredients": [
+    {
+      "stack": {
+        "item": "sevendaystomine:plank_wood"
+      },
+      "count": 4
+    }
+  ]
+}

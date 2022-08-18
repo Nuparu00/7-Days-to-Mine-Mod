@@ -1,0 +1,35 @@
+{
+  "src": "sevendaystomine",
+  "from": {
+    "block" : "sevendaystomine:plank_wood",
+    "properties" : [
+      {
+        "name" : "cross",
+        "value" : "false"
+      }
+    ]
+  },
+  "to": {
+    "block" : "sevendaystomine:plank_wood",
+    "properties" : [
+      {
+        "name" : "cross",
+        "value" : "true"
+      }
+    ]
+  },
+  "copy" : [
+    "facing",
+    "waterlogged"
+  ],
+  "direction" : "UPGRADE_AND_DOWNGRADE",
+  "sound" : "minecraft:block.wood.place",
+  "ingredients": [
+    {
+      "stack": {
+        "item": "sevendaystomine:plank_wood"
+      },
+      "count": 4
+    }
+  ]
+}

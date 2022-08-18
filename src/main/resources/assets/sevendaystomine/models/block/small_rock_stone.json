@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/small_rock",
+	"textures": {
+		"0": "block/stone",
+		"particle": "block/stone"
+	}
+}

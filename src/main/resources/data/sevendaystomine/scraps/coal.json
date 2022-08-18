@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:coal",
+  "material" : "carbon",
+  "weight" : 1,
+  "canBeScrapped" : false,
+  "isScrapBit" : true
+}

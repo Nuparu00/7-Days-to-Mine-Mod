@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:raw_gold_block",
+  "material" : "gold",
+  "weight" : 90,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

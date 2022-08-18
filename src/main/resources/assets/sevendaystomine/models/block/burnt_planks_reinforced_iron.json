@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/planks_iron_reinforced",
+	"textures": {
+		"0": "sevendaystomine:block/burnt_planks",
+		"particle": "sevendaystomine:block/burnt_planks"
+	}
+}

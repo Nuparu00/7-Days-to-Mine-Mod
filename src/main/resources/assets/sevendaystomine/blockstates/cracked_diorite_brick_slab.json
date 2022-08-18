@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "sevendaystomine:block/cracked_diorite_brick_slab"
+    },
+    "type=double": {
+      "model": "sevendaystomine:block/cracked_diorite_bricks"
+    },
+    "type=top": {
+      "model": "sevendaystomine:block/cracked_diorite_brick_slab_top"
+    }
+  }
+}

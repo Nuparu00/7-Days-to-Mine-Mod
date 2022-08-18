@@ -1,0 +1,9 @@
+{
+    "parent": "sevendaystomine:block/log_spike",
+    "textures": {
+        "0": "block/stripped_acacia_log",
+        "1": "block/acacia_log",
+        "2": "block/acacia_log_top",
+        "particle": "block/stripped_acacia_log"
+    }
+}

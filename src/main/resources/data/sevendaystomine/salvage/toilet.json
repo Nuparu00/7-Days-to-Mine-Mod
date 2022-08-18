@@ -1,0 +1,21 @@
+{
+  "src": "sevendaystomine",
+  "block": "sevendaystomine:toilet",
+  "sound" : "minecraft:block.anvil.land",
+  "ingredients": [
+    {
+      "stack": {
+        "item": "sevendaystomine:scrap_iron"
+      },
+      "count": 4,
+      "chance" : 0.75
+    },
+    {
+      "stack": {
+        "item": "sevendaystomine:iron_pipe"
+      },
+      "count": 3,
+      "chance" : 0.5
+    }
+  ]
+}

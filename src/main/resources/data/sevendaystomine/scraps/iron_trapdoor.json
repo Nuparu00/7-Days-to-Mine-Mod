@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:iron_trapdoor",
+  "material" : "iron",
+  "weight" : 60,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

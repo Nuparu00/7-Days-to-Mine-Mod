@@ -1,0 +1,24 @@
+{
+    "variants": {
+        "facing=south,shape=straight": { "model": "sevendaystomine:block/sofa_lime" },
+        "facing=east,shape=straight": { "model": "sevendaystomine:block/sofa_lime", "y": 270 , "uvlock": true},
+        "facing=west,shape=straight": { "model": "sevendaystomine:block/sofa_lime", "y": 90 , "uvlock": true },
+        "facing=north,shape=straight": { "model": "sevendaystomine:block/sofa_lime", "y": 180 , "uvlock": true },
+        "facing=south,shape=inner_right": { "model": "sevendaystomine:block/sofa_lime_inner" },
+        "facing=east,shape=inner_right": { "model": "sevendaystomine:block/sofa_lime_inner", "y": 270 , "uvlock": true },
+        "facing=west,shape=inner_right": { "model": "sevendaystomine:block/sofa_lime_inner", "y": 90 , "uvlock": true },
+        "facing=north,shape=inner_right": { "model": "sevendaystomine:block/sofa_lime_inner", "y": 180 , "uvlock": true },
+        "facing=south,shape=outer_right": { "model": "sevendaystomine:block/sofa_lime_outer" },
+        "facing=east,shape=outer_right": { "model": "sevendaystomine:block/sofa_lime_outer", "y": 270 , "uvlock": true },
+        "facing=west,shape=outer_right": { "model": "sevendaystomine:block/sofa_lime_outer", "y": 90 , "uvlock": true },
+        "facing=north,shape=outer_right": { "model": "sevendaystomine:block/sofa_lime_outer", "y": 180 , "uvlock": true },
+        "facing=west,shape=inner_left": { "model": "sevendaystomine:block/sofa_lime_inner" },
+        "facing=south,shape=inner_left": { "model": "sevendaystomine:block/sofa_lime_inner", "y": 270 , "uvlock": true },
+        "facing=north,shape=inner_left": { "model": "sevendaystomine:block/sofa_lime_inner", "y": 90 , "uvlock": true },
+        "facing=east,shape=inner_left": { "model": "sevendaystomine:block/sofa_lime_inner", "y": 180 , "uvlock": true },
+        "facing=west,shape=outer_left": { "model": "sevendaystomine:block/sofa_lime_outer" },
+        "facing=south,shape=outer_left": { "model": "sevendaystomine:block/sofa_lime_outer", "y": 270 , "uvlock": true },
+        "facing=north,shape=outer_left": { "model": "sevendaystomine:block/sofa_lime_outer", "y": 90 , "uvlock": true },
+        "facing=east,shape=outer_left": { "model": "sevendaystomine:block/sofa_lime_outer", "y": 180 , "uvlock": true }
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:waxed_exposed_cut_copper_slab",
+  "material" : "copper",
+  "weight" : "45",
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

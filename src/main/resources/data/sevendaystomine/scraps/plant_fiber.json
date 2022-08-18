@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "sevendaystomine:plant_fiber",
+  "material" : "plant_fiber",
+  "weight" : 1,
+  "canBeScrapped" : false,
+  "isScrapBit" : true
+}

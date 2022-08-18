@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_hanging_lantern",
+  "render_type": "cutout_mipped",
+  "textures": {
+    "lantern": "sevendaystomine:block/lantern_unlit"
+  }
+}

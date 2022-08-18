@@ -1,0 +1,21 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "RF",
+    "S "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "R": {
+      "item": "sevendaystomine:small_stone"
+    },
+    "F": {
+      "item": "sevendaystomine:plant_fiber"
+    }
+  },
+  "result": {
+    "item": "minecraft:stone_axe"
+  }
+}

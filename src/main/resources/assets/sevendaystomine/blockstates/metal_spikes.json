@@ -1,0 +1,110 @@
+{
+    "variants": {
+        "face=ceiling,facing=east,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "x": 180,
+            "y": 270
+        },
+        "face=ceiling,facing=north,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "x": 180,
+            "y": 180
+        },
+        "face=ceiling,facing=south,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "x": 180
+        },
+        "face=ceiling,facing=west,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "x": 180,
+            "y": 90
+        },
+        "face=floor,facing=east,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "y": 90
+        },
+        "face=floor,facing=north,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes"
+        },
+        "face=floor,facing=south,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "y": 180
+        },
+        "face=floor,facing=west,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "y": 270
+        },
+        "face=wall,facing=east,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "x": 90,
+            "y": 90
+        },
+        "face=wall,facing=north,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "x": 90
+        },
+        "face=wall,facing=south,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "x": 90,
+            "y": 180
+        },
+        "face=wall,facing=west,extended=false": {
+            "model": "sevendaystomine:block/metal_spikes",
+            "x": 90,
+            "y": 270
+        },
+        "face=ceiling,facing=east,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "x": 180,
+            "y": 270
+        },
+        "face=ceiling,facing=north,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "x": 180,
+            "y": 180
+        },
+        "face=ceiling,facing=south,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "x": 180
+        },
+        "face=ceiling,facing=west,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "x": 180,
+            "y": 90
+        },
+        "face=floor,facing=east,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "y": 90
+        },
+        "face=floor,facing=north,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended"
+        },
+        "face=floor,facing=south,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "y": 180
+        },
+        "face=floor,facing=west,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "y": 270
+        },
+        "face=wall,facing=east,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "x": 90,
+            "y": 90
+        },
+        "face=wall,facing=north,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "x": 90
+        },
+        "face=wall,facing=south,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "x": 90,
+            "y": 180
+        },
+        "face=wall,facing=west,extended=true": {
+            "model": "sevendaystomine:block/metal_spikes_extended",
+            "x": 90,
+            "y": 270
+        }
+    }
+}

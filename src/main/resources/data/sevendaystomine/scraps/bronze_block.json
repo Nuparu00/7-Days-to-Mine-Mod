@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "sevendaystomine:bronze_block",
+  "material" : "bronze",
+  "weight" : 90,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

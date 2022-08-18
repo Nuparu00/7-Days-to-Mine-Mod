@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:netherite_scrap",
+  "material" : "netherite",
+  "weight" : 1,
+  "canBeScrapped" : false,
+  "isScrapBit" : true
+}

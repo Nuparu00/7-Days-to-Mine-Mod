@@ -1,0 +1,15 @@
+{
+  "src": "sevendaystomine",
+  "from": "minecraft:warped_planks",
+  "to": "sevendaystomine:warped_planks_reinforced",
+  "direction" : "UPGRADE_AND_DOWNGRADE",
+  "sound" : "minecraft:block.wood.place",
+  "ingredients": [
+    {
+      "stack": {
+        "item": "sevendaystomine:plank_wood"
+      },
+      "count": 4
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:deepslate_gold_ore",
+  "material" : "gold",
+  "weight" : 10,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

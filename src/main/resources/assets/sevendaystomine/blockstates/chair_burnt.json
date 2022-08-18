@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:block/chair_burnt" },
+        "facing=west": { "model": "sevendaystomine:block/chair_burnt", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:block/chair_burnt", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:block/chair_burnt", "y": 180 }
+    }
+}

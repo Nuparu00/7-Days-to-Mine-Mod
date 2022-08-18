@@ -1,0 +1,9 @@
+{
+    "parent": "sevendaystomine:block/log_spike",
+    "textures": {
+        "0": "block/stripped_crimson_stem",
+        "1": "block/crimson_stem",
+        "2": "block/crimson_stem_top",
+        "particle": "block/stripped_crimson_stem"
+    }
+}

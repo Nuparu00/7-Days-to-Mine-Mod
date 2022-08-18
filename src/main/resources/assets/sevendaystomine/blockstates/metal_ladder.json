@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:block/metal_ladder" },
+        "facing=east":  { "model": "sevendaystomine:block/metal_ladder", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:block/metal_ladder", "y": 180 },
+        "facing=west":  { "model": "sevendaystomine:block/metal_ladder", "y": 270 }
+    }
+}

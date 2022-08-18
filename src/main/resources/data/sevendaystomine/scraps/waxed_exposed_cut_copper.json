@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:waxed_exposed_cut_copper",
+  "material" : "copper",
+  "weight" : 90,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

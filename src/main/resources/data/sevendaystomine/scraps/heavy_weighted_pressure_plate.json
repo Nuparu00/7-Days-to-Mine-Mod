@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:heavy_weighted_pressure_plate",
+  "material" : "iron",
+  "weight" : 20,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

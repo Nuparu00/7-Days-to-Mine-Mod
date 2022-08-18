@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:bucket",
+  "material" : "iron",
+  "weight" : 30,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

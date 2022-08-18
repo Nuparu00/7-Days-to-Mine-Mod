@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:block/wooden_spikes_broken" },
+        "facing=west": { "model": "sevendaystomine:block/wooden_spikes_broken", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:block/wooden_spikes_broken", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:block/wooden_spikes_broken", "y": 180 }
+    }
+}

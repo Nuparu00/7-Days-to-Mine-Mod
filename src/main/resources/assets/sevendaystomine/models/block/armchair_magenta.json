@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/armchair",
+	"textures": {
+		"all": "block/magenta_wool",
+		"particle": "block/magenta_wool"
+	}
+}

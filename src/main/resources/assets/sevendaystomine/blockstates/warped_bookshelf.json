@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=south,full=false": { "model": "sevendaystomine:block/bookshelf_warped_empty" },
+        "facing=east,full=false": { "model": "sevendaystomine:block/bookshelf_warped_empty", "y": 270 },
+        "facing=west,full=false": { "model": "sevendaystomine:block/bookshelf_warped_empty", "y": 90 },
+        "facing=north,full=false": { "model": "sevendaystomine:block/bookshelf_warped_empty", "y": 180 },
+        "facing=south,full=true": { "model": "sevendaystomine:block/bookshelf_warped_full" },
+        "facing=east,full=true": { "model": "sevendaystomine:block/bookshelf_warped_full", "y": 270 },
+        "facing=west,full=true": { "model": "sevendaystomine:block/bookshelf_warped_full", "y": 90 },
+        "facing=north,full=true": { "model": "sevendaystomine:block/bookshelf_warped_full", "y": 180 }
+    }
+}

@@ -1,0 +1,18 @@
+{
+  "loader": "forge:separate-perspective",
+  "gui_light": "front",
+  "base": {
+    "parent": "sevendaystomine:item/stone_spear_throwing"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "sevendaystomine:item/stone_spear_gui"
+    },
+    "ground": {
+      "parent": "sevendaystomine:item/stone_spear_gui"
+    },
+    "fixed": {
+      "parent": "sevendaystomine:item/stone_spear_gui"
+    }
+  }
+}

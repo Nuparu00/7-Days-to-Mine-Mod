@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,campfire=false": { "model": "sevendaystomine:block/beaker" },
+        "facing=south,campfire=false": { "model": "sevendaystomine:block/beaker", "y": 180 },
+        "facing=west,campfire=false":  { "model": "sevendaystomine:block/beaker", "y": 270 },
+        "facing=east,campfire=false":  { "model": "sevendaystomine:block/beaker", "y": 90 },
+        "facing=north,campfire=true": { "model": "sevendaystomine:block/beaker_campfire" },
+        "facing=south,campfire=true": { "model": "sevendaystomine:block/beaker_campfire", "y": 180 },
+        "facing=west,campfire=true":  { "model": "sevendaystomine:block/beaker_campfire", "y": 270 },
+        "facing=east,campfire=true":  { "model": "sevendaystomine:block/beaker_campfire", "y": 90 }
+    }
+}

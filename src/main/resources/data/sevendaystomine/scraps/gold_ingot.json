@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:gold_ingot",
+  "material" : "gold",
+  "weight" : 10,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

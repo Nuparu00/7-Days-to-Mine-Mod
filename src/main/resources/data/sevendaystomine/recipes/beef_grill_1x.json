@@ -1,0 +1,13 @@
+{
+   "type":"sevendaystomine:cooking_shapeless",
+   "ingredients":[
+      {
+         "item":"minecraft:beef"
+      }
+   ],
+   "station" : "sevendaystomine:cooking_grill",
+   "result":{
+      "item":"minecraft:cooked_beef",
+      "count":1
+   }
+}

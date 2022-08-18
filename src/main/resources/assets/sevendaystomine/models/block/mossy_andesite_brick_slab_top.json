@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "sevendaystomine:block/stone_andesite_bricks_mossy",
+    "top": "sevendaystomine:block/stone_andesite_bricks_mossy",
+    "side": "sevendaystomine:block/stone_andesite_bricks_mossy"
+  }
+}

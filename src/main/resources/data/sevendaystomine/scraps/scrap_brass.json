@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "sevendaystomine:scrap_brass",
+  "material" : "brass",
+  "weight" : 1,
+  "canBeScrapped" : false,
+  "isScrapBit" : true
+}

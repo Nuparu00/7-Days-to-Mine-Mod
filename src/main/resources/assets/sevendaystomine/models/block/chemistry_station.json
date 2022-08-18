@@ -1,0 +1,6 @@
+{
+	"parent": "sevendaystomine:block/chemistry_station_lit",
+	"textures": {
+		"8": "block/furnace_front"
+	}
+}

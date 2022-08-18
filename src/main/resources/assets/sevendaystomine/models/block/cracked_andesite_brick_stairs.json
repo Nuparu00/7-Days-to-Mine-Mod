@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "sevendaystomine:block/stone_andesite_bricks_cracked",
+    "top": "sevendaystomine:block/stone_andesite_bricks_cracked",
+    "side": "sevendaystomine:block/stone_andesite_bricks_cracked"
+  }
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/armchair",
+	"textures": {
+		"all": "block/lime_wool",
+		"particle": "block/lime_wool"
+	}
+}

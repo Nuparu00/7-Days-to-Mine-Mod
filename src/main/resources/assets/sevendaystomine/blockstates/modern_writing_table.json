@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=south": { "model": "sevendaystomine:block/modern_writing_table", "y": 180 },
+        "facing=north": { "model": "sevendaystomine:block/modern_writing_table", "y": 0 },
+        "facing=east":  { "model": "sevendaystomine:block/modern_writing_table", "y": 90 },
+        "facing=west":  { "model": "sevendaystomine:block/modern_writing_table", "y": 270 }
+    }
+}

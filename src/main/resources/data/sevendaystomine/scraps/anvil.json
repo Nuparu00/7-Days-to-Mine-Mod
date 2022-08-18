@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:anvil",
+  "material" : "iron",
+  "weight" : 300,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

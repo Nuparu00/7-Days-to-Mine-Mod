@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:block/cupboard", "y": 180, "uvlock": true },
+        "facing=south": { "model": "sevendaystomine:block/cupboard", "y": 0 },
+        "facing=west":  { "model": "sevendaystomine:block/cupboard", "y": 90 , "uvlock": true },
+        "facing=east":  { "model": "sevendaystomine:block/cupboard", "y": 270 , "uvlock": true}
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:cut_copper_slab",
+  "material" : "copper",
+  "weight" : "45",
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

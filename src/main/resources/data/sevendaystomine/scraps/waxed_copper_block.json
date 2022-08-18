@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:waxed_copper_block",
+  "material" : "copper",
+  "weight" : 90,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

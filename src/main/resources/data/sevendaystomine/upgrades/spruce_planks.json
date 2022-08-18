@@ -1,0 +1,15 @@
+{
+  "src": "sevendaystomine",
+  "from": "sevendaystomine:spruce_planks_frame",
+  "to": "minecraft:spruce_planks",
+  "direction" : "UPGRADE_AND_DOWNGRADE",
+  "sound" : "minecraft:block.wood.place",
+  "ingredients": [
+    {
+      "stack": {
+        "item": "sevendaystomine:plank_wood"
+      },
+      "count": 4
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/bookshelf_full",
+	"textures": {
+		"0": "block/warped_planks",
+		"particle": "block/warped_planks"
+	}
+}

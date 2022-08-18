@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "sevendaystomine:lead_block",
+  "material" : "lead",
+  "weight" : 90,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

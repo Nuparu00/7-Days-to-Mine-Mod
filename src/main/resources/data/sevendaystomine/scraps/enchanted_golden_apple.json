@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:enchanted_golden_apple",
+  "material" : "gold",
+  "weight" : 720,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

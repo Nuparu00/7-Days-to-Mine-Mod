@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/bookshelf_empty",
+	"textures": {
+		"0": "block/jungle_planks",
+		"particle": "block/jungle_planks"
+	}
+}

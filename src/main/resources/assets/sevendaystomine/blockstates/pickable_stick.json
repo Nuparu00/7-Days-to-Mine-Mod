@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:block/pickable_stick" },
+        "facing=south": { "model": "sevendaystomine:block/pickable_stick", "y": 180 },
+        "facing=west":  { "model": "sevendaystomine:block/pickable_stick", "y": 270 },
+        "facing=east":  { "model": "sevendaystomine:block/pickable_stick", "y": 90 }
+    }
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/planks_frame",
+	"textures": {
+		"0": "block/acacia_planks",
+		"particle": "block/acacia_planks"
+	}
+}

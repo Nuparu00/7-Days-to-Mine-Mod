@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:iron_nugget",
+  "material" : "iron",
+  "weight" : "1/9",
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

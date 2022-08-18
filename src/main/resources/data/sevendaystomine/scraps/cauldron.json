@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:cauldron",
+  "material" : "iron",
+  "weight" : 70,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

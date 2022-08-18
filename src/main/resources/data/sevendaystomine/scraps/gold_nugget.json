@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:gold_nugget",
+  "material" : "gold",
+  "weight" : "1/9",
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

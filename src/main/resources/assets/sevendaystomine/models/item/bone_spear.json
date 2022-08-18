@@ -1,0 +1,12 @@
+{
+    "parent": "sevendaystomine:item/bone_spear_normal",
+    "gui_light": "front",
+    "overrides": [
+        {
+            "predicate": {
+                "sevendaystomine:throwing": 1.0
+            },
+            "model" : "sevendaystomine:item/bone_spear_pose"
+        }
+    ]
+}

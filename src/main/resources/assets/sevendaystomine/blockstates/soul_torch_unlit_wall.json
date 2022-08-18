@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "sevendaystomine:block/torch_unlit_wall"
+    },
+    "facing=north": {
+      "model": "sevendaystomine:block/torch_unlit_wall",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "sevendaystomine:block/torch_unlit_wall",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "sevendaystomine:block/torch_unlit_wall",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:shears",
+  "material" : "iron",
+  "weight" : 20,
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

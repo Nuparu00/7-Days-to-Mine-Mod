@@ -1,0 +1,8 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "minecraft:exposed_cut_copper_stairs",
+  "material" : "copper",
+  "weight" : "135/2",
+  "canBeScrapped" : true,
+  "isScrapBit" : false
+}

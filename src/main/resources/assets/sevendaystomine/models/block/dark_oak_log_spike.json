@@ -1,0 +1,9 @@
+{
+    "parent": "sevendaystomine:block/log_spike",
+    "textures": {
+        "0": "block/stripped_dark_oak_log",
+        "1": "block/dark_oak_log",
+        "2": "block/dark_oak_log_top",
+        "particle": "block/stripped_dark_oak_log"
+    }
+}

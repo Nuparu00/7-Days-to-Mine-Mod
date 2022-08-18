@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/sofa_outer",
+	"textures": {
+		"all": "block/purple_wool",
+		"particle": "block/purple_wool"
+	}
+}

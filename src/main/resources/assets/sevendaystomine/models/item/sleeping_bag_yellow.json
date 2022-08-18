@@ -1,0 +1,8 @@
+{
+    "parent": "sevendaystomine:block/sleeping_bag",
+    "textures":{
+        "0":"block/blue_wool",
+        "1":"block/yellow_wool",
+        "particle":"block/blue_wool"
+    }
+}

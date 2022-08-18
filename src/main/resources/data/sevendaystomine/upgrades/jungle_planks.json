@@ -1,0 +1,15 @@
+{
+  "src": "sevendaystomine",
+  "from": "sevendaystomine:jungle_planks_frame",
+  "to": "minecraft:jungle_planks",
+  "direction" : "UPGRADE_AND_DOWNGRADE",
+  "sound" : "minecraft:block.wood.place",
+  "ingredients": [
+    {
+      "stack": {
+        "item": "sevendaystomine:plank_wood"
+      },
+      "count": 4
+    }
+  ]
+}
