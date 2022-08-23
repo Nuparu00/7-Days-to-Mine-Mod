@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -80,9 +81,8 @@ public class ClientEventHandler {
             int quality = qualityStack.getQuality();
             QualityLevel qualityLevel = qualityStack.getQualityLevel();
 
-            MutableComponent qualityTitle = MutableComponent.create(new TranslatableContents(
-                    "tooltip.sevendaystomine.quality." + qualityLevel.getUnlocalizedName().toLowerCase()));
-            MutableComponent qualityValue = MutableComponent.create(new TranslatableContents("tooltip.sevendaystomine.quality", quality));
+            MutableComponent qualityTitle = Component.translatable( "tooltip.sevendaystomine.quality." + qualityLevel.getUnlocalizedName().toLowerCase());
+            MutableComponent qualityValue = Component.translatable("tooltip.sevendaystomine.quality", quality);
 
 
             Style style = qualityTitle.getStyle().withColor(qualityLevel.textColor);

@@ -1,0 +1,7 @@
+{
+  "name": "survival_guide.name",
+  "subtitle": "Surviving the apocalypse",
+  "landing_text": "Written by Craig Craigson",
+  "dont_generate_book" : true,
+  "custom_book_item" : "sevendaystomine:survival_guide"
+}

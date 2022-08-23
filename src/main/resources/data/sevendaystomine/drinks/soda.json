@@ -2,5 +2,6 @@
   "src" : "sevendaystomine",
   "item" : "sevendaystomine:soda",
   "amount" : 4,
-  "caffeineBuzzDuration" : 3200
+  "caffeineBuzzDuration" : 1200,
+  "caffeineBuzzAmplifier" : 1
 }

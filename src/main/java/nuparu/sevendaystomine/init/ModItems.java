@@ -1,12 +1,17 @@
 package nuparu.sevendaystomine.init;
 
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.item.*;
+import nuparu.sevendaystomine.world.level.block.IBlockBase;
+
+import java.util.function.Supplier;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SevenDaysToMine.MODID);
@@ -132,7 +137,40 @@ public class ModItems {
     public static final RegistryObject<Item> CANNED_LAMB = ITEMS.register("canned_lamb", () -> new CannedFoodItem(new Item.Properties().stacksTo(1).food(ModFood.CANNED_HUGE_MEAT).durability(4)));
     public static final RegistryObject<Item> MRE = ITEMS.register("mre", () -> new Item(new Item.Properties().stacksTo(1).food(ModFood.MRE).durability(5).tab(ModCreativeModeTabs.TAB_FOOD)));
     public static final RegistryObject<Item> MOLDY_BREAD = ITEMS.register("moldy_bread", () -> new Item(new Item.Properties().stacksTo(64).food(ModFood.MOLDY_BREAD).tab(ModCreativeModeTabs.TAB_FOOD)));
-    public static final RegistryObject<Item> SODA = ITEMS.register("soda", () -> new CannedDrinkItem(new Item.Properties().stacksTo(16).food(ModFood.SODA).tab(ModCreativeModeTabs.TAB_FOOD)));
+    public static final RegistryObject<Item> SODA = ITEMS.register("soda", () -> new CannedDrinkItem(new Item.Properties().stacksTo(16).tab(ModCreativeModeTabs.TAB_FOOD)));
+    public static final RegistryObject<Item> COFFEE_BOTTLE = ITEMS.register("coffee_bottle", () -> new DrinkItem(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FOOD)));
+    public static final RegistryObject<Item> GOLDENROD_TEA = ITEMS.register("goldenrod_tea_bottle", () -> new DrinkItem(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FOOD)));
+
+    public static final RegistryObject<Item> CENT = ITEMS.register("cent", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+    public static final RegistryObject<Item> SAND_DUST = ITEMS.register("sand_dust", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+    public static final RegistryObject<Item> POTASSIUM = ITEMS.register("potassium", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+    public static final RegistryObject<Item> CEMENT = ITEMS.register("cement", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+    public static final RegistryObject<Item> CONCRETE_MIX = ITEMS.register("concrete_mix", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+    public static final RegistryObject<Item> GAS_CANISTER = ITEMS.register("gas_canister", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+    public static final RegistryObject<Item> GEAR = ITEMS.register("gear", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+    public static final RegistryObject<Item> BULLET_TIP = ITEMS.register("bullet_tip", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+    public static final RegistryObject<Item> BULLET_CASING = ITEMS.register("bullet_casing", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+
+    public static final RegistryObject<Item> SURVIVAL_GUIDE = registerBook("survival_guide",false);
+    public static final RegistryObject<Item> BOOK_FORGING = registerBook("book_forging",true);
+    public static final RegistryObject<Item> BOOK_AMMO = registerBook("book_ammo",true);
+    public static final RegistryObject<Item> BOOK_COMPUTERS = registerBook("book_computers",true);
+    public static final RegistryObject<Item> BOOK_CONCRETE = registerBook("book_concrete",true);
+    public static final RegistryObject<Item> BOOK_ELECTRICITY = registerBook("book_electricity",true);
+    public static final RegistryObject<Item> BOOK_CHEMISTRY = registerBook("book_chemistry",true);
+    public static final RegistryObject<Item> BOOK_METALWORKING = registerBook("book_metalworking",true);
+    public static final RegistryObject<Item> BOOK_PISTOL = registerBook("book_pistol",true);
+    public static final RegistryObject<Item> BOOK_MINIBIKE = registerBook("book_minibike",true);
+
+
+    private static RegistryObject<Item> registerBook(String name, boolean unlocksRecipes) {
+        return registerBook(name, () -> new PatchouliBookItem(new Item.Properties(),unlocksRecipes) , () -> new VanillaBookItem(new Item.Properties(),unlocksRecipes));
+    }
+
+    private static RegistryObject<Item> registerBook(String name, Supplier<Item> patchouli, Supplier<Item> vanilla) {
+        return ITEMS.register(name, ModList.get().isLoaded("patchouli") ? patchouli : vanilla);
+    }
+
 
 
 }

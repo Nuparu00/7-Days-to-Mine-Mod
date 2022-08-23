@@ -64,7 +64,11 @@ public class DrinkDataManager extends SimpleJsonResourceReloadListener {
                     caffeineBuzzAmplifier = Math.abs(jo.get("caffeineBuzzAmplifier").getAsInt());
                 }
 
-                drinkData.put(item,new DrinkEntry(amount,dirtiness,alcoholic,caffeineBuzzDuration,caffeineBuzzAmplifier));
+                boolean tea = false;
+                if(jo.has("tea")){
+                    tea = jo.get("tea").getAsBoolean();
+                }
+                drinkData.put(item,new DrinkEntry(amount,dirtiness,alcoholic,caffeineBuzzDuration,caffeineBuzzAmplifier,tea));
             }
             catch (NullPointerException e){
                 SevenDaysToMine.LOGGER.error("An error occurred while trying to load drink (" + key.toString() + ") :" + e.getMessage());

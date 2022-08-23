@@ -98,6 +98,9 @@ public class PlayerEventHandler {
                         effect.setCurativeItems(new ArrayList<>());
                         player.addEffect(effect);
                     }
+                    if(drinkData.tea()){
+                        player.removeEffect(ModEffects.DYSENTERY.get());
+                    }
                 }
             }
         }

@@ -1,6 +1,9 @@
 package nuparu.sevendaystomine.capability;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -11,7 +14,12 @@ import nuparu.sevendaystomine.init.ModDamageSources;
 import nuparu.sevendaystomine.network.PacketManager;
 import nuparu.sevendaystomine.network.messages.ExtendedPlayerSyncMessage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExtendedPlayer implements IExtendedPlayer{
+
+    private List<String> recipes = new ArrayList<>();
     private int waterLevel = 20;
     private float saturationLevel;
     private float exhaustionLevel;
@@ -39,7 +47,7 @@ public class ExtendedPlayer implements IExtendedPlayer{
     @Override
     public void addWaterLevel(int level) {
         this.waterLevel = Math.min(Math.max(waterLevel+level,0),20);
-        this.saturationLevel = Math.min(Math.max(waterLevel+level,0),20);
+        this.saturationLevel = Math.min(Math.max(waterLevel+level,0),20)/2f;
         onDataChanged();
     }
 
@@ -68,6 +76,32 @@ public class ExtendedPlayer implements IExtendedPlayer{
     }
 
     @Override
+    public void unlockRecipe(String recipe) {
+        if (hasRecipe(recipe))
+            return;
+        recipes.add(recipe);
+        onDataChanged();
+    }
+
+    @Override
+    public void forgetRecipe(String recipe) {
+        if (!hasRecipe(recipe))
+            return;
+        recipes.remove(recipe);
+        onDataChanged();
+    }
+
+    @Override
+    public boolean hasRecipe(String recipe) {
+        return recipes.contains(recipe);
+    }
+
+    @Override
+    public List<String> getRecipes() {
+        return recipes;
+    }
+
+    @Override
     public IExtendedPlayer setOwner(Player player) {
         this.owner = player;
         return this;
@@ -87,6 +121,14 @@ public class ExtendedPlayer implements IExtendedPlayer{
             this.exhaustionLevel = nbt.getFloat("waterExhaustionLevel");
         }
         infectionTime = nbt.getInt("infectionTime");
+
+        if (nbt.contains("recipes", Tag.TAG_LIST)) {
+            recipes.clear();
+            ListTag list = nbt.getList("recipes", Tag.TAG_STRING);
+            for (int i = 0; i < list.size(); i++) {
+                recipes.add(list.getString(i));
+            }
+        }
     }
 
     @Override
@@ -96,6 +138,12 @@ public class ExtendedPlayer implements IExtendedPlayer{
         nbt.putFloat("waterSaturationLevel", this.saturationLevel);
         nbt.putFloat("waterExhaustionLevel", this.exhaustionLevel);
         nbt.putInt("infectionTime", infectionTime);
+
+        ListTag list = new ListTag();
+        for (String rec : recipes) {
+            list.add(StringTag.valueOf(rec));
+        }
+        nbt.put("recipes", list);
         return nbt;
     }
 

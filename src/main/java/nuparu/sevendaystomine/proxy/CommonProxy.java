@@ -1,9 +1,11 @@
 package nuparu.sevendaystomine.proxy;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
+import net.minecraft.network.chat.Component;
 import java.util.function.Supplier;
 
 public class CommonProxy {
@@ -20,6 +22,10 @@ public class CommonProxy {
     }
 
     public void openClientSideGui(int id, int x, int y, int z) {
+
+    }
+
+    public void addNotificationToast(ItemStack stack, Component title, Component description){
 
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -149,7 +150,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll(SevenDaysToMine.MODID+"-thirst", new ThirstBarOverlay(Minecraft.getInstance()));
+        event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(),SevenDaysToMine.MODID+"-thirst", new ThirstBarOverlay(Minecraft.getInstance()));
         event.registerAboveAll(SevenDaysToMine.MODID+"-upgrade", new UpgradeOverlay(Minecraft.getInstance()));
     }
     public static ModelLayerLocation createModelLayerLocation(String name){

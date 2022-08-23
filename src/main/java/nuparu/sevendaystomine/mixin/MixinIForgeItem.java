@@ -37,7 +37,6 @@ public interface MixinIForgeItem {
     @Overwrite(remap = false)
     default Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack)
     {
-        System.out.println("FFF");
         IForgeItem iForgeItem= (IForgeItem) (Object) this;
         Item self = self();
 

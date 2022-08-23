@@ -1,4 +1,18 @@
 {
+    "_comment": "Stats",
+    "tooltip.sevendaystomine.quality.good": "Good",
+    "tooltip.sevendaystomine.quality.none": "Faulty",
+    "tooltip.sevendaystomine.quality.flawless": "Flawless",
+    "tooltip.sevendaystomine.quality.poor": "Poor",
+    "tooltip.sevendaystomine.quality": "Quality: %1$s",
+    "tooltip.sevendaystomine.quality.faulty": "Faulty",
+    "tooltip.sevendaystomine.quality.fine": "Fine",
+    "tooltip.sevendaystomine.quality.great": "Great",
+    "tooltip.sevendaystomine.known": "Known",
+    "tooltip.sevendaystomine.unknown": "Unknown",
+    "tooltip.sevendaystomine.used": "Used",
+    "tooltip.sevendaystomine.unused": "Unused",
+
     "_comment": "Creative Tabs",
     "itemGroup.sevendaystomine.materials": "7 Days to Mine - Materials",
     "itemGroup.sevendaystomine.food": "7 Days to Mine - Foodstuff",
@@ -6,6 +20,7 @@
     "itemGroup.sevendaystomine.combat": "7 Days to Mine - Combat",
     "itemGroup.sevendaystomine.tools": "7 Days to Mine - Tools",
     "itemGroup.sevendaystomine.medicine": "7 Days to Mine - Medicine",
+    "itemGroup.sevendaystomine.books": "7 Days to Mine - Recipe Books",
 
     "_comment": "Items",
     "item.sevendaystomine.scrap_iron": "Scrap Iron",
@@ -34,6 +49,10 @@
     "item.sevendaystomine.tin_ingot": "Tin Ingot",
     "item.sevendaystomine.zinc_ingot": "Zinc Ingot",
     "item.sevendaystomine.bronze_ingot": "Bronze Ingot",
+
+
+    "item.sevendaystomine.survival_guide": "Survival Guide",
+    "survival_guide.subtitle": "Surviving the apocalypse",
 
     "_comment": "Blocks",
 
@@ -158,5 +177,9 @@
     "material.paper": "Paper",
     "material.string": "String",
     "material.bone": "Bone",
-    "material.netherite": "Netherite"
+    "material.netherite": "Netherite",
+
+
+    "_comment": "GUI",
+    "recipe_unlocked.toast": "Recipes Unlocked!"
 }

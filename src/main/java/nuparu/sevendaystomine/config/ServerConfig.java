@@ -10,6 +10,7 @@ public class ServerConfig {
     public static ForgeConfigSpec.DoubleValue blockToughnessModifier;
     public static ForgeConfigSpec.BooleanValue thirst;
     public static ForgeConfigSpec.BooleanValue quality;
+    public static ForgeConfigSpec.BooleanValue recipeBooksRequired;
     public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> infectionStagesDuration;
 
 
@@ -48,7 +49,8 @@ public class ServerConfig {
                 "player.quality_tier_names", Arrays.asList("faulty", "poor","good","fine","great","flawless"), it -> it instanceof String);
         qualityTierColors = server.comment("The RGB colors in decimal format of the quality tiers").defineList(
                 "player.quality_tier_colors", Arrays.asList(0x9C8867,0xCF7F29,0xA2A41B,0x42C234,0x315DCE,0xA42ACC), it -> it instanceof Integer);
-
+        recipeBooksRequired = server.comment("Do recipes have to be unlocked using the recipe books?")
+                .define("player.recipeBooksRequired", true);
         xpPerQuality = server.comment("How many XP per 1 Quality point").defineInRange("player.xpPerQuality", 5, 0,
                 Double.MAX_VALUE);
 

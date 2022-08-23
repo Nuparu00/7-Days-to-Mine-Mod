@@ -55,4 +55,10 @@ public class ModCreativeModeTabs {
             return new ItemStack(ModBlocks.FORGE.get());
         }
     };
+    public static CreativeModeTab TAB_BOOKS = new CreativeModeTab(SevenDaysToMine.MODID + ".books") {
+        @OnlyIn(Dist.CLIENT)
+        public ItemStack makeIcon() {
+            return new ItemStack(ModItems.SURVIVAL_GUIDE.get());
+        }
+    };
 }

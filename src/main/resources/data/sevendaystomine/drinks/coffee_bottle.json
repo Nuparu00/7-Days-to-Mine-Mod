@@ -1,0 +1,7 @@
+{
+  "src" : "sevendaystomine",
+  "item" : "sevendaystomine:coffee_bottle",
+  "amount" : 4,
+  "caffeineBuzzDuration" : 3600,
+  "caffeineBuzzAmplifier" : 0
+}

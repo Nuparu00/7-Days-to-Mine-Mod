@@ -3,15 +3,18 @@ package nuparu.sevendaystomine.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
+import nuparu.sevendaystomine.client.gui.components.toasts.NotificationToast;
 import nuparu.sevendaystomine.client.gui.inventory.entity.LockedCodeSafeScreen;
 import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.util.MathUtils;
 import nuparu.sevendaystomine.world.item.quality.QualityManager;
 
+import net.minecraft.network.chat.Component;
 import java.util.function.Supplier;
 
 public class ClientProxy extends CommonProxy{
@@ -43,5 +46,13 @@ public class ClientProxy extends CommonProxy{
                 mc.setScreen(new LockedCodeSafeScreen(te, new BlockPos(x, y, z)));
                 return;
         }
+    }
+
+
+    @Override
+    public void addNotificationToast(ItemStack stack, Component title, Component description){
+        Minecraft.getInstance().getToasts()
+                .addToast(new NotificationToast(stack, title,
+                        description));
     }
 }
