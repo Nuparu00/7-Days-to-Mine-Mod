@@ -7,6 +7,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class FrigidHunterEntity<T extends FrigidHunterEntity> extends FrozenZombieEntity {
 
@@ -31,7 +32,7 @@ public class FrigidHunterEntity<T extends FrigidHunterEntity> extends FrozenZomb
 
     public static class Factory implements EntityType.EntityFactory<FrigidHunterEntity> {
         @Override
-        public FrigidHunterEntity create(EntityType<FrigidHunterEntity> type, Level world) {
+        public @NotNull FrigidHunterEntity create(@NotNull EntityType<FrigidHunterEntity> type, @NotNull Level world) {
             return new FrigidHunterEntity(type, world);
         }
     }

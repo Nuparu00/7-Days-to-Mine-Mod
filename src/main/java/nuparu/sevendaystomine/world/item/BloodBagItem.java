@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import nuparu.sevendaystomine.init.ModEffects;
+import org.jetbrains.annotations.NotNull;
 
 public class BloodBagItem extends Item {
 	
@@ -21,7 +22,7 @@ public class BloodBagItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level worldIn, Player playerIn, @NotNull InteractionHand handIn) {
 		ItemStack itemstack = playerIn.getItemInHand(handIn);
 
 		playerIn.startUsingItem(handIn);
@@ -29,10 +30,9 @@ public class BloodBagItem extends Item {
 
 	}
 	@Override
-	public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+	public void releaseUsing(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull LivingEntity entityLiving, int timeLeft) {
 
-		if (entityLiving instanceof Player) {
-			Player player = (Player) entityLiving;
+		if (entityLiving instanceof Player player) {
 			int dur = this.getUseDuration(stack) - timeLeft;
 			if (dur >= this.getUseDuration(stack) * 0.15f) {
 				if (!player.isCreative()) {
@@ -62,12 +62,12 @@ public class BloodBagItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack itemStack) {
+	public int getUseDuration(@NotNull ItemStack itemStack) {
 		return 60;
 	}
 
 	@Override
-	public UseAnim getUseAnimation(ItemStack itemStack) {
+	public @NotNull UseAnim getUseAnimation(@NotNull ItemStack itemStack) {
 		return UseAnim.BOW;
 	}
 

@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"iron",
+         "weight" : 20
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:mp5_barrel"
+   },
+   "mold":{
+      "item":"sevendaystomine:mp5_barrel_mold"
+   },
+   "experience" : 0,
+   "cookingtime" : 300
+}

@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"iron",
+         "weight" : 20
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:iron_pipe"
+   },
+   "mold":{
+      "item":"sevendaystomine:iron_pipe_mold"
+   },
+   "experience" : 0.1,
+   "cookingtime" : 1200
+}

@@ -1,0 +1,15 @@
+{
+   "type":"minecraft:crafting_shapeless",
+   "group": "armchair",
+    "ingredients": [
+        {
+             "item":"minecraft:green_wool"
+        },
+        {
+           "item":"sevendaystomine:sofa_green"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:armchair_green"
+   }
+}

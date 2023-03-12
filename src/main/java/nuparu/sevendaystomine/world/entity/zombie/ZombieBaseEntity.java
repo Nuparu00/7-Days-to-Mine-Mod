@@ -27,8 +27,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.util.ItemUtils;
-import nuparu.sevendaystomine.util.Utils;
 import nuparu.sevendaystomine.world.entity.item.LootableCorpseEntity;
+import nuparu.sevendaystomine.world.level.LevelUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -126,7 +127,7 @@ public class ZombieBaseEntity extends Monster {
         }
 
         if (!this.level.isClientSide()) {
-            if (Utils.isBloodmoonProper(level)) {
+            if (LevelUtils.isBloodmoonProper(level)) {
                 if (!speed.hasModifier(BLOODMOON_SPEED_BOOST)) {
                     speed.addTransientModifier(BLOODMOON_SPEED_BOOST);
                 }
@@ -230,13 +231,13 @@ public class ZombieBaseEntity extends Monster {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("LightLevelPrev", lightLevelPrev);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.lightLevelPrev = compoundTag.getInt("LightLevelPrev");
     }
@@ -257,7 +258,7 @@ public class ZombieBaseEntity extends Monster {
         return SoundEvents.ZOMBIE_AMBIENT;
     }
 
-    protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
+    protected SoundEvent getHurtSound(@NotNull DamageSource p_184601_1_) {
         return SoundEvents.ZOMBIE_HURT;
     }
 
@@ -269,22 +270,22 @@ public class ZombieBaseEntity extends Monster {
         return SoundEvents.ZOMBIE_STEP;
     }
 
-    protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
+    protected void playStepSound(@NotNull BlockPos p_180429_1_, @NotNull BlockState p_180429_2_) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }
 
     @Override
-    public void die(DamageSource damageSource) {
+    public void die(@NotNull DamageSource damageSource) {
         super.die(damageSource);
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayer player) {
+    public void startSeenByPlayer(@NotNull ServerPlayer player) {
         super.startSeenByPlayer(player);
     }
 
     @Override
-    public void stopSeenByPlayer(ServerPlayer player) {
+    public void stopSeenByPlayer(@NotNull ServerPlayer player) {
         super.stopSeenByPlayer(player);
     }
 

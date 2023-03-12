@@ -1,0 +1,74 @@
+{
+    "type": "minecraft:generic",
+	"pools": [{
+		"rolls": {
+			"min": 0,
+			"max": 4
+		},
+		"entries": [{
+				"type": "minecraft:empty",
+				"weight": 75
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 50,
+				"name": "minecraft:paper"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 75,
+				"name": "minecraft:book"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 10,
+				"name": "sevendaystomine:survival_guide"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 5,
+				"name": "sevendaystomine:book_forging"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 4,
+				"name": "sevendaystomine:book_ammo"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 2,
+				"name": "sevendaystomine:book_computers"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 2,
+				"name": "sevendaystomine:book_concrete"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 2,
+				"name": "sevendaystomine:book_electricity"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 2,
+				"name": "sevendaystomine:book_chemistry"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 2,
+				"name": "sevendaystomine:book_metalworking"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 2,
+				"name": "sevendaystomine:book_pistol"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 10,
+				"name": "minecraft:writable_book"
+			}
+		]
+	}]
+}

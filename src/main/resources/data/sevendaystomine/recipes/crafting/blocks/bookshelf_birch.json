@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bookshelf",
+  "pattern": [
+    "WWW",
+    "WSW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "sevendaystomine:plank_wood"
+    },
+    "S": {
+      "item": "minecraft:birch_slab"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:birch_bookshelf"
+  }
+}

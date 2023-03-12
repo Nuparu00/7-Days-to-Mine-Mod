@@ -31,9 +31,9 @@ public class BookshelfBlockEntity extends SmallContainerBlockEntity{
         BlockState blockState = this.level.getBlockState(this.worldPosition);
         if(blockState.getBlock() instanceof BookshelfBlock) {
             boolean state = blockState.getValue(BookshelfBlock.FULL);
-            if (isEmpty() && state) {
+            if (getInventory().isEmpty() && state) {
                 level.setBlock(worldPosition, blockState.setValue(BookshelfBlock.FULL, false), 3);
-            } else if (!isEmpty() && !state) {
+            } else if (!getInventory().isEmpty() && !state) {
                 level.setBlock(worldPosition, blockState.setValue(BookshelfBlock.FULL, true), 3);
             }
         }

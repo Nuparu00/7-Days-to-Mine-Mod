@@ -1,6 +1,5 @@
 package nuparu.sevendaystomine.mixin;
 
-import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.player.Player;
 import nuparu.sevendaystomine.capability.CapabilityHelper;

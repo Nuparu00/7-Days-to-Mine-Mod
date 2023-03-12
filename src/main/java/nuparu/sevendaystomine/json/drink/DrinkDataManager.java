@@ -9,17 +9,11 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import nuparu.sevendaystomine.SevenDaysToMine;
-import nuparu.sevendaystomine.json.scrap.ScrapEntry;
-import nuparu.sevendaystomine.json.scrap.WeightWrapper;
-import nuparu.sevendaystomine.world.item.EnumMaterial;
-import org.apache.commons.lang3.math.Fraction;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DrinkDataManager extends SimpleJsonResourceReloadListener {
@@ -34,7 +28,7 @@ public class DrinkDataManager extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManagerIn, ProfilerFiller profilerIn) {
+    protected void apply(Map<ResourceLocation, JsonElement> objectIn, @NotNull ResourceManager resourceManagerIn, @NotNull ProfilerFiller profilerIn) {
         drinkData.clear();
 
         for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {

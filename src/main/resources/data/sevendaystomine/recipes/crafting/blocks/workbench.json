@@ -1,0 +1,31 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "WWW",
+    "SCH",
+    "III"
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:plank"
+    }, 
+    "S": {
+      "item": "sevendaystomine:screwdriver",
+      "data": 32767
+    }, 
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "H": {
+      "item": "sevendaystomine:clawhammer",
+      "data": 32767
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+}
+  },
+  "result": {
+    "item": "sevendaystomine:workbench"
+  },
+  "recipe": "sevendaystomine:book_metalworking"
+}

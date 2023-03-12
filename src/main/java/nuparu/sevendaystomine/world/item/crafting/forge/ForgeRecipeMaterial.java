@@ -18,10 +18,10 @@ import net.minecraft.world.level.Level;
 import nuparu.sevendaystomine.init.ModRecipeSerializers;
 import nuparu.sevendaystomine.init.ModRecipeTypes;
 import nuparu.sevendaystomine.json.scrap.ScrapDataManager;
-import nuparu.sevendaystomine.json.scrap.ScrapEntry;
 import nuparu.sevendaystomine.world.item.EnumMaterial;
 import nuparu.sevendaystomine.world.level.block.entity.ForgeBlockEntity;
 import org.apache.commons.lang3.math.Fraction;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public boolean matches(ForgeBlockEntity forge, Level world) {
+    public boolean matches(ForgeBlockEntity forge, @NotNull Level world) {
         if(!ItemStack.isSameIgnoreDurability(forge.getMoldSlot(),mold)) return false;
 
         HashMap<EnumMaterial,Fraction> invMap = new HashMap<>();
@@ -71,7 +71,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
         for(MaterialStack materialStack : ingredients){
             EnumMaterial material = materialStack.material;
             if(!invMap.containsKey(material)) return false;
-            if(invMap.get(material).compareTo(materialStack.weight.asFraction()) == -1) return false;
+            if(invMap.get(material).compareTo(materialStack.weight.asFraction()) < 0) return false;
             Fraction r = invMap.get(material).divideBy(materialStack.weight.asFraction());
             if(ratio == null){
                 ratio = r;
@@ -105,7 +105,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
         for(MaterialStack materialStack : ingredients){
             EnumMaterial material = materialStack.material;
             if(!invMap.containsKey(material)) return null;
-            if(invMap.get(material).compareTo(materialStack.weight.asFraction()) == -1) return null;
+            if(invMap.get(material).compareTo(materialStack.weight.asFraction()) < 0) return null;
             Fraction r = invMap.get(material).divideBy(materialStack.weight.asFraction());
             if(ratio == null){
                 ratio = r;
@@ -118,7 +118,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public ItemStack assemble(ForgeBlockEntity forge) {
+    public @NotNull ItemStack assemble(@NotNull ForgeBlockEntity forge) {
 
         Fraction ratio = this.getRatio(forge);
         if(ratio == null) return ItemStack.EMPTY;
@@ -187,7 +187,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
             if(materialStack.material!=material) continue;
             Fraction weight = materialStack.weight.asFraction().multiplyBy(Fraction.getFraction(stack.getCount()));
 
-            Fraction currentConsume = weight.compareTo(weightToConsume) == -1 ? weight : weightToConsume;
+            Fraction currentConsume = weight.compareTo(weightToConsume) < 0 ? weight : weightToConsume;
             int itemCount = currentConsume.divideBy(materialStack.weight.asFraction()).getProperWhole();
             Fraction consumedWeight = materialStack.weight.asFraction().multiplyBy(Fraction.getFraction(itemCount));
 
@@ -220,17 +220,17 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return this.id;
     }
 
     @Override
-    public String getGroup() {
+    public @NotNull String getGroup() {
         return this.group;
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem() {
         return this.result.copy();
     }
 
@@ -238,7 +238,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
         return this.mold.copy();
     }
     @Override
-    public NonNullList<Ingredient> getIngredients() {
+    public @NotNull NonNullList<Ingredient> getIngredients() {
         return NonNullList.create();
     }
 
@@ -247,12 +247,12 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.FORGE_MATERIAL.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public @NotNull RecipeType<?> getType() {
         return ModRecipeTypes.FORGE_RECIPE_TYPE.get();
     }
 
@@ -268,7 +268,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
         int defaultCookingTime = 600;
 
         @Override
-        public ForgeRecipeMaterial fromJson(ResourceLocation recipeId, JsonObject json) {
+        public @NotNull ForgeRecipeMaterial fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
             String s = GsonHelper.getAsString(json, "group", "");
             NonNullList<MaterialStack> nonnulllist = materialsFromJson(GsonHelper.getAsJsonArray(json, "ingredients"),recipeId);
             if (nonnulllist.isEmpty()) {
@@ -325,14 +325,12 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
 
         @Nullable
         @Override
-        public ForgeRecipeMaterial fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+        public ForgeRecipeMaterial fromNetwork(@NotNull ResourceLocation recipeId, FriendlyByteBuf buffer) {
             String s = buffer.readUtf(32767);
             int i = buffer.readVarInt();
             NonNullList<MaterialStack> nonnulllist = NonNullList.withSize(i, MaterialStack.EMPTY);
 
-            for(int j = 0; j < nonnulllist.size(); ++j) {
-                nonnulllist.set(j, MaterialStack.fromNetwork(buffer));
-            }
+            nonnulllist.replaceAll(ignored -> MaterialStack.fromNetwork(buffer));
 
             ItemStack itemstack = buffer.readItem();
             ItemStack mold = buffer.readItem();

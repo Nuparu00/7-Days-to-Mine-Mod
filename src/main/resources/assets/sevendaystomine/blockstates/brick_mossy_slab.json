@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "sevendaystomine:block/brick_mossy_slab_bottom" },
+        "type=top": { "model": "sevendaystomine:block/brick_mossy_slab_upper" },
+        "type=double": { "model": "sevendaystomine:block/brick_block_mossy" }
+    }
+}

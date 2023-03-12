@@ -1,0 +1,25 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "PPP",
+      "PPP",
+      "RIG"
+   ],
+   "key":{
+      "P":{
+         "item":"sevendaystomine:iron_pipe"
+      },
+      "R":{
+         "item":"minecraft:redstone"
+      },
+      "G":{
+         "item":"sevendaystomine:gear"
+      },
+      "I":{
+      "tag": "forge:ingots/iron"
+}
+   },
+   "result":{
+      "item":"sevendaystomine:metal_spikes"
+   }
+}

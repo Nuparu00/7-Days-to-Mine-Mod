@@ -8,6 +8,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class FeralZombieEntity<T extends FeralZombieEntity> extends ZombieBipedEntity {
 
@@ -32,14 +33,14 @@ public class FeralZombieEntity<T extends FeralZombieEntity> extends ZombieBipedE
 
 
     @Override
-    public boolean hurt(DamageSource source, float amount)
+    public boolean hurt(@NotNull DamageSource source, float amount)
     {
         return super.hurt(source, this.isOnFire() ? amount*4.25f : amount/3);
     }
 
     public static class Factory implements EntityType.EntityFactory<FeralZombieEntity> {
         @Override
-        public FeralZombieEntity create(EntityType<FeralZombieEntity> type, Level world) {
+        public @NotNull FeralZombieEntity create(@NotNull EntityType<FeralZombieEntity> type, @NotNull Level world) {
             return new FeralZombieEntity(type, world);
         }
     }

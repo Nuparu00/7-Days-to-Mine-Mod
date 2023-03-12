@@ -1,0 +1,36 @@
+{
+   "display":{
+      "icon":{
+         "item":"minecraft:stone_axe"
+      },
+      "title":{
+         "translate":"advancements.stone_axe.title"
+      },
+      "description":{
+         "translate":"advancements.stone_axe.description"
+      }
+   },
+   "rewards":{
+      "recipes":[
+      ],
+      "experience": 1
+   },
+   "parent": "sevendaystomine:survival/small_stone",
+   "criteria":{
+      "has_axe":{
+         "trigger":"minecraft:inventory_changed",
+         "conditions":{
+            "items":[
+               {
+                  "item":"minecraft:stone_axe"
+               }
+            ]
+         }
+      }
+   },
+   "requirements":[
+      [
+         "has_axe"
+      ]
+   ]
+}

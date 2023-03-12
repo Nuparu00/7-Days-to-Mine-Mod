@@ -1,0 +1,22 @@
+{
+   "type":"sevendaystomine:quality_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:wire"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:book_electricity",
+      "count":1
+   },
+  "recipe": "sevendaystomine:book_electricity"
+}

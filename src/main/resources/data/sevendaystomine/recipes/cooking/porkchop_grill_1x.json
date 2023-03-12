@@ -1,0 +1,15 @@
+{
+   "type":"sevendaystomine:cooking_shapeless",
+   "ingredients":[
+      {
+         "item":"minecraft:porkchop"
+      }
+   ],
+   "station" : "sevendaystomine:cooking_grill",
+   "result":{
+      "item":"minecraft:cooked_porkchop",
+      "count":1
+   },
+   "experience": 0.1,
+   "cookingtime": 200
+}

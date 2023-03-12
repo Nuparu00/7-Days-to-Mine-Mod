@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=south": { "model": "sevendaystomine:block/solar_panel_base" },
+        "facing=east": { "model": "sevendaystomine:block/solar_panel_base", "y": 270 },
+        "facing=west": { "model": "sevendaystomine:block/solar_panel_base", "y": 90 },
+        "facing=north": { "model": "sevendaystomine:block/solar_panel_base", "y": 180 }
+    }
+}

@@ -15,6 +15,7 @@ import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.client.model.entity.BoneSpearModel;
 import nuparu.sevendaystomine.client.model.entity.StoneSpearModel;
 import nuparu.sevendaystomine.init.ModItems;
+import org.jetbrains.annotations.NotNull;
 
 public class ModdedBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer {
 
@@ -30,14 +31,14 @@ public class ModdedBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLev
     }
 
     @Override
-    public void onResourceManagerReload(ResourceManager p_172555_) {
+    public void onResourceManagerReload(@NotNull ResourceManager p_172555_) {
         super.onResourceManagerReload(p_172555_);
         this.stoneSpearModel = new StoneSpearModel(this.entityModelSet.bakeLayer(ClientSetup.STONE_SPEAR_LAYER));
         this.boneSpearModel = new BoneSpearModel(this.entityModelSet.bakeLayer(ClientSetup.BONE_SPEAR_LAYER));
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int p_108834_, int p_108835_) {
+    public void renderByItem(ItemStack stack, ItemTransforms.@NotNull TransformType transformType, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int p_108834_, int p_108835_) {
         Item item = stack.getItem();
         if(item == ModItems.STONE_SPEAR.get()){
             poseStack.pushPose();

@@ -6,11 +6,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.IForgeShearable;
-import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.world.level.block.entity.SpikesBlockEntity;
 
 public class RazorWireBlock extends SpikeBlock {

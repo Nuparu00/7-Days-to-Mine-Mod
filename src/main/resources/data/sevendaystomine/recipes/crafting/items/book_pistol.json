@@ -1,0 +1,22 @@
+{
+   "type":"sevendaystomine:quality_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:pistol_bullet"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:book_pistol",
+      "count":1
+   },
+  "recipe": "sevendaystomine:book_pistol"
+}

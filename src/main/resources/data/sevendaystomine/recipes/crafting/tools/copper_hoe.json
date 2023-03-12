@@ -1,0 +1,20 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "CC",
+    " S",
+    " S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:copper_hoe"
+  },
+  "quality": true
+}

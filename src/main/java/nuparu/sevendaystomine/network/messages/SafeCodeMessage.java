@@ -86,7 +86,7 @@ public class SafeCodeMessage {
 							}
 						}
 
-						String codeInString = new StringBuilder().append(h).append(d).append(u).toString();
+						String codeInString = String.valueOf(h) + d + u;
 						int codeInInt = Integer.parseInt(codeInString);
 						safe.setSelectedCode(codeInInt, player);
 						CompoundTag nbt = safe.saveWithoutMetadata();

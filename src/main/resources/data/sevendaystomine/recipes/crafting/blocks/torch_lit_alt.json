@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:torch"
+    },
+    {
+      "item": "sevendaystomine:torch_unlit"
+    }
+  ],
+  "result": {
+   "item": "sevendaystomine:torch",
+   "count": 2
+  }
+}

@@ -5,6 +5,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.init.ModEntities;
+import nuparu.sevendaystomine.world.entity.item.CarEntity;
+import nuparu.sevendaystomine.world.entity.item.MinibikeEntity;
 import nuparu.sevendaystomine.world.entity.zombie.*;
 
 @Mod.EventBusSubscriber(modid = SevenDaysToMine.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -26,8 +28,10 @@ public class EntityAttributeEventHandler {
         event.put(ModEntities.TWISTED_ZOMBIE.get(), TwistedZombieEntity.createAttributes().build());
         event.put(ModEntities.CRAWLER_ZOMBIE.get(), CrawlerZombieEntity.createAttributes().build());
         event.put(ModEntities.ZOMBIE_WOLF.get(), ZombieWolfEntity.createAttributes().build());
-        event.put(ModEntities.ZOMBIE_PIG.get(), ZombiePigEntity.createAttributes().build());;
+        event.put(ModEntities.ZOMBIE_PIG.get(), ZombiePigEntity.createAttributes().build());
         event.put(ModEntities.SPIDER_ZOMBIE.get(), SpiderZombieEntity.createAttributes().build());
+        event.put(ModEntities.MINIBIKE.get(), MinibikeEntity.createAttributes().build());
+        event.put(ModEntities.CAR.get(), CarEntity.createAttributes().build());
     }
 }
 

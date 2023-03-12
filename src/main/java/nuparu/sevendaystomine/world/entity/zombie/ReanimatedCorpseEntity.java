@@ -4,10 +4,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class ReanimatedCorpseEntity<T extends ReanimatedCorpseEntity> extends ZombieBipedEntity {
 
@@ -32,7 +32,7 @@ public class ReanimatedCorpseEntity<T extends ReanimatedCorpseEntity> extends Zo
 
     public static class Factory implements EntityType.EntityFactory<ReanimatedCorpseEntity> {
         @Override
-        public ReanimatedCorpseEntity create(EntityType<ReanimatedCorpseEntity> type, Level world) {
+        public @NotNull ReanimatedCorpseEntity create(@NotNull EntityType<ReanimatedCorpseEntity> type, @NotNull Level world) {
             return new ReanimatedCorpseEntity(type, world);
         }
     }

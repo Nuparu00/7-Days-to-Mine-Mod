@@ -10,12 +10,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.util.ItemUtils;
 
 public class UpgradeOverlay extends Gui implements IGuiOverlay {
-    public static final ResourceLocation OVERLAYS_TEXTURE = new ResourceLocation(SevenDaysToMine.MODID, "textures/gui/overlays.png");
-
     public UpgradeOverlay(Minecraft minecraft) {
         super(minecraft,minecraft.getItemRenderer());
     }
@@ -30,7 +27,7 @@ public class UpgradeOverlay extends Gui implements IGuiOverlay {
             if (!stack.getOrCreateTag().contains("7D2M_UpgradeProgress", Tag.TAG_DOUBLE)) return;
             double progress = stack.getOrCreateTag().getDouble("7D2M_UpgradeProgress");
 
-            bind(OVERLAYS_TEXTURE);
+            bind(ThirstBarOverlay.OVERLAYS_TEXTURE);
             RenderSystem.enableBlend();
             int x = width / 2;
             int y = height / 2;

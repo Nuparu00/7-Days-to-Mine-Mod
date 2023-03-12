@@ -55,7 +55,7 @@ public class ThirstBarOverlay extends Gui implements IGuiOverlay {
                     y = top + (random.nextInt(3) - 1);
                 }
 
-                blit(poseStack, x, y, 0 + background * 9, 0, 9, 9);
+                blit(poseStack, x, y, background * 9, 0, 9, 9);
 
                 if (idx < level)
                     blit(poseStack, x, y, icon - 7, 0, 9, 9);

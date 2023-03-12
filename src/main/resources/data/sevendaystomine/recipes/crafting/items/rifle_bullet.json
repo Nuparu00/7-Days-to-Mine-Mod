@@ -1,0 +1,23 @@
+{
+   "type":"sevendaystomine:quality_shaped",
+  "pattern": [
+    " T ",
+    "GGG",
+    " C "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "T": {
+      "item": "sevendaystomine:bullet_tip"
+    },
+    "C": {
+      "item": "sevendaystomine:bullet_casing"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:rifle_bullet"
+  },
+  "recipe": "sevendaystomine:book_ammo"
+}

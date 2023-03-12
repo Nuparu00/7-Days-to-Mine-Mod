@@ -1,0 +1,35 @@
+{
+   "display":{
+      "icon":{
+         "item":"sevendaystomine:auger"
+      },
+      "title":{
+         "translate":"advancements.auger.title"
+      },
+      "description":{
+         "translate":"advancements.auger.description"
+      },
+      "frame": "goal"
+   },
+   "rewards":{
+      "experience": 1
+   },
+   "parent": "sevendaystomine:survival/steel_pickaxe",
+   "criteria":{
+      "has_gun":{
+         "trigger":"minecraft:inventory_changed",
+         "conditions":{
+            "items":[
+               {
+                  "item":"sevendaystomine:auger"
+               }
+            ]
+         }
+      }
+   },
+   "requirements":[
+      [
+         "has_gun"
+      ]
+   ]
+}

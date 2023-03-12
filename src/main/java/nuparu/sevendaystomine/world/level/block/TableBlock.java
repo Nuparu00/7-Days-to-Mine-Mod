@@ -21,6 +21,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -54,8 +55,8 @@ public class TableBlock extends BlockBase implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
         boolean north = state.getValue(NORTH);
         boolean south = state.getValue(SOUTH);
         boolean west = state.getValue(WEST);
@@ -115,8 +116,8 @@ public class TableBlock extends BlockBase implements SimpleWaterloggedBlock {
                         blockstate3.isFaceSturdy(iblockreader, blockpos4, Direction.EAST), Direction.EAST)).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
-    public BlockState updateShape(BlockState p_196271_1_, Direction p_196271_2_, BlockState p_196271_3_,
-                                  LevelAccessor p_196271_4_, BlockPos p_196271_5_, BlockPos p_196271_6_) {
+    public @NotNull BlockState updateShape(BlockState p_196271_1_, @NotNull Direction p_196271_2_, @NotNull BlockState p_196271_3_,
+                                           @NotNull LevelAccessor p_196271_4_, @NotNull BlockPos p_196271_5_, @NotNull BlockPos p_196271_6_) {
         if (p_196271_1_.getValue(WATERLOGGED)) {
             p_196271_4_.scheduleTick(p_196271_5_, Fluids.WATER, Fluids.WATER.getTickDelay(p_196271_4_));
         }
@@ -129,7 +130,7 @@ public class TableBlock extends BlockBase implements SimpleWaterloggedBlock {
                 : super.updateShape(p_196271_1_, p_196271_2_, p_196271_3_, p_196271_4_, p_196271_5_, p_196271_6_);
     }
 
-    public BlockState rotate(BlockState p_185499_1_, Rotation p_185499_2_) {
+    public @NotNull BlockState rotate(@NotNull BlockState p_185499_1_, Rotation p_185499_2_) {
         switch(p_185499_2_) {
             case CLOCKWISE_180:
                 return p_185499_1_.setValue(NORTH, p_185499_1_.getValue(SOUTH)).setValue(EAST, p_185499_1_.getValue(WEST)).setValue(SOUTH, p_185499_1_.getValue(NORTH)).setValue(WEST, p_185499_1_.getValue(EAST));
@@ -142,7 +143,7 @@ public class TableBlock extends BlockBase implements SimpleWaterloggedBlock {
         }
     }
 
-    public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_) {
+    public @NotNull BlockState mirror(@NotNull BlockState p_185471_1_, Mirror p_185471_2_) {
         switch(p_185471_2_) {
             case LEFT_RIGHT:
                 return p_185471_1_.setValue(NORTH, p_185471_1_.getValue(SOUTH)).setValue(SOUTH, p_185471_1_.getValue(NORTH));
@@ -156,7 +157,7 @@ public class TableBlock extends BlockBase implements SimpleWaterloggedBlock {
         p_56388_.add(NORTH, EAST, SOUTH, WEST, WATERLOGGED);
     }
 
-    public FluidState getFluidState(BlockState p_204507_1_) {
+    public @NotNull FluidState getFluidState(BlockState p_204507_1_) {
         return p_204507_1_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_204507_1_);
     }
 

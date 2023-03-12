@@ -19,8 +19,7 @@ public class AdvancedBandageItem extends BandageItem {
 
 	@Override
 	public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-		if (entityLiving instanceof Player) {
-			Player player = (Player) entityLiving;
+		if (entityLiving instanceof Player player) {
 			int dur = this.getUseDuration(stack) - timeLeft;
 			if (dur >= 20) {
 				if (!player.isCreative()) {

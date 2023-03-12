@@ -16,6 +16,7 @@ import nuparu.sevendaystomine.init.ModRecipeSerializers;
 import nuparu.sevendaystomine.init.ModRecipeTypes;
 import nuparu.sevendaystomine.world.level.block.entity.ForgeBlockEntity;
 import org.apache.commons.lang3.math.Fraction;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public boolean matches(ForgeBlockEntity grillInventory, Level world) {
+    public boolean matches(ForgeBlockEntity grillInventory, @NotNull Level world) {
         if(!ItemStack.isSameIgnoreDurability(grillInventory.getMoldSlot(),mold)) return false;
         StackedContents recipeitemhelper = new StackedContents();
         List<ItemStack> inputs = new ArrayList();
@@ -80,7 +81,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public ItemStack assemble(ForgeBlockEntity grillInventory) {
+    public @NotNull ItemStack assemble(@NotNull ForgeBlockEntity grillInventory) {
         return this.result.copy();
     }
 
@@ -90,17 +91,17 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return this.id;
     }
 
     @Override
-    public String getGroup() {
+    public @NotNull String getGroup() {
         return this.group;
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem() {
         return this.result.copy();
     }
 
@@ -109,17 +110,17 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
+    public @NotNull NonNullList<Ingredient> getIngredients() {
         return this.ingredients;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.FORGE_SHAPELESS.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public @NotNull RecipeType<?> getType() {
         return ModRecipeTypes.FORGE_RECIPE_TYPE.get();
     }
 
@@ -143,7 +144,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
         int defaultCookingTime = 600;
 
         @Override
-        public ForgeRecipeShapeless fromJson(ResourceLocation recipeId, JsonObject json) {
+        public @NotNull ForgeRecipeShapeless fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
             String s = GsonHelper.getAsString(json, "group", "");
             NonNullList<Ingredient> nonnulllist = itemsFromJson(GsonHelper.getAsJsonArray(json, "ingredients"));
             if (nonnulllist.isEmpty()) {
@@ -174,14 +175,12 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
 
         @Nullable
         @Override
-        public ForgeRecipeShapeless fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+        public ForgeRecipeShapeless fromNetwork(@NotNull ResourceLocation recipeId, FriendlyByteBuf buffer) {
             String s = buffer.readUtf(32767);
             int i = buffer.readVarInt();
             NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
 
-            for(int j = 0; j < nonnulllist.size(); ++j) {
-                nonnulllist.set(j, Ingredient.fromNetwork(buffer));
-            }
+            nonnulllist.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
 
             ItemStack itemstack = buffer.readItem();
             ItemStack mold = buffer.readItem();

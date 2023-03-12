@@ -1,0 +1,19 @@
+{
+   "type":"sevendaystomine:chemistry_shapeless",
+   "ingredients":[
+      {
+         "item":"minecraft:potion"
+      },
+      {
+         "item":"minecraft:wheat"
+      },
+      {
+         "item":"minecraft:sugar"
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:beer_bottle"
+   },
+   "experience" : 0.33,
+   "cookingtime" : 400
+}

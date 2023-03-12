@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class UncraftingContainer implements Container, StackedContentsCompatible {
     private final NonNullList<ItemStack> items;
@@ -36,15 +37,15 @@ public class UncraftingContainer implements Container, StackedContentsCompatible
         return true;
     }
 
-    public ItemStack getItem(int p_39332_) {
+    public @NotNull ItemStack getItem(int p_39332_) {
         return p_39332_ >= this.getContainerSize() ? ItemStack.EMPTY : this.items.get(p_39332_);
     }
 
-    public ItemStack removeItemNoUpdate(int p_39344_) {
+    public @NotNull ItemStack removeItemNoUpdate(int p_39344_) {
         return ContainerHelper.takeItem(this.items, p_39344_);
     }
 
-    public ItemStack removeItem(int p_39334_, int p_39335_) {
+    public @NotNull ItemStack removeItem(int p_39334_, int p_39335_) {
         ItemStack itemstack = ContainerHelper.removeItem(this.items, p_39334_, p_39335_);
         if (!itemstack.isEmpty()) {
             this.menu.slotsChanged(this);
@@ -53,7 +54,7 @@ public class UncraftingContainer implements Container, StackedContentsCompatible
         return itemstack;
     }
 
-    public void setItem(int p_39337_, ItemStack p_39338_) {
+    public void setItem(int p_39337_, @NotNull ItemStack p_39338_) {
         this.items.set(p_39337_, p_39338_);
         this.menu.slotsChanged(this);
     }
@@ -61,7 +62,7 @@ public class UncraftingContainer implements Container, StackedContentsCompatible
     public void setChanged() {
     }
 
-    public boolean stillValid(Player p_39340_) {
+    public boolean stillValid(@NotNull Player p_39340_) {
         return true;
     }
 
@@ -77,7 +78,7 @@ public class UncraftingContainer implements Container, StackedContentsCompatible
         return this.width;
     }
 
-    public void fillStackedContents(StackedContents p_39342_) {
+    public void fillStackedContents(@NotNull StackedContents p_39342_) {
         for(ItemStack itemstack : this.items) {
             p_39342_.accountSimpleStack(itemstack);
         }

@@ -1,14 +1,10 @@
 package nuparu.sevendaystomine.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ColorableAgeableListModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
 import nuparu.sevendaystomine.world.entity.zombie.ZombiePigEntity;
-import nuparu.sevendaystomine.world.entity.zombie.ZombieWolfEntity;
 
 public class ZombiePigModel<T extends ZombiePigEntity> extends QuadrupedModel<T> {
     public ZombiePigModel(ModelPart p_170799_) {

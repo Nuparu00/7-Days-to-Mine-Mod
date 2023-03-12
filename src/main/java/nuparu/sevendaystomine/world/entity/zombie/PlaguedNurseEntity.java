@@ -7,6 +7,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class PlaguedNurseEntity<T extends PlaguedNurseEntity> extends ZombieBipedEntity {
 
@@ -31,7 +32,7 @@ public class PlaguedNurseEntity<T extends PlaguedNurseEntity> extends ZombieBipe
 
     public static class Factory implements EntityType.EntityFactory<PlaguedNurseEntity> {
         @Override
-        public PlaguedNurseEntity create(EntityType<PlaguedNurseEntity> type, Level world) {
+        public @NotNull PlaguedNurseEntity create(@NotNull EntityType<PlaguedNurseEntity> type, @NotNull Level world) {
             return new PlaguedNurseEntity(type, world);
         }
     }

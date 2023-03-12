@@ -1,0 +1,22 @@
+{
+   "type":"sevendaystomine:quality_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:scrap_iron"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:book_forging",
+      "count":1
+   },
+  "recipe": "sevendaystomine:book_forging"
+}

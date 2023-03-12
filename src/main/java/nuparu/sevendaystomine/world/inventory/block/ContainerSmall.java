@@ -1,23 +1,16 @@
 package nuparu.sevendaystomine.world.inventory.block;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.SlotItemHandler;
 import nuparu.sevendaystomine.init.ModContainers;
 import nuparu.sevendaystomine.world.inventory.ItemHandlerNameable;
 import nuparu.sevendaystomine.world.level.block.entity.ItemHandlerBlockEntity;
-import nuparu.sevendaystomine.world.level.block.entity.WorkbenchBlockEntity;
-
-import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 public class ContainerSmall extends AbstractContainerMenu {
 
@@ -66,12 +59,12 @@ public class ContainerSmall extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return this.blockEntity != null && this.blockEntity.isUsableByPlayer(player);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         final Slot slot = this.slots.get(index);
 
         if (slot != null && slot.hasItem()) {
@@ -99,7 +92,7 @@ public class ContainerSmall extends AbstractContainerMenu {
     }
 
     @Override
-    public void removed(Player p_75134_1_) {
+    public void removed(@NotNull Player p_75134_1_) {
         super.removed(p_75134_1_);
         this.blockEntity.onContainerClosed(p_75134_1_);
     }

@@ -13,8 +13,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import nuparu.sevendaystomine.capability.CapabilityHelper;
 import nuparu.sevendaystomine.capability.IChunkData;
 import nuparu.sevendaystomine.config.ServerConfig;
-import nuparu.sevendaystomine.util.Utils;
+import nuparu.sevendaystomine.world.entity.EntityUtils;
 import nuparu.sevendaystomine.world.entity.zombie.ZombieBaseEntity;
+import nuparu.sevendaystomine.world.level.LevelUtils;
 
 public class GoalBreakBlocks extends Goal {
 	Block block;
@@ -31,7 +32,7 @@ public class GoalBreakBlocks extends Goal {
 		if(!ServerConfig.zombiesBreakBlocks.get()) return false;
 		if(zombie.getTarget() != null) {
 
-			BlockHitResult blockRay = Utils.rayTraceServer(zombie,1, 2.5f, ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE);
+			BlockHitResult blockRay = EntityUtils.rayTraceServer(zombie,1, 2.5f, ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE);
             this.blockPosition = blockRay.getBlockPos();
 			if (!net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.zombie.level, this.blockPosition, this.zombie))  return false;
             this.block = zombie.level.getBlockState(this.blockPosition).getBlock();
@@ -43,8 +44,7 @@ public class GoalBreakBlocks extends Goal {
 	@Override
 	public void tick() {
 		super.tick();
-		if(!(zombie.level instanceof ServerLevel)) return;
-		ServerLevel world = (ServerLevel) zombie.level;
+		if(!(zombie.level instanceof ServerLevel world)) return;
 		if(blockPosition == null) return;
 		LevelChunk chunk = world.getChunkAt(blockPosition);
         IChunkData ichunkdata = CapabilityHelper.getChunkData(chunk);
@@ -58,7 +58,7 @@ public class GoalBreakBlocks extends Goal {
 			}
 			float m = (zombie.getDigSpeed(state, blockPosition) / hardness) / 32f;
 
-			if (Utils.damageBlock(world, blockPosition, m, true, this.stepSoundTickCounter % 4.0F == 0.0F)) {
+			if (LevelUtils.damageBlock(world, blockPosition, m, true, this.stepSoundTickCounter % 4.0F == 0.0F)) {
 				world.levelEvent(2001, blockPosition, Block.getId(world.getBlockState(this.blockPosition)));
 				this.stop();
 

@@ -1,0 +1,22 @@
+{
+   "type":"sevendaystomine:quality_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:scrap_lead"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:book_ammo",
+      "count":1
+   },
+  "recipe": "sevendaystomine:book_ammo"
+}

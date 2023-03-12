@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"iron",
+         "weight" : 10
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:hunting_rifle_bolt"
+   },
+   "mold":{
+      "item":"sevendaystomine:hunting_rifle_bolt_mold"
+   },
+   "experience" : 0,
+   "cookingtime" : 300
+}

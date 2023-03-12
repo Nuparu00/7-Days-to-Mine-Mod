@@ -1,0 +1,20 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "BB",
+    "BS",
+    " S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:bronze_axe"
+  },
+  "quality": true
+}

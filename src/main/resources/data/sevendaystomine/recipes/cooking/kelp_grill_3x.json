@@ -1,0 +1,21 @@
+{
+   "type":"sevendaystomine:cooking_shapeless",
+   "ingredients":[
+      {
+         "item":"minecraft:kelp"
+      },
+      {
+         "item":"minecraft:kelp"
+      },
+      {
+         "item":"minecraft:kelp"
+      }
+   ],
+   "station" : "sevendaystomine:cooking_grill",
+   "result":{
+      "item":"minecraft:dried_kelp",
+      "count":3
+   },
+   "experience": 0.15,
+   "cookingtime": 300
+}

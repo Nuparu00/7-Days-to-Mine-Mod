@@ -1,27 +1,23 @@
 {  
-   "upgrade_wood":{  
-      "category":"block",
+   "upgrade_wood":{
       "subtitle":"subtitle.upgrade_wood",
       "sounds":[  
          "sevendaystomine:sdtm.upgrade_wood"
       ]
    },
-   "campfire_crackling":{  
-      "category":"block",
+   "campfire_crackling":{
       "subtitle":"subtitle.campfire_crackling",
       "sounds":[  
          "sevendaystomine:sdtm.campfire_crackling"
       ]
    },
-   "heartbeat":{  
-      "category":"player",
+   "heartbeat":{
       "subtitle":"subtitle.heartbeat",
       "sounds":[  
          "sevendaystomine:sdtm.heartbeat"
       ]
    },
-   "main_menu_00":{  
-      "category":"music",
+   "main_menu_00":{
       "subtitle":"subtitle.menu_00",
       "sounds":[  
          {  
@@ -30,8 +26,7 @@
          }
       ]
    },
-   "main_menu_01":{  
-      "category":"music",
+   "main_menu_01":{
       "subtitle":"subtitle.menu_01",
       "sounds":[  
          {  
@@ -40,71 +35,61 @@
          }
       ]
    },
-   "pistol.shot":{  
-      "category":"player",
+   "pistol.shot":{
       "subtitle":"subtitle.pistol.shot",
       "sounds":[  
          "sevendaystomine:sdtm.pistol.shot"
       ]
    },
-   "pistol.dryshot":{  
-      "category":"player",
+   "pistol.dryshot":{
       "subtitle":"subtitle.pistol.dryshot",
       "sounds":[  
          "sevendaystomine:sdtm.pistol.dryshot"
       ]
    },
-   "pistol.reload":{  
-      "category":"player",
+   "pistol.reload":{
       "subtitle":"subtitle.pistol.reload",
       "sounds":[  
          "sevendaystomine:sdtm.pistol.reload"
       ]
    },
-   "ak47.shot":{  
-      "category":"player",
+   "ak47.shot":{
       "subtitle":"subtitle.ak47.shot",
       "sounds":[  
          "sevendaystomine:sdtm.ak47.shot"
       ]
    },
-   "ak47.reload":{  
-      "category":"player",
+   "ak47.reload":{
       "subtitle":"subtitle.ak47.reload",
       "sounds":[  
          "sevendaystomine:sdtm.ak47.reload"
       ]
    },
-   "door.locked":{  
-      "category":"block",
+   "door.locked":{
       "subtitle":"subtitle.door.locked",
       "sounds":[  
          "sevendaystomine:sdtm.door.locked"
       ]
    },
-   "camera.take":{  
-      "category":"player",
+   "camera.take":{
       "subtitle":"subtitle.camera.take",
       "sounds":[  
          "sevendaystomine:sdtm.camera.take"
       ]
    },
-   "hunting_rifle.shot":{  
-      "category":"player",
+   "hunting_rifle.shot":{
       "subtitle":"subtitle.hunting_rifle.shot",
       "sounds":[  
          "sevendaystomine:sdtm.hunting_rifle.shot"
       ]
    },
-   "hunting_rifle.reload":{  
-      "category":"player",
+   "hunting_rifle.reload":{
       "subtitle":"subtitle.hunting_rifle.reload",
       "sounds":[  
          "sevendaystomine:sdtm.hunting_rifle.reload"
       ]
    },
-   "white_noise":{  
-      "category":"record",
+   "white_noise":{
       "subtitle":"subtitle.white_noise",
       "sounds":[  
          {  
@@ -113,8 +98,7 @@
          }
       ]
    },
-   "emergency_alert_system":{  
-      "category":"record",
+   "emergency_alert_system":{
       "subtitle":"subtitle.emergency_alert_system",
       "sounds":[  
          {  
@@ -123,36 +107,31 @@
          }
       ]
    },
-   "recipe_unlocked":{  
-      "category":"player",
+   "recipe_unlocked":{
       "subtitle":"subtitle.recipe_unlocked",
       "sounds":[  
          "sevendaystomine:recipe_unlocked"
       ]
    },
-   "shotgun.shot":{  
-      "category":"player",
+   "shotgun.shot":{
       "subtitle":"subtitle.shotgun.shot",
       "sounds":[  
          "sevendaystomine:shotgun.shot"
       ]
    },
-   "mp5.shot":{  
-      "category":"player",
+   "mp5.shot":{
       "subtitle":"subtitle.mp5.shot",
       "sounds":[  
          "sevendaystomine:mp5.shot"
       ]
    }   ,
-   "flamethrower.shot":{  
-      "category":"player",
+   "flamethrower.shot":{
       "subtitle":"subtitle.flamethrower.shot",
       "sounds":[  
          "sevendaystomine:flamethrower.shot"
       ]
    }   ,
-   "sirene":{  
-      "category":"record",
+   "sirene":{
       "subtitle":"subtitle.sirene",
       "sounds":[  
          {  
@@ -161,158 +140,142 @@
          }
       ]
    }   ,
-   "safe.unlock":{  
-      "category":"block",
+   "safe.unlock":{
       "subtitle":"subtitle.safe.unlock",
       "sounds":[  
          "sevendaystomine:safe.unlock"
       ]
    },
-   "entity.human.hurt":{  
-      "category":"neutral",
+   "entity.human.hurt":{
       "subtitle":"subtitle.entity.human.hurt",
       "sounds":[  
          "sevendaystomine:human_hurt"
       ]
    },
-   "horde":{  
-      "category":"hostile",
+   "horde":{
       "subtitle":"subtitle.horde",
       "sounds":[  
          "sevendaystomine:horde"
       ]
    },
-   "gas_leak":{  
-      "category":"ambient",
+   "gas_leak":{
       "subtitle":"subtitle.gas_leak",
       "sounds":[  
          "sevendaystomine:gas_leak"
       ]
    },
-   "chainsaw.idle":{  
-      "category":"player",
+   "chainsaw.idle":{
       "subtitle":"subtitle.chainsaw.idle",
       "sounds":[  
          "sevendaystomine:chainsaw.idle"
       ]
    },
-   "chainsaw.cut":{  
-      "category":"player",
+   "chainsaw.cut":{
       "subtitle":"subtitle.chainsaw.cut",
       "sounds":[  
          "sevendaystomine:chainsaw.cut"
       ]
    },
-   "honk":{  
-      "category":"player",
+   "honk":{
       "subtitle":"subtitle.honk",
       "sounds":[  
          "sevendaystomine:honk"
       ]
    },
-   "minibike.idle":{  
-      "category":"player",
+   "minibike.idle":{
       "subtitle":"subtitle.minibike.idle",
       "sounds":[  
          "sevendaystomine:minibike.idle"
       ]
    },
-   "car.accelerate":{  
-      "category":"player",
+   "car.accelerate":{
       "subtitle":"subtitle.car.accelerate",
       "sounds":[  
          "sevendaystomine:car.accelerate"
       ]
    },
-   "magnum.shot":{  
-      "category":"player",
+   "magnum.shot":{
       "subtitle":"subtitle.magnum.shot",
       "sounds":[  
          "sevendaystomine:magnum.shot"
       ]
    },
-   "m4.shot":{  
-      "category":"player",
+   "m4.shot":{
       "subtitle":"subtitle.m4.shot",
       "sounds":[  
          "sevendaystomine:m4.shot"
       ]
    },
-   "car.open":{  
-      "category":"block",
+   "car.open":{
       "subtitle":"subtitle.car.open",
       "sounds":[  
          "sevendaystomine:car.open"
       ]
    },
-   "car.close":{  
-      "category":"block",
+   "car.close":{
       "subtitle":"subtitle.car.close",
       "sounds":[  
          "sevendaystomine:car.close"
       ]
    },
-   "garbage.open":{  
-      "category":"block",
+   "garbage.open":{
       "subtitle":"subtitle.garbage.open",
       "sounds":[  
          "sevendaystomine:garbage.open"
       ]
    },
-   "drawer.open":{  
-      "category":"block",
+   "drawer.open":{
       "subtitle":"subtitle.drawer.open",
       "sounds":[  
          "sevendaystomine:drawer.open"
       ]
    },
-   "drawer.close":{  
-      "category":"block",
+   "drawer.close":{
       "subtitle":"subtitle.drawer.close",
       "sounds":[  
          "sevendaystomine:drawer.close"
       ]
    },
-   "file_cabinet.open":{  
-      "category":"block",
+   "file_cabinet.open":{
       "subtitle":"subtitle.file_cabinet.open",
       "sounds":[  
          "sevendaystomine:file_cabinet.open"
       ]
    },
    "file_cabinet.close":{  
-      "category":"block",
       "subtitle":"subtitle.file_cabinet.close",
       "sounds":[  
          "sevendaystomine:file_cabinet.close"
       ]
    },
-   "cabinet.open":{  
-      "category":"block",
+   "cabinet.open":{
       "subtitle":"subtitle.cabinet.open",
       "sounds":[  
          "sevendaystomine:cabinet.open"
       ]
    },
-   "cabinet.close":{  
-      "category":"block",
+   "cabinet.close":{
       "subtitle":"subtitle.cabinet.close",
       "sounds":[  
          "sevendaystomine:cabinet.close"
       ]
    },
-   "fridge.open":{  
-      "category":"block",
+   "fridge.open":{
       "subtitle":"subtitle.fridge.open",
       "sounds":[  
          "sevendaystomine:fridge.open"
       ]
    },
-   "fridge.close":{  
-      "category":"block",
+   "fridge.close":{
       "subtitle":"subtitle.fridge.close",
       "sounds":[  
          "sevendaystomine:fridge.close"
+      ]
+   },
+   "solar_panel_hum":{
+      "subtitle":"subtitle.solar_panel_hum",
+      "sounds":[
+         "sevendaystomine:solar_panel_hum"
       ]
    }
 }

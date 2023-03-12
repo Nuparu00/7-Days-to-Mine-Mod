@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import nuparu.sevendaystomine.world.level.block.entity.CalendarBlockEntity;
-import nuparu.sevendaystomine.world.level.block.entity.SmallContainerBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CalendarBlock extends HorizontalBlockBase implements EntityBlock {
@@ -35,24 +35,19 @@ public class CalendarBlock extends HorizontalBlockBase implements EntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new CalendarBlockEntity(pos,state);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
-        switch (state.getValue(FACING)) {
-            default:
-            case NORTH:
-                return NORTH;
-            case SOUTH:
-                return SOUTH;
-            case WEST:
-                return WEST;
-            case EAST:
-                return EAST;
-        }
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
+        return switch (state.getValue(FACING)) {
+            case NORTH -> NORTH;
+            case SOUTH, UP, DOWN -> SOUTH;
+            case WEST -> WEST;
+            case EAST -> EAST;
+        };
     }
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_53334_) {
@@ -72,8 +67,8 @@ public class CalendarBlock extends HorizontalBlockBase implements EntityBlock {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block,
-                                BlockPos pos2, boolean p_220069_6_) {
+    public void neighborChanged(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Block block,
+                                @NotNull BlockPos pos2, boolean p_220069_6_) {
         if (!world.isClientSide) {
             if (!state.canSurvive(world, pos)) {
                 world.destroyBlock(pos, true);

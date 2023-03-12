@@ -2,21 +2,18 @@ package nuparu.sevendaystomine.client.gui.components.toasts;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.FrameType;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import nuparu.sevendaystomine.init.ModSounds;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class NotificationToast implements Toast {
       this.description = description;
    }
 
-   public Visibility render(PoseStack p_94800_, ToastComponent p_94801_, long p_94802_) {
+   public @NotNull Visibility render(@NotNull PoseStack p_94800_, ToastComponent p_94801_, long p_94802_) {
       RenderSystem.setShader(GameRenderer::getPositionTexShader);
       RenderSystem.setShaderTexture(0, TEXTURE);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

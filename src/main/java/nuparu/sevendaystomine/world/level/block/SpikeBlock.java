@@ -1,19 +1,17 @@
 package nuparu.sevendaystomine.world.level.block;
 
-import com.mojang.math.Vector3d;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.world.level.block.entity.SpikesBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SpikeBlock extends WaterloggableHorizontalBlockBase implements EntityBlock, ISpikeBlock {
@@ -28,7 +26,7 @@ public class SpikeBlock extends WaterloggableHorizontalBlockBase implements Enti
     }
 
     @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
+    public void entityInside(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Entity entityIn) {
         if (!(entityIn instanceof LivingEntity)) {
             return;
         }
@@ -56,7 +54,7 @@ public class SpikeBlock extends WaterloggableHorizontalBlockBase implements Enti
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new SpikesBlockEntity(pos,state);
     }
 }

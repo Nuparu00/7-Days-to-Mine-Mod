@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 import nuparu.sevendaystomine.world.entity.item.LootableCorpseEntity;
 import nuparu.sevendaystomine.world.entity.zombie.ZombieBaseEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -22,8 +23,8 @@ public class LootableCorpseRenderer<T extends LootableCorpseEntity> extends Enti
 	}
 
 	@Override
-	public void render(T entity, float entityYaw, float partialTicks, PoseStack matrix,
-					   MultiBufferSource buffer, int p_225623_6_) {
+	public void render(@NotNull T entity, float entityYaw, float partialTicks, @NotNull PoseStack matrix,
+                       @NotNull MultiBufferSource buffer, int p_225623_6_) {
 		super.render(entity, entityYaw, partialTicks, matrix, buffer, p_225623_6_);
 		Entity original = entity.getOriginal();
 		if (original == null)
@@ -53,8 +54,7 @@ public class LootableCorpseRenderer<T extends LootableCorpseEntity> extends Enti
 		float rotY = entityYaw;
 		float rotZ = 0;
 
-		if (original instanceof ZombieBaseEntity) {
-			ZombieBaseEntity zombie = ((ZombieBaseEntity) original);
+		if (original instanceof ZombieBaseEntity zombie) {
 
 			if (zombie.customCorpseTransform()) {
 				Vec3 rot = zombie.corpseRotation();
@@ -77,7 +77,7 @@ public class LootableCorpseRenderer<T extends LootableCorpseEntity> extends Enti
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T p_114482_) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T p_114482_) {
 		return null;
 	}
 

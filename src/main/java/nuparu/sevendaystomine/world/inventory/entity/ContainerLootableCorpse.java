@@ -1,6 +1,7 @@
 package nuparu.sevendaystomine.world.inventory.entity;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -11,15 +12,15 @@ import net.minecraftforge.items.SlotItemHandler;
 import nuparu.sevendaystomine.capability.ExtendedInventoryProvider;
 import nuparu.sevendaystomine.capability.IItemHandlerExtended;
 import nuparu.sevendaystomine.init.ModContainers;
-import nuparu.sevendaystomine.world.entity.item.LootableCorpseEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ContainerLootableCorpse extends AbstractContainerMenu {
 
     private final Level world;
-    LootableCorpseEntity corpseEntity;
-    IItemHandlerExtended inventory;
+    final Entity corpseEntity;
+    final IItemHandlerExtended inventory;
 
-    protected ContainerLootableCorpse(int windowID, Inventory invPlayer, LootableCorpseEntity corpseEntity) {
+    protected ContainerLootableCorpse(int windowID, Inventory invPlayer, Entity corpseEntity) {
         super(ModContainers.LOOTABLE_COPRSE.get(), windowID);
         this.world = invPlayer.player.level;
         this.corpseEntity = corpseEntity;
@@ -43,21 +44,21 @@ public class ContainerLootableCorpse extends AbstractContainerMenu {
     }
 
     public static ContainerLootableCorpse createContainerClientSide(int windowID, Inventory playerInventory, FriendlyByteBuf packetBuffer) {
-        return new ContainerLootableCorpse(windowID,playerInventory, (LootableCorpseEntity) playerInventory.player.level.getEntity(packetBuffer.readInt()));
+        return new ContainerLootableCorpse(windowID,playerInventory, playerInventory.player.level.getEntity(packetBuffer.readInt()));
     }
 
-    public static ContainerLootableCorpse createContainerServerSide(int windowID, Inventory playerInventory, LootableCorpseEntity entity){
+    public static ContainerLootableCorpse createContainerServerSide(int windowID, Inventory playerInventory, Entity entity){
         return new ContainerLootableCorpse(windowID, playerInventory, entity);
     }
 
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return true;
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         final Slot slot = this.slots.get(index);
 
         if (slot != null && slot.hasItem()) {

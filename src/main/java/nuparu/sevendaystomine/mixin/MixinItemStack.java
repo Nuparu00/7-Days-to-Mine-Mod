@@ -3,17 +3,11 @@ package nuparu.sevendaystomine.mixin;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.util.ItemUtils;
-import nuparu.sevendaystomine.util.Utils;
 import nuparu.sevendaystomine.world.item.quality.IQualityItem;
 import nuparu.sevendaystomine.world.item.quality.IQualityStack;
-import nuparu.sevendaystomine.world.item.quality.QualityLevel;
-import nuparu.sevendaystomine.world.item.quality.QualityManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -43,15 +37,17 @@ public class MixinItemStack implements IQualityStack {
     }
 
     @Override
-    public QualityLevel getQualityLevel() {
-        return QualityManager.getQualityLevel(getQuality());
-    }
-
-    @Override
     public boolean canHaveQuality() {
         ItemStack stack = (ItemStack)(Object)this;
         return ((IQualityItem)stack.getItem()).canHaveQuality();
     }
+
+    @Override
+    public boolean hasQuality() {
+        ItemStack stack = (ItemStack)(Object)this;
+        return stack.hasTag() && stack.getTag().getInt("Quality") > 0;
+    }
+
     @Inject(method = "inventoryTick(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;IZ)V", at = @At("RETURN"))
     public void inventoryTick(Level p_41667_, Entity p_41668_, int p_41669_, boolean p_41670_, CallbackInfo ci) {
         ItemStack stack = (ItemStack)(Object)this;

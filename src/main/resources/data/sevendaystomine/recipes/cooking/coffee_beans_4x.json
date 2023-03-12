@@ -1,0 +1,24 @@
+{
+   "type":"sevendaystomine:cooking_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:coffee_berry"
+      },
+      {
+         "item":"sevendaystomine:coffee_berry"
+      },
+      {
+         "item":"sevendaystomine:coffee_berry"
+      },
+      {
+         "item":"sevendaystomine:coffee_berry"
+      }
+   ],
+   "station" : "sevendaystomine:cooking_pot",
+   "result":{
+      "item":"sevendaystomine:coffee_beans",
+      "count" : 4
+   },
+   "experience": 0.25,
+   "cookingtime": 600
+}

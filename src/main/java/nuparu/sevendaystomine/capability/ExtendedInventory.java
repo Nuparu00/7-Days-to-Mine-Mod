@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
-import nuparu.sevendaystomine.SevenDaysToMine;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
@@ -200,13 +200,13 @@ public class ExtendedInventory implements IItemHandlerExtended, IItemHandlerModi
     public static class Factory implements Callable<IItemHandlerExtended> {
 
         @Override
-        public IItemHandlerExtended call() throws Exception {
+        public IItemHandlerExtended call() {
             return new ExtendedInventory();
         }
     }
 
     @Override
-    public Component getName() {
+    public @NotNull Component getName() {
         return MutableComponent.create(new TranslatableContents("container." + name));
     }
 
@@ -216,7 +216,7 @@ public class ExtendedInventory implements IItemHandlerExtended, IItemHandlerModi
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return getName();
     }
 }

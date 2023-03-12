@@ -17,9 +17,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
-import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -29,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
 import nuparu.sevendaystomine.world.entity.ai.GoalBreakBlocks;
+import org.jetbrains.annotations.NotNull;
 
 public class SpiderZombieEntity<T extends SpiderZombieEntity> extends ZombieBaseEntity {
 
@@ -106,7 +105,7 @@ public class SpiderZombieEntity<T extends SpiderZombieEntity> extends ZombieBase
         return this.isClimbing();
     }
 
-    public void makeStuckInBlock(BlockState p_33796_, Vec3 p_33797_) {
+    public void makeStuckInBlock(BlockState p_33796_, @NotNull Vec3 p_33797_) {
         if (!p_33796_.is(Blocks.COBWEB)) {
             super.makeStuckInBlock(p_33796_, p_33797_);
         }
@@ -114,7 +113,7 @@ public class SpiderZombieEntity<T extends SpiderZombieEntity> extends ZombieBase
     }
 
     @Override
-    protected PathNavigation createNavigation(Level p_33802_) {
+    protected @NotNull PathNavigation createNavigation(@NotNull Level p_33802_) {
         return new WallClimberNavigation(this, p_33802_);
     }
     public boolean isClimbing() {

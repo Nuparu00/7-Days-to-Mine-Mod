@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import nuparu.sevendaystomine.world.level.block.entity.RadioBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RadioBlock extends WaterloggableHorizontalBlockBase implements EntityBlock{
@@ -23,8 +24,8 @@ public class RadioBlock extends WaterloggableHorizontalBlockBase implements Enti
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
         switch (state.getValue(FACING)) {
             default:
             case NORTH:
@@ -40,7 +41,7 @@ public class RadioBlock extends WaterloggableHorizontalBlockBase implements Enti
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new RadioBlockEntity(pos,state);
     }
 }

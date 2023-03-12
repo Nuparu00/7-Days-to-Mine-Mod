@@ -1,0 +1,21 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "CCC",
+    "COC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    },
+    "O": {
+      "item": "sevendaystomine:hunting_rifle_barrel"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:hunting_rifle_barrel_mold"
+  },
+  "recipe": "sevendaystomine:book_hunting_rifle",
+  "quality": false
+}

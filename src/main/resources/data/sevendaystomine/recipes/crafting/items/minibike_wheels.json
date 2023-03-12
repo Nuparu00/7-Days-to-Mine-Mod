@@ -1,0 +1,23 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    " LLL ",
+    "LIIIL",
+    "LI IL",
+    "LIIIL",
+    " LLL "
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "I": {
+      "item": "sevendaystomine:iron_pipe"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:wheels"
+  },
+  "recipe": "sevendaystomine:book_minibike",
+  "quality": true
+}

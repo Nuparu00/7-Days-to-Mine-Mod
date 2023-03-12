@@ -2,11 +2,8 @@ package nuparu.sevendaystomine.world.level.block;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
 public class TorchWallBlockBase extends WallTorchBlock implements IBlockBase {

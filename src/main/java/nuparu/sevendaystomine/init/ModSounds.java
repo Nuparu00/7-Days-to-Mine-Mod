@@ -96,4 +96,7 @@ public class ModSounds {
 			() -> new SoundEvent(new ResourceLocation(SevenDaysToMine.MODID, "fridge.open")));
 	public static final RegistryObject<SoundEvent> FRIDGE_CLOSE= SOUNDS.register("fridge.close",
 			() -> new SoundEvent(new ResourceLocation(SevenDaysToMine.MODID, "fridge.close")));
+
+	public static final RegistryObject<SoundEvent> SOLAR_PANEL_HUM= SOUNDS.register("solar_panel_hum",
+			() -> new SoundEvent(new ResourceLocation(SevenDaysToMine.MODID, "solar_panel_hum")));
 }

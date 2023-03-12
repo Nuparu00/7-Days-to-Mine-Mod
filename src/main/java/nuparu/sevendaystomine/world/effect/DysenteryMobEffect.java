@@ -1,8 +1,6 @@
 package nuparu.sevendaystomine.world.effect;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -10,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import nuparu.sevendaystomine.capability.CapabilityHelper;
 import nuparu.sevendaystomine.capability.IExtendedPlayer;
 import nuparu.sevendaystomine.config.ServerConfig;
+import org.jetbrains.annotations.NotNull;
 
 public class DysenteryMobEffect extends BaseMobEffect{
 
@@ -19,7 +18,7 @@ public class DysenteryMobEffect extends BaseMobEffect{
                 AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
-    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
+    public void applyEffectTick(@NotNull LivingEntity livingEntity, int amplifier) {
         if(!ServerConfig.thirst.get()) return;
 
         if(livingEntity instanceof Player) {

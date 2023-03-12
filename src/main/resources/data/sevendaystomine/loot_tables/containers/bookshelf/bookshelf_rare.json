@@ -1,0 +1,34 @@
+{
+    "type": "minecraft:generic",
+	"pools": [{
+		"rolls": {
+			"min": 1,
+			"max": 4
+		},
+		"entries": [{
+				"type": "minecraft:item",
+				"weight": 100,
+				"name": "minecraft:paper"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 150,
+				"name": "minecraft:book"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 15,
+				"name": "sevendaystomine:book_minibike"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 10,
+				"name": "minecraft:writable_book"
+			},
+			{
+				"type": "minecraft:empty",
+				"weight": 525
+			}
+		]
+	}]
+}

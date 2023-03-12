@@ -1,21 +1,18 @@
 package nuparu.sevendaystomine.init;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.item.crafting.DummyRecipe;
 import nuparu.sevendaystomine.world.item.crafting.QualityShapedRecipe;
+import nuparu.sevendaystomine.world.item.crafting.QualityShapelessRecipe;
 import nuparu.sevendaystomine.world.item.crafting.ScrapRecipe;
 import nuparu.sevendaystomine.world.item.crafting.chemistry.ChemistryRecipeShapeless;
 import nuparu.sevendaystomine.world.item.crafting.cooking.CookingShapeless;
 import nuparu.sevendaystomine.world.item.crafting.forge.ForgeRecipeMaterial;
 import nuparu.sevendaystomine.world.item.crafting.forge.ForgeRecipeShapeless;
-import nuparu.sevendaystomine.world.item.crafting.forge.IForgeRecipe;
-import nuparu.sevendaystomine.world.level.block.entity.ForgeBlockEntity;
 
 public class ModRecipeSerializers {
 
@@ -26,7 +23,8 @@ public class ModRecipeSerializers {
             ScrapRecipe.Serializer::new);
     public static final RegistryObject<QualityShapedRecipe.Serializer> QUALITY_SHAPED_SERIALIZER = SERIALIZERS.register("quality_shaped",
             QualityShapedRecipe.Serializer::new);
-
+    public static final RegistryObject<QualityShapelessRecipe.Serializer> QUALITY_SHAPELESS_SERIALIZER = SERIALIZERS.register("quality_shapeless",
+            QualityShapelessRecipe.Serializer::new);
     public static final RegistryObject<DummyRecipe.Serializer> DUMMY_SERIALIZER = SERIALIZERS.register("dummy",
             DummyRecipe.Serializer::new);
 

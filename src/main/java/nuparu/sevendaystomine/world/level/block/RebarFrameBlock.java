@@ -24,7 +24,7 @@ public class RebarFrameBlock extends BlockBase implements SimpleWaterloggedBlock
 
     public RebarFrameBlock(Properties p_49795_) {
         super(p_49795_);
-        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, Boolean.valueOf(false)));
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, Boolean.FALSE));
         occlusionShape = Shapes.or(Block.box(0,0,0,1,1,16),
                 Block.box(5,0,0,6,1,16),
                 Block.box(10,0,0,11,1,16),
@@ -62,19 +62,19 @@ public class RebarFrameBlock extends BlockBase implements SimpleWaterloggedBlock
 
     @Override
     @NotNull
-    public VoxelShape getOcclusionShape(BlockState p_53338_, BlockGetter p_53339_, BlockPos p_53340_) {
+    public VoxelShape getOcclusionShape(@NotNull BlockState p_53338_, @NotNull BlockGetter p_53339_, @NotNull BlockPos p_53340_) {
         return occlusionShape;
     }
 
     @Override
     @NotNull
-    public VoxelShape getVisualShape(BlockState p_53311_, BlockGetter p_53312_, BlockPos p_53313_, CollisionContext p_53314_) {
+    public VoxelShape getVisualShape(@NotNull BlockState p_53311_, @NotNull BlockGetter p_53312_, @NotNull BlockPos p_53313_, @NotNull CollisionContext p_53314_) {
         return occlusionShape;
     }
 
 
     @Override
-    public FluidState getFluidState(BlockState p_52362_) {
+    public @NotNull FluidState getFluidState(BlockState p_52362_) {
         return p_52362_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_52362_);
     }
 
@@ -82,12 +82,12 @@ public class RebarFrameBlock extends BlockBase implements SimpleWaterloggedBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext p_53304_) {
         FluidState fluidstate = p_53304_.getLevel().getFluidState(p_53304_.getClickedPos());
-        return super.getStateForPlacement(p_53304_).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+        return super.getStateForPlacement(p_53304_).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
 
     @Override
-    public BlockState updateShape(BlockState p_53323_, Direction p_53324_, BlockState p_53325_, LevelAccessor p_53326_, BlockPos p_53327_, BlockPos p_53328_) {
+    public @NotNull BlockState updateShape(BlockState p_53323_, @NotNull Direction p_53324_, @NotNull BlockState p_53325_, @NotNull LevelAccessor p_53326_, @NotNull BlockPos p_53327_, @NotNull BlockPos p_53328_) {
         if (p_53323_.getValue(WATERLOGGED)) {
             p_53326_.scheduleTick(p_53327_, Fluids.WATER, Fluids.WATER.getTickDelay(p_53326_));
         }

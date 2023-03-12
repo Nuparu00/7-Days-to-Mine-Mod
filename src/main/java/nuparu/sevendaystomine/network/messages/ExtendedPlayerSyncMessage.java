@@ -13,8 +13,8 @@ import nuparu.sevendaystomine.capability.IExtendedPlayer;
 import java.util.function.Supplier;
 
 public class ExtendedPlayerSyncMessage {
-    IExtendedPlayer extendedPlayer;
-    int playerID;
+    final IExtendedPlayer extendedPlayer;
+    final int playerID;
 
     public ExtendedPlayerSyncMessage() {
         this.extendedPlayer = null;
@@ -59,8 +59,7 @@ public class ExtendedPlayerSyncMessage {
                 int playerID = msg.playerID;
                 if(player != null && player.level != null){
                     Entity entity = player.level.getEntity(playerID);
-                    if(entity instanceof Player){
-                        Player player2 = (Player)entity;
+                    if(entity instanceof Player player2){
                         IExtendedPlayer localExtendedPlayer = CapabilityHelper.getExtendedPlayer(player2);
                         if(localExtendedPlayer == null) return;
                         localExtendedPlayer.copy(extendedPlayer);

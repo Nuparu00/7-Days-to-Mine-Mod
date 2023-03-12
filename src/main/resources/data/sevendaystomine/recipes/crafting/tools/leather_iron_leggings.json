@@ -1,0 +1,21 @@
+{
+   "type":"sevendaystomine:quality_shaped",
+   "pattern":[
+      "LLL",
+      "I I",
+      "L L"
+   ],
+   "key":{
+      "I":{
+			"tag": "forge:ingots/iron"
+},
+      "L":{
+			"tag": "forge:leather"
+}
+   },
+   "result":{
+      "item":"sevendaystomine:leather_iron_leggings",
+      "count":1
+   },
+   "quality": true
+}

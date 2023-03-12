@@ -21,6 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import nuparu.sevendaystomine.world.entity.item.MountableBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ChairBlock extends HorizontalBlockBase implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -37,25 +38,20 @@ public class ChairBlock extends HorizontalBlockBase implements SimpleWaterlogged
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
-        switch (state.getValue(FACING)) {
-            default:
-            case NORTH:
-                return NORTH;
-            case SOUTH:
-                return SOUTH;
-            case WEST:
-                return WEST;
-            case EAST:
-                return EAST;
-        }
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
+        return switch (state.getValue(FACING)) {
+            case NORTH -> NORTH;
+            case SOUTH, UP, DOWN -> SOUTH;
+            case WEST -> WEST;
+            case EAST -> EAST;
+        };
 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos,
-                                 Player playerIn, InteractionHand hand, BlockHitResult result) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos,
+                                          Player playerIn, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
         if (!playerIn.isCrouching()) {
             MountableBlockEntity.mountBlock(worldIn, pos, playerIn,0.45f);
             return InteractionResult.SUCCESS;
@@ -63,7 +59,7 @@ public class ChairBlock extends HorizontalBlockBase implements SimpleWaterlogged
         return InteractionResult.FAIL;
     }
 
-    public FluidState getFluidState(BlockState p_52362_) {
+    public @NotNull FluidState getFluidState(BlockState p_52362_) {
         return p_52362_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_52362_);
     }
 
@@ -71,12 +67,12 @@ public class ChairBlock extends HorizontalBlockBase implements SimpleWaterlogged
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext p_53304_) {
         FluidState fluidstate = p_53304_.getLevel().getFluidState(p_53304_.getClickedPos());
-        return super.getStateForPlacement(p_53304_).setValue(FACING, p_53304_.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+        return super.getStateForPlacement(p_53304_).setValue(FACING, p_53304_.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
 
     @Override
-    public BlockState updateShape(BlockState p_53323_, Direction p_53324_, BlockState p_53325_, LevelAccessor p_53326_, BlockPos p_53327_, BlockPos p_53328_) {
+    public @NotNull BlockState updateShape(BlockState p_53323_, @NotNull Direction p_53324_, @NotNull BlockState p_53325_, @NotNull LevelAccessor p_53326_, @NotNull BlockPos p_53327_, @NotNull BlockPos p_53328_) {
         if (p_53323_.getValue(WATERLOGGED)) {
             p_53326_.scheduleTick(p_53327_, Fluids.WATER, Fluids.WATER.getTickDelay(p_53326_));
         }

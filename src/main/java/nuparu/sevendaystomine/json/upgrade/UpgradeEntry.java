@@ -1,10 +1,6 @@
 package nuparu.sevendaystomine.json.upgrade;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootTable;
 import nuparu.sevendaystomine.json.IngredientStack;
 
 import javax.annotation.Nullable;

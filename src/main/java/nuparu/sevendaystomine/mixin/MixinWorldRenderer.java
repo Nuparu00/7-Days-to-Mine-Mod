@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3d;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -14,7 +13,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderBuffers;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -25,9 +23,6 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import nuparu.sevendaystomine.capability.BreakData;
 import nuparu.sevendaystomine.capability.CapabilityHelper;
 import nuparu.sevendaystomine.capability.IChunkData;
-import nuparu.sevendaystomine.config.ClientConfig;
-import nuparu.sevendaystomine.util.Utils;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -54,7 +49,7 @@ public class MixinWorldRenderer {
         Level world = minecraft.level;
 
 
-        ChunkSource provider = (ChunkSource) world.getChunkSource();
+        ChunkSource provider = world.getChunkSource();
 
         if (f_storage == null) {
             f_storage = ObfuscationReflectionHelper.findField(ClientChunkCache.class, "f_104410_");

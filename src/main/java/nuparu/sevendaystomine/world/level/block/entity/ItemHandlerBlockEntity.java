@@ -9,25 +9,33 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
+import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.util.ItemUtils;
-import nuparu.sevendaystomine.util.Utils;
 import nuparu.sevendaystomine.world.inventory.IContainerCallbacks;
 import nuparu.sevendaystomine.world.inventory.ILootTableProvider;
+import nuparu.sevendaystomine.world.inventory.InventoryUtils;
 import nuparu.sevendaystomine.world.inventory.ItemHandlerNameable;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -54,14 +62,25 @@ public abstract class ItemHandlerBlockEntity<INVENTORY extends ItemHandlerNameab
     }
 
     public NonNullList<ItemStack> getDrops() {
-        if(this.lootTable != null){
-            this.unpackLootTable(null);
+        this.unpackLootTable(null);
+        return InventoryUtils.dropItemHandlerContents(getInventory(), level.random);
+    }
+
+    public void dropAllContents(Level world, BlockPos blockPos) {
+        this.unpackLootTable(null);
+        Containers.dropContents(world, blockPos, this.getDrops());
+    }
+
+    public static void setLootTable(BlockGetter p_222767_, RandomSource p_222768_, BlockPos p_222769_, ResourceLocation p_222770_) {
+        BlockEntity blockentity = p_222767_.getBlockEntity(p_222769_);
+        if (blockentity instanceof ItemHandlerBlockEntity<?> itemHandlerBlockEntity) {
+            itemHandlerBlockEntity.setLootTable(p_222770_, p_222768_.nextLong());
         }
-        return Utils.dropItemHandlerContents(getInventory(), level.random);
+
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void load(@NotNull CompoundTag compound) {
         super.load(compound);
         if (!this.tryLoadLootTable(compound)) {
             if (getInventory() != null && compound.contains("ItemHandler")) {
@@ -72,7 +91,7 @@ public abstract class ItemHandlerBlockEntity<INVENTORY extends ItemHandlerNameab
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
+    public void saveAdditional(@NotNull CompoundTag compound) {
         super.saveAdditional(compound);
         if (!this.trySaveLootTable(compound)) {
             if (getInventory() != null) {
@@ -84,13 +103,20 @@ public abstract class ItemHandlerBlockEntity<INVENTORY extends ItemHandlerNameab
     @Override
     @Nonnull
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             if(this.lootTable != null){
                 this.unpackLootTable(null);
             }
             return inventory.cast();
         }
         return super.getCapability(cap, side);
+    }
+
+
+    @Override
+    public void invalidateCaps(){
+        super.invalidateCaps();
+        this.inventory.invalidate();
     }
 
     public ResourceLocation getLootTable() {
@@ -134,14 +160,16 @@ public abstract class ItemHandlerBlockEntity<INVENTORY extends ItemHandlerNameab
             if (p_184281_1_ instanceof ServerPlayer) {
                 CriteriaTriggers.GENERATE_LOOT.trigger((ServerPlayer)p_184281_1_, this.lootTable);
             }
-
+            //NON PERSISTANT EVEN IF ACTIONS ARE THE SAME
             this.lootTable = null;
-            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.worldPosition)).withOptionalRandomSeed(this.lootTableSeed);
+            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel)this.level)).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.worldPosition)).withOptionalRandomSeed(this.lootTableSeed);
             if (p_184281_1_ != null) {
                 lootcontext$builder.withLuck(p_184281_1_.getLuck()).withParameter(LootContextParams.THIS_ENTITY, p_184281_1_);
             }
+            LootContext context = lootcontext$builder.create(LootContextParamSets.CHEST);
+            SevenDaysToMine.LOGGER.warn(this.getClass().getName() + " " + getBlockPos().toShortString() +  " // " + lootTableSeed +  " " + ((LegacyRandomSource)context.getRandom()).seed.get());
 
-            ItemUtils.fill(loottable,this.getInventory(), lootcontext$builder.create(LootContextParamSets.CHEST));
+            ItemUtils.fill(loottable,this.getInventory(), context);
         }
 
     }
@@ -151,7 +179,7 @@ public abstract class ItemHandlerBlockEntity<INVENTORY extends ItemHandlerNameab
         this.lootTableSeed = p_189404_2_;
     }
 
-    public void setLootTable(ResourceLocation p_189404_1_) {
+    public void setLootTable(@org.jetbrains.annotations.Nullable ResourceLocation p_189404_1_) {
         this.lootTable = p_189404_1_;
     }
 

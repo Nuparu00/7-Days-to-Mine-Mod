@@ -120,7 +120,7 @@ public class ChunkData implements IChunkData {
 
         }
 
-        map.keySet().removeAll(toRemove);
+        toRemove.forEach(map.keySet()::remove);
         lastUpdate = world.getGameTime();
         markDirty();
     }

@@ -1,0 +1,18 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "PLP"
+   ],
+   "key":{
+      "L":{
+         "item":"minecraft:oak_log"
+      },
+      "P":{
+         "item":"sevendaystomine:plank_wood"
+      }
+   },
+   "result":{
+      "item":"minecraft:oak_slab",
+      "count":4
+   }
+}

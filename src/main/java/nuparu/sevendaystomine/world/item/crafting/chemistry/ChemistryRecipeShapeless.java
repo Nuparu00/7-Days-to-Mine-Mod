@@ -15,12 +15,10 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.RecipeMatcher;
-import net.minecraftforge.registries.ForgeRegistries;
 import nuparu.sevendaystomine.init.ModRecipeSerializers;
 import nuparu.sevendaystomine.init.ModRecipeTypes;
-import nuparu.sevendaystomine.world.item.crafting.cooking.ICookingRecipe;
 import nuparu.sevendaystomine.world.level.block.entity.ChemistryBlockEntity;
-import nuparu.sevendaystomine.world.level.block.entity.ChemistryBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -48,7 +46,7 @@ public class ChemistryRecipeShapeless implements IChemistryRecipe<ChemistryBlock
     }
 
     @Override
-    public boolean matches(ChemistryBlockEntity grillInventory, Level world) {
+    public boolean matches(ChemistryBlockEntity grillInventory, @NotNull Level world) {
         StackedContents recipeitemhelper = new StackedContents();
         List<ItemStack> inputs = new ArrayList();
         int i = 0;
@@ -84,7 +82,7 @@ public class ChemistryRecipeShapeless implements IChemistryRecipe<ChemistryBlock
     }
 
     @Override
-    public ItemStack assemble(ChemistryBlockEntity grillInventory) {
+    public @NotNull ItemStack assemble(@NotNull ChemistryBlockEntity grillInventory) {
         return this.result.copy();
     }
 
@@ -94,32 +92,32 @@ public class ChemistryRecipeShapeless implements IChemistryRecipe<ChemistryBlock
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return this.id;
     }
 
     @Override
-    public String getGroup() {
+    public @NotNull String getGroup() {
         return this.group;
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem() {
         return this.result.copy();
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
+    public @NotNull NonNullList<Ingredient> getIngredients() {
         return this.ingredients;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.CHEMISTRY_SHAPELESS.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public @NotNull RecipeType<?> getType() {
         return ModRecipeTypes.CHEMISTRY_STATION_RECIPE_TYPE.get();
     }
 
@@ -134,10 +132,10 @@ public class ChemistryRecipeShapeless implements IChemistryRecipe<ChemistryBlock
     }
 
     public static class Factory implements RecipeSerializer<ChemistryRecipeShapeless> {
-        int defaultCookingTime = 600;
+        final int defaultCookingTime = 600;
 
         @Override
-        public ChemistryRecipeShapeless fromJson(ResourceLocation recipeId, JsonObject json) {
+        public @NotNull ChemistryRecipeShapeless fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
             String s = GsonHelper.getAsString(json, "group", "");
             NonNullList<Ingredient> nonnulllist = itemsFromJson(GsonHelper.getAsJsonArray(json, "ingredients"));
             if (nonnulllist.isEmpty()) {
@@ -167,14 +165,12 @@ public class ChemistryRecipeShapeless implements IChemistryRecipe<ChemistryBlock
 
         @Nullable
         @Override
-        public ChemistryRecipeShapeless fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+        public ChemistryRecipeShapeless fromNetwork(@NotNull ResourceLocation recipeId, FriendlyByteBuf buffer) {
             String s = buffer.readUtf(32767);
             int i = buffer.readVarInt();
             NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
 
-            for (int j = 0; j < nonnulllist.size(); ++j) {
-                nonnulllist.set(j, Ingredient.fromNetwork(buffer));
-            }
+            nonnulllist.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
 
             ItemStack itemstack = buffer.readItem();
             float experience = buffer.readFloat();

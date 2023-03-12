@@ -34,9 +34,8 @@ import nuparu.sevendaystomine.json.upgrade.UpgradeDataManager;
 import nuparu.sevendaystomine.json.upgrade.UpgradeEntry;
 import nuparu.sevendaystomine.util.ItemUtils;
 import nuparu.sevendaystomine.util.MathUtils;
-import nuparu.sevendaystomine.util.Utils;
+import nuparu.sevendaystomine.world.inventory.InventoryUtils;
 import nuparu.sevendaystomine.world.item.quality.IQualityStack;
-import nuparu.sevendaystomine.world.item.quality.QualityManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,8 +44,7 @@ import java.util.HashMap;
 public class PlayerEventHandler {
     @SubscribeEvent
     public static void onPlayerItemUseFinish(LivingEntityUseItemEvent.Finish event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             Level level = player.level;
             RandomSource random = level.random;
             ItemStack stack = event.getItem();
@@ -115,7 +113,7 @@ public class PlayerEventHandler {
             IQualityStack qualityStack = (IQualityStack) (Object) stack;
             if (qualityStack.canHaveQuality()) {
                 int quality = qualityStack.getQuality();
-                speed *= 1 + (quality / (double) QualityManager.maxLevel) * (QualityManager.levels.size() - 1);
+                speed *= 1 + qualityStack.getRelativeQualityScaled();
             }
         }
         event.setNewSpeed(speed);
@@ -138,7 +136,7 @@ public class PlayerEventHandler {
                 if (upgradeAmount > 0) {
                     UpgradeEntry entry = UpgradeDataManager.INSTANCE.getUpgradeFromEntry(state);
                     if (entry != null) {
-                        HashMap<ItemStack, Integer[]> map = player.isCreative() ? new HashMap<>() : Utils.hasIngredients(entry.ingredients, player);
+                        HashMap<ItemStack, Integer[]> map = player.isCreative() ? new HashMap<>() : InventoryUtils.hasIngredients(entry.ingredients, player);
                         if (map != null) {
 
                             if (stack.getOrCreateTag().contains("7D2M_UpgradePos", Tag.TAG_LONG) && stack.getOrCreateTag().getLong("7D2M_UpgradePos") != pos.asLong()) {
@@ -152,11 +150,9 @@ public class PlayerEventHandler {
                                 ItemUtils.eraseUpgraderData(stack);
                                 level.setBlockAndUpdate(pos, entry.getUpgradeTo().asBlockState(entry,state));
                                 if (!player.isCreative()) {
-                                    Utils.consumeIngredients(map, player);
+                                    InventoryUtils.consumeIngredients(map, player);
                                 }
-                                stack.hurtAndBreak(1, player, (player1) -> {
-                                    player1.broadcastBreakEvent(player.getUsedItemHand());
-                                });
+                                stack.hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(player.getUsedItemHand()));
                             } else {
                                 stack.getOrCreateTag().putDouble("7D2M_UpgradeProgress", progress);
                                 stack.getOrCreateTag().putLong("7D2M_UpgradePos", pos.asLong());
@@ -186,7 +182,7 @@ public class PlayerEventHandler {
                         if (progress >= 1) {
                             ItemUtils.eraseUpgraderData(stack);
                             for (IngredientStack ingredientStack : entry.ingredients) {
-                                if(level.getRandom().nextDouble() > ingredientStack.chance()) continue;;
+                                if(level.getRandom().nextDouble() > ingredientStack.chance()) continue;
                                 int count = level.getRandom().nextInt(ingredientStack.count() + 1);
                                 if (count == 0) continue;
                                 Ingredient ingredient = ingredientStack.ingredient();
@@ -196,9 +192,7 @@ public class PlayerEventHandler {
                                 Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, itemStack);
                             }
                             level.destroyBlock(pos,false);
-                            stack.hurtAndBreak(1, player, (player1) -> {
-                                player1.broadcastBreakEvent(player.getUsedItemHand());
-                            });
+                            stack.hurtAndBreak(1, player, (player1) -> player1.broadcastBreakEvent(player.getUsedItemHand()));
                         } else {
                             stack.getOrCreateTag().putDouble("7D2M_UpgradeProgress", -progress);
                             stack.getOrCreateTag().putLong("7D2M_UpgradePos", pos.asLong());

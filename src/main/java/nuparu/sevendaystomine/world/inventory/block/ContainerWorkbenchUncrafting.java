@@ -8,7 +8,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -16,20 +15,17 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.init.ModContainers;
 import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.util.ItemUtils;
-import nuparu.sevendaystomine.util.Utils;
 import nuparu.sevendaystomine.world.inventory.block.slot.UncraftingResultSlot;
 import nuparu.sevendaystomine.world.inventory.block.slot.WorkbenchScrapSlot;
 import nuparu.sevendaystomine.world.inventory.block.slot.WorkbenchUncraftingInputSlot;
 import nuparu.sevendaystomine.world.item.quality.IQualityStack;
 import nuparu.sevendaystomine.world.item.quality.QualityManager;
-import nuparu.sevendaystomine.world.level.block.ChemistryStationBlock;
-import nuparu.sevendaystomine.world.level.block.WorkbenchBlock;
 import nuparu.sevendaystomine.world.level.block.entity.WorkbenchBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +84,7 @@ public class ContainerWorkbenchUncrafting extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return this.workbench != null && this.workbench.isUsableByPlayer(player);
     }
 
@@ -109,7 +105,7 @@ public class ContainerWorkbenchUncrafting extends AbstractContainerMenu {
         }
     }
 
-    public void slotsChanged(Container p_75130_1_) {
+    public void slotsChanged(@NotNull Container p_75130_1_) {
         //this.access.execute((p_217069_1_, p_217069_2_) -> updateCraftingGrid(world, player, craftSlots, resultSlots,this.workbench.getInventory().getStackInSlot(0)));
     }
 
@@ -191,7 +187,7 @@ public class ContainerWorkbenchUncrafting extends AbstractContainerMenu {
                 }
                 else{
                     originalQuality = (int) Math.min(Math.floor(player.totalExperience / ServerConfig.xpPerQuality.get()),
-                            QualityManager.maxLevel);
+                            QualityManager.getMaxLevel());
                 }
 
                 for (int m = 0; m < 25; m++) {
@@ -242,7 +238,7 @@ public class ContainerWorkbenchUncrafting extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player entity, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player entity, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
@@ -303,7 +299,7 @@ public class ContainerWorkbenchUncrafting extends AbstractContainerMenu {
     }*/
 
     @Override
-    public void removed(Player p_75134_1_) {
+    public void removed(@NotNull Player p_75134_1_) {
         super.removed(p_75134_1_);
         this.access.execute((p_217068_2_, p_217068_3_) -> this.clearContainer(p_75134_1_, this.craftSlots));
     }

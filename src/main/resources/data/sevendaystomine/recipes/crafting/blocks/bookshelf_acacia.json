@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WSW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "sevendaystomine:plank_wood"
+    },
+    "S": {
+      "item": "minecraft:acacia_slab"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:acacia_bookshelf"
+  }
+}

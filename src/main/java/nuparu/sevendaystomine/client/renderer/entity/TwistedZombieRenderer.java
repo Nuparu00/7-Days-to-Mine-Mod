@@ -8,6 +8,7 @@ import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.client.renderer.entity.layers.RedEyesLayer;
 import nuparu.sevendaystomine.client.model.entity.TwistedZombieModel;
 import nuparu.sevendaystomine.world.entity.zombie.TwistedZombieEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class TwistedZombieRenderer<T extends TwistedZombieEntity, M extends TwistedZombieModel<T>>
 		extends MobRenderer<T, M> {
@@ -23,11 +24,11 @@ public class TwistedZombieRenderer<T extends TwistedZombieEntity, M extends Twis
 				"textures/entity/zombie/eyes/twisted_zombie_eyes.png")));
 	}
 
-	protected boolean isShaking(T p_230495_1_) {
+	protected boolean isShaking(@NotNull T p_230495_1_) {
 		return false;
 	}
 
-	public ResourceLocation getTextureLocation(T p_110775_1_) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T p_110775_1_) {
 		return ZOMBIE_LOCATION;
 	}
 

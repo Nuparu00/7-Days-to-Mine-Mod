@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 2,
+    "xz_spread": 16,
+    "feature": "sevendaystomine:pickable_stick_simple"
+  }
+}

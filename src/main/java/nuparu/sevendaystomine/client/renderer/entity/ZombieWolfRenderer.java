@@ -7,8 +7,8 @@ import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.client.model.entity.ZombieWolfModel;
 import nuparu.sevendaystomine.client.renderer.entity.layers.RedEyesLayer;
-import nuparu.sevendaystomine.client.model.entity.BloatedZombieModel;
 import nuparu.sevendaystomine.world.entity.zombie.ZombieWolfEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ZombieWolfRenderer<T extends ZombieWolfEntity, M extends ZombieWolfModel<T>>
 		extends MobRenderer<T, M> {
@@ -24,11 +24,11 @@ public class ZombieWolfRenderer<T extends ZombieWolfEntity, M extends ZombieWolf
 				"textures/entity/zombie/eyes/zombie_wolf_eyes.png")));
 	}
 
-	protected boolean isShaking(T p_230495_1_) {
+	protected boolean isShaking(@NotNull T p_230495_1_) {
 		return false;
 	}
 
-	public ResourceLocation getTextureLocation(T p_110775_1_) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T p_110775_1_) {
 		return ZOMBIE_LOCATION;
 	}
 

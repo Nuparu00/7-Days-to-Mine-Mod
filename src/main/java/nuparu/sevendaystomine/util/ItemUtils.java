@@ -8,22 +8,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
-import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
-import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.items.IItemHandler;
 import nuparu.sevendaystomine.SevenDaysToMine;
-import nuparu.sevendaystomine.init.ModBlockEntities;
+import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.json.scrap.ScrapDataManager;
 import nuparu.sevendaystomine.json.scrap.ScrapEntry;
 import nuparu.sevendaystomine.json.upgrader.UpgraderToolDataManager;
@@ -159,5 +148,9 @@ public class ItemUtils {
         }
 
         return null;
+    }
+
+    public static boolean canHaveQuality(Item item){
+        return item instanceof TieredItem || item instanceof ProjectileWeaponItem || item instanceof ArmorItem || item instanceof TridentItem || item == ModItems.CAR_BATTERY.get()  || item == ModItems.SMALL_ENGINE.get()  || item == ModItems.MINIBIKE_HANDLES.get() || item == ModItems.MINIBIKE_SEAT.get();
     }
 }

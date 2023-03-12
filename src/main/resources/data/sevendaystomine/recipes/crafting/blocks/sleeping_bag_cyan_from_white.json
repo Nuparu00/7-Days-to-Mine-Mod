@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "dyed_sleeping_bag",
+  "ingredients": [
+    {
+      "item": "sevendaystomine:sleeping_bag_white"
+    },
+    {
+      "item": "minecraft:cyan_dye"
+    }
+  ],
+  "result": {
+    "item": "sevendaystomine:sleeping_bag_cyan"
+  }
+}

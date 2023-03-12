@@ -7,7 +7,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.inventory.block.*;
+import nuparu.sevendaystomine.world.inventory.entity.ContainerCar;
 import nuparu.sevendaystomine.world.inventory.entity.ContainerLootableCorpse;
+import nuparu.sevendaystomine.world.inventory.entity.ContainerMinibike;
+import nuparu.sevendaystomine.world.inventory.item.ContainerCamera;
 
 public class ModContainers {
 	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES,
@@ -16,6 +19,10 @@ public class ModContainers {
 	public static final RegistryObject<MenuType<ContainerLootableCorpse>> LOOTABLE_COPRSE = CONTAINERS.register("lootable_corpse",
 			() -> IForgeMenuType.create(ContainerLootableCorpse::createContainerClientSide));
 
+	public static final RegistryObject<MenuType<ContainerMinibike>> MINIBIKE = CONTAINERS.register("minibike",
+			() -> IForgeMenuType.create(ContainerMinibike::createContainerClientSide));
+	public static final RegistryObject<MenuType<ContainerCar>> CAR = CONTAINERS.register("car",
+			() -> IForgeMenuType.create(ContainerCar::createContainerClientSide));
 
 	public static final RegistryObject<MenuType<ContainerForge>> FORGE = CONTAINERS.register("forge",
 			() -> IForgeMenuType.create(ContainerForge::createContainerClientSide));
@@ -32,4 +39,8 @@ public class ModContainers {
 
 	public static final RegistryObject<MenuType<ContainerSmall>> SMALL = CONTAINERS.register("small",
 			() -> IForgeMenuType.create(ContainerSmall::createContainerClientSide));
+	public static final RegistryObject<MenuType<ContainerCamera>> CAMERA = CONTAINERS.register("camera",
+			() -> IForgeMenuType.create(ContainerCamera::createContainerClientSide));
+	public static final RegistryObject<MenuType<ContainerCombustionGenerator>> COMBUSTION_GENERATOR = CONTAINERS.register("combustion_generator",
+			() -> IForgeMenuType.create(ContainerCombustionGenerator::createContainerClientSide));
 }

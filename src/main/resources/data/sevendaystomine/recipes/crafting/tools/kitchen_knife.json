@@ -1,0 +1,18 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "SII"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:kitchen_knife"
+  },
+  "quality": true
+}

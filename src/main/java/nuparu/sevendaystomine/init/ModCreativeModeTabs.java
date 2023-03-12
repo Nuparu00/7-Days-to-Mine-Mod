@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import nuparu.sevendaystomine.SevenDaysToMine;
+import org.jetbrains.annotations.NotNull;
 
 public class ModCreativeModeTabs {
     public static CreativeModeTab TAB_MATERIALS = new CreativeModeTab(SevenDaysToMine.MODID + ".materials") {
@@ -61,4 +62,17 @@ public class ModCreativeModeTabs {
             return new ItemStack(ModItems.SURVIVAL_GUIDE.get());
         }
     };
+    public static CreativeModeTab TAB_ELECTRICITY = new CreativeModeTab(SevenDaysToMine.MODID + ".electricity") {
+        @OnlyIn(Dist.CLIENT)
+        public @NotNull ItemStack makeIcon() {
+            return new ItemStack(ModItems.CAR_BATTERY.get());
+        }
+    };
+    public static CreativeModeTab TAB_CLOTHING = new CreativeModeTab(SevenDaysToMine.MODID + ".clothing") {
+        @OnlyIn(Dist.CLIENT)
+        public @NotNull ItemStack makeIcon() {
+            return new ItemStack(ModItems.SHIRT.get());
+        }
+    };
+
 }

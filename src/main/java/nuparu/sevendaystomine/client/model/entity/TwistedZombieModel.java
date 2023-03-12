@@ -9,8 +9,8 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
-import nuparu.sevendaystomine.world.entity.zombie.BloatedZombieEntity;
 import nuparu.sevendaystomine.world.entity.zombie.TwistedZombieEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class TwistedZombieModel<T extends TwistedZombieEntity> extends EntityModel<T> implements ArmedModel, HeadedModel {
 
@@ -219,7 +219,7 @@ public class TwistedZombieModel<T extends TwistedZombieEntity> extends EntityMod
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 		leftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 		head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -376,7 +376,7 @@ public class TwistedZombieModel<T extends TwistedZombieEntity> extends EntityMod
 		this.leftLeg.visible = p_102880_;
 	}
 
-	public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
+	public void translateToHand(@NotNull HumanoidArm p_102854_, @NotNull PoseStack p_102855_) {
 		this.getArm(p_102854_).translateAndRotate(p_102855_);
 	}
 
@@ -384,7 +384,7 @@ public class TwistedZombieModel<T extends TwistedZombieEntity> extends EntityMod
 		return p_102852_ == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
 	}
 
-	public ModelPart getHead() {
+	public @NotNull ModelPart getHead() {
 		return this.head;
 	}
 

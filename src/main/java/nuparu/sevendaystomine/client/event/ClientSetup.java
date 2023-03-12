@@ -1,12 +1,18 @@
 package nuparu.sevendaystomine.client.event;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -15,15 +21,16 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.gui.inventory.entity.*;
+import nuparu.sevendaystomine.client.gui.overlay.CameraOverlay;
 import nuparu.sevendaystomine.client.gui.overlay.ThirstBarOverlay;
 import nuparu.sevendaystomine.client.gui.overlay.UpgradeOverlay;
 import nuparu.sevendaystomine.client.model.entity.*;
 import nuparu.sevendaystomine.client.particle.ModParticleType;
-import nuparu.sevendaystomine.client.renderer.blockentity.CalendarRenderer;
-import nuparu.sevendaystomine.client.renderer.blockentity.GlobeRenderer;
-import nuparu.sevendaystomine.client.renderer.blockentity.SleepingBagRenderer;
+import nuparu.sevendaystomine.client.renderer.blockentity.*;
 import nuparu.sevendaystomine.client.renderer.entity.*;
+import nuparu.sevendaystomine.client.renderer.entity.layers.ClothingLayer;
 import nuparu.sevendaystomine.init.*;
+import nuparu.sevendaystomine.world.item.ClothingItem;
 
 @Mod.EventBusSubscriber(modid=SevenDaysToMine.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
@@ -49,6 +56,18 @@ public class ClientSetup {
     public static final ModelLayerLocation SLEEPING_BAG_HEAD_LAYER = createModelLayerLocation("sleeping_bag_head");
     public static final ModelLayerLocation SLEEPING_BAG_FOOT_LAYER = createModelLayerLocation("sleeping_bag_foot");
     public static final ModelLayerLocation GLOBE_LAYER = createModelLayerLocation("globe");
+    public static final ModelLayerLocation AIRDROP_MODEL = createModelLayerLocation("airdrop");
+    public static final ModelLayerLocation SOLAR_PANEL = createModelLayerLocation("solar_panel");
+
+    public static final ModelLayerLocation MINIBIKE_MODEL = createModelLayerLocation("minibike");
+    public static final ModelLayerLocation CAR_MODEL = createModelLayerLocation("car");
+    public static final ModelLayerLocation CLOTHING_INNER = createModelLayerLocation("clothing_inner");
+    public static final ModelLayerLocation CLOTHING_OUTER = createModelLayerLocation("clothing_outer");
+
+
+
+    public static final CubeDeformation OUTER_CLOTHING_DEFORMATION = new CubeDeformation(0.35F);
+    public static final CubeDeformation INNER_CLOTHING_DEFORMATION = new CubeDeformation(0.1F);
 
 
     @SubscribeEvent
@@ -56,6 +75,25 @@ public class ClientSetup {
         ItemProperties.register(ModItems.STONE_SPEAR.get(), new ResourceLocation(SevenDaysToMine.MODID,"throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) -> p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F);
         ItemProperties.register(ModItems.BONE_SPEAR.get(), new ResourceLocation(SevenDaysToMine.MODID,"throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) -> p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F);
 
+        ItemProperties.register(ModItems.CRUDE_BOW.get(),new ResourceLocation("pull"), (stack, world, entity, time) -> {
+            if (entity == null) {
+                return 0.0F;
+            } else {
+                return entity.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+            }
+        });
+
+        ItemProperties.register(ModItems.CRUDE_BOW.get(),new ResourceLocation("pulling"), (stack, world, entity, time) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
+        ItemProperties.register(ModItems.COMPOUND_BOW.get(),new ResourceLocation("pull"), (stack, world, entity, time) -> {
+            if (entity == null) {
+                return 0.0F;
+            } else {
+                return entity.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+            }
+        });
+
+        ItemProperties.register(ModItems.COMPOUND_BOW.get(),new ResourceLocation("pulling"), (stack, world, entity, time) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
         /*ItemBlockRenderTypes.setRenderLayer(ModBlocks.TORCH_UNLIT.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.TORCH_UNLIT_WALL.get(), RenderType.cutout());
@@ -76,6 +114,10 @@ public class ClientSetup {
         MenuScreens.register(ModContainers.WORKBENCH.get(), WorkbenchScreen::new);
         MenuScreens.register(ModContainers.WORKBENCH_UNCRAFTING.get(), WorkbenchUncraftingScreen::new);
         MenuScreens.register(ModContainers.SMALL.get(), SmallContainerScreen::new);
+        MenuScreens.register(ModContainers.MINIBIKE.get(), MinibikeScreen::new);
+        MenuScreens.register(ModContainers.CAR.get(), CarScreen::new);
+        MenuScreens.register(ModContainers.CAMERA.get(), CameraContainerScreen::new);
+        MenuScreens.register(ModContainers.COMBUSTION_GENERATOR.get(), CombustionGeneratorScreen::new);
     }
 
     @SubscribeEvent
@@ -102,6 +144,12 @@ public class ClientSetup {
         event.registerLayerDefinition(SLEEPING_BAG_HEAD_LAYER, SleepingBagRenderer::createHeadLayer);
         event.registerLayerDefinition(SLEEPING_BAG_FOOT_LAYER, SleepingBagRenderer::createFootLayer);
         event.registerLayerDefinition(GLOBE_LAYER, GlobeRenderer::createLayer);
+        event.registerLayerDefinition(AIRDROP_MODEL, AirdropModel::createLayer);
+        event.registerLayerDefinition(MINIBIKE_MODEL, MinibikeModel::createLayer);
+        event.registerLayerDefinition(CAR_MODEL, CarModel::createLayer);
+        event.registerLayerDefinition(CLOTHING_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(INNER_CLOTHING_DEFORMATION, 0.0F), 64, 64));
+        event.registerLayerDefinition(CLOTHING_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(OUTER_CLOTHING_DEFORMATION, 0.0F), 64, 64));
+        event.registerLayerDefinition(SOLAR_PANEL, SolarPanelRenderer::createLayer);
     }
 
     @SubscribeEvent
@@ -128,19 +176,26 @@ public class ClientSetup {
         event.registerEntityRenderer(ModEntities.SPIDER_ZOMBIE.get(), SpiderZombieRenderer::new);
         event.registerEntityRenderer(ModEntities.LOOTABLE_CORPSE.get(), LootableCorpseRenderer::new);
         event.registerEntityRenderer(ModEntities.MOUNTABLE_BLOCK.get(), MountableBlockRenderer::new);
+        event.registerEntityRenderer(ModEntities.AIRDROP.get(), AirdropRenderer::new);
+        event.registerEntityRenderer(ModEntities.MINIBIKE.get(), MinibikeRenderer::new);
+        event.registerEntityRenderer(ModEntities.CAR.get(), CarRenderer::new);
 
 
         event.registerBlockEntityRenderer(ModBlockEntities.SLEEPING_BAG.get(), SleepingBagRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CALENDAR.get(), CalendarRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.GLOBE.get(), GlobeRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.PHOTO.get(), PhotoRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.SOLAR_PANEL.get(), SolarPanelRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.WIND_TURBINE.get(), WindTurbineRenderer::new);
     }
 
     @SubscribeEvent
     public static void onColorHandlerItemEvent(RegisterColorHandlersEvent.Item event) {
-        ItemColors itemColors = event.getItemColors();
-        itemColors.register((p_92699_, p_92700_) -> {
-            return p_92700_ > 0 ? -1 : 0x479BA8;
-        }, ModItems.MURKY_WATER_BOTTLE.get());
+        event.register((p_92699_, p_92700_) -> p_92700_ > 0 ? -1 : 0x479BA8, ModItems.MURKY_WATER_BOTTLE.get());
+        Item[] clothes = new Item[]{ModItems.SHORTS.get(), ModItems.SKIRT.get(), ModItems.SHORTS_LONG.get(), ModItems.JEANS.get(),
+                ModItems.SHIRT.get(), ModItems.SHORT_SLEEVED_SHIRT.get(), ModItems.JACKET.get(), ModItems.JUMPER.get(), ModItems.COAT.get(),
+                ModItems.T_SHIRT_0.get(), ModItems.T_SHIRT_1.get()};
+        event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : ((ClothingItem) stack.getItem()).getColor(stack),clothes);
     }
 
     @SubscribeEvent
@@ -152,6 +207,7 @@ public class ClientSetup {
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
         event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(),SevenDaysToMine.MODID+"-thirst", new ThirstBarOverlay(Minecraft.getInstance()));
         event.registerAboveAll(SevenDaysToMine.MODID+"-upgrade", new UpgradeOverlay(Minecraft.getInstance()));
+        event.registerAboveAll(SevenDaysToMine.MODID+"-camera", new CameraOverlay(Minecraft.getInstance()));
     }
     public static ModelLayerLocation createModelLayerLocation(String name){
         return new ModelLayerLocation(new ResourceLocation(SevenDaysToMine.MODID, name), name);
@@ -159,13 +215,13 @@ public class ClientSetup {
 
 
     @SubscribeEvent
-    public static void stitcherEventPre(TextureStitchEvent.Pre event) {
+    public static void stitcherEventPre(TextureStitchEvent event) {
         TextureAtlas map = event.getAtlas();
         ResourceLocation stitching = map.location();
-
+/*
         if(!stitching.equals(TextureAtlas.LOCATION_BLOCKS))
             return;
-        event.addSprite(new ResourceLocation(SevenDaysToMine.MODID, "entity/sleeping_bag/red"));
+        event.getAtlas().(new ResourceLocation(SevenDaysToMine.MODID, "entity/sleeping_bag/red"));
         event.addSprite(new ResourceLocation(SevenDaysToMine.MODID, "entity/sleeping_bag/light_gray"));
         event.addSprite(new ResourceLocation(SevenDaysToMine.MODID, "entity/sleeping_bag/purple"));
         event.addSprite(new ResourceLocation(SevenDaysToMine.MODID, "entity/sleeping_bag/pink"));
@@ -182,12 +238,22 @@ public class ClientSetup {
         event.addSprite(new ResourceLocation(SevenDaysToMine.MODID, "entity/sleeping_bag/yellow"));
         event.addSprite(new ResourceLocation(SevenDaysToMine.MODID, "entity/sleeping_bag/orange"));
         event.addSprite(new ResourceLocation(SevenDaysToMine.MODID, "entity/globe"));
+        event.addSprite(new ResourceLocation(SevenDaysToMine.MODID, "item/empty_paper_slot"));*/
     }
 
     @SubscribeEvent
-    public static void stitcherEventPost(TextureStitchEvent.Post event) {
-        TextureAtlas map = event.getAtlas();
-        ResourceLocation stitching = map.location();
+    public static void addLayersEvent(EntityRenderersEvent.AddLayers event){
+        for(String skin : event.getSkins()){
+            LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer = event.getSkin(skin);
+            HumanoidModel inner = new HumanoidModel(Minecraft.getInstance().getEntityModels().bakeLayer(CLOTHING_INNER));
+            HumanoidModel outer = new HumanoidModel(Minecraft.getInstance().getEntityModels().bakeLayer(CLOTHING_OUTER));
 
+            renderer.addLayer(new ClothingLayer<>(renderer, inner, outer));
+        }
     }
+
+    /*@SubscribeEvent
+    public static void registerAdditionalEvent(ModelEvent.RegisterAdditional event){
+       event.register(new ResourceLocation(SevenDaysToMine.MODID,"block/wind_turbine_blades"));
+    }*/
 }

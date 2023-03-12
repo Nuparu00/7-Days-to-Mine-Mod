@@ -1,0 +1,25 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "SSSSS",
+    "SGGGS",
+    "SBBBS",
+    "SGGGS",
+    "SSSSS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:ingots/steel"
+    },
+    "G": {
+      "item": "sevendaystomine:gear"
+    },
+    "B": {
+      "item": "minecraft:stone_button"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:code_safe"
+  },
+  "recipe": "sevendaystomine:book_metalworking"
+}

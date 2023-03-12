@@ -1,0 +1,208 @@
+{
+    "type": "minecraft:generic",
+    "pools": [
+        {
+           "rolls": {
+                "min": 1,
+                "max": 9
+            },
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "sevendaystomine:canned_beef"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_cat_food"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "sevendaystomine:canned_chicken"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_chili"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_dog_food"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "sevendaystomine:canned_ham"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "sevendaystomine:canned_lamb"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_miso"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_pasta"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_pears"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_peas"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "sevendaystomine:canned_salmon"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_soup"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "sevendaystomine:canned_stock"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:canned_tuna"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "sevendaystomine:coffee_beans"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 2,
+                    "name": "sevendaystomine:soda"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "sevendaystomine:moldy_bread",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 4,
+                    "name": "minecraft:poisonous_potato",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 2,
+                    "name": "minecraft:cookie",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 12,
+                    "name": "minecraft:glass_bottle",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 14,
+                    "name": "sevendaystomine:empty_can",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 2,
+                    "name": "minecraft:sugar",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 2,
+                    "name": "sevendaystomine:salt",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 320
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 3,
+                    "name": "minecraft:honey_bottle",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

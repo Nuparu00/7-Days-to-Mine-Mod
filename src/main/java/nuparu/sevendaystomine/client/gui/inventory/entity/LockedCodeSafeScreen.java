@@ -17,6 +17,7 @@ import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.network.PacketManager;
 import nuparu.sevendaystomine.network.messages.SafeCodeMessage;
 import nuparu.sevendaystomine.world.level.block.entity.CodeSafeBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
@@ -25,12 +26,12 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 			"textures/gui/container/code_safe_locked.png");
 
 	private CodeSafeBlockEntity safe;
-	private BlockPos pos;
+	private final BlockPos pos;
 
 	private int guiLeft;
 	private int guiTop;
-	private int xSize = 110;
-	private int ySize = 100;
+	private final int xSize = 110;
+	private final int ySize = 100;
 
 	public LockedCodeSafeScreen(BlockEntity tileEntity, BlockPos pos) {
 		super(Component.translatable("screen.code_safe.locked"));
@@ -53,27 +54,15 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 		
 		int y1 = guiTop + 23;
 		int y2 = guiTop + 53;
-		addRenderableWidget(new CodeButton(4, x1, y1, 12, 20, Component.literal("+"), (button) -> {
-			actionPerformed((CodeButton) button);
-        }));
+		addRenderableWidget(new CodeButton(4, x1, y1, 12, 20, Component.literal("+"), (button) -> actionPerformed((CodeButton) button)));
 
-		addRenderableWidget(new CodeButton(5, x1, y2, 12, 20, Component.literal("-"), (button) -> {
-			actionPerformed((CodeButton) button);
-        }));
+		addRenderableWidget(new CodeButton(5, x1, y2, 12, 20, Component.literal("-"), (button) -> actionPerformed((CodeButton) button)));
 
-		addRenderableWidget(new CodeButton(2, x2, y1, 12, 20, Component.literal("+"), (button) -> {
-			actionPerformed((CodeButton) button);
-        }));
-		addRenderableWidget(new CodeButton(3, x2, y2, 12, 20, Component.literal("-"), (button) -> {
-			actionPerformed((CodeButton) button);
-        }));
+		addRenderableWidget(new CodeButton(2, x2, y1, 12, 20, Component.literal("+"), (button) -> actionPerformed((CodeButton) button)));
+		addRenderableWidget(new CodeButton(3, x2, y2, 12, 20, Component.literal("-"), (button) -> actionPerformed((CodeButton) button)));
 
-		addRenderableWidget(new CodeButton(0, x3, y1, 12, 20, Component.literal("+"), (button) -> {
-			actionPerformed((CodeButton) button);
-        }));
-		addRenderableWidget(new CodeButton(1, x3, y2, 12, 20, Component.literal("-"), (button) -> {
-			actionPerformed((CodeButton) button);
-        }));
+		addRenderableWidget(new CodeButton(0, x3, y1, 12, 20, Component.literal("+"), (button) -> actionPerformed((CodeButton) button)));
+		addRenderableWidget(new CodeButton(1, x3, y2, 12, 20, Component.literal("-"), (button) -> actionPerformed((CodeButton) button)));
 
 	}
 
@@ -81,7 +70,7 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 		return false;
 	}
 
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
 		this.drawGuiContainerBackgroundLayer(matrix,partialTicks, mouseX, mouseY);
 		super.render(matrix,mouseX, mouseY, partialTicks);
 		this.drawGuiContainerForegroundLayer(matrix,mouseX, mouseY);

@@ -14,6 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.item.EnumMaterial;
 import org.apache.commons.lang3.math.Fraction;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class ScrapDataManager extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManagerIn, ProfilerFiller profilerIn) {
+    protected void apply(Map<ResourceLocation, JsonElement> objectIn, @NotNull ResourceManager resourceManagerIn, @NotNull ProfilerFiller profilerIn) {
         scraps.clear();
         scrapBitsMap.clear();
 
@@ -109,6 +110,10 @@ public class ScrapDataManager extends SimpleJsonResourceReloadListener {
             return scrapBitsMap.get(material);
         }
         return null;
+    }
+
+    public List<ScrapEntry> getScraps(){
+        return new ArrayList<>(scraps);
     }
 
 }

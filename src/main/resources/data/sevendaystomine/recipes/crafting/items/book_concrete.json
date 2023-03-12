@@ -1,0 +1,22 @@
+{
+   "type":"sevendaystomine:quality_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:small_stone"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:book_concrete",
+      "count":1
+   },
+  "recipe": "sevendaystomine:book_concrete"
+}

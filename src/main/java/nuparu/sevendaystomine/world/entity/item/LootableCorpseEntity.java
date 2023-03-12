@@ -30,8 +30,9 @@ import nuparu.sevendaystomine.capability.ExtendedInventory;
 import nuparu.sevendaystomine.capability.ExtendedInventoryProvider;
 import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.init.ModEntities;
-import nuparu.sevendaystomine.util.Utils;
+import nuparu.sevendaystomine.world.entity.EntityUtils;
 import nuparu.sevendaystomine.world.inventory.entity.ContainerLootableCorpse;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -57,8 +58,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
     }
 
     public void setOriginal(Entity entity) {
-        if (entity instanceof LivingEntity) {
-            LivingEntity living = ((LivingEntity) entity);
+        if (entity instanceof LivingEntity living) {
             living.hurtTime = 0;
             living.swingTime = 0;
             living.deathTime = 0;
@@ -89,7 +89,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
     public Entity getOriginal() {
         if (originalCached == null) {
             CompoundTag nbt = getOriginalNBT();
-            originalCached = Utils.getEntityByNBTAndResource(new ResourceLocation(nbt.getString("resourceLocation")),
+            originalCached = EntityUtils.getEntityByNBTAndResource(new ResourceLocation(nbt.getString("resourceLocation")),
                     nbt.getCompound("entity"), level);
         }
         return originalCached;
@@ -135,16 +135,15 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public @NotNull Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
 
     @Override
-    public InteractionResult interact(Player playerEntity, InteractionHand hand) {
+    public @NotNull InteractionResult interact(Player playerEntity, @NotNull InteractionHand hand) {
         if(!playerEntity.isCrouching() && hand == InteractionHand.MAIN_HAND) {
-            if(playerEntity instanceof ServerPlayer) {
-                ServerPlayer serverPlayer = (ServerPlayer) playerEntity;
+            if(playerEntity instanceof ServerPlayer serverPlayer) {
                 NetworkHooks.openScreen(serverPlayer, this, (packetBuffer) -> packetBuffer.writeInt(this.getId()));
             }
             return InteractionResult.SUCCESS;
@@ -187,9 +186,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
         this.setDeltaMovement(new Vec3(motionX, motionY, motionZ));
         this.move(MoverType.SELF, this.getDeltaMovement());
 
-        if (this.getY() < -64.0D) {
-            this.outOfWorld();
-        }
+        this.checkOutOfWorld();
 
         boolean flag = false;
         for (Entity entity : this.level.getEntities(this, getBoundingBox())) {
@@ -204,7 +201,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurt(@NotNull DamageSource source, float amount) {
         if (this.age < 20)
             return super.hurt(source, amount);
         if (this.level.isClientSide()) {
@@ -216,8 +213,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
                 PacketManager.sendToTrackingEntity(PacketManager.spawnBlood, new SpawnBloodMessage(position().x, getY() + getBbHeight() * MathUtils.getFloatInRange(0.4f, 0.75f), position().z, MathUtils.getFloatInRange(-0.1f, 0.1f), MathUtils.getFloatInRange(0.1f, 0.22f), MathUtils.getFloatInRange(-0.1f, 0.1f)), () -> this);
             }*/
         }
-        if (source.getDirectEntity() instanceof ServerPlayer) {
-            ServerPlayer player = (ServerPlayer) source.getDirectEntity();
+        if (source.getDirectEntity() instanceof ServerPlayer player) {
             if (!player.isCreative()) {
                 ItemStack s = player.getMainHandItem();
                 if (s.getMaxDamage() > 0) {
@@ -286,12 +282,12 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int windowiD, Inventory playerInventory, Player playerEntity) {
+    public AbstractContainerMenu createMenu(int windowiD, @NotNull Inventory playerInventory, @NotNull Player playerEntity) {
         return ContainerLootableCorpse.createContainerServerSide(windowiD,playerInventory,this);
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         if (this.getOriginal() != null){
             return getOriginal().getDisplayName();
         }

@@ -4,18 +4,17 @@ import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.config.ServerConfig;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class QualityManager {
-    public static ArrayList<QualityLevel> levels = new ArrayList<>();
-    public static int maxLevel = 0;
+    private static ArrayList<QualityTier> tiers = new ArrayList<>();
+    private static int maxLevel = 0;
 
-    private static final QualityLevel NONE = new QualityLevel("none", Integer.MIN_VALUE,0,0xffffff);
+    private static final QualityTier NONE = new QualityTier("none", Integer.MIN_VALUE,0,0xffffff);
 
 
     public static void reload(){
-        levels.clear();
+        tiers.clear();
 
         List<? extends String> names = ServerConfig.qualityTierNames.get();
         List<? extends Integer> breakpoints = ServerConfig.qualityTierBreakpoints.get();
@@ -26,24 +25,32 @@ public class QualityManager {
         }
         int size = Math.min(names.size(),breakpoints.size());
 
-        levels.add(NONE);
+        tiers.add(NONE);
         int prevEnd = 0;
         for(int i = 0; i < size; i++){
             int start = prevEnd+1;
             int end = breakpoints.get(i);
             prevEnd = end;
 
-            levels.add(new QualityLevel(names.get(i),start,end,colors.get(i)));
+            tiers.add(new QualityTier(names.get(i),start,end,colors.get(i)));
         }
         maxLevel= prevEnd;
     }
 
-    public static QualityLevel getQualityLevel(int level){
-        for(QualityLevel qualityLevel : levels){
-            if(qualityLevel.getStartLevel() <= level && qualityLevel.getEndLevel() >= level){
-                return qualityLevel;
+    public static QualityTier getQualityTier(int level){
+        for(QualityTier qualityTier : tiers){
+            if(qualityTier.getStartLevel() <= level && qualityTier.getEndLevel() >= level){
+                return qualityTier;
             }
         }
         return NONE;
+    }
+
+    public static int getMaxLevel() {
+        return maxLevel;
+    }
+
+    public static int tierCount(){
+        return tiers.size();
     }
 }

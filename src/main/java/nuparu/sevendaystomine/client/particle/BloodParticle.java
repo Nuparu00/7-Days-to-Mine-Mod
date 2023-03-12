@@ -5,6 +5,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import nuparu.sevendaystomine.util.MathUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class BloodParticle extends TextureSheetParticle {
     private final SpriteSet spriteSet;
@@ -24,20 +25,8 @@ public class BloodParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
+    public @NotNull ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        /*if(stoppedByCollision && !onGround){
-            xd = 0;
-            zd = 0;
-            gravity = 0.05f;
-        }
-        else{
-            gravity = 0.6f;
-        }*/
-    }
 }

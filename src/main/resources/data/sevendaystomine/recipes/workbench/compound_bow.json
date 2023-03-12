@@ -1,0 +1,25 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "  PPI",
+    " P  S",
+    "P  S ",
+    "P S  ",
+    "IS   "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "P": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "I": {
+      "item": "sevendaystomine:gear"
+	}
+  },
+  "result": {
+    "item": "sevendaystomine:compound_bow"
+  },
+  "quality" : true
+}

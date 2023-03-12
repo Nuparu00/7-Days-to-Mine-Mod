@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"ISI",
+		"III"
+	],
+	"key": {
+		"I": {
+			"tag": "forge:ingots/iron"
+		},
+		"S": {
+			"item": "sevendaystomine:scrap_iron"
+		}
+	},
+	"result": {
+		"item": "sevendaystomine:cooking_pot"
+	}
+}

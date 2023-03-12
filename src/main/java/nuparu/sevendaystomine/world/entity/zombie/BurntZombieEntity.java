@@ -12,7 +12,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -20,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedEntity {
 
@@ -175,7 +175,7 @@ public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedE
 
     public static class Factory implements EntityType.EntityFactory<BurntZombieEntity> {
         @Override
-        public BurntZombieEntity create(EntityType<BurntZombieEntity> type, Level world) {
+        public @NotNull BurntZombieEntity create(@NotNull EntityType<BurntZombieEntity> type, @NotNull Level world) {
             return new BurntZombieEntity(type, world);
         }
     }

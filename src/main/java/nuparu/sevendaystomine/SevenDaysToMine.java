@@ -21,16 +21,17 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import nuparu.sevendaystomine.command.CommandInfect;
-import nuparu.sevendaystomine.command.CommandSetBreakData;
+import nuparu.sevendaystomine.command.*;
 import nuparu.sevendaystomine.config.ConfigHelper;
 import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.init.*;
+import nuparu.sevendaystomine.loot.function.ModLootFunctionManager;
 import nuparu.sevendaystomine.network.PacketManager;
 import nuparu.sevendaystomine.proxy.ClientProxy;
 import nuparu.sevendaystomine.proxy.CommonProxy;
 import nuparu.sevendaystomine.world.item.crafting.DummyRecipe;
 import nuparu.sevendaystomine.world.item.quality.QualityManager;
+import nuparu.sevendaystomine.world.level.horde.HordeManager;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -72,18 +73,26 @@ public class SevenDaysToMine {
         ModContainers.CONTAINERS.register(bus);
         ModPaintingTypes.PAINTING_TYPES.register(bus);
         ModParticleTypes.PARTICLE_TYPES.register(bus);
+        ModFeatures.FEATURES.register(bus);
+        ModLootModifiers.LOOT_MODIFIER_SERIALIZERS.register(bus);
+        ModCommandArguments.ARGUMENT_TYPES.register(bus);
+        //ModConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
+        //ModPlacedFeatures.PLACED_FEATURES.register(bus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            ModGameRules.register();
-        });
+        event.enqueueWork(ModGameRules::register);
         PacketManager.setup();
         TierSortingRegistry.registerTier(ModTiers.STEEL, new ResourceLocation(MODID, "steel"), List.of(Tiers.WOOD, Tiers.STONE, Tiers.GOLD, Tiers.IRON), List.of(Tiers.DIAMOND, Tiers.NETHERITE));
 
-        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(ModBlocks.GOLDENROD.get()), () -> ModBlocks.POTTED_GOLDENROD.get());
+        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(ModBlocks.GOLDENROD.get()), ModBlocks.POTTED_GOLDENROD);
+        //Forces Java to initialize the static fields in ModLootFunctionManager. Maybe adding a register() method would be a better idea?
+        event.enqueueWork(ModLootFunctionManager::new);
+        event.enqueueWork(ModStructureProcessors::register);
+        event.enqueueWork(ModStructurePoolElements::new);
+        event.enqueueWork(ModProcessorLists::new);
     }
 
     @SubscribeEvent
@@ -127,6 +136,12 @@ public class SevenDaysToMine {
         CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
         CommandSetBreakData.register(commandDispatcher);
         CommandInfect.register(commandDispatcher);
+        CommandAirdrop.register(commandDispatcher);
+        CommandInfect.register(commandDispatcher);
+        CommandCure.register(commandDispatcher);
+        CommandSetQuality.register(commandDispatcher);
+        CommandBloodmoon.register(commandDispatcher);
+        CommandHorde.register(commandDispatcher);
 
     }
 }

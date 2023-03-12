@@ -12,6 +12,7 @@ import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.init.ModBlockEntities;
 import nuparu.sevendaystomine.world.level.block.TorchLitBlockBase;
 import nuparu.sevendaystomine.world.level.block.TorchWallLitBlockBase;
+import org.jetbrains.annotations.NotNull;
 
 public class TorchBlockEntity extends BlockEntity{
 
@@ -40,14 +41,14 @@ public class TorchBlockEntity extends BlockEntity{
         }
     }
 
-    public void load(CompoundTag compound) {
+    public void load(@NotNull CompoundTag compound) {
         super.load(compound);
         if(compound.contains("age", Tag.TAG_INT)){
             this.age = compound.getInt("age");
         }
     }
 
-    protected void saveAdditional(CompoundTag compound) {
+    protected void saveAdditional(@NotNull CompoundTag compound) {
         super.saveAdditional(compound);
         compound.putInt("age", this.age);
     }

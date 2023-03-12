@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import nuparu.sevendaystomine.world.entity.zombie.SpiderZombieEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class SpiderZombieModel<T extends SpiderZombieEntity> extends EntityModel<T> implements ArmedModel, HeadedModel {
 
@@ -53,12 +54,12 @@ public class SpiderZombieModel<T extends SpiderZombieEntity> extends EntityModel
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 		rightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -77,7 +78,7 @@ public class SpiderZombieModel<T extends SpiderZombieEntity> extends EntityModel
 		this.leftLegUp.visible = p_102880_;
 	}
 
-	public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
+	public void translateToHand(@NotNull HumanoidArm p_102854_, @NotNull PoseStack p_102855_) {
 		this.getArm(p_102854_).translateAndRotate(p_102855_);
 	}
 
@@ -85,7 +86,7 @@ public class SpiderZombieModel<T extends SpiderZombieEntity> extends EntityModel
 		return p_102852_ == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
 	}
 
-	public ModelPart getHead() {
+	public @NotNull ModelPart getHead() {
 		return this.head;
 	}
 

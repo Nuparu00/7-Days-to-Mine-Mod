@@ -15,15 +15,13 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.client.renderer.entity.layers.BurnsLayer;
-import nuparu.sevendaystomine.client.renderer.entity.layers.RedEyesLayer;
-import nuparu.sevendaystomine.world.entity.zombie.BurntZombieEntity;
 import nuparu.sevendaystomine.world.entity.zombie.SoulBurntZombieEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class SoulBurntZombieRenderer<T extends SoulBurntZombieEntity, M extends HumanoidModel<T>>
 		extends ZombieBipedRenderer<T, M> {
@@ -41,7 +39,7 @@ public class SoulBurntZombieRenderer<T extends SoulBurntZombieEntity, M extends 
 		this.addLayer(burnsLayer = new BurnsLayer<T, M, M>(this,new ResourceLocation(SevenDaysToMine.MODID, "textures/entity/zombie/burnt/soul_burnt_zombie_glow.png")));
 	}
 
-	public ResourceLocation getTextureLocation(T p_110775_1_) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T p_110775_1_) {
 		return ZOMBIE_LOCATION;
 	}
 
@@ -51,13 +49,13 @@ public class SoulBurntZombieRenderer<T extends SoulBurntZombieEntity, M extends 
 	}
 
 	@Override
-	protected boolean isShaking(T p_230495_1_) {
+	protected boolean isShaking(@NotNull T p_230495_1_) {
 		return false;
 	}
 
 	@Override
-	public void render(T entity, float p_225623_2_, float p_225623_3_, PoseStack matrix, MultiBufferSource buffer,
-					   int p_225623_6_) {
+	public void render(@NotNull T entity, float p_225623_2_, float p_225623_3_, @NotNull PoseStack matrix, @NotNull MultiBufferSource buffer,
+                       int p_225623_6_) {
 		super.render(entity, p_225623_2_, p_225623_3_, matrix, buffer, p_225623_6_);
 		if(!entity.isAlive()) return;
 		renderFlame(matrix, buffer, entity);
@@ -77,7 +75,7 @@ public class SoulBurntZombieRenderer<T extends SoulBurntZombieEntity, M extends 
 		float f3 = p_114456_.getBbHeight() / f;
 		float f4 = 0.0F;
 		p_114454_.mulPose(Vector3f.YP.rotationDegrees(-camera.getYRot()));
-		p_114454_.translate(0.0D, 0.0D, (double)(-0.3F + (float)((int)f3) * 0.02F));
+		p_114454_.translate(0.0D, 0.0D, -0.3F + (float)((int)f3) * 0.02F);
 		float f5 = 0.0F;
 		int i = 0;
 		VertexConsumer vertexconsumer = p_114455_.getBuffer(Sheets.cutoutBlockSheet());

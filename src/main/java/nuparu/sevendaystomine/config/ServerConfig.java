@@ -29,6 +29,14 @@ public class ServerConfig {
     public static ForgeConfigSpec.BooleanValue zombiesBreakBlocks;
     public static ForgeConfigSpec.BooleanValue zombieCorpses;
     public static ForgeConfigSpec.IntValue corpseLifespan;
+    public static ForgeConfigSpec.IntValue airdropLifespan;
+    public static ForgeConfigSpec.BooleanValue allowPhotos;
+
+
+    public static ForgeConfigSpec.IntValue smallRockGenerationChance;
+    public static ForgeConfigSpec.IntValue smallRockGenerationRateMin;
+    public static ForgeConfigSpec.IntValue smallRockGenerationRateMax;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> smallRockGenerationDimensions;
 
     public static void init(ForgeConfigSpec.Builder server) {
         scrapCoefficient = server.comment("Controls how much scrap you get from scrapping in inventory")
@@ -39,7 +47,8 @@ public class ServerConfig {
 
         quality = server.comment("Controls whether the quality mechanic should be enabled")
                 .define("player.quality", true);
-
+        allowPhotos = server.comment("Can players take photos with the Analog Camera item?")
+                .define("player.allowPhotos", true);
         infectionStagesDuration = server.comment("The duration of the individual infection stages").defineList(
                 "player.infection_stages_duration", Arrays.asList(24000, 24000, 24000, 24000, 24000, 24000, 24000 ), it -> it instanceof Integer);
 
@@ -85,7 +94,24 @@ public class ServerConfig {
 
         corpseLifespan = server.comment("How many ticks until a corpse decays").defineInRange("mobs.corpseLifespan", 20000, 0,
                 Integer.MAX_VALUE);
+        airdropLifespan = server.comment("How many ticks until an airdrop decays").defineInRange("world.airdropLifespan", 20000, 0,
+                Integer.MAX_VALUE);
         zombieCorpses = server.comment("Do corpses spawn on zombies' death?")
                 .define("mobs.zombieCorpses", true);
+
+        worldgen(server);
+    }
+
+    private static void worldgen(ForgeConfigSpec.Builder server) {
+        smallRockGenerationChance = server.comment("The chance of a chunk being suitable for Small Rocks. Larger numbers makes them less likely").defineInRange("worldGen.smallRockGenerationChance", 2, 0,
+                Integer.MAX_VALUE);
+        smallRockGenerationRateMin = server.comment("The minimal number of Small Rocks in a chunk").defineInRange("worldGen.smallRockGenerationRateMin", 0, 0,
+                Integer.MAX_VALUE);
+        smallRockGenerationRateMax = server.comment("The maximal number of Small Rocks in a chunk").defineInRange("worldGen.smallRockGenerationRateMax", 4, 0,
+                Integer.MAX_VALUE);
+
+        smallRockGenerationDimensions = server.comment("In what dimensions can Small Rocks generate").defineList(
+                "worldGen.smallRockGenerationDimensions", Arrays.asList("minecraft:overworld"), it -> it instanceof String);
+
     }
 }

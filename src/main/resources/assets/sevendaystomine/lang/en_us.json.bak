@@ -266,9 +266,9 @@
     "gui.electricity.stored": "Stored: %1$s/%2$s J",
     "unlocked.toast": "Recipes Unlocked!",
 
-    "horde.bloodmoon.name": "Bloodmoon Horde",
-    "horde.wolf.name": "Wolf Horde",
-    "horde.generic.name": "Horde",
+    "hordeEntry.bloodmoon.name": "Bloodmoon Horde",
+    "hordeEntry.wolf.name": "Wolf Horde",
+    "hordeEntry.generic.name": "Horde",
 
     "generator.WASTELAND": "Wasteland (7D2M)",
 
@@ -1170,7 +1170,7 @@
     "subtitle.flamethrower.shot": "Flamethrower Shot",
     "subtitle.safe.unlock.shot": "Safe Unlock",
     "subtitle.entity.human.hurt": "Human Hurt",
-    "subtitle.horde": "Horde",
+    "subtitle.hordeEntry": "Horde",
     "subtitle.gas_leak": "Gas Leak",
     "subtitle.chainsaw.idle": "Chainsaw Idle",
     "subtitle.chainsaw.cut": "Chainsaw Cut",

@@ -17,7 +17,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import nuparu.sevendaystomine.init.ModDamageSources;
 import nuparu.sevendaystomine.init.ModItems;
-import nuparu.sevendaystomine.util.Utils;
+import nuparu.sevendaystomine.world.entity.EntityUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class BloodDrawKitItem extends Item {
 
@@ -27,7 +28,7 @@ public class BloodDrawKitItem extends Item {
 
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level worldIn, Player playerIn, @NotNull InteractionHand handIn) {
 		ItemStack itemstack = playerIn.getItemInHand(handIn);
 
 		playerIn.startUsingItem(handIn);
@@ -36,19 +37,17 @@ public class BloodDrawKitItem extends Item {
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stack, Level world, LivingEntity entityLiving, int timeLeft) {
+	public void releaseUsing(@NotNull ItemStack stack, @NotNull Level world, @NotNull LivingEntity entityLiving, int timeLeft) {
 
-		if (entityLiving instanceof Player && !world.isClientSide) {
-			Player player = (Player) entityLiving;
+		if (entityLiving instanceof Player player && !world.isClientSide) {
 			int dur = this.getUseDuration(stack) - timeLeft;
 			if (dur >= this.getUseDuration(stack) * 0.15f) {
 				ItemStack bloodBag = new ItemStack(ModItems.BLOOD_BAG.get());
 				LivingEntity toHurt = entityLiving;
 
-				HitResult entityRay = Utils.raytraceEntities(entityLiving, 6, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
+				HitResult entityRay = EntityUtils.raytraceEntities(entityLiving, 6, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
 				if (entityRay != null) {
-					if (entityRay instanceof EntityHitResult && ((EntityHitResult)entityRay).getEntity() instanceof LivingEntity) {
-						LivingEntity clickedLiving = (LivingEntity) ((EntityHitResult)entityRay).getEntity();
+					if (entityRay instanceof EntityHitResult && ((EntityHitResult) entityRay).getEntity() instanceof LivingEntity clickedLiving) {
 						if(clickedLiving instanceof Player){
 							if(!player.isCreative() && !player.isSpectator()){
 								toHurt = clickedLiving;
@@ -67,9 +66,7 @@ public class BloodDrawKitItem extends Item {
 				}
 				toHurt.hurt(ModDamageSources.bleeding, 4);
 				if (player instanceof ServerPlayer) {
-					stack.hurtAndBreak(1, player, (p_43076_) -> {
-						p_43076_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-					});
+					stack.hurtAndBreak(1, player, (p_43076_) -> p_43076_.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 				}
 				player.awardStat(Stats.ITEM_USED.get(this));
 			}
@@ -77,12 +74,12 @@ public class BloodDrawKitItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack itemStack) {
+	public int getUseDuration(@NotNull ItemStack itemStack) {
 		return 200;
 	}
 
 	@Override
-	public UseAnim getUseAnimation(ItemStack itemStack) {
+	public @NotNull UseAnim getUseAnimation(@NotNull ItemStack itemStack) {
 		return UseAnim.BOW;
 	}
 }

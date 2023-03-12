@@ -9,8 +9,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.Wolf;
 import nuparu.sevendaystomine.world.entity.zombie.ZombieWolfEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ZombieWolfModel<T extends ZombieWolfEntity> extends ColorableAgeableListModel<T> {
     private static final String REAL_HEAD = "real_head";
@@ -59,11 +59,11 @@ public class ZombieWolfModel<T extends ZombieWolfEntity> extends ColorableAgeabl
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
-    protected Iterable<ModelPart> headParts() {
+    protected @NotNull Iterable<ModelPart> headParts() {
         return ImmutableList.of(this.head);
     }
 
-    protected Iterable<ModelPart> bodyParts() {
+    protected @NotNull Iterable<ModelPart> bodyParts() {
         return ImmutableList.of(this.body, this.rightHindLeg, this.leftHindLeg, this.rightFrontLeg, this.leftFrontLeg, this.tail, this.upperBody);
     }
 
@@ -111,7 +111,7 @@ public class ZombieWolfModel<T extends ZombieWolfEntity> extends ColorableAgeabl
         this.realTail.zRot = p_104132_.getBodyRollAngle(p_104135_, -0.2F);
     }
 
-    public void setupAnim(T p_104137_, float p_104138_, float p_104139_, float p_104140_, float p_104141_, float p_104142_) {
+    public void setupAnim(@NotNull T p_104137_, float p_104138_, float p_104139_, float p_104140_, float p_104141_, float p_104142_) {
         this.head.xRot = p_104142_ * ((float)Math.PI / 180F);
         this.head.yRot = p_104141_ * ((float)Math.PI / 180F);
         this.tail.xRot = (float) Math.sin(System.currentTimeMillis() / 500d)*0.05f+0.6f;

@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemHandlerNameable extends ItemStackHandler implements IItemHandlerNameable {
 
@@ -27,7 +28,7 @@ public class ItemHandlerNameable extends ItemStackHandler implements IItemHandle
     }
 
     @Override
-    public Component getName() {
+    public @NotNull Component getName() {
         return getDisplayName();
     }
 
@@ -37,7 +38,7 @@ public class ItemHandlerNameable extends ItemStackHandler implements IItemHandle
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return hasCustomName() ? displayName : defaultName;
     }
 

@@ -1,7 +1,6 @@
 package nuparu.sevendaystomine.world.item;
 
 import net.minecraft.client.resources.language.I18n;
-import nuparu.sevendaystomine.SevenDaysToMine;
 
 public enum EnumMaterial {
     NONE("none"), CARBON("carbon"), IRON("iron"), BRASS("brass"),
@@ -13,7 +12,7 @@ public enum EnumMaterial {
     CONCRETE("concrete"), LEATHER("leather"), GASOLINE("gasoline"),
     SAND("sand"), PAPER("paper"), STRING("string"), BONE("bone"), NETHERITE("netherite");
 
-    String name;
+    final String name;
 
     EnumMaterial(String name) {
         this.name = name;

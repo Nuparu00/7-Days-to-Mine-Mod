@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"iron",
+         "weight" : 10
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:pistol_slide"
+   },
+   "mold":{
+      "item":"sevendaystomine:pistol_barrel_mold"
+   },
+   "experience" : 0,
+   "cookingtime" : 300
+}

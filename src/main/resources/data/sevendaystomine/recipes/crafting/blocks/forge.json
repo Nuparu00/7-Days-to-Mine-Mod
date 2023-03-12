@@ -1,0 +1,24 @@
+{
+   "type":"sevendaystomine:quality_shaped",
+  "pattern": [
+    "S S",
+    "SSS",
+    "ISB"
+  ],
+  "key": {
+    "S": {
+      "item": "sevendaystomine:small_stone"
+    }, 
+    "I": {
+      "item": "sevendaystomine:iron_pipe"
+    }, 
+    "B": {
+      "item": "sevendaystomine:bellows"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:forge"
+  },
+  "recipe": "sevendaystomine:book_forging",
+  "quality" : false
+}

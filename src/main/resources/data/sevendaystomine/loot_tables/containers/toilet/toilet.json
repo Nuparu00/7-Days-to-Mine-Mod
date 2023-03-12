@@ -1,0 +1,51 @@
+{
+	"type": "minecraft:generic",
+	"pools": [{
+		"rolls": 1,
+		"entries": [{
+				"type": "minecraft:item",
+				"weight": 1,
+				"name": "minecraft:paper"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 40,
+				"name": "sevendaystomine:cloth"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 25,
+				"name": "minecraft:glass_bottle"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 25,
+				"name": "sevendaystomine:empty_can"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 20,
+				"name": "minecraft:rotten_flesh"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 25,
+				"name": "sevendaystomine:murky_water_bottle"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 1,
+				"name": "minecraft:diamond"
+			},
+			{
+				"type": "minecraft:item",
+				"weight": 10,
+				"name": "sevendaystomine:cent"
+			},
+			{
+				"type": "minecraft:empty",
+				"weight": 100
+			}
+		]
+	}]
+}

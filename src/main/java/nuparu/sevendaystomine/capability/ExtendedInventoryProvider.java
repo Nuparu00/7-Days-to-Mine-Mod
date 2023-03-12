@@ -14,8 +14,8 @@ public class ExtendedInventoryProvider implements ICapabilitySerializable<Compou
     public static final Capability<IItemHandlerExtended> EXTENDED_INV_CAP = CapabilityManager.get(new CapabilityToken<IItemHandlerExtended>() {
     });
 
-    private final IItemHandlerExtended instance = new ExtendedInventory();
-    protected final LazyOptional<IItemHandlerExtended> lazyInstance = LazyOptional.of(() -> this.instance);
+    private IItemHandlerExtended instance = new ExtendedInventory();
+    protected LazyOptional<IItemHandlerExtended> lazyInstance = LazyOptional.of(() -> this.instance);
 
     @NotNull
     @Override
@@ -35,6 +35,12 @@ public class ExtendedInventoryProvider implements ICapabilitySerializable<Compou
 
     public ExtendedInventoryProvider setSize(int size) {
         instance.setSize(size);
+        return this;
+    }
+
+    public ExtendedInventoryProvider setInstance(IItemHandlerExtended instance){
+        this.instance = instance;
+        this.lazyInstance = LazyOptional.of(() -> instance);
         return this;
     }
 }

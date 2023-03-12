@@ -22,6 +22,7 @@ import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.capability.CapabilityHelper;
 import nuparu.sevendaystomine.capability.IExtendedPlayer;
 import nuparu.sevendaystomine.init.ModCreativeModeTabs;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -35,8 +36,8 @@ public class BookItem extends Item {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip,
-                                TooltipFlag flagIn) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, List<Component> tooltip,
+                                @NotNull TooltipFlag flagIn) {
         tooltip.add(Component.translatable(getBookName() + ".subtitle"));
         if(!Screen.hasShiftDown() || Minecraft.getInstance().player == null) return;
         boolean known = hasRecipe(Minecraft.getInstance().player);
@@ -56,7 +57,7 @@ public class BookItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level worldIn, Player playerIn, @NotNull InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
         if (playerIn.isCrouching())
             return InteractionResultHolder.pass(stack);
@@ -90,7 +91,7 @@ public class BookItem extends Item {
 
     public boolean hasRecipe(Player player){
         IExtendedPlayer iExtendedPlayer = CapabilityHelper.getExtendedPlayer(player);
-        return iExtendedPlayer == null ? true : iExtendedPlayer.hasRecipe(getBookRegistryName().toString());
+        return iExtendedPlayer == null || iExtendedPlayer.hasRecipe(getBookRegistryName().toString());
     }
 
     public ResourceLocation getBookRegistryName(){

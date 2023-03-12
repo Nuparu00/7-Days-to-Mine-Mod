@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "sevendaystomine:mossy_diorite_bricks"
+  },
+  "result": "sevendaystomine:mossy_diorite_brick_stairs"
+}

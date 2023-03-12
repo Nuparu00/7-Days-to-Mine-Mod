@@ -11,8 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.json.IngredientStack;
-import nuparu.sevendaystomine.json.upgrade.EnumUpgradeDirection;
-import nuparu.sevendaystomine.json.upgrade.UpgradeEntry;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class SalvageDataManager extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManagerIn, ProfilerFiller profilerIn) {
+    protected void apply(Map<ResourceLocation, JsonElement> objectIn, @NotNull ResourceManager resourceManagerIn, @NotNull ProfilerFiller profilerIn) {
         entries.clear();
 
         for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {

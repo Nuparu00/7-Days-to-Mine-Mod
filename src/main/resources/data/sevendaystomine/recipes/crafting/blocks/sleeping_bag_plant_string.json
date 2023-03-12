@@ -1,0 +1,15 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "P  ",
+      "PPP"
+   ],
+   "key":{
+      "P":{
+         "item":"minecraft:string"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:sleeping_bag_white"
+   }
+}

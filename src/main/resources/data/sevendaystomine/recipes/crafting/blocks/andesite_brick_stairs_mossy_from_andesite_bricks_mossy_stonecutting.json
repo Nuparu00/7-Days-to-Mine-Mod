@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "sevendaystomine:mossy_andesite_bricks"
+  },
+  "result": "sevendaystomine:mossy_andesite_brick_stairs"
+}

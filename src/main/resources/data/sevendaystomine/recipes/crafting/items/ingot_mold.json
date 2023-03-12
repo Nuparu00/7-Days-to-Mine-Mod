@@ -1,0 +1,17 @@
+{
+  "type":"sevendaystomine:quality_shaped",
+  "pattern": [
+    "C C",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:ingot_mold"
+  },
+  "recipe": "sevendaystomine:book_forging",
+  "quality": false
+}

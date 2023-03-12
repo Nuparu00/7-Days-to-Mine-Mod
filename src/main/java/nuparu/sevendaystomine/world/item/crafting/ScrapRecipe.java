@@ -20,6 +20,7 @@ import nuparu.sevendaystomine.util.ItemUtils;
 import nuparu.sevendaystomine.util.Utils;
 import nuparu.sevendaystomine.world.item.EnumMaterial;
 import org.apache.commons.lang3.math.Fraction;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -31,7 +32,7 @@ public class ScrapRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer inv, Level worldIn) {
+    public boolean matches(@NotNull CraftingContainer inv, @NotNull Level worldIn) {
         if (matchesAnyOtherRecipe(inv, worldIn)) {
             return false;
         }
@@ -70,9 +71,8 @@ public class ScrapRecipe extends CustomRecipe {
         Iterator<Recipe<?>> recipes = Utils.getServer().getRecipeManager().getRecipes().iterator();
         while (recipes.hasNext()) {
             Recipe<?> recipe = recipes.next();
-            if (!(recipe instanceof CraftingRecipe))
+            if (!(recipe instanceof CraftingRecipe craftingRecipe))
                 continue;
-            CraftingRecipe craftingRecipe = (CraftingRecipe) recipe;
 
             if (!(craftingRecipe instanceof ScrapRecipe)) {
                 if (craftingRecipe.matches(inv, worldIn)) {
@@ -84,7 +84,7 @@ public class ScrapRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer p_44001_) {
+    public @NotNull ItemStack assemble(@NotNull CraftingContainer p_44001_) {
         return this.resultItem.copy();
     }
 
@@ -94,22 +94,22 @@ public class ScrapRecipe extends CustomRecipe {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.SCRAP_SERIALIZER.get();
     }
 
     public static class Serializer implements RecipeSerializer<ScrapRecipe> {
 
-        public ScrapRecipe fromJson(ResourceLocation p_199425_1_, JsonObject json) {
+        public @NotNull ScrapRecipe fromJson(@NotNull ResourceLocation p_199425_1_, @NotNull JsonObject json) {
             return new ScrapRecipe();
         }
 
-        public ScrapRecipe fromNetwork(ResourceLocation p_199426_1_, FriendlyByteBuf p_199426_2_) {
+        public ScrapRecipe fromNetwork(@NotNull ResourceLocation p_199426_1_, @NotNull FriendlyByteBuf p_199426_2_) {
 
             return new ScrapRecipe();
         }
 
-        public void toNetwork(FriendlyByteBuf p_199427_1_, ScrapRecipe p_199427_2_) {
+        public void toNetwork(@NotNull FriendlyByteBuf p_199427_1_, @NotNull ScrapRecipe p_199427_2_) {
         }
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
 import nuparu.sevendaystomine.world.item.quality.IQualityStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -42,7 +43,7 @@ public class MinerZombieEntity<T extends MinerZombieEntity> extends ZombieBipedE
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_33282_, DifficultyInstance p_33283_, MobSpawnType p_33284_, @Nullable SpawnGroupData p_33285_, @Nullable CompoundTag p_33286_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_33282_, @NotNull DifficultyInstance p_33283_, @NotNull MobSpawnType p_33284_, @Nullable SpawnGroupData p_33285_, @Nullable CompoundTag p_33286_) {
         RandomSource randomsource = p_33282_.getRandom();
         this.populateDefaultEquipmentSlots(randomsource, p_33283_);
         this.populateDefaultEquipmentEnchantments(randomsource, p_33283_);
@@ -50,7 +51,7 @@ public class MinerZombieEntity<T extends MinerZombieEntity> extends ZombieBipedE
     }
 
     @Override
-    protected void populateDefaultEquipmentSlots(RandomSource p_218949_, DifficultyInstance p_218950_) {
+    protected void populateDefaultEquipmentSlots(@NotNull RandomSource p_218949_, @NotNull DifficultyInstance p_218950_) {
         super.populateDefaultEquipmentSlots(p_218949_, p_218950_);
         if (random.nextInt(4) != 0)
             return;
@@ -61,7 +62,7 @@ public class MinerZombieEntity<T extends MinerZombieEntity> extends ZombieBipedE
 
     public static class Factory implements EntityType.EntityFactory<MinerZombieEntity> {
         @Override
-        public MinerZombieEntity create(EntityType<MinerZombieEntity> type, Level world) {
+        public @NotNull MinerZombieEntity create(@NotNull EntityType<MinerZombieEntity> type, @NotNull Level world) {
             return new MinerZombieEntity(type, world);
         }
     }

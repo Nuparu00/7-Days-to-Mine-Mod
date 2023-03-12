@@ -1,0 +1,17 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "group": "log_spike",
+   "pattern":[
+      " L ",
+      "LLL"
+   ],
+   "key":{
+      "L":{
+         "item":"minecraft:oak_log"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:oak_log_spike",
+      "count":4
+   }
+}

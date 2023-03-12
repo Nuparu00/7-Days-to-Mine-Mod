@@ -23,15 +23,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import nuparu.sevendaystomine.init.ModBlockEntities;
-import nuparu.sevendaystomine.init.ModRecipeSerializers;
 import nuparu.sevendaystomine.init.ModRecipeTypes;
 import nuparu.sevendaystomine.world.inventory.ItemHandlerNameable;
 import nuparu.sevendaystomine.world.inventory.block.ContainerForge;
 import nuparu.sevendaystomine.world.item.crafting.forge.IForgeRecipe;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -391,12 +389,12 @@ public class ForgeBlockEntity extends ItemHandlerBlockEntity implements Containe
         Containers.dropContents(world, blockPos, this.getDrops());
     }
 
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return getInventory().getDisplayName();
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int windowID, Inventory playerInventory, Player Player) {
+    public AbstractContainerMenu createMenu(int windowID, @NotNull Inventory playerInventory, @NotNull Player Player) {
         return ContainerForge.createContainerServerSide(windowID, playerInventory, this);
     }
 
@@ -414,37 +412,32 @@ public class ForgeBlockEntity extends ItemHandlerBlockEntity implements Containe
     }
 
     @Override
-    public ItemStack getItem(int i) {
+    public @NotNull ItemStack getItem(int i) {
         return getInventory().getStackInSlot(i);
     }
 
     @Override
-    public ItemStack removeItem(int p_70298_1_, int p_70298_2_) {
+    public @NotNull ItemStack removeItem(int p_70298_1_, int p_70298_2_) {
         return null;
     }
 
     @Override
-    public ItemStack removeItemNoUpdate(int p_70304_1_) {
+    public @NotNull ItemStack removeItemNoUpdate(int p_70304_1_) {
         return null;
     }
 
     @Override
-    public void setItem(int p_70299_1_, ItemStack p_70299_2_) {
+    public void setItem(int p_70299_1_, @NotNull ItemStack p_70299_2_) {
 
     }
 
     @Override
-    public int getMaxStackSize() {
-        return Container.super.getMaxStackSize();
-    }
-
-    @Override
-    public boolean stillValid(Player p_70300_1_) {
+    public boolean stillValid(@NotNull Player p_70300_1_) {
         return false;
     }
 
     @Override
-    public void startOpen(Player p_18955_) {
+    public void startOpen(@NotNull Player p_18955_) {
         Container.super.startOpen(p_18955_);
     }
 

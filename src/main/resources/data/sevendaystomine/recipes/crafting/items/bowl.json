@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #",
+    " # "
+  ],
+  "key": {
+    "#":{
+         "item":"sevendaystomine:plank_wood"
+      }
+  },
+  "result": {
+    "item": "minecraft:bowl",
+    "count": 4
+  }
+}

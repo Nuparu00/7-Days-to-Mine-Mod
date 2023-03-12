@@ -6,7 +6,6 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import nuparu.sevendaystomine.config.ServerConfig;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class ExtendedPlayer implements IExtendedPlayer{
 
-    private List<String> recipes = new ArrayList<>();
+    private final List<String> recipes = new ArrayList<>();
     private int waterLevel = 20;
     private float saturationLevel;
     private float exhaustionLevel;

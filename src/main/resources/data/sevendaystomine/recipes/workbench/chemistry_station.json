@@ -1,0 +1,31 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "JJPPB",
+    "IIIII",
+    "IF  I",
+    "IIIII",
+    "I   I"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "F": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "P": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "B": {
+      "item": "sevendaystomine:beaker"
+    },
+    "J": {
+      "item": "minecraft:glass_bottle"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:chemistry_station"
+  },
+  "recipe": "sevendaystomine:book_chemistry"
+}

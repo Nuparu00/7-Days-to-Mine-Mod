@@ -1,0 +1,25 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "LLLLL",
+    "LWWWL",
+    "LWIWL",
+    " LLLL"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "I": {
+      "item": "sevendaystomine:scrap_iron"
+    },
+    "W": {
+      "tag": "forge:plank"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:minibike_seat"
+  },
+  "recipe": "sevendaystomine:book_minibike",
+  "quality": true
+}

@@ -1,13 +1,10 @@
 package nuparu.sevendaystomine.network.messages;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -16,14 +13,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkEvent;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.capability.CapabilityHelper;
-import nuparu.sevendaystomine.capability.ExtendedPlayer;
 import nuparu.sevendaystomine.capability.IExtendedPlayer;
 import nuparu.sevendaystomine.init.ModBlocksTags;
 import nuparu.sevendaystomine.init.ModEffects;
 import nuparu.sevendaystomine.init.ModFluidTags;
-import nuparu.sevendaystomine.network.PacketManager;
 import nuparu.sevendaystomine.util.MathUtils;
-import nuparu.sevendaystomine.util.Utils;
+import nuparu.sevendaystomine.world.entity.EntityUtils;
 
 import java.util.function.Supplier;
 
@@ -48,13 +43,14 @@ public class PlayerDrinkMessage {
     public static class Handler {
 
         public static void handle(PlayerDrinkMessage msg, Supplier<NetworkEvent.Context> ctx) {
+
             ctx.get().enqueueWork(() -> {
                 Player player = SevenDaysToMine.proxy.getPlayerEntityFromContext(ctx);
                 if(player.isSpectator() || player.isCreative()) return;
                 if(!player.getMainHandItem().isEmpty()) return;
                 Level level = player.level;
                 if(level != null){
-                    BlockHitResult result = Utils.rayTraceServer(player, player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue(), 1,
+                    BlockHitResult result = EntityUtils.rayTraceServer(player, player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue(), 1,
                             ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
                     if(result == null) return;
 

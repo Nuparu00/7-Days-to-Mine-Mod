@@ -1,0 +1,22 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "   I ",
+    "   SI",
+    "  S I",
+    " S   ",
+    "S    "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+			"tag": "forge:ingots/iron"
+}
+  },
+  "result": {
+    "item": "minecraft:iron_hoe"
+  },
+  "quality": true
+}

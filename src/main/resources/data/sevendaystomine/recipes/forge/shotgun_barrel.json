@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"iron",
+         "weight" : 3
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:shotgun_barrel"
+   },
+   "mold":{
+      "item":"sevendaystomine:shotgun_barrel_mold"
+   },
+   "experience" : 0,
+   "cookingtime" : 300
+}

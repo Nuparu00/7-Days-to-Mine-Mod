@@ -11,13 +11,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.inventory.block.ContainerWorkbench;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 public class WorkbenchScreen extends AbstractContainerScreen<ContainerWorkbench> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/workbench.png");
-	ContainerWorkbench container;
+	final ContainerWorkbench container;
 
 	public WorkbenchScreen(ContainerWorkbench container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
@@ -27,14 +28,14 @@ public class WorkbenchScreen extends AbstractContainerScreen<ContainerWorkbench>
 	}
 
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		this.renderTooltip(matrixStack, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
+	protected void renderBg(@NotNull PoseStack matrixStack, float partialTicks, int x, int y) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, TEXTURE);
@@ -44,7 +45,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<ContainerWorkbench>
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+	protected void renderLabels(@NotNull PoseStack matrixStack, int mouseX, int mouseY) {
 		// draw the label for the top of the screen
 		int marginHorizontal = (this.width - this.imageWidth) / 2;
 		this.font.draw(matrixStack, this.title, 134-(this.font.width(this.title)/2), 6, Color.darkGray.getRGB()); /// this.font.draw

@@ -1,0 +1,121 @@
+{
+  "src" : "sevendaystomine",
+  "waves" : {
+    "min" : {
+      "base" : 3,
+      "change" : {
+        "operation" : "add",
+        "value" : 1,
+        "per" : 2,
+        "unit" : "bloodmoon",
+        "ceil" : 5
+      }
+    },
+    "max" : {
+      "base" : 6,
+      "change" : {
+        "operation" : "add",
+        "value" : 2,
+        "per" : 2,
+        "unit" : "bloodmoon"
+      }
+    },
+    "delay" : 200
+  },
+  "trigger" : {
+    "time" : {
+      "type" : "daily",
+      "days" : 5,
+      "start" : 6000
+    },
+    "sound" : "ambient.cave",
+    "global" : false
+  },
+  "pools": [
+    {
+      "group" : "start",
+      "sound" : "ambient.cave",
+      "rolls": {
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "weight": 75,
+          "name": "sevendaystomine:reanimated_corpse",
+          "nbt" : ""
+        }
+      ]
+    },
+    {
+      "group" : "normal",
+      "sound" : "ambient.cave",
+      "weight" : 10,
+      "rolls": {
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "weight": 75,
+          "name": "sevendaystomine:reanimated_corpse",
+          "nbt" : ""
+        }
+      ]
+    },
+    {
+      "group" : "normal",
+      "sound" : "ambient.cave",
+      "weight" : 5,
+      "rolls": {
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "weight": 75,
+          "name": "sevendaystomine:reanimated_corpse",
+          "nbt" : ""
+        }
+      ]
+    },
+    {
+      "group" : "end",
+      "sound" : "ambient.cave",
+      "rolls": {
+        "min" : {
+          "base" : 3,
+          "change" : {
+            "operation" : "add",
+            "value" : 1,
+            "per" : 1,
+            "unit" : "bloodmoon"
+          }
+        },
+        "max" : {
+          "base" : 6,
+          "change" : {
+            "operation" : "add",
+            "value" : 2,
+            "per" : 1,
+            "unit" : "bloodmoon"
+          }
+        }
+      },
+      "entries": [
+        {
+          "weight": 75,
+          "name": "sevendaystomine:reanimated_corpse",
+          "nbt" : ""
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "function": "sevendaystomine:test",
+    "loot": [
+      "minecraft:blocks/glowstone"
+    ],
+    "experience": 200
+  }
+}

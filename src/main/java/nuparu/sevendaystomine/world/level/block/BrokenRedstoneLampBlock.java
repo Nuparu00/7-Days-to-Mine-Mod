@@ -1,13 +1,12 @@
 package nuparu.sevendaystomine.world.level.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class BrokenRedstoneLampBlock extends BlockBase{
     public BrokenRedstoneLampBlock(Properties p_49795_) {
@@ -15,7 +14,7 @@ public class BrokenRedstoneLampBlock extends BlockBase{
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos otherBlock, boolean p_55671_) {
+    public void neighborChanged(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Block block, @NotNull BlockPos otherBlock, boolean p_55671_) {
         if (!level.isClientSide) {
             if (level.hasNeighborSignal(pos)) {
                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

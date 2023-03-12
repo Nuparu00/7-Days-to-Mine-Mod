@@ -9,6 +9,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class TwistedZombieEntity<T extends TwistedZombieEntity> extends ZombieBipedEntity {
 
@@ -32,7 +33,7 @@ public class TwistedZombieEntity<T extends TwistedZombieEntity> extends ZombieBi
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount)
+    public boolean hurt(@NotNull DamageSource source, float amount)
     {
         return super.hurt(source, this.isOnFire() ? amount*4.25f : amount/3);
     }
@@ -51,7 +52,7 @@ public class TwistedZombieEntity<T extends TwistedZombieEntity> extends ZombieBi
 
     public static class Factory implements EntityType.EntityFactory<TwistedZombieEntity> {
         @Override
-        public TwistedZombieEntity create(EntityType<TwistedZombieEntity> type, Level world) {
+        public @NotNull TwistedZombieEntity create(@NotNull EntityType<TwistedZombieEntity> type, @NotNull Level world) {
             return new TwistedZombieEntity(type, world);
         }
     }

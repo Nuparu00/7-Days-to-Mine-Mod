@@ -13,10 +13,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.init.ModBlocks;
-import nuparu.sevendaystomine.util.Utils;
+import nuparu.sevendaystomine.world.level.LevelUtils;
 import nuparu.sevendaystomine.world.level.block.CalendarBlock;
 import nuparu.sevendaystomine.world.level.block.entity.CalendarBlockEntity;
-import nuparu.sevendaystomine.world.level.block.entity.SleepingBagBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class CalendarRenderer implements BlockEntityRenderer<CalendarBlockEntity> {
 
@@ -26,7 +26,7 @@ public class CalendarRenderer implements BlockEntityRenderer<CalendarBlockEntity
     }
 
     @Override
-    public void render(CalendarBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(CalendarBlockEntity te, float partialTicks, @NotNull PoseStack matrixStack, @NotNull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
         Level world = te.getLevel();
         boolean flag = world != null;
         BlockState blockstate = flag ? te.getBlockState() : ModBlocks.CALENDAR.get().defaultBlockState();
@@ -38,7 +38,7 @@ public class CalendarRenderer implements BlockEntityRenderer<CalendarBlockEntity
             String text = "?";
 
             if (ServerConfig.bloodmoonFrequency.get() > 0 && ServerConfig.bloodmoonFrequency.get() <= 999) {
-                int mod = Utils.getDay(world) % ServerConfig.bloodmoonFrequency.get();
+                int mod = LevelUtils.getDay(world) % ServerConfig.bloodmoonFrequency.get();
                 int i = mod == 0 ? 0 : ServerConfig.bloodmoonFrequency.get() - (mod);
                 text = i + "";
             }

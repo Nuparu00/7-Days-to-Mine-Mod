@@ -1,0 +1,20 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "SSSSS",
+    "S   S",
+    "S   S",
+    "S   S",
+    "SSSSS"
+  ],
+  "key": {
+    "S": {
+      "item": "sevendaystomine:iron_pipe"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:rebar_frame",
+    "count":4
+  },
+  "recipe": "sevendaystomine:book_concrete"
+}

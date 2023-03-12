@@ -2,7 +2,6 @@ package nuparu.sevendaystomine.world.level.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,14 +23,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.world.level.block.entity.SpikesBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock implements SimpleWaterloggedBlock, EntityBlock, ISpikeBlock, IBlockBase{
@@ -58,8 +56,8 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter reader, BlockPos pos,
-                               CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos,
+                                        @NotNull CollisionContext context) {
         AttachFace face = state.getValue(FACE);
         Direction facing = state.getValue(FACING);
 
@@ -85,7 +83,7 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
     }
 
     @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
+    public void entityInside(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Entity entityIn) {
         if (!(entityIn instanceof LivingEntity)) {
             return;
         }
@@ -102,7 +100,7 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
         }
     }
 
-    public boolean canSurvive(BlockState p_196260_1_, LevelReader p_196260_2_, BlockPos p_196260_3_) {
+    public boolean canSurvive(@NotNull BlockState p_196260_1_, @NotNull LevelReader p_196260_2_, @NotNull BlockPos p_196260_3_) {
         return canAttach(p_196260_2_, p_196260_3_, getConnectedDirection(p_196260_1_).getOpposite());
     }
 
@@ -126,7 +124,7 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
     }
 
     @Override
-    public void setPlacedBy(Level p_180633_1_, BlockPos p_180633_2_, BlockState p_180633_3_, LivingEntity p_180633_4_, ItemStack p_180633_5_) {
+    public void setPlacedBy(Level p_180633_1_, @NotNull BlockPos p_180633_2_, @NotNull BlockState p_180633_3_, LivingEntity p_180633_4_, @NotNull ItemStack p_180633_5_) {
         if (!p_180633_1_.isClientSide) {
             this.checkIfExtend(p_180633_1_, p_180633_2_, p_180633_3_);
         }
@@ -134,7 +132,7 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
     }
 
     @Override
-    public void neighborChanged(BlockState p_220069_1_, Level p_220069_2_, BlockPos p_220069_3_, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_) {
+    public void neighborChanged(@NotNull BlockState p_220069_1_, Level p_220069_2_, @NotNull BlockPos p_220069_3_, @NotNull Block p_220069_4_, @NotNull BlockPos p_220069_5_, boolean p_220069_6_) {
         if (!p_220069_2_.isClientSide) {
             this.checkIfExtend(p_220069_2_, p_220069_3_, p_220069_1_);
         }
@@ -142,14 +140,14 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
     }
 
     @Override
-    public void onPlace(BlockState p_220082_1_, Level p_220082_2_, BlockPos p_220082_3_, BlockState p_220082_4_, boolean p_220082_5_) {
+    public void onPlace(BlockState p_220082_1_, @NotNull Level p_220082_2_, @NotNull BlockPos p_220082_3_, BlockState p_220082_4_, boolean p_220082_5_) {
         if (!p_220082_4_.is(p_220082_1_.getBlock()) && !p_220082_2_.isClientSide && p_220082_2_.getBlockEntity(p_220082_3_) == null) {
             this.checkIfExtend(p_220082_2_, p_220082_3_, p_220082_1_);
         }
 
     }
 
-    protected static Direction getConnectedDirection(BlockState p_196365_0_) {
+    protected static @NotNull Direction getConnectedDirection(BlockState p_196365_0_) {
         switch (p_196365_0_.getValue(FACE)) {
             case CEILING:
                 return Direction.DOWN;
@@ -206,7 +204,7 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new SpikesBlockEntity(pos,state);
     }
 

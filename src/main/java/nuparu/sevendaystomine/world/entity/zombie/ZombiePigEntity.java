@@ -3,7 +3,6 @@ package nuparu.sevendaystomine.world.entity.zombie;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -13,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class ZombiePigEntity<T extends ZombiePigEntity> extends ZombieAnimalEntity {
 
@@ -57,7 +57,7 @@ public class ZombiePigEntity<T extends ZombiePigEntity> extends ZombieAnimalEnti
 
     public static class Factory implements EntityType.EntityFactory<ZombiePigEntity> {
         @Override
-        public ZombiePigEntity create(EntityType<ZombiePigEntity> type, Level world) {
+        public @NotNull ZombiePigEntity create(@NotNull EntityType<ZombiePigEntity> type, @NotNull Level world) {
             return new ZombiePigEntity(type, world);
         }
     }

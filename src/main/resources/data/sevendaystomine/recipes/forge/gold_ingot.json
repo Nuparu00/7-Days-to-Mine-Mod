@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"gold",
+         "weight" : 10
+      }
+   ],
+   "result":{
+      "item":"minecraft:gold_ingot"
+   },
+   "mold":{
+      "item":"sevendaystomine:ingot_mold"
+   },
+   "experience" : 4,
+   "cookingtime" : 600
+}

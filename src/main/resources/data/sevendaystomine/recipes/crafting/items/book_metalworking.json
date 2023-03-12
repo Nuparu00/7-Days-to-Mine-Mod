@@ -1,0 +1,23 @@
+{
+   "type":"sevendaystomine:quality_shapeless",
+    "ingredients": [
+        {
+
+              "tag": "forge:ingots/iron"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        },
+        {
+            "item": "minecraft:paper"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:book_metalworking",
+      "count":1
+   },
+  "recipe": "sevendaystomine:book_metalworking"
+}

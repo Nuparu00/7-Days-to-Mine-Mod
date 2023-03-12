@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "sevendaystomine:small_stone",
+  "step": "local_modifications"
+}

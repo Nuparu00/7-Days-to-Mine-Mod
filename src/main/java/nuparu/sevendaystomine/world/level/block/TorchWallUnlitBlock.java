@@ -19,8 +19,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.init.ModItems;
-
-import java.util.Random;
+import org.jetbrains.annotations.NotNull;
 
 public class TorchWallUnlitBlock extends TorchWallBlockBase{
     public TorchWallUnlitBlock() {
@@ -28,12 +27,12 @@ public class TorchWallUnlitBlock extends TorchWallBlockBase{
     }
 
     @Override
-    public void animateTick(BlockState p_57494_, Level p_57495_, BlockPos p_57496_, RandomSource p_57497_) {
+    public void animateTick(@NotNull BlockState p_57494_, @NotNull Level p_57495_, @NotNull BlockPos p_57496_, @NotNull RandomSource p_57497_) {
 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
         if (player.isCrouching()) return super.use(state, level, pos, player, hand, result);
         if (level.isClientSide())
             return InteractionResult.SUCCESS;
@@ -43,9 +42,7 @@ public class TorchWallUnlitBlock extends TorchWallBlockBase{
         if (item == Items.FLINT_AND_STEEL) {
             lit(level, pos, this == ModBlocks.SOUL_TORCH_UNLIT_WALL.get());
             if (!player.isCreative()) {
-                stack.hurtAndBreak(1, player, (p_43388_) -> {
-                    p_43388_.broadcastBreakEvent(player.getUsedItemHand());
-                });
+                stack.hurtAndBreak(1, player, (p_43388_) -> p_43388_.broadcastBreakEvent(player.getUsedItemHand()));
             }
         } else if (item == Items.TORCH || item == ModItems.TORCH.get()) {
             lit(level, pos,this == ModBlocks.SOUL_TORCH_UNLIT_WALL.get());

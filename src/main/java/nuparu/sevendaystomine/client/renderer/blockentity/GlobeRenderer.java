@@ -24,8 +24,8 @@ import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.world.level.block.GlobeBlock;
-import nuparu.sevendaystomine.world.level.block.entity.CalendarBlockEntity;
 import nuparu.sevendaystomine.world.level.block.entity.GlobeBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class GlobeRenderer implements BlockEntityRenderer<GlobeBlockEntity> {
 
@@ -47,7 +47,7 @@ public class GlobeRenderer implements BlockEntityRenderer<GlobeBlockEntity> {
     }
 
     @Override
-    public void render(GlobeBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(GlobeBlockEntity te, float partialTicks, @NotNull PoseStack matrixStack, @NotNull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
         Level world = te.getLevel();
         boolean flag = world != null;
         BlockState blockstate = flag ? te.getBlockState() : ModBlocks.GLOBE.get().defaultBlockState();

@@ -5,22 +5,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import nuparu.sevendaystomine.world.entity.item.MountableBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ArmchairBlock extends WaterloggableHorizontalBlockBase{
 
@@ -36,25 +29,20 @@ public class ArmchairBlock extends WaterloggableHorizontalBlockBase{
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
-        switch (state.getValue(FACING)) {
-            default:
-            case NORTH:
-                return NORTH;
-            case SOUTH:
-                return SOUTH;
-            case WEST:
-                return WEST;
-            case EAST:
-                return EAST;
-        }
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
+        return switch (state.getValue(FACING)) {
+            case NORTH -> NORTH;
+            case SOUTH, UP, DOWN -> SOUTH;
+            case WEST -> WEST;
+            case EAST -> EAST;
+        };
 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos,
-                                 Player playerIn, InteractionHand hand, BlockHitResult result) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos,
+                                          Player playerIn, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
         if (!playerIn.isCrouching()) {
             MountableBlockEntity.mountBlock(worldIn, pos, playerIn,0.15f);
             return InteractionResult.SUCCESS;

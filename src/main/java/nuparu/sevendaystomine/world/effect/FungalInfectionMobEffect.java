@@ -4,10 +4,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
 import nuparu.sevendaystomine.init.ModDamageSources;
-import nuparu.sevendaystomine.util.MathUtils;
 
 public class FungalInfectionMobEffect extends BaseMobEffect{
 

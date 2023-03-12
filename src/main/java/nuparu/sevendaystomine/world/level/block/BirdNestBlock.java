@@ -27,12 +27,12 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import nuparu.sevendaystomine.init.ModSounds;
 import nuparu.sevendaystomine.world.level.block.entity.ItemHandlerBlockEntity;
 import nuparu.sevendaystomine.world.level.block.entity.SmallContainerBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BirdNestBlock extends BlockBase implements EntityBlock, IContainerBlockWithSounds, SimpleWaterloggedBlock {
@@ -47,18 +47,18 @@ public class BirdNestBlock extends BlockBase implements EntityBlock, IContainerB
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new SmallContainerBlockEntity(pos,state);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
         return SHAPE;
     }
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult rayTraceResult) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player player,
+                                          @NotNull InteractionHand hand, @NotNull BlockHitResult rayTraceResult) {
         if (worldIn.isClientSide())
             return InteractionResult.SUCCESS;
 
@@ -66,16 +66,15 @@ public class BirdNestBlock extends BlockBase implements EntityBlock, IContainerB
         if (namedContainerProvider != null) {
             ItemHandlerBlockEntity tileEntity = (ItemHandlerBlockEntity)namedContainerProvider;
             tileEntity.unpackLootTable(player);
-            if (!(player instanceof ServerPlayer))
+            if (!(player instanceof ServerPlayer serverPlayerEntity))
                 return InteractionResult.FAIL;
-            ServerPlayer serverPlayerEntity = (ServerPlayer) player;
             NetworkHooks.openScreen(serverPlayerEntity, namedContainerProvider, (packetBuffer) -> packetBuffer.writeBlockPos(pos));
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void setPlacedBy(Level p_48694_, BlockPos p_48695_, BlockState p_48696_, LivingEntity p_48697_, ItemStack p_48698_) {
+    public void setPlacedBy(@NotNull Level p_48694_, @NotNull BlockPos p_48695_, @NotNull BlockState p_48696_, LivingEntity p_48697_, ItemStack p_48698_) {
         if (p_48698_.hasCustomHoverName()) {
             BlockEntity blockentity = p_48694_.getBlockEntity(p_48695_);
             if (blockentity instanceof SmallContainerBlockEntity) {
@@ -86,7 +85,7 @@ public class BirdNestBlock extends BlockBase implements EntityBlock, IContainerB
     }
 
     @Override
-    public void onRemove(BlockState p_48713_, Level p_48714_, BlockPos p_48715_, BlockState p_48716_, boolean p_48717_) {
+    public void onRemove(BlockState p_48713_, @NotNull Level p_48714_, @NotNull BlockPos p_48715_, BlockState p_48716_, boolean p_48717_) {
         if (!p_48713_.is(p_48716_.getBlock())) {
             BlockEntity blockentity = p_48714_.getBlockEntity(p_48715_);
             if (blockentity instanceof SmallContainerBlockEntity) {
@@ -102,15 +101,15 @@ public class BirdNestBlock extends BlockBase implements EntityBlock, IContainerB
     }
 
     @Override
-    public boolean triggerEvent(BlockState p_49226_, Level p_49227_, BlockPos p_49228_, int p_49229_, int p_49230_) {
+    public boolean triggerEvent(@NotNull BlockState p_49226_, @NotNull Level p_49227_, @NotNull BlockPos p_49228_, int p_49229_, int p_49230_) {
         super.triggerEvent(p_49226_, p_49227_, p_49228_, p_49229_, p_49230_);
         BlockEntity blockentity = p_49227_.getBlockEntity(p_49228_);
-        return blockentity == null ? false : blockentity.triggerEvent(p_49229_, p_49230_);
+        return blockentity != null && blockentity.triggerEvent(p_49229_, p_49230_);
     }
 
     @Override
     @javax.annotation.Nullable
-    public MenuProvider getMenuProvider(BlockState p_49234_, Level p_49235_, BlockPos p_49236_) {
+    public MenuProvider getMenuProvider(@NotNull BlockState p_49234_, Level p_49235_, @NotNull BlockPos p_49236_) {
         BlockEntity blockentity = p_49235_.getBlockEntity(p_49236_);
         return blockentity instanceof MenuProvider ? (MenuProvider)blockentity : null;
     }
@@ -127,7 +126,7 @@ public class BirdNestBlock extends BlockBase implements EntityBlock, IContainerB
         return ModSounds.CABINET_CLOSE.get();
     }
 
-    public FluidState getFluidState(BlockState p_52362_) {
+    public @NotNull FluidState getFluidState(BlockState p_52362_) {
         return p_52362_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_52362_);
     }
 
@@ -135,12 +134,12 @@ public class BirdNestBlock extends BlockBase implements EntityBlock, IContainerB
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext p_53304_) {
         FluidState fluidstate = p_53304_.getLevel().getFluidState(p_53304_.getClickedPos());
-        return super.getStateForPlacement(p_53304_).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+        return super.getStateForPlacement(p_53304_).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
 
     @Override
-    public BlockState updateShape(BlockState p_53323_, Direction p_53324_, BlockState p_53325_, LevelAccessor p_53326_, BlockPos p_53327_, BlockPos p_53328_) {
+    public @NotNull BlockState updateShape(BlockState p_53323_, @NotNull Direction p_53324_, @NotNull BlockState p_53325_, @NotNull LevelAccessor p_53326_, @NotNull BlockPos p_53327_, @NotNull BlockPos p_53328_) {
         if (p_53323_.getValue(WATERLOGGED)) {
             p_53326_.scheduleTick(p_53327_, Fluids.WATER, Fluids.WATER.getTickDelay(p_53326_));
         }

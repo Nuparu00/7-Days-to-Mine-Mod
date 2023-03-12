@@ -5,6 +5,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.json.drink.DrinkDataManager;
+import nuparu.sevendaystomine.json.horde.HordeDataManager;
 import nuparu.sevendaystomine.json.salvage.SalvageDataManager;
 import nuparu.sevendaystomine.json.scrap.ScrapDataManager;
 import nuparu.sevendaystomine.json.upgrade.UpgradeDataManager;
@@ -20,6 +21,7 @@ public class DataEventHandler {
         event.addListener(UpgradeDataManager.INSTANCE);
         event.addListener(UpgraderToolDataManager.INSTANCE);
         event.addListener(SalvageDataManager.INSTANCE);
+        event.addListener(HordeDataManager.INSTANCE);
 
     }
 }

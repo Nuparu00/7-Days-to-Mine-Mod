@@ -1,0 +1,8 @@
+{
+    "parent": "block/slab",
+    "textures": {
+        "bottom": "sevendaystomine:block/brick_mossy",
+        "top": "sevendaystomine:block/brick_mossy",
+        "side": "sevendaystomine:block/brick_mossy"
+    }
+}

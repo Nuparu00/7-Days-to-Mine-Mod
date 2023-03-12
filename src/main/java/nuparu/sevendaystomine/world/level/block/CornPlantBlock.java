@@ -9,7 +9,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.minecraft.world.level.block.CropBlock.getGrowthSpeed;
@@ -36,22 +36,22 @@ public class CornPlantBlock extends BushBlock implements BonemealableBlock ,IBlo
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter p_52258_, BlockPos p_52259_, BlockState p_52260_, boolean p_52261_) {
+    public boolean isValidBonemealTarget(@NotNull BlockGetter p_52258_, @NotNull BlockPos p_52259_, @NotNull BlockState p_52260_, boolean p_52261_) {
         return !this.isMaxAge(p_52260_);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level p_221045_, RandomSource p_221046_, BlockPos p_221047_, BlockState p_221048_) {
+    public boolean isBonemealSuccess(@NotNull Level p_221045_, @NotNull RandomSource p_221046_, @NotNull BlockPos p_221047_, @NotNull BlockState p_221048_) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel p_221040_, RandomSource p_221041_, BlockPos p_221042_, BlockState p_221043_) {
+    public void performBonemeal(@NotNull ServerLevel p_221040_, @NotNull RandomSource p_221041_, @NotNull BlockPos p_221042_, @NotNull BlockState p_221043_) {
         this.growCrops(p_221040_, p_221042_, p_221043_);
     }
 
     @Override
-    public boolean canSurvive(BlockState p_196260_1_, LevelReader p_196260_2_, BlockPos p_196260_3_) {
+    public boolean canSurvive(@NotNull BlockState p_196260_1_, LevelReader p_196260_2_, @NotNull BlockPos p_196260_3_) {
         if(!(p_196260_2_.getRawBrightness(p_196260_3_, 0) >= 8 || p_196260_2_.canSeeSky(p_196260_3_))) return false;
         if (p_196260_1_.getValue(HALF) != DoubleBlockHalf.UPPER) {
             return super.canSurvive(p_196260_1_, p_196260_2_, p_196260_3_);
@@ -63,7 +63,7 @@ public class CornPlantBlock extends BushBlock implements BonemealableBlock ,IBlo
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState p_51042_, BlockGetter p_51043_, BlockPos p_51044_) {
+    protected boolean mayPlaceOn(BlockState p_51042_, @NotNull BlockGetter p_51043_, @NotNull BlockPos p_51044_) {
         return p_51042_.is(BlockTags.DIRT) || p_51042_.is(Blocks.FARMLAND) || p_51042_.is(Blocks.GRASS_BLOCK);
     }
 
@@ -88,11 +88,11 @@ public class CornPlantBlock extends BushBlock implements BonemealableBlock ,IBlo
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState p_149653_1_) {
+    public boolean isRandomlyTicking(@NotNull BlockState p_149653_1_) {
         return !this.isMaxAge(p_149653_1_);
     }
 
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+    public void tick(@NotNull BlockState state, ServerLevel world, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (!world.isAreaLoaded(pos, 1))
             return;
         if (world.getRawBrightness(pos, 0) >= 9) {

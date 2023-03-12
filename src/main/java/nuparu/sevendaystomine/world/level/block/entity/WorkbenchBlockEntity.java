@@ -9,14 +9,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import nuparu.sevendaystomine.init.ModBlockEntities;
 import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.world.inventory.ItemHandlerNameable;
-import nuparu.sevendaystomine.world.inventory.block.ContainerGrill;
 import nuparu.sevendaystomine.world.inventory.block.ContainerWorkbench;
 import nuparu.sevendaystomine.world.inventory.block.ContainerWorkbenchUncrafting;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -41,13 +40,13 @@ public class WorkbenchBlockEntity extends ItemHandlerBlockEntity<ItemHandlerName
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return getInventory().getDisplayName();
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int windowID, Inventory playerInventory, Player player) {
+    public AbstractContainerMenu createMenu(int windowID, Inventory playerInventory, @NotNull Player player) {
         return playerInventory.player.isCrouching() ? ContainerWorkbenchUncrafting.createContainerServerSide(windowID, playerInventory, this) : ContainerWorkbench.createContainerServerSide(windowID, playerInventory, this);
     }
 
@@ -77,27 +76,27 @@ public class WorkbenchBlockEntity extends ItemHandlerBlockEntity<ItemHandlerName
     }
 
     @Override
-    public ItemStack getItem(int slot) {
+    public @NotNull ItemStack getItem(int slot) {
         return getInventory().getStackInSlot(slot);
     }
 
     @Override
-    public ItemStack removeItem(int slot, int count) {
+    public @NotNull ItemStack removeItem(int slot, int count) {
         return null;
     }
 
     @Override
-    public ItemStack removeItemNoUpdate(int p_18951_) {
+    public @NotNull ItemStack removeItemNoUpdate(int p_18951_) {
         return null;
     }
 
     @Override
-    public void setItem(int slot, ItemStack stack) {
+    public void setItem(int slot, @NotNull ItemStack stack) {
         //getInventory().setStackInSlot(slot, stack);
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return isUsableByPlayer(player);
     }
 

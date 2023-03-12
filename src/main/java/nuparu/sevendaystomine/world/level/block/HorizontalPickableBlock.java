@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 public class HorizontalPickableBlock extends PickableBlock{
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -27,25 +27,25 @@ public class HorizontalPickableBlock extends PickableBlock{
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
         return SHAPE;
     }
 
     @Override
-    public BlockState rotate(BlockState p_54125_, Rotation p_54126_) {
+    public @NotNull BlockState rotate(BlockState p_54125_, Rotation p_54126_) {
         return p_54125_.setValue(FACING, p_54126_.rotate(p_54125_.getValue(FACING)));
     }
 
     @Override
-    public BlockState mirror(BlockState p_54122_, Mirror p_54123_) {
+    public @NotNull BlockState mirror(BlockState p_54122_, Mirror p_54123_) {
         return p_54122_.rotate(p_54123_.getRotation(p_54122_.getValue(FACING)));
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext p_53304_) {
         FluidState fluidstate = p_53304_.getLevel().getFluidState(p_53304_.getClickedPos());
-        return super.getStateForPlacement(p_53304_).setValue(FACING, p_53304_.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+        return super.getStateForPlacement(p_53304_).setValue(FACING, p_53304_.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
     @Override

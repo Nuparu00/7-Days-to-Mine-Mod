@@ -1,6 +1,5 @@
 package nuparu.sevendaystomine.init;
 
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -12,4 +11,5 @@ public class ModTiers {
     public static final Tier COPPER = new ForgeTier(1,100,3,0.5f,8, ModBlocksTags.NEEDS_COPPER_TOOL,() -> Ingredient.of(Items.COPPER_INGOT));
     public static final Tier BRONZE = new ForgeTier(2,150,6,1.5f,10, ModBlocksTags.NEEDS_BRONZE_TOOL,() -> Ingredient.of(ModItems.BRONZE_INGOT.get()));
     public static final Tier STEEL = new ForgeTier(3,500,7,2.5f,12, ModBlocksTags.NEEDS_STEEL_TOOL,() -> Ingredient.of(ModItems.STEEL_INGOT.get()));
+    public static final Tier AUGER = new ForgeTier(4,1000,14,4f,0, ModBlocksTags.NEEDS_AUGER,() -> Ingredient.of(ModItems.GEAR.get()));
 }

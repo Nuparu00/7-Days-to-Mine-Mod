@@ -1,13 +1,14 @@
 {
   "required": true,
   "package": "nuparu.sevendaystomine.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "sevendaystomine.refmap.json",
   "mixins": [
-    "MixinPlayer",
+    "MixinBottleItem",
     "MixinItem",
     "MixinItemStack",
-    "MixinBottleItem"
+    "MixinPlayer",
+    "MixinRandomizableContainerBlockEntity"
   ],
   "client": [
     "MixinWorldRenderer"

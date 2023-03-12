@@ -1,6 +1,9 @@
 package nuparu.sevendaystomine.init;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -24,6 +27,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> BOARDS = registerBlockWithItem("plank_wood",
             () -> new BoardsBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1.5F).noOcclusion()));
+
+    public static final RegistryObject<Block> FUNGI_BOARDS = registerBlockWithItem("plank_fungi",
+            () -> new BoardsBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1.75F).noOcclusion()));
     public static final RegistryObject<WoodenFrameBlock> OAK_FRAME = registerBlockWithItem("oak_planks_frame",
             () -> new WoodenFrameBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
                     .strength(0.8F, 2.0F).sound(SoundType.WOOD).noOcclusion()), true);
@@ -122,7 +128,7 @@ public class ModBlocks {
 
     public static final RegistryObject<BlockBase> LEAD_BLOCK = registerBlockWithItem("lead_block",
             () -> new BlockBase(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.TERRACOTTA_CYAN)
-                    .strength(4, 11).sound(SoundType.METAL)), true);
+                    .strength(4, 11).sound(SoundType.METAL).randomTicks()), true);
 
     public static final RegistryObject<BlockBase> BRASS_BLOCK = registerBlockWithItem("brass_block",
             () -> new BlockBase(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_YELLOW)
@@ -151,6 +157,8 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> LANTERN_UNLIT = registerBlockWithItem("lantern_unlit", () -> new LanternBlockBase(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN).noOcclusion()), true);
 
+    public static final RegistryObject<Block> BRICK_MOSSY = BLOCKS.register("brick_block_mossy",
+            () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.BRICKS)));
     public static final RegistryObject<BlockBase> GRANITE_BRICKS = registerBlockWithItem("granite_bricks",
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
 
@@ -180,6 +188,9 @@ public class ModBlocks {
     public static final RegistryObject<BlockBase> CRACKED_ANDESITE_BRICKS = registerBlockWithItem("cracked_andesite_bricks",
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
 
+    public static final RegistryObject<StairBlockBase> BRICKS_MOSSY_STAIRS = registerBlockWithItem("brick_mossy_stairs",
+            () -> new StairBlockBase(() -> BRICK_MOSSY.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BRICK_STAIRS)), true);
+
     public static final RegistryObject<StairBlockBase> GRANITE_BRICK_STAIRS = registerBlockWithItem("granite_brick_stairs",
             () -> new StairBlockBase(() -> GRANITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
 
@@ -206,6 +217,9 @@ public class ModBlocks {
 
     public static final RegistryObject<StairBlockBase> CRACKED_ANDESITE_BRICK_STAIRS = registerBlockWithItem("cracked_andesite_brick_stairs",
             () -> new StairBlockBase(() -> CRACKED_ANDESITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
+
+    public static final RegistryObject<SlabBlockBase> BRICK_MOSSY_SLAB = registerBlockWithItem("brick_mossy_slab",
+            () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.BRICK_SLAB)), true);
 
     public static final RegistryObject<SlabBlockBase> GRANITE_BRICK_SLAB = registerBlockWithItem("granite_brick_slab",
             () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
@@ -240,17 +254,32 @@ public class ModBlocks {
     public static final RegistryObject<OreBlockBase> TIN_ORE = registerBlockWithItem("tin_ore",
             () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), true);
 
+    public static final RegistryObject<OreBlockBase> DEEPSLATE_TIN_ORE = registerBlockWithItem("deepslate_tin_ore",
+            () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.0F, 4.0F).randomTicks()), true);
+
     public static final RegistryObject<OreBlockBase> ZINC_ORE = registerBlockWithItem("zinc_ore",
             () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), true);
 
+    public static final RegistryObject<OreBlockBase> DEEPSLATE_ZINC_ORE = registerBlockWithItem("deepslate_zinc_ore",
+            () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.0F, 4.0F).randomTicks()), true);
+
     public static final RegistryObject<OreBlockBase> LEAD_ORE = registerBlockWithItem("lead_ore",
-            () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), true);
+            () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F).randomTicks()), true);
+
+    public static final RegistryObject<OreBlockBase> DEEPSLATE_LEAD_ORE = registerBlockWithItem("deepslate_lead_ore",
+            () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.0F, 4.0F).randomTicks()), true);
 
     public static final RegistryObject<OreBlockBase> POTASSIUM_ORE = registerBlockWithItem("potassium_ore",
             () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), true);
 
+    public static final RegistryObject<OreBlockBase> DEEPSLATE_POTASSIUM_ORE = registerBlockWithItem("deepslate_potassium_ore",
+            () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.0F, 4.0F).randomTicks()), true);
+
     public static final RegistryObject<OreBlockBase> CINNABAR_ORE = registerBlockWithItem("cinnabar_ore",
             () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), true);
+
+    public static final RegistryObject<OreBlockBase> DEEPSLATE_CINNABAR_ORE = registerBlockWithItem("deepslate_cinnabar_ore",
+            () -> new OreBlockBase(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.0F, 4.0F).randomTicks()), true);
 
     public static final RegistryObject<BlockBase> ASPHALT = registerBlockWithItem("asphalt",
             () -> new BlockBase(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
@@ -449,7 +478,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> GOLDENROD = registerBlockWithItem("goldenrod",
             () -> new FlowerBlockBase(MobEffects.DIG_SPEED, 7,
                     BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final RegistryObject<Block> POTTED_GOLDENROD = registerBlockWithItem("potted_goldenrod", () -> new FlowerPotBlockBase( () -> (FlowerPotBlock)Blocks.FLOWER_POT, () -> GOLDENROD.get(), BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()),false);
+    public static final RegistryObject<Block> POTTED_GOLDENROD = registerBlockWithItem("potted_goldenrod", () -> new FlowerPotBlockBase( () -> (FlowerPotBlock)Blocks.FLOWER_POT, GOLDENROD, BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()),false);
     public static final RegistryObject<Block> CORN_PLANT = registerBlockWithItem("corn_plant",
             () -> new CornPlantBlock(BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.CROP)), false);
     public static final RegistryObject<Block> COFFEE_PLANT = registerBlockWithItem("coffee_plant",
@@ -631,17 +660,38 @@ public class ModBlocks {
     public static final RegistryObject<Block> SLEEPING_BAG_BROWN = registerBlockWithItem("sleeping_bag_brown",
             () -> new SleepingBagBlock(DyeColor.BROWN, BlockBehaviour.Properties.copy(Blocks.BLACK_BED).strength(0.05F)));
 
-    public static final RegistryObject<Block> CALENDAR = registerBlockWithItem("calendar",
+    public static final RegistryObject<CalendarBlock> CALENDAR = registerBlockWithItem("calendar",
             () -> new CalendarBlock(BlockBehaviour.Properties.of(Material.CLOTH_DECORATION).strength(0).instabreak().sound(SoundType.WOOL)));
 
-    public static final RegistryObject<Block> RADIO = registerBlockWithItem("radio",
+    public static final RegistryObject<RadioBlock> RADIO = registerBlockWithItem("radio",
             () -> new RadioBlock(BlockBehaviour.Properties.of(Material.METAL).strength(0.5f).sound(SoundType.METAL)));
 
-    public static final RegistryObject<Block> GLOBE = registerBlockWithItem("globe",
+    public static final RegistryObject<GlobeBlock> GLOBE = registerBlockWithItem("globe",
             () -> new GlobeBlock(BlockBehaviour.Properties.of(Material.METAL).strength(1f).sound(SoundType.METAL)));
 
-    public static final RegistryObject<Block> STAND = registerBlockWithItem("stand",
+    public static final RegistryObject<StandBlock> STAND = registerBlockWithItem("stand",
             () -> new StandBlock(BlockBehaviour.Properties.of(Material.METAL).strength(1.8f).sound(SoundType.METAL)));
+    public static final RegistryObject<WheelsBlock> WHEELS = registerBlockWithItem("wheels",
+            () -> new WheelsBlock(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_BLACK)
+                    .strength(1).sound(SoundType.WOOL)), true);
+    public static final RegistryObject<PhotoBlock> PHOTO = registerBlockWithItem("photo",
+            () -> new PhotoBlock(BlockBehaviour.Properties.of(Material.WOOL)
+                    .strength(0.5f).sound(SoundType.WOOL).instabreak().noOcclusion()), false);
+
+    public static final RegistryObject<SolarPanelBlock> SOLAR_PANEL = registerBlockWithItem("solar_panel",
+            () -> new SolarPanelBlock(BlockBehaviour.Properties.of(Material.METAL)
+                    .strength(2.5f).sound(SoundType.GLASS).noOcclusion()));
+
+    public static final RegistryObject<CombustionGeneratorBlock> COMBUSTION_GENERATOR = registerBlockWithItem("combustion_generator",
+            () -> new CombustionGeneratorBlock(BlockBehaviour.Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().lightLevel(litBlockEmission(8))));
+
+    public static final RegistryObject<WindTurbineBlock> WIND_TURBINE = registerBlockWithItem("wind_turbine",
+            () -> new WindTurbineBlock(BlockBehaviour.Properties.of(Material.METAL).strength(2.5F).sound(SoundType.METAL).noOcclusion()));
+    public static final RegistryObject<Block> WIND_TURBINE_BLADES = BLOCKS.register("wind_turbine_blades",() -> new Block(BlockBehaviour.Properties.copy(ModBlocks.WIND_TURBINE.get())));
+
+    public static final RegistryObject<EnergyPoleBlock> ENERGY_POLE = registerBlockWithItem("energy_pole",
+            () -> new EnergyPoleBlock(BlockBehaviour.Properties.of(Material.WOOD)
+                    .strength(1.5f).sound(SoundType.WOOD).noOcclusion()));
 
 
     private static <BLOCK extends Block> RegistryObject<BLOCK> registerBlockWithItem(String name, Supplier<BLOCK> blockFactory, boolean hasItem) {

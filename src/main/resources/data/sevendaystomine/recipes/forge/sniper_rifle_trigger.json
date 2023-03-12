@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"iron",
+         "weight" : 25
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:sniper_rifle_trigger"
+   },
+   "mold":{
+      "item":"sevendaystomine:sniper_rifle_trigger_mold"
+   },
+   "experience" : 0,
+   "cookingtime" : 300
+}

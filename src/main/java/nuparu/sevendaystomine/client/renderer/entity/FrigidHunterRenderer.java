@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.world.entity.zombie.FrigidHunterEntity;
-import nuparu.sevendaystomine.world.entity.zombie.ReanimatedCorpseEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class FrigidHunterRenderer<T extends FrigidHunterEntity, M extends HumanoidModel<T>>
 		extends ZombieBipedRenderer<T, M> {
@@ -20,7 +20,7 @@ public class FrigidHunterRenderer<T extends FrigidHunterEntity, M extends Humano
 		super(context, ClientSetup.FRIGID_HUNTER_LAYER);
 	}
 
-	public ResourceLocation getTextureLocation(T p_110775_1_) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T p_110775_1_) {
 		return ZOMBIE_LOCATION;
 	}
 
@@ -29,7 +29,7 @@ public class FrigidHunterRenderer<T extends FrigidHunterEntity, M extends Humano
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	protected boolean isShaking(T p_230495_1_) {
+	protected boolean isShaking(@NotNull T p_230495_1_) {
 		return false;
 	}
 }

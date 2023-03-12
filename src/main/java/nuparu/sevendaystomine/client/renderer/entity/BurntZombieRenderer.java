@@ -9,9 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.client.renderer.entity.layers.BurnsLayer;
-import nuparu.sevendaystomine.client.renderer.entity.layers.RedEyesLayer;
 import nuparu.sevendaystomine.world.entity.zombie.BurntZombieEntity;
-import nuparu.sevendaystomine.world.entity.zombie.ReanimatedCorpseEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class BurntZombieRenderer<T extends BurntZombieEntity, M extends HumanoidModel<T>>
 		extends ZombieBipedRenderer<T, M> {
@@ -23,7 +22,7 @@ public class BurntZombieRenderer<T extends BurntZombieEntity, M extends Humanoid
 		this.addLayer(burnsLayer = new BurnsLayer<T, M, M>(this));
 	}
 
-	public ResourceLocation getTextureLocation(T entity) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T entity) {
 		return ZOMBIE_LOCATION;
 	}
 

@@ -14,7 +14,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -22,23 +21,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import nuparu.sevendaystomine.init.ModSounds;
-import nuparu.sevendaystomine.world.level.block.entity.BookshelfBlockEntity;
 import nuparu.sevendaystomine.world.level.block.entity.ItemHandlerBlockEntity;
 import nuparu.sevendaystomine.world.level.block.entity.SmallContainerBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RefrigeratorBlock extends WaterloggableHorizontalBlockBase implements EntityBlock, IContainerBlockWithSounds {
@@ -53,13 +48,13 @@ public class RefrigeratorBlock extends WaterloggableHorizontalBlockBase implemen
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new SmallContainerBlockEntity(pos,state);
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult rayTraceResult) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player player,
+                                          @NotNull InteractionHand hand, @NotNull BlockHitResult rayTraceResult) {
         if (worldIn.isClientSide())
             return InteractionResult.SUCCESS;
 
@@ -67,16 +62,15 @@ public class RefrigeratorBlock extends WaterloggableHorizontalBlockBase implemen
         if (namedContainerProvider != null) {
             ItemHandlerBlockEntity tileEntity = (ItemHandlerBlockEntity)namedContainerProvider;
             tileEntity.unpackLootTable(player);
-            if (!(player instanceof ServerPlayer))
+            if (!(player instanceof ServerPlayer serverPlayerEntity))
                 return InteractionResult.FAIL;
-            ServerPlayer serverPlayerEntity = (ServerPlayer) player;
             NetworkHooks.openScreen(serverPlayerEntity, namedContainerProvider, (packetBuffer) -> packetBuffer.writeBlockPos(pos));
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity p_48697_, ItemStack p_48698_) {
+    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, BlockState state, LivingEntity p_48697_, @NotNull ItemStack p_48698_) {
         if(state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
             if (p_48698_.hasCustomHoverName()) {
@@ -92,7 +86,7 @@ public class RefrigeratorBlock extends WaterloggableHorizontalBlockBase implemen
     }
 
     @Override
-    public void onRemove(BlockState p_48713_, Level p_48714_, BlockPos p_48715_, BlockState p_48716_, boolean p_48717_) {
+    public void onRemove(BlockState p_48713_, @NotNull Level p_48714_, @NotNull BlockPos p_48715_, BlockState p_48716_, boolean p_48717_) {
         if (!p_48713_.is(p_48716_.getBlock())) {
             BlockEntity blockentity = p_48714_.getBlockEntity(p_48715_);
             if (blockentity instanceof SmallContainerBlockEntity) {
@@ -126,15 +120,15 @@ public class RefrigeratorBlock extends WaterloggableHorizontalBlockBase implemen
     }
 
     @Override
-    public boolean triggerEvent(BlockState p_49226_, Level p_49227_, BlockPos p_49228_, int p_49229_, int p_49230_) {
+    public boolean triggerEvent(@NotNull BlockState p_49226_, @NotNull Level p_49227_, @NotNull BlockPos p_49228_, int p_49229_, int p_49230_) {
         super.triggerEvent(p_49226_, p_49227_, p_49228_, p_49229_, p_49230_);
         BlockEntity blockentity = p_49227_.getBlockEntity(p_49228_);
-        return blockentity == null ? false : blockentity.triggerEvent(p_49229_, p_49230_);
+        return blockentity != null && blockentity.triggerEvent(p_49229_, p_49230_);
     }
 
     @Override
     @javax.annotation.Nullable
-    public MenuProvider getMenuProvider(BlockState p_49234_, Level p_49235_, BlockPos p_49236_) {
+    public MenuProvider getMenuProvider(@NotNull BlockState p_49234_, Level p_49235_, @NotNull BlockPos p_49236_) {
         BlockEntity blockentity = p_49235_.getBlockEntity(p_49236_);
         return blockentity instanceof MenuProvider ? (MenuProvider)blockentity : null;
     }

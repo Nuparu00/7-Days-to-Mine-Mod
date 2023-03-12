@@ -1,0 +1,21 @@
+{
+   "type":"sevendaystomine:cooking_shapeless",
+   "ingredients":[
+      {
+         "item":"minecraft:beef"
+      },
+      {
+         "item":"minecraft:beef"
+      },
+      {
+         "item":"minecraft:beef"
+      }
+   ],
+   "station" : "sevendaystomine:cooking_grill",
+   "result":{
+      "item":"minecraft:cooked_beef",
+      "count":3
+   },
+   "experience": 0.15,
+   "cookingtime": 300
+}

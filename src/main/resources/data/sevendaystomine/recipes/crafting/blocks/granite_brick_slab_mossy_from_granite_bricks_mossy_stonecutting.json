@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 2,
+  "ingredient": {
+    "item": "sevendaystomine:mossy_granite_bricks"
+  },
+  "result": "sevendaystomine:mossy_granite_brick_slab"
+}

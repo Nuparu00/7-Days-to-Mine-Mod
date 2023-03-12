@@ -1,0 +1,9 @@
+{
+  "feature": "sevendaystomine:pickable_stick_simple",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap" : "WORLD_SURFACE"
+    }
+  ]
+}

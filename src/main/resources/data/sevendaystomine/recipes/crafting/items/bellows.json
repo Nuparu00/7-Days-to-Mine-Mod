@@ -1,0 +1,23 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "WLW",
+    "ILL",
+    "WLW"
+  ],
+  "key": {
+    "L": {
+      "tag": "forge:leather"
+    }, 
+    "I": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "W": {
+      "item": "sevendaystomine:plank_wood"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:bellows"
+  },
+  "recipe": "sevendaystomine:book_forging"
+}

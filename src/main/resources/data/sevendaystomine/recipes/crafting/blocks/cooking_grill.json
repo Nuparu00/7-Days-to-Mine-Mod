@@ -1,0 +1,16 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "PPP",
+      "PPP",
+      "PPP"
+   ],
+   "key":{
+      "P":{
+         "item":"sevendaystomine:iron_pipe"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:cooking_grill"
+   }
+}

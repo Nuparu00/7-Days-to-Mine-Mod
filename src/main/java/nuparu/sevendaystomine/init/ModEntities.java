@@ -7,10 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import nuparu.sevendaystomine.SevenDaysToMine;
-import nuparu.sevendaystomine.world.entity.item.BoneSpearEntity;
-import nuparu.sevendaystomine.world.entity.item.LootableCorpseEntity;
-import nuparu.sevendaystomine.world.entity.item.MountableBlockEntity;
-import nuparu.sevendaystomine.world.entity.item.StoneSpearEntity;
+import nuparu.sevendaystomine.world.entity.item.*;
 import nuparu.sevendaystomine.world.entity.zombie.*;
 
 public class ModEntities {
@@ -49,6 +46,30 @@ public class ModEntities {
                             MobCategory.MISC)
                     .sized(0.01F, 0.01F)
                     .build(new ResourceLocation(SevenDaysToMine.MODID, "mountable_block").toString()));
+
+    public static final RegistryObject<EntityType<AirdropEntity>> AIRDROP = ENTITIES.register(
+            "airdrop",
+            () -> EntityType.Builder
+                    .of((EntityType.EntityFactory<AirdropEntity>) AirdropEntity::new,
+                            MobCategory.MISC)
+                    .sized(1f, 1f).fireImmune().setTrackingRange(256).clientTrackingRange(128)
+                    .build(new ResourceLocation(SevenDaysToMine.MODID, "airdorp").toString()));
+
+    public static final RegistryObject<EntityType<MinibikeEntity>> MINIBIKE = ENTITIES.register(
+            "minibike",
+            () -> EntityType.Builder
+                    .of((EntityType.EntityFactory<MinibikeEntity>) MinibikeEntity::new,
+                            MobCategory.MISC)
+                    .sized(0.8F, 0.75F).setTrackingRange(128).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).updateInterval(1)
+                    .build(new ResourceLocation(SevenDaysToMine.MODID, "minibike").toString()));
+    public static final RegistryObject<EntityType<CarEntity>> CAR = ENTITIES.register(
+            "car",
+            () -> EntityType.Builder
+                    .of((EntityType.EntityFactory<CarEntity>) CarEntity::new,
+                            MobCategory.MISC)
+                    .sized(2F, 1.5F).setTrackingRange(128).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).updateInterval(1)
+                    .build(new ResourceLocation(SevenDaysToMine.MODID, "car").toString()));
+
 
     //Zombies
 

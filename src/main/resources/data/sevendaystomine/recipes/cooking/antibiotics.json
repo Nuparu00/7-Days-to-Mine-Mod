@@ -1,0 +1,21 @@
+{
+   "type":"sevendaystomine:cooking_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:moldy_bread"
+      },
+      {
+         "item":"sevendaystomine:potassium"
+      },
+      {
+         "item":"minecraft:potion"
+      }
+   ],
+   "station" : "sevendaystomine:beaker",
+   "result":{
+      "item":"sevendaystomine:antibiotics",
+      "count":1
+   },
+   "experience": 0.4,
+   "cookingtime": 750
+}

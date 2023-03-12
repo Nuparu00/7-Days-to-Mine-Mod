@@ -12,19 +12,17 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import nuparu.sevendaystomine.init.ModContainers;
-import nuparu.sevendaystomine.world.level.block.CookingGrillBLock;
 import nuparu.sevendaystomine.world.level.block.entity.GrillBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ContainerGrill extends AbstractContainerMenu {
     // -------- methods used by the ContainerScreen to render parts of the display
     private final ContainerData intArray;
     private final Level world; // needed for some helper methods
-    GrillBlockEntity grill;
+    final GrillBlockEntity grill;
 
     public ContainerGrill(int windowID, Inventory invPlayer, GrillBlockEntity grill, ContainerData intArray) {
         super(ModContainers.COOKING_GRILL.get(), windowID);
@@ -67,12 +65,12 @@ public class ContainerGrill extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return this.grill != null && this.grill.canPlayerAccessInventory(player);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot == null || !slot.hasItem())
@@ -136,11 +134,11 @@ public class ContainerGrill extends AbstractContainerMenu {
         }
 
         @Override
-        public boolean mayPlace(ItemStack stack) {
+        public boolean mayPlace(@NotNull ItemStack stack) {
             return false;
         }
 
-        public ItemStack remove(int p_75209_1_) {
+        public @NotNull ItemStack remove(int p_75209_1_) {
             if (this.hasItem()) {
                 this.removeCount += Math.min(p_75209_1_, this.getItem().getCount());
             }
@@ -149,12 +147,12 @@ public class ContainerGrill extends AbstractContainerMenu {
         }
 
 
-        public void onTake(Player p_190901_1_, ItemStack p_190901_2_) {
+        public void onTake(@NotNull Player p_190901_1_, @NotNull ItemStack p_190901_2_) {
             this.checkTakeAchievements(p_190901_2_);
             super.onTake(p_190901_1_, p_190901_2_);
         }
 
-        protected void onQuickCraft(ItemStack p_75210_1_, int p_75210_2_) {
+        protected void onQuickCraft(@NotNull ItemStack p_75210_1_, int p_75210_2_) {
             this.removeCount += p_75210_2_;
             this.checkTakeAchievements(p_75210_1_);
         }
@@ -162,7 +160,7 @@ public class ContainerGrill extends AbstractContainerMenu {
         protected void checkTakeAchievements(ItemStack p_39558_) {
             p_39558_.onCraftedBy(this.player.level, this.player, this.removeCount);
             if (this.player instanceof ServerPlayer && this.container instanceof GrillBlockEntity) {
-                ((GrillBlockEntity)this.container).awardUsedRecipesAndPopExperience((ServerPlayer)this.player);
+                ((GrillBlockEntity)this.container).awardUsedRecipesAndPopExperience(this.player);
             }
 
             this.removeCount = 0;

@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:quality_shaped",
+   "pattern":[
+      "P P",
+      "P P"
+   ],
+   "key":{
+      "P":{
+         "item":"sevendaystomine:plant_fiber"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:fiber_boots",
+      "count":1
+   },
+   "quality": true
+}

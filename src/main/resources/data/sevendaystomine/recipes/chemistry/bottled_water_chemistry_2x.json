@@ -1,0 +1,18 @@
+{
+   "type":"sevendaystomine:chemistry_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:murky_water_bottle"
+      },
+      {
+         "item":"sevendaystomine:murky_water_bottle"
+      }
+   ],
+   "result":{
+      "item":"minecraft:potion",
+      "count":2,
+      "nbt" : "{Potion:\"minecraft:water\"}"
+   },
+   "experience" : 0.25,
+   "cookingtime" : 200
+}

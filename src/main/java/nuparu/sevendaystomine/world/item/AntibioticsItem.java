@@ -11,6 +11,7 @@ import nuparu.sevendaystomine.capability.CapabilityHelper;
 import nuparu.sevendaystomine.capability.IExtendedPlayer;
 import nuparu.sevendaystomine.init.ModEffects;
 import nuparu.sevendaystomine.util.PlayerUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class AntibioticsItem extends Item {
 	public AntibioticsItem(Properties properties) {
@@ -18,10 +19,9 @@ public class AntibioticsItem extends Item {
 	}
 
 	@Override
-	public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity living) {
+	public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull LivingEntity living) {
 		stack = super.finishUsingItem(stack, worldIn, living);
-		if(!(living instanceof Player))return stack;
-		Player player = (Player)living;
+		if(!(living instanceof Player player))return stack;
 		IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
 		int time = iep.getInfectionTime();
 		int stage = PlayerUtils.getInfectionStage(time);

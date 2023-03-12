@@ -1,7 +1,7 @@
 package nuparu.sevendaystomine.init;
 
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
@@ -9,7 +9,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.item.*;
-import nuparu.sevendaystomine.world.level.block.IBlockBase;
 
 import java.util.function.Supplier;
 
@@ -43,6 +42,8 @@ public class ModItems {
     public static final RegistryObject<Item> IRON_REINFORCED_CLUB = ITEMS.register("iron_reinforced_club", () -> new SwordItem(Tiers.IRON, 5, -3.2f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_COMBAT)));
     public static final RegistryObject<Item> BARBED_CLUB = ITEMS.register("barbed_club", () -> new SwordItem(Tiers.IRON, 7, -3.22f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_COMBAT)));
     public static final RegistryObject<Item> SPIKED_CLUB = ITEMS.register("spiked_club", () -> new SwordItem(Tiers.IRON, 9, -3.22f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> CRUDE_BOW = ITEMS.register("crude_bow", () -> new BowItem(new Item.Properties().durability(384).tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> COMPOUND_BOW = ITEMS.register("compound_bow", () -> new BowItem(new Item.Properties().durability(384).tab(ModCreativeModeTabs.TAB_COMBAT)));
 
     public static final RegistryObject<Item> TORCH_UNLIT = ITEMS.register("torch_unlit",
             () -> new StandingAndWallBlockItem(ModBlocks.TORCH_UNLIT.get(), ModBlocks.TORCH_UNLIT_WALL.get(), (new Item.Properties()).tab(CreativeModeTab.TAB_DECORATIONS)));
@@ -60,23 +61,23 @@ public class ModItems {
     public static final RegistryObject<Item> ZINC_INGOT = ITEMS.register("zinc_ingot", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
     public static final RegistryObject<Item> BRONZE_INGOT = ITEMS.register("bronze_ingot", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
 
-    public static final RegistryObject<Item> REANIMATED_CORPSE_SPAWN_EGG = ITEMS.register("reanimated_corpse_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.REANIMATED_CORPSE.get(), 0x403A34, 0x1D2637, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> PLAGUED_NURSE_SPAWN_EGG = ITEMS.register("plagued_nurse_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.PLAGUED_NURSE.get(), 0x5B1C1C, 0x242A3C, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> FRIGID_HUNTER_SPAWN_EGG = ITEMS.register("frigid_hunter_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.FRIGID_HUNTER.get(), 0x607A88, 0x593616, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> FROSTBITTEN_WORKER_SPAWN_EGG = ITEMS.register("frostbitten_worker_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.FROSTBITTEN_WORKER.get(), 0x2C5B50, 0x1D2637, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> MINER_ZOMBIE_SPAWN_EGG = ITEMS.register("miner_zombie_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.MINER_ZOMBIE.get(), 0x1A1325, 0x211A17, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> BURNT_ZOMBIE_SPAWN_EGG = ITEMS.register("burnt_zombie_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.BURNT_ZOMBIE.get(), 0x000000, 0xffc400, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> SOUL_BURNT_ZOMBIE_SPAWN_EGG = ITEMS.register("soul_burnt_zombie_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.SOUL_BURNT_ZOMBIE.get(), 0x000000, 0x00F4FF, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> BLOATED_ZOMBIE_SPAWN_EGG = ITEMS.register("bloated_zombie_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.BLOATED_ZOMBIE.get(), 0x4F4134, 0x211B17, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> ZOMBIE_SOLDIER_SPAWN_EGG = ITEMS.register("zombie_soldier_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.SOLDIER_ZOMBIE.get(), 0x313B63, 0x544A38, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> INFECTED_SURVIVOR_SPAWN_EGG = ITEMS.register("infected_survivor_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.INFECTED_SURVIVOR.get(), 0x6B5D65, 0x6C3B38, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> FROZEN_LUMBERJACK_SPAWN_EGG = ITEMS.register("frozen_lumberjack_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.FROZEN_LUMBERJACK.get(), 0x151F36, 0x760504, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> FERAL_ZOMBIE_SPAWN_EGG = ITEMS.register("feral_zombie_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.FERAL_ZOMBIE.get(), 0x4B5435, 0x453A2D, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> TWISTED_ZOMBIE_SPAWN_EGG = ITEMS.register("twisted_zombie_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.TWISTED_ZOMBIE.get(), 0x11ccbb, 0x555555, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> CRAWLER_ZOMBIE_SPAWN_EGG = ITEMS.register("crawler_zombie_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.CRAWLER_ZOMBIE.get(), 0x4D463C, 0x375268, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> ZOMBIE_WOLF_SPAWN_EGG = ITEMS.register("zombie_wolf_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.ZOMBIE_WOLF.get(), 0x827E7E, 0x851919, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> ZOMBIE_PIG_SPAWN_EGG = ITEMS.register("zombie_pig_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.ZOMBIE_PIG.get(), 0xD39294, 0x852122, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> SPIDER_ZOMBIE_SPAWN_EGG = ITEMS.register("spider_zombie_spawn_egg", () -> new ForgeSpawnEggItem(() -> ModEntities.SPIDER_ZOMBIE.get(), 0x2E2E34, 0x474239, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> REANIMATED_CORPSE_SPAWN_EGG = ITEMS.register("reanimated_corpse_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.REANIMATED_CORPSE, 0x403A34, 0x1D2637, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> PLAGUED_NURSE_SPAWN_EGG = ITEMS.register("plagued_nurse_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.PLAGUED_NURSE, 0x5B1C1C, 0x242A3C, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> FRIGID_HUNTER_SPAWN_EGG = ITEMS.register("frigid_hunter_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.FRIGID_HUNTER, 0x607A88, 0x593616, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> FROSTBITTEN_WORKER_SPAWN_EGG = ITEMS.register("frostbitten_worker_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.FROSTBITTEN_WORKER, 0x2C5B50, 0x1D2637, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> MINER_ZOMBIE_SPAWN_EGG = ITEMS.register("miner_zombie_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.MINER_ZOMBIE, 0x1A1325, 0x211A17, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> BURNT_ZOMBIE_SPAWN_EGG = ITEMS.register("burnt_zombie_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.BURNT_ZOMBIE, 0x000000, 0xffc400, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> SOUL_BURNT_ZOMBIE_SPAWN_EGG = ITEMS.register("soul_burnt_zombie_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOUL_BURNT_ZOMBIE, 0x000000, 0x00F4FF, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> BLOATED_ZOMBIE_SPAWN_EGG = ITEMS.register("bloated_zombie_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.BLOATED_ZOMBIE, 0x4F4134, 0x211B17, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> ZOMBIE_SOLDIER_SPAWN_EGG = ITEMS.register("zombie_soldier_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_ZOMBIE, 0x313B63, 0x544A38, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> INFECTED_SURVIVOR_SPAWN_EGG = ITEMS.register("infected_survivor_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.INFECTED_SURVIVOR, 0x6B5D65, 0x6C3B38, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> FROZEN_LUMBERJACK_SPAWN_EGG = ITEMS.register("frozen_lumberjack_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.FROZEN_LUMBERJACK, 0x151F36, 0x760504, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> FERAL_ZOMBIE_SPAWN_EGG = ITEMS.register("feral_zombie_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.FERAL_ZOMBIE, 0x4B5435, 0x453A2D, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> TWISTED_ZOMBIE_SPAWN_EGG = ITEMS.register("twisted_zombie_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.TWISTED_ZOMBIE, 0x11ccbb, 0x555555, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> CRAWLER_ZOMBIE_SPAWN_EGG = ITEMS.register("crawler_zombie_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.CRAWLER_ZOMBIE, 0x4D463C, 0x375268, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> ZOMBIE_WOLF_SPAWN_EGG = ITEMS.register("zombie_wolf_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.ZOMBIE_WOLF, 0x827E7E, 0x851919, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> ZOMBIE_PIG_SPAWN_EGG = ITEMS.register("zombie_pig_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.ZOMBIE_PIG, 0xD39294, 0x852122, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> SPIDER_ZOMBIE_SPAWN_EGG = ITEMS.register("spider_zombie_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SPIDER_ZOMBIE, 0x2E2E34, 0x474239, (new Item.Properties()).tab(CreativeModeTab.TAB_MISC)));
 
     public static final RegistryObject<Item> KITCHEN_KNIFE = ITEMS.register("kitchen_knife", () -> new SwordItem(Tiers.IRON, 4, -2.8f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_COMBAT)));
     public static final RegistryObject<Item> ARMY_KNIFE = ITEMS.register("army_knife", () -> new SwordItem(ModTiers.STEEL, 6, -2.6f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_COMBAT)));
@@ -102,6 +103,8 @@ public class ModItems {
     public static final RegistryObject<Item> STEEL_PICKAXE = ITEMS.register("steel_pickaxe", () -> new PickaxeItem(ModTiers.STEEL, 0, -2.8f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_TOOLS)));
     public static final RegistryObject<Item> STEEL_AXE = ITEMS.register("steel_axe", () -> new AxeItem(ModTiers.STEEL, 0, -2.8f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_TOOLS)));
     public static final RegistryObject<Item> STEEL_HOE = ITEMS.register("steel_hoe", () -> new HoeItem(ModTiers.STEEL, 0, -2.8f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_TOOLS)));
+    public static final RegistryObject<Item> AUGER = ITEMS.register("auger", () -> new AugerItem(ModTiers.AUGER, 0, -2.8f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_TOOLS)));
+    public static final RegistryObject<Item> CHAINSAW = ITEMS.register("chainsaw", () -> new ChainsawItem(ModTiers.AUGER, 0, -2.8f, new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_TOOLS)));
 
     public static final RegistryObject<Item> BANDAGE = ITEMS.register("bandage", () -> new BandageItem(new Item.Properties().stacksTo(8).tab(ModCreativeModeTabs.TAB_MEDICINE)));
     public static final RegistryObject<Item> ADVANCED_BANDAGE = ITEMS.register("advanced_bandage", () -> new AdvancedBandageItem(new Item.Properties().stacksTo(8).tab(ModCreativeModeTabs.TAB_MEDICINE)));
@@ -110,7 +113,7 @@ public class ModItems {
     public static final RegistryObject<Item> BLOOD_DRAW_KIT = ITEMS.register("blood_draw_kit", () -> new BloodDrawKitItem(new Item.Properties().stacksTo(1).durability(16).tab(ModCreativeModeTabs.TAB_MEDICINE)));
     public static final RegistryObject<Item> ANTIBIOTICS = ITEMS.register("antibiotics", () -> new AntibioticsItem(new Item.Properties().stacksTo(16).tab(ModCreativeModeTabs.TAB_MEDICINE).food(ModFood.ANTIBIOTICS)));
 
-    public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", () -> new TieredItem(Tiers.IRON,new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_TOOLS)));
+    public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", () -> new SwordItem(Tiers.IRON,0,0,new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_TOOLS)));
 
     public static final RegistryObject<Item> CORN = ITEMS.register("corn", () -> new ItemNameBlockItem(ModBlocks.CORN_PLANT.get(), new Item.Properties().stacksTo(64).tab(ModCreativeModeTabs.TAB_FOOD).food(ModFood.CORN)));
     public static final RegistryObject<Item> COFFEE_BERRY = ITEMS.register("coffee_berry", () -> new ItemNameBlockItem(ModBlocks.COFFEE_PLANT.get(), new Item.Properties().stacksTo(64).tab(ModCreativeModeTabs.TAB_FOOD).food(ModFood.COFFEE_BERRY)));
@@ -162,7 +165,106 @@ public class ModItems {
     public static final RegistryObject<Item> BOOK_PISTOL = registerBook("book_pistol",true);
     public static final RegistryObject<Item> BOOK_MINIBIKE = registerBook("book_minibike",true);
 
+    public static final RegistryObject<Item> HUNTING_RIFLE_BARREL_MOLD = ITEMS.register("hunting_rifle_barrel_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> HUNTING_RIFLE_BOLT_MOLD = ITEMS.register("hunting_rifle_bolt_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> MP5_BARREL_MOLD = ITEMS.register("mp5_barrel_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> MP5_STOCK_MOLD = ITEMS.register("mp5_stock_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> MP5_TRIGGER_MOLD = ITEMS.register("mp5_trigger_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> PISTOL_BARREL_MOLD = ITEMS.register("pistol_barrel_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> PISTOL_TRIGGER_MOLD = ITEMS.register("pistol_trigger_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SNIPER_RIFLE_STOCK_MOLD = ITEMS.register("sniper_rifle_stock_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SNIPER_RIFLE_TRIGGER_MOLD = ITEMS.register("sniper_rifle_trigger_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SHOTGUN_BARREL_MOLD = ITEMS.register("shotgun_barrel_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SHOTGUN_RECEIVER_MOLD = ITEMS.register("shotgun_receiver_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SHOTGUN_SHORT_BARREL_MOLD = ITEMS.register("shotgun_short_barrel_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> IRON_PIPE_MOLD = ITEMS.register("iron_pipe_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> CEMENT_MOLD = ITEMS.register("cement_mold", () -> new Item(new Item.Properties().stacksTo(1).durability(64).tab(ModCreativeModeTabs.TAB_FORGING)));
 
+    public static final RegistryObject<Item> PISTOL_SLIDE = ITEMS.register("pistol_slide", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> PISTOL_TRIGGER = ITEMS.register("pistol_trigger", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> PISTOL_GRIP = ITEMS.register("pistol_grip", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SNIPER_RIFLE_BARREL = ITEMS.register("sniper_rifle_barrel", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SNIPER_RIFLE_TRIGGER = ITEMS.register("sniper_rifle_trigger", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SNIPER_RIFLE_SCOPE = ITEMS.register("sniper_rifle_scope", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SNIPER_RIFLE_STOCK = ITEMS.register("sniper_rifle_stock", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+
+    public static final RegistryObject<Item> SHOTGUN_RECEIVER = ITEMS.register("shotgun_receiver", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SHOTGUN_STOCK = ITEMS.register("shotgun_stock", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SHOTGUN_STOCK_SHORT = ITEMS.register("shotgun_stock_short", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SHOTGUN_PARTS = ITEMS.register("shotgun_parts", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SHOTGUN_BARREL = ITEMS.register("shotgun_barrel", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> SHOTGUN_BARREL_SHORT = ITEMS.register("shotgun_barrel_short", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+
+    public static final RegistryObject<Item> MAGNUM_FRAME = ITEMS.register("magnum_frame", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> MAGNUM_CYLINDER = ITEMS.register("magnum_cylinder", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> MAGNUM_GRIP = ITEMS.register("magnum_grip", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+
+    public static final RegistryObject<Item> MP5_BARREL = ITEMS.register("mp5_barrel", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> MP5_TRIGGER = ITEMS.register("mp5_trigger", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> MP5_STOCK = ITEMS.register("mp5_stock", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+
+    public static final RegistryObject<Item> HUNTING_RIFLE_BARREL = ITEMS.register("hunting_rifle_barrel", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> HUNTING_RIFLE_STOCK = ITEMS.register("hunting_rifle_stock", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> RIFLE_PARTS = ITEMS.register("rifle_parts", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> HUNTING_RIFLE_BOLT = ITEMS.register("hunting_rifle_bolt", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+
+    public static final RegistryObject<Item> CAR_BATTERY = ITEMS.register("car_battery", () -> new BatteryItem(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_ELECTRICITY)));
+    public static final RegistryObject<Item> SMALL_ENGINE = ITEMS.register("small_engine", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_ELECTRICITY)));
+    public static final RegistryObject<Item> MINIBIKE_SEAT = ITEMS.register("minibike_seat", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_ELECTRICITY)));
+    public static final RegistryObject<Item> MINIBIKE_HANDLES = ITEMS.register("minibike_handles", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_ELECTRICITY)));
+
+
+    public static final RegistryObject<Item> FIBER_HAT = ITEMS.register("fiber_hat", () -> new ArmorItem(ModArmorMaterials.FIBER, EquipmentSlot.HEAD, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> FIBER_CHESTPLATE = ITEMS.register("fiber_chestplate", () -> new ArmorItem(ModArmorMaterials.FIBER, EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> FIBER_LEGGINGS = ITEMS.register("fiber_leggings", () -> new ArmorItem(ModArmorMaterials.FIBER, EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> FIBER_BOOTS = ITEMS.register("fiber_boots", () -> new ArmorItem(ModArmorMaterials.FIBER, EquipmentSlot.FEET, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+
+    public static final RegistryObject<Item> LEATHER_IRON_HELMET = ITEMS.register("leather_iron_helmet", () -> new ArmorItem(ModArmorMaterials.LEATHER_IRON, EquipmentSlot.HEAD, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> LEATHER_IRON_CHESTPLATE = ITEMS.register("leather_iron_chestplate", () -> new ArmorItem(ModArmorMaterials.LEATHER_IRON, EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> LEATHER_IRON_LEGGINGS = ITEMS.register("leather_iron_leggings", () -> new ArmorItem(ModArmorMaterials.LEATHER_IRON, EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> LEATHER_IRON_BOOTS = ITEMS.register("leather_iron_boots", () -> new ArmorItem(ModArmorMaterials.LEATHER_IRON, EquipmentSlot.FEET, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+
+    public static final RegistryObject<Item> STEEL_HELMET = ITEMS.register("steel_helmet", () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.HEAD, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> STEEL_CHESTPLATE = ITEMS.register("steel_chestplate", () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> STEEL_LEGGINGS = ITEMS.register("steel_leggings", () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> STEEL_BOOTS = ITEMS.register("steel_boots", () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.FEET, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+
+    public static final RegistryObject<Item> MILITARY_HELMET = ITEMS.register("military_helmet", () -> new ArmorItem(ModArmorMaterials.MILITARY, EquipmentSlot.HEAD, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> MILITARY_CHESTPLATE = ITEMS.register("military_chestplate", () -> new ArmorItem(ModArmorMaterials.MILITARY, EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> MILITARY_LEGGINGS = ITEMS.register("military_leggings", () -> new ArmorItem(ModArmorMaterials.MILITARY, EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> MILITARY_BOOTS = ITEMS.register("military_boots", () -> new ArmorItem(ModArmorMaterials.MILITARY, EquipmentSlot.FEET, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+
+    public static final RegistryObject<Item> SCRAP_HELMET = ITEMS.register("scrap_helmet", () -> new ArmorItem(ModArmorMaterials.SCRAP, EquipmentSlot.HEAD, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> SCRAP_CHESTPLATE = ITEMS.register("scrap_chestplate", () -> new ArmorItem(ModArmorMaterials.SCRAP, EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> SCRAP_LEGGINGS = ITEMS.register("scrap_leggings", () -> new ArmorItem(ModArmorMaterials.SCRAP, EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> SCRAP_BOOTS = ITEMS.register("scrap_boots", () -> new ArmorItem(ModArmorMaterials.SCRAP, EquipmentSlot.FEET, new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+
+
+    public static final RegistryObject<Item> SHIRT = ITEMS.register("shirt", () -> new ClothingItem(EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "shirt"));
+    public static final RegistryObject<Item> SHORT_SLEEVED_SHIRT = ITEMS.register("short_sleeved_shirt", () -> new ClothingItem(EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "short_sleeved_shirt"));
+    public static final RegistryObject<Item> T_SHIRT_0 = ITEMS.register("t_shirt_0", () -> new ClothingItem(EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "t_shirt_0"));
+    public static final RegistryObject<Item> T_SHIRT_1 = ITEMS.register("t_shirt_1", () -> new ClothingItem(EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "t_shirt_1"));
+    public static final RegistryObject<Item> JACKET = ITEMS.register("jacket", () -> new ClothingItem(EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "jacket"));
+    public static final RegistryObject<Item> JUMPER = ITEMS.register("jumper", () -> new ClothingItem(EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "jumper"));
+    public static final RegistryObject<Item> COAT = ITEMS.register("coat", () -> new ClothingItem(EquipmentSlot.CHEST, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "coat"));
+    public static final RegistryObject<Item> SHORTS = ITEMS.register("shorts", () -> new ClothingItem(EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "shorts"));
+    public static final RegistryObject<Item> SKIRT = ITEMS.register("skirt", () -> new ClothingItem(EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "skirt"));
+    public static final RegistryObject<Item> JEANS = ITEMS.register("jeans", () -> new ClothingItem(EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "jeans"));
+    public static final RegistryObject<Item> SHORTS_LONG = ITEMS.register("shorts_long", () -> new ClothingItem(EquipmentSlot.LEGS, new Item.Properties().tab(ModCreativeModeTabs.TAB_CLOTHING), "shorts_longer"));
+    public static final RegistryObject<Item> ANALOG_CAMERA = ITEMS.register("analog_camera", () -> new AnalogCameraItem( new Item.Properties().tab(ModCreativeModeTabs.TAB_ELECTRICITY)));
+
+    public static final RegistryObject<Item> PHOTO = ITEMS.register("photo", () -> new PhotoItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> BELLOWS = ITEMS.register("bellows", () -> new Item(new Item.Properties().stacksTo(1).tab(ModCreativeModeTabs.TAB_FORGING)));
+    public static final RegistryObject<Item> REALITY_WAND = ITEMS.register("reality_wand", RealityWandItem::new);
+    public static final RegistryObject<Item> SALT = ITEMS.register("salt", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.TAB_MATERIALS)));
+
+    public static final RegistryObject<Item> PISTOL_BULLET = ITEMS.register("pistol_bullet", () -> new BulletItem(new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> RIFLE_BULLET = ITEMS.register("rifle_bullet", () -> new BulletItem(new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> SMG_BULLET = ITEMS.register("smg_bullet", () -> new BulletItem(new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> MAGNUM_BULLET = ITEMS.register("magnum_bullet", () -> new BulletItem(new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> SHOTGUN_SHELL = ITEMS.register("shotgun_shell", () -> new BulletItem(new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    public static final RegistryObject<Item> ROCKET = ITEMS.register("rocket", () -> new BulletItem(new Item.Properties().tab(ModCreativeModeTabs.TAB_COMBAT)));
+    
     private static RegistryObject<Item> registerBook(String name, boolean unlocksRecipes) {
         return registerBook(name, () -> new PatchouliBookItem(new Item.Properties(),unlocksRecipes) , () -> new VanillaBookItem(new Item.Properties(),unlocksRecipes));
     }

@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"iron",
+         "weight" : 6
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:pistol_trigger"
+   },
+   "mold":{
+      "item":"sevendaystomine:pistol_trigger_mold"
+   },
+   "experience" : 0,
+   "cookingtime" : 300
+}

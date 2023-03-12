@@ -2,12 +2,6 @@ package nuparu.sevendaystomine.world.entity.zombie;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class SoulBurntZombieEntity<T extends SoulBurntZombieEntity> extends ZombieBipedEntity {
 
@@ -97,7 +92,7 @@ public class SoulBurntZombieEntity<T extends SoulBurntZombieEntity> extends Zomb
 
     public static class Factory implements EntityType.EntityFactory<SoulBurntZombieEntity> {
         @Override
-        public SoulBurntZombieEntity create(EntityType<SoulBurntZombieEntity> type, Level world) {
+        public @NotNull SoulBurntZombieEntity create(@NotNull EntityType<SoulBurntZombieEntity> type, @NotNull Level world) {
             return new SoulBurntZombieEntity(type, world);
         }
     }

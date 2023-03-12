@@ -11,7 +11,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
-import nuparu.sevendaystomine.util.MathUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class ZombieWolfEntity<T extends ZombieWolfEntity> extends ZombieAnimalEntity {
     private float interestedAngle;
@@ -86,7 +86,7 @@ public class ZombieWolfEntity<T extends ZombieWolfEntity> extends ZombieAnimalEn
 
     public static class Factory implements EntityType.EntityFactory<ZombieWolfEntity> {
         @Override
-        public ZombieWolfEntity create(EntityType<ZombieWolfEntity> type, Level world) {
+        public @NotNull ZombieWolfEntity create(@NotNull EntityType<ZombieWolfEntity> type, @NotNull Level world) {
             return new ZombieWolfEntity(type, world);
         }
     }

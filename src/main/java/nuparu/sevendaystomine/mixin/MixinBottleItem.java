@@ -1,19 +1,12 @@
 package nuparu.sevendaystomine.mixin;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BottleItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -25,7 +18,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BottleItem.class)
@@ -36,10 +28,10 @@ public abstract class MixinBottleItem {
     public void use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
         BottleItem item = (BottleItem) (Object) this;
         ItemStack itemstack = player.getItemInHand(hand);
-        HitResult hitresult = item.getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        BlockHitResult hitresult = Item.getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
         if (hitresult.getType() != HitResult.Type.MISS) {
             if (hitresult.getType() == HitResult.Type.BLOCK) {
-                BlockPos blockpos = ((BlockHitResult) hitresult).getBlockPos();
+                BlockPos blockpos = hitresult.getBlockPos();
                 if (player.mayInteract(level, blockpos)) {
 
                     if (level.getFluidState(blockpos).is(ModFluidTags.MURKY_WATER_SOURCE)) {

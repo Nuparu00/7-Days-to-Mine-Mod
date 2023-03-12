@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
 
 public class FallingWaterloggableHorizontalBlockBase extends FallingBlockBase{
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -25,17 +26,17 @@ public class FallingWaterloggableHorizontalBlockBase extends FallingBlockBase{
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.SOUTH).setValue(WATERLOGGED, Boolean.FALSE));
     }
 
-    public BlockState rotate(BlockState p_54125_, Rotation p_54126_) {
+    public @NotNull BlockState rotate(BlockState p_54125_, Rotation p_54126_) {
         return p_54125_.setValue(FACING, p_54126_.rotate(p_54125_.getValue(FACING)));
     }
 
-    public BlockState mirror(BlockState p_54122_, Mirror p_54123_) {
+    public @NotNull BlockState mirror(BlockState p_54122_, Mirror p_54123_) {
         return p_54122_.rotate(p_54123_.getRotation(p_54122_.getValue(FACING)));
     }
 
 
 
-    public FluidState getFluidState(BlockState p_52362_) {
+    public @NotNull FluidState getFluidState(BlockState p_52362_) {
         return p_52362_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_52362_);
     }
 
@@ -43,12 +44,12 @@ public class FallingWaterloggableHorizontalBlockBase extends FallingBlockBase{
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext p_53304_) {
         FluidState fluidstate = p_53304_.getLevel().getFluidState(p_53304_.getClickedPos());
-        return super.getStateForPlacement(p_53304_).setValue(FACING, p_53304_.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+        return super.getStateForPlacement(p_53304_).setValue(FACING, p_53304_.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
 
     @Override
-    public BlockState updateShape(BlockState p_53323_, Direction p_53324_, BlockState p_53325_, LevelAccessor p_53326_, BlockPos p_53327_, BlockPos p_53328_) {
+    public @NotNull BlockState updateShape(BlockState p_53323_, @NotNull Direction p_53324_, @NotNull BlockState p_53325_, @NotNull LevelAccessor p_53326_, @NotNull BlockPos p_53327_, @NotNull BlockPos p_53328_) {
         if (p_53323_.getValue(WATERLOGGED)) {
             p_53326_.scheduleTick(p_53327_, Fluids.WATER, Fluids.WATER.getTickDelay(p_53326_));
         }

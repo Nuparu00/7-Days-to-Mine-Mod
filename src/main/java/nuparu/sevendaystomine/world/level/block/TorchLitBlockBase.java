@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import nuparu.sevendaystomine.init.ModBlockEntities;
 import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.world.level.block.entity.TorchBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -26,12 +27,12 @@ public class TorchLitBlockBase extends TorchBlockBase implements EntityBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state){
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state){
         return ModBlockEntities.TORCH.get().create(pos,state);
     }
 
     @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return level.isClientSide ? null : (level1, blockPos, blockState, t) -> {
             if (t instanceof TorchBlockEntity tile) {
                 tile.tickServer();

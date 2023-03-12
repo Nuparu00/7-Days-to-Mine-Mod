@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import nuparu.sevendaystomine.init.ModBlockEntities;
 import nuparu.sevendaystomine.world.level.block.ISpikeBlock;
+import org.jetbrains.annotations.NotNull;
 
 public class SpikesBlockEntity extends BlockEntity {
     public int health;
@@ -17,7 +18,7 @@ public class SpikesBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void load(@NotNull CompoundTag compound) {
         super.load(compound);
         if(compound.contains("Health", Tag.TAG_INT)){
             this.health = compound.getInt("Health");
@@ -25,7 +26,7 @@ public class SpikesBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
+    protected void saveAdditional(@NotNull CompoundTag compound) {
         super.saveAdditional(compound);
         compound.putInt("Health", this.health);
     }

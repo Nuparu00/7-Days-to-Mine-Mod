@@ -2,9 +2,11 @@ package nuparu.sevendaystomine.capability;
 
 import net.minecraft.nbt.CompoundTag;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class BreakData implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     long lastChange;
     float state;

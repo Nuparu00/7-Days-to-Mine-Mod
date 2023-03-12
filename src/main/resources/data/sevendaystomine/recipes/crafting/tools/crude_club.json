@@ -1,0 +1,19 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "WS",
+    "S "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "W": {
+      "tag": "forge:plank"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:crude_club"
+  },
+  "quality": true
+}

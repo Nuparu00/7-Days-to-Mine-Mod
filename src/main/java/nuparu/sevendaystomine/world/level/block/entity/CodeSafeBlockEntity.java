@@ -7,16 +7,15 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import nuparu.sevendaystomine.init.ModBlockEntities;
 import nuparu.sevendaystomine.init.ModSounds;
-import nuparu.sevendaystomine.util.MathUtils;
 import nuparu.sevendaystomine.world.level.block.CodeSafeBlock;
-import nuparu.sevendaystomine.world.level.block.IContainerBlockWithSounds;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class CodeSafeBlockEntity extends SmallContainerBlockEntity{
     private int correctCode = 0;
     private int selectedCode = 0;
 
-    private ArrayList<Player> lookingPlayers = new ArrayList<>();
+    private final ArrayList<Player> lookingPlayers = new ArrayList<>();
 
     public CodeSafeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CODE_SAFE.get(),pos, state);
@@ -135,11 +134,11 @@ public class CodeSafeBlockEntity extends SmallContainerBlockEntity{
 
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> blockEntity.getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         CompoundTag nbt = saveWithoutMetadata();
         nbt.remove("CorrectCode");
         return nbt;

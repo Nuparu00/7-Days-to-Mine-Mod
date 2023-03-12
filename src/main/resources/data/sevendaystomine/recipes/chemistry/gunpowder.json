@@ -1,0 +1,20 @@
+{
+   "type":"sevendaystomine:chemistry_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:potassium"
+      },
+      {
+         "item":"sevendaystomine:potassium"
+      },
+      {
+         "item":"minecraft:coal"
+      }
+   ],
+   "result":{
+      "item":"minecraft:gunpowder",
+      "count":1
+   },
+   "experience" : 0.5,
+   "cookingtime" : 600
+}

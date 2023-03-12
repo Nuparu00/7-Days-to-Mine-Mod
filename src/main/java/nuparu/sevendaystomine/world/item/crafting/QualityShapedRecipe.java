@@ -20,13 +20,14 @@ import nuparu.sevendaystomine.capability.CapabilityHelper;
 import nuparu.sevendaystomine.capability.IExtendedPlayer;
 import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.init.ModRecipeSerializers;
+import nuparu.sevendaystomine.world.inventory.block.ContainerWorkbench;
 import nuparu.sevendaystomine.world.item.quality.IQualityStack;
 import nuparu.sevendaystomine.world.item.quality.QualityManager;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
-@SuppressWarnings("deprecation")
 public class QualityShapedRecipe extends ShapedRecipe implements ILockedRecipe{
 
 	String recipe;
@@ -39,7 +40,8 @@ public class QualityShapedRecipe extends ShapedRecipe implements ILockedRecipe{
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer inv) {
+	public @NotNull ItemStack assemble(@NotNull CraftingContainer inv) {
+		//Maybe mixin into superclass so it works with vanilla items too?
 		ItemStack stack = super.assemble(inv);
 		if (!quality)
 			return stack;
@@ -47,38 +49,40 @@ public class QualityShapedRecipe extends ShapedRecipe implements ILockedRecipe{
 		Player player = getPlayerFromContainer(inv);
         if (player != null) {
 			((IQualityStack)(Object)stack).setQuality((int) Math
-					.min(Math.max(Math.floor(player.totalExperience / ServerConfig.xpPerQuality.get()), 1), QualityManager.maxLevel));
+					.min(Math.max(Math.floor(player.totalExperience / ServerConfig.xpPerQuality.get()), 1), QualityManager.getMaxLevel()));
         }
         return stack;
 
 	}
 
-
 	@Override
-	public boolean matches(CraftingContainer container, Level level) {
-		if(!hasRecipe()) return super.matches(container, level);
-		Player player = getPlayerFromContainer(container);
+	public boolean matches(@NotNull CraftingContainer container, @NotNull Level level) {
+		if(!super.matches(container,level)) return false;
+		if(!hasRecipe() || !ServerConfig.recipeBooksRequired.get()) return true;
 
+		Player player = getPlayerFromContainer(container);
 		IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
-		return (!ServerConfig.recipeBooksRequired.get() || player == null || (iep != null && iep.hasRecipe(recipe))) && super.matches(container, level);
+
+		return (player == null || (iep != null && iep.hasRecipe(recipe)));
 	}
 
 	@Nullable
 	public Player getPlayerFromContainer(CraftingContainer craftingContainer){
 		AbstractContainerMenu container = craftingContainer.menu;
-		if(container instanceof CraftingMenu){
-			CraftingMenu craftingMenu = (CraftingMenu)container;
+		if(container instanceof CraftingMenu craftingMenu){
 			return craftingMenu.player;
 		}
-		else if (container instanceof InventoryMenu){
-			InventoryMenu inventoryMenu = (InventoryMenu) container;
+		else if (container instanceof InventoryMenu inventoryMenu){
 			return inventoryMenu.owner;
+		}
+		else if (container instanceof ContainerWorkbench workbench) {
+			return workbench.player;
 		}
 		return null;
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return ModRecipeSerializers.QUALITY_SHAPED_SERIALIZER.get();
 	}
 
@@ -89,7 +93,7 @@ public class QualityShapedRecipe extends ShapedRecipe implements ILockedRecipe{
 
 	public static class Serializer implements RecipeSerializer<QualityShapedRecipe> {
 		private static final ResourceLocation NAME = new ResourceLocation(SevenDaysToMine.MODID, "quality_shaped");
-		public QualityShapedRecipe fromJson(ResourceLocation p_44236_, JsonObject p_44237_) {
+		public @NotNull QualityShapedRecipe fromJson(@NotNull ResourceLocation p_44236_, @NotNull JsonObject p_44237_) {
 			ShapedRecipe.setCraftingSize(5,5);
 			String s = GsonHelper.getAsString(p_44237_, "group", "");
 			Map<String, Ingredient> map = ShapedRecipe.keyFromJson(GsonHelper.getAsJsonObject(p_44237_, "key"));
@@ -104,16 +108,14 @@ public class QualityShapedRecipe extends ShapedRecipe implements ILockedRecipe{
 			return new QualityShapedRecipe(p_44236_, s, i, j, nonnulllist, itemstack,recipe,quality);
 		}
 
-		public QualityShapedRecipe fromNetwork(ResourceLocation p_44239_, FriendlyByteBuf p_44240_) {
+		public QualityShapedRecipe fromNetwork(@NotNull ResourceLocation p_44239_, FriendlyByteBuf p_44240_) {
 			ShapedRecipe.setCraftingSize(5,5);
 			int i = p_44240_.readVarInt();
 			int j = p_44240_.readVarInt();
 			String s = p_44240_.readUtf();
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i * j, Ingredient.EMPTY);
 
-			for(int k = 0; k < nonnulllist.size(); ++k) {
-				nonnulllist.set(k, Ingredient.fromNetwork(p_44240_));
-			}
+			nonnulllist.replaceAll(ignored -> Ingredient.fromNetwork(p_44240_));
 
 			ItemStack itemstack = p_44240_.readItem();
 			String recipe = p_44240_.readUtf();

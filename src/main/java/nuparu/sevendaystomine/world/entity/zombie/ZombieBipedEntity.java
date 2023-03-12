@@ -1,23 +1,11 @@
 package nuparu.sevendaystomine.world.entity.zombie;
 
-import com.mojang.math.Vector3d;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.Vec3;
-import nuparu.sevendaystomine.config.ServerConfig;
-import nuparu.sevendaystomine.util.ItemUtils;
 import nuparu.sevendaystomine.world.entity.ai.GoalBreakBlocks;
-import nuparu.sevendaystomine.world.entity.item.LootableCorpseEntity;
 
 public class ZombieBipedEntity<T extends ZombieBipedEntity> extends ZombieBaseEntity {
 

@@ -42,8 +42,7 @@ public class BreakSyncMessage {
 
                 Level world = SevenDaysToMine.proxy.getLevel();
                 ChunkAccess ichunk = world.getChunk(msg.pos);
-                if(ichunk instanceof LevelChunk) {
-                    LevelChunk chunk = (LevelChunk)ichunk;
+                if(ichunk instanceof LevelChunk chunk) {
                     IChunkData data = CapabilityHelper.getChunkData(chunk);
                     data.readFromNBT(msg.data);
                 }

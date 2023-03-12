@@ -16,6 +16,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import nuparu.sevendaystomine.world.level.block.entity.GlobeBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class GlobeBlock extends WaterloggableHorizontalBlockBase implements EntityBlock {
@@ -28,14 +29,14 @@ public class GlobeBlock extends WaterloggableHorizontalBlockBase implements Enti
 
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
         return SHAPE;
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult rayTraceResult) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
+                                          BlockHitResult rayTraceResult) {
         double hitX = rayTraceResult.getLocation().x;
         double hitY = rayTraceResult.getLocation().y;
         double hitZ = rayTraceResult.getLocation().z;
@@ -54,13 +55,13 @@ public class GlobeBlock extends WaterloggableHorizontalBlockBase implements Enti
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new GlobeBlockEntity(pos,state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return (level1, blockPos, blockState, t) -> {
             if (t instanceof GlobeBlockEntity tile) {
                 tile.tick();

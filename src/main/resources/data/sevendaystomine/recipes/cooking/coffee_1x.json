@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:cooking_shapeless",
+   "ingredients":[
+      {
+         "item":"minecraft:potion"
+      },
+      {
+         "item":"sevendaystomine:coffee_beans"
+      }
+   ],
+   "station" : "sevendaystomine:cooking_pot",
+   "result":{
+      "item":"sevendaystomine:coffee_bottle"
+   },
+   "experience": 0.15,
+   "cookingtime": 150
+}

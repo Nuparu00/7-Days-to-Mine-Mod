@@ -3,7 +3,6 @@ package nuparu.sevendaystomine.mixin;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -32,8 +31,7 @@ public abstract class MixinItem implements IQualityItem {
     @Override
     public boolean canHaveQuality() {
         Item instance =(Item)(Object)this;
-
-        return instance instanceof TieredItem || instance instanceof ProjectileWeaponItem || instance instanceof ArmorItem || instance instanceof TridentItem;
+        return ItemUtils.canHaveQuality(instance);
     }
 
     @Inject(method = "fillItemCategory(Lnet/minecraft/world/item/CreativeModeTab;Lnet/minecraft/core/NonNullList;)V", at = @At("HEAD"), cancellable = true)
@@ -50,7 +48,7 @@ public abstract class MixinItem implements IQualityItem {
     public void onCraftedBy(ItemStack stack, Level world, Player player, CallbackInfo ci) {
         if (canHaveQuality() && ((IQualityStack)(Object)stack).getQuality()<= 0) {
             ((IQualityStack)(Object)stack).setQuality((int) Math.min(Math.floor(player.totalExperience / ServerConfig.xpPerQuality.get()),
-                    QualityManager.maxLevel));
+                    QualityManager.getMaxLevel()));
         }
     }
 
@@ -68,12 +66,12 @@ public abstract class MixinItem implements IQualityItem {
             Component component = cir.getReturnValue();
 
             int color = ((IQualityStack)(Object)stack).getQualityLevel().textColor;
-            MutableComponent mutableComponent = MutableComponent.create(new TranslatableContents("")).append(component);
+            MutableComponent mutableComponent = Component.empty().append(component);
             mutableComponent.setStyle(mutableComponent.getStyle().withColor(color));
             cir.setReturnValue(mutableComponent);
         }
     }
-    @Inject(method = "Lnet/minecraft/world/item/Item;getItemCategory()Lnet/minecraft/world/item/CreativeModeTab;", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getItemCategory()Lnet/minecraft/world/item/CreativeModeTab;", at = @At("RETURN"), cancellable = true)
     public void getItemCategory(CallbackInfoReturnable<CreativeModeTab> cir) {
         Item instance =(Item)(Object)this;
         if(instance == Items.TORCH || instance == Items.SOUL_TORCH){

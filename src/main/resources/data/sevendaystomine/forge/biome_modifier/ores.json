@@ -1,0 +1,16 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "sevendaystomine:cinnabar_ore_large",
+    "sevendaystomine:cinnabar_ore_small",
+    "sevendaystomine:lead_ore_large",
+    "sevendaystomine:lead_ore_small",
+    "sevendaystomine:potassium_ore_large",
+    "sevendaystomine:potassium_ore_small",
+    "sevendaystomine:tin_ore_large",
+    "sevendaystomine:tin_ore_small",
+    "sevendaystomine:zinc_ore_large",
+    "sevendaystomine:zinc_ore_small"],
+  "step": "underground_ores"
+}

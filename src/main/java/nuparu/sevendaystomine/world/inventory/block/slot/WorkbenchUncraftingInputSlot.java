@@ -1,14 +1,10 @@
 package nuparu.sevendaystomine.world.inventory.block.slot;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import nuparu.sevendaystomine.SevenDaysToMine;
-import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.world.inventory.block.ContainerWorkbenchUncrafting;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -28,7 +24,7 @@ public class WorkbenchUncraftingInputSlot extends Slot {
     }
 
     @Override
-    public void set(ItemStack stack) {
+    public void set(@NotNull ItemStack stack) {
         ItemStack old = this.getItem();
         super.set(stack);
         if(!ItemStack.matches(old,stack)) {

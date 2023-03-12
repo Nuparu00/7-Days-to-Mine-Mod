@@ -39,8 +39,7 @@ public class BreakHelper {
             Iterator<Tag> it = list.iterator();
             while(it.hasNext()) {
                 Tag inbt = it.next();
-                if(inbt instanceof CompoundTag) {
-                    CompoundTag entryNBT = (CompoundTag)inbt;
+                if(inbt instanceof CompoundTag entryNBT) {
                     if(!entryNBT.contains("pos")) continue;
                     if(!entryNBT.contains("lastChange")) continue;
                     if(!entryNBT.contains("state")) continue;

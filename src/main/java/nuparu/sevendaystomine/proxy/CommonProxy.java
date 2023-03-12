@@ -6,6 +6,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 import net.minecraft.network.chat.Component;
+
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class CommonProxy {
@@ -17,6 +19,11 @@ public class CommonProxy {
         return 0;
     }
 
+    @Nullable
+    public Player getPlayer(){
+        return null;
+    }
+    @Nullable
     public Level getLevel(){
         return null;
     }
@@ -25,7 +32,19 @@ public class CommonProxy {
 
     }
 
+    public void openClientOnlyGui(int id, ItemStack stack) {
+
+    }
+
     public void addNotificationToast(ItemStack stack, Component title, Component description){
+
+    }
+
+
+    public void openPhoto(String path){
+
+    }
+    public void schedulePhoto() {
 
     }
 }

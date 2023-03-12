@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -21,7 +22,7 @@ public class RenderStates extends RenderType {
     });
 
 
-    public static RenderType eyes(ResourceLocation p_110489_) {
+    public static @NotNull RenderType eyes(@NotNull ResourceLocation p_110489_) {
         return EYES.apply(p_110489_);
     }
 }

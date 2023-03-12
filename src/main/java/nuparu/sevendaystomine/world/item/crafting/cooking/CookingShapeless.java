@@ -18,10 +18,8 @@ import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.registries.ForgeRegistries;
 import nuparu.sevendaystomine.init.ModRecipeSerializers;
 import nuparu.sevendaystomine.init.ModRecipeTypes;
-import nuparu.sevendaystomine.world.item.crafting.forge.IForgeRecipe;
 import nuparu.sevendaystomine.world.level.block.entity.GrillBlockEntity;
-import nuparu.sevendaystomine.world.level.block.entity.GrillBlockEntity;
-import org.apache.commons.lang3.math.Fraction;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -37,7 +35,7 @@ public class CookingShapeless implements ICookingRecipe<GrillBlockEntity> {
     protected final float experience;
     protected final int cookingTime;
 
-    private ResourceLocation station;
+    private final ResourceLocation station;
 
     public CookingShapeless(ResourceLocation resourceLocation, String group, ItemStack result, NonNullList<Ingredient> ingredients, float experience, int cookingTime, ResourceLocation station) {
         this.id = resourceLocation;
@@ -51,8 +49,8 @@ public class CookingShapeless implements ICookingRecipe<GrillBlockEntity> {
     }
 
     @Override
-    public boolean matches(GrillBlockEntity grillInventory, Level world) {
-        if (!ForgeRegistries.BLOCKS.getKey(grillInventory.getBlockState().getBlock()).equals(station)) return false;
+    public boolean matches(GrillBlockEntity grillInventory, @NotNull Level world) {
+        if (!ForgeRegistries.BLOCKS.getKey(grillInventory.getBlockState().getBlock()).equals(getRequiredStation())) return false;
         StackedContents recipeitemhelper = new StackedContents();
         List<ItemStack> inputs = new ArrayList();
         int i = 0;
@@ -88,7 +86,7 @@ public class CookingShapeless implements ICookingRecipe<GrillBlockEntity> {
     }
 
     @Override
-    public ItemStack assemble(GrillBlockEntity grillInventory) {
+    public @NotNull ItemStack assemble(@NotNull GrillBlockEntity grillInventory) {
         return this.result.copy();
     }
 
@@ -98,32 +96,32 @@ public class CookingShapeless implements ICookingRecipe<GrillBlockEntity> {
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return this.id;
     }
 
     @Override
-    public String getGroup() {
+    public @NotNull String getGroup() {
         return this.group;
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem() {
         return this.result.copy();
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
+    public @NotNull NonNullList<Ingredient> getIngredients() {
         return this.ingredients;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.FORGE_SHAPELESS.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public @NotNull RecipeType<?> getType() {
         return ModRecipeTypes.COOKING_RECIPE_TYPE.get();
     }
 
@@ -143,10 +141,10 @@ public class CookingShapeless implements ICookingRecipe<GrillBlockEntity> {
     }
 
     public static class Factory implements RecipeSerializer<CookingShapeless> {
-        int defaultCookingTime = 600;
+        final int defaultCookingTime = 600;
 
         @Override
-        public CookingShapeless fromJson(ResourceLocation recipeId, JsonObject json) {
+        public @NotNull CookingShapeless fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
             String s = GsonHelper.getAsString(json, "group", "");
             NonNullList<Ingredient> nonnulllist = itemsFromJson(GsonHelper.getAsJsonArray(json, "ingredients"));
             if (nonnulllist.isEmpty()) {
@@ -177,14 +175,12 @@ public class CookingShapeless implements ICookingRecipe<GrillBlockEntity> {
 
         @Nullable
         @Override
-        public CookingShapeless fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+        public CookingShapeless fromNetwork(@NotNull ResourceLocation recipeId, FriendlyByteBuf buffer) {
             String s = buffer.readUtf(32767);
             int i = buffer.readVarInt();
             NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
 
-            for (int j = 0; j < nonnulllist.size(); ++j) {
-                nonnulllist.set(j, Ingredient.fromNetwork(buffer));
-            }
+            nonnulllist.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
 
             ItemStack itemstack = buffer.readItem();
             float experience = buffer.readFloat();

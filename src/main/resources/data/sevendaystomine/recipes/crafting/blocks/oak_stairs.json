@@ -1,0 +1,19 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "P ",
+      "LP"
+   ],
+   "key":{
+      "L":{
+         "item":"minecraft:oak_log"
+      },
+      "P":{
+         "item":"sevendaystomine:plank_wood"
+      }
+   },
+   "result":{
+      "item":"minecraft:oak_stairs",
+      "count":4
+   }
+}

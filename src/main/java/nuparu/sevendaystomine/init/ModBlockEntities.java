@@ -1,12 +1,10 @@
 package nuparu.sevendaystomine.init;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import nuparu.sevendaystomine.SevenDaysToMine;
-import nuparu.sevendaystomine.world.level.block.CodeSafeBlock;
 import nuparu.sevendaystomine.world.level.block.entity.*;
 
 public class ModBlockEntities {
@@ -63,5 +61,17 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(RadioBlockEntity::new, ModBlocks.RADIO.get()).build(null));
     public static final RegistryObject<BlockEntityType<GlobeBlockEntity>> GLOBE = TILE_ENTITIES.register("globe",
             () -> BlockEntityType.Builder.of(GlobeBlockEntity::new, ModBlocks.GLOBE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<PhotoBlockEntity>> PHOTO = TILE_ENTITIES.register("photo",
+            () -> BlockEntityType.Builder.of(PhotoBlockEntity::new, ModBlocks.PHOTO.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<SolarPanelBlockEntity>> SOLAR_PANEL = TILE_ENTITIES.register("solar_panel",
+            () -> BlockEntityType.Builder.of(SolarPanelBlockEntity::new, ModBlocks.SOLAR_PANEL.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<CombustionGeneratorBlockEntity>> COMBUSTION_GENERATOR = TILE_ENTITIES.register("combustion_generator",
+            () -> BlockEntityType.Builder.of(CombustionGeneratorBlockEntity::new, ModBlocks.COMBUSTION_GENERATOR.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<WindTurbineBlockEntity>> WIND_TURBINE = TILE_ENTITIES.register("wind_turbine",
+            () -> BlockEntityType.Builder.of(WindTurbineBlockEntity::new, ModBlocks.WIND_TURBINE.get()).build(null));
 
 }

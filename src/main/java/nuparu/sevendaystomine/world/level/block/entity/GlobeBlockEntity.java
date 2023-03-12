@@ -8,9 +8,9 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import nuparu.sevendaystomine.init.ModBlockEntities;
+import org.jetbrains.annotations.NotNull;
 
 public class GlobeBlockEntity extends BlockEntity {
 
@@ -38,7 +38,7 @@ public class GlobeBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void load(@NotNull CompoundTag compound) {
         super.load(compound);
         if(compound.contains("Angle", Tag.TAG_DOUBLE)){
             this.angle = compound.getInt("Angle");
@@ -52,7 +52,7 @@ public class GlobeBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
+    protected void saveAdditional(@NotNull CompoundTag compound) {
         super.saveAdditional(compound);
         //compound.putDouble("Angle", this.angle);
         compound.putDouble("Speed", this.speed);
@@ -78,11 +78,11 @@ public class GlobeBlockEntity extends BlockEntity {
 
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this, blockEntity -> blockEntity.getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         return saveWithoutMetadata();
     }
 

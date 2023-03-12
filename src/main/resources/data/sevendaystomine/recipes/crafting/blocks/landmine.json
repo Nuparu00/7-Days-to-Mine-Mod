@@ -1,0 +1,25 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "SPS",
+      "GGG",
+      "SCS"
+   ],
+   "key":{
+      "S":{
+         "item":"sevendaystomine:scrap_iron"
+      },
+      "P":{
+         "item":"minecraft:stone_pressure_plate"
+      },
+      "G":{
+         "item":"minecraft:gunpowder"
+      },
+      "C":{
+         "item":"sevendaystomine:empty_can"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:landmine"
+   }
+}

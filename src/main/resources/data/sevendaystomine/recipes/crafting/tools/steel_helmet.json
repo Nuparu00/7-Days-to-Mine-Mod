@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:quality_shaped",
+   "pattern":[
+      "SSS",
+      "S S"
+   ],
+   "key":{
+      "S":{
+      "tag": "forge:ingots/steel"
+}
+   },
+   "result":{
+      "item":"sevendaystomine:steel_helmet",
+      "count":1
+   },
+   "quality": true
+}

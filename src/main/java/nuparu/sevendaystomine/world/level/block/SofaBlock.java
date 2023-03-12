@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import nuparu.sevendaystomine.world.entity.item.MountableBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.IntStream;
 
@@ -86,8 +87,8 @@ public class SofaBlock extends HorizontalBlockBase implements SimpleWaterloggedB
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-                               CollisionContext p_220053_4_) {
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
         return (BOTTOM_SHAPES)[SHAPE_BY_STATE[this.getShapeIndex(state)]];
 
     }
@@ -96,8 +97,8 @@ public class SofaBlock extends HorizontalBlockBase implements SimpleWaterloggedB
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos,
-                                 Player playerIn, InteractionHand hand, BlockHitResult result) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos,
+                                          Player playerIn, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
         if (!playerIn.isCrouching()) {
             MountableBlockEntity.mountBlock(worldIn, pos, playerIn,0.15f);
             return InteractionResult.SUCCESS;
@@ -105,7 +106,7 @@ public class SofaBlock extends HorizontalBlockBase implements SimpleWaterloggedB
         return InteractionResult.FAIL;
     }
 
-    public FluidState getFluidState(BlockState p_52362_) {
+    public @NotNull FluidState getFluidState(BlockState p_52362_) {
         return p_52362_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_52362_);
     }
 
@@ -113,7 +114,7 @@ public class SofaBlock extends HorizontalBlockBase implements SimpleWaterloggedB
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        BlockState blockState = super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+        BlockState blockState = super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
         return blockState.setValue(SHAPE, getStairsShape(blockState, context.getLevel(), context.getClickedPos()));
     }
@@ -160,7 +161,7 @@ public class SofaBlock extends HorizontalBlockBase implements SimpleWaterloggedB
     }
 
     @Override
-    public BlockState updateShape(BlockState p_53323_, Direction p_53324_, BlockState p_53325_, LevelAccessor p_53326_, BlockPos p_53327_, BlockPos p_53328_) {
+    public @NotNull BlockState updateShape(BlockState p_53323_, @NotNull Direction p_53324_, @NotNull BlockState p_53325_, @NotNull LevelAccessor p_53326_, @NotNull BlockPos p_53327_, @NotNull BlockPos p_53328_) {
         if (p_53323_.getValue(WATERLOGGED)) {
             p_53326_.scheduleTick(p_53327_, Fluids.WATER, Fluids.WATER.getTickDelay(p_53326_));
         }
@@ -172,7 +173,7 @@ public class SofaBlock extends HorizontalBlockBase implements SimpleWaterloggedB
 
 
     @Override
-    public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_) {
+    public @NotNull BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_) {
         Direction direction = p_185471_1_.getValue(FACING);
         StairsShape stairsshape = p_185471_1_.getValue(SHAPE);
         switch (p_185471_2_) {

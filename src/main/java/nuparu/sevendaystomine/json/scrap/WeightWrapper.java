@@ -6,7 +6,7 @@ public class WeightWrapper {
 
     public static final WeightWrapper ZERO = new WeightWrapper(0);
 
-    private Number weight;
+    private final Number weight;
 
     @Override
     public String toString() {
@@ -26,9 +26,13 @@ public class WeightWrapper {
     }
 
     public double asDouble(){
-        return weight instanceof Double ? (double) weight : ((Fraction) weight).doubleValue();
+        return weight instanceof Double ? (double) weight : weight.doubleValue();
     }
     public Number asNumber(){
         return weight;
+    }
+
+    public Number divide(WeightWrapper other){
+        return isFraction() || other.isFraction() ? asFraction().divideBy(other.asFraction()) : asDouble() / other.asDouble();
     }
 }

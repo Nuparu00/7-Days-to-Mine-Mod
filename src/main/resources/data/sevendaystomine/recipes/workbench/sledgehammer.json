@@ -1,0 +1,22 @@
+{
+  "type": "sevendaystomine:quality_shaped",
+  "pattern": [
+    "IIIII",
+    "  S  ",
+    "  S  ",
+    "  S  ",
+    "  S  "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:sledgehammer"
+  },
+  "quality": true
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "steel_ingot",
+  "pattern": [
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "sevendaystomine:steel_block"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:steel_ingot",
+    "count": 9
+  }
+}

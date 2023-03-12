@@ -3,8 +3,6 @@ package nuparu.sevendaystomine.client.renderer.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -13,7 +11,6 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BrightnessCombiner;
@@ -33,6 +30,7 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.world.level.block.entity.SleepingBagBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -64,13 +62,13 @@ public class SleepingBagRenderer implements BlockEntityRenderer<SleepingBagBlock
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    public void render(SleepingBagBlockEntity p_112205_, float p_112206_, PoseStack p_112207_, MultiBufferSource p_112208_, int p_112209_, int p_112210_) {
+    public void render(SleepingBagBlockEntity p_112205_, float p_112206_, @NotNull PoseStack p_112207_, @NotNull MultiBufferSource p_112208_, int p_112209_, int p_112210_) {
         Material material = SLEEPING_BAG_TEXTURES[p_112205_.getColor().getId()];
         Level level = p_112205_.getLevel();
         if (level != null) {
             BlockState blockstate = p_112205_.getBlockState();
             DoubleBlockCombiner.NeighborCombineResult<? extends BedBlockEntity> neighborcombineresult = DoubleBlockCombiner.combineWithNeigbour(BlockEntityType.BED, BedBlock::getBlockType, BedBlock::getConnectedDirection, ChestBlock.FACING, blockstate, level, p_112205_.getBlockPos(), (p_112202_, p_112203_) -> false);
-            int i = neighborcombineresult.<Int2IntFunction>apply(new BrightnessCombiner<>()).get(p_112209_);
+            int i = neighborcombineresult.apply(new BrightnessCombiner<>()).get(p_112209_);
             this.renderPiece(p_112207_, p_112208_, blockstate.getValue(BedBlock.PART) == BedPart.HEAD ? this.headRoot : this.footRoot, blockstate.getValue(BedBlock.FACING), material, i, p_112210_, false);
         } else {
             this.renderPiece(p_112207_, p_112208_, this.headRoot, Direction.SOUTH, material, p_112209_, p_112210_, false);

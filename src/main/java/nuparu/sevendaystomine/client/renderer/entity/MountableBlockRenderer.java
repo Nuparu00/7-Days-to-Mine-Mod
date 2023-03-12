@@ -1,20 +1,12 @@
 package nuparu.sevendaystomine.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.phys.Vec3;
-import nuparu.sevendaystomine.world.entity.item.LootableCorpseEntity;
 import nuparu.sevendaystomine.world.entity.item.MountableBlockEntity;
-import nuparu.sevendaystomine.world.entity.zombie.ZombieBaseEntity;
-
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
 public class MountableBlockRenderer<T extends MountableBlockEntity> extends EntityRenderer<T> {
 
@@ -23,12 +15,12 @@ public class MountableBlockRenderer<T extends MountableBlockEntity> extends Enti
 	}
 
 	@Override
-	public void render(T entity, float entityYaw, float partialTicks, PoseStack matrix,
-					   MultiBufferSource buffer, int p_225623_6_) {
+	public void render(@NotNull T entity, float entityYaw, float partialTicks, @NotNull PoseStack matrix,
+                       @NotNull MultiBufferSource buffer, int p_225623_6_) {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T p_114482_) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T p_114482_) {
 		return null;
 	}
 

@@ -1,0 +1,19 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "CCC",
+      "CSC",
+      "CCC"
+   ],
+   "key":{
+      "C":{
+         "item":"sevendaystomine:cloth"
+      },
+	  "S":{
+         "item":"minecraft:sand"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:sandbags"
+   }
+}

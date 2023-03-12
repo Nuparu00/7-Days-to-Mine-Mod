@@ -1,0 +1,9 @@
+{
+  "type": "sevendaystomine:quality",
+  "conditions": [
+    {
+      "condition": "random_chance",
+      "chance": 1.0
+    }
+  ]
+}

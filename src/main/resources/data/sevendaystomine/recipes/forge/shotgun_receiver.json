@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:forge_material",
+   "ingredients":[
+      {
+         "material":"iron",
+         "weight" : 4
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:shotgun_receiver"
+   },
+   "mold":{
+      "item":"sevendaystomine:shotgun_receiver_mold"
+   },
+   "experience" : 0,
+   "cookingtime" : 300
+}

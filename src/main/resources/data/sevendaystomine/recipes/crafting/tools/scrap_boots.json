@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:quality_shaped",
+   "pattern":[
+      "S S",
+      "S S"
+   ],
+   "key":{
+      "S":{
+         "item":"sevendaystomine:scrap_iron"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:scrap_boots",
+      "count":1
+   },
+   "quality": true
+}

@@ -8,6 +8,7 @@ import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.client.renderer.entity.layers.RedEyesLayer;
 import nuparu.sevendaystomine.client.model.entity.BloatedZombieModel;
 import nuparu.sevendaystomine.world.entity.zombie.BloatedZombieEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class BloatedZombieRenderer<T extends BloatedZombieEntity, M extends BloatedZombieModel<T>>
 		extends MobRenderer<T, M> {
@@ -23,11 +24,11 @@ public class BloatedZombieRenderer<T extends BloatedZombieEntity, M extends Bloa
 				"textures/entity/zombie/eyes/bloated_zombie_eyes.png")));
 	}
 
-	protected boolean isShaking(T p_230495_1_) {
+	protected boolean isShaking(@NotNull T p_230495_1_) {
 		return false;
 	}
 
-	public ResourceLocation getTextureLocation(T p_110775_1_) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T p_110775_1_) {
 		return ZOMBIE_LOCATION;
 	}
 
