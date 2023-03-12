@@ -1,7 +1,7 @@
 {
+   "type": "minecraft:generic",
    "pools":[
       {
-         "name":"clothes",
          "rolls":{
             "min":0,
             "max":3

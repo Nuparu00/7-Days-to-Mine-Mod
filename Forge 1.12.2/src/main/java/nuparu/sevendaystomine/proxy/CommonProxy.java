@@ -39,6 +39,7 @@ import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -615,4 +616,5 @@ public class CommonProxy {
 	public void playMovingSound(int id, Entity enttiy) {
 
 	}
+	
 }

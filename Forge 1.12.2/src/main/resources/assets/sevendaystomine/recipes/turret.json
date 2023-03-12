@@ -18,7 +18,8 @@
       "item": "sevendaystomine:mp5_barrel"
     },
     "S": {
-      "item": "sevendaystomine:steelingot"
+      "            "type": "forge:ore_dict",
+    "ore": "ingotSteel"
     },
     "P": {
       "item": "sevendaystomine:iron_pipe"

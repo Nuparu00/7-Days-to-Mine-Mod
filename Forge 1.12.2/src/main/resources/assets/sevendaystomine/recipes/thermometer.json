@@ -7,10 +7,12 @@
   ],
   "key": {
     "C": {
-      "item": "sevendaystomine:copperingot"
+            "type": "forge:ore_dict",
+    "ore": "ingotCopper"
     },
     "S": {
-      "item": "sevendaystomine:steelingot"
+            "type": "forge:ore_dict",
+    "ore": "ingotSteel"
     },
     "R": {
       "item": "minecraft:redstone"

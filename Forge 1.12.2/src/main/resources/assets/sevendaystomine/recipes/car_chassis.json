@@ -11,7 +11,8 @@
       "item": "sevendaystomine:iron_pipe"
     },
     "S": {
-      "item": "sevendaystomine:steelingot"
+                  "type": "forge:ore_dict",
+    "ore": "ingotSteel"
     }
   },
   "result": {

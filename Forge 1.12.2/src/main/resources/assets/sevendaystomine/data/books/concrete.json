@@ -227,6 +227,12 @@
           "item": "minecraft:gravel"
         },
 		{
+          "x": 57,
+          "y": 11,
+          "z": 0,
+          "item": "sevendaystomine:sand_dust"
+        },
+		{
           "x": 48,
           "y": 64,
           "z": 0,

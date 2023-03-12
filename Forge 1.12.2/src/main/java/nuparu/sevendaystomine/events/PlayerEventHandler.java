@@ -44,6 +44,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -80,6 +81,17 @@ public class PlayerEventHandler {
 	protected static long nextChainsawIdleSound = 0l;
 	public static long nextChainsawCutSound = 0l;
 	protected static long lastTimeHittingBlock = 0l;
+	
+	@SubscribeEvent
+	public void onPlayerWakeUp(PlayerWakeUpEvent event) {
+		EntityPlayer player = event.getEntityPlayer();
+		World world = player.world;
+		
+		if(event.shouldSetSpawn() && !event.updateWorld() && !world.isRemote) {
+			IExtendedPlayer iep = CapabilityHelper.getExtendedPlayer(player);
+			iep.addStamina(400);
+		}
+	}
 
 	@SubscribeEvent
 	public void onBlockPlaced(PlayerInteractEvent.RightClickBlock event) {

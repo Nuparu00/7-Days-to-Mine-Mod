@@ -10,7 +10,8 @@
       "item": "minecraft:stick"
     },
     "B": {
-      "item": "sevendaystomine:bronzeingot"
+     "type": "forge:ore_dict",
+    "ore": "ingotBronze"
     }
   },
   "result": {

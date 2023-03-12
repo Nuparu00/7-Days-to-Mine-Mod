@@ -15,6 +15,7 @@ public class BlockReinforcedConcreteWet extends BlockBase {
 		setHardness(7.5F);
 		setResistance(5.0F);
 		setHarvestLevel("pickaxe", 2);
+		setTickRandomly(true);
 	}
 
 	@Override
@@ -28,13 +29,8 @@ public class BlockReinforcedConcreteWet extends BlockBase {
 	}
 
 	@Override
-	public int tickRate(World world) {
-		return 6000;
-	}
-
-	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		if (world.isDaytime()) {
+	public void randomTick(World world, BlockPos pos, IBlockState state, Random random) {
+		if (world.isDaytime() && random.nextBoolean()) {
 			world.setBlockState(pos, ModBlocks.REINFORCED_CONCRETE.getDefaultState(), 3);
 		}
 

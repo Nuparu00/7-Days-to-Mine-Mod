@@ -12,7 +12,8 @@
       "item": "minecraft:stick"
     },
     "I": {
-      "item": "sevendaystomine:steelingot"
+                  "type": "forge:ore_dict",
+    "ore": "ingotSteel"
     }
   },
   "result": {

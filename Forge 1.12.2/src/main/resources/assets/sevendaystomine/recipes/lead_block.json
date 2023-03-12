@@ -7,7 +7,8 @@
   ],
   "key": {
     "#": {
-      "item": "sevendaystomine:leadingot"
+                  "type": "forge:ore_dict",
+    "ore": "ingotLead"
     }
   },
   "result": {

@@ -285,17 +285,26 @@ public class EntityShot extends Entity implements IProjectile {
 			if (explosive && !world.isRemote) {
 				world.newExplosion(this, entity.posX, entity.posY, entity.posZ, 1.2f, sparking, true);
 			}
+			int hurtTimeOld = -1;
+			EntityLivingBase entitylivingbase = null;
+			
+			if(entity instanceof EntityLivingBase) {
+				entitylivingbase = (EntityLivingBase) entity;
+				hurtTimeOld = entitylivingbase.hurtResistantTime;
+				entitylivingbase.hurtResistantTime = 0;
+			}
+			
 			if (!this.world.isRemote && entity.attackEntityFrom(damagesource, (float) i)) {
-				if (entity instanceof EntityLivingBase) {
-					EntityLivingBase entitylivingbase = (EntityLivingBase) entity;
+				if (entitylivingbase != null) {
+					
 					if (this.knockbackStrength > 0) {
 						float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
 						if (f1 > 0.0F) {
 							entitylivingbase.addVelocity(
-									this.motionX * (double) this.knockbackStrength * 0.6000000238418579D / (double) f1,
+									this.motionX * (double) this.knockbackStrength * 0.4000000238418579D / (double) f1,
 									0.1D,
-									this.motionZ * (double) this.knockbackStrength * 0.6000000238418579D / (double) f1);
+									this.motionZ * (double) this.knockbackStrength * 0.4000000238418579D / (double) f1);
 						}
 					}
 
@@ -312,6 +321,8 @@ public class EntityShot extends Entity implements IProjectile {
 							&& this.getShooter() instanceof EntityPlayerMP) {
 						((EntityPlayerMP) this.getShooter()).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
 					}
+
+					entitylivingbase.hurtResistantTime = hurtTimeOld;
 				}
 
 				if (!(entity instanceof EntityEnderman)) {

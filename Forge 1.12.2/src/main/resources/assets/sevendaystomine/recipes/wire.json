@@ -2,7 +2,8 @@
    "type":"sevendaystomine:crafting_locked_shapeless",
     "ingredients": [
         {
-            "item": "sevendaystomine:copperingot"
+                       "type": "forge:ore_dict",
+    "ore": "ingotCopper"
         }
     ],
    "result":{

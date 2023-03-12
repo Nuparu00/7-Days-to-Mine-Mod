@@ -1,17 +1,20 @@
 {
-   "type":"minecraft:crafting_shaped",
-   "group": "wooden_frame",
-   "pattern":[
-      "I I",
-      "III"
-   ],
-   "key":{
-      "I":{
-    "type": "forge:ore_dict",
-    "ore": "ingotIron"
-}
-   },
-   "result":{
-      "item":"sevendaystomine:cookingpot"
-   }
+	"type": "minecraft:crafting_shaped",
+	"group": "wooden_frame",
+	"pattern": [
+		"ISI",
+		"III"
+	],
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotIron"
+		},
+		"S": {
+			"item": "sevendaystomine:scrapiron"
+		}
+	},
+	"result": {
+		"item": "sevendaystomine:cookingpot"
+	}
 }

@@ -1,6 +1,7 @@
 package nuparu.sevendaystomine;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -89,7 +91,7 @@ import nuparu.sevendaystomine.world.horde.HordeSavedData;
 @Mod(modid = SevenDaysToMine.MODID, version = SevenDaysToMine.VERSION, useMetadata = true, updateJSON = "https://raw.githubusercontent.com/Nuparu00/7-Days-to-Mine/master/update.json")
 public class SevenDaysToMine {
 	public static final String MODID = "sevendaystomine";
-	public static final String VERSION = "1.12.2-1.0.2.5";
+	public static final String VERSION = "1.12.2-1.0.2.10";
 
 	static final String CLIENT_PROXY_CLASS = "nuparu.sevendaystomine.proxy.ClientProxy";
 	static final String SERVER_PROXY_CLASS = "nuparu.sevendaystomine.proxy.CommonProxy";
