@@ -141,7 +141,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     public static class Factory implements RecipeSerializer<ForgeRecipeShapeless> {
-        int defaultCookingTime = 600;
+        final int defaultCookingTime = 600;
 
         @Override
         public @NotNull ForgeRecipeShapeless fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {

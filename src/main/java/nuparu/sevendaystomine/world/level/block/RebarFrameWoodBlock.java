@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class RebarFrameWoodBlock extends BlockBase implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    VoxelShape occlusionShape;
+    final VoxelShape occlusionShape;
 
     public RebarFrameWoodBlock(Properties p_49795_) {
         super(p_49795_);

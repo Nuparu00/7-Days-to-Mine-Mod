@@ -32,21 +32,23 @@
       ]
    },
    "parent": "sevendaystomine:survival/crafting_table",
-   "criteria":{
-      "has_block":{
-         "trigger":"minecraft:inventory_changed",
-         "conditions":{
-            "items":[
+   "criteria": {
+      "item": {
+         "conditions": {
+            "items": [
                {
-                  "item":"sevendaystomine:sleeping_bag_white"
+                  "items": [
+                     "sevendaystomine:sleeping_bag_white"
+                  ]
                }
             ]
-         }
+         },
+         "trigger": "minecraft:inventory_changed"
       }
    },
-   "requirements":[
+   "requirements": [
       [
-         "has_block"
+         "item"
       ]
    ]
 }

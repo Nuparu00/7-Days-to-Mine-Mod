@@ -8,67 +8,67 @@ import nuparu.sevendaystomine.SevenDaysToMine;
 import org.jetbrains.annotations.NotNull;
 
 public class ModCreativeModeTabs {
-    public static CreativeModeTab TAB_MATERIALS = new CreativeModeTab(SevenDaysToMine.MODID + ".materials") {
+    public static final CreativeModeTab TAB_MATERIALS = new CreativeModeTab(SevenDaysToMine.MODID + ".materials") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(ModItems.IRON_SCRAP.get());
         }
     };
 
-    public static CreativeModeTab TAB_BLOCKS = new CreativeModeTab(SevenDaysToMine.MODID + ".blocks") {
+    public static final CreativeModeTab TAB_BLOCKS = new CreativeModeTab(SevenDaysToMine.MODID + ".blocks") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(ModBlocks.OAK_FRAME.get());
         }
     };
 
-    public static CreativeModeTab TAB_FOOD = new CreativeModeTab(SevenDaysToMine.MODID + ".food") {
+    public static final CreativeModeTab TAB_FOOD = new CreativeModeTab(SevenDaysToMine.MODID + ".food") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(ModItems.MRE.get());
         }
     };
 
-    public static CreativeModeTab TAB_COMBAT = new CreativeModeTab(SevenDaysToMine.MODID + ".combat") {
+    public static final CreativeModeTab TAB_COMBAT = new CreativeModeTab(SevenDaysToMine.MODID + ".combat") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(ModItems.SPIKED_CLUB.get());
         }
     };
 
-    public static CreativeModeTab TAB_TOOLS = new CreativeModeTab(SevenDaysToMine.MODID + ".tools") {
+    public static final CreativeModeTab TAB_TOOLS = new CreativeModeTab(SevenDaysToMine.MODID + ".tools") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(ModItems.SCRAP_PICKAXE.get());
         }
     };
 
-    public static CreativeModeTab TAB_MEDICINE = new CreativeModeTab(SevenDaysToMine.MODID + ".medicine") {
+    public static final CreativeModeTab TAB_MEDICINE = new CreativeModeTab(SevenDaysToMine.MODID + ".medicine") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(ModItems.FIRST_AID_KIT.get());
         }
     };
 
-    public static CreativeModeTab TAB_FORGING = new CreativeModeTab(SevenDaysToMine.MODID + ".forging") {
+    public static final CreativeModeTab TAB_FORGING = new CreativeModeTab(SevenDaysToMine.MODID + ".forging") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(ModBlocks.FORGE.get());
         }
     };
-    public static CreativeModeTab TAB_BOOKS = new CreativeModeTab(SevenDaysToMine.MODID + ".books") {
+    public static final CreativeModeTab TAB_BOOKS = new CreativeModeTab(SevenDaysToMine.MODID + ".books") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(ModItems.SURVIVAL_GUIDE.get());
         }
     };
-    public static CreativeModeTab TAB_ELECTRICITY = new CreativeModeTab(SevenDaysToMine.MODID + ".electricity") {
+    public static final CreativeModeTab TAB_ELECTRICITY = new CreativeModeTab(SevenDaysToMine.MODID + ".electricity") {
         @OnlyIn(Dist.CLIENT)
         public @NotNull ItemStack makeIcon() {
             return new ItemStack(ModItems.CAR_BATTERY.get());
         }
     };
-    public static CreativeModeTab TAB_CLOTHING = new CreativeModeTab(SevenDaysToMine.MODID + ".clothing") {
+    public static final CreativeModeTab TAB_CLOTHING = new CreativeModeTab(SevenDaysToMine.MODID + ".clothing") {
         @OnlyIn(Dist.CLIENT)
         public @NotNull ItemStack makeIcon() {
             return new ItemStack(ModItems.SHIRT.get());

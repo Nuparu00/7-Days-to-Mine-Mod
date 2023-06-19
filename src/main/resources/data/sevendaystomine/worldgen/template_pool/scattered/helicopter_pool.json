@@ -1,0 +1,15 @@
+{
+	"name": "sevendaystomine:scattered/helicopter_pool",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 1,
+			"element": {
+				"location": "sevendaystomine:scattered/helicopter/helicopter",
+				"processors": "sevendaystomine:remove_moss_carpet",
+				"projection": "rigid",
+				"element_type": "sevendaystomine:mod_single_pool_element"
+			}
+		}
+	]
+}

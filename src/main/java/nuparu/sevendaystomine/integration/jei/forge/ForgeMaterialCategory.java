@@ -1,14 +1,10 @@
 package nuparu.sevendaystomine.integration.jei.forge;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.json.scrap.ScrapDataManager;
@@ -44,7 +40,7 @@ public class ForgeMaterialCategory extends AbstractForgeRecipeCategory<ForgeReci
 
             ScrapEntry entry = ScrapDataManager.INSTANCE.getScrapResult(material);
             if(entry != null){
-                ItemStack stack = new ItemStack(entry.item, (int)Math.ceil((double)weight.divide(entry.weight).doubleValue()));
+                ItemStack stack = new ItemStack(entry.item(), (int)Math.ceil(weight.divide(entry.weight()).doubleValue()));
                 if(stack.isEmpty()) continue;
                 list.add(stack);
             }

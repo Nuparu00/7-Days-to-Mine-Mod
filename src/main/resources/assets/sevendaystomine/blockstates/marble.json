@@ -1,0 +1,36 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "sevendaystomine:block/marble"
+			},
+			{
+				"model": "sevendaystomine:block/marble_mirrored"
+			},
+			{
+				"model": "sevendaystomine:block/marble",
+				"y": 180
+			},
+			{
+				"model": "sevendaystomine:block/marble_mirrored",
+				"y": 180
+			},
+			{
+				"model": "sevendaystomine:block/marble",
+				"y": 90
+			},
+			{
+				"model": "sevendaystomine:block/marble_mirrored",
+				"y": 90
+			},
+			{
+				"model": "sevendaystomine:block/marble",
+				"y": 270
+			},
+			{
+				"model": "sevendaystomine:block/marble_mirrored",
+				"y": 270
+			}
+		]
+	}
+}

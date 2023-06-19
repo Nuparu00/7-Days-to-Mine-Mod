@@ -10,9 +10,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.world.item.quality.IQualityStack;
-import nuparu.sevendaystomine.world.item.quality.QualityManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,6 +23,7 @@ import static nuparu.sevendaystomine.util.ItemUtils.canHaveQuality;
 @Mixin(BowItem.class)
 public abstract class MixinBowItem {
     @Shadow public abstract int getUseDuration(ItemStack p_40680_);
+
 
     @Shadow public abstract AbstractArrow customArrow(AbstractArrow arrow);
 
@@ -73,9 +72,7 @@ public abstract class MixinBowItem {
                                 abstractarrow.setSecondsOnFire(100);
                             }
 
-                            stack.hurtAndBreak(1, player, (p_40665_) -> {
-                                p_40665_.broadcastBreakEvent(player.getUsedItemHand());
-                            });
+                            stack.hurtAndBreak(1, player, (p_40665_) -> p_40665_.broadcastBreakEvent(player.getUsedItemHand()));
                             if (flag1 || player.getAbilities().instabuild && (itemstack.is(Items.SPECTRAL_ARROW) || itemstack.is(Items.TIPPED_ARROW))) {
                                 abstractarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                             }
@@ -83,7 +80,7 @@ public abstract class MixinBowItem {
                             level.addFreshEntity(abstractarrow);
                         }
 
-                        level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
                         if (!flag1 && !player.getAbilities().instabuild) {
                             itemstack.shrink(1);
                             if (itemstack.isEmpty()) {

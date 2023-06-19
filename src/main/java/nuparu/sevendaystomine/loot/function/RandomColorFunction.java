@@ -20,9 +20,8 @@ public class RandomColorFunction extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
         Item item = stack.getItem();
-        if (!(item instanceof ClothingItem))
+        if (!(item instanceof ClothingItem clothing))
             return stack;
-        ClothingItem clothing = (ClothingItem)item;
         if(!clothing.isDyeable())
             return stack;
         clothing.setColor(stack, context.getRandom().nextInt(0xffffff + 1));

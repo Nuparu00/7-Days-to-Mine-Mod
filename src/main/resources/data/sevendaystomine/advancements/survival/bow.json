@@ -14,26 +14,36 @@
       "experience":1
    },
    "parent":"sevendaystomine:survival/crafting_table",
-   "criteria":{
-      "has_bow":{
-         "trigger":"minecraft:inventory_changed",
-         "conditions":{
-            "items":[
+   "criteria": {
+      "bow": {
+         "conditions": {
+            "items": [
                {
-                  "item":"sevendaystomine:crude_bow"
+                  "items": [
+                     "sevendaystomine:crude_bow"
+                  ]
                }
             ]
-         }
+         },
+         "trigger": "minecraft:inventory_changed"
       },
-      "has_arrow":{
-         "trigger":"minecraft:inventory_changed",
-         "conditions":{
-            "items":[
+      "arrow": {
+         "conditions": {
+            "items": [
                {
-                  "item":"minecraft:arrow"
+                  "items": [
+                     "minecraft:arrow"
+                  ]
                }
             ]
-         }
+         },
+         "trigger": "minecraft:inventory_changed"
       }
-   }
+   },
+   "requirements": [
+      [
+         "bow",
+         "arrow"
+      ]
+   ]
 }

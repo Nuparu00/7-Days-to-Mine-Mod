@@ -82,17 +82,6 @@ public class ResourcesHelper {
         photos.clear();
     }
 
-    public static class Image {
-        public ResourceLocation res;
-        public int width;
-        public int height;
-        public String path;
-
-        public Image(ResourceLocation res, int width, int height, String path) {
-            this.res = res;
-            this.width = width;
-            this.height = height;
-            this.path = path;
-        }
+    public record Image(ResourceLocation res, int width, int height, String path){
     }
 }

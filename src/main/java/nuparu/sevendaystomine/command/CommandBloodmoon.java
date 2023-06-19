@@ -4,24 +4,16 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.commands.arguments.RangeArgument;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import nuparu.sevendaystomine.config.ServerConfig;
-import nuparu.sevendaystomine.util.PlayerUtils;
 import nuparu.sevendaystomine.world.level.LevelUtils;
-
-import java.util.Collection;
-import java.util.Optional;
 
 public class CommandBloodmoon {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		LiteralArgumentBuilder<CommandSourceStack> mbesayCommand = Commands.literal("blooodmoon")
-				.requires((commandSource) -> commandSource.hasPermission(2)).executes((context) -> setBloodmoon(context))
+				.requires((commandSource) -> commandSource.hasPermission(2)).executes(CommandBloodmoon::setBloodmoon)
 						.then(Commands.argument("bloodmoonNumber", IntegerArgumentType.integer(1)).executes((context) -> setBloodmoon(context, IntegerArgumentType.getInteger(context, "bloodmoonNumber"))));
 
 		dispatcher.register(mbesayCommand);

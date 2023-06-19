@@ -2,10 +2,7 @@ package nuparu.sevendaystomine.capability;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import nuparu.sevendaystomine.world.level.horde.Horde;
-
-import java.util.List;
 
 public interface IExtendedEntity {
     Horde getHorde();

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class ZombieBipedRenderer<T extends ZombieBipedEntity, M extends HumanoidModel<T>>
 		extends HumanoidMobRenderer<T, M> {
 
-	public RedEyesLayer redEyesLayer;
+	public final RedEyesLayer redEyesLayer;
 	
 	public ZombieBipedRenderer(EntityRendererProvider.Context manager, ModelLayerLocation modelLayerLocation) {
 		this(manager,modelLayerLocation,0.5f);

@@ -1,0 +1,70 @@
+{
+  "variants": {
+    "type=bottom": [
+      {
+        "model": "sevendaystomine:block/marble_slab"
+      },
+      {
+        "model": "sevendaystomine:block/marble_slab",
+        "y": 90
+      },
+      {
+        "model": "sevendaystomine:block/marble_slab",
+        "y": 180
+      },
+      {
+        "model": "sevendaystomine:block/marble_slab",
+        "y": 270
+      }
+    ],
+    "type=double": [
+      {
+        "model": "sevendaystomine:block/marble"
+      },
+      {
+        "model": "sevendaystomine:block/marble_mirrored"
+      },
+      {
+        "model": "sevendaystomine:block/marble",
+        "y": 180
+      },
+      {
+        "model": "sevendaystomine:block/marble_mirrored",
+        "y": 180
+      },
+      {
+        "model": "sevendaystomine:block/marble",
+        "y": 90
+      },
+      {
+        "model": "sevendaystomine:block/marble_mirrored",
+        "y": 90
+      },
+      {
+        "model": "sevendaystomine:block/marble",
+        "y": 270
+      },
+      {
+        "model": "sevendaystomine:block/marble_mirrored",
+        "y": 270
+      }
+    ],
+    "type=top": [
+      {
+        "model": "sevendaystomine:block/marble_slab_top"
+      },
+      {
+        "model": "sevendaystomine:block/marble_slab_top",
+        "y": 90
+      },
+      {
+        "model": "sevendaystomine:block/marble_slab_top",
+        "y": 180
+      },
+      {
+        "model": "sevendaystomine:block/marble_slab_top",
+        "y": 270
+      }
+    ]
+  }
+}

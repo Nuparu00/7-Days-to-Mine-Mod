@@ -6,7 +6,7 @@
 			"weight": 4,
 			"element": {
 				"location": "sevendaystomine:scattered/ruins/ruins_0",
-				"processors": "minecraft:empty",
+				"processors": "sevendaystomine:remove_moss_carpet",
 				"projection": "rigid",
 				"element_type": "sevendaystomine:mod_single_pool_element"
 			}
@@ -15,7 +15,7 @@
 			"weight": 3,
 			"element": {
 				"location": "sevendaystomine:scattered/ruins/ruins_1",
-				"processors": "minecraft:empty",
+				"processors": "sevendaystomine:remove_moss_carpet",
 				"projection": "rigid",
 				"element_type": "sevendaystomine:mod_single_pool_element"
 			}
@@ -24,7 +24,7 @@
 			"weight": 140,
 			"element": {
 				"location": "sevendaystomine:scattered/ruins/ruins_2",
-				"processors": "minecraft:empty",
+				"processors": "sevendaystomine:age_processors",
 				"projection": "rigid",
 				"element_type": "sevendaystomine:mod_single_pool_element"
 			}

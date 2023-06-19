@@ -26,17 +26,13 @@ public class RadioBlock extends WaterloggableHorizontalBlockBase implements Enti
     @Override
     public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
                                         @NotNull CollisionContext p_220053_4_) {
-        switch (state.getValue(FACING)) {
-            default:
-            case NORTH:
-                return NORTH;
-            case SOUTH:
-                return SOUTH;
-            case WEST:
-                return WEST;
-            case EAST:
-                return EAST;
-        }
+        return switch (state.getValue(FACING)) {
+            case NORTH -> NORTH;
+            case SOUTH -> SOUTH;
+            case WEST -> WEST;
+            case EAST -> EAST;
+            default -> NORTH;
+        };
     }
 
     @Nullable

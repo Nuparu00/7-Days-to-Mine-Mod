@@ -21,7 +21,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import nuparu.sevendaystomine.init.ModCreativeModeTabs;
-import nuparu.sevendaystomine.world.level.block.entity.SolarPanelBlockEntity;
 import nuparu.sevendaystomine.world.level.block.entity.WindTurbineBlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -31,8 +31,8 @@ public record VariableNumber<T extends Number>(T base, Change<T> change) {
         Number result = base;
         if(change() != Change.CONSTANT && change() != null){
             int unit = change().getUnitValue(level);
-            int pers = (int) Math.floor(unit / change().getPer().doubleValue());
-            double deltaDouble = change().getValue().doubleValue() * pers;
+            int pers = (int) Math.floor(unit / change().per().doubleValue());
+            double deltaDouble = change().value().doubleValue() * pers;
             result = result.doubleValue() + deltaDouble;
             if(base instanceof Integer){
                 result = result.intValue();

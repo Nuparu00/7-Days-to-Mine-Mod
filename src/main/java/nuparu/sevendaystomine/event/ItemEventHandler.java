@@ -13,7 +13,6 @@ import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.util.ItemUtils;
 import nuparu.sevendaystomine.world.item.quality.IQualityItem;
 import nuparu.sevendaystomine.world.item.quality.IQualityStack;
-import nuparu.sevendaystomine.world.item.quality.QualityManager;
 
 @Mod.EventBusSubscriber(modid = SevenDaysToMine.MODID)
 public class ItemEventHandler {

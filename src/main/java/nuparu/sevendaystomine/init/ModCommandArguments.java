@@ -1,7 +1,6 @@
 package nuparu.sevendaystomine.init;
 
 import com.mojang.brigadier.arguments.ArgumentType;
-import net.minecraft.commands.arguments.EntitySummonArgument;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;

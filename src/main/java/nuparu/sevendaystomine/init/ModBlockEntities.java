@@ -30,18 +30,31 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(SmallContainerBlockEntity::new, ModBlocks.CARDBOARD_BOX.get(), ModBlocks.CUPBOARD.get()
                     , ModBlocks.DRESSER.get(), ModBlocks.MOLDY_BACKPACK_NORMAL.get(), ModBlocks.MOLDY_BACKPACK_MEDICAL.get(), ModBlocks.MOLDY_BACKPACK_ARMY.get(), ModBlocks.MEDICAL_CABINET.get(), ModBlocks.WOODEN_WRITING_TABLE.get()
                     , ModBlocks.MODERN_WRITING_TABLE.get(), ModBlocks.FILE_CABINET.get(), ModBlocks.TOILET.get(), ModBlocks.TRASH_CAN.get(), ModBlocks.CASH_REGISTER.get(), ModBlocks.GARBAGE.get(), ModBlocks.MAILBOX.get()
-                    , ModBlocks.FRIDGE.get(), ModBlocks.BIRD_NEST.get()).build(null));
+                    , ModBlocks.FRIDGE.get(), ModBlocks.BIRD_NEST.get(), ModBlocks.TRASH_BIN.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TinyContainerBlockEntity>> TINY_CONTAINER = TILE_ENTITIES.register("tiny_container",
+            () -> BlockEntityType.Builder.of(TinyContainerBlockEntity::new, ModBlocks.CARDBOARD_BOX.get()).build(null));
     public static final RegistryObject<BlockEntityType<CodeSafeBlockEntity>> CODE_SAFE = TILE_ENTITIES.register("code_safe",
             () -> BlockEntityType.Builder.of(CodeSafeBlockEntity::new, ModBlocks.CODE_SAFE.get()).build(null));
     public static final RegistryObject<BlockEntityType<BookshelfBlockEntity>> BOOKSHELF = TILE_ENTITIES.register("bookshelf",
             () -> BlockEntityType.Builder.of(BookshelfBlockEntity::new, ModBlocks.OAK_BOOKSHELF.get(), ModBlocks.SPRUCE_BOOKSHELF.get(),
                     ModBlocks.BIRCH_BOOKSHELF.get(), ModBlocks.JUNGLE_BOOKSHELF.get(), ModBlocks.ACACIA_BOOKSHELF.get(),
                     ModBlocks.DARK_OAK_BOOKSHELF.get(), ModBlocks.WARPED_BOOKSHELF.get(),
-                    ModBlocks.CRIMSON_BOOKSHELF.get()).build(null));
+                    ModBlocks.CRIMSON_BOOKSHELF.get(), ModBlocks.MANGROVE_BOOKSHELF.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<SpikesBlockEntity>> SPIKES = TILE_ENTITIES.register("spikes",
             () -> BlockEntityType.Builder.of(SpikesBlockEntity::new, ModBlocks.WOODEN_SPIKES.get(), ModBlocks.WOODEN_SPIKES_BLOODIED.get(),
-                    ModBlocks.WOODEN_SPIKES_BROKEN.get(), ModBlocks.WOODEN_SPIKES_DAMAGED.get(), ModBlocks.RAZOR_WIRE.get(), ModBlocks.METAL_SPIKES.get()).build(null));
+                    ModBlocks.WOODEN_SPIKES_BROKEN.get(), ModBlocks.WOODEN_SPIKES_DAMAGED.get(), ModBlocks.RAZOR_WIRE.get(), ModBlocks.METAL_SPIKES.get(),
+                    ModBlocks.OAK_LOG_SPIKE.get(),
+                    ModBlocks.SPRUCE_LOG_SPIKE.get(),
+                    ModBlocks.BIRCH_LOG_SPIKE.get(),
+                    ModBlocks.JUNGLE_LOG_SPIKE.get(),
+                    ModBlocks.ACACIA_LOG_SPIKE.get(),
+                    ModBlocks.DARK_OAK_LOG_SPIKE.get(),
+                    ModBlocks.WARPED_LOG_SPIKE.get(),
+                    ModBlocks.CRIMSON_LOG_SPIKE.get(),
+                    ModBlocks.MANGROVE_LOG_SPIKE.get()
+            ).build(null));
 
 
     public static final RegistryObject<BlockEntityType<SleepingBagBlockEntity>> SLEEPING_BAG = TILE_ENTITIES.register("sleeping_bag",

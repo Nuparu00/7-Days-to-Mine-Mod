@@ -37,16 +37,12 @@ public class SleepingBagBlock extends BedBlock implements IBlockBase {
     public @NotNull VoxelShape getShape(@NotNull BlockState p_220053_1_, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
                                         @NotNull CollisionContext p_220053_4_) {
         Direction direction = getConnectedDirection(p_220053_1_).getOpposite();
-        switch (direction) {
-            case NORTH:
-                return BOTTOM_NORTH;
-            case SOUTH:
-                return BOTTOM_SOUTH;
-            case WEST:
-                return BOTTOM_WEST;
-            default:
-                return BOTTOM_EAST;
-        }
+        return switch (direction) {
+            case NORTH -> BOTTOM_NORTH;
+            case SOUTH -> BOTTOM_SOUTH;
+            case WEST -> BOTTOM_WEST;
+            default -> BOTTOM_EAST;
+        };
     }
 
     @Override

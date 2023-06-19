@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -19,12 +18,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.INBTSerializable;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.capability.CapabilityHelper;
@@ -32,7 +28,6 @@ import nuparu.sevendaystomine.capability.IExtendedEntity;
 import nuparu.sevendaystomine.json.horde.HordeDataManager;
 import nuparu.sevendaystomine.json.horde.HordeEntry;
 import nuparu.sevendaystomine.json.horde.pool.HordePool;
-import org.checkerframework.checker.units.qual.C;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -58,15 +53,17 @@ public class Horde implements INBTSerializable<CompoundTag> {
     private int maxWaves;
     private int waveTimer;
     private int age;
+    private int originalPlayersCount;
     private float totalHealth;
 
     private boolean active = false;
 
-    public Horde(HordeEntry hordeEntry, int id, ServerLevel level, BlockPos center) {
+    public Horde(HordeEntry hordeEntry, int id, ServerLevel level, BlockPos center, int originalPlayersCount) {
         this.hordeEntry = hordeEntry;
         this.id = id;
         this.level = level;
         this.center = center;
+        this.originalPlayersCount = originalPlayersCount;
         this.maxWaves = hordeEntry.waves().get(level,random).intValue();
         this.bossEvent.setProgress(0.0F);
     }
@@ -135,7 +132,7 @@ public class Horde implements INBTSerializable<CompoundTag> {
         if(soundEvent != null){
             level.playSound(null,getCenter().getX(),getCenter().getY(),getCenter().getZ(),soundEvent, SoundSource.AMBIENT,1,1);
         }
-        int rolls = pool.rolls().get(level,random).intValue();
+        int rolls = pool.rolls().get(level,random).intValue() * originalPlayersCount;
         for(int i = 0; i < rolls; i++){
             Optional<HordePool.Entry> entry = pool.getEntry(level, random);
             if(entry.isPresent()) {

@@ -347,17 +347,6 @@ public class ForgeBlockEntity extends ItemHandlerBlockEntity implements Containe
         return list;
     }
 
-    public ItemStack[][] getActiveInventoryAsArray() {
-        ItemStack[][] array = new ItemStack[2][2];
-
-        array[0][0] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT.ordinal());
-        array[0][1] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal());
-        array[1][0] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal());
-        array[1][1] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal());
-
-        return array;
-    }
-
     public boolean isUsableByPlayer(Player player) {
         if (this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
@@ -438,7 +427,7 @@ public class ForgeBlockEntity extends ItemHandlerBlockEntity implements Containe
 
     @Override
     public void startOpen(@NotNull Player p_18955_) {
-        Container.super.startOpen(p_18955_);
+        super.startOpen(p_18955_);
     }
 
     @Override

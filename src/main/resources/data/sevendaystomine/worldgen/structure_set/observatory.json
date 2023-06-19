@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "sevendaystomine:observatory",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 676123323,
+    "spacing": 60,
+    "separation": 25,
+    "type": "minecraft:random_spread"
+  }
+}

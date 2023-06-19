@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:block/television" },
+        "facing=west": { "model": "sevendaystomine:block/television", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:block/television", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:block/television", "y": 180 }
+    }
+}

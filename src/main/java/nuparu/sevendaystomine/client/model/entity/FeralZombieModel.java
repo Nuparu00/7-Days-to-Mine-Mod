@@ -214,80 +214,70 @@ public class FeralZombieModel<T extends FeralZombieEntity> extends EntityModel<T
 
 	private void poseRightArm(T p_102876_) {
 		switch (this.rightArmPose) {
-			case EMPTY:
-				this.rightArm.yRot = 0.0F;
-				break;
-			case BLOCK:
+			case EMPTY -> this.rightArm.yRot = 0.0F;
+			case BLOCK -> {
 				this.rightArm.xRot = this.rightArm.xRot * 0.5F - 0.9424779F;
-				this.rightArm.yRot = (-(float)Math.PI / 6F);
-				break;
-			case ITEM:
-				this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float)Math.PI / 10F);
+				this.rightArm.yRot = (-(float) Math.PI / 6F);
+			}
+			case ITEM -> {
+				this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
 				this.rightArm.yRot = 0.0F;
-				break;
-			case THROW_SPEAR:
-				this.rightArm.xRot = this.rightArm.xRot * 0.5F - (float)Math.PI;
+			}
+			case THROW_SPEAR -> {
+				this.rightArm.xRot = this.rightArm.xRot * 0.5F - (float) Math.PI;
 				this.rightArm.yRot = 0.0F;
-				break;
-			case BOW_AND_ARROW:
+			}
+			case BOW_AND_ARROW -> {
 				this.rightArm.yRot = -0.1F + this.head.yRot;
 				this.leftArm.yRot = 0.1F + this.head.yRot + 0.4F;
-				this.rightArm.xRot = (-(float)Math.PI / 2F) + this.head.xRot;
-				this.leftArm.xRot = (-(float)Math.PI / 2F) + this.head.xRot;
-				break;
-			case CROSSBOW_CHARGE:
-				AnimationUtils.animateCrossbowCharge(this.rightArm, this.leftArm, p_102876_, true);
-				break;
-			case CROSSBOW_HOLD:
-				AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, true);
-				break;
-			case SPYGLASS:
+				this.rightArm.xRot = (-(float) Math.PI / 2F) + this.head.xRot;
+				this.leftArm.xRot = (-(float) Math.PI / 2F) + this.head.xRot;
+			}
+			case CROSSBOW_CHARGE -> AnimationUtils.animateCrossbowCharge(this.rightArm, this.leftArm, p_102876_, true);
+			case CROSSBOW_HOLD -> AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, true);
+			case SPYGLASS -> {
 				this.rightArm.xRot = Mth.clamp(this.head.xRot - 1.9198622F - (p_102876_.isCrouching() ? 0.2617994F : 0.0F), -2.4F, 3.3F);
 				this.rightArm.yRot = this.head.yRot - 0.2617994F;
-				break;
-			case TOOT_HORN:
+			}
+			case TOOT_HORN -> {
 				this.rightArm.xRot = Mth.clamp(this.head.xRot, -1.2F, 1.2F) - 1.4835298F;
-				this.rightArm.yRot = this.head.yRot - ((float)Math.PI / 6F);
+				this.rightArm.yRot = this.head.yRot - ((float) Math.PI / 6F);
+			}
 		}
 
 	}
 
 	private void poseLeftArm(T p_102879_) {
 		switch (this.leftArmPose) {
-			case EMPTY:
-				this.leftArm.yRot = 0.0F;
-				break;
-			case BLOCK:
+			case EMPTY -> this.leftArm.yRot = 0.0F;
+			case BLOCK -> {
 				this.leftArm.xRot = this.leftArm.xRot * 0.5F - 0.9424779F;
-				this.leftArm.yRot = ((float)Math.PI / 6F);
-				break;
-			case ITEM:
-				this.leftArm.xRot = this.leftArm.xRot * 0.5F - ((float)Math.PI / 10F);
+				this.leftArm.yRot = ((float) Math.PI / 6F);
+			}
+			case ITEM -> {
+				this.leftArm.xRot = this.leftArm.xRot * 0.5F - ((float) Math.PI / 10F);
 				this.leftArm.yRot = 0.0F;
-				break;
-			case THROW_SPEAR:
-				this.leftArm.xRot = this.leftArm.xRot * 0.5F - (float)Math.PI;
+			}
+			case THROW_SPEAR -> {
+				this.leftArm.xRot = this.leftArm.xRot * 0.5F - (float) Math.PI;
 				this.leftArm.yRot = 0.0F;
-				break;
-			case BOW_AND_ARROW:
+			}
+			case BOW_AND_ARROW -> {
 				this.rightArm.yRot = -0.1F + this.head.yRot - 0.4F;
 				this.leftArm.yRot = 0.1F + this.head.yRot;
-				this.rightArm.xRot = (-(float)Math.PI / 2F) + this.head.xRot;
-				this.leftArm.xRot = (-(float)Math.PI / 2F) + this.head.xRot;
-				break;
-			case CROSSBOW_CHARGE:
-				AnimationUtils.animateCrossbowCharge(this.rightArm, this.leftArm, p_102879_, false);
-				break;
-			case CROSSBOW_HOLD:
-				AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, false);
-				break;
-			case SPYGLASS:
+				this.rightArm.xRot = (-(float) Math.PI / 2F) + this.head.xRot;
+				this.leftArm.xRot = (-(float) Math.PI / 2F) + this.head.xRot;
+			}
+			case CROSSBOW_CHARGE -> AnimationUtils.animateCrossbowCharge(this.rightArm, this.leftArm, p_102879_, false);
+			case CROSSBOW_HOLD -> AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, false);
+			case SPYGLASS -> {
 				this.leftArm.xRot = Mth.clamp(this.head.xRot - 1.9198622F - (p_102879_.isCrouching() ? 0.2617994F : 0.0F), -2.4F, 3.3F);
 				this.leftArm.yRot = this.head.yRot + 0.2617994F;
-				break;
-			case TOOT_HORN:
+			}
+			case TOOT_HORN -> {
 				this.leftArm.xRot = Mth.clamp(this.head.xRot, -1.2F, 1.2F) - 1.4835298F;
-				this.leftArm.yRot = this.head.yRot + ((float)Math.PI / 6F);
+				this.leftArm.yRot = this.head.yRot + ((float) Math.PI / 6F);
+			}
 		}
 
 	}

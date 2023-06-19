@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import nuparu.sevendaystomine.SevenDaysToMine;
@@ -14,7 +13,6 @@ import nuparu.sevendaystomine.config.ClientConfig;
 import nuparu.sevendaystomine.init.ModBlockEntities;
 import nuparu.sevendaystomine.init.ModSounds;
 import nuparu.sevendaystomine.util.MathUtils;
-import nuparu.sevendaystomine.world.level.block.SolarPanelBlock;
 import nuparu.sevendaystomine.world.level.block.WindTurbineBlock;
 import org.jetbrains.annotations.NotNull;
 

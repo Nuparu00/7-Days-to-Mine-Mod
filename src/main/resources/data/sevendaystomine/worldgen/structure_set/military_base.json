@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "sevendaystomine:military_base",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 2115023775,
+    "spacing": 80,
+    "separation": 35,
+    "type": "minecraft:random_spread"
+  }
+}

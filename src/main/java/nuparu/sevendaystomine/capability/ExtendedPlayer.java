@@ -4,7 +4,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
@@ -13,12 +15,12 @@ import nuparu.sevendaystomine.init.ModDamageSources;
 import nuparu.sevendaystomine.network.PacketManager;
 import nuparu.sevendaystomine.network.messages.ExtendedPlayerSyncMessage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ExtendedPlayer implements IExtendedPlayer{
 
     private final List<String> recipes = new ArrayList<>();
+    private final HashMap<ResourceLocation, Long> hordes = new HashMap<>();
     private int waterLevel = 20;
     private float saturationLevel;
     private float exhaustionLevel;
@@ -213,6 +215,26 @@ public class ExtendedPlayer implements IExtendedPlayer{
         }
     }
 
+    @Override
+    public void setLastHorde(ResourceLocation horde, long time) {
+        hordes.put(horde, time);
+    }
+
+    @Override
+    public long getLastHorde(ResourceLocation horde) {
+        return hordes.getOrDefault(horde, 0L);
+    }
+
+    @Override
+    public Optional<Tuple<ResourceLocation, Long>> getLastActualHordeHorde() {
+        try {
+            Map.Entry<ResourceLocation, Long> entry = Collections.max(hordes.entrySet(), Map.Entry.comparingByValue());
+            return Optional.of(new Tuple<>(entry.getKey(), entry.getValue()));
+        }
+        catch (NoSuchElementException e){
+            return Optional.empty();
+        }
+    }
     public void setDrinkCounter(int value){
         drinkCounter = value;
     }

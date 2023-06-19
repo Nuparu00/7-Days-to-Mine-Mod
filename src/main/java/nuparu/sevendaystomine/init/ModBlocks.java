@@ -1,9 +1,6 @@
 package nuparu.sevendaystomine.init;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -54,6 +51,9 @@ public class ModBlocks {
     public static final RegistryObject<WoodenFrameBlock> WARPED_FRAME = registerBlockWithItem("warped_planks_frame",
             () -> new WoodenFrameBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
                     .strength(0.8F, 2.0F).sound(SoundType.WOOD).noOcclusion()), true);
+    public static final RegistryObject<WoodenFrameBlock> MANGROVE_FRAME = registerBlockWithItem("mangrove_planks_frame",
+            () -> new WoodenFrameBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
+                    .strength(0.8F, 2.0F).sound(SoundType.WOOD).noOcclusion()), true);
     public static final RegistryObject<WoodenFrameBlock> BURNT_FRAME = registerBlockWithItem("burnt_frame",
             () -> new WoodenFrameBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK)
                     .strength(0.5F, 1.5F).sound(SoundType.WOOD).noOcclusion()), true);
@@ -89,6 +89,9 @@ public class ModBlocks {
     public static final RegistryObject<BlockBase> BURNT_PLANKS_REINFORCED = registerBlockWithItem("burnt_planks_reinforced",
             () -> new BlockBase(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK)
                     .strength(0.5F, 1.5F).sound(SoundType.WOOD)), true);
+    public static final RegistryObject<BlockBase> MANGROVE_PLANKS_REINFORCED = registerBlockWithItem("mangrove_planks_reinforced",
+            () -> new BlockBase(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
+                    .strength(0.8F, 2.0F).sound(SoundType.WOOD)), true);
 
     public static final RegistryObject<BlockBase> OAK_PLANKS_REINFORCED_IRON = registerBlockWithItem("oak_planks_reinforced_iron",
             () -> new BlockBase(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
@@ -112,6 +115,9 @@ public class ModBlocks {
             () -> new BlockBase(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
                     .strength(3.1F, 6.0F).sound(SoundType.WOOD)), true);
     public static final RegistryObject<BlockBase> WARPED_PLANKS_REINFORCED_IRON = registerBlockWithItem("warped_planks_reinforced_iron",
+            () -> new BlockBase(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
+                    .strength(3.1F, 6.0F).sound(SoundType.WOOD)), true);
+    public static final RegistryObject<BlockBase> MANGROVE_PLANKS_REINFORCED_IRON = registerBlockWithItem("mangrove_planks_reinforced_iron",
             () -> new BlockBase(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
                     .strength(3.1F, 6.0F).sound(SoundType.WOOD)), true);
     public static final RegistryObject<BlockBase> BURNT_PLANKS_REINFORCED_IRON = registerBlockWithItem("burnt_planks_reinforced_iron",
@@ -157,7 +163,12 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> LANTERN_UNLIT = registerBlockWithItem("lantern_unlit", () -> new LanternBlockBase(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN).noOcclusion()), true);
 
-    public static final RegistryObject<Block> BRICK_MOSSY = BLOCKS.register("brick_block_mossy",
+    public static final RegistryObject<Block> MARBLE = registerBlockWithItem("marble",
+            () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> MARBLE_COBBLESTONE = registerBlockWithItem("marble_cobblestone",
+            () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
+    public static final RegistryObject<Block> BRICK_MOSSY = registerBlockWithItem("brick_block_mossy",
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.BRICKS)));
     public static final RegistryObject<BlockBase> GRANITE_BRICKS = registerBlockWithItem("granite_bricks",
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
@@ -166,6 +177,8 @@ public class ModBlocks {
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
 
     public static final RegistryObject<BlockBase> ANDESITE_BRICKS = registerBlockWithItem("andesite_bricks",
+            () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
+    public static final RegistryObject<BlockBase> MARBLE_BRICKS = registerBlockWithItem("marble_bricks",
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
 
 
@@ -177,6 +190,8 @@ public class ModBlocks {
 
     public static final RegistryObject<BlockBase> MOSSY_ANDESITE_BRICKS = registerBlockWithItem("mossy_andesite_bricks",
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
+    public static final RegistryObject<BlockBase> MOSSY_MARBLE_BRICKS = registerBlockWithItem("mossy_marble_bricks",
+            () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
 
 
     public static final RegistryObject<BlockBase> CRACKED_GRANITE_BRICKS = registerBlockWithItem("cracked_granite_bricks",
@@ -186,6 +201,8 @@ public class ModBlocks {
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
 
     public static final RegistryObject<BlockBase> CRACKED_ANDESITE_BRICKS = registerBlockWithItem("cracked_andesite_bricks",
+            () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
+    public static final RegistryObject<BlockBase> CRACKED_MARBLE_BRICKS = registerBlockWithItem("cracked_marble_bricks",
             () -> new BlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)), true);
 
     public static final RegistryObject<StairBlockBase> BRICKS_MOSSY_STAIRS = registerBlockWithItem("brick_mossy_stairs",
@@ -200,6 +217,9 @@ public class ModBlocks {
     public static final RegistryObject<StairBlockBase> ANDESITE_BRICK_STAIRS = registerBlockWithItem("andesite_brick_stairs",
             () -> new StairBlockBase(() -> ANDESITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
 
+    public static final RegistryObject<StairBlockBase> MARBLE_BRICK_STAIRS = registerBlockWithItem("marble_brick_stairs",
+            () -> new StairBlockBase(() -> MARBLE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
+
     public static final RegistryObject<StairBlockBase> MOSSY_GRANITE_BRICK_STAIRS = registerBlockWithItem("mossy_granite_brick_stairs",
             () -> new StairBlockBase(() -> MOSSY_GRANITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
 
@@ -209,6 +229,9 @@ public class ModBlocks {
     public static final RegistryObject<StairBlockBase> MOSSY_ANDESITE_BRICK_STAIRS = registerBlockWithItem("mossy_andesite_brick_stairs",
             () -> new StairBlockBase(() -> MOSSY_ANDESITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
 
+    public static final RegistryObject<StairBlockBase> MOSSY_MARBLE_BRICK_STAIRS = registerBlockWithItem("mossy_marble_brick_stairs",
+            () -> new StairBlockBase(() -> MOSSY_MARBLE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
+
     public static final RegistryObject<StairBlockBase> CRACKED_GRANITE_BRICK_STAIRS = registerBlockWithItem("cracked_granite_brick_stairs",
             () -> new StairBlockBase(() -> CRACKED_GRANITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
 
@@ -216,6 +239,9 @@ public class ModBlocks {
             () -> new StairBlockBase(() -> CRACKED_DIORITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
 
     public static final RegistryObject<StairBlockBase> CRACKED_ANDESITE_BRICK_STAIRS = registerBlockWithItem("cracked_andesite_brick_stairs",
+            () -> new StairBlockBase(() -> CRACKED_ANDESITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
+
+    public static final RegistryObject<StairBlockBase> CRACKED_MARBLE_BRICK_STAIRS = registerBlockWithItem("cracked_marble_brick_stairs",
             () -> new StairBlockBase(() -> CRACKED_ANDESITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
 
     public static final RegistryObject<SlabBlockBase> BRICK_MOSSY_SLAB = registerBlockWithItem("brick_mossy_slab",
@@ -230,6 +256,15 @@ public class ModBlocks {
     public static final RegistryObject<SlabBlockBase> ANDESITE_BRICK_SLAB = registerBlockWithItem("andesite_brick_slab",
             () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
 
+    public static final RegistryObject<StairBlockBase> MARBLE_STAIRS = registerBlockWithItem("marble_stairs",
+            () -> new StairBlockBase(() -> MARBLE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
+
+    public static final RegistryObject<StairBlockBase> MARBLE_COBBLESTONE_STAIRS = registerBlockWithItem("marble_cobblestone_stairs",
+            () -> new StairBlockBase(() -> MARBLE_COBBLESTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_STAIRS)), true);
+
+    public static final RegistryObject<SlabBlockBase> MARBLE_BRICK_SLAB = registerBlockWithItem("marble_brick_slab",
+            () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
+
     public static final RegistryObject<SlabBlockBase> MOSSY_GRANITE_BRICK_SLAB = registerBlockWithItem("mossy_granite_brick_slab",
             () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
 
@@ -239,6 +274,9 @@ public class ModBlocks {
     public static final RegistryObject<SlabBlockBase> MOSSY_ANDESITE_BRICK_SLAB = registerBlockWithItem("mossy_andesite_brick_slab",
             () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
 
+    public static final RegistryObject<SlabBlockBase> MOSSY_MARBLE_BRICK_SLAB = registerBlockWithItem("mossy_marble_brick_slab",
+            () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
+
     public static final RegistryObject<SlabBlockBase> CRACKED_GRANITE_BRICK_SLAB = registerBlockWithItem("cracked_granite_brick_slab",
             () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
 
@@ -246,6 +284,15 @@ public class ModBlocks {
             () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
 
     public static final RegistryObject<SlabBlockBase> CRACKED_ANDESITE_BRICK_SLAB = registerBlockWithItem("cracked_andesite_brick_slab",
+            () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
+
+    public static final RegistryObject<SlabBlockBase> CRACKED_MARVLE_BRICK_SLAB = registerBlockWithItem("cracked_marble_brick_slab",
+            () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
+
+    public static final RegistryObject<SlabBlockBase> MARBLE_SLAB = registerBlockWithItem("marble_slab",
+            () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
+
+    public static final RegistryObject<SlabBlockBase> MARBLE_COBBLESTONE_SLAB = registerBlockWithItem("marble_cobblestone_slab",
             () -> new SlabBlockBase(BlockBehaviour.Properties.copy(Blocks.STONE_BRICK_SLAB)), true);
 
     public static final RegistryObject<BlockBase> WARPED_STONE_BRICKS = registerBlockWithItem("warped_stone_bricks",
@@ -343,6 +390,8 @@ public class ModBlocks {
             () -> new TableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f)), true);
     public static final RegistryObject<Block> TABLE_WARPED = registerBlockWithItem("warped_table",
             () -> new TableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f)), true);
+    public static final RegistryObject<Block> TABLE_MANGROVE = registerBlockWithItem("mangrove_table",
+            () -> new TableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f)), true);
     public static final RegistryObject<Block> TABLE_BURNT = registerBlockWithItem("burnt_table",
             () -> new TableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f)), true);
 
@@ -361,6 +410,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> CHAIR_CRIMSON = registerBlockWithItem("chair_crimson",
             () -> new ChairBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f)),true);
     public static final RegistryObject<Block> CHAIR_WARPED = registerBlockWithItem("chair_warped",
+            () -> new ChairBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f)),true);
+    public static final RegistryObject<Block> CHAIR_MANGROVE = registerBlockWithItem("chair_mangrove",
             () -> new ChairBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f)),true);
     public static final RegistryObject<Block> CHAIR_BURNT = registerBlockWithItem("chair_burnt",
             () -> new ChairBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f)),true);
@@ -556,10 +607,15 @@ public class ModBlocks {
             () -> new WritingTableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f).sound(SoundType.WOOD)));
     public static final RegistryObject<Block> FILE_CABINET = registerBlockWithItem("file_cabinet",
             () -> new FileCabinetBlock(BlockBehaviour.Properties.of(Material.METAL).strength(2.8f).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> MICROWAVE = registerBlockWithItem("microwave",
+            () -> new MicrowaveBlock(BlockBehaviour.Properties.of(Material.METAL).strength(2.8f).sound(SoundType.METAL)));
     public static final RegistryObject<Block> TOILET = registerBlockWithItem("toilet",
             () -> new ToiletBlock(BlockBehaviour.Properties.of(Material.METAL).strength(3f).sound(SoundType.METAL)));
     public static final RegistryObject<Block> TRASH_CAN = registerBlockWithItem("trash_can",
             () -> new TrashCanBlock(BlockBehaviour.Properties.of(Material.METAL).strength(3.5f).sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> TRASH_BIN = registerBlockWithItem("trash_bin",
+            () -> new TrashBinBlock(BlockBehaviour.Properties.of(Material.METAL).strength(1f).sound(SoundType.METAL)));
     public static final RegistryObject<Block> CASH_REGISTER = registerBlockWithItem("cash_register",
             () -> new CashRegisterBlock(BlockBehaviour.Properties.of(Material.METAL).strength(3.5f).sound(SoundType.METAL)));
     public static final RegistryObject<Block> GARBAGE = registerBlockWithItem("garbage",
@@ -583,6 +639,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> WARPED_BOOKSHELF = registerBlockWithItem("warped_bookshelf",
             () -> new BookshelfBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_PLANKS)));
     public static final RegistryObject<Block> CRIMSON_BOOKSHELF = registerBlockWithItem("crimson_bookshelf",
+            () -> new BookshelfBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_PLANKS)));
+
+    public static final RegistryObject<Block> MANGROVE_BOOKSHELF = registerBlockWithItem("mangrove_bookshelf",
             () -> new BookshelfBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_PLANKS)));
 
     public static final RegistryObject<Block> FRIDGE = registerBlockWithItem("fridge",
@@ -620,6 +679,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> WARPED_LOG_SPIKE = registerBlockWithItem("warped_log_spike",
             () -> new LogSpikeBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f).sound(SoundType.WOOD).noOcclusion().noCollission(),150,2f));
     public static final RegistryObject<Block> CRIMSON_LOG_SPIKE = registerBlockWithItem("crimson_log_spike",
+            () -> new LogSpikeBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f).sound(SoundType.WOOD).noOcclusion().noCollission(),150,2f));
+    public static final RegistryObject<Block> MANGROVE_LOG_SPIKE = registerBlockWithItem("mangrove_log_spike",
             () -> new LogSpikeBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2f).sound(SoundType.WOOD).noOcclusion().noCollission(),150,2f));
     public static final RegistryObject<Block> LANDMINE = registerBlockWithItem("landmine",
             () -> new LandmineBlock(BlockBehaviour.Properties.of(Material.METAL).strength(1f).sound(SoundType.METAL).noCollission(),3.5f));
@@ -693,6 +754,47 @@ public class ModBlocks {
             () -> new EnergyPoleBlock(BlockBehaviour.Properties.of(Material.WOOD)
                     .strength(1.5f).sound(SoundType.WOOD).noOcclusion()));
 
+    public static final RegistryObject<Block> MOSS_CARPET = registerBlockWithItem("moss_carpet",
+            () -> new DirectionalMossBlock(BlockBehaviour.Properties.copy(Blocks.MOSS_CARPET)));
+
+    public static final RegistryObject<Block> FAKE_ANVIL = registerBlockWithItem("fake_anvil",
+            () -> new FakeAnvilBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL)));
+
+    public static final RegistryObject<Block> LOCKED_OAK_DOOR = registerBlockWithItem("locked_oak_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR)));
+
+    public static final RegistryObject<Block> LOCKED_BIRCH_DOOR = registerBlockWithItem("locked_birch_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.BIRCH_DOOR)));
+
+    public static final RegistryObject<Block> LOCKED_SPRUCE_DOOR = registerBlockWithItem("locked_spruce_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.SPRUCE_DOOR)));
+
+    public static final RegistryObject<Block> LOCKED_JUNGLE_DOOR = registerBlockWithItem("locked_jungle_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.JUNGLE_DOOR)));
+
+    public static final RegistryObject<Block> LOCKED_ACACIA_DOOR = registerBlockWithItem("locked_acacia_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.ACACIA_DOOR)));
+
+    public static final RegistryObject<Block> LOCKED_DARK_OAK_DOOR = registerBlockWithItem("locked_dark_oak_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.DARK_OAK_DOOR)));
+
+    public static final RegistryObject<Block> LOCKED_WARPED_DOOR = registerBlockWithItem("locked_warped_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.WARPED_DOOR)));
+
+    public static final RegistryObject<Block> LOCKED_CRIMSON_DOOR = registerBlockWithItem("locked_crimson_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.CRIMSON_DOOR)));
+
+    public static final RegistryObject<Block> LOCKED_MANGROVE_DOOR = registerBlockWithItem("locked_mangrove_door",
+            () -> new LockedDoorBlockBase(BlockBehaviour.Properties.copy(Blocks.MANGROVE_DOOR)));
+
+    public static final RegistryObject<Block> MONITOR = registerBlockWithItem("monitor",
+            () -> new MonitorBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(1.5f)));
+
+    public static final RegistryObject<Block> COMPUTER = registerBlockWithItem("computer",
+            () -> new ComputerBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(2.5f)));
+
+    public static final RegistryObject<Block> TELEVISION = registerBlockWithItem("television",
+            () -> new TelevisionBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(2)));
 
     private static <BLOCK extends Block> RegistryObject<BLOCK> registerBlockWithItem(String name, Supplier<BLOCK> blockFactory, boolean hasItem) {
         RegistryObject<BLOCK> block = BLOCKS.register(name, blockFactory);

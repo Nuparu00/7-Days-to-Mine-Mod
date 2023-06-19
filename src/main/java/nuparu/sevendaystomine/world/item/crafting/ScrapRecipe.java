@@ -47,18 +47,18 @@ public class ScrapRecipe extends CustomRecipe {
                 Item item = itemstack.getItem();
                 if (ScrapDataManager.INSTANCE.hasEntry(item)) {
                     ScrapEntry entry = ScrapDataManager.INSTANCE.getEntry(item);
-                    if (!entry.canBeScrapped)
+                    if (!entry.canBeScrapped())
                         return false;
-                    if (entry.material != mat && mat != EnumMaterial.NONE)
+                    if (entry.material() != mat && mat != EnumMaterial.NONE)
                         return false;
-                    weight = weight.add(entry.weight.isFraction() ? entry.weight.asFraction() : Fraction.getFraction(entry.weight.asDouble()));
-                    mat = entry.material;
+                    weight = weight.add(entry.weight().isFraction() ? entry.weight().asFraction() : Fraction.getFraction(entry.weight().asDouble()));
+                    mat = entry.material();
                 } else {
                     return false;
                 }
             }
         }
-        if (weight == Fraction.ZERO)
+        if (weight.equals(Fraction.ZERO))
             return false;
         resultItem = new ItemStack(ItemUtils.getScrapResult(mat),
                 (int) Math.floor(weight.doubleValue() * ServerConfig.scrapCoefficient.get()));

@@ -15,10 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-@OnlyIn(Dist.CLIENT)
 public class GrillScreen extends AbstractContainerScreen<ContainerGrill> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/cooking_grill.png");
-	ContainerGrill container;
+	final ContainerGrill container;
 
 	public GrillScreen(ContainerGrill container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);

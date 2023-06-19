@@ -17,7 +17,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
@@ -83,7 +82,7 @@ public class WorldEventHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingDamage(LivingDamageEvent event) {
         if(event.getEntity().level.isClientSide()) return;
-        System.out.println(event.getEntity() + " " + event.getAmount());
+        //System.out.println(event.getEntity() + " " + event.getAmount());
         if(event.getAmount() <= 0) return;
         IExtendedEntity iee = CapabilityHelper.getExtendedEntity(event.getEntity());
         if(iee != null && iee.hasHorde()){

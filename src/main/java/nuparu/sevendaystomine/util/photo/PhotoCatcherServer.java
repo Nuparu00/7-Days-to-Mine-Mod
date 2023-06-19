@@ -15,7 +15,7 @@ public class PhotoCatcherServer {
 
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
 
-	public static HashMap<String, List<ByteMapItem>> byteMap = Maps.newHashMap();
+	public static final HashMap<String, List<ByteMapItem>> byteMap = Maps.newHashMap();
 
 	/*
 	 * Returns an image file if one could be generated
@@ -84,10 +84,10 @@ public class PhotoCatcherServer {
 	}
 
 	public static class ByteMapItem {
-		public byte[] bytes;
-		public int index;
-		public int parts;
-		public String nameBase;
+		public final byte[] bytes;
+		public final int index;
+		public final int parts;
+		public final String nameBase;
 
 		public ByteMapItem(byte[] bytes, int index, int parts, String nameBase) {
 			this.bytes = bytes;

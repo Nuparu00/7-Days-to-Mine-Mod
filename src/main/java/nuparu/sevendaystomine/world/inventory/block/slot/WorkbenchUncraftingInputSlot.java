@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 
 public class WorkbenchUncraftingInputSlot extends Slot {
-    ContainerWorkbenchUncrafting workbench;
+    final ContainerWorkbenchUncrafting workbench;
 
     public WorkbenchUncraftingInputSlot(Container container, int index, int xPosition, int yPosition, ContainerWorkbenchUncrafting workbench) {
         super(container, index, xPosition, yPosition);

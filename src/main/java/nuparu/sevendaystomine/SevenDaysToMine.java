@@ -31,7 +31,6 @@ import nuparu.sevendaystomine.proxy.ClientProxy;
 import nuparu.sevendaystomine.proxy.CommonProxy;
 import nuparu.sevendaystomine.world.item.crafting.DummyRecipe;
 import nuparu.sevendaystomine.world.item.quality.QualityManager;
-import nuparu.sevendaystomine.world.level.horde.HordeManager;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;

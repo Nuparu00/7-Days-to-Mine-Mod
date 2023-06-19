@@ -30,7 +30,6 @@ import nuparu.sevendaystomine.world.level.block.CookwareBlock;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GrillBlockEntity extends ItemHandlerBlockEntity implements Container {
@@ -264,26 +263,6 @@ public class GrillBlockEntity extends ItemHandlerBlockEntity implements Containe
         return currentRecipe == null ? 600 : currentRecipe.getCookingTime();
     }
 
-    public List<ItemStack> getActiveInventory() {
-        List<ItemStack> list = new ArrayList<>();
-        list.add(getInventory().getStackInSlot(EnumSlots.INPUT_SLOT.ordinal()));
-        list.add(getInventory().getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal()));
-        list.add(getInventory().getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal()));
-        list.add(getInventory().getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal()));
-        return list;
-    }
-
-    public ItemStack[][] getActiveInventoryAsArray() {
-        ItemStack[][] array = new ItemStack[2][2];
-
-        array[0][0] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT.ordinal());
-        array[0][1] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT2.ordinal());
-        array[1][0] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT3.ordinal());
-        array[1][1] = getInventory().getStackInSlot(EnumSlots.INPUT_SLOT4.ordinal());
-
-        return array;
-    }
-
     public boolean isUsableByPlayer(Player player) {
         if (this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
@@ -361,7 +340,7 @@ public class GrillBlockEntity extends ItemHandlerBlockEntity implements Containe
 
     @Override
     public void startOpen(@NotNull Player p_18955_) {
-        Container.super.startOpen(p_18955_);
+        super.startOpen(p_18955_);
     }
 
     @Override

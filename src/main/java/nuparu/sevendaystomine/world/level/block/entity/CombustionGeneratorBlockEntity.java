@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeHooks;
@@ -38,20 +37,14 @@ public class CombustionGeneratorBlockEntity extends ElectricityItemBlockHandler 
 
     public final ContainerData dataAccess = new ContainerData() {
         public int get(int p_221476_1_) {
-            switch (p_221476_1_) {
-                case 0:
-                    return CombustionGeneratorBlockEntity.this.burnTime;
-                case 1:
-                    return CombustionGeneratorBlockEntity.this.currentItemBurnTime;
-                case 2:
-                    return CombustionGeneratorBlockEntity.this.temperature;
-                case 3:
-                    return CombustionGeneratorBlockEntity.this.production;
-                case 4:
-                    return CombustionGeneratorBlockEntity.this.energyStorage.getEnergyStored();
-                default:
-                    return 0;
-            }
+            return switch (p_221476_1_) {
+                case 0 -> CombustionGeneratorBlockEntity.this.burnTime;
+                case 1 -> CombustionGeneratorBlockEntity.this.currentItemBurnTime;
+                case 2 -> CombustionGeneratorBlockEntity.this.temperature;
+                case 3 -> CombustionGeneratorBlockEntity.this.production;
+                case 4 -> CombustionGeneratorBlockEntity.this.energyStorage.getEnergyStored();
+                default -> 0;
+            };
         }
 
         public void set(int p_221477_1_, int p_221477_2_) {

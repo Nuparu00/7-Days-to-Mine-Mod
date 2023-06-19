@@ -1,25 +1,12 @@
 package nuparu.sevendaystomine.capability;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameRules;
-import nuparu.sevendaystomine.config.ServerConfig;
-import nuparu.sevendaystomine.init.ModDamageSources;
-import nuparu.sevendaystomine.network.PacketManager;
-import nuparu.sevendaystomine.network.messages.ExtendedPlayerSyncMessage;
 import nuparu.sevendaystomine.world.level.horde.Horde;
 import nuparu.sevendaystomine.world.level.horde.HordeManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class ExtendedEntity implements IExtendedEntity{

@@ -23,7 +23,7 @@ import nuparu.sevendaystomine.world.entity.EntityUtils;
 import java.util.function.Supplier;
 
 public class PlayerDrinkMessage {
-    BlockPos pos;
+    final BlockPos pos;
 
     public PlayerDrinkMessage() {
         pos = null;

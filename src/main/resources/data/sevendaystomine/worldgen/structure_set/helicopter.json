@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "sevendaystomine:helicopter",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1190010423,
+    "spacing": 50,
+    "separation": 20,
+    "type": "minecraft:random_spread"
+  }
+}

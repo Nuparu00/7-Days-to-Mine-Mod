@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "sevendaystomine:block/marble_cobblestone_slab"
+    },
+    "type=double": {
+      "model": "sevendaystomine:block/marble_cobblestone"
+    },
+    "type=top": {
+      "model": "sevendaystomine:block/marble_cobblestone_slab_top"
+    }
+  }
+}

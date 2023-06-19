@@ -12,7 +12,7 @@ import nuparu.sevendaystomine.world.level.block.entity.SpikesBlockEntity;
 
 public class LogSpikeBlock extends SpikeBlock {
 
-    float damagePerBlock;
+    final float damagePerBlock;
 
     public LogSpikeBlock(Properties p_49795_, int maxHealth, float damage) {
         super(p_49795_, maxHealth, (int)damage);

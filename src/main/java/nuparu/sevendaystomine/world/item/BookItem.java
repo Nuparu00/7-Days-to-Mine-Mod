@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BookItem extends Item {
-    public boolean unlocksRecipes;
+    public final boolean unlocksRecipes;
     public BookItem(Properties properties, boolean unlocksRecipes) {
         super(properties.stacksTo(1).tab(ModCreativeModeTabs.TAB_BOOKS));
         this.unlocksRecipes = unlocksRecipes;

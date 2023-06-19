@@ -1,0 +1,15 @@
+{
+	"name": "sevendaystomine:city/lamps",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 6,
+			"element": {
+				"location": "sevendaystomine:city/streets/decoration/lamp",
+				"processors": "sevendaystomine:age_processors",
+				"projection": "rigid",
+				"element_type": "minecraft:single_pool_element"
+			}
+		}
+	]
+}

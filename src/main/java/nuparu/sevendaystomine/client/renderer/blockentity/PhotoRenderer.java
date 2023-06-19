@@ -60,7 +60,7 @@ public class PhotoRenderer implements BlockEntityRenderer<PhotoBlockEntity> {
                 return;
             }
 
-            int shape = Integer.compare(te.image.height, te.image.width);
+            int shape = Integer.compare(te.image.height(), te.image.width());
 
             float w = 16;
             float h = 16;
@@ -68,13 +68,13 @@ public class PhotoRenderer implements BlockEntityRenderer<PhotoBlockEntity> {
             //Controls the shape of the photo - portrait vs landscape
             if (shape < 0) {
                 w = w * 0.75f;
-                h = ((float) te.image.height / (float) te.image.width) * w;
+                h = ((float) te.image.height() / (float) te.image.width()) * w;
             } else if (shape == 0) {
                 h = h * 0.75f;
                 w = h;
             } else {
                 h = h * 0.75f;
-                w = ((float) te.image.width / (float) te.image.height) * h;
+                w = ((float) te.image.width() / (float) te.image.height()) * h;
             }
 
             float f = direction.toYRot();
@@ -88,7 +88,7 @@ public class PhotoRenderer implements BlockEntityRenderer<PhotoBlockEntity> {
             matrixStack.scale(0.0625f, 0.0625f, 0.0625f);
             RenderSystem.enableDepthTest();
             drawTexturedRect(matrixStack, WHITE_1X1,buffer, -1,-1,0,0,w+2,h+2,1,1,1,0.1f,combinedLight,combinedOverlay);
-            drawTexturedRect(matrixStack, te.image.res,buffer, 0,0,0,0,w,h,w,h,1,0,combinedLight,combinedOverlay);
+            drawTexturedRect(matrixStack, te.image.res(),buffer, 0,0,0,0,w,h,w,h,1,0,combinedLight,combinedOverlay);
             RenderSystem.disableDepthTest();
             matrixStack.popPose();
         }

@@ -65,17 +65,13 @@ public class BookshelfBlock extends WaterloggableHorizontalBlockBase implements 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
                                         @NotNull CollisionContext p_220053_4_) {
-        switch (state.getValue(FACING)) {
-            default:
-            case NORTH:
-                return NORTH;
-            case SOUTH:
-                return SOUTH;
-            case WEST:
-                return WEST;
-            case EAST:
-                return EAST;
-        }
+        return switch (state.getValue(FACING)) {
+            case NORTH -> NORTH;
+            case SOUTH -> SOUTH;
+            case WEST -> WEST;
+            case EAST -> EAST;
+            default -> NORTH;
+        };
     }
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player player,

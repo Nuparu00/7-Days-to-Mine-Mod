@@ -3,7 +3,7 @@ package nuparu.sevendaystomine.world.item.quality;
 public class QualityTier {
 
     private final String unlocalizedName;
-    public int textColor;
+    public final int textColor;
     private final int startLevel;
     private final int endLevel;
 

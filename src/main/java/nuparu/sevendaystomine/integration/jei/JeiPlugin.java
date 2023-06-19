@@ -35,7 +35,6 @@ import nuparu.sevendaystomine.world.item.EnumMaterial;
 import nuparu.sevendaystomine.world.item.crafting.ILockedRecipe;
 import nuparu.sevendaystomine.world.item.crafting.chemistry.ChemistryRecipeShapeless;
 import nuparu.sevendaystomine.world.item.crafting.cooking.CookingShapeless;
-import nuparu.sevendaystomine.world.item.crafting.cooking.ICookingRecipe;
 import nuparu.sevendaystomine.world.item.crafting.forge.ForgeRecipeMaterial;
 
 import javax.annotation.Nonnull;
@@ -104,7 +103,7 @@ public class JeiPlugin implements IModPlugin {
     public <T extends Recipe> List<T>  getRecipesForClass(Class<T> clazz, RecipeManager recipeManager){
         List<T> recipes = new ArrayList<>();
         for(Recipe recipe : recipeManager.getAllRecipesFor(ModRecipeTypes.FORGE_RECIPE_TYPE.get()).stream()
-                .filter(recipe -> clazz.isAssignableFrom(recipe.getClass())).collect(Collectors.toList())){
+                .filter(recipe -> clazz.isAssignableFrom(recipe.getClass())).toList()){
             recipes.add((T) recipe);
         }
         return recipes;
@@ -122,22 +121,22 @@ public class JeiPlugin implements IModPlugin {
                 //ItemStack scrapResult = ScrapDataManager.instance.getScrapResult(material);
                 ScrapEntry scrapResult = ScrapDataManager.INSTANCE.getScrapResult(material);
                 for(ScrapEntry entry : ScrapDataManager.INSTANCE.getScraps()){
-                    if(entry.item == null || !entry.canBeScrapped)
+                    if(entry.item() == null || !entry.canBeScrapped())
                         continue;
-                    if(entry.material == material) {
-                        if (entry.weight.asDouble() > scrapResult.weight.asDouble()) {
+                    if(entry.material() == material) {
+                        if (entry.weight().asDouble() > scrapResult.weight().asDouble()) {
                             NonNullList<Ingredient> ingredients = NonNullList.create();
-                            ingredients.add(Ingredient.of(new ItemStack(entry.item,1)));
+                            ingredients.add(Ingredient.of(new ItemStack(entry.item(),1)));
                             if(ingredients.get(0).isEmpty()) continue;
-                            result.add(new ShapelessRecipe(new ResourceLocation(SevenDaysToMine.MODID,"crafting/scrap"),"", new ItemStack(scrapResult.item, (int) Math.floor(entry.weight.asDouble() * ServerConfig.scrapCoefficient.get())), ingredients));
+                            result.add(new ShapelessRecipe(new ResourceLocation(SevenDaysToMine.MODID,"crafting/scrap"),"", new ItemStack(scrapResult.item(), (int) Math.floor(entry.weight().asDouble() * ServerConfig.scrapCoefficient.get())), ingredients));
                         }
                         else{
-                            int inputCount = (int)Math.ceil(1d/(entry.weight.asDouble() * ServerConfig.scrapCoefficient.get()));
+                            int inputCount = (int)Math.ceil(1d/(entry.weight().asDouble() * ServerConfig.scrapCoefficient.get()));
                             if(inputCount < 1) continue;
                             NonNullList<Ingredient> ingredients = NonNullList.create();
-                            ingredients.add(Ingredient.of(new ItemStack(entry.item,inputCount)));
+                            ingredients.add(Ingredient.of(new ItemStack(entry.item(),inputCount)));
                             if(ingredients.get(0).isEmpty()) continue;
-                            result.add(new ShapelessRecipe(new ResourceLocation(SevenDaysToMine.MODID,"crafting/scrap"),"scrap", new ItemStack(scrapResult.item, (int) Math.floor(entry.weight.asDouble() * inputCount * ServerConfig.scrapCoefficient.get())),ingredients));
+                            result.add(new ShapelessRecipe(new ResourceLocation(SevenDaysToMine.MODID,"crafting/scrap"),"scrap", new ItemStack(scrapResult.item(), (int) Math.floor(entry.weight().asDouble() * inputCount * ServerConfig.scrapCoefficient.get())),ingredients));
                         }
                     }
                 }

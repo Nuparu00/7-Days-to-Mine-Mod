@@ -29,11 +29,12 @@ import nuparu.sevendaystomine.world.item.quality.QualityManager;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.Map;
 
 public class QualityShapelessRecipe extends ShapelessRecipe implements ILockedRecipe{
 
+	@SuppressWarnings("CanBeFinal")
 	String recipe;
+	@SuppressWarnings("CanBeFinal")
 	boolean quality;
 
 	public QualityShapelessRecipe(ResourceLocation p_i48161_1_, String p_i48161_2_, ItemStack p_i48161_3_,

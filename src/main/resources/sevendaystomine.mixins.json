@@ -11,6 +11,7 @@
     "MixinRandomizableContainerBlockEntity"
   ],
   "client": [
+    "MixinStructureBlockRenderer",
     "MixinWorldRenderer"
   ],
   "injectors": {

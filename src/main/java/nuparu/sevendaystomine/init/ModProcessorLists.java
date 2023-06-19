@@ -5,8 +5,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.level.levelgen.processor.BookshelfProcessor;
 

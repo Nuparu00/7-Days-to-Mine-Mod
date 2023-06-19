@@ -8,12 +8,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-public class ShowerHeadBlock extends WaterloggableHorizontalBlockBase {
+public class ShowerHeadBlock extends WallAttachedBlockBase {
 
-    public VoxelShape NORTH = Block.box(5, 8, 6, 13, 14, 16);
-    public VoxelShape SOUTH = Block.box(5, 8, 0.0F, 13, 14, 10);
-    public VoxelShape WEST = Block.box(6, 8, 5, 16, 14, 13);
-    public VoxelShape EAST = Block.box(0.0F, 8, 5, 10, 14, 13);
+    public final VoxelShape NORTH = Block.box(5, 8, 6, 13, 14, 16);
+    public final VoxelShape SOUTH = Block.box(5, 8, 0.0F, 13, 14, 10);
+    public final VoxelShape WEST = Block.box(6, 8, 5, 16, 14, 13);
+    public final VoxelShape EAST = Block.box(0.0F, 8, 5, 10, 14, 13);
 
     public ShowerHeadBlock(Properties p_49795_) {
         super(p_49795_);
@@ -21,17 +21,13 @@ public class ShowerHeadBlock extends WaterloggableHorizontalBlockBase {
     @Override
     public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
                                         @NotNull CollisionContext p_220053_4_) {
-        switch (state.getValue(FACING)) {
-            default:
-            case NORTH:
-                return NORTH;
-            case SOUTH:
-                return SOUTH;
-            case WEST:
-                return WEST;
-            case EAST:
-                return EAST;
-        }
+        return switch (state.getValue(FACING)) {
+            case NORTH -> NORTH;
+            case SOUTH -> SOUTH;
+            case WEST -> WEST;
+            case EAST -> EAST;
+            default -> NORTH;
+        };
 
     }
 }

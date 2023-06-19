@@ -8,6 +8,7 @@ import nuparu.sevendaystomine.config.ServerConfig;
 import nuparu.sevendaystomine.util.photo.PhotoCatcherClient;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.function.Supplier;
 
 public class PhotoToClientMessage{
@@ -54,8 +55,14 @@ public class PhotoToClientMessage{
 
 			ctx.get().enqueueWork(() -> {
 				if (!ServerConfig.allowPhotos.get()) return;
-				File file = PhotoCatcherClient.addBytesToMap(msg.bytes, msg.parts, msg.index,
-						msg.name);
+				File file;
+				try {
+					file = PhotoCatcherClient.addBytesToMap(msg.bytes, msg.parts, msg.index,
+							msg.name);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return;
+				}
 
 				if (file == null)
 					return;

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class BloatedZombieRenderer<T extends BloatedZombieEntity, M extends BloatedZombieModel<T>>
 		extends MobRenderer<T, M> {
 
-	public RedEyesLayer redEyesLayer;
+	public final RedEyesLayer redEyesLayer;
 
 	private static final ResourceLocation ZOMBIE_LOCATION = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/entity/zombie/bloated_zombie.png");

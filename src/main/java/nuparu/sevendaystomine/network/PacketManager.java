@@ -20,42 +20,42 @@ public class PacketManager {
 
     private static final String PROTOCOL_VERSION = Integer.toString(1);
 
-    public static SimpleChannel extendedPlayerSync = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel extendedPlayerSync = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "extended_player_sync"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel playerDrink = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel playerDrink = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "player_drink"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel blockBreakSync = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel blockBreakSync = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "block_break_sync"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel blockBreakSyncTracking = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel blockBreakSyncTracking = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "block_break_sync_tracking"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel openGuiClient = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel openGuiClient = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "open_gui_client"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel safeCodeUpdate = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel safeCodeUpdate = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "safe_code_reload"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
@@ -63,54 +63,54 @@ public class PacketManager {
             .simpleChannel();
 
 
-    public static SimpleChannel syncTileEntity = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel syncTileEntity = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "sync_tile_entity"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel honk = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel honk = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "honk"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel gunReload = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel gunReload = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "gun_reload"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel schedulePhoto = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel schedulePhoto = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "schedule_photo"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel photoToServer = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel photoToServer = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "photo_to_server"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
-    public static SimpleChannel photoRequest = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel photoRequest = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "photo_request"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
-    public static SimpleChannel photoToClient = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel photoToClient = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "photo_to_client"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
 
-    public static SimpleChannel cameraDimensions = NetworkRegistry.ChannelBuilder
+    public static final SimpleChannel cameraDimensions = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(SevenDaysToMine.MODID, "camera_dimensions"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)

@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 
 public class WorkbenchScrapSlot extends SlotItemHandler {
     private final ResourceLocation NO_SCRAP_SLOT = new ResourceLocation(SevenDaysToMine.MODID, "items/empty_scrap_slot");
-    ContainerWorkbenchUncrafting container;
+    final ContainerWorkbenchUncrafting container;
 
     public WorkbenchScrapSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, ContainerWorkbenchUncrafting container) {
         super(itemHandler, index, xPosition, yPosition);

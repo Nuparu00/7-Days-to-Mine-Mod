@@ -16,21 +16,23 @@
       "experience": 1
    },
    "parent": "sevendaystomine:survival/small_stone",
-   "criteria":{
-      "has_axe":{
-         "trigger":"minecraft:inventory_changed",
-         "conditions":{
-            "items":[
+   "criteria": {
+      "item": {
+         "conditions": {
+            "items": [
                {
-                  "item":"minecraft:stone_axe"
+                  "items": [
+                     "minecraft:stone_axe"
+                  ]
                }
             ]
-         }
+         },
+         "trigger": "minecraft:inventory_changed"
       }
    },
-   "requirements":[
+   "requirements": [
       [
-         "has_axe"
+         "item"
       ]
    ]
 }

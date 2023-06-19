@@ -12,8 +12,6 @@ import nuparu.sevendaystomine.json.horde.time.Time;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public record HordeEntry(ResourceLocation path, boolean checkForActiveHorde, Trigger trigger, Range<Integer> waves, int wavesDelay, List<HordePool> startPools, List<HordePool> normalPools, List<HordePool> endPools, AdvancementRewards rewards) {
 

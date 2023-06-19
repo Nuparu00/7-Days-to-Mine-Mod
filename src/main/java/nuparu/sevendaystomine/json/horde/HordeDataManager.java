@@ -32,6 +32,8 @@ public class HordeDataManager extends SimpleJsonResourceReloadListener {
 
     private final HashMap<ResourceLocation, HordeEntry> hordes = new HashMap<>();
 
+    private final List<HordeEntry> randomHordes = new ArrayList<>();
+
 
     public HordeDataManager() {
         super(GSON, "hordes");
@@ -117,6 +119,9 @@ public class HordeDataManager extends SimpleJsonResourceReloadListener {
 
                 HordeEntry hordeEntry = new HordeEntry(key,checkForActiveHorde,trigger,waves, wavesDelay,startPools, normalPools, endPools, rewards);
                 hordes.put(key,hordeEntry);
+                if(trigger.time() instanceof RandomTime){
+                    randomHordes.add(hordeEntry);
+                }
             }
             catch (Exception e){
                 SevenDaysToMine.LOGGER.error("An error occurred while trying to load horde (" + key.toString() + ") :" + e.getMessage());
@@ -208,5 +213,9 @@ public class HordeDataManager extends SimpleJsonResourceReloadListener {
             case "random" -> new RandomTime(GsonHelper.getAsFloat(timeJson,"chance", 0.00004166666f));
             default -> null;
         };
+    }
+
+    public List<HordeEntry> getRandomHordes() {
+        return randomHordes;
     }
 }

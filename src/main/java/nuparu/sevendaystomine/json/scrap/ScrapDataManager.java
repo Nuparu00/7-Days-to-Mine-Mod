@@ -77,7 +77,7 @@ public class ScrapDataManager extends SimpleJsonResourceReloadListener {
     }
     public boolean hasEntry(Item item){
         for(ScrapEntry entry : scraps){
-            if(entry.item == item){
+            if(entry.item() == item){
                 return true;
             }
         }
@@ -86,7 +86,7 @@ public class ScrapDataManager extends SimpleJsonResourceReloadListener {
 
     public ScrapEntry getEntry(Item item){
         for(ScrapEntry entry : scraps){
-            if(entry.item == item){
+            if(entry.item() == item){
                 return entry;
             }
         }

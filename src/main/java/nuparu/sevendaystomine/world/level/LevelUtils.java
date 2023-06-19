@@ -107,7 +107,7 @@ public class LevelUtils {
         UpgradeEntry upgradeEntry = UpgradeDataManager.INSTANCE.getDowngradeFromEntry(state);
         if(upgradeEntry != null){
             if(accessor instanceof Level level) {
-                for (IngredientStack stack : upgradeEntry.ingredients) {
+                for (IngredientStack stack : upgradeEntry.ingredients()) {
                     int count = accessor.getRandom().nextInt(stack.count() + 1);
                     if (count == 0) continue;
                     Ingredient ingredient = stack.ingredient();

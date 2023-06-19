@@ -29,7 +29,7 @@ public class ItemUtils {
     public static Item getScrapResult(EnumMaterial mat) {
         ScrapEntry scrapEntry = ScrapDataManager.INSTANCE.getScrapResult(mat);
         if(scrapEntry != null){
-            return scrapEntry.item;
+            return scrapEntry.item();
         }
         return null;
     }

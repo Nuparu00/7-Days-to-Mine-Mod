@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class CrawlerZombieRenderer<T extends CrawlerZombieEntity, M extends CrawlerZombieModel<T>>
 		extends MobRenderer<T, M> {
 
-	public RedEyesLayer redEyesLayer;
+	public final RedEyesLayer redEyesLayer;
 
 	private static final ResourceLocation ZOMBIE_LOCATION = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/entity/zombie/zombie_crawler.png");

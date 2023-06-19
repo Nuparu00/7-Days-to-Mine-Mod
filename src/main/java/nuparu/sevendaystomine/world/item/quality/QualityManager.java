@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QualityManager {
-    private static ArrayList<QualityTier> tiers = new ArrayList<>();
+    private static final ArrayList<QualityTier> tiers = new ArrayList<>();
     private static int maxLevel = 0;
 
     private static final QualityTier NONE = new QualityTier("none", Integer.MIN_VALUE,0,0xffffff);
@@ -21,7 +21,7 @@ public class QualityManager {
         List<? extends Integer> colors = ServerConfig.qualityTierColors.get();
 
         if(names.size() != breakpoints.size()){
-            SevenDaysToMine.LOGGER.warn("The length of the server config property qualityTierNames(%d) is not the same as the length of qualityTierBreakpoints(%d)!",names.size(),breakpoints.size());
+            SevenDaysToMine.LOGGER.warn("The length of the server config property qualityTierNames({}) is not the same as the length of qualityTierBreakpoints({})!",names.size(),breakpoints.size());
         }
         int size = Math.min(names.size(),breakpoints.size());
 

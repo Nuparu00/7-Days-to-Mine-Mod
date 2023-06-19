@@ -19,7 +19,6 @@ import nuparu.sevendaystomine.network.messages.SafeCodeMessage;
 import nuparu.sevendaystomine.world.level.block.entity.CodeSafeBlockEntity;
 import org.jetbrains.annotations.NotNull;
 
-@OnlyIn(Dist.CLIENT)
 public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,
@@ -141,7 +140,7 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 	
 	public static class CodeButton extends Button {
 
-		public int id;
+		public final int id;
 		
 		public CodeButton(int id, int p_i232255_1_, int p_i232255_2_, int p_i232255_3_, int p_i232255_4_,
 				Component p_i232255_5_, Button.OnPress p_i232255_6_) {

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=down": { "model": "minecraft:block/moss_carpet", "x": 180 },
+        "facing=up": { "model": "minecraft:block/moss_carpet"},
+        "facing=west": { "model": "minecraft:block/moss_carpet", "x": 90, "y" : 270 },
+        "facing=north": { "model": "minecraft:block/moss_carpet", "x": 90 },
+        "facing=south": { "model": "minecraft:block/moss_carpet", "x": 270 },
+        "facing=east": { "model": "minecraft:block/moss_carpet", "x": 90, "y" : 90 }
+    }
+}

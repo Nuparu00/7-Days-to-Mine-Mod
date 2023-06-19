@@ -1,0 +1,9 @@
+{
+    "parent": "sevendaystomine:block/log_spike",
+    "textures": {
+        "0": "block/stripped_mangrove_log",
+        "1": "block/mangrove_log",
+        "2": "block/mangrove_log_top",
+        "particle": "block/stripped_mangrove_log"
+    }
+}

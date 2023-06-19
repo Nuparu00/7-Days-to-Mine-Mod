@@ -58,21 +58,21 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
             if(stack.isEmpty()) continue;
             if(!ScrapDataManager.INSTANCE.hasEntry(stack)) return false;
             MaterialStack materialStack = ScrapDataManager.INSTANCE.getEntry(stack).toMaterialStack();
-            Fraction weight = materialStack.weight.asFraction().multiplyBy(Fraction.getFraction(stack.getCount()));
-            if(invMap.containsKey(materialStack.material)){
-                weight = weight.add(invMap.get(materialStack.material));
+            Fraction weight = materialStack.weight().asFraction().multiplyBy(Fraction.getFraction(stack.getCount()));
+            if(invMap.containsKey(materialStack.material())){
+                weight = weight.add(invMap.get(materialStack.material()));
             }
-            invMap.put(materialStack.material,weight);
+            invMap.put(materialStack.material(),weight);
         }
 
         if(invMap.size() != ingredients.size()) return false;
 
         Fraction ratio = null;
         for(MaterialStack materialStack : ingredients){
-            EnumMaterial material = materialStack.material;
+            EnumMaterial material = materialStack.material();
             if(!invMap.containsKey(material)) return false;
-            if(invMap.get(material).compareTo(materialStack.weight.asFraction()) < 0) return false;
-            Fraction r = invMap.get(material).divideBy(materialStack.weight.asFraction());
+            if(invMap.get(material).compareTo(materialStack.weight().asFraction()) < 0) return false;
+            Fraction r = invMap.get(material).divideBy(materialStack.weight().asFraction());
             if(ratio == null){
                 ratio = r;
                 continue;
@@ -92,21 +92,21 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
             if(stack.isEmpty()) continue;
             if(!ScrapDataManager.INSTANCE.hasEntry(stack)) return null;
             MaterialStack materialStack = ScrapDataManager.INSTANCE.getEntry(stack).toMaterialStack();
-            Fraction weight = materialStack.weight.asFraction().multiplyBy(Fraction.getFraction(stack.getCount()));
-            if(invMap.containsKey(materialStack.material)){
-                weight = weight.add(invMap.get(materialStack.material));
+            Fraction weight = materialStack.weight().asFraction().multiplyBy(Fraction.getFraction(stack.getCount()));
+            if(invMap.containsKey(materialStack.material())){
+                weight = weight.add(invMap.get(materialStack.material()));
             }
-            invMap.put(materialStack.material,weight);
+            invMap.put(materialStack.material(),weight);
         }
 
         if(invMap.size() != ingredients.size()) return null;
 
         Fraction ratio = null;
         for(MaterialStack materialStack : ingredients){
-            EnumMaterial material = materialStack.material;
+            EnumMaterial material = materialStack.material();
             if(!invMap.containsKey(material)) return null;
-            if(invMap.get(material).compareTo(materialStack.weight.asFraction()) < 0) return null;
-            Fraction r = invMap.get(material).divideBy(materialStack.weight.asFraction());
+            if(invMap.get(material).compareTo(materialStack.weight().asFraction()) < 0) return null;
+            Fraction r = invMap.get(material).divideBy(materialStack.weight().asFraction());
             if(ratio == null){
                 ratio = r;
                 continue;
@@ -143,8 +143,8 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
         ArrayList<ItemStack> rest = new ArrayList<>();
 
         for(MaterialStack materialStack : ingredients){
-            EnumMaterial material = materialStack.material;
-            Fraction weightToConsume = materialStack.weight.asFraction().multiplyBy(wholeRatioAsFraction);
+            EnumMaterial material = materialStack.material();
+            Fraction weightToConsume = materialStack.weight().asFraction().multiplyBy(wholeRatioAsFraction);
             ItemStack stack = consumeWeight(forge,material,weightToConsume);
             if(!stack.isEmpty()) {
                 rest.add(stack);
@@ -184,12 +184,12 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
             ItemStack stack = inv.get(i);
             if(!ScrapDataManager.INSTANCE.hasEntry(stack)) continue;
             MaterialStack materialStack = ScrapDataManager.INSTANCE.getEntry(stack).toMaterialStack();
-            if(materialStack.material!=material) continue;
-            Fraction weight = materialStack.weight.asFraction().multiplyBy(Fraction.getFraction(stack.getCount()));
+            if(materialStack.material()!=material) continue;
+            Fraction weight = materialStack.weight().asFraction().multiplyBy(Fraction.getFraction(stack.getCount()));
 
             Fraction currentConsume = weight.compareTo(weightToConsume) < 0 ? weight : weightToConsume;
-            int itemCount = currentConsume.divideBy(materialStack.weight.asFraction()).getProperWhole();
-            Fraction consumedWeight = materialStack.weight.asFraction().multiplyBy(Fraction.getFraction(itemCount));
+            int itemCount = currentConsume.divideBy(materialStack.weight().asFraction()).getProperWhole();
+            Fraction consumedWeight = materialStack.weight().asFraction().multiplyBy(Fraction.getFraction(itemCount));
 
             weightToConsume= weightToConsume.subtract(consumedWeight);
 
@@ -265,7 +265,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     public static class Factory implements RecipeSerializer<ForgeRecipeMaterial> {
-        int defaultCookingTime = 600;
+        final int defaultCookingTime = 600;
 
         @Override
         public @NotNull ForgeRecipeMaterial fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {

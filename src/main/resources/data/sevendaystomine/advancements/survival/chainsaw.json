@@ -15,21 +15,23 @@
       "experience": 1
    },
    "parent": "sevendaystomine:survival/steel_pickaxe",
-   "criteria":{
-      "has_gun":{
-         "trigger":"minecraft:inventory_changed",
-         "conditions":{
-            "items":[
+   "criteria": {
+      "item": {
+         "conditions": {
+            "items": [
                {
-                  "item":"sevendaystomine:chainsaw"
+                  "items": [
+                     "sevendaystomine:chainsaw"
+                  ]
                }
             ]
-         }
+         },
+         "trigger": "minecraft:inventory_changed"
       }
    },
-   "requirements":[
+   "requirements": [
       [
-         "has_gun"
+         "item"
       ]
    ]
 }

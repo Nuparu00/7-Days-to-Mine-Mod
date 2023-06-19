@@ -7,7 +7,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.config.ClientConfig;

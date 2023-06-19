@@ -13,14 +13,21 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class HorizontalBlockBase extends HorizontalDirectionalBlock implements IBlockBase {
+
+    private final boolean invertedRotation;
     protected HorizontalBlockBase(Properties p_54120_) {
+        this(p_54120_, false);
+    }
+
+    protected HorizontalBlockBase(Properties p_54120_, boolean invertedRotation) {
         super(p_54120_);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.SOUTH));
+        this.invertedRotation = invertedRotation;
     }
 
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext p_53304_) {
-        return super.getStateForPlacement(p_53304_).setValue(FACING, p_53304_.getHorizontalDirection());
+        return super.getStateForPlacement(p_53304_).setValue(FACING, invertedRotation ? p_53304_.getHorizontalDirection().getOpposite() : p_53304_.getHorizontalDirection());
     }
 
     @Override

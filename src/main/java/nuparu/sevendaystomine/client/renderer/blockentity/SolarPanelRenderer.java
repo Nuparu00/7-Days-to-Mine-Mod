@@ -23,9 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.init.ModBlocks;
-import nuparu.sevendaystomine.world.level.block.GlobeBlock;
 import nuparu.sevendaystomine.world.level.block.SolarPanelBlock;
-import nuparu.sevendaystomine.world.level.block.entity.GlobeBlockEntity;
 import nuparu.sevendaystomine.world.level.block.entity.SolarPanelBlockEntity;
 import org.jetbrains.annotations.NotNull;
 

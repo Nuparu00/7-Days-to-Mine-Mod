@@ -21,14 +21,9 @@ public class PhotoCatcherClient {
 	/*
 	 * Returns an image file if one could be generated
 	 */
-	public static File addBytesToMap(byte[] bytes, int parts, int index, String name) {
+	public static File addBytesToMap(byte[] bytes, int parts, int index, String name) throws IOException {
 		if (parts == 1 && index == 0) {
-			try {
-				return finish(bytes, name);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
+			return finish(bytes, name);
 		}
 		if (!byteMap.containsKey(name)) {
 			byteMap.put(name, new ArrayList<>(Collections.singletonList(new ByteMapItem(bytes, index, parts))));
@@ -36,12 +31,7 @@ public class PhotoCatcherClient {
 			List<ByteMapItem> existingByteMapItems = byteMap.get(name);
 			existingByteMapItems.add(new ByteMapItem(bytes, index, parts));
 			if (existingByteMapItems.size() == parts) {
-				try {
-					return finish(byteMapToBytes(existingByteMapItems), name);
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
-				}
+				return finish(byteMapToBytes(existingByteMapItems), name);
 			}
 		}
 		return null;
@@ -62,7 +52,7 @@ public class PhotoCatcherClient {
 		return outputStream.toByteArray();
 	}
 
-	public static File finish(byte[] bytes, String name) throws IOException {
+	public static File finish(byte[] bytes, String name) {
 		File file = getTempFile(name);
 		file.deleteOnExit();
 		file.getParentFile().mkdirs();
@@ -91,16 +81,7 @@ public class PhotoCatcherClient {
 		return file;
 	}
 
-	public static class ByteMapItem {
-		public byte[] bytes;
-		public int index;
-		public int parts;
-
-		public ByteMapItem(byte[] bytes, int index, int parts) {
-			this.bytes = bytes;
-			this.index = index;
-			this.parts = parts;
-		}
+	public record ByteMapItem(byte[] bytes, int index, int parts) {
 	}
 
 	private static File getTempFile(String name) {

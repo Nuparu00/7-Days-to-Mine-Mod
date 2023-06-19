@@ -32,7 +32,7 @@ public class SoulBurntZombieRenderer<T extends SoulBurntZombieEntity, M extends 
 			new ResourceLocation("block/soul_fire_1"));
 	private static final ResourceLocation ZOMBIE_LOCATION = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/entity/zombie/burnt/soul_burnt_zombie.png");
-	public BurnsLayer burnsLayer;
+	public final BurnsLayer burnsLayer;
 
 	public SoulBurntZombieRenderer(EntityRendererProvider.Context context) {
 		super(context, ClientSetup.REANIMATED_CORPSE_LAYER);

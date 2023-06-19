@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "east=false,north=false,south=false,west=false": { "model": "sevendaystomine:block/table_mangrove" , "uvlock" : true},
+        "east=false,north=true,south=false,west=false": { "model": "sevendaystomine:block/table_mangrove_half", "y": 180 , "uvlock" : true},
+        "east=true,north=false,south=false,west=false": { "model": "sevendaystomine:block/table_mangrove_half", "y": 270 , "uvlock" : true},
+        "east=false,north=false,south=true,west=false": { "model": "sevendaystomine:block/table_mangrove_half", "y": 0 , "uvlock" : true},
+        "east=false,north=false,south=false,west=true": { "model": "sevendaystomine:block/table_mangrove_half", "y": 90 , "uvlock" : true},
+        "east=true,north=true,south=false,west=false": { "model": "sevendaystomine:block/table_mangrove_quad" , "y": 180 , "uvlock" : true},
+        "east=true,north=false,south=true,west=false": { "model": "sevendaystomine:block/table_mangrove_quad", "y": 270 , "uvlock" : true},
+        "east=false,north=false,south=true,west=true": { "model": "sevendaystomine:block/table_mangrove_quad", "y": 0 , "uvlock" : true},
+        "east=false,north=true,south=false,west=true": { "model": "sevendaystomine:block/table_mangrove_quad", "y": 90 , "uvlock" : true},
+        "east=false,north=true,south=true,west=false": { "model": "sevendaystomine:block/table_mangrove_plane", "y": 180 , "uvlock" : true},
+        "east=true,north=false,south=false,west=true": { "model": "sevendaystomine:block/table_mangrove_plane" , "uvlock" : true},
+        "east=true,north=true,south=true,west=false": { "model": "sevendaystomine:block/table_mangrove_plane" , "uvlock" : true},
+        "east=true,north=false,south=true,west=true": { "model": "sevendaystomine:block/table_mangrove_plane", "y": 90 , "uvlock" : true},
+        "east=false,north=true,south=true,west=true": { "model": "sevendaystomine:block/table_mangrove_plane", "y": 180 , "uvlock" : true},
+        "east=true,north=true,south=false,west=true": { "model": "sevendaystomine:block/table_mangrove_plane"},
+        "east=true,north=true,south=true,west=true": { "model": "sevendaystomine:block/table_mangrove_plane" , "uvlock" : true}
+    }
+}

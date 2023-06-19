@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpikeBlock extends WaterloggableHorizontalBlockBase implements EntityBlock, ISpikeBlock {
 
-    protected int maxHealth;
-    protected int damage;
+    protected final int maxHealth;
+    protected final int damage;
 
     public SpikeBlock(Properties p_49795_, int maxHealth, int damage) {
         super(p_49795_);

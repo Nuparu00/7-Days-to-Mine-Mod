@@ -1,0 +1,7 @@
+{
+	"parent": "sevendaystomine:block/planks_reinforced",
+	"textures": {
+		"0": "block/mangrove_planks",
+		"particle": "block/mangrove_planks"
+	}
+}

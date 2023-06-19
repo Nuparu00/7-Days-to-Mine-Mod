@@ -18,7 +18,7 @@ public class UpgraderToolDataManager extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = (new GsonBuilder()).create();
     public static final UpgraderToolDataManager INSTANCE = new UpgraderToolDataManager();
 
-    public HashMap<Item,UpgraderToolEntry> upgraders = new HashMap<>();
+    public final HashMap<Item,UpgraderToolEntry> upgraders = new HashMap<>();
     public UpgraderToolDataManager() {
         super(GSON, "upgraders");
     }

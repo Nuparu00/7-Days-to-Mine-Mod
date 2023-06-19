@@ -14,10 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-@OnlyIn(Dist.CLIENT)
 public class LootableCorpseScreen extends AbstractContainerScreen<ContainerLootableCorpse> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/dispenser.png");
-	ContainerLootableCorpse container;
+	final ContainerLootableCorpse container;
 
 	public LootableCorpseScreen(ContainerLootableCorpse container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);

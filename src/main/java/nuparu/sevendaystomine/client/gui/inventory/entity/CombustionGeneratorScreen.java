@@ -3,7 +3,6 @@ package nuparu.sevendaystomine.client.gui.inventory.entity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -13,12 +12,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.util.ClientUtils;
 import nuparu.sevendaystomine.world.inventory.block.ContainerCombustionGenerator;
-import nuparu.sevendaystomine.world.inventory.block.ContainerSmall;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-
-@OnlyIn(Dist.CLIENT)
 public class CombustionGeneratorScreen extends AbstractContainerScreen<ContainerCombustionGenerator> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/combustion_generator.png");
 	final ContainerCombustionGenerator container;

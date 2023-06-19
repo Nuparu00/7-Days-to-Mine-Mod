@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-@OnlyIn(Dist.CLIENT)
 public class ChemistryStationScreen extends AbstractContainerScreen<ContainerChemistry> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/chemistry_station.png");
 	final ContainerChemistry container;

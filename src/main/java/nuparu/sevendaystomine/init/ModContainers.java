@@ -39,6 +39,8 @@ public class ModContainers {
 
 	public static final RegistryObject<MenuType<ContainerSmall>> SMALL = CONTAINERS.register("small",
 			() -> IForgeMenuType.create(ContainerSmall::createContainerClientSide));
+	public static final RegistryObject<MenuType<ContainerTiny>> TINY = CONTAINERS.register("riny",
+			() -> IForgeMenuType.create(ContainerTiny::createContainerClientSide));
 	public static final RegistryObject<MenuType<ContainerCamera>> CAMERA = CONTAINERS.register("camera",
 			() -> IForgeMenuType.create(ContainerCamera::createContainerClientSide));
 	public static final RegistryObject<MenuType<ContainerCombustionGenerator>> COMBUSTION_GENERATOR = CONTAINERS.register("combustion_generator",

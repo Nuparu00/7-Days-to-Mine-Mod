@@ -16,7 +16,7 @@ import nuparu.sevendaystomine.init.ModItems;
 import org.jetbrains.annotations.NotNull;
 
 public class CannedFoodItem extends Item {
-    public boolean liquid;
+    public final boolean liquid;
 
     public CannedFoodItem(Properties properties) {
         this(properties,false);

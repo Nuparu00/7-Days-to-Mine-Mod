@@ -47,26 +47,26 @@ public class PhotoScreen extends Screen {
 		renderBackground(matrix);
 		if (image != null) {
 			// -1 == (width > height) ; 0 == (width == height) ; 1 == (width < height)
-			int shape = Integer.compare(image.height, image.width);
+			int shape = Integer.compare(image.height(), image.width());
 
 			int w = width;
 			int h = height;
 
 			if (shape < 0) {
 				w = (int) Math.floor(w * 0.75f);
-				h = (int) Math.floor(((float) image.height / (float) image.width) * w);
+				h = (int) Math.floor(((float) image.height() / (float) image.width()) * w);
 			} else if (shape == 0) {
 				h = (int) Math.floor(h * 0.75f);
 				w = h;
 			} else {
 				h = (int) Math.floor(h * 0.75f);
-				w = (int) Math.floor(((float) image.width / (float) image.height) * h);
+				w = (int) Math.floor(((float) image.width() / (float) image.height()) * h);
 			}
 
 
 			h *= 0.75;
 			w *= 0.75;
-			if (image.res != null) {
+			if (image.res() != null) {
 				RenderSystem.setShader(GameRenderer::getPositionColorShader);
 				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -75,7 +75,7 @@ public class PhotoScreen extends Screen {
 
 				blitColored(matrix, startX - 10, startX + w + 10,startY - 10,startY + h + 10,0,0xffffff);
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
-				RenderSystem.setShaderTexture(0, image.res);
+				RenderSystem.setShaderTexture(0, image.res());
 				blit(matrix, startX, startY,w, h,0,0, w,h,w,h);
 			}
 		}

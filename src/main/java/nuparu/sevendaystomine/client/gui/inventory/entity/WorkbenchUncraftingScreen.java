@@ -15,10 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-@OnlyIn(Dist.CLIENT)
 public class WorkbenchUncraftingScreen extends AbstractContainerScreen<ContainerWorkbenchUncrafting> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/workbench_uncrafting.png");
-	ContainerWorkbenchUncrafting container;
+	final ContainerWorkbenchUncrafting container;
 
 	public WorkbenchUncraftingScreen(ContainerWorkbenchUncrafting container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);

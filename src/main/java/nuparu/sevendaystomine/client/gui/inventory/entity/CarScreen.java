@@ -21,7 +21,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
 public class CarScreen extends AbstractContainerScreen<ContainerCar> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/car.png");
 	final ContainerCar container;

@@ -12,7 +12,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -41,7 +43,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class ItemHandlerBlockEntity<INVENTORY extends ItemHandlerNameable>
-        extends BlockEntity implements IContainerCallbacks, MenuProvider, ILootTableProvider {
+        extends RandomizableContainerBlockEntity implements IContainerCallbacks, MenuProvider, ILootTableProvider {
 
     @Nullable
     protected ResourceLocation lootTable;
@@ -179,12 +181,50 @@ public abstract class ItemHandlerBlockEntity<INVENTORY extends ItemHandlerNameab
         this.lootTableSeed = p_189404_2_;
     }
 
-    public void setLootTable(@org.jetbrains.annotations.Nullable ResourceLocation p_189404_1_) {
+    public void setLootTable(ResourceLocation p_189404_1_) {
         this.lootTable = p_189404_1_;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
         super.deserializeNBT(nbt);
+    }
+
+
+
+    @Override
+    public int getContainerSize() {
+        return getInventory().getSlots();
+    }
+
+    @Override
+    protected Component getDefaultName() {
+        return null;
+    }
+
+
+    @Override
+    protected NonNullList<ItemStack> getItems() {
+        final NonNullList<ItemStack> items = NonNullList.create();
+
+        for (int slot = 0; slot < getContainerSize(); ++slot) {
+            ItemStack stack = getInventory().getStackInSlot(slot);
+            if(!stack.isEmpty()){
+                items.add(stack);
+            }
+        }
+        return items;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> p_59625_) {
+        for (int slot = 0; slot < p_59625_.size(); ++slot) {
+            getInventory().setStackInSlot(slot,p_59625_.get(slot));
+        }
+    }
+
+    @Override
+    protected AbstractContainerMenu createMenu(int p_58627_, Inventory p_58628_) {
+        return createMenu(p_58627_,p_58628_, p_58628_.player);
     }
 }

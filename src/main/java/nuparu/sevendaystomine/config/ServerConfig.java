@@ -30,6 +30,13 @@ public class ServerConfig {
     public static ForgeConfigSpec.BooleanValue zombieCorpses;
     public static ForgeConfigSpec.IntValue corpseLifespan;
     public static ForgeConfigSpec.IntValue airdropLifespan;
+    public static ForgeConfigSpec.IntValue airdropPeriod;
+    public static ForgeConfigSpec.IntValue airdropDelay;
+    public static ForgeConfigSpec.IntValue airdropDistanceMin;
+    public static ForgeConfigSpec.IntValue airdropDistanceMax;
+    public static ForgeConfigSpec.IntValue airdropAnnouncementOffsetMin;
+    public static ForgeConfigSpec.IntValue airdropAnnouncementOffsetMax;
+    public static ForgeConfigSpec.BooleanValue airdropAnnouncement;
     public static ForgeConfigSpec.BooleanValue allowPhotos;
 
 
@@ -96,6 +103,20 @@ public class ServerConfig {
                 Integer.MAX_VALUE);
         airdropLifespan = server.comment("How many ticks until an airdrop decays").defineInRange("world.airdropLifespan", 20000, 0,
                 Integer.MAX_VALUE);
+        airdropPeriod = server.comment("How many ticks between individual airdrop (0 = disabled)").defineInRange("world.airdropPeriod", 4800, 0,
+                Integer.MAX_VALUE);
+        airdropDelay = server.comment("How many ticks before first airdrop").defineInRange("world.airdropDelay", 3600, 0,
+                Integer.MAX_VALUE);
+        airdropDistanceMin = server.comment("Minimum distance of an airdrop (relative to the \"player center\")").defineInRange("world.airdropDistanceMin", 256, 0,
+                Integer.MAX_VALUE);
+        airdropDistanceMax = server.comment("Maximum distance of an airdrop (relative to the \"player center\")").defineInRange("world.airdropDistanceMax", 512, 0,
+                Integer.MAX_VALUE);
+        airdropAnnouncementOffsetMin = server.comment("Minimum offset of the coordinates printed into the chat when an airdrop is dropped").defineInRange("world.airdropAnnouncementOffsetMin", 32, 0,
+                Integer.MAX_VALUE);
+        airdropAnnouncementOffsetMax = server.comment("Maximum offset of the coordinates printed into the chat when an airdrop is dropped").defineInRange("world.airdropAnnouncementOffsetMax", 128, 0,
+                Integer.MAX_VALUE);
+        airdropAnnouncement = server.comment("Are airdrops announced into the chat?")
+                .define("mobs.airdropAnnouncement", true);
         zombieCorpses = server.comment("Do corpses spawn on zombies' death?")
                 .define("mobs.zombieCorpses", true);
 
@@ -111,7 +132,7 @@ public class ServerConfig {
                 Integer.MAX_VALUE);
 
         smallRockGenerationDimensions = server.comment("In what dimensions can Small Rocks generate").defineList(
-                "worldGen.smallRockGenerationDimensions", Arrays.asList("minecraft:overworld"), it -> it instanceof String);
+                "worldGen.smallRockGenerationDimensions", List.of("minecraft:overworld"), it -> it instanceof String);
 
     }
 }

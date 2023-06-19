@@ -21,10 +21,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
 public class MinibikeScreen extends AbstractContainerScreen<ContainerMinibike> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/minibike.png");
-	ContainerMinibike container;
+	final ContainerMinibike container;
 	boolean chestPrev = false;
 
 	public MinibikeScreen(ContainerMinibike container, Inventory playerInventory, Component title) {

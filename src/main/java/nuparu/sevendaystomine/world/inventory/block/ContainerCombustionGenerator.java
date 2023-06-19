@@ -12,11 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.SlotItemHandler;
 import nuparu.sevendaystomine.init.ModContainers;
-import nuparu.sevendaystomine.world.inventory.ItemHandlerNameable;
 import nuparu.sevendaystomine.world.level.block.entity.CombustionGeneratorBlockEntity;
-import nuparu.sevendaystomine.world.level.block.entity.ItemHandlerBlockEntity;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.shadowed.eliotlash.mclib.utils.MathHelper;
 
 public class ContainerCombustionGenerator extends AbstractContainerMenu {
 

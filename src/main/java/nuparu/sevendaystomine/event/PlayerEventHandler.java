@@ -136,7 +136,7 @@ public class PlayerEventHandler {
                 if (upgradeAmount > 0) {
                     UpgradeEntry entry = UpgradeDataManager.INSTANCE.getUpgradeFromEntry(state);
                     if (entry != null) {
-                        HashMap<ItemStack, Integer[]> map = player.isCreative() ? new HashMap<>() : InventoryUtils.hasIngredients(entry.ingredients, player);
+                        HashMap<ItemStack, Integer[]> map = player.isCreative() ? new HashMap<>() : InventoryUtils.hasIngredients(entry.ingredients(), player);
                         if (map != null) {
 
                             if (stack.getOrCreateTag().contains("7D2M_UpgradePos", Tag.TAG_LONG) && stack.getOrCreateTag().getLong("7D2M_UpgradePos") != pos.asLong()) {
@@ -158,8 +158,8 @@ public class PlayerEventHandler {
                                 stack.getOrCreateTag().putLong("7D2M_UpgradePos", pos.asLong());
                                 stack.getOrCreateTag().putString("7D2M_UpgradeDim", level.dimension().location().toString());
                             }
-                            if (entry.sound != null) {
-                                level.playSound(null, player.getX(), player.getY(), player.getZ(), entry.sound, SoundSource.BLOCKS, MathUtils.getFloatInRange(0.9f, 1.1f), MathUtils.getFloatInRange(0.9f, 1.1f));
+                            if (entry.sound() != null) {
+                                level.playSound(null, player.getX(), player.getY(), player.getZ(), entry.sound(), SoundSource.BLOCKS, MathUtils.getFloatInRange(0.9f, 1.1f), MathUtils.getFloatInRange(0.9f, 1.1f));
                             }
                             player.swing(event.getHand(), true);
 
@@ -181,7 +181,7 @@ public class PlayerEventHandler {
                         double progress = salvageAmount + (stack.getOrCreateTag().contains("7D2M_UpgradeProgress") ? -stack.getOrCreateTag().getDouble("7D2M_UpgradeProgress") : 0);
                         if (progress >= 1) {
                             ItemUtils.eraseUpgraderData(stack);
-                            for (IngredientStack ingredientStack : entry.ingredients) {
+                            for (IngredientStack ingredientStack : entry.ingredients()) {
                                 if(level.getRandom().nextDouble() > ingredientStack.chance()) continue;
                                 int count = level.getRandom().nextInt(ingredientStack.count() + 1);
                                 if (count == 0) continue;
@@ -198,8 +198,8 @@ public class PlayerEventHandler {
                             stack.getOrCreateTag().putLong("7D2M_UpgradePos", pos.asLong());
                             stack.getOrCreateTag().putString("7D2M_UpgradeDim", level.dimension().location().toString());
                         }
-                        if (entry.sound != null) {
-                            level.playSound(null, player.getX(), player.getY(), player.getZ(), entry.sound, SoundSource.BLOCKS, MathUtils.getFloatInRange(0.9f, 1.1f), MathUtils.getFloatInRange(0.9f, 1.1f));
+                        if (entry.sound() != null) {
+                            level.playSound(null, player.getX(), player.getY(), player.getZ(), entry.sound(), SoundSource.BLOCKS, MathUtils.getFloatInRange(0.9f, 1.1f), MathUtils.getFloatInRange(0.9f, 1.1f));
                         }
                         player.swing(event.getHand(), true);
 

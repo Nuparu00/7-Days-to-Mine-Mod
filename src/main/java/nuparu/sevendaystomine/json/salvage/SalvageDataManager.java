@@ -74,7 +74,7 @@ public class SalvageDataManager extends SimpleJsonResourceReloadListener {
     @Nullable
     public SalvageEntry getSalvageForBlock(Block block){
         for(SalvageEntry entry : entries){
-            if(entry.block == block){
+            if(entry.block() == block){
                 return entry;
             }
         }

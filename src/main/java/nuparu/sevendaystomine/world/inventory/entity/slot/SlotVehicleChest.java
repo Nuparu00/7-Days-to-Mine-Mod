@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SlotVehicleChest extends SlotItemHandler {
 
-    ContainerMinibike containerMinibike;
+    final ContainerMinibike containerMinibike;
 
     public SlotVehicleChest(IItemHandler itemHandler, int index, int xPosition, int yPosition, ContainerMinibike containerMinibike) {
         super(itemHandler, index, xPosition, yPosition);

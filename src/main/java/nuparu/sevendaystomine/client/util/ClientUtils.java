@@ -4,8 +4,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class ClientUtils {
@@ -41,4 +45,24 @@ public class ClientUtils {
         return ((mouseX >= x && mouseX <= x + xSize) && (mouseY >= y && mouseY <= y + ySize));
     }
 
+    public static void renderNameTag(BlockPos pos, Component p_225629_2_, PoseStack p_225629_3_, MultiBufferSource p_225629_4_, int p_225629_5_, double maxDst) {
+        Minecraft minecraft = Minecraft.getInstance();
+        double d0 = minecraft.getEntityRenderDispatcher().distanceToSqr(pos.getX(), pos.getY(), pos.getZ());
+        if (d0 <= maxDst) {
+            float f = 1 + 0.5F;
+            p_225629_3_.pushPose();
+            p_225629_3_.translate(0.5D, f, 0.5D);
+            p_225629_3_.mulPose(minecraft.getEntityRenderDispatcher().cameraOrientation());
+            p_225629_3_.scale(-0.025F, -0.025F, 0.025F);
+            Matrix4f matrix4f = p_225629_3_.last().pose();
+            float f1 = Minecraft.getInstance().options.getBackgroundOpacity(1);
+            int j = (int) (f1 * 255.0F) << 24;
+            Font fontrenderer = minecraft.font;
+            float f2 = (float) (-fontrenderer.width(p_225629_2_) / 2);
+            fontrenderer.drawInBatch(p_225629_2_, f2, 0, 0xffffff, false, matrix4f, p_225629_4_, true, j, p_225629_5_);
+            fontrenderer.drawInBatch(p_225629_2_, f2, (float) 0, -1, false, matrix4f, p_225629_4_, false, 0, p_225629_5_);
+
+            p_225629_3_.popPose();
+        }
+    }
 }

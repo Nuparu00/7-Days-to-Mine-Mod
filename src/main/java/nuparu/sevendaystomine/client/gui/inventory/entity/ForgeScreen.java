@@ -15,10 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-@OnlyIn(Dist.CLIENT)
 public class ForgeScreen extends AbstractContainerScreen<ContainerForge> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/forge.png");
-	ContainerForge container;
+	final ContainerForge container;
 
 	public ForgeScreen(ContainerForge container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);

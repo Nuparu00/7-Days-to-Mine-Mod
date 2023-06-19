@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:jigsaw",
+  "start_pool": "sevendaystomine:scattered/yacht_pool",
+  "size": 1,
+  "max_distance_from_center": 80,
+  "biomes": "#sevendaystomine:has_structure/yacht",
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "start_height": {
+    "absolute": -1
+  },
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "use_expansion_hack": false,
+  "spawn_overrides": {
+  }
+}

@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
@@ -66,7 +65,7 @@ import java.util.HashMap;
 public class ClientEventHandler {
 
     //Cached BreakData... duh
-    public static HashMap<BlockPos, CompoundTag> cachedBreakData = new HashMap<>();
+    public static final HashMap<BlockPos, CompoundTag> cachedBreakData = new HashMap<>();
     public static boolean takingPhoto;
 
     @SubscribeEvent
@@ -111,8 +110,8 @@ public class ClientEventHandler {
         if (ScrapDataManager.INSTANCE.hasEntry(item)) {
             ScrapEntry entry = ScrapDataManager.INSTANCE.getEntry(item);
 
-            mat = entry.material;
-            weight = entry.weight;
+            mat = entry.material();
+            weight = entry.weight();
         }
 
         if (mat != null && mat != EnumMaterial.NONE) {

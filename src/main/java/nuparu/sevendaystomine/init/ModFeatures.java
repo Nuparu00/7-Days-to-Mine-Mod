@@ -6,7 +6,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import nuparu.sevendaystomine.SevenDaysToMine;
-import nuparu.sevendaystomine.world.level.levelgen.feature.FeatureRoads;
 import nuparu.sevendaystomine.world.level.levelgen.feature.FeatureSmallStone;
 
 public class ModFeatures {

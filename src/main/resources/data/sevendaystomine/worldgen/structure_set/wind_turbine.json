@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "sevendaystomine:wind_turbine",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 400123209,
+    "spacing": 60,
+    "separation": 15,
+    "type": "minecraft:random_spread"
+  }
+}

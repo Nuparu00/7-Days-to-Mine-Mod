@@ -89,7 +89,7 @@ public class ZombieBaseEntity extends Monster {
     public static final AttributeModifier BLOODMOON_ARMOR_BOOST = new AttributeModifier(
             UUID.fromString("b859cf4a-b7cd-486f-9b59-ebabfdd0985e"), "bloodmoonArmorBoost", 4f,
             AttributeModifier.Operation.ADDITION);
-    public boolean nightRun = true;
+    public final boolean nightRun = true;
     public int lightLevelPrev = -1;
     AttributeInstance speed;
     AttributeInstance range;
@@ -200,21 +200,13 @@ public class ZombieBaseEntity extends Monster {
         }
 
         if (this.hasEffect(MobEffects.DIG_SLOWDOWN)) {
-            float f1;
-            switch (this.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
-                case 0:
-                    f1 = 0.3F;
-                    break;
-                case 1:
-                    f1 = 0.09F;
-                    break;
-                case 2:
-                    f1 = 0.0027F;
-                    break;
-                case 3:
-                default:
-                    f1 = 8.1E-4F;
-            }
+            float f1 = switch (this.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
+                case 0 -> 0.3F;
+                case 1 -> 0.09F;
+                case 2 -> 0.0027F;
+                case 3 -> 8.1E-4F;
+                default -> 8.1E-4F;
+            };
 
             f *= f1;
         }

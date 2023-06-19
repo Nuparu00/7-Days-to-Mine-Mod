@@ -20,40 +20,40 @@ import org.jetbrains.annotations.NotNull;
 
 public class WoodenFrameBlock extends BlockBase implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    VoxelShape occlusionShape;
+    public static final VoxelShape SHAPE = Shapes.or(Block.box(0,0,0,2,2,16),
+            Block.box(14,0,0,16,2,16),
+            Block.box(0,0,0,16,2,2),
+            Block.box(14,0,0,16,2,16),
+
+            Block.box(0,14,0,2,16,16),
+            Block.box(14,14,0,16,16,16),
+            Block.box(0,14,0,16,16,2),
+            Block.box(14,14,0,16,16,16),
+
+            Block.box(0,0,0,2,16,2),
+            Block.box(14,0,0,16,16,2),
+            Block.box(0,0,14,2,16,16),
+            Block.box(14,0,14,16,16,16),
+
+            Block.box(7,2,1,9,14,2),
+            Block.box(7,2,14,9,14,15),
+            Block.box(1,2,7,2,14,9),
+            Block.box(14,2,7,15,14,9),
+            Block.box(7,14,2,15,15,14),
+            Block.box(7,1,2,15,2,14)
+
+    );
 
     public WoodenFrameBlock(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, Boolean.FALSE));
-        occlusionShape = Shapes.or(Block.box(0,0,0,2,2,16),
-                Block.box(14,0,0,16,2,16),
-                Block.box(0,0,0,16,2,2),
-                Block.box(14,0,0,16,2,16),
-
-                Block.box(0,14,0,2,16,16),
-                Block.box(14,14,0,16,16,16),
-                Block.box(0,14,0,16,16,2),
-                Block.box(14,14,0,16,16,16),
-
-                Block.box(0,0,0,2,16,2),
-                Block.box(14,0,0,16,16,2),
-                Block.box(0,0,14,2,16,16),
-                Block.box(14,0,14,16,16,16)
-        );
     }
 
     @Override
-    @NotNull
-    public VoxelShape getOcclusionShape(@NotNull BlockState p_53338_, @NotNull BlockGetter p_53339_, @NotNull BlockPos p_53340_) {
-        return occlusionShape;
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
+                                        @NotNull CollisionContext p_220053_4_) {
+        return SHAPE;
     }
-
-    @Override
-    @NotNull
-    public VoxelShape getVisualShape(@NotNull BlockState p_53311_, @NotNull BlockGetter p_53312_, @NotNull BlockPos p_53313_, @NotNull CollisionContext p_53314_) {
-        return occlusionShape;
-    }
-
 
     @Override
     public @NotNull FluidState getFluidState(BlockState p_52362_) {

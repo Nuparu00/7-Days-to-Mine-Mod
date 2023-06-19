@@ -1,9 +1,13 @@
 package nuparu.sevendaystomine.capability;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public interface IExtendedPlayer {
 
@@ -41,4 +45,10 @@ public interface IExtendedPlayer {
     void onDataChanged();
     void onStartedTracking(Player tracker);
     void tick(Player player);
+
+    void setLastHorde(ResourceLocation horde, long time);
+
+    long getLastHorde(ResourceLocation horde);
+
+    Optional<Tuple<ResourceLocation, Long>> getLastActualHordeHorde();
 }

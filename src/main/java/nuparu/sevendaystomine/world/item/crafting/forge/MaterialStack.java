@@ -5,24 +5,16 @@ import nuparu.sevendaystomine.json.scrap.WeightWrapper;
 import nuparu.sevendaystomine.world.item.EnumMaterial;
 import org.apache.commons.lang3.math.Fraction;
 
-public class MaterialStack {
+public record MaterialStack(EnumMaterial material, WeightWrapper weight){
 
     public static final MaterialStack EMPTY = new MaterialStack(EnumMaterial.NONE,0);
-
-    EnumMaterial material;
-    WeightWrapper weight;
 
 
     public MaterialStack(EnumMaterial material) {
         this(material,1);
     }
-
     public MaterialStack(EnumMaterial material, Number weight) {
         this(material,new WeightWrapper(weight));
-    }
-    public MaterialStack(EnumMaterial material, WeightWrapper weight) {
-        this.material = material;
-        this.weight = weight;
     }
 
     public static MaterialStack fromNetwork(FriendlyByteBuf buffer) {

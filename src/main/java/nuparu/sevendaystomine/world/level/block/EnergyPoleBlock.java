@@ -7,12 +7,10 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -24,9 +22,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import nuparu.sevendaystomine.init.ModCreativeModeTabs;
-import nuparu.sevendaystomine.world.level.block.entity.WindTurbineBlockEntity;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class EnergyPoleBlock extends BlockBase implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -101,5 +97,16 @@ public class EnergyPoleBlock extends BlockBase implements SimpleWaterloggedBlock
                 level.destroyBlock(pos, true);
             }
         }
+    }
+
+
+    @Override
+    public BlockState rotate(BlockState p_54125_, Rotation p_54126_) {
+        return p_54125_.setValue(FACING, p_54126_.rotate(p_54125_.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState p_54122_, Mirror p_54123_) {
+        return p_54122_.rotate(p_54123_.getRotation(p_54122_.getValue(FACING)));
     }
 }

@@ -16,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import nuparu.sevendaystomine.world.inventory.ILootTableProvider;
+import nuparu.sevendaystomine.world.level.block.entity.ItemHandlerBlockEntity;
 
 public class RealityWandItem extends Item {
     public RealityWandItem() {
@@ -43,9 +45,9 @@ public class RealityWandItem extends Item {
                     CompoundTag nbt = tileEntity.saveWithoutMetadata();
                     //if (nbt.contains("LootTable", Constants.NBT.TAG_STRING)) {
                     String lootTable = "sevendaystomine:containers/" + stack.getHoverName().getString();
-                    if(tileEntity instanceof ILootTableProvider){
-                        ILootTableProvider lootTableProvider = (ILootTableProvider)tileEntity;
-                        lootTableProvider.setLootTable(new ResourceLocation(lootTable),worldIn.random.nextLong());
+
+                    if(tileEntity instanceof RandomizableContainerBlockEntity randomizableContainerBlockEntity){
+                        randomizableContainerBlockEntity.setLootTable(new ResourceLocation(lootTable),worldIn.random.nextLong());
 
                         textComponent = Component.translatable("debug.loottable.set", pos.toShortString(), lootTable);
                         textComponent.setStyle(textComponent.getStyle().withColor(ChatFormatting.GREEN));

@@ -45,8 +45,8 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
     public static final VoxelShape AABB_EAST = Block.box(0.0, 0, 0, 1, 16, 16);
 
 
-    protected int maxHealth;
-    protected int damage;
+    protected final int maxHealth;
+    protected final int damage;
 
     public MetalSpikeBlock(BlockBehaviour.Properties p_49795_, int maxHealth, int damage) {
         super(p_49795_);
@@ -148,14 +148,11 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
     }
 
     protected static @NotNull Direction getConnectedDirection(BlockState p_196365_0_) {
-        switch (p_196365_0_.getValue(FACE)) {
-            case CEILING:
-                return Direction.DOWN;
-            case FLOOR:
-                return Direction.UP;
-            default:
-                return p_196365_0_.getValue(FACING);
-        }
+        return switch (p_196365_0_.getValue(FACE)) {
+            case CEILING -> Direction.DOWN;
+            case FLOOR -> Direction.UP;
+            default -> p_196365_0_.getValue(FACING);
+        };
     }
 
     @Nullable

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SlotVehicleComponent extends SlotItemHandler {
 
-    protected Item validItem;
+    protected final Item validItem;
 
     public SlotVehicleComponent(IItemHandler itemHandler, int index, int xPosition, int yPosition, Item validItem) {
         super(itemHandler, index, xPosition, yPosition);

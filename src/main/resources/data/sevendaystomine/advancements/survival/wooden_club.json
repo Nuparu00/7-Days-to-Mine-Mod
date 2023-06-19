@@ -14,21 +14,23 @@
       "experience": 1
    },
    "parent": "sevendaystomine:survival/crafting_table",
-   "criteria":{
-      "has_club":{
-         "trigger":"minecraft:inventory_changed",
-         "conditions":{
-            "items":[
+   "criteria": {
+      "item": {
+         "conditions": {
+            "items": [
                {
-                  "item":"sevendaystomine:wooden_club"
+                  "items": [
+                     "sevendaystomine:wooden_club"
+                  ]
                }
             ]
-         }
+         },
+         "trigger": "minecraft:inventory_changed"
       }
    },
-   "requirements":[
+   "requirements": [
       [
-         "has_club"
+         "item"
       ]
    ]
 }

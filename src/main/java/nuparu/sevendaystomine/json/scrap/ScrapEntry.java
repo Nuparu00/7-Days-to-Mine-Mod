@@ -9,25 +9,9 @@ import nuparu.sevendaystomine.world.item.EnumMaterial;
 import nuparu.sevendaystomine.world.item.crafting.forge.MaterialStack;
 import org.apache.commons.lang3.math.Fraction;
 
-public class ScrapEntry {
-    public ResourceLocation name;
-    public Item item;
-    public EnumMaterial material;
-    public WeightWrapper weight;
-    public boolean canBeScrapped;
+public record ScrapEntry(ResourceLocation name, Item item, EnumMaterial material, WeightWrapper weight, boolean canBeScrapped, boolean isScrapBit, boolean excludeFromMin) {
     //Scrap bit is the smallest unit of the material and the result of scrapping of other items
-    public boolean isScrapBit;
-    public boolean excludeFromMin;
 
-    public ScrapEntry(ResourceLocation name, Item item, EnumMaterial material, WeightWrapper weight, boolean canBeScrapped, boolean isScrapBit, boolean excludeFromMin){
-        this.name = name;
-        this.item = item;
-        this.material = material;
-        this.weight = weight;
-        this.canBeScrapped = canBeScrapped;
-        this.isScrapBit = isScrapBit;
-        this.excludeFromMin = excludeFromMin;
-    }
 
     public CompoundTag save(CompoundTag nbt){
         if(material == null) {

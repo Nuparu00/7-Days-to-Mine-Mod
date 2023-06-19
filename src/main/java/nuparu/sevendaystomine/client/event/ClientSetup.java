@@ -8,6 +8,8 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -71,6 +73,7 @@ public class ClientSetup {
 
 
     @SubscribeEvent
+    @SuppressWarnings({"deprecated", "removal"})
     public static void clientSetup(final FMLClientSetupEvent event) {
         ItemProperties.register(ModItems.STONE_SPEAR.get(), new ResourceLocation(SevenDaysToMine.MODID,"throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) -> p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F);
         ItemProperties.register(ModItems.BONE_SPEAR.get(), new ResourceLocation(SevenDaysToMine.MODID,"throwing"), (p_174585_, p_174586_, p_174587_, p_174588_) -> p_174587_ != null && p_174587_.isUsingItem() && p_174587_.getUseItem() == p_174585_ ? 1.0F : 0.0F);
@@ -114,10 +117,22 @@ public class ClientSetup {
         MenuScreens.register(ModContainers.WORKBENCH.get(), WorkbenchScreen::new);
         MenuScreens.register(ModContainers.WORKBENCH_UNCRAFTING.get(), WorkbenchUncraftingScreen::new);
         MenuScreens.register(ModContainers.SMALL.get(), SmallContainerScreen::new);
+        MenuScreens.register(ModContainers.TINY.get(), TinyContainerScreen::new);
         MenuScreens.register(ModContainers.MINIBIKE.get(), MinibikeScreen::new);
         MenuScreens.register(ModContainers.CAR.get(), CarScreen::new);
         MenuScreens.register(ModContainers.CAMERA.get(), CameraContainerScreen::new);
         MenuScreens.register(ModContainers.COMBUSTION_GENERATOR.get(), CombustionGeneratorScreen::new);
+
+        /*
+        WARNING:
+        To ensure transparency of the doors, without having to make a custom .json model files.
+        Most likely will have to create them in 1.20+
+        */
+        event.enqueueWork(() -> {
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.LOCKED_OAK_DOOR.get(), RenderType.cutoutMipped());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.LOCKED_ACACIA_DOOR.get(), RenderType.cutoutMipped());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.LOCKED_JUNGLE_DOOR.get(), RenderType.cutoutMipped());
+        });
     }
 
     @SubscribeEvent

@@ -1,0 +1,14 @@
+{
+  "processors":[
+    {
+      "integrity": 0.6,
+      "processor_type": "minecraft:block_rot",
+      "rottable_blocks": "sevendaystomine:moss_carpet"
+    },
+    {
+      "mossiness": 0.4,
+      "chance": 0.18,
+      "processor_type": "sevendaystomine:extended_block_age"
+    }
+  ]
+}

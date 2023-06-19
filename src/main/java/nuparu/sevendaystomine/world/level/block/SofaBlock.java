@@ -179,34 +179,24 @@ public class SofaBlock extends HorizontalBlockBase implements SimpleWaterloggedB
         switch (p_185471_2_) {
             case LEFT_RIGHT:
                 if (direction.getAxis() == Direction.Axis.Z) {
-                    switch (stairsshape) {
-                        case INNER_LEFT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
-                        case INNER_RIGHT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
-                        case OUTER_LEFT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
-                        case OUTER_RIGHT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
-                        default:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180);
-                    }
+                    return switch (stairsshape) {
+                        case INNER_LEFT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
+                        case INNER_RIGHT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
+                        case OUTER_LEFT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
+                        case OUTER_RIGHT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
+                        default -> p_185471_1_.rotate(Rotation.CLOCKWISE_180);
+                    };
                 }
                 break;
             case FRONT_BACK:
                 if (direction.getAxis() == Direction.Axis.X) {
-                    switch (stairsshape) {
-                        case INNER_LEFT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
-                        case INNER_RIGHT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
-                        case OUTER_LEFT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
-                        case OUTER_RIGHT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
-                        case STRAIGHT:
-                            return p_185471_1_.rotate(Rotation.CLOCKWISE_180);
-                    }
+                    return switch (stairsshape) {
+                        case INNER_LEFT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
+                        case INNER_RIGHT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
+                        case OUTER_LEFT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
+                        case OUTER_RIGHT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
+                        case STRAIGHT -> p_185471_1_.rotate(Rotation.CLOCKWISE_180);
+                    };
                 }
         }
 

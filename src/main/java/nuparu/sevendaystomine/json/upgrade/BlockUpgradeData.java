@@ -60,7 +60,7 @@ public record BlockUpgradeData(Block block, HashMap<String, String> properties) 
     public <T extends Comparable<T>> BlockState asBlockState(UpgradeEntry entry, BlockState from) {
         BlockState state = asBlockState();
 
-        for (String toCopy : entry.copy) {
+        for (String toCopy : entry.copy()) {
             Object valueFrom = null;
             for (Property<?> property : from.getProperties()) {
                 if (property.getName().equals(toCopy)) {

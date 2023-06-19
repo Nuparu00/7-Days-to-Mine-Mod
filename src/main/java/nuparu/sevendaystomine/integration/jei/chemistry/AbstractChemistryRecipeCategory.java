@@ -22,7 +22,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.world.item.crafting.chemistry.IChemistryRecipe;
-import nuparu.sevendaystomine.world.item.crafting.cooking.ICookingRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;

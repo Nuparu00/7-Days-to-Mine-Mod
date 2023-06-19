@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-@OnlyIn(Dist.CLIENT)
 public class SmallContainerScreen extends AbstractContainerScreen<ContainerSmall> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/container_small.png");
 	final ContainerSmall container;

@@ -1,0 +1,15 @@
+{
+	"name": "sevendaystomine:city/streets_long",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 6,
+			"element": {
+				"location": "sevendaystomine:city/streets/straight_long",
+				"processors": "sevendaystomine:age_processors",
+				"projection": "rigid",
+				"element_type": "sevendaystomine:mod_single_pool_element"
+			}
+		}
+	]
+}

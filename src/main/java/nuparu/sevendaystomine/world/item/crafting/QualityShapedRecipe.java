@@ -30,7 +30,9 @@ import java.util.Map;
 
 public class QualityShapedRecipe extends ShapedRecipe implements ILockedRecipe{
 
+	@SuppressWarnings("CanBeFinal")
 	String recipe;
+	@SuppressWarnings("CanBeFinal")
 	boolean quality;
 	public QualityShapedRecipe(ResourceLocation p_i48162_1_, String p_i48162_2_, int p_i48162_3_, int p_i48162_4_,
 							   NonNullList<Ingredient> p_i48162_5_, ItemStack p_i48162_6_, String recipe, boolean quality) {

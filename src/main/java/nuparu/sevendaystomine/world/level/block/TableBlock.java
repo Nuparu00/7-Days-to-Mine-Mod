@@ -33,7 +33,7 @@ public class TableBlock extends BlockBase implements SimpleWaterloggedBlock {
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
-    public VoxelShape TOP = Block.box(0,14,0,16,16,16);
+    public final VoxelShape TOP = Block.box(0,14,0,16,16,16);
     public static final VoxelShape LEG_A = Block.box(2,0,12,4,14,14);
     public static final VoxelShape LEG_B = Block.box(12,0,12,14,14,14);
     public static final  VoxelShape LEG_C = Block.box(2,0,2,4,14,4);
@@ -131,27 +131,23 @@ public class TableBlock extends BlockBase implements SimpleWaterloggedBlock {
     }
 
     public @NotNull BlockState rotate(@NotNull BlockState p_185499_1_, Rotation p_185499_2_) {
-        switch(p_185499_2_) {
-            case CLOCKWISE_180:
-                return p_185499_1_.setValue(NORTH, p_185499_1_.getValue(SOUTH)).setValue(EAST, p_185499_1_.getValue(WEST)).setValue(SOUTH, p_185499_1_.getValue(NORTH)).setValue(WEST, p_185499_1_.getValue(EAST));
-            case COUNTERCLOCKWISE_90:
-                return p_185499_1_.setValue(NORTH, p_185499_1_.getValue(EAST)).setValue(EAST, p_185499_1_.getValue(SOUTH)).setValue(SOUTH, p_185499_1_.getValue(WEST)).setValue(WEST, p_185499_1_.getValue(NORTH));
-            case CLOCKWISE_90:
-                return p_185499_1_.setValue(NORTH, p_185499_1_.getValue(WEST)).setValue(EAST, p_185499_1_.getValue(NORTH)).setValue(SOUTH, p_185499_1_.getValue(EAST)).setValue(WEST, p_185499_1_.getValue(SOUTH));
-            default:
-                return p_185499_1_;
-        }
+        return switch (p_185499_2_) {
+            case CLOCKWISE_180 ->
+                    p_185499_1_.setValue(NORTH, p_185499_1_.getValue(SOUTH)).setValue(EAST, p_185499_1_.getValue(WEST)).setValue(SOUTH, p_185499_1_.getValue(NORTH)).setValue(WEST, p_185499_1_.getValue(EAST));
+            case COUNTERCLOCKWISE_90 ->
+                    p_185499_1_.setValue(NORTH, p_185499_1_.getValue(EAST)).setValue(EAST, p_185499_1_.getValue(SOUTH)).setValue(SOUTH, p_185499_1_.getValue(WEST)).setValue(WEST, p_185499_1_.getValue(NORTH));
+            case CLOCKWISE_90 ->
+                    p_185499_1_.setValue(NORTH, p_185499_1_.getValue(WEST)).setValue(EAST, p_185499_1_.getValue(NORTH)).setValue(SOUTH, p_185499_1_.getValue(EAST)).setValue(WEST, p_185499_1_.getValue(SOUTH));
+            default -> p_185499_1_;
+        };
     }
 
     public @NotNull BlockState mirror(@NotNull BlockState p_185471_1_, Mirror p_185471_2_) {
-        switch(p_185471_2_) {
-            case LEFT_RIGHT:
-                return p_185471_1_.setValue(NORTH, p_185471_1_.getValue(SOUTH)).setValue(SOUTH, p_185471_1_.getValue(NORTH));
-            case FRONT_BACK:
-                return p_185471_1_.setValue(EAST, p_185471_1_.getValue(WEST)).setValue(WEST, p_185471_1_.getValue(EAST));
-            default:
-                return super.mirror(p_185471_1_, p_185471_2_);
-        }
+        return switch (p_185471_2_) {
+            case LEFT_RIGHT -> p_185471_1_.setValue(NORTH, p_185471_1_.getValue(SOUTH)).setValue(SOUTH, p_185471_1_.getValue(NORTH));
+            case FRONT_BACK -> p_185471_1_.setValue(EAST, p_185471_1_.getValue(WEST)).setValue(WEST, p_185471_1_.getValue(EAST));
+            default -> super.mirror(p_185471_1_, p_185471_2_);
+        };
     }
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_56388_) {
         p_56388_.add(NORTH, EAST, SOUTH, WEST, WATERLOGGED);

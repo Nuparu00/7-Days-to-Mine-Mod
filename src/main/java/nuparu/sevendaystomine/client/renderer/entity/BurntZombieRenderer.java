@@ -16,7 +16,7 @@ public class BurntZombieRenderer<T extends BurntZombieEntity, M extends Humanoid
 		extends ZombieBipedRenderer<T, M> {
 	private static final ResourceLocation ZOMBIE_LOCATION = new ResourceLocation(SevenDaysToMine.MODID,
 			"textures/entity/zombie/burnt/burnt_zombie.png");
-	public BurnsLayer burnsLayer;
+	public final BurnsLayer burnsLayer;
 	public BurntZombieRenderer(EntityRendererProvider.Context context) {
 		super(context, ClientSetup.BURNT_ZOMBIE_LAYER);
 		this.addLayer(burnsLayer = new BurnsLayer<T, M, M>(this));
