@@ -2,6 +2,7 @@ package nuparu.sevendaystomine.world.level.horde;
 
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -152,7 +153,7 @@ public class Horde implements INBTSerializable<CompoundTag> {
      */
     private void summonEntity(HordePool.Entry entry) {
         if (entry.type().canSummon()) {
-            Entity entity = entry.type().spawn(level, entry.nbt(), null, null, getSpawnPosFor(entry.type()), MobSpawnType.NATURAL, true, true);
+            Entity entity = entry.type().spawn(level, entry.nbt(), null, getSpawnPosFor(entry.type()), MobSpawnType.NATURAL, true, true);
             if(entity != null) {
                 addEntity(entity);
             }
@@ -369,7 +370,7 @@ public class Horde implements INBTSerializable<CompoundTag> {
         return f;
     }
 
-    private void sendSoundToPlayer(ServerPlayer player, SoundEvent soundEvent, SoundSource soundSource, double x, double y, double z, float volume, float pitch, long seed){
+    private void sendSoundToPlayer(ServerPlayer player, Holder<SoundEvent> soundEvent, SoundSource soundSource, double x, double y, double z, float volume, float pitch, long seed){
         player.connection.send(new ClientboundSoundPacket(soundEvent, soundSource, x, y, z, volume, pitch, seed));
     }
 

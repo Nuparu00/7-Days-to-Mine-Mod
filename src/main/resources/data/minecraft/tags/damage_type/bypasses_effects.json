@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "sevendaystomine:thirst",
+    "sevendaystomine:bleeding",
+    "sevendaystomine:alcohol_poisoning",
+    "sevendaystomine:infection",
+    "sevendaystomine:fungal_infection"
+  ]
+}

@@ -4,6 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -90,7 +91,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
         if (originalCached == null) {
             CompoundTag nbt = getOriginalNBT();
             originalCached = EntityUtils.getEntityByNBTAndResource(new ResourceLocation(nbt.getString("resourceLocation")),
-                    nbt.getCompound("entity"), level);
+                    nbt.getCompound("entity"), level());
         }
         return originalCached;
     }
@@ -135,7 +136,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
     }
 
     @Override
-    public @NotNull Packet<?> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -162,7 +163,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
         this.zOld = this.getZ();
 
         this.age++;
-        if (!level.isClientSide()) {
+        if (!level().isClientSide()) {
             if (this.age >= ServerConfig.corpseLifespan.get()) {
                 this.kill();
                 return;
@@ -173,12 +174,12 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
         double motionY = this.getDeltaMovement().y;
         double motionZ = this.getDeltaMovement().z;
 
-        if (!onGround && !onEntity) {
+        if (!onGround() && !onEntity) {
             motionY -= 0.03999999910593033D;
         } else {
             motionY = 0;
         }
-        if (this.onGround) {
+        if (this.onGround()) {
             motionX *= 0.5D;
             motionY *= 0.5D;
             motionZ *= 0.5D;
@@ -186,10 +187,10 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
         this.setDeltaMovement(new Vec3(motionX, motionY, motionZ));
         this.move(MoverType.SELF, this.getDeltaMovement());
 
-        this.checkOutOfWorld();
+        this.checkBelowWorld();
 
         boolean flag = false;
-        for (Entity entity : this.level.getEntities(this, getBoundingBox())) {
+        for (Entity entity : this.level().getEntities(this, getBoundingBox())) {
             if (entity instanceof Player)
                 continue;
             if (!this.hasPassenger(entity) && entity.canBeCollidedWith()) {
@@ -204,8 +205,8 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
     public boolean hurt(@NotNull DamageSource source, float amount) {
         if (this.age < 20)
             return super.hurt(source, amount);
-        if (this.level.isClientSide()) {
-            level.playLocalSound(this.getX(), this.getY(), this.getZ(),
+        if (this.level().isClientSide()) {
+            level().playLocalSound(this.getX(), this.getY(), this.getZ(),
                     SoundEvents.GENERIC_HURT, SoundSource.HOSTILE, 1.0F, 1.0F, false);
         }
         else {
@@ -230,7 +231,7 @@ public class LootableCorpseEntity extends Entity implements MenuProvider {
                 for (int i = 0; i < getInventory().getSlots(); i++) {
                     ItemStack stack = getInventory().getStackInSlot(i);
 
-                    level.addFreshEntity(new ItemEntity(level, getX() + this.getBbWidth() / 2, getY(),
+                    level().addFreshEntity(new ItemEntity(level(), getX() + this.getBbWidth() / 2, getY(),
                             getZ() + this.getBbWidth() / 2, stack));
                 }
             }

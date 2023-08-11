@@ -132,7 +132,7 @@ public class LevelUtils {
             return false;
         } else {
             Biome biome = level.getBiome(p_46759_).value();
-            return biome.getPrecipitation() == Biome.Precipitation.RAIN && biome.warmEnoughToRain(p_46759_);
+            return biome.getPrecipitationAt(p_46759_) == Biome.Precipitation.RAIN && biome.warmEnoughToRain(p_46759_);
         }
     }
 }

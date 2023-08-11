@@ -20,10 +20,10 @@ public class AlcoholPoisonMobEffect extends BaseMobEffect {
 
 	@Override
 	public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-		if (livingEntity.level.getDifficulty() == Difficulty.PEACEFUL)
+		if (livingEntity.level().getDifficulty() == Difficulty.PEACEFUL)
 			return;
-		if (livingEntity.level.random.nextInt(25) == 0) {
-			livingEntity.hurt(ModDamageSources.alcoholPoison, 1);
+		if (livingEntity.level().random.nextInt(25) == 0) {
+			livingEntity.hurt(ModDamageSources.ALCOHOL_POISONING.apply(livingEntity.level()), 1);
 
 		}
 	}

@@ -1,7 +1,7 @@
 package nuparu.sevendaystomine.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -67,10 +67,10 @@ public class LootableCorpseRenderer<T extends LootableCorpseEntity> extends Enti
 		}
 		matrix.pushPose();
 		matrix.translate(-new_x, new_y, new_z);
-		matrix.mulPose(Vector3f.YP.rotationDegrees(rotY));
+		matrix.mulPose(Axis.YP.rotationDegrees(rotY));
 		matrix.pushPose();
-		matrix.mulPose(Vector3f.ZP.rotationDegrees(rotZ));
-		matrix.mulPose(Vector3f.XP.rotationDegrees(rotX));
+		matrix.mulPose(Axis.ZP.rotationDegrees(rotZ));
+		matrix.mulPose(Axis.XP.rotationDegrees(rotX));
 		renderer.render(original, entityYaw, partialTicks, matrix,buffer,p_225623_6_);
 		matrix.popPose();
 		matrix.popPose();

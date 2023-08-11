@@ -4,6 +4,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.FlowerBlock;
+import nuparu.sevendaystomine.world.item.block.BlockItemBase;
 import org.jetbrains.annotations.Nullable;
 
 public class FlowerBlockBase extends FlowerBlock implements IBlockBase {
@@ -15,7 +16,7 @@ public class FlowerBlockBase extends FlowerBlock implements IBlockBase {
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
-        return new BlockItem(this, properties);
+        final Item.Properties properties = new Item.Properties();
+        return new BlockItemBase(this, properties);
     }
 }

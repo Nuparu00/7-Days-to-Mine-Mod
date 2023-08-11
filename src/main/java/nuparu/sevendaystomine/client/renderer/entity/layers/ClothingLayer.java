@@ -42,7 +42,7 @@ public class ClothingLayer<T extends LivingEntity, M extends HumanoidModel<T>, A
     private void renderArmorPiece(PoseStack p_117119_, MultiBufferSource p_117120_, T p_117121_, EquipmentSlot p_117122_, int p_117123_, A p_117124_) {
         ItemStack itemstack = p_117121_.getItemBySlot(p_117122_);
         if (itemstack.getItem() instanceof ClothingItem clothingItem) {
-            if (clothingItem.getSlot() == p_117122_) {
+            if (clothingItem.getEquipmentSlot() == p_117122_) {
                 this.getParentModel().copyPropertiesTo(p_117124_);
                 this.setPartVisibility(p_117124_, p_117122_);
                 net.minecraft.client.model.Model model = getArmorModelHook(p_117121_, itemstack, p_117122_, p_117124_);

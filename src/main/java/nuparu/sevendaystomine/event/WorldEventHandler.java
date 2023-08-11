@@ -81,7 +81,7 @@ public class WorldEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingDamage(LivingDamageEvent event) {
-        if(event.getEntity().level.isClientSide()) return;
+        if(event.getEntity().level().isClientSide()) return;
         //System.out.println(event.getEntity() + " " + event.getAmount());
         if(event.getAmount() <= 0) return;
         IExtendedEntity iee = CapabilityHelper.getExtendedEntity(event.getEntity());
@@ -92,7 +92,7 @@ public class WorldEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingDeath(LivingDeathEvent event) {
-        if(event.getEntity().level.isClientSide()) return;
+        if(event.getEntity().level().isClientSide()) return;
         IExtendedEntity iee = CapabilityHelper.getExtendedEntity(event.getEntity());
         if(iee != null && iee.hasHorde()){
             iee.getHorde().removeEntityFromHorde(event.getEntity());

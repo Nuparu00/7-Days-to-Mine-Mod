@@ -29,7 +29,7 @@ public class ContainerChemistry extends AbstractContainerMenu {
     public ContainerChemistry(int windowID, Inventory invPlayer, ChemistryBlockEntity chemistryStation, ContainerData intArray) {
         super(ModContainers.CHEMISTRY_STATION.get(), windowID);
         this.intArray = intArray;
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.chemistryStation = chemistryStation;
 
         addDataSlots(intArray); // tell vanilla to keep the IIntArray synchronised between client and
@@ -64,7 +64,7 @@ public class ContainerChemistry extends AbstractContainerMenu {
 
     public static ContainerChemistry createContainerClientSide(int windowID, Inventory playerInventory,
                                                                FriendlyByteBuf extraData) {
-        return new ContainerChemistry(windowID, playerInventory, (ChemistryBlockEntity) playerInventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        return new ContainerChemistry(windowID, playerInventory, (ChemistryBlockEntity) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     @Override
@@ -200,7 +200,7 @@ public class ContainerChemistry extends AbstractContainerMenu {
         }
 
         protected void checkTakeAchievements(ItemStack p_39558_) {
-            p_39558_.onCraftedBy(this.player.level, this.player, this.removeCount);
+            p_39558_.onCraftedBy(this.player.level(), this.player, this.removeCount);
             if (this.player instanceof ServerPlayer && this.container instanceof ChemistryBlockEntity) {
                 ((ChemistryBlockEntity)this.container).awardUsedRecipesAndPopExperience(this.player);
             }

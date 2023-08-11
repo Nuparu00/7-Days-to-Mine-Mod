@@ -27,7 +27,7 @@ public class ContainerGrill extends AbstractContainerMenu {
     public ContainerGrill(int windowID, Inventory invPlayer, GrillBlockEntity grill, ContainerData intArray) {
         super(ModContainers.COOKING_GRILL.get(), windowID);
         this.intArray = intArray;
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.grill = grill;
 
         addDataSlots(intArray); // tell vanilla to keep the IIntArray synchronised between client and
@@ -61,7 +61,7 @@ public class ContainerGrill extends AbstractContainerMenu {
 
     public static ContainerGrill createContainerClientSide(int windowID, Inventory playerInventory,
                                                            FriendlyByteBuf extraData) {
-        return new ContainerGrill(windowID, playerInventory, (GrillBlockEntity) playerInventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        return new ContainerGrill(windowID, playerInventory, (GrillBlockEntity) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     @Override
@@ -158,7 +158,7 @@ public class ContainerGrill extends AbstractContainerMenu {
         }
 
         protected void checkTakeAchievements(ItemStack p_39558_) {
-            p_39558_.onCraftedBy(this.player.level, this.player, this.removeCount);
+            p_39558_.onCraftedBy(this.player.level(), this.player, this.removeCount);
             if (this.player instanceof ServerPlayer && this.container instanceof GrillBlockEntity) {
                 ((GrillBlockEntity)this.container).awardUsedRecipesAndPopExperience(this.player);
             }

@@ -9,10 +9,10 @@ import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.world.level.levelgen.feature.FeatureSmallStone;
 
 public class ModFeatures {
-    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES,
+    /*public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES,
             SevenDaysToMine.MODID);
-
+*/
     //public static final RegistryObject<Feature> ROADS = FEATURES.register("roads",() -> new FeatureRoads(NoneFeatureConfiguration.CODEC));
-    public static final RegistryObject<Feature> SMALL_STONE = FEATURES.register("small_stone",() -> new FeatureSmallStone(NoneFeatureConfiguration.CODEC.stable()));
+    //public static final RegistryObject<Feature> SMALL_STONE = FEATURES.register("small_stone",() -> new FeatureSmallStone(NoneFeatureConfiguration.CODEC.stable()));
 
 }

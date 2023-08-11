@@ -65,7 +65,7 @@ public class ExtendedPlayer implements IExtendedPlayer{
     @Override
     public void causeExhaustion(float delta) {
         if (!owner.getAbilities().invulnerable) {
-            if (!owner.level.isClientSide) {
+            if (!owner.level().isClientSide) {
                 this.exhaustionLevel = Math.min(this.exhaustionLevel + delta, 40.0F);
             }
 
@@ -155,7 +155,7 @@ public class ExtendedPlayer implements IExtendedPlayer{
 
     @Override
     public void onDataChanged() {
-        if(!owner.level.isClientSide()){
+        if(!owner.level().isClientSide()){
             ExtendedPlayerSyncMessage message = new ExtendedPlayerSyncMessage(this, owner);
 
             PacketManager.sendToTrackingEntity(PacketManager.extendedPlayerSync, message, () -> owner);
@@ -165,7 +165,7 @@ public class ExtendedPlayer implements IExtendedPlayer{
 
     @Override
     public void onStartedTracking(Player tracker) {
-        if (!owner.level.isClientSide()) {
+        if (!owner.level().isClientSide()) {
             ExtendedPlayerSyncMessage message = new ExtendedPlayerSyncMessage(this, owner);
             PacketManager.sendTo(PacketManager.extendedPlayerSync, message, (ServerPlayer) tracker);
         }
@@ -173,14 +173,17 @@ public class ExtendedPlayer implements IExtendedPlayer{
 
     @Override
     public void tick(Player player){
+        if(player.isCreative() || player.isSpectator()) return;
         boolean dirty = false;
+
+        causeExhaustion(0.02f);
 
         if(getDrinkCounter() > 0){
             setDrinkCounter(getDrinkCounter()-1);
         }
 
         if(ServerConfig.thirst.get()) {
-            Difficulty difficulty = player.level.getDifficulty();
+            Difficulty difficulty = player.level().getDifficulty();
             this.lastWaterLevel = this.waterLevel;
             if (this.exhaustionLevel > 4.0F) {
                 this.exhaustionLevel -= 4.0F;
@@ -195,7 +198,7 @@ public class ExtendedPlayer implements IExtendedPlayer{
                 ++this.tickTimer;
                 if (this.tickTimer >= 80) {
                     if (player.getHealth() > 10.0F || difficulty == Difficulty.HARD || player.getHealth() > 1.0F && difficulty == Difficulty.NORMAL) {
-                        player.hurt(ModDamageSources.thirst, 1.0F);
+                        player.hurt(ModDamageSources.THIRST.apply(player.level()), 1.0F);
                     }
 
                     this.tickTimer = 0;
@@ -204,7 +207,7 @@ public class ExtendedPlayer implements IExtendedPlayer{
                 this.tickTimer = 0;
             }
 
-            if (player.level.getDifficulty() == Difficulty.PEACEFUL && player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION) && this.tickTimer % 10 == 0 && waterLevel < getMaxWaterLevel()) {
+            if (player.level().getDifficulty() == Difficulty.PEACEFUL && player.level().getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION) && this.tickTimer % 10 == 0 && waterLevel < getMaxWaterLevel()) {
                 waterLevel += 1;
                 dirty = true;
             }

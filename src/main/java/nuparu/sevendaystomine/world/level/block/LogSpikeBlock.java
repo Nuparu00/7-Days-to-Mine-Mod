@@ -34,7 +34,7 @@ public class LogSpikeBlock extends SpikeBlock {
         float fallDistance = entityIn.fallDistance;
         if(fallDistance > 1) {
             float damageToDeal = fallDistance * damagePerBlock;
-                entityIn.hurt(DamageSource.GENERIC, damageToDeal);
+                entityIn.hurt(worldIn.damageSources().generic(), damageToDeal);
                 if (worldIn.getBlockEntity(pos) instanceof SpikesBlockEntity blockEntity) {
                     blockEntity.damage(1);
                 }

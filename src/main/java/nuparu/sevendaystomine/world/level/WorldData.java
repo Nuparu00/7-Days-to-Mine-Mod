@@ -77,9 +77,8 @@ public class WorldData extends SavedData {
                     x,
                     z), true);
 
-            level.getServer().getPlayerList().getPlayers().forEach(player -> player.sendChatMessage(OutgoingPlayerChatMessage.create(
-                    PlayerChatMessage.system(
-                            new ChatMessageContent(ClientUtils.localize("airdrop.message", x, z)))), true, ChatType.bind(ChatType.SAY_COMMAND, e)));
+            level.getServer().getPlayerList().getPlayers().forEach(player -> player.sendChatMessage(OutgoingChatMessage.create(
+                    PlayerChatMessage.system(ClientUtils.localize("airdrop.message", x, z))), true, ChatType.bind(ChatType.SAY_COMMAND, e)));
         }
         lastAirdrop = level.getGameTime();
         this.setDirty();
@@ -98,7 +97,7 @@ public class WorldData extends SavedData {
             double x = player.getX() + dist * Math.cos(angle);
             double z = player.getZ() + dist * Math.sin(angle);
 
-            return new BlockPos(x, 255, z);
+            return new BlockPos((int) x, 255, (int) z);
         }
 
         for (ServerPlayer player : players) {
@@ -111,7 +110,7 @@ public class WorldData extends SavedData {
         double x = xSum / players.size() + dist * Math.cos(angle);
         double z = zSum / players.size() + dist * Math.sin(angle);
 
-        return new BlockPos(x, level.getMaxBuildHeight(), z);
+        return new BlockPos((int) x, level.getMaxBuildHeight(), (int) z);
     }
 
 }

@@ -47,7 +47,7 @@ public class SafeCodeMessage {
 				}
 
 				ServerPlayer player = ctx.get().getSender();
-					Level world = player.level;
+					Level world = player.level();
 					if (world == null) {
 						return;
 					}

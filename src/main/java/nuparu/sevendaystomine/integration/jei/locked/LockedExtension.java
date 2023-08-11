@@ -7,6 +7,8 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import nuparu.sevendaystomine.integration.jei.CraftingGridHelper;
 import nuparu.sevendaystomine.world.item.crafting.ILockedRecipe;
@@ -30,13 +32,13 @@ public class LockedExtension<T extends ILockedRecipe> implements ICraftingCatego
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, PoseStack matrixStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         if(!recipe.hasRecipe())
             return;
 
         this.recipeWidth = recipeWidth;
         this.recipeHeight = recipeHeight;
-        lockedIcon.draw(matrixStack, recipeWidth);
+        lockedIcon.draw(guiGraphics.pose(), recipeWidth);
     }
 
     @Override
@@ -55,6 +57,6 @@ public class LockedExtension<T extends ILockedRecipe> implements ICraftingCatego
     public void setRecipe(IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
         if(recipe.getWidth() > 3 || recipe.getHeight() > 3) return;
         craftingGridHelper.createAndSetInputs(builder,VanillaTypes.ITEM_STACK, recipe.getIngredients().stream().map(i -> Arrays.asList(i.getItems())).toList(),recipe.getWidth(), recipe.getHeight());
-        craftingGridHelper.createAndSetOutputs(builder,VanillaTypes.ITEM_STACK, Lists.newArrayList(recipe.getResultItem()));
+        craftingGridHelper.createAndSetOutputs(builder,VanillaTypes.ITEM_STACK, Lists.newArrayList(recipe.getResultItem(Minecraft.getInstance().level.registryAccess())));
     }
 }

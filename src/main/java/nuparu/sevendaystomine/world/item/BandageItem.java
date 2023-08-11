@@ -1,5 +1,6 @@
 package nuparu.sevendaystomine.world.item;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -10,10 +11,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import nuparu.sevendaystomine.init.ModCreativeModeTabs;
 import nuparu.sevendaystomine.init.ModEffects;
 import org.jetbrains.annotations.NotNull;
 
-public class BandageItem extends Item {
+import javax.annotation.Nullable;
+
+public class BandageItem extends ItemBase {
 
 	public BandageItem(Item.Properties properties) {
 		super(properties);
@@ -66,5 +70,10 @@ public class BandageItem extends Item {
 		}
         return InteractionResult.PASS;
     }
+
+	@Override
+	public ResourceLocation creativeModeTab(){
+		return ModCreativeModeTabs.MEDICINE.getId();
+	}
 
 }

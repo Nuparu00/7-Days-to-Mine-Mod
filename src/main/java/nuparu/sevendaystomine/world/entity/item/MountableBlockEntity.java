@@ -3,6 +3,7 @@ package nuparu.sevendaystomine.world.entity.item;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -37,15 +38,15 @@ public class MountableBlockEntity extends Entity {
     public MountableBlockEntity(Level world, double x, double y, double z) {
         this(world);
         this.setPos(x, y, z);
-        blockPos = new BlockPos(x, y, z);
+        blockPos = new BlockPos((int) x, (int) y, (int) z);
         blockState = world.getBlockState(blockPos);
     }
 
     @Override
     public void baseTick() {
         super.baseTick();
-        if (!level.isClientSide()) {
-            if (this.getPassengers().isEmpty() || this.level.getBlockState(blockPos) != blockState) {
+        if (!level().isClientSide()) {
+            if (this.getPassengers().isEmpty() || this.level().getBlockState(blockPos) != blockState) {
                 this.kill();
             }
         }
@@ -80,7 +81,7 @@ public class MountableBlockEntity extends Entity {
     }
 
     @Override
-    public @NotNull Packet<?> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

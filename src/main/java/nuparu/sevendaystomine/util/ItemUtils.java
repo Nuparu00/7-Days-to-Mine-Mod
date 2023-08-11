@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.items.IItemHandler;
 import nuparu.sevendaystomine.SevenDaysToMine;
@@ -71,9 +72,8 @@ public class ItemUtils {
         stack.getOrCreateTag().remove("7D2M_UpgradeDim");
     }
 
-    public static void fill(LootTable lootTable, IItemHandler inventory, LootContext lootContext) {
+    public static void fill(LootTable lootTable, IItemHandler inventory, LootParams lootContext, RandomSource random) {
         ObjectArrayList<ItemStack> list = lootTable.getRandomItems(lootContext);
-        RandomSource random = lootContext.getRandom();
         List<Integer> list1 = getAvailableSlots(inventory, random);
         shuffleAndSplitItems(list, list1.size(), random);
         for(ItemStack itemstack : list) {
@@ -142,7 +142,7 @@ public class ItemUtils {
     @Nullable
     public static Recipe getRecipesForStack(ItemStack stack, MinecraftServer server) {
         for (Recipe irecipe : server.getRecipeManager().getRecipes()) {
-            if (ItemStack.isSameIgnoreDurability(stack, irecipe.getResultItem())) {
+            if (ItemStack.isSameItem(stack, irecipe.getResultItem(server.registryAccess()))) {
                 return irecipe;
             }
         }

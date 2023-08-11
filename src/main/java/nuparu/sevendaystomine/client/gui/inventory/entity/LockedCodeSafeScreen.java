@@ -3,6 +3,7 @@ package nuparu.sevendaystomine.client.gui.inventory.entity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -53,15 +54,15 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 		
 		int y1 = guiTop + 23;
 		int y2 = guiTop + 53;
-		addRenderableWidget(new CodeButton(4, x1, y1, 12, 20, Component.literal("+"), (button) -> actionPerformed((CodeButton) button)));
 
-		addRenderableWidget(new CodeButton(5, x1, y2, 12, 20, Component.literal("-"), (button) -> actionPerformed((CodeButton) button)));
+		addRenderableWidget(new Button.Builder(Component.literal("+"), button -> actionPerformed((CodeButton) button)).pos(x1, y1).size(12,20).build(builder -> new CodeButton(4,builder)));
+		addRenderableWidget(new Button.Builder(Component.literal("-"), button -> actionPerformed((CodeButton) button)).pos(x1, y2).size(12,20).build(builder -> new CodeButton(5,builder)));
 
-		addRenderableWidget(new CodeButton(2, x2, y1, 12, 20, Component.literal("+"), (button) -> actionPerformed((CodeButton) button)));
-		addRenderableWidget(new CodeButton(3, x2, y2, 12, 20, Component.literal("-"), (button) -> actionPerformed((CodeButton) button)));
+		addRenderableWidget(new Button.Builder(Component.literal("+"), button -> actionPerformed((CodeButton) button)).pos(x2, y1).size(12,20).build(builder -> new CodeButton(2,builder)));
+		addRenderableWidget(new Button.Builder(Component.literal("-"), button -> actionPerformed((CodeButton) button)).pos(x2, y2).size(12,20).build(builder -> new CodeButton(3,builder)));
 
-		addRenderableWidget(new CodeButton(0, x3, y1, 12, 20, Component.literal("+"), (button) -> actionPerformed((CodeButton) button)));
-		addRenderableWidget(new CodeButton(1, x3, y2, 12, 20, Component.literal("-"), (button) -> actionPerformed((CodeButton) button)));
+		addRenderableWidget(new Button.Builder(Component.literal("+"), button -> actionPerformed((CodeButton) button)).pos(x3, y1).size(12,20).build(builder -> new CodeButton(0,builder)));
+		addRenderableWidget(new Button.Builder(Component.literal("-"), button -> actionPerformed((CodeButton) button)).pos(x3, y2).size(12,20).build(builder -> new CodeButton(1,builder)));
 
 	}
 
@@ -69,22 +70,20 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 		return false;
 	}
 
-	public void render(@NotNull PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
-		this.drawGuiContainerBackgroundLayer(matrix,partialTicks, mouseX, mouseY);
-		super.render(matrix,mouseX, mouseY, partialTicks);
-		this.drawGuiContainerForegroundLayer(matrix,mouseX, mouseY);
+	public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.drawGuiContainerBackgroundLayer(graphics,partialTicks, mouseX, mouseY);
+		super.render(graphics,mouseX, mouseY, partialTicks);
+		this.drawGuiContainerForegroundLayer(graphics,mouseX, mouseY);
 	}
 
-	protected void drawGuiContainerBackgroundLayer(PoseStack matrix, float particalTicks, int mouseX, int mouseY) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+	protected void drawGuiContainerBackgroundLayer(GuiGraphics graphics, float particalTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.setShaderTexture(0, TEXTURE);
 		int marginHorizontal = (width - xSize) / 2;
 		int marginVertical = (height - ySize) / 2;
-		blit(matrix,marginHorizontal, marginVertical, 0, 0, xSize, ySize);
+		graphics.blit(TEXTURE,marginHorizontal, marginVertical, 0, 0, xSize, ySize);
 	}
 
-	protected void drawGuiContainerForegroundLayer(PoseStack matrix,int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(GuiGraphics graphics,int mouseX, int mouseY) {
 		int selectedCode = safe.getSelectedCode();
 
 		int h = (selectedCode / 100) % 10;
@@ -98,18 +97,18 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 		int y1 = guiTop + 15;
 		int y2 = guiTop + 45;
 		int y3 = guiTop + 75;
-		
-		this.font.draw(matrix,String.valueOf(h), x1, y2, 0xffffff);
-		this.font.draw(matrix,String.valueOf(d), x2, y2, 0xffffff);
-		this.font.draw(matrix,String.valueOf(u), x3, y2, 0xffffff);
-		
-		this.font.draw(matrix,String.valueOf(h==9?0:h+1), x1, y1, 0x555555);
-		this.font.draw(matrix,String.valueOf(d==9?0:d+1), x2, y1, 0x555555);
-		this.font.draw(matrix,String.valueOf(u==9?0:u+1), x3, y1, 0x555555);
-		
-		this.font.draw(matrix,String.valueOf(h==0?9:h-1), x1, y3, 0x555555);
-		this.font.draw(matrix,String.valueOf(d==0?9:d-1), x2, y3, 0x555555);
-		this.font.draw(matrix,String.valueOf(u==0?9:u-1), x3, y3, 0x555555);
+
+		graphics.drawString(minecraft.font,String.valueOf(h), x1, y2, 0xffffff);
+		graphics.drawString(minecraft.font,String.valueOf(d), x2, y2, 0xffffff);
+		graphics.drawString(minecraft.font,String.valueOf(u), x3, y2, 0xffffff);
+
+		graphics.drawString(minecraft.font,String.valueOf(h==9?0:h+1), x1, y1, 0x555555);
+		graphics.drawString(minecraft.font,String.valueOf(d==9?0:d+1), x2, y1, 0x555555);
+		graphics.drawString(minecraft.font,String.valueOf(u==9?0:u+1), x3, y1, 0x555555);
+
+		graphics.drawString(minecraft.font,String.valueOf(h==0?9:h-1), x1, y3, 0x555555);
+		graphics.drawString(minecraft.font,String.valueOf(d==0?9:d-1), x2, y3, 0x555555);
+		graphics.drawString(minecraft.font,String.valueOf(u==0?9:u-1), x3, y3, 0x555555);
 	}
 	
 	protected void actionPerformed(CodeButton button)
@@ -120,9 +119,7 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 			int multpleOfTwo = buttonID/2;
 			
 			int toAdd = (int) Math.pow(10, multpleOfTwo+1);
-			if(buttonID%2==0) {
-				
-			}else {
+			if(buttonID%2 == 1) {
 				toAdd = -toAdd;
 			}
 			PacketManager.safeCodeUpdate.sendToServer(new SafeCodeMessage(pos,toAdd));
@@ -142,9 +139,8 @@ public class LockedCodeSafeScreen extends Screen implements GuiEventListener {
 
 		public final int id;
 		
-		public CodeButton(int id, int p_i232255_1_, int p_i232255_2_, int p_i232255_3_, int p_i232255_4_,
-				Component p_i232255_5_, Button.OnPress p_i232255_6_) {
-			super(p_i232255_1_, p_i232255_2_, p_i232255_3_, p_i232255_4_, p_i232255_5_, p_i232255_6_);
+		public CodeButton(int id, Builder builder) {
+			super(builder);
 			this.id = id;
 		}
 	}

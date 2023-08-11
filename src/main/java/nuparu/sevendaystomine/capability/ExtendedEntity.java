@@ -31,7 +31,7 @@ public class ExtendedEntity implements IExtendedEntity{
 
     @Override
     public void readNBT(CompoundTag nbt) {
-        if(owner == null || owner.getLevel().isClientSide()) return;
+        if(owner == null || owner.level().isClientSide()) return;
 
         if(nbt.contains("HordeId",Tag.TAG_INT)){
             int hordeId = nbt.getInt("HordeId");

@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import nuparu.sevendaystomine.world.level.block.IBlockBase;
+import nuparu.sevendaystomine.world.item.block.BlockItemBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +38,7 @@ public class HorizontalBlockBase extends HorizontalDirectionalBlock implements I
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
-        return new BlockItem(this, properties);
+        final Item.Properties properties = new Item.Properties();
+        return new BlockItemBase(this, properties);
     }
 }

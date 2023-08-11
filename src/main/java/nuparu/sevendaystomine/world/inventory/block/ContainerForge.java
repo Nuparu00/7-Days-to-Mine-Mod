@@ -28,7 +28,7 @@ public class ContainerForge extends AbstractContainerMenu {
     public ContainerForge(int windowID, Inventory invPlayer, ForgeBlockEntity forge, ContainerData intArray) {
         super(ModContainers.FORGE.get(), windowID);
         this.intArray = intArray;
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.forge = forge;
 
         addDataSlots(intArray); // tell vanilla to keep the IIntArray synchronised between client and
@@ -65,7 +65,7 @@ public class ContainerForge extends AbstractContainerMenu {
 
     public static ContainerForge createContainerClientSide(int windowID, Inventory playerInventory,
                                                            FriendlyByteBuf extraData) {
-        return new ContainerForge(windowID, playerInventory, (ForgeBlockEntity) playerInventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        return new ContainerForge(windowID, playerInventory, (ForgeBlockEntity) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     @Override
@@ -206,7 +206,7 @@ public class ContainerForge extends AbstractContainerMenu {
         }
 
         protected void checkTakeAchievements(ItemStack p_39558_) {
-            p_39558_.onCraftedBy(this.player.level, this.player, this.removeCount);
+            p_39558_.onCraftedBy(this.player.level(), this.player, this.removeCount);
             if (this.player instanceof ServerPlayer && this.container instanceof ForgeBlockEntity) {
                 ((ForgeBlockEntity)this.container).awardUsedRecipesAndPopExperience(this.player);
             }

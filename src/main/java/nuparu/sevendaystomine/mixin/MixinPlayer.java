@@ -32,7 +32,7 @@ public class MixinPlayer {
                 if (k > 0) {
                     extendedPlayer.causeExhaustion(0.01F * (float)k * 0.01F);
                 }
-            } else if (!player.onClimbable() && player.isOnGround()) {
+            } else if (!player.onClimbable() && player.onGround()) {
                 int l = Math.round((float)Math.sqrt(x * x + z * z) * 100.0F);
                 if (l > 0) {
                     if (player.isSprinting()) {

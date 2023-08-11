@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
@@ -21,8 +22,8 @@ public class LockedDoorBlockBase extends DoorBlockBase{
 
     private static long nextSoundAllowed = 0;
 
-    public LockedDoorBlockBase(Properties p_52737_) {
-        super(p_52737_);
+    public LockedDoorBlockBase(Properties p_52737_, BlockSetType blockSetType) {
+        super(p_52737_, blockSetType);
     }
 
     public void unlock(Level world, BlockPos pos, BlockState state) {

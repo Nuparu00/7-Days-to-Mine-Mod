@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
 import org.jetbrains.annotations.NotNull;
@@ -53,13 +52,13 @@ public class SoulBurntZombieEntity<T extends SoulBurntZombieEntity> extends Zomb
 
         super.tick();
 
-        for (int x = 0; x < 1 + level.random.nextInt(3); x++) {
-            level.addParticle(ParticleTypes.LARGE_SMOKE, getX() + level.random.nextDouble() * 0.3 - 0.15,
-                    getY() + height / 2, getZ() + level.random.nextDouble() * 0.3 - 0.15, 0.0D, 0.0D, 0.0D);
+        for (int x = 0; x < 1 + level().random.nextInt(3); x++) {
+            level().addParticle(ParticleTypes.LARGE_SMOKE, getX() + level().random.nextDouble() * 0.3 - 0.15,
+                    getY() + height / 2, getZ() + level().random.nextDouble() * 0.3 - 0.15, 0.0D, 0.0D, 0.0D);
         }
-        if (!this.level.isClientSide()) {
+        if (!this.level().isClientSide()) {
 
-            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
                 return;
             }
 
@@ -69,7 +68,7 @@ public class SoulBurntZombieEntity<T extends SoulBurntZombieEntity> extends Zomb
                 int k = (int) Math.floor(this.getZ() + (double) ((float) (l / 2 % 2 * 2 - 1) * 0.25F));
                 BlockPos blockpos = new BlockPos(i, j, k);
 
-                BlockState bottom = level.getBlockState(blockpos.below());
+                BlockState bottom = level().getBlockState(blockpos.below());
 
                 Block fireBlock = Blocks.FIRE;
 
@@ -77,9 +76,9 @@ public class SoulBurntZombieEntity<T extends SoulBurntZombieEntity> extends Zomb
                     fireBlock = Blocks.SOUL_FIRE;
                 }
 
-                if (this.level.getBlockState(blockpos).getMaterial() == Material.AIR
-                        && fireBlock.canSurvive(Blocks.FIRE.defaultBlockState(), this.level, blockpos)) {
-                    this.level.setBlockAndUpdate(blockpos, fireBlock.defaultBlockState());
+                if (this.level().getBlockState(blockpos).isAir()
+                        && fireBlock.canSurvive(Blocks.FIRE.defaultBlockState(), this.level(), blockpos)) {
+                    this.level().setBlockAndUpdate(blockpos, fireBlock.defaultBlockState());
                 }
             }
         }

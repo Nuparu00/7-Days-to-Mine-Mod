@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,12 +25,11 @@ public class ThirstBarOverlay extends Gui implements IGuiOverlay {
     }
 
     @Override
-    public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+    public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int width, int height) {
         if(!ServerConfig.thirst.get()) return;
         boolean isMounted = minecraft.player.getVehicle() instanceof LivingEntity;
-        if (!isMounted && !minecraft.options.hideGui && gui.shouldDrawSurvivalElements()) {
+        if (!isMounted && !minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && minecraft.getCameraEntity() instanceof Player player) {
             bind(OVERLAYS_TEXTURE);
-            Player player = (Player) this.minecraft.getCameraEntity();
             RenderSystem.enableBlend();
             int left = width / 2 + 91;
             int top = height - gui.rightHeight;
@@ -55,12 +55,14 @@ public class ThirstBarOverlay extends Gui implements IGuiOverlay {
                     y = top + (random.nextInt(3) - 1);
                 }
 
-                blit(poseStack, x, y, background * 9, 0, 9, 9);
+                guiGraphics.blit(OVERLAYS_TEXTURE, x, y, background * 9, 0, 9, 9);
 
-                if (idx < level)
-                    blit(poseStack, x, y, icon - 7, 0, 9, 9);
-                else if (idx == level)
-                    blit(poseStack, x, y, icon + 2, 0, 9, 9);
+                if (idx < level) {
+                    guiGraphics.blit(OVERLAYS_TEXTURE, x, y, icon - 7, 0, 9, 9);
+                }
+                else if (idx == level){
+                    guiGraphics.blit(OVERLAYS_TEXTURE, x, y, icon + 2, 0, 9, 9);
+                }
             }
             RenderSystem.disableBlend();
         }

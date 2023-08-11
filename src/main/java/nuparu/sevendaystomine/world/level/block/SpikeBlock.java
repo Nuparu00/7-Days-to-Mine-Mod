@@ -36,7 +36,7 @@ public class SpikeBlock extends WaterloggableHorizontalBlockBase implements Enti
                 return;
             }
         }
-        entityIn.hurt(DamageSource.GENERIC, damage);
+        entityIn.hurt(worldIn.damageSources().generic(), damage);
         if (worldIn.getBlockEntity(pos) instanceof SpikesBlockEntity blockEntity) {
             blockEntity.damage(1);
         }

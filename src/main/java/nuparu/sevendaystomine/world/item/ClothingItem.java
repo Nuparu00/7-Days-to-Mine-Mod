@@ -5,6 +5,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +19,7 @@ import javax.annotation.Nullable;
 import java.util.function.Function;
 
 @SuppressWarnings("unused")
-public class ClothingItem extends DyeableArmorItem {
+public class ClothingItem extends DyeableArmorItem implements CreativeModeTabProvider{
     public ResourceLocation texture;
     public ResourceLocation overlay;
 
@@ -26,13 +27,13 @@ public class ClothingItem extends DyeableArmorItem {
     private boolean hasOverlay = false;
     private int defaultColor = 0xffffff;
 
-    public ClothingItem(ArmorMaterial material, EquipmentSlot slot, Properties properties, String textureName) {
+    public ClothingItem(ArmorMaterial material, ArmorItem.Type slot, Properties properties, String textureName) {
         super(material, slot, properties);
         this.texture = new ResourceLocation(SevenDaysToMine.MODID,"textures/models/clothing/" + textureName +".png");
         this.overlay = new ResourceLocation(SevenDaysToMine.MODID,"textures/models/clothing/" + textureName +"_overlay.png");
     }
 
-    public ClothingItem(EquipmentSlot slot, Properties properties, String textureName) {
+    public ClothingItem(ArmorItem.Type slot, Properties properties, String textureName) {
         this(ModArmorMaterials.CLOTHING, slot, properties,textureName);
     }
     public static Function<net.minecraft.client.model.geom.EntityModelSet, net.minecraft.client.model.HumanoidModel> modelFactory() {

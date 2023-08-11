@@ -61,7 +61,7 @@ public class AirdropModel<T extends AirdropEntity> extends EntityModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        parachute.visible = (!entity.isOnGround() && !entity.getLanded());
+        parachute.visible = (!entity.onGround() && !entity.getLanded());
     }
 
     @Override

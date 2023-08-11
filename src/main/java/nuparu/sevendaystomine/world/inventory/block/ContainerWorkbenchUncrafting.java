@@ -42,10 +42,10 @@ public class ContainerWorkbenchUncrafting extends AbstractContainerMenu {
 
     public ContainerWorkbenchUncrafting(int windowID, Inventory invPlayer, WorkbenchBlockEntity workbench) {
         super(ModContainers.WORKBENCH_UNCRAFTING.get(), windowID);
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.player = invPlayer.player;
         this.workbench = workbench;
-        this.access = ContainerLevelAccess.create(player.level,workbench.getBlockPos());
+        this.access = ContainerLevelAccess.create(player.level(),workbench.getBlockPos());
 
         // server Containers
         if(workbench != null) {
@@ -80,7 +80,7 @@ public class ContainerWorkbenchUncrafting extends AbstractContainerMenu {
 
     public static ContainerWorkbenchUncrafting createContainerClientSide(int windowID, Inventory playerInventory,
                                                                          FriendlyByteBuf extraData) {
-        return new ContainerWorkbenchUncrafting(windowID, playerInventory, (WorkbenchBlockEntity) playerInventory.player.level.getBlockEntity(extraData.readBlockPos()));
+        return new ContainerWorkbenchUncrafting(windowID, playerInventory, (WorkbenchBlockEntity) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
     @Override
@@ -96,7 +96,7 @@ public class ContainerWorkbenchUncrafting extends AbstractContainerMenu {
             if (optional.isPresent()) {
                 CraftingRecipe icraftingrecipe = optional.get();
                 if (p_217066_4_.setRecipeUsed(p_217066_1_, serverplayerentity, icraftingrecipe)) {
-                    itemstack = icraftingrecipe.assemble(p_217066_3_);
+                    itemstack = icraftingrecipe.assemble(p_217066_3_, p_217066_1_.registryAccess());
                 }
             }
 

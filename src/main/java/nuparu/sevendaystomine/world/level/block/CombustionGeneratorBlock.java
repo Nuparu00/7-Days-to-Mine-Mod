@@ -14,7 +14,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -41,7 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import nuparu.sevendaystomine.init.ModCreativeModeTabs;
+import nuparu.sevendaystomine.world.item.block.BlockItemBase;
 import nuparu.sevendaystomine.world.level.block.entity.CombustionGeneratorBlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -109,8 +108,8 @@ public class CombustionGeneratorBlock extends AbstractFurnaceBlock implements IB
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
-        return new BlockItem(this, properties);
+        final Item.Properties properties = new Item.Properties();
+        return new BlockItemBase(this, properties);
 
     }
 
@@ -194,11 +193,6 @@ public class CombustionGeneratorBlock extends AbstractFurnaceBlock implements IB
             p_180655_2_.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
             p_180655_2_.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
         }
-    }
-
-    @Override
-    public CreativeModeTab getItemGroup() {
-        return ModCreativeModeTabs.TAB_ELECTRICITY;
     }
 }
 

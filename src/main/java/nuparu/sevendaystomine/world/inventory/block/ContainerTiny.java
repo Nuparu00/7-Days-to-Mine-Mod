@@ -21,7 +21,7 @@ public class ContainerTiny extends AbstractContainerMenu {
 
     public ContainerTiny(int windowID, Inventory invPlayer, ItemHandlerBlockEntity<ItemHandlerNameable> blockEntity) {
         super(ModContainers.TINY.get(), windowID);
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.player = invPlayer.player;
         this.blockEntity = blockEntity;
         blockEntity.onContainerOpened(player);
@@ -53,7 +53,7 @@ public class ContainerTiny extends AbstractContainerMenu {
 
     public static ContainerTiny createContainerClientSide(int windowID, Inventory playerInventory,
                                                           FriendlyByteBuf extraData) {
-        return new ContainerTiny(windowID, playerInventory, (ItemHandlerBlockEntity<ItemHandlerNameable>) playerInventory.player.level.getBlockEntity(extraData.readBlockPos()));
+        return new ContainerTiny(windowID, playerInventory, (ItemHandlerBlockEntity<ItemHandlerNameable>) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
     @Override

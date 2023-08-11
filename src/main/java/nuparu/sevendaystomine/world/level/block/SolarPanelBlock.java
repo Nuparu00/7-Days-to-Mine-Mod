@@ -85,9 +85,4 @@ public class SolarPanelBlock extends WaterloggableHorizontalBlockBase implements
             }
         };
     }
-
-    @Override
-    public CreativeModeTab getItemGroup() {
-        return ModCreativeModeTabs.TAB_ELECTRICITY;
-    }
 }

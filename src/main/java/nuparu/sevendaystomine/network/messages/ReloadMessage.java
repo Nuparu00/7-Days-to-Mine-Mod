@@ -39,7 +39,7 @@ public class ReloadMessage {
 			ctx.get().enqueueWork(() -> {
 				ctx.get().setPacketHandled(true);
 				final ServerPlayer player = ctx.get().getSender();
-				final Level world = player.level;
+				final Level world = player.level();
 				final ItemStack mainStack = player.getMainHandItem();
 				final ItemStack secStack = player.getOffhandItem();
 

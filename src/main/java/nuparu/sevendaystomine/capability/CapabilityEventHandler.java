@@ -55,7 +55,7 @@ public class CapabilityEventHandler {
     @SubscribeEvent
     public static void onPlayerRespawnEvent(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getEntity();
-        if(!player.level.isClientSide()) {
+        if(!player.level().isClientSide()) {
             IExtendedPlayer extendedPlayer = CapabilityHelper.getExtendedPlayer(player);
             extendedPlayer.onDataChanged();
         }

@@ -1,5 +1,6 @@
 package nuparu.sevendaystomine.world.item;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -15,12 +16,13 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import nuparu.sevendaystomine.init.ModCreativeModeTabs;
 import nuparu.sevendaystomine.init.ModDamageSources;
 import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.world.entity.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class BloodDrawKitItem extends Item {
+public class BloodDrawKitItem extends ItemBase {
 
 	public BloodDrawKitItem(Item.Properties properties) {
 		super(properties);
@@ -64,7 +66,7 @@ public class BloodDrawKitItem extends Item {
                 if (!player.getInventory().add(bloodBag)) {
 					player.drop(bloodBag, false);
 				}
-				toHurt.hurt(ModDamageSources.bleeding, 4);
+				toHurt.hurt(ModDamageSources.BLEEDING.apply(world), 4);
 				if (player instanceof ServerPlayer) {
 					stack.hurtAndBreak(1, player, (p_43076_) -> p_43076_.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 				}
@@ -81,5 +83,10 @@ public class BloodDrawKitItem extends Item {
 	@Override
 	public @NotNull UseAnim getUseAnimation(@NotNull ItemStack itemStack) {
 		return UseAnim.BOW;
+	}
+
+	@Override
+	public ResourceLocation creativeModeTab(){
+		return ModCreativeModeTabs.MEDICINE.getId();
 	}
 }

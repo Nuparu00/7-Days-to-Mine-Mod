@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -86,7 +87,7 @@ public class CookingShapeless implements ICookingRecipe<GrillBlockEntity> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull GrillBlockEntity grillInventory) {
+    public @NotNull ItemStack assemble(@NotNull GrillBlockEntity grillInventory, @NotNull RegistryAccess registryAccess) {
         return this.result.copy();
     }
 
@@ -106,7 +107,7 @@ public class CookingShapeless implements ICookingRecipe<GrillBlockEntity> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
         return this.result.copy();
     }
 

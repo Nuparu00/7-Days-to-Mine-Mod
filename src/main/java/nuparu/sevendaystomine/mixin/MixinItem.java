@@ -26,14 +26,14 @@ public abstract class MixinItem implements IQualityItem {
 
     @Shadow public abstract Item asItem();
 
-    @Shadow protected abstract boolean allowedIn(CreativeModeTab p_220153_);
+    //@Shadow protected abstract boolean allowedIn(CreativeModeTab p_220153_);
 
     @Override
     public boolean canHaveQuality() {
         Item instance =(Item)(Object)this;
         return ItemUtils.canHaveQuality(instance);
     }
-
+/*
     @Inject(method = "fillItemCategory(Lnet/minecraft/world/item/CreativeModeTab;Lnet/minecraft/core/NonNullList;)V", at = @At("HEAD"), cancellable = true)
     public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> list, CallbackInfo ci) {
         if (canHaveQuality() && allowedIn(group)) {
@@ -42,7 +42,7 @@ public abstract class MixinItem implements IQualityItem {
             list.add(stack);
             ci.cancel();
         }
-    }
+    }*/
 
     @Inject(method = "onCraftedBy(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;)V", at = @At("HEAD"))
     public void onCraftedBy(ItemStack stack, Level world, Player player, CallbackInfo ci) {
@@ -70,14 +70,14 @@ public abstract class MixinItem implements IQualityItem {
             mutableComponent.setStyle(mutableComponent.getStyle().withColor(color));
             cir.setReturnValue(mutableComponent);
         }
-    }
+    }/*
     @Inject(method = "getItemCategory()Lnet/minecraft/world/item/CreativeModeTab;", at = @At("RETURN"), cancellable = true)
     public void getItemCategory(CallbackInfoReturnable<CreativeModeTab> cir) {
         Item instance =(Item)(Object)this;
         if(instance == Items.TORCH || instance == Items.SOUL_TORCH){
             cir.setReturnValue(null);
         }
-    }
+    }*/
     @Inject(method = "inventoryTick(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;IZ)V", at = @At("RETURN"))
     public void inventoryTick(ItemStack stack, Level p_41405_, Entity entity, int slot, boolean p_41408_, CallbackInfo ci) {
         Item instance =(Item)(Object)this;

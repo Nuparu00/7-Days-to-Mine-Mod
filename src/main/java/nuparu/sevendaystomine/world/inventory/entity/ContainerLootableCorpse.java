@@ -22,7 +22,7 @@ public class ContainerLootableCorpse extends AbstractContainerMenu {
 
     protected ContainerLootableCorpse(int windowID, Inventory invPlayer, Entity corpseEntity) {
         super(ModContainers.LOOTABLE_COPRSE.get(), windowID);
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.corpseEntity = corpseEntity;
         inventory = corpseEntity.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, null).orElse(null);
 
@@ -44,7 +44,7 @@ public class ContainerLootableCorpse extends AbstractContainerMenu {
     }
 
     public static ContainerLootableCorpse createContainerClientSide(int windowID, Inventory playerInventory, FriendlyByteBuf packetBuffer) {
-        return new ContainerLootableCorpse(windowID,playerInventory, playerInventory.player.level.getEntity(packetBuffer.readInt()));
+        return new ContainerLootableCorpse(windowID,playerInventory, playerInventory.player.level().getEntity(packetBuffer.readInt()));
     }
 
     public static ContainerLootableCorpse createContainerServerSide(int windowID, Inventory playerInventory, Entity entity){

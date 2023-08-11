@@ -33,7 +33,7 @@ public class CommandAirdrop {
         world.addFreshEntity(e);
         e.setPos(pos.getX(), pos.getY(), pos.getZ());
 
-        commandContext.getSource().sendSuccess(Component.translatable("airdrop.message",
+        commandContext.getSource().sendSuccess(() -> Component.translatable("airdrop.message",
                         pos.getX() + MathUtils.getIntInRange(world.random, 32, 128) * (world.random.nextBoolean() ? 1 : -1),
                         pos.getZ() + MathUtils.getIntInRange(world.random, 32, 128) * (world.random.nextBoolean() ? 1 : -1)),
                 true);

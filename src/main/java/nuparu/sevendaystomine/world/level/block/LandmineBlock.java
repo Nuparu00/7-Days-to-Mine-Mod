@@ -45,13 +45,13 @@ public class LandmineBlock extends BlockBase{
             }
         }
         worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-        worldIn.explode(null, pos.getX() + 0.5, pos.getY() + 0.25, pos.getZ() + 0.5, power, true, Explosion.BlockInteraction.DESTROY);
+        worldIn.explode(null, pos.getX() + 0.5, pos.getY() + 0.25, pos.getZ() + 0.5, power, true, Level.ExplosionInteraction.BLOCK);
     }
 
     @Override
     public void onBlockExploded(BlockState state, Level worldIn, BlockPos pos, Explosion explosionIn) {
         if(worldIn.isClientSide()) return;
-        worldIn.explode(null, pos.getX() + 0.5, pos.getY() + 0.25 , pos.getZ() + 0.5, power, true,Explosion.BlockInteraction.DESTROY);
+        worldIn.explode(null, pos.getX() + 0.5, pos.getY() + 0.25 , pos.getZ() + 0.5, power, true,Level.ExplosionInteraction.BLOCK);
     }
 
     @Override

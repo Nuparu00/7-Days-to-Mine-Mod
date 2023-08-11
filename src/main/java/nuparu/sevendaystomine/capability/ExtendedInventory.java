@@ -207,7 +207,7 @@ public class ExtendedInventory implements IItemHandlerExtended, IItemHandlerModi
 
     @Override
     public @NotNull Component getName() {
-        return MutableComponent.create(new TranslatableContents("container." + name));
+        return Component.translatable("container." + name);
     }
 
     @Override

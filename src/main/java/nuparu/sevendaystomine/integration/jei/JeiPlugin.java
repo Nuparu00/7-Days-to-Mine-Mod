@@ -128,7 +128,7 @@ public class JeiPlugin implements IModPlugin {
                             NonNullList<Ingredient> ingredients = NonNullList.create();
                             ingredients.add(Ingredient.of(new ItemStack(entry.item(),1)));
                             if(ingredients.get(0).isEmpty()) continue;
-                            result.add(new ShapelessRecipe(new ResourceLocation(SevenDaysToMine.MODID,"crafting/scrap"),"", new ItemStack(scrapResult.item(), (int) Math.floor(entry.weight().asDouble() * ServerConfig.scrapCoefficient.get())), ingredients));
+                            result.add(new ShapelessRecipe(new ResourceLocation(SevenDaysToMine.MODID,"crafting/scrap"),"", CraftingBookCategory.MISC, new ItemStack(scrapResult.item(), (int) Math.floor(entry.weight().asDouble() * ServerConfig.scrapCoefficient.get())), ingredients));
                         }
                         else{
                             int inputCount = (int)Math.ceil(1d/(entry.weight().asDouble() * ServerConfig.scrapCoefficient.get()));
@@ -136,7 +136,7 @@ public class JeiPlugin implements IModPlugin {
                             NonNullList<Ingredient> ingredients = NonNullList.create();
                             ingredients.add(Ingredient.of(new ItemStack(entry.item(),inputCount)));
                             if(ingredients.get(0).isEmpty()) continue;
-                            result.add(new ShapelessRecipe(new ResourceLocation(SevenDaysToMine.MODID,"crafting/scrap"),"scrap", new ItemStack(scrapResult.item(), (int) Math.floor(entry.weight().asDouble() * inputCount * ServerConfig.scrapCoefficient.get())),ingredients));
+                            result.add(new ShapelessRecipe(new ResourceLocation(SevenDaysToMine.MODID,"crafting/scrap"),"scrap", CraftingBookCategory.MISC, new ItemStack(scrapResult.item(), (int) Math.floor(entry.weight().asDouble() * inputCount * ServerConfig.scrapCoefficient.get())),ingredients));
                         }
                     }
                 }

@@ -1,15 +1,13 @@
 package nuparu.sevendaystomine.world.item.crafting;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.config.ServerConfig;
@@ -28,7 +26,7 @@ public class ScrapRecipe extends CustomRecipe {
     private ItemStack resultItem = ItemStack.EMPTY;
 
     public ScrapRecipe() {
-        super(new ResourceLocation(SevenDaysToMine.MODID, "scrap"));
+        super(new ResourceLocation(SevenDaysToMine.MODID, "scrap"), CraftingBookCategory.MISC);
     }
 
     @Override
@@ -84,7 +82,7 @@ public class ScrapRecipe extends CustomRecipe {
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull CraftingContainer p_44001_) {
+    public @NotNull ItemStack assemble(@NotNull CraftingContainer p_44001_, RegistryAccess registryAccess) {
         return this.resultItem.copy();
     }
 

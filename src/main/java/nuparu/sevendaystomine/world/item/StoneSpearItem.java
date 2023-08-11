@@ -3,6 +3,7 @@ package nuparu.sevendaystomine.world.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,12 +24,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import nuparu.sevendaystomine.client.renderer.ModdedBlockEntityWithoutLevelRenderer;
+import nuparu.sevendaystomine.init.ModCreativeModeTabs;
 import nuparu.sevendaystomine.world.entity.item.StoneSpearEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-public class StoneSpearItem extends TridentItem {
+public class StoneSpearItem extends TridentItem implements CreativeModeTabProvider{
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
     public StoneSpearItem(Properties p_43381_,double speed, double damage) {
         super(p_43381_);
@@ -85,7 +87,7 @@ public class StoneSpearItem extends TridentItem {
                         f3 *= f5 / f4;
                         player.push(f1, f2, f3);
                         player.startAutoSpinAttack(20);
-                        if (player.isOnGround()) {
+                        if (player.onGround()) {
                             float f6 = 1.1999999F;
                             player.move(MoverType.SELF, new Vec3(0.0D, 1.1999999F, 0.0D));
                         }
@@ -110,5 +112,10 @@ public class StoneSpearItem extends TridentItem {
     @Override
     public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot p_43383_) {
         return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
+    }
+
+    @Override
+    public ResourceLocation creativeModeTab(){
+        return ModCreativeModeTabs.COMBAT.getId();
     }
 }

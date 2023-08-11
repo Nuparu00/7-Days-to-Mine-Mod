@@ -2,7 +2,7 @@ package nuparu.sevendaystomine.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -62,9 +62,9 @@ public class SolarPanelRenderer implements BlockEntityRenderer<SolarPanelBlockEn
             }
 
             matrixStack.translate(0.5D, 0.5D, 0.5D);
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(-f));
             matrixStack.translate(0, 0.1875, 0);
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(rot));
+            matrixStack.mulPose(Axis.XP.rotationDegrees(rot));
 
             VertexConsumer vertexconsumer = MAT.buffer(buffer, RenderType::entitySolid);
             globe.render(matrixStack, vertexconsumer, combinedLight, combinedOverlay);

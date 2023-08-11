@@ -10,6 +10,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.network.NetworkEvent;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.capability.CapabilityHelper;
@@ -48,13 +49,13 @@ public class PlayerDrinkMessage {
                 Player player = SevenDaysToMine.proxy.getPlayerEntityFromContext(ctx);
                 if(player.isSpectator() || player.isCreative()) return;
                 if(!player.getMainHandItem().isEmpty()) return;
-                Level level = player.level;
+                Level level = player.level();
                 if(level != null){
-                    BlockHitResult result = EntityUtils.rayTraceServer(player, player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue(), 1,
+                    BlockHitResult result = EntityUtils.rayTraceServer(player, player.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue(), 1,
                             ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
                     if(result == null) return;
 
-                    BlockState blockState = player.level.getBlockState(result.getBlockPos());
+                    BlockState blockState = player.level().getBlockState(result.getBlockPos());
                     if(blockState.is(ModBlocksTags.MURKY_WATER_SOURCE) || blockState.getFluidState().is(ModFluidTags.MURKY_WATER_SOURCE)){
                         IExtendedPlayer extendedPlayer = CapabilityHelper.getExtendedPlayer(player);
                         if(extendedPlayer.getWaterLevel() == extendedPlayer.getMaxWaterLevel()) return;

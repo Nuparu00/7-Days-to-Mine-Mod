@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -129,7 +130,7 @@ public class AirdropEntity extends Entity implements MenuProvider {
     }
 
     @Override
-    public @NotNull Packet<?> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -156,7 +157,7 @@ public class AirdropEntity extends Entity implements MenuProvider {
         this.zOld = this.getZ();
 
         this.age++;
-        if (!level.isClientSide()) {
+        if (!level().isClientSide()) {
             if (this.age >= ServerConfig.airdropLifespan.get()) {
                 this.kill();
                 return;
@@ -167,11 +168,11 @@ public class AirdropEntity extends Entity implements MenuProvider {
         if (getLanded() && getSmokeTime() > 0) {
             double height = this.getDimensions(this.getPose()).height;
             for (int i = 0; i < random.nextInt(3) + 1; i++) {
-                level.addParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, this.position().x, this.position().y + height
+                level().addParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, this.position().x, this.position().y + height
                         , this.position().z,
                         MathUtils.getFloatInRange(-0.02f, 0.02f), MathUtils.getFloatInRange(0.2f, 0.5f),
                         MathUtils.getFloatInRange(-0.02f, 0.02f));
-                level.addParticle(ParticleTypes.CLOUD, this.position().x, this.position().y + height, this.position().z,
+                level().addParticle(ParticleTypes.CLOUD, this.position().x, this.position().y + height, this.position().z,
                         MathUtils.getFloatInRange(-0.1f, 0.1f), MathUtils.getFloatInRange(0.2f, 0.5f),
                         MathUtils.getFloatInRange(-0.1f, 0.1f));
             }
@@ -182,18 +183,18 @@ public class AirdropEntity extends Entity implements MenuProvider {
         double motionY = this.getDeltaMovement().y;
         double motionZ = this.getDeltaMovement().z;
 
-        if (!onGround && !onEntity) {
+        if (!onGround() && !onEntity) {
             motionY = !getLanded() ? -0.0625 : -0.1911;
         } else {
             motionY = 0;
-            if (!level.isClientSide()) {
+            if (!level().isClientSide()) {
                 if (!getLanded()) {
                     setSmokeTime(1200);
                     setLanded(true);
                 }
             }
         }
-        if (this.onGround) {
+        if (this.onGround()) {
             motionX *= 0.5D;
             motionY *= 0.5D;
             motionZ *= 0.5D;
@@ -201,10 +202,10 @@ public class AirdropEntity extends Entity implements MenuProvider {
         this.setDeltaMovement(new Vec3(motionX, motionY, motionZ));
         this.move(MoverType.SELF, this.getDeltaMovement());
 
-        checkOutOfWorld();
+        checkBelowWorld();
 
         boolean flag = false;
-        for (Entity entity : this.level.getEntities(this, getBoundingBox())) {
+        for (Entity entity : this.level().getEntities(this, getBoundingBox())) {
             if (entity instanceof Player)
                 continue;
             if (!this.hasPassenger(entity) && entity.canBeCollidedWith()) {
@@ -234,7 +235,7 @@ public class AirdropEntity extends Entity implements MenuProvider {
             if (getInventory() != null) {
                 for (int i = 0; i < getInventory().getSlots(); i++) {
                     ItemStack stack = getInventory().getStackInSlot(i);
-                    Containers.dropItemStack(level, getX() + this.getBbWidth() / 2, getY(),
+                    Containers.dropItemStack(level(), getX() + this.getBbWidth() / 2, getY(),
                             getZ() + this.getBbWidth() / 2, stack);
                 }
             }
@@ -303,7 +304,7 @@ public class AirdropEntity extends Entity implements MenuProvider {
             double x = player.getX() + dist * Math.cos(angle);
             double z = player.getZ() + dist * Math.sin(angle);
 
-            return new BlockPos(x, 255, z);
+            return new BlockPos((int) x, 255, (int) z);
         }
 
         for (Player player : players) {
@@ -316,7 +317,7 @@ public class AirdropEntity extends Entity implements MenuProvider {
         double x = xSum / players.size() + dist * Math.cos(angle);
         double z = zSum / players.size() + dist * Math.sin(angle);
 
-        return new BlockPos(x, 255, z);
+        return new BlockPos((int) x, 255, (int) z);
     }
 
     @Override

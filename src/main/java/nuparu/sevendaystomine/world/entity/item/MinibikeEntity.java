@@ -196,7 +196,7 @@ public class MinibikeEntity extends VehicleEntity {
         Item item = battery.getItem();
         if (!(item instanceof IBattery bat))
             return false;
-        return bat.getVoltage(battery, level) > 0;
+        return bat.getVoltage(battery, level()) > 0;
     }
 
     @Override
@@ -247,7 +247,7 @@ public class MinibikeEntity extends VehicleEntity {
         kmh = Math.sqrt(this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z) * 20;
 
         //System.out.println(this.getCalculatedQuality() + " " + kmh);
-        if (level.isClientSide()) {
+        if (level().isClientSide()) {
             if (System.currentTimeMillis() - nextIdleSound >= (4750 / (1d + kmh / 40d))
                     && this.getControllingPassenger() != null && this.canBeDriven()) {
                 //SevenDaysToMine.proxy.playMovingSound(0, this);
@@ -262,7 +262,7 @@ public class MinibikeEntity extends VehicleEntity {
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(drag, drag, drag));
 
-        if (!level.isClientSide()) {
+        if (!level().isClientSide()) {
             float turning = this.getTurning();
             this.setTurningPrev(turning);
             if (turning != 0) {
@@ -279,7 +279,7 @@ public class MinibikeEntity extends VehicleEntity {
 
         this.move(MoverType.SELF, this.getDeltaMovement());
 
-        if (!level.isClientSide()) {
+        if (!level().isClientSide()) {
             this.setCharged(this.isBateryCharged());
         }
         this.wheelAnglePrev = this.wheelAngle;
@@ -300,23 +300,23 @@ public class MinibikeEntity extends VehicleEntity {
         //Replacing grass with dirt
         if (kmh > 3) {
             if (this.getControllingPassenger() != null && this.getControllingPassenger() instanceof LivingEntity) {
-                BlockPos pos = new BlockPos(this.xOld, this.yOld - 1, this.zOld);
-                BlockState state = this.level.getBlockState(pos);
+                BlockPos pos = new BlockPos((int) this.xOld, (int) (this.yOld - 1), (int) this.zOld);
+                BlockState state = this.level().getBlockState(pos);
 
-                if (!level.isClientSide()) {
+                if (!level().isClientSide()) {
                     if (state.getBlock() == Blocks.GRASS_BLOCK) {
-                        level.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
+                        level().setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
                     } /*else if (level.getBlockState(pos.above()).getBlock() instanceof BlockBush) {
                         level.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
                     }*/
 
-                    if (level.random.nextInt(15) == 0) {
+                    if (level().random.nextInt(15) == 0) {
                         this.setFuel((this.getFuel() - (10F / ((IQualityStack)(Object)(inv.getStackInSlot(4))).getQuality())));
                     }
                 }
-                if (state.isFaceSturdy(level, pos, Direction.UP)) {
+                if (state.isFaceSturdy(level(), pos, Direction.UP)) {
                     for (int j = 0; j < 10; j++) {
-                        level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state).setPos(pos), getX() + random.nextDouble() * 0.2,
+                        level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state).setPos(pos), getX() + random.nextDouble() * 0.2,
                                 getY() + random.nextDouble() * 0.2, getZ() + random.nextDouble() * 0.2, getDeltaMovement().x, getDeltaMovement().y,
                                 getDeltaMovement().z);
                     }
@@ -331,7 +331,7 @@ public class MinibikeEntity extends VehicleEntity {
                     double d7 = this.getX();
                     double d8 = this.getZ();
 
-                    level.addParticle(ParticleTypes.SMOKE, d7, this.getY() + 0.12, d8, this.getDeltaMovement().x,
+                    level().addParticle(ParticleTypes.SMOKE, d7, this.getY() + 0.12, d8, this.getDeltaMovement().x,
                             this.getDeltaMovement().y, this.getDeltaMovement().z);
 
                 }
@@ -340,13 +340,13 @@ public class MinibikeEntity extends VehicleEntity {
         if (this.getHealth() <= this.getMaxHealth() * 0.2 && !isInFluidType()) {
             if (this.getHealth() <= this.getMaxHealth() * 0.1) {
                 for (int k = 0; k < random.nextInt(2); k++) {
-                    level.addParticle(ParticleTypes.FLAME, getX() + random.nextDouble() * 0.3 - 0.15,
+                    level().addParticle(ParticleTypes.FLAME, getX() + random.nextDouble() * 0.3 - 0.15,
                             getY() + 0.25, getZ() + random.nextDouble() * 0.3 - 0.15, this.getDeltaMovement().x,
                             this.getDeltaMovement().y + 0.02, this.getDeltaMovement().z);
                 }
             }
             for (int k = 0; k < random.nextInt(3); k++) {
-                level.addParticle(ParticleTypes.SMOKE, getX() + random.nextDouble() * 0.3 - 0.15,
+                level().addParticle(ParticleTypes.SMOKE, getX() + random.nextDouble() * 0.3 - 0.15,
                         getY() + 0.25, getZ() + random.nextDouble() * 0.3 - 0.15, this.getDeltaMovement().x,
                         this.getDeltaMovement().y + 0.07, this.getDeltaMovement().z);
             }
@@ -355,18 +355,18 @@ public class MinibikeEntity extends VehicleEntity {
 
         //System.out.println(kmh);
         //Entity collision handling
-        if (kmh >= 3 && !level.isClientSide()) {
-            List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate(0.2F, -0.01F, 0.2F), (p_20442_) -> p_20442_.isAlive() && p_20442_ instanceof LivingEntity);
+        if (kmh >= 3 && !level().isClientSide()) {
+            List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(0.2F, -0.01F, 0.2F), (p_20442_) -> p_20442_.isAlive() && p_20442_ instanceof LivingEntity);
             if (!list.isEmpty()) {
 
                 for (int j = 0; j < list.size(); ++j) {
                     Entity entity = list.get(j);
-                    if (entity instanceof LivingEntity) {
+                    if (entity instanceof LivingEntity livingEntity) {
                         if (!entity.hasPassenger(this) && !this.hasPassenger(entity)) {
                             double force = kmh / 6d;
                             entity.push(-Mth.sin(this.getYRot() * ((float) Math.PI / 180F)) * (float) force * 0.5F, 0.1D, Mth.cos(this.getYRot() * ((float) Math.PI / 180F)) * (float) force * 0.5F);
-                            entity.hurt(ModDamageSources.causeVehicleDamage(this, entity), (float) Math.floor(1.5 * kmh));
-                            hurt(DamageSource.mobAttack((LivingEntity) entity), (float) Math.floor(0.25 * kmh));
+                            entity.hurt(ModDamageSources.VEHICLE.apply(level(), this, entity), (float) Math.floor(1.5 * kmh));
+                            hurt(level().damageSources().mobAttack(livingEntity), (float) Math.floor(0.25 * kmh));
                             //this.push(entity,90);
                         }
                     }
@@ -377,8 +377,8 @@ public class MinibikeEntity extends VehicleEntity {
 
     @Override
     @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+    public LivingEntity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (LivingEntity) this.getPassengers().get(0);
     }
 
     @Override
@@ -387,12 +387,7 @@ public class MinibikeEntity extends VehicleEntity {
     }
 
     @Override
-    public void positionRider(Entity p_226266_1_) {
-        this.positionRider(p_226266_1_, Entity::setPos);
-    }
-
-
-    private void positionRider(Entity passenger, Entity.MoveFunction posY) {
+    protected void positionRider(Entity passenger, Entity.MoveFunction posY) {
         if (this.hasPassenger(passenger)) {
             float f = 0.0F;
             float f1 = (float) ((this.isRemoved() ? (double) 0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());

@@ -21,8 +21,8 @@ public class BookshelfProcessor extends StructureProcessor {
 
     @Override
     public StructureTemplate.StructureBlockInfo  process(LevelReader worldView, BlockPos pos, BlockPos blockPos, StructureTemplate.StructureBlockInfo structureBlockInfoLocal, StructureTemplate.StructureBlockInfo structureBlockInfoWorld, StructurePlaceSettings structurePlacementData, @Nullable StructureTemplate template) {
-        BlockState blockState = structureBlockInfoWorld.state;
-        BlockPos worldPos = structureBlockInfoWorld.pos;
+        BlockState blockState = structureBlockInfoWorld.state();
+        BlockPos worldPos = structureBlockInfoWorld.pos();
         RandomSource random = structurePlacementData.getRandom(worldPos);
 
         if (blockState.getBlock() instanceof BookshelfBlock) {

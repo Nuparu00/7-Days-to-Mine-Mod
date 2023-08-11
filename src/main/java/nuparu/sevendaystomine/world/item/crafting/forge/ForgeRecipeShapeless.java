@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -46,7 +47,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
 
     @Override
     public boolean matches(ForgeBlockEntity grillInventory, @NotNull Level world) {
-        if(!ItemStack.isSameIgnoreDurability(grillInventory.getMoldSlot(),mold)) return false;
+        if(!ItemStack.isSameItem(grillInventory.getMoldSlot(),mold)) return false;
         StackedContents recipeitemhelper = new StackedContents();
         List<ItemStack> inputs = new ArrayList();
         int i = 0;
@@ -81,7 +82,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull ForgeBlockEntity grillInventory) {
+    public @NotNull ItemStack assemble(@NotNull ForgeBlockEntity grillInventory, RegistryAccess registryAccess) {
         return this.result.copy();
     }
 
@@ -101,7 +102,7 @@ public class ForgeRecipeShapeless implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
         return this.result.copy();
     }
 

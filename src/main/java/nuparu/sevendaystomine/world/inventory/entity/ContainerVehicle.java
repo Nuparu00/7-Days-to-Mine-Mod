@@ -23,7 +23,7 @@ public abstract class ContainerVehicle extends AbstractContainerMenu {
 
     protected ContainerVehicle(int windowID, Inventory invPlayer, VehicleEntity vehicle, MenuType<? extends ContainerVehicle> menuType) {
         super(menuType, windowID);
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.vehicle = vehicle;
         inventory = vehicle.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, null).orElse(null);
     }

@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +27,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import nuparu.sevendaystomine.world.item.block.BlockItemBase;
 import nuparu.sevendaystomine.world.level.block.entity.SpikesBlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -94,7 +94,7 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
                 return;
             }
         }
-        entityIn.hurt(DamageSource.GENERIC, damage);
+        entityIn.hurt(worldIn.damageSources().generic(), damage);
         if (worldIn.getBlockEntity(pos) instanceof SpikesBlockEntity blockEntity) {
             blockEntity.damage(1);
         }
@@ -208,8 +208,8 @@ public class MetalSpikeBlock extends FaceAttachedHorizontalDirectionalBlock impl
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
-        return new BlockItem(this, properties);
+        final Item.Properties properties = new Item.Properties();
+        return new BlockItemBase(this, properties);
     }
 
 

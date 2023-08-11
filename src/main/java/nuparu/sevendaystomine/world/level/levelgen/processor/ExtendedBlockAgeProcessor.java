@@ -66,9 +66,9 @@ public class ExtendedBlockAgeProcessor extends StructureProcessor {
 
     @Nullable
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader p_74016_, BlockPos p_74017_, BlockPos p_74018_, StructureTemplate.StructureBlockInfo p_74019_, StructureTemplate.StructureBlockInfo p_74020_, StructurePlaceSettings p_74021_) {
-        RandomSource randomsource = p_74021_.getRandom(p_74020_.pos);
-        BlockState blockstate = p_74020_.state;
-        BlockPos blockpos = p_74020_.pos;
+        RandomSource randomsource = p_74021_.getRandom(p_74020_.pos());
+        BlockState blockstate = p_74020_.state();
+        BlockPos blockpos = p_74020_.pos();
         BlockState blockstate1 = null;
 
         BlockState[] replacements = entries.get(blockstate.getBlock());
@@ -92,7 +92,7 @@ public class ExtendedBlockAgeProcessor extends StructureProcessor {
             blockstate1 = this.maybeReplaceFullStoneBlock(randomsource);
         }*/
 
-        return blockstate1 != null ? new StructureTemplate.StructureBlockInfo(blockpos, blockstate1, p_74020_.nbt) : p_74020_;
+        return blockstate1 != null ? new StructureTemplate.StructureBlockInfo(blockpos, blockstate1, p_74020_.nbt()) : p_74020_;
     }
 
     @Nullable

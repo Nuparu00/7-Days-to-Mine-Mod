@@ -1,12 +1,14 @@
 package nuparu.sevendaystomine.world.item;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
+import nuparu.sevendaystomine.init.ModCreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
-public class MurkyWaterBottleItem extends PotionItem {
+public class MurkyWaterBottleItem extends PotionItem implements CreativeModeTabProvider {
     public MurkyWaterBottleItem(Properties p_42979_) {
         super(p_42979_);
     }
@@ -17,10 +19,8 @@ public class MurkyWaterBottleItem extends PotionItem {
     }
 
     @Override
-    public void fillItemCategory(@NotNull CreativeModeTab p_42981_, @NotNull NonNullList<ItemStack> p_42982_) {
-        if (this.allowedIn(p_42981_)) {
-            p_42982_.add(new ItemStack(this));
-        }
+    public ResourceLocation creativeModeTab(){
+        return ModCreativeModeTabs.FOOD.getId();
     }
 
 }

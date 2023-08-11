@@ -67,8 +67,8 @@ public class PhotoToServerMessage {
 				if (file == null)
 					return;
 
-				player.level.playSound(null, player.blockPosition(), ModSounds.CAMERA_TAKE.get(), SoundSource.PLAYERS, 0.3F,
-						1.0F / (player.level.random.nextFloat() * 0.4F + 1.2F) + 0.5F);
+				player.level().playSound(null, player.blockPosition(), ModSounds.CAMERA_TAKE.get(), SoundSource.PLAYERS, 0.3F,
+						1.0F / (player.level().random.nextFloat() * 0.4F + 1.2F) + 0.5F);
 				ItemStack stack = new ItemStack(ModItems.PHOTO.get());
 				stack.getOrCreateTag().putString("path", FilenameUtils.getName(file.getPath()));
 				if (!player.getInventory().add(stack)) {

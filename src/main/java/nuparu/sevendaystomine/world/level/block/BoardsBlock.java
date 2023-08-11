@@ -43,11 +43,6 @@ public class BoardsBlock extends BlockBase implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public CreativeModeTab getItemGroup() {
-        return ModCreativeModeTabs.TAB_MATERIALS;
-    }
-
-    @Override
     public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter p_220053_2_, @NotNull BlockPos p_220053_3_,
                                         @NotNull CollisionContext p_220053_4_) {
         return switch (state.getValue(FACING)) {

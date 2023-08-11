@@ -2,7 +2,7 @@ package nuparu.sevendaystomine.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -42,7 +42,7 @@ public class AirdropRenderer<T extends AirdropEntity> extends EntityRenderer<T> 
 		matrix.pushPose();
 		//matrix.scale(1,-1,1);
 		matrix.translate(0,1.5,0);
-		matrix.mulPose(Vector3f.XP.rotationDegrees(180));
+		matrix.mulPose(Axis.XP.rotationDegrees(180));
 		if (rendertype != null) {
 			VertexConsumer ivertexbuilder = buffer.getBuffer(rendertype);
 			int i = getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));

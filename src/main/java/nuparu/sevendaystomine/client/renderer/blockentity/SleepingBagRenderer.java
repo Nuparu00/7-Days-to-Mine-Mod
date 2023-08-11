@@ -2,7 +2,7 @@ package nuparu.sevendaystomine.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -81,8 +81,8 @@ public class SleepingBagRenderer implements BlockEntityRenderer<SleepingBagBlock
         p_173542_.pushPose();
         p_173542_.translate(0.0D, 0.5, p_173549_ ? -1.0D : 0.0D);
         p_173542_.translate(0.5D, 0.5D, 0.5D);
-        p_173542_.mulPose(Vector3f.XP.rotationDegrees(180.0F));
-        p_173542_.mulPose(Vector3f.YP.rotationDegrees(180.0F + p_173545_.toYRot()));
+        p_173542_.mulPose(Axis.XP.rotationDegrees(180.0F));
+        p_173542_.mulPose(Axis.YP.rotationDegrees(180.0F + p_173545_.toYRot()));
         p_173542_.translate(0D, -0.5D, 0D);
         VertexConsumer vertexconsumer = p_173546_.buffer(p_173543_, RenderType::entitySolid);
         p_173544_.render(p_173542_, vertexconsumer, p_173547_, p_173548_);

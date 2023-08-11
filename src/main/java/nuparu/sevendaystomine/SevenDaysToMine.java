@@ -72,11 +72,11 @@ public class SevenDaysToMine {
         ModContainers.CONTAINERS.register(bus);
         ModPaintingTypes.PAINTING_TYPES.register(bus);
         ModParticleTypes.PARTICLE_TYPES.register(bus);
-        ModFeatures.FEATURES.register(bus);
         ModLootModifiers.LOOT_MODIFIER_SERIALIZERS.register(bus);
         ModCommandArguments.ARGUMENT_TYPES.register(bus);
         //ModConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
         //ModPlacedFeatures.PLACED_FEATURES.register(bus);
+        ModCreativeModeTabs.CREATIVE_MODE_TABS.register(bus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

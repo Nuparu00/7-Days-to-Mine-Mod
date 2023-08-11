@@ -42,7 +42,7 @@ public class PhotoRequestMessage {
 
 			ctx.get().enqueueWork(() -> {
 				ServerPlayer player = ctx.get().getSender();
-				ServerLevel world = player.getLevel();
+				ServerLevel world = player.serverLevel();
 				File file = new File(
 						DimensionType.getStorageFolder(world.dimension(),
 								world.getServer().getWorldPath(LevelResource.ROOT).toFile().toPath()).toFile(),

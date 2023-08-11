@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import nuparu.sevendaystomine.world.inventory.ILootTableProvider;
 import nuparu.sevendaystomine.world.level.block.entity.ItemHandlerBlockEntity;
 
-public class RealityWandItem extends Item {
+public class RealityWandItem extends ItemBase {
     public RealityWandItem() {
-        super(new Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

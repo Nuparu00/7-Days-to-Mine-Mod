@@ -9,17 +9,20 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.saveddata.SavedData;
 import nuparu.sevendaystomine.json.horde.HordeDataManager;
 import nuparu.sevendaystomine.json.horde.HordeEntry;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class HordeManager extends SavedData {
     private static final String HORDES_FILE_ID = "hordes";
+    private static final int HORDE_POSITION_ATTEMPTS = 128;
     private final List<Horde> activeHordes = new ArrayList<>();
     private final ServerLevel level;
 
@@ -96,11 +99,14 @@ public class HordeManager extends SavedData {
             this.setDirty();
         }
         if (this.tick++ % 40 == 0) {
-            for (Player player : level.getServer().getPlayerList().getPlayers()) {
+            for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
                 for (HordeEntry entry : HordeDataManager.INSTANCE.getRandomHordes()) {
-                    if (entry.trigger().time().test(player, player.level)) {
-                        startHorde()
-                        break;
+                    if (entry.trigger().time().test(player, player.level())) {
+                        Optional<BlockPos> pos = chooseHordePosition(player, entry);
+                        if(pos.isPresent()) {
+                            startHorde(entry, level, pos.get(), player);
+                            break;
+                        }
                     }
                 }
             }
@@ -128,5 +134,23 @@ public class HordeManager extends SavedData {
 
     public Optional<Horde> getHorde(int id) {
         return getActiveHordes().stream().filter(horde -> horde.getId() == id).findFirst();
+    }
+
+    private Optional<BlockPos> chooseHordePosition(ServerPlayer player, HordeEntry entry){
+        double desiredDistance = 64;
+        BlockPos playerPos = player.blockPosition();
+        for(int i = 0; i < HORDE_POSITION_ATTEMPTS; i++){
+            double angle = 2.0 * Math.PI * level.random.nextDouble();
+            double x = player.getX() + desiredDistance * Math.cos(angle);
+            double z = player.getZ() + desiredDistance * Math.sin(angle);
+
+            BlockPos pos = playerPos.offset((int) x,0, (int) z);
+            pos = player.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
+
+            if(player.level().getBlockState(pos.above()).isAir() && player.level().getBlockState(pos.above(2)).isAir()){
+                return Optional.of(pos);
+            }
+        }
+        return Optional.empty();
     }
 }

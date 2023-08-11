@@ -1,6 +1,7 @@
 package nuparu.sevendaystomine.loot.function;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
@@ -14,6 +15,6 @@ public class ModLootFunctionManager {
 
 
     public static LootItemFunctionType register(ResourceLocation resourceLocation, Serializer<? extends LootItemFunction> lootSerializer) {
-        return Registry.register(Registry.LOOT_FUNCTION_TYPE, resourceLocation, new LootItemFunctionType(lootSerializer));
+        return Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, resourceLocation, new LootItemFunctionType(lootSerializer));
     }
 }

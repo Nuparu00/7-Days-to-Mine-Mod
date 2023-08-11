@@ -5,6 +5,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.json.scrap.ScrapDataManager;
@@ -53,6 +54,6 @@ public class ForgeMaterialCategory extends AbstractForgeRecipeCategory<ForgeReci
                 builder.addSlot(RecipeIngredientRole.INPUT, 41 + j * 18 - 5, 12 + i * 18 - 5).addItemStack(index < list.size() ? list.get(index) : ItemStack.EMPTY);
             }
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 106, 38).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 106, 38).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
     }
 }

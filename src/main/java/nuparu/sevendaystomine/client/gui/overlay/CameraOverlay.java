@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,10 +24,9 @@ public class CameraOverlay extends Gui implements IGuiOverlay {
     }
 
     @Override
-    public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+    public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int width, int height) {
 
-        if (!minecraft.options.hideGui) {
-            Player player = (Player) this.minecraft.getCameraEntity();
+        if (!minecraft.options.hideGui && minecraft.getCameraEntity() instanceof Player player) {
             ItemStack stack = player.getMainHandItem();
             if (!stack.isEmpty() && stack.getItem() == ModItems.ANALOG_CAMERA.get()) {
                 if (ClientEventHandler.takingPhoto)
@@ -39,21 +39,20 @@ public class CameraOverlay extends Gui implements IGuiOverlay {
                 int xMax = (int) (width - 32 - width * dW / 2);
                 int yMax = (int) (height - 32 - height * dH / 2);
 
-                poseStack.pushPose();
+                guiGraphics.pose().pushPose();
                 RenderSystem.enableBlend();
                 RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,
                         GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-                bind(ThirstBarOverlay.OVERLAYS_TEXTURE);
-                minecraft.gui.blit(poseStack, xMin, yMin, 0, 102, 32, 32);
-                minecraft.gui.blit(poseStack, xMax, yMin, 34, 102, 32, 32);
+                guiGraphics.blit(ThirstBarOverlay.OVERLAYS_TEXTURE, xMin, yMin, 0, 102, 32, 32);
+                guiGraphics.blit(ThirstBarOverlay.OVERLAYS_TEXTURE, xMax, yMin, 34, 102, 32, 32);
 
-                minecraft.gui.blit(poseStack, xMin, yMax, 0, 135, 32, 32);
-                minecraft.gui.blit(poseStack, xMax, yMax, 34, 135, 32, 32);
+                guiGraphics.blit(ThirstBarOverlay.OVERLAYS_TEXTURE, xMin, yMax, 0, 135, 32, 32);
+                guiGraphics.blit(ThirstBarOverlay.OVERLAYS_TEXTURE, xMax, yMax, 34, 135, 32, 32);
 
-                minecraft.font.draw(poseStack, AnalogCameraItem.getZoom(stack, player) + "x", xMin + 5,
+                guiGraphics.drawString(minecraft.font, AnalogCameraItem.getZoom(stack, player) + "x", xMin + 5,
                         yMax + 25 - minecraft.font.lineHeight, 0xffffff);
                 RenderSystem.disableBlend();
-                poseStack.popPose();
+                guiGraphics.pose().popPose();
 
             }
         }

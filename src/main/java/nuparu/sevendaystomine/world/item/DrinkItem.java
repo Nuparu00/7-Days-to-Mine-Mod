@@ -1,6 +1,7 @@
 package nuparu.sevendaystomine.world.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -10,9 +11,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import nuparu.sevendaystomine.init.ModCreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
-public class DrinkItem extends Item {
+public class DrinkItem extends ItemBase {
     public DrinkItem(Properties properties) {
         super(properties);
     }
@@ -54,6 +56,11 @@ public class DrinkItem extends Item {
 
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level p_42993_, @NotNull Player p_42994_, @NotNull InteractionHand p_42995_) {
         return ItemUtils.startUsingInstantly(p_42993_, p_42994_, p_42995_);
+    }
+
+    @Override
+    public ResourceLocation creativeModeTab(){
+        return ModCreativeModeTabs.FOOD.getId();
     }
 
 }

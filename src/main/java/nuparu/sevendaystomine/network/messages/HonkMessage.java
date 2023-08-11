@@ -29,7 +29,7 @@ public class HonkMessage {
                 if (riding instanceof CarEntity car && car.honkCooldown == 0 && riding.getPassengers().indexOf(player) == 0) {
                     System.out.println("Beep beep beep");
                     car.honkCooldown = 15;
-					player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HONK.get(), SoundSource.PLAYERS, player.level.random.nextFloat() * 0.2f + 1.4f, player.level.random.nextFloat() * 0.05f + 0.8f);
+					player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HONK.get(), SoundSource.PLAYERS, player.getRandom().nextFloat() * 0.2f + 1.4f, player.getRandom().nextFloat() * 0.05f + 0.8f);
                 }
             });
         }

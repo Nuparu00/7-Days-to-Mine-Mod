@@ -95,7 +95,7 @@ public class SpiderZombieEntity<T extends SpiderZombieEntity> extends ZombieBase
     @Override
     public void tick() {
         super.tick();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.setClimbing(this.horizontalCollision);
         }
 
@@ -157,8 +157,8 @@ public class SpiderZombieEntity<T extends SpiderZombieEntity> extends ZombieBase
             }
         }
 
-        if (!this.level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte)1);
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte)1);
         }
 
     }
@@ -224,7 +224,7 @@ public class SpiderZombieEntity<T extends SpiderZombieEntity> extends ZombieBase
         }
 
 
-        if (this.onGround) {
+        if (this.onGround()) {
             if (!this.wasOnGround) {
                 this.setJumping(false);
                 this.checkLandingDelay();
@@ -257,7 +257,7 @@ public class SpiderZombieEntity<T extends SpiderZombieEntity> extends ZombieBase
             }
         }
 
-        this.wasOnGround = this.onGround;
+        this.wasOnGround = this.onGround();
     }
 
     public void startJumping() {
@@ -361,7 +361,7 @@ public class SpiderZombieEntity<T extends SpiderZombieEntity> extends ZombieBase
         }
 
         public void tick() {
-            if (this.spiderZombie.onGround && !this.spiderZombie.jumping && !((SpiderZombieEntity.SpiderZombieJumpControl)this.spiderZombie.jumpControl).wantJump()) {
+            if (this.spiderZombie.onGround() && !this.spiderZombie.jumping && !((SpiderZombieEntity.SpiderZombieJumpControl)this.spiderZombie.jumpControl).wantJump()) {
                 this.spiderZombie.setSpeedModifier(0.0D);
             } else if (this.hasWanted()) {
                 this.spiderZombie.setSpeedModifier(this.nextJumpSpeed);

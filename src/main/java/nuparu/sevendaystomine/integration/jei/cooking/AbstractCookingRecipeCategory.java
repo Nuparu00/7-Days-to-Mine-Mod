@@ -14,6 +14,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -77,18 +78,18 @@ public abstract class AbstractCookingRecipeCategory<T extends ICookingRecipe> im
         return this.cachedArrows.getUnchecked(cookTime);
     }
 
-    protected void drawExperience(T recipe, PoseStack matrixStack, int y) {
+    protected void drawExperience(T recipe, GuiGraphics guiGraphics, int y) {
         float experience = recipe.getExperience();
         if (experience > 0) {
             Component experienceString = Component.translatable("gui.jei.category.smelting.experience", experience);
             Minecraft minecraft = Minecraft.getInstance();
             Font fontRenderer = minecraft.font;
             int stringWidth = fontRenderer.width(experienceString);
-            fontRenderer.draw(matrixStack, experienceString, background.getWidth() - stringWidth, y, 0xFF808080);
+            guiGraphics.drawString(fontRenderer, experienceString, background.getWidth() - stringWidth, y, 0xFF808080);
         }
     }
 
-    protected void drawCookTime(T recipe, PoseStack matrixStack, int y) {
+    protected void drawCookTime(T recipe, GuiGraphics guiGraphics, int y) {
         int cookTime = recipe.getCookingTime();
         if (cookTime > 0) {
             int cookTimeSeconds = cookTime / 20;
@@ -96,7 +97,7 @@ public abstract class AbstractCookingRecipeCategory<T extends ICookingRecipe> im
             Minecraft minecraft = Minecraft.getInstance();
             Font fontRenderer = minecraft.font;
             int stringWidth = fontRenderer.width(timeString);
-            fontRenderer.draw(matrixStack, timeString, background.getWidth() - stringWidth, y, 0xFF808080);
+            guiGraphics.drawString(fontRenderer, timeString, background.getWidth() - stringWidth, y, 0xFF808080);
         }
     }
 
@@ -109,15 +110,15 @@ public abstract class AbstractCookingRecipeCategory<T extends ICookingRecipe> im
                 builder.addSlot(RecipeIngredientRole.INPUT, 48 + j * 18 - 5, 28 + i * 18 - 5).addItemStacks(index < ingredients.size() ? Arrays.stream(ingredients.get(index).getItems()).collect(Collectors.toList()) : new ArrayList<>());
             }
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 119, 32).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 119, 32).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
     }
 
     @Override
-    public void draw(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
-        flame.draw(matrixStack, 53, 58);
+    public void draw(T recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        flame.draw(guiGraphics, 53, 58);
         IDrawableAnimated arrow = getArrow(recipe);
-        arrow.draw(matrixStack, 84, 32);
-        drawExperience(recipe, matrixStack, 0);
-        drawCookTime(recipe, matrixStack, 65);
+        arrow.draw(guiGraphics, 84, 32);
+        drawExperience(recipe, guiGraphics, 0);
+        drawCookTime(recipe, guiGraphics, 65);
     }
 }

@@ -51,7 +51,7 @@ public class ContainerCar extends ContainerVehicle {
     }
 
     public static ContainerCar createContainerClientSide(int windowID, Inventory playerInventory, FriendlyByteBuf packetBuffer) {
-        return new ContainerCar(windowID, playerInventory, (CarEntity) playerInventory.player.level.getEntity(packetBuffer.readInt()));
+        return new ContainerCar(windowID, playerInventory, (CarEntity) playerInventory.player.level().getEntity(packetBuffer.readInt()));
     }
 
     public static ContainerCar createContainerServerSide(int windowID, Inventory playerInventory, CarEntity entity) {
@@ -76,10 +76,10 @@ public class ContainerCar extends ContainerVehicle {
         addedChest = false;
         for (Slot slot : chestSlots) {
             //this.inventoryItemStacks.remove(this.inventorySlots.indexOf(slot));
-            if (!this.vehicle.level.isClientSide()) {
+            if (!this.vehicle.level().isClientSide()) {
                 float width = this.vehicle.getDimensions(Pose.STANDING).width / 2f;
                 float height = this.vehicle.getDimensions(Pose.STANDING).height;
-                Containers.dropItemStack(this.vehicle.level, this.vehicle.position().x + width, this.vehicle.position().y + height, this.vehicle.position().z + width, slot.getItem());
+                Containers.dropItemStack(this.vehicle.level(), this.vehicle.position().x + width, this.vehicle.position().y + height, this.vehicle.position().z + width, slot.getItem());
             }
             this.vehicle.replaceItemInInventory(slot.getSlotIndex(), ItemStack.EMPTY);
             slot.setChanged();
@@ -107,7 +107,7 @@ public class ContainerCar extends ContainerVehicle {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(originalStack, stack);
-                if (!vehicle.level.isClientSide()) {
+                if (!vehicle.level().isClientSide()) {
                     vehicle.updateInventory();
                 }
             } else {

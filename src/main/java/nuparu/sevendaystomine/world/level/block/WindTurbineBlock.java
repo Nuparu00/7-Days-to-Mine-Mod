@@ -85,9 +85,4 @@ public class WindTurbineBlock extends WaterloggableHorizontalBlockBase implement
             }
         };
     }
-
-    @Override
-    public CreativeModeTab getItemGroup() {
-        return ModCreativeModeTabs.TAB_ELECTRICITY;
-    }
 }

@@ -1,6 +1,7 @@
 package nuparu.sevendaystomine.init;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import nuparu.sevendaystomine.SevenDaysToMine;
@@ -14,7 +15,7 @@ public class ModStructureProcessors {
 
     public static void register(){
 
-        Registry.register(Registry.STRUCTURE_PROCESSOR, new ResourceLocation(SevenDaysToMine.MODID, "bookshelf_processor"), BOOKSHELF_PROCESSOR);
-        Registry.register(Registry.STRUCTURE_PROCESSOR, new ResourceLocation(SevenDaysToMine.MODID, "extended_block_age"), EXTENDED_BLOCK_AGE_PROCESSOR);
+        Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, new ResourceLocation(SevenDaysToMine.MODID, "bookshelf_processor"), BOOKSHELF_PROCESSOR);
+        Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, new ResourceLocation(SevenDaysToMine.MODID, "extended_block_age"), EXTENDED_BLOCK_AGE_PROCESSOR);
     }
 }

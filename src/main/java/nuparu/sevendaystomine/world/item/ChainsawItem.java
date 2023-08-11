@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ChainsawItem extends FuelDiggerItem {
+public class ChainsawItem extends FuelDiggerItem{
 
     public static final Set<ToolAction> DEFAULT_AUGER_ACTIONS = of(ToolActions.AXE_DIG);
     private static Set<ToolAction> of(ToolAction... actions) {

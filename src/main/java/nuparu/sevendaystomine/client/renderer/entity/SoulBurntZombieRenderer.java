@@ -2,7 +2,7 @@ package nuparu.sevendaystomine.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -74,7 +74,7 @@ public class SoulBurntZombieRenderer<T extends SoulBurntZombieEntity, M extends 
 		float f2 = 0.0F;
 		float f3 = p_114456_.getBbHeight() / f;
 		float f4 = 0.0F;
-		p_114454_.mulPose(Vector3f.YP.rotationDegrees(-camera.getYRot()));
+		p_114454_.mulPose(Axis.YP.rotationDegrees(-camera.getYRot()));
 		p_114454_.translate(0.0D, 0.0D, -0.3F + (float)((int)f3) * 0.02F);
 		float f5 = 0.0F;
 		int i = 0;

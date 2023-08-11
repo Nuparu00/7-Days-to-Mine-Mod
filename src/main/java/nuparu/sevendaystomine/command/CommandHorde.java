@@ -37,9 +37,9 @@ public class CommandHorde {
 		if (world.isClientSide())
 			return 0;
 		Optional<Horde> horde = HordeManager.getOrCreate(commandContext.getSource().getServer())
-				.startHorde(hordeKey,world,new BlockPos(commandContext.getSource().getPosition()),commandContext.getSource().getPlayer());
+				.startHorde(hordeKey,world,new BlockPos((int) commandContext.getSource().getPosition().x, (int) commandContext.getSource().getPosition().y, (int) commandContext.getSource().getPosition().z),commandContext.getSource().getPlayer());
 		if(horde.isPresent()){
-			commandContext.getSource().sendSuccess(Component.translatable("horde.summon.success"),true);
+			commandContext.getSource().sendSuccess(() -> Component.translatable("horde.summon.success"),true);
 			return 1;
 		}
 		commandContext.getSource().sendFailure(Component.translatable("horde.summon.failure"));

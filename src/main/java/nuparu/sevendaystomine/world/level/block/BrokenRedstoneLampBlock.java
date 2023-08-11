@@ -19,7 +19,7 @@ public class BrokenRedstoneLampBlock extends BlockBase{
             if (level.hasNeighborSignal(pos)) {
                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                 level.explode(null, pos.getX() + 0.5, pos.getY() + 0.25, pos.getZ() + 0.5, 0.1f, true,
-                        Explosion.BlockInteraction.DESTROY);
+                        Level.ExplosionInteraction.BLOCK);
             }
 
         }

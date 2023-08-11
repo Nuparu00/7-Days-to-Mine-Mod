@@ -17,7 +17,7 @@ public class StairBlockBase extends StairBlock implements IBlockBase{
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
+        final Item.Properties properties = new Item.Properties();
         return new BlockItem(this, properties);
     }
 }

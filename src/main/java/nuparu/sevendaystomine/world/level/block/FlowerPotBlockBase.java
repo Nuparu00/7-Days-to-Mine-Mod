@@ -19,7 +19,6 @@ public class FlowerPotBlockBase extends FlowerPotBlock implements IBlockBase {
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
-        return new BlockItem(this, properties);
+        return null;
     }
 }

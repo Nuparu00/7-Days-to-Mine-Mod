@@ -45,7 +45,7 @@ public class PlayerEventHandler {
     @SubscribeEvent
     public static void onPlayerItemUseFinish(LivingEntityUseItemEvent.Finish event) {
         if (event.getEntity() instanceof Player player) {
-            Level level = player.level;
+            Level level = player.level();
             RandomSource random = level.random;
             ItemStack stack = event.getItem();
             Item item = stack.getItem();
@@ -215,7 +215,7 @@ public class PlayerEventHandler {
             ItemStack stack = event.getItem();
             if (stack.getItem().getFoodProperties() != null && stack.getItem().getMaxDamage() > 0
                     && (stack.getMaxDamage() - stack.getDamageValue()) > 1) {
-                stack.hurt(1, player.level.random, player);
+                stack.hurt(1, player.getRandom(), player);
                 event.setResultStack(stack);
             }
         }

@@ -21,6 +21,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -126,8 +127,8 @@ public class ZombieBaseEntity extends Monster {
             attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
         }
 
-        if (!this.level.isClientSide()) {
-            if (LevelUtils.isBloodmoonProper(level)) {
+        if (!this.level().isClientSide()) {
+            if (LevelUtils.isBloodmoonProper(level())) {
                 if (!speed.hasModifier(BLOODMOON_SPEED_BOOST)) {
                     speed.addTransientModifier(BLOODMOON_SPEED_BOOST);
                 }
@@ -157,7 +158,7 @@ public class ZombieBaseEntity extends Monster {
 
             if (nightRun) {
                 BlockPos pos = this.blockPosition();
-                int light = level.getMaxLocalRawBrightness(pos);
+                int light = level().getMaxLocalRawBrightness(pos);
                 applyNightSpeedModifier(light);
             }
         }
@@ -215,7 +216,7 @@ public class ZombieBaseEntity extends Monster {
             f /= 5.0F;
         }
 
-        if (!this.onGround) {
+        if (!this.onGround()) {
             f /= 5.0F;
         }
 
@@ -290,25 +291,25 @@ public class ZombieBaseEntity extends Monster {
             if (this.deathTime == 20) {
 
                 remove(RemovalReason.DISCARDED);
-                LootableCorpseEntity lootable = new LootableCorpseEntity(level);
+                LootableCorpseEntity lootable = new LootableCorpseEntity(level());
                 lootable.setOriginal(this);
                 lootable.setPos(getX(), getY(), getZ());
                 dead = true;
-                if (!this.level.isClientSide()) {
-                    LootTable loottable = this.level.getServer().getLootTables().get(getDefaultLootTable());
-                    LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.blockPosition()));
+                if (!this.level().isClientSide()) {
+                    LootTable loottable = this.level().getServer().getLootData().getLootTable(getDefaultLootTable());
+                    LootParams.Builder lootcontext$builder = (new LootParams.Builder((ServerLevel) this.level())).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.blockPosition()));
                     if (this.lastHurtByPlayer != null) {
                         lootcontext$builder.withLuck(lastHurtByPlayer.getLuck()).withParameter(LootContextParams.THIS_ENTITY, lastHurtByPlayer);
                     }
-                    ItemUtils.fill(loottable, lootable.getInventory(), lootcontext$builder.create(LootContextParamSets.CHEST));
-                    level.addFreshEntity(lootable);
+                    ItemUtils.fill(loottable, lootable.getInventory(), lootcontext$builder.create(LootContextParamSets.CHEST),random);
+                    level().addFreshEntity(lootable);
                 }
 
                 for (int i = 0; i < 20; ++i) {
                     double d0 = this.random.nextGaussian() * 0.02D;
                     double d1 = this.random.nextGaussian() * 0.02D;
                     double d2 = this.random.nextGaussian() * 0.02D;
-                    this.level.addParticle(ParticleTypes.POOF, this.getRandomX(1.0D), this.getRandomY(),
+                    this.level().addParticle(ParticleTypes.POOF, this.getRandomX(1.0D), this.getRandomY(),
                             this.getRandomZ(1.0D), d0, d1, d2);
                 }
             }

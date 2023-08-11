@@ -27,7 +27,7 @@ public class PlayerTickEventHandler {
     public static void onPlayerTickPost(TickEvent.PlayerTickEvent event) {
         if(event.phase == TickEvent.Phase.START) return;
         Player player = event.player;
-        Level level = player.level;
+        Level level = player.level();
         IExtendedPlayer extendedPlayer = CapabilityHelper.getExtendedPlayer(player);
         if(extendedPlayer == null) return;
 
@@ -41,7 +41,6 @@ public class PlayerTickEventHandler {
                 updateUpgrader(player.getOffhandItem(),player);
             }
 
-            extendedPlayer.causeExhaustion(0.02f);
             extendedPlayer.tick(player);
 
             if (extendedPlayer.isInfected()) {
@@ -59,7 +58,7 @@ public class PlayerTickEventHandler {
                 }
 
                 if (amplifier == PlayerUtils.getNumberOfstages() - 1) {
-                    player.hurt(ModDamageSources.infection, 1);
+                    player.hurt(ModDamageSources.INFECTION.apply(level), 1);
                 }
             }
         }
@@ -68,7 +67,7 @@ public class PlayerTickEventHandler {
     private static void updateUpgrader(ItemStack stack, Player player){
         if(stack.getOrCreateTag().contains("7D2M_UpgradePos", Tag.TAG_LONG)){
             long l = stack.getOrCreateTag().getLong("7D2M_UpgradePos");
-            BlockHitResult result = EntityUtils.rayTraceServer(player, player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue(), 1,
+            BlockHitResult result = EntityUtils.rayTraceServer(player, player.getAttribute(net.minecraftforge.common.ForgeMod.BLOCK_REACH.get()).getValue(), 1,
                     ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
             if(result.getBlockPos().asLong() != l){
                 ItemUtils.eraseUpgraderData(stack);

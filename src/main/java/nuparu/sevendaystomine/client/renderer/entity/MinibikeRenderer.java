@@ -1,7 +1,7 @@
 package nuparu.sevendaystomine.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +23,7 @@ public class MinibikeRenderer<T extends MinibikeEntity, M extends MinibikeModel<
 	@Override
 	protected void setupRotations(@NotNull T minibike, @NotNull PoseStack matrixStack, float p_225621_3_, float p_225621_4_, float partialTicks) {
 		super.setupRotations(minibike, matrixStack, p_225621_3_, p_225621_4_, partialTicks);
-		matrixStack.mulPose(Vector3f.ZP.rotationDegrees(MathUtils.lerp(partialTicks,minibike.getTurningPrev(), minibike.getTurning())));
+		matrixStack.mulPose(Axis.ZP.rotationDegrees(MathUtils.lerp(partialTicks,minibike.getTurningPrev(), minibike.getTurning())));
 	}
 	@Override
 	public @NotNull ResourceLocation getTextureLocation(@NotNull T p_114482_) {

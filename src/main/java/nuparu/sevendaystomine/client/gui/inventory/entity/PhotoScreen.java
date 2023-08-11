@@ -2,7 +2,8 @@ package nuparu.sevendaystomine.client.gui.inventory.entity;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -42,9 +43,9 @@ public class PhotoScreen extends Screen {
 	}
 
 	@Override
-	public void render(@NotNull PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		renderBackground(matrix);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		renderBackground(guiGraphics);
 		if (image != null) {
 			// -1 == (width > height) ; 0 == (width == height) ; 1 == (width < height)
 			int shape = Integer.compare(image.height(), image.width());
@@ -73,16 +74,16 @@ public class PhotoScreen extends Screen {
 				int startX = (width/2)-(w/2);
 				int startY = (height/2)-(h/2);
 
-				blitColored(matrix, startX - 10, startX + w + 10,startY - 10,startY + h + 10,0,0xffffff);
-				RenderSystem.setShader(GameRenderer::getPositionTexShader);
-				RenderSystem.setShaderTexture(0, image.res());
-				blit(matrix, startX, startY,w, h,0,0, w,h,w,h);
+				blitColored(guiGraphics, startX - 10, startX + w + 10,startY - 10,startY + h + 10,0,0xffffff);
+				//RenderSystem.setShader(GameRenderer::getPositionTexShader);
+				//RenderSystem.setShaderTexture(0, image.res());
+				guiGraphics.blit(image.res(), startX, startY,w, h,0,0, w,h,w,h);
 			}
 		}
 	}
 
-	public static void blitColored(PoseStack stack, float p_93114_, float p_93115_, float p_93116_, float p_93117_, float p_93118_, int color) {
-		Matrix4f matrix4f = stack.last().pose();
+	public static void blitColored(GuiGraphics graphics, float p_93114_, float p_93115_, float p_93116_, float p_93117_, float p_93118_, int color) {
+		Matrix4f matrix4f = graphics.pose().last().pose();
 
 		int r = (color & 0xFF0000) >> 16;
 		int g = (color & 0xFF00) >> 8;

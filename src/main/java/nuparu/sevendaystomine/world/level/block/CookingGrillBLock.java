@@ -55,7 +55,7 @@ public class CookingGrillBLock extends CookwareBlock implements EntityBlock {
         if (worldIn.isClientSide())
             return InteractionResult.SUCCESS;
 
-        if(!worldIn.getBlockState(pos.above()).getMaterial().isReplaceable()) return  InteractionResult.SUCCESS;
+        if(!worldIn.getBlockState(pos.above()).canBeReplaced()) return  InteractionResult.SUCCESS;
         MenuProvider namedContainerProvider = this.getMenuProvider(state, worldIn, pos);
         if (namedContainerProvider != null) {
             ItemHandlerBlockEntity tileEntity = (ItemHandlerBlockEntity)namedContainerProvider;

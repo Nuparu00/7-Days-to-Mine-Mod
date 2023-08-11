@@ -36,6 +36,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
+import nuparu.sevendaystomine.world.item.block.BlockItemBase;
 import nuparu.sevendaystomine.world.level.block.entity.ChemistryBlockEntity;
 import nuparu.sevendaystomine.world.level.block.entity.ItemHandlerBlockEntity;
 import org.jetbrains.annotations.NotNull;
@@ -91,8 +92,8 @@ public class ChemistryStationBlock extends AbstractFurnaceBlock implements IBloc
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
-        return new BlockItem(this, properties);
+        final Item.Properties properties = new Item.Properties();
+        return new BlockItemBase(this, properties);
 
     }
 

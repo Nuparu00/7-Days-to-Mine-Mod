@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public class ContainerWorkbench extends AbstractContainerMenu {
 
-    private final CraftingContainer craftSlots = new CraftingContainer(this,5,5);
+    private final CraftingContainer craftSlots = new TransientCraftingContainer(this,5,5);
     private final ResultContainer resultSlots = new ResultContainer();
     private final Level world; // needed for some helper methods
     private final ContainerLevelAccess access;
@@ -28,10 +28,10 @@ public class ContainerWorkbench extends AbstractContainerMenu {
 
     public ContainerWorkbench(int windowID, Inventory invPlayer, WorkbenchBlockEntity workbench) {
         super(ModContainers.WORKBENCH.get(), windowID);
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.player = invPlayer.player;
         this.workbench = workbench;
-        this.access = ContainerLevelAccess.create(player.level,workbench.getBlockPos());
+        this.access = ContainerLevelAccess.create(player.level(),workbench.getBlockPos());
 
         // server Containers
         if(workbench != null) {
@@ -65,7 +65,7 @@ public class ContainerWorkbench extends AbstractContainerMenu {
 
     public static ContainerWorkbench createContainerClientSide(int windowID, Inventory playerInventory,
                                                                FriendlyByteBuf extraData) {
-        return new ContainerWorkbench(windowID, playerInventory, (WorkbenchBlockEntity) playerInventory.player.level.getBlockEntity(extraData.readBlockPos()));
+        return new ContainerWorkbench(windowID, playerInventory, (WorkbenchBlockEntity) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ContainerWorkbench extends AbstractContainerMenu {
             if (optional.isPresent()) {
                 CraftingRecipe icraftingrecipe = optional.get();
                 if (p_217066_4_.setRecipeUsed(p_217066_1_, serverplayerentity, icraftingrecipe)) {
-                    itemstack = icraftingrecipe.assemble(p_217066_3_);
+                    itemstack = icraftingrecipe.assemble(p_217066_3_, p_217066_1_.registryAccess());
                 }
             }
 

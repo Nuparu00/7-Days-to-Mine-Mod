@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import nuparu.sevendaystomine.init.ModBlocks;
 import nuparu.sevendaystomine.init.ModItems;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class TorchWallUnlitBlock extends TorchWallBlockBase{
     public TorchWallUnlitBlock() {
-        super(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD),null);
+        super(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.WOOD),null);
     }
 
     @Override

@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeMod;
 import nuparu.sevendaystomine.init.ModEntities;
 import org.jetbrains.annotations.NotNull;
@@ -68,7 +67,7 @@ public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedE
 
         double height = this.getBbHeight();
         double width = this.getBbWidth();
-        if (!this.level.isClientSide && this.isAlive() && !this.isNoAi()) {
+        if (!this.level().isClientSide && this.isAlive() && !this.isNoAi()) {
             if (this.isSoulFireConverting()) {
                 --this.conversionTime;
 
@@ -77,7 +76,7 @@ public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedE
                     this.doSoulFireConversion();
                 }
             }
-            if (level.getBlockState(new BlockPos(getX() + width / 2, getY() + height / 5, getZ() + width / 2))
+            if (level().getBlockState(new BlockPos((int) (getX() + width / 2), (int) (getY() + height / 5), (int) (getZ() + width / 2)))
                     .getBlock() == Blocks.SOUL_FIRE) {
                 ++this.inSoulFireTime;
                 if (this.inSoulFireTime >= 100 && !isSoulFireConverting()) {
@@ -91,9 +90,9 @@ public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedE
 
         super.tick();
 
-        for (int x = 0; x < 1 + level.random.nextInt(3); x++) {
-            level.addParticle(ParticleTypes.LARGE_SMOKE, getX() + level.random.nextDouble() * 0.3 - 0.15,
-                    getY() + height / 2, getZ() + level.random.nextDouble() * 0.3 - 0.15, 0.0D, 0.0D, 0.0D);
+        for (int x = 0; x < 1 + level().random.nextInt(3); x++) {
+            level().addParticle(ParticleTypes.LARGE_SMOKE, getX() + level().random.nextDouble() * 0.3 - 0.15,
+                    getY() + height / 2, getZ() + level().random.nextDouble() * 0.3 - 0.15, 0.0D, 0.0D, 0.0D);
         }
         if (random.nextDouble() < 0.1D) {
             /*
@@ -102,9 +101,9 @@ public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedE
              */
 
         }
-        if (!this.level.isClientSide()) {
+        if (!this.level().isClientSide()) {
 
-            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
                 return;
             }
 
@@ -114,7 +113,7 @@ public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedE
                 int k = (int) Math.floor(this.getZ() + (double) ((float) (l / 2 % 2 * 2 - 1) * 0.25F));
                 BlockPos blockpos = new BlockPos(i, j, k);
 
-                BlockState bottom = level.getBlockState(blockpos.below());
+                BlockState bottom = level().getBlockState(blockpos.below());
 
                 Block fireBlock = Blocks.FIRE;
 
@@ -122,9 +121,9 @@ public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedE
                     fireBlock = Blocks.SOUL_FIRE;
                 }
 
-                if (this.level.getBlockState(blockpos).getMaterial() == Material.AIR
-                        && fireBlock.canSurvive(Blocks.FIRE.defaultBlockState(), this.level, blockpos)) {
-                    this.level.setBlockAndUpdate(blockpos, fireBlock.defaultBlockState());
+                if (this.level().getBlockState(blockpos).isAir()
+                        && fireBlock.canSurvive(Blocks.FIRE.defaultBlockState(), this.level(), blockpos)) {
+                    this.level().setBlockAndUpdate(blockpos, fireBlock.defaultBlockState());
                 }
             }
         }
@@ -159,10 +158,10 @@ public class BurntZombieEntity<T extends BurntZombieEntity> extends ZombieBipedE
     protected void doSoulFireConversion() {
         this.convertTo(ModEntities.SOUL_BURNT_ZOMBIE.get(),true);
         if (!this.isSilent()) {
-            this.level.levelEvent(null, 1040, this.blockPosition(), 0);
+            this.level().levelEvent(null, 1040, this.blockPosition(), 0);
             double height = this.getBbHeight();
             double width = this.getBbWidth();
-            level.playSound(null, getX() + width / 2, getY() + height / 2, getZ() + width / 2,
+            level().playSound(null, getX() + width / 2, getY() + height / 2, getZ() + width / 2,
                     SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 1F, 0.8F);
         }
 

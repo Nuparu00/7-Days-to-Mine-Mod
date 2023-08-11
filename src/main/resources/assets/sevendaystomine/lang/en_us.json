@@ -17,6 +17,7 @@
     "tooltip.sevendaystomine.fuel": "Fuel: %1$s",
     "tooltip.sevendaystomine.health": "Health: %1$s/%2$s",
     "tooltip.sevendaystomine.acceleration": "Acceleration: %1$s",
+    "tooltip.sevendaystomine.ammo": "Ammo: %1$s/%2$s",
 
     "_comment": "Chat Messages",
     "airdrop.message": "Airdrop has been dropped around X:%1$s Z:%2$s.",
@@ -45,11 +46,12 @@
     "jei.information.thermometer": "Fires a Redstone signal when a block is about to reach a critical temperature.",
 
     "_comment": "Creative Tabs",
-    "itemGroup.sevendaystomine.materials": "7 Days to Mine - Materials",
-    "itemGroup.sevendaystomine.food": "7 Days to Mine - Foodstuffs",
-    "itemGroup.sevendaystomine.blocks": "7 Days to Mine - Blocks",
+    "itemGroup.sevendaystomine.ingredients": "7 Days to Mine - Ingredients",
+    "itemGroup.sevendaystomine.food": "7 Days to Mine - Food & Drinks",
+    "itemGroup.sevendaystomine.buildingBlocks": "7 Days to Mine - Building Blocks",
+    "itemGroup.sevendaystomine.functionalBlocks": "7 Days to Mine - Functional Blocks",
     "itemGroup.sevendaystomine.combat": "7 Days to Mine - Combat",
-    "itemGroup.sevendaystomine.tools": "7 Days to Mine - Tools",
+    "itemGroup.sevendaystomine.tools": "7 Days to Mine - Tools & Utilities",
     "itemGroup.sevendaystomine.medicine": "7 Days to Mine - Medicine",
     "itemGroup.sevendaystomine.books": "7 Days to Mine - Recipe Books",
 

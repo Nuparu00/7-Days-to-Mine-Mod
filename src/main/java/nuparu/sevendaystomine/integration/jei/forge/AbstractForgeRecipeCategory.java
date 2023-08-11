@@ -11,6 +11,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -69,18 +70,18 @@ public abstract class AbstractForgeRecipeCategory<T extends IForgeRecipe> implem
         return this.cachedArrows.getUnchecked(cookTime);
     }
 
-    protected void drawExperience(T recipe, PoseStack matrixStack, int y) {
+    protected void drawExperience(T recipe, GuiGraphics guiGraphics, int y) {
         float experience = recipe.getExperience();
         if (experience > 0) {
             Component experienceString = Component.translatable("gui.jei.category.smelting.experience", experience);
             Minecraft minecraft = Minecraft.getInstance();
             Font fontRenderer = minecraft.font;
             int stringWidth = fontRenderer.width(experienceString);
-            fontRenderer.draw(matrixStack, experienceString, background.getWidth() - stringWidth, y, 0xFF808080);
+            guiGraphics.drawString(fontRenderer, experienceString, background.getWidth() - stringWidth, y, 0xFF808080);
         }
     }
 
-    protected void drawCookTime(T recipe, PoseStack matrixStack, int y) {
+    protected void drawCookTime(T recipe, GuiGraphics guiGraphics, int y) {
         int cookTime = recipe.getCookingTime();
         if (cookTime > 0) {
             int cookTimeSeconds = cookTime / 20;
@@ -88,16 +89,16 @@ public abstract class AbstractForgeRecipeCategory<T extends IForgeRecipe> implem
             Minecraft minecraft = Minecraft.getInstance();
             Font fontRenderer = minecraft.font;
             int stringWidth = fontRenderer.width(timeString);
-            fontRenderer.draw(matrixStack, timeString, background.getWidth() - stringWidth, y, 0xFF808080);
+            guiGraphics.drawString(fontRenderer, timeString, background.getWidth() - stringWidth, y, 0xFF808080);
         }
     }
 
     @Override
-    public void draw(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
-        flame.draw(matrixStack, 46, 42);
+    public void draw(T recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        flame.draw(guiGraphics, 46, 42);
         IDrawableAnimated arrow = getArrow(recipe);
-        arrow.draw(matrixStack, 77, 38);
-        drawExperience(recipe, matrixStack, 0);
-        drawCookTime(recipe, matrixStack, 65);
+        arrow.draw(guiGraphics, 77, 38);
+        drawExperience(recipe, guiGraphics, 0);
+        drawCookTime(recipe, guiGraphics, 65);
     }
 }

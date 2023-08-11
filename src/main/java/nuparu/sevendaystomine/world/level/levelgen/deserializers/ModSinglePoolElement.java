@@ -18,11 +18,6 @@ public class ModSinglePoolElement extends SinglePoolElement {
     protected ModSinglePoolElement(Either<ResourceLocation, StructureTemplate> p_210415_, Holder<StructureProcessorList> p_210416_, StructureTemplatePool.Projection p_210417_) {
         super(p_210415_, p_210416_, p_210417_);
     }
-
-
-    public ModSinglePoolElement(StructureTemplate p_210419_) {
-        this(Either.right(p_210419_), ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID);
-    }
     @Override
     protected StructurePlaceSettings getSettings(Rotation p_210421_, BoundingBox p_210422_, boolean p_210423_) {
         StructurePlaceSettings structureplacesettings = new StructurePlaceSettings();

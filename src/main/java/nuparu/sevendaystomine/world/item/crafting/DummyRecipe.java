@@ -1,10 +1,12 @@
 package nuparu.sevendaystomine.world.item.crafting;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -13,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DummyRecipe extends CustomRecipe {
     public DummyRecipe(ResourceLocation location) {
-        super(location);
+        super(location, CraftingBookCategory.MISC);
     }
 
     @Override
@@ -22,7 +24,7 @@ public class DummyRecipe extends CustomRecipe {
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull CraftingContainer p_44001_) {
+    public @NotNull ItemStack assemble(@NotNull CraftingContainer p_44001_, RegistryAccess registryAccess) {
         return ItemStack.EMPTY;
     }
 

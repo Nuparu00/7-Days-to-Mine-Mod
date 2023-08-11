@@ -21,23 +21,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BatteryItem extends Item implements IBattery{
+public class BatteryItem extends ItemBase implements IBattery{
     public static final int BASE_VOLTAGE = 2500;
     public BatteryItem(Properties p_41383_) {
         super(p_41383_);
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void fillItemCategory(@NotNull CreativeModeTab tab, @NotNull NonNullList<ItemStack> items) {
-        if (this.allowedIn(tab)) {
-            Player player = Minecraft.getInstance().player;
-            ItemStack stack = new ItemStack(this, 1);
-            ((IQualityStack)(Object)stack).setQuality(SevenDaysToMine.proxy.getQualityForCurrentPlayer());
-            CompoundTag nbt = stack.getOrCreateTag();
-            nbt.putLong("Voltage", getCapacity(stack,null));
-            items.add(stack);
-        }
     }
 
     @Override

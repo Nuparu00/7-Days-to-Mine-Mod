@@ -2,7 +2,7 @@ package nuparu.sevendaystomine.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -70,9 +70,9 @@ public class WindTurbineRenderer implements BlockEntityRenderer<WindTurbineBlock
             }
 
             matrixStack.pushPose();
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-direction.toYRot()));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(-direction.toYRot()));
             matrixStack.translate(xRotOffset,yRotOffset,zRotOffset);
-            matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-rotation * 360));
+            matrixStack.mulPose(Axis.ZP.rotationDegrees(-rotation * 360));
             matrixStack.translate(-xRotOffset,-yRotOffset,-zRotOffset);
             VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.cutout());
             matrixStack.translate(xOffset,0,zOffset);

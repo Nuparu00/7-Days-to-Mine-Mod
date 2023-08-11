@@ -24,7 +24,7 @@ public class ContainerCombustionGenerator extends AbstractContainerMenu {
 
     public ContainerCombustionGenerator(int windowID, Inventory invPlayer, CombustionGeneratorBlockEntity blockEntity, ContainerData containerData) {
         super(ModContainers.COMBUSTION_GENERATOR.get(), windowID);
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.player = invPlayer.player;
         this.blockEntity = blockEntity;
         this.containerData = containerData;
@@ -58,7 +58,7 @@ public class ContainerCombustionGenerator extends AbstractContainerMenu {
 
     public static ContainerCombustionGenerator createContainerClientSide(int windowID, Inventory playerInventory,
                                                                          FriendlyByteBuf extraData) {
-        return new ContainerCombustionGenerator(windowID, playerInventory, (CombustionGeneratorBlockEntity) playerInventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(5));
+        return new ContainerCombustionGenerator(windowID, playerInventory, (CombustionGeneratorBlockEntity) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(5));
     }
 
     @Override

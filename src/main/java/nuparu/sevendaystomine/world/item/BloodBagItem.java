@@ -2,6 +2,7 @@ package nuparu.sevendaystomine.world.item;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -12,10 +13,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import nuparu.sevendaystomine.init.ModCreativeModeTabs;
 import nuparu.sevendaystomine.init.ModEffects;
 import org.jetbrains.annotations.NotNull;
 
-public class BloodBagItem extends Item {
+public class BloodBagItem extends ItemBase {
 	
 	public BloodBagItem(Properties properties) {
 		super(properties);
@@ -69,6 +71,11 @@ public class BloodBagItem extends Item {
 	@Override
 	public @NotNull UseAnim getUseAnimation(@NotNull ItemStack itemStack) {
 		return UseAnim.BOW;
+	}
+
+	@Override
+	public ResourceLocation creativeModeTab(){
+		return ModCreativeModeTabs.MEDICINE.getId();
 	}
 
 }

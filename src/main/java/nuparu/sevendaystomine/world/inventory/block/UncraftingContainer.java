@@ -10,6 +10,8 @@ import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class UncraftingContainer implements Container, StackedContentsCompatible {
     private final NonNullList<ItemStack> items;
     private final int width;
@@ -83,5 +85,8 @@ public class UncraftingContainer implements Container, StackedContentsCompatible
             p_39342_.accountSimpleStack(itemstack);
         }
 
+    }
+    public List<ItemStack> getItems() {
+        return List.copyOf(this.items);
     }
 }

@@ -2,8 +2,9 @@ package nuparu.sevendaystomine.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.geom.ModelPart;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,13 +46,14 @@ public class TextModelPart extends ModelPart {
                     modelrenderer.render(p_228309_1_, p_228309_2_, p_228309_3_, p_228309_4_, p_228309_5_, p_228309_6_, p_228309_7_, p_228309_8_);
                 }*/
             matrixStack.translate(0.35,0,0);
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
-            matrixStack.mulPose(Vector3f.ZP.rotationDegrees(yRot));
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(zRot));
+            matrixStack.mulPose(Axis.XP.rotationDegrees(xRot));
+            matrixStack.mulPose(Axis.ZP.rotationDegrees(yRot));
+            matrixStack.mulPose(Axis.XP.rotationDegrees(zRot));
             matrixStack.translate(xPos,yPos,zPos);
             matrixStack.scale(scale,scale,scale);
             Minecraft minecraft = Minecraft.getInstance();
-            minecraft.font.draw(matrixStack, text, 0, 0, 0x000000);
+            GuiGraphics guigraphics = new GuiGraphics(minecraft, minecraft.renderBuffers().bufferSource());
+            guigraphics.drawString(minecraft.font, text, 0, 0, 0x000000);
 
             matrixStack.popPose();
 

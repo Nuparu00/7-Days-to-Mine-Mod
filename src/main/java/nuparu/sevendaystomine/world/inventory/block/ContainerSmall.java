@@ -20,7 +20,7 @@ public class ContainerSmall extends AbstractContainerMenu {
 
     public ContainerSmall(int windowID, Inventory invPlayer, ItemHandlerBlockEntity<ItemHandlerNameable> blockEntity) {
         super(ModContainers.SMALL.get(), windowID);
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         this.player = invPlayer.player;
         this.blockEntity = blockEntity;
         blockEntity.onContainerOpened(player);
@@ -55,7 +55,7 @@ public class ContainerSmall extends AbstractContainerMenu {
 
     public static ContainerSmall createContainerClientSide(int windowID, Inventory playerInventory,
                                                            FriendlyByteBuf extraData) {
-        return new ContainerSmall(windowID, playerInventory, (ItemHandlerBlockEntity<ItemHandlerNameable>) playerInventory.player.level.getBlockEntity(extraData.readBlockPos()));
+        return new ContainerSmall(windowID, playerInventory, (ItemHandlerBlockEntity<ItemHandlerNameable>) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
     @Override

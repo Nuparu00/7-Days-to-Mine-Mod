@@ -2,7 +2,7 @@ package nuparu.sevendaystomine.client.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import org.joml.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.GameRenderer;
@@ -59,8 +59,8 @@ public class ClientUtils {
             int j = (int) (f1 * 255.0F) << 24;
             Font fontrenderer = minecraft.font;
             float f2 = (float) (-fontrenderer.width(p_225629_2_) / 2);
-            fontrenderer.drawInBatch(p_225629_2_, f2, 0, 0xffffff, false, matrix4f, p_225629_4_, true, j, p_225629_5_);
-            fontrenderer.drawInBatch(p_225629_2_, f2, (float) 0, -1, false, matrix4f, p_225629_4_, false, 0, p_225629_5_);
+            fontrenderer.drawInBatch(p_225629_2_, f2, 0, 0xffffff, false, matrix4f, p_225629_4_, Font.DisplayMode.NORMAL, j, p_225629_5_);
+            //fontrenderer.drawInBatch(p_225629_2_, f2, (float) 0, -1, false, matrix4f, p_225629_4_, false, 0, p_225629_5_);
 
             p_225629_3_.popPose();
         }

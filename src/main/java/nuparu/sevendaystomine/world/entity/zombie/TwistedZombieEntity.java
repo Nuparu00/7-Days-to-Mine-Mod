@@ -41,9 +41,9 @@ public class TwistedZombieEntity<T extends TwistedZombieEntity> extends ZombieBi
     @Override
     public void aiStep() {
 
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             for(int i = 0; i < random.nextInt(2); ++i) {
-                this.level.addParticle(ParticleTypes.WARPED_SPORE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(ParticleTypes.WARPED_SPORE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
             }
         }
 

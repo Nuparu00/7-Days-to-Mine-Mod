@@ -1,7 +1,7 @@
 package nuparu.sevendaystomine.client.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.level.ChunkEvent;
@@ -115,7 +116,7 @@ public class ClientEventHandler {
         }
 
         if (mat != null && mat != EnumMaterial.NONE) {
-            event.getToolTip().add(MutableComponent.create(new TranslatableContents("tooltip.sevendaystomine.material", weight, mat.getLocalizedName())).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+            event.getToolTip().add(Component.translatable("tooltip.sevendaystomine.material", weight, mat.getLocalizedName()).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
         }
     }
 
@@ -130,11 +131,11 @@ public class ClientEventHandler {
         if (player != null && Minecraft.getInstance().getCameraEntity() == player) {
             if (player.isSpectator() || player.isCreative()) return;
             if (!player.getMainHandItem().isEmpty()) return;
-            BlockHitResult result = EntityUtils.rayTraceServer(player, player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue(), 1,
+            BlockHitResult result = EntityUtils.rayTraceServer(player, player.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue(), 1,
                     ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
             if (result == null) return;
 
-            BlockState blockState = player.level.getBlockState(result.getBlockPos());
+            BlockState blockState = player.level().getBlockState(result.getBlockPos());
             if (blockState.is(ModBlocksTags.MURKY_WATER_SOURCE) || blockState.getFluidState().is(ModFluidTags.MURKY_WATER_SOURCE)) {
                 PacketManager.sendToServer(PacketManager.playerDrink, new PlayerDrinkMessage(result.getBlockPos()));
             }
@@ -192,8 +193,8 @@ public class ClientEventHandler {
 
         if (riding instanceof MinibikeEntity minibike) {
             Vec3 forward = minibike.getForward();
-            matrixStack.mulPose(Vector3f.XN.rotationDegrees((float) (forward.x * MathUtils.lerp(partialTicks, minibike.getTurningPrev(), minibike.getTurning()))));
-            matrixStack.mulPose(Vector3f.ZN.rotationDegrees((float) (forward.z * MathUtils.lerp(partialTicks, minibike.getTurningPrev(), minibike.getTurning()))));
+            matrixStack.mulPose(Axis.XN.rotationDegrees((float) (forward.x * MathUtils.lerp(partialTicks, minibike.getTurningPrev(), minibike.getTurning()))));
+            matrixStack.mulPose(Axis.ZN.rotationDegrees((float) (forward.z * MathUtils.lerp(partialTicks, minibike.getTurningPrev(), minibike.getTurning()))));
         }
 
     }

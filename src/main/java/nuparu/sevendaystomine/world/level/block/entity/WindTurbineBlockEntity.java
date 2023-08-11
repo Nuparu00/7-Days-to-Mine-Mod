@@ -116,7 +116,7 @@ public class WindTurbineBlockEntity extends ElectricityBlockHandler{
                     BlockPos pos = getBlockPos().above(j).relative(direction,k).relative(direction.getClockWise(),i);
                     BlockState state = getLevel().getBlockState(pos);
                     blocks++;
-                    if(state.getMaterial().isSolidBlocking()){
+                    if(state.isSolid()){
                         blockingBlocks++;
                     }
                 }

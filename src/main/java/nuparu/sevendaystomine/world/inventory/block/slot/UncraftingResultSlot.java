@@ -45,12 +45,12 @@ public class UncraftingResultSlot extends Slot {
 
     protected void checkTakeAchievements(@NotNull ItemStack p_40185_) {
         if (this.removeCount > 0) {
-            p_40185_.onCraftedBy(this.player.level, this.player, this.removeCount);
+            p_40185_.onCraftedBy(this.player.level(), this.player, this.removeCount);
             net.minecraftforge.event.ForgeEventFactory.firePlayerCraftingEvent(this.player, p_40185_, this.craftSlots);
         }
 
         if (this.container instanceof RecipeHolder) {
-            ((RecipeHolder)this.container).awardUsedRecipes(this.player);
+            ((RecipeHolder)this.container).awardUsedRecipes(this.player,craftSlots.getItems());
         }
 
         this.removeCount = 0;

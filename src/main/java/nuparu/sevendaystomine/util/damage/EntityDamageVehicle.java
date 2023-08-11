@@ -1,12 +1,6 @@
 package nuparu.sevendaystomine.util.damage;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
-
-public class EntityDamageVehicle extends IndirectEntityDamageSource {
+public class EntityDamageVehicle{ /*extends DamageSources {
 	public EntityDamageVehicle(String name, Entity transmitter, Entity indirectSource) {
 		super(name, transmitter, indirectSource);
 		this.bypassArmor();
@@ -37,5 +31,5 @@ public class EntityDamageVehicle extends IndirectEntityDamageSource {
 		}
 
 	}
-
+*/
 }

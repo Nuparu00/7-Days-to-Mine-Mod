@@ -31,6 +31,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import nuparu.sevendaystomine.init.ModSounds;
+import nuparu.sevendaystomine.world.item.block.DoubleHighBlockItemBase;
 import nuparu.sevendaystomine.world.level.block.entity.ItemHandlerBlockEntity;
 import nuparu.sevendaystomine.world.level.block.entity.SmallContainerBlockEntity;
 import org.jetbrains.annotations.NotNull;
@@ -154,8 +155,8 @@ public class RefrigeratorBlock extends WaterloggableHorizontalBlockBase implemen
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
-        return new DoubleHighBlockItem(this, properties);
+        final Item.Properties properties = new Item.Properties();
+        return new DoubleHighBlockItemBase(this, properties);
     }
 
 }

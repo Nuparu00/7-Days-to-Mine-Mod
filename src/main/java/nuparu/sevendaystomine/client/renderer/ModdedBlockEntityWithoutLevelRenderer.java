@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import nuparu.sevendaystomine.client.event.ClientSetup;
 import nuparu.sevendaystomine.client.model.entity.BoneSpearModel;
@@ -38,7 +39,7 @@ public class ModdedBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLev
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.@NotNull TransformType transformType, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int p_108834_, int p_108835_) {
+    public void renderByItem(ItemStack stack, ItemDisplayContext transformType, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int p_108834_, int p_108835_) {
         Item item = stack.getItem();
         if(item == ModItems.STONE_SPEAR.get()){
             poseStack.pushPose();

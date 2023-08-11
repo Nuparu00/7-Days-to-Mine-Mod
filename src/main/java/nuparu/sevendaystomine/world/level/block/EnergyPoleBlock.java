@@ -81,10 +81,6 @@ public class EnergyPoleBlock extends BlockBase implements SimpleWaterloggedBlock
         p_53334_.add(FACING, WATERLOGGED);
     }
 
-    @Override
-    public CreativeModeTab getItemGroup() {
-        return ModCreativeModeTabs.TAB_ELECTRICITY;
-    }
 
     @Override
     public void neighborChanged(@NotNull BlockState blockState, Level level, @NotNull BlockPos pos, @NotNull Block p_220069_4_,

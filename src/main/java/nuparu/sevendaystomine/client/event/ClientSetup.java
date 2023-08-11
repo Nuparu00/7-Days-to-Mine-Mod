@@ -24,6 +24,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.client.gui.inventory.entity.*;
 import nuparu.sevendaystomine.client.gui.overlay.CameraOverlay;
+import nuparu.sevendaystomine.client.gui.overlay.GunOverlay;
 import nuparu.sevendaystomine.client.gui.overlay.ThirstBarOverlay;
 import nuparu.sevendaystomine.client.gui.overlay.UpgradeOverlay;
 import nuparu.sevendaystomine.client.model.entity.*;
@@ -126,7 +127,7 @@ public class ClientSetup {
         /*
         WARNING:
         To ensure transparency of the doors, without having to make a custom .json model files.
-        Most likely will have to create them in 1.20+
+        Most likely will have to create them in 1.21+
         */
         event.enqueueWork(() -> {
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.LOCKED_OAK_DOOR.get(), RenderType.cutoutMipped());
@@ -223,6 +224,7 @@ public class ClientSetup {
         event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(),SevenDaysToMine.MODID+"-thirst", new ThirstBarOverlay(Minecraft.getInstance()));
         event.registerAboveAll(SevenDaysToMine.MODID+"-upgrade", new UpgradeOverlay(Minecraft.getInstance()));
         event.registerAboveAll(SevenDaysToMine.MODID+"-camera", new CameraOverlay(Minecraft.getInstance()));
+        event.registerAboveAll(SevenDaysToMine.MODID+"-gun", new GunOverlay(Minecraft.getInstance()));
     }
     public static ModelLayerLocation createModelLayerLocation(String name){
         return new ModelLayerLocation(new ResourceLocation(SevenDaysToMine.MODID, name), name);

@@ -29,7 +29,7 @@ public class RazorWireBlock extends SpikeBlock {
         }
 
         if(entityIn.walkDist - entityIn.walkDistO >= 0.001) {
-            entityIn.hurt(DamageSource.GENERIC, damage);
+            entityIn.hurt(worldIn.damageSources().generic(), damage);
             if (worldIn.getBlockEntity(pos) instanceof SpikesBlockEntity blockEntity) {
                 blockEntity.damage(1);
             }

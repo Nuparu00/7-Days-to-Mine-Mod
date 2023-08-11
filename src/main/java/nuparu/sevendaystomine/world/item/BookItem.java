@@ -27,10 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BookItem extends Item {
+public class BookItem extends ItemBase {
     public final boolean unlocksRecipes;
     public BookItem(Properties properties, boolean unlocksRecipes) {
-        super(properties.stacksTo(1).tab(ModCreativeModeTabs.TAB_BOOKS));
+        super(properties.stacksTo(1));
         this.unlocksRecipes = unlocksRecipes;
     }
 

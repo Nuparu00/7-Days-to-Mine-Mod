@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -158,20 +159,19 @@ public abstract class ItemHandlerBlockEntity<INVENTORY extends ItemHandlerNameab
 
     public void unpackLootTable(@Nullable Player p_184281_1_) {
         if (this.lootTable != null && this.level.getServer() != null) {
-            LootTable loottable = this.level.getServer().getLootTables().get(this.lootTable);
+            LootTable loottable = this.level.getServer().getLootData().getLootTable(this.lootTable);
             if (p_184281_1_ instanceof ServerPlayer) {
                 CriteriaTriggers.GENERATE_LOOT.trigger((ServerPlayer)p_184281_1_, this.lootTable);
             }
             //NON PERSISTANT EVEN IF ACTIONS ARE THE SAME
             this.lootTable = null;
-            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel)this.level)).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.worldPosition)).withOptionalRandomSeed(this.lootTableSeed);
+            LootParams.Builder lootcontext$builder = (new LootParams.Builder((ServerLevel)this.level)).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.worldPosition));
             if (p_184281_1_ != null) {
                 lootcontext$builder.withLuck(p_184281_1_.getLuck()).withParameter(LootContextParams.THIS_ENTITY, p_184281_1_);
             }
-            LootContext context = lootcontext$builder.create(LootContextParamSets.CHEST);
-            SevenDaysToMine.LOGGER.warn(this.getClass().getName() + " " + getBlockPos().toShortString() +  " // " + lootTableSeed +  " " + ((LegacyRandomSource)context.getRandom()).seed.get());
+            LootParams context = lootcontext$builder.create(LootContextParamSets.CHEST);
 
-            ItemUtils.fill(loottable,this.getInventory(), context);
+            ItemUtils.fill(loottable,this.getInventory(), context, RandomSource.create(lootTableSeed));
         }
 
     }

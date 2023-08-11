@@ -29,7 +29,7 @@ public class ContainerCamera extends AbstractContainerMenu {
 
     protected ContainerCamera(int windowID, Inventory invPlayer, ItemStack stack) {
         super(ModContainers.CAMERA.get(), windowID);
-        this.world = invPlayer.player.level;
+        this.world = invPlayer.player.level();
         inventory = stack.getCapability(ExtendedInventoryProvider.EXTENDED_INV_CAP, null).orElse(null);
 
         addSlot(new SlotItemHandler(inventory, 0, 80, 21){

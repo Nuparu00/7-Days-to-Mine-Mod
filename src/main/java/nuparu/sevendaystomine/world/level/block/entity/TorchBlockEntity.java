@@ -23,7 +23,7 @@ public class TorchBlockEntity extends BlockEntity{
 
     public void tickServer() {
         if(hasLevel() && level instanceof ServerLevel){
-            Biome.Precipitation precipitation = level.getBiome(worldPosition).value().getPrecipitation();
+            Biome.Precipitation precipitation = level.getBiome(worldPosition).value().getPrecipitationAt(this.worldPosition);
             boolean raining = level.isRaining() && level.canSeeSky(this.worldPosition);
             if(ServerConfig.torchBurnTime.get() >= 0){
                 age += raining && precipitation == Biome.Precipitation.SNOW ? 4 : 1;

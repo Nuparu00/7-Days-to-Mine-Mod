@@ -13,12 +13,12 @@ public class FungalInfectionMobEffect extends BaseMobEffect{
     }
 
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity.level.random.nextInt(12) == 0) {
-            livingEntity.hurt(ModDamageSources.fungalInfection, 1);
+        if (livingEntity.level().random.nextInt(12) == 0) {
+            livingEntity.hurt(ModDamageSources.FUNGAL_INFECTION.apply(livingEntity.level()), 1);
         }
-        if (livingEntity.level.isClientSide() && livingEntity.level.getDifficulty() != Difficulty.PEACEFUL) {
-            if (livingEntity.level.random.nextInt(2) == 0) {
-                livingEntity.level.addParticle(ParticleTypes.WARPED_SPORE, livingEntity.getRandomX(0.5D), livingEntity.getRandomY(), livingEntity.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+        if (livingEntity.level().isClientSide() && livingEntity.level().getDifficulty() != Difficulty.PEACEFUL) {
+            if (livingEntity.level().random.nextInt(2) == 0) {
+                livingEntity.level().addParticle(ParticleTypes.WARPED_SPORE, livingEntity.getRandomX(0.5D), livingEntity.getRandomY(), livingEntity.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
             }
 
         }

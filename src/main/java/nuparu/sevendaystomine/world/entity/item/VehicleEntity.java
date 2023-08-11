@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -98,7 +99,7 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
     }
 
     @Override
-    public @NotNull Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -308,12 +309,12 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
 
     @Override
     public float getViewXRot(float p_195050_1_) {
-        if(!level.isClientSide()) return this.getXRot();
+        if(!level().isClientSide()) return this.getXRot();
         return p_195050_1_ == 1.0F ? this.getXRot() : Mth.lerp(p_195050_1_, this.xRotO, this.getXRot());
     }
     @Override
     public float getViewYRot(float p_195046_1_) {
-        if(!level.isClientSide()) return this.getYRot();
+        if(!level().isClientSide()) return this.getYRot();
         return p_195046_1_ == 1.0F ? this.getYRot() : Mth.lerp(p_195046_1_, this.yRotO, this.getXRot());
     }
 
@@ -330,7 +331,7 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
                         if (this.getFuel() < MAX_FUEL) {
                             this.setFuel(this.getFuel() + 250);
                             stack.shrink(1);
-                            level.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BOTTLE_EMPTY,
+                            level().playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BOTTLE_EMPTY,
                                     SoundSource.BLOCKS, MathUtils.getFloatInRange(0.5f, 0.75f),
                                     MathUtils.getFloatInRange(0.9f, 1f));
                         }
@@ -342,7 +343,7 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
                                 InventoryUtils.removeItemStack(playerEntity.getInventory(), toConsume);
                                 stack.hurt(1, random, (ServerPlayer) playerEntity);
                                 this.heal(this.getMaxHealth() / 5f);
-                                level.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ANVIL_USE,
+                                level().playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ANVIL_USE,
                                         SoundSource.BLOCKS, MathUtils.getFloatInRange(0.5f, 0.75f),
                                         MathUtils.getFloatInRange(0.9f, 1f));
                             }
@@ -368,8 +369,8 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
         return InteractionResult.PASS;
     }
     @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+    public LivingEntity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (LivingEntity) this.getPassengers().get(0);
     }
 
     public boolean canBeDriven() {
@@ -415,7 +416,7 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
                 if (getYRot() > 180) {
                     this.setYRot(getYRot() - 360);
                 }
-                if (!level.isClientSide()) {
+                if (!level().isClientSide()) {
                     ExtendedInventory inv = this.getInventory();
                     if(inv == null) return;
                     ItemStack engine = inv.getStackInSlot(4);
@@ -426,9 +427,9 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
 
                     ItemStack battery = inv.getStackInSlot(3);
                     if (!battery.isEmpty()) {
-                        level.random.nextInt(1);
+                        level().random.nextInt(1);
                         if (battery.getItem() instanceof IBattery bat) {
-                            bat.drainVoltage(battery, level, 1);
+                            bat.drainVoltage(battery, level(), 1);
                         }
                     }
 
@@ -437,7 +438,7 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
 
         }
 
-        if (!level.isClientSide()) {
+        if (!level().isClientSide()) {
             //System.out.println(strafe);
             float prevFront = this.getFrontRotation() * 0.9f;
             if (Math.abs(prevFront) <= 0.0001) {
@@ -453,12 +454,7 @@ public abstract class VehicleEntity extends LivingEntity implements MenuProvider
     }
 
     @Override
-    public void positionRider(@NotNull Entity p_226266_1_) {
-        this.positionRider(p_226266_1_, Entity::setPos);
-    }
-
-
-    private void positionRider(Entity passenger, Entity.MoveFunction posY) {
+    protected void positionRider(Entity passenger, Entity.MoveFunction posY) {
         if (this.hasPassenger(passenger)) {
             float f = 0.0F;
             float f1 = (float) ((this.isRemoved() ? (double) 0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());

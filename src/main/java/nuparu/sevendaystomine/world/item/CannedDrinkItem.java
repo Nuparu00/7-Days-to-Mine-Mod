@@ -1,6 +1,7 @@
 package nuparu.sevendaystomine.world.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -11,10 +12,11 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import nuparu.sevendaystomine.init.ModCreativeModeTabs;
 import nuparu.sevendaystomine.init.ModItems;
 import org.jetbrains.annotations.NotNull;
 
-public class CannedDrinkItem extends Item {
+public class CannedDrinkItem extends ItemBase {
     public CannedDrinkItem(Properties properties) {
         super(properties);
     }
@@ -62,5 +64,10 @@ public class CannedDrinkItem extends Item {
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment)
     {
         return false;
+    }
+
+    @Override
+    public ResourceLocation creativeModeTab(){
+        return ModCreativeModeTabs.FOOD.getId();
     }
 }

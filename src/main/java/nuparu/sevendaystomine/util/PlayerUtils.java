@@ -1,9 +1,15 @@
 package nuparu.sevendaystomine.util;
 
+import com.mojang.datafixers.util.Either;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import nuparu.sevendaystomine.capability.CapabilityHelper;
 import nuparu.sevendaystomine.capability.IExtendedPlayer;
 import nuparu.sevendaystomine.config.ServerConfig;
+import nuparu.sevendaystomine.world.item.GunItem;
+
+import java.util.Optional;
 
 public class PlayerUtils {
     public static int getInfectionStageStart(int stage) {
@@ -56,5 +62,28 @@ public class PlayerUtils {
         if (iep != null && !iep.isInfected()) {
             iep.setInfectionTime(time);
         }
+    }
+
+    public static BiOptional<ItemStack, ItemStack> gunsInHands(Player player){
+        Optional<ItemStack> mainHand = gunInHand(player, InteractionHand.MAIN_HAND);
+        Optional<ItemStack> offHand = gunInHand(player, InteractionHand.OFF_HAND);
+        if(mainHand.isPresent() && offHand.isPresent()){
+            Optional<GunItem.Wield> mainHandWield = GunItem.getWield(mainHand.get());
+            Optional<GunItem.Wield> offHandWield = GunItem.getWield(offHand.get());
+
+            if((mainHandWield.isPresent() && mainHandWield.get() == GunItem.Wield.TWO_HAND) ||
+            (offHandWield.isPresent() && offHandWield.get() == GunItem.Wield.TWO_HAND)){
+                return BiOptional.of(Optional.empty(), Optional.empty());
+            }
+        }
+        return BiOptional.of(mainHand, offHand);
+    }
+
+    public static Optional<ItemStack> gunInHand(Player player, InteractionHand hand){
+        ItemStack stack = player.getItemInHand(hand);
+        if(stack.getItem() instanceof GunItem){
+            return Optional.of(stack);
+        }
+        return Optional.empty();
     }
 }

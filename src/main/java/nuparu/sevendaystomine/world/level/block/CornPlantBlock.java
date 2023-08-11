@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import nuparu.sevendaystomine.world.item.block.BlockItemBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,7 @@ public class CornPlantBlock extends BushBlock implements BonemealableBlock ,IBlo
     }
 
     @Override
-    public boolean isValidBonemealTarget(@NotNull BlockGetter p_52258_, @NotNull BlockPos p_52259_, @NotNull BlockState p_52260_, boolean p_52261_) {
+    public boolean isValidBonemealTarget(@NotNull LevelReader p_52258_, @NotNull BlockPos p_52259_, @NotNull BlockState p_52260_, boolean p_52261_) {
         return !this.isMaxAge(p_52260_);
     }
 
@@ -190,7 +191,7 @@ public class CornPlantBlock extends BushBlock implements BonemealableBlock ,IBlo
     @Nullable
     @Override
     public BlockItem createBlockItem() {
-        final Item.Properties properties = new Item.Properties().tab(getItemGroup());
-        return new BlockItem(this, properties);
+        final Item.Properties properties = new Item.Properties();
+        return new BlockItemBase(this, properties);
     }
 }

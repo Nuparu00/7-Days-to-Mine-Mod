@@ -2,7 +2,7 @@ package nuparu.sevendaystomine.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -63,11 +63,11 @@ public class GlobeRenderer implements BlockEntityRenderer<GlobeBlockEntity> {
 
             rot = prev + (angle - prev) * partialTicks;
             matrixStack.translate(0.5D, 1.5D, 0.5D);
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(-f));
             matrixStack.translate(0D, 0, -0.605);
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(-23.5f));
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees((float) (rot)));
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(180));
+            matrixStack.mulPose(Axis.XP.rotationDegrees(-23.5f));
+            matrixStack.mulPose(Axis.YP.rotationDegrees((float) (rot)));
+            matrixStack.mulPose(Axis.XP.rotationDegrees(180));
 
             VertexConsumer vertexconsumer = MAT.buffer(buffer, RenderType::entitySolid);
             globe.render(matrixStack, vertexconsumer, combinedLight, combinedOverlay);

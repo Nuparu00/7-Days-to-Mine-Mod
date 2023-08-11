@@ -2,6 +2,7 @@ package nuparu.sevendaystomine.client.gui.inventory.entity;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -24,30 +25,28 @@ public class LootableCorpseScreen extends AbstractContainerScreen<ContainerLoota
 	}
 
 	@Override
-	public void render(@NotNull PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(matrixStack);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		this.renderTooltip(matrixStack, mouseX, mouseY);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(@NotNull PoseStack matrixStack, float partialTicks, int x, int y) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+	protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTicks, int x, int y) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.setShaderTexture(0, TEXTURE);
 		int marginHorizontal = (this.width - this.imageWidth) / 2;
 		int marginVertical = (this.height - this.imageHeight) / 2;
-		this.blit(matrixStack, marginHorizontal, marginVertical, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(TEXTURE, marginHorizontal, marginVertical, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
-	protected void renderLabels(@NotNull PoseStack matrixStack, int mouseX, int mouseY) {
+	protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		// draw the label for the top of the screen
 		int marginHorizontal = (this.width - this.imageWidth) / 2;
-		this.font.draw(matrixStack, this.title, (176/2f)-this.font.width(this.title)/2, 6, Color.darkGray.getRGB()); /// this.font.draw
+		guiGraphics.drawString(this.font, this.title, (int) (176/2f)-this.font.width(this.title)/2, 6, Color.darkGray.getRGB()); /// this.font.draw
 
 		// draw the label for the player inventory slots
-		this.font.draw(matrixStack, playerInventoryTitle, /// this.font.draw
+		guiGraphics.drawString(this.font, playerInventoryTitle, /// this.font.draw
 				8, 75, Color.darkGray.getRGB());
 	}
 

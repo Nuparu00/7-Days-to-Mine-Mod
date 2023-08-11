@@ -23,7 +23,7 @@ public class EntityUtils {
 
         Vec3 vec3d1 = entity.getLookAngle();
         Vec3 vec3d2 = vec3d.add(vec3d1.x * dst, vec3d1.y * dst, vec3d1.z * dst);
-        List<Entity> list = entity.level.getEntities(entity,
+        List<Entity> list = entity.level().getEntities(entity,
                 entity.getBoundingBox().inflate(vec3d1.x * dst, vec3d1.y * dst, vec3d1.z * dst),
                 EntityUtils::isRayCastable);
 
@@ -71,7 +71,7 @@ public class EntityUtils {
         Vec3 vec31 = entity.getLookAngle();
         Vec3 vec32 = vec3.add(vec31.x * blockReachDistance, vec31.y * blockReachDistance,
                 vec31.z * blockReachDistance);
-        return entity.level.clip(new ClipContext(vec3, vec32, blockMode,
+        return entity.level().clip(new ClipContext(vec3, vec32, blockMode,
                 fluidMode, entity));
     }
 

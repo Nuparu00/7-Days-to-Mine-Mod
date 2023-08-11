@@ -2,9 +2,9 @@ package nuparu.sevendaystomine.client.renderer.blockentity;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -82,8 +82,8 @@ public class PhotoRenderer implements BlockEntityRenderer<PhotoBlockEntity> {
             matrixStack.pushPose();
 
             matrixStack.translate(0.5D, 0.5+h/32d, 0.5D);
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-f));
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(180));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(-f));
+            matrixStack.mulPose(Axis.XP.rotationDegrees(180));
             matrixStack.translate(-(w/32d), 0, 0.49);
             matrixStack.scale(0.0625f, 0.0625f, 0.0625f);
             RenderSystem.enableDepthTest();

@@ -4,15 +4,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeHooks;
 import nuparu.sevendaystomine.init.ModBlockEntities;
 import nuparu.sevendaystomine.world.inventory.ItemHandlerNameable;
@@ -123,7 +123,7 @@ public class CombustionGeneratorBlockEntity extends ElectricityItemBlockHandler 
             }
 
             if (temperature > 1000) {
-                this.level.explode(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 2, true, Explosion.BlockInteraction.BREAK);
+                this.level.explode((Entity)null, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, 2f, true, Level.ExplosionInteraction.BLOCK);
             }
             if (temperature < 0) {
                 temperature = 0;
@@ -176,7 +176,7 @@ public class CombustionGeneratorBlockEntity extends ElectricityItemBlockHandler 
         return Math.min(1d, temperature / 1000d);
     }
 
-    public int calculateHeatScore() {
+    public int calculateHeatScore() {/*
         if (!hasLevel()) return 0;
 
         HashMap<Material, Integer> counts = new HashMap<>();
@@ -200,7 +200,8 @@ public class CombustionGeneratorBlockEntity extends ElectricityItemBlockHandler 
                 + counts.getOrDefault(Material.ICE_SOLID, 0) * 2
                 + counts.getOrDefault(Material.ICE, 0) * 2 + counts.getOrDefault(Material.WATER, 0);
 
-        return hot - cold;
+        return hot - cold;*/
+        return 0;
     }
 
     public boolean isOn() {

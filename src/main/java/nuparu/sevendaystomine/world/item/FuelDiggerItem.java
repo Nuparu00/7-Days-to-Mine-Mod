@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import nuparu.sevendaystomine.SevenDaysToMine;
+import nuparu.sevendaystomine.init.ModCreativeModeTabs;
 import nuparu.sevendaystomine.init.ModItems;
 import nuparu.sevendaystomine.world.inventory.InventoryUtils;
 import nuparu.sevendaystomine.world.item.quality.IQualityStack;
@@ -26,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class FuelDiggerItem extends DiggerItem implements IReloadableItem{
+public class FuelDiggerItem extends DiggerItem implements IReloadableItem, CreativeModeTabProvider{
     public SoundEvent refillSound;
     //Units of fuel per canister
     public int reloadAmount = 5;
@@ -134,24 +136,6 @@ public class FuelDiggerItem extends DiggerItem implements IReloadableItem{
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public void fillItemCategory(@NotNull CreativeModeTab tab, @NotNull NonNullList<ItemStack> items) {
-        if (this.allowedIn(tab)) {
-            Player player = Minecraft.getInstance().player;
-            ItemStack stack = new ItemStack(this, 1);
-            ((IQualityStack)(Object)stack).setQuality(SevenDaysToMine.proxy.getQualityForCurrentPlayer());
-            if (player != null) {
-                CompoundTag nbt = stack.getOrCreateTag();
-                nbt.putInt("FuelMax", 1000);
-                nbt.putInt("FuelCurrent", 0);
-                nbt.putInt("ReloadTime", 90000);
-                nbt.putBoolean("Reloading", false);
-            }
-            items.add(stack);
-        }
-    }
-
-    @Override
     public Item getReloadItem(ItemStack stack) {
         return ModItems.GAS_CANISTER.get();
     }
@@ -169,6 +153,11 @@ public class FuelDiggerItem extends DiggerItem implements IReloadableItem{
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
         return this.getAmmo(stack, null) <= 0 || super.onLeftClickEntity(stack, player, entity);
+    }
+
+    @Override
+    public ResourceLocation creativeModeTab(){
+        return ModCreativeModeTabs.TOOLS.getId();
     }
 
 }

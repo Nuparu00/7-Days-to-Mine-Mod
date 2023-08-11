@@ -1,6 +1,7 @@
 package nuparu.sevendaystomine.world.item.crafting;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -15,5 +16,5 @@ public interface ILockedRecipe extends CraftingRecipe {
     }
     int getWidth();
     int getHeight();
-    ItemStack getResultItem();
+    ItemStack getResultItem(RegistryAccess p_267111_);
 }

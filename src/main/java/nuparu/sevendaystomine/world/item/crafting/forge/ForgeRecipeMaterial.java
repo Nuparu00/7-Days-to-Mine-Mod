@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -50,7 +51,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
 
     @Override
     public boolean matches(ForgeBlockEntity forge, @NotNull Level world) {
-        if(!ItemStack.isSameIgnoreDurability(forge.getMoldSlot(),mold)) return false;
+        if(!ItemStack.isSameItem(forge.getMoldSlot(),mold)) return false;
 
         HashMap<EnumMaterial,Fraction> invMap = new HashMap<>();
         int i = 0;
@@ -118,7 +119,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull ForgeBlockEntity forge) {
+    public @NotNull ItemStack assemble(@NotNull ForgeBlockEntity forge, RegistryAccess registryAccess) {
 
         Fraction ratio = this.getRatio(forge);
         if(ratio == null) return ItemStack.EMPTY;
@@ -160,7 +161,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
                     forge.getInventory().setStackInSlot(i,stackToAdd);
                     stack.shrink(countToAdd);
                 }
-                else if(ItemStack.isSame(stack,slotStack) && slotStack.getCount() < slotStack.getMaxStackSize()){
+                else if(ItemStack.isSameItem(stack,slotStack) && slotStack.getCount() < slotStack.getMaxStackSize()){
                     int delta = Math.min(slotStack.getMaxStackSize() - slotStack.getCount(), stack.getCount());
                     slotStack.grow(delta);
                     stack.shrink(delta);
@@ -230,7 +231,7 @@ public class ForgeRecipeMaterial implements IForgeRecipe<ForgeBlockEntity> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem() {
+    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
         return this.result.copy();
     }
 

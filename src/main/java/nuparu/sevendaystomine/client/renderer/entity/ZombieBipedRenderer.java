@@ -25,7 +25,7 @@ public abstract class ZombieBipedRenderer<T extends ZombieBipedEntity, M extends
 	public ZombieBipedRenderer(EntityRendererProvider.Context manager, ModelLayerLocation modelLayerLocation, float shadow) {
 		super(manager, (M) new HumanoidModel(manager.bakeLayer(modelLayerLocation)), shadow);
 		this.addLayer(redEyesLayer = new RedEyesLayer<T, M, M>(this));
-		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),manager.getModelManager()));
 		HumanoidModel inner = new HumanoidModel(Minecraft.getInstance().getEntityModels().bakeLayer(ClientSetup.CLOTHING_INNER));
 		HumanoidModel outer = new HumanoidModel(Minecraft.getInstance().getEntityModels().bakeLayer(ClientSetup.CLOTHING_OUTER));
 		this.addLayer(new ClothingLayer<>(this, inner, outer));

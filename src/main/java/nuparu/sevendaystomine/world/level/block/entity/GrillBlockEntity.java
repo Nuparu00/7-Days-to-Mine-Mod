@@ -145,11 +145,11 @@ public class GrillBlockEntity extends ItemHandlerBlockEntity implements Containe
 
     public void smeltItem() {
         if (currentRecipe != null) {
-            ItemStack result = currentRecipe.assemble(this);
+            ItemStack result = currentRecipe.assemble(this, level.registryAccess());
             ItemStack currentOutput = getOutputSlot();
             if (currentOutput.isEmpty()) {
                 this.getInventory().setStackInSlot(GrillBlockEntity.EnumSlots.OUTPUT_SLOT.ordinal(), result);
-            } else if (ItemStack.isSame(currentOutput, result)
+            } else if (ItemStack.isSameItem(currentOutput, result)
                     && currentOutput.getCount() + result.getCount() <= Math.min(
                     getOutputSlot().getMaxStackSize(),
                     this.getInventory().getStackInSlot(GrillBlockEntity.EnumSlots.OUTPUT_SLOT.ordinal()).getMaxStackSize())) {
@@ -226,7 +226,7 @@ public class GrillBlockEntity extends ItemHandlerBlockEntity implements Containe
 
 
     public void awardUsedRecipesAndPopExperience(Player p_235645_1_) {
-        List<Recipe<?>> list = this.getRecipesToAwardAndPopExperience(p_235645_1_.level, p_235645_1_.position());
+        List<Recipe<?>> list = this.getRecipesToAwardAndPopExperience(p_235645_1_.level(), p_235645_1_.position());
         p_235645_1_.awardRecipes(list);
         this.recipesUsed.clear();
     }

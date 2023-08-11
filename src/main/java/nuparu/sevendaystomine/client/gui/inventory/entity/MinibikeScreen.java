@@ -3,6 +3,7 @@ package nuparu.sevendaystomine.client.gui.inventory.entity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MinibikeScreen extends AbstractContainerScreen<ContainerMinibike> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SevenDaysToMine.MODID,"textures/gui/container/minibike.png");
@@ -33,10 +35,10 @@ public class MinibikeScreen extends AbstractContainerScreen<ContainerMinibike> {
 	}
 
 	@Override
-	public void render(@NotNull PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(matrixStack);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		this.renderTooltip(matrixStack, mouseX, mouseY);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 		int mid = (int) ((176/2f)-this.font.width(this.container.minibike.getName())/2);
 		int titleWidth = this.font.width(this.container.minibike.getName());
 
@@ -59,7 +61,7 @@ public class MinibikeScreen extends AbstractContainerScreen<ContainerMinibike> {
 
 			Component acceleration = Component.translatable("tooltip.sevendaystomine.acceleration", this.container.minibike.getAcceleration());
 			tooltip.add(acceleration);
-			this.renderComponentTooltip(matrixStack, tooltip, mouseX, mouseY);
+			guiGraphics.renderTooltip(minecraft.font,tooltip, Optional.empty(), mouseX, mouseY);
 		}
 	}
 
@@ -68,29 +70,27 @@ public class MinibikeScreen extends AbstractContainerScreen<ContainerMinibike> {
 	}
 
 	@Override
-	protected void renderBg(@NotNull PoseStack matrixStack, float partialTicks, int x, int y) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+	protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTicks, int x, int y) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.setShaderTexture(0, TEXTURE);
 		int marginHorizontal = (this.width - this.imageWidth) / 2;
 		int marginVertical = (this.height - this.imageHeight) / 2;
-		this.blit(matrixStack, marginHorizontal, marginVertical, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(TEXTURE, marginHorizontal, marginVertical, 0, 0, imageWidth, imageHeight);
 
 		boolean chest = container.minibike.getChest();
 
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
-		InventoryScreen.renderEntityInInventory(i + ((this.imageWidth+(chest ? -66 : 0)) / 2), j + 62, 32, (float) (i + 51) - x, (float) (j + 75 - 50) - y,
+		InventoryScreen.renderEntityInInventoryFollowsAngle(guiGraphics,i + ((this.imageWidth+(chest ? -66 : 0)) / 2), j + 62, 32, (float) (i + 51) - x, (float) (j + 75 - 50) - y,
 				this.container.minibike);
 	}
 
 	@Override
-	protected void renderLabels(@NotNull PoseStack matrixStack, int mouseX, int mouseY) {
+	protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		// draw the label for the top of the screen
-		this.font.draw(matrixStack, container.minibike.getDisplayName(), (176/2f)-this.font.width(this.container.minibike.getName())/2, 6, Color.darkGray.getRGB()); /// this.font.draw
+		guiGraphics.drawString(minecraft.font, container.minibike.getDisplayName(), (int)(176/2f)-this.font.width(this.container.minibike.getName())/2, 6, Color.darkGray.getRGB()); /// this.font.draw
 
 		// draw the label for the player inventory slots
-		this.font.draw(matrixStack, playerInventoryTitle, /// this.font.draw
+		guiGraphics.drawString(minecraft.font, playerInventoryTitle, /// this.font.draw
 				8, 75, Color.darkGray.getRGB());
 	}
 

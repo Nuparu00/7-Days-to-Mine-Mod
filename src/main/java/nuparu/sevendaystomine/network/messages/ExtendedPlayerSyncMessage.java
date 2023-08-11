@@ -57,8 +57,8 @@ public class ExtendedPlayerSyncMessage {
                 Player player = SevenDaysToMine.proxy.getPlayerEntityFromContext(ctx);
                 IExtendedPlayer extendedPlayer = msg.extendedPlayer;
                 int playerID = msg.playerID;
-                if(player != null && player.level != null){
-                    Entity entity = player.level.getEntity(playerID);
+                if(player != null && player.level() != null){
+                    Entity entity = player.level().getEntity(playerID);
                     if(entity instanceof Player player2){
                         IExtendedPlayer localExtendedPlayer = CapabilityHelper.getExtendedPlayer(player2);
                         if(localExtendedPlayer == null) return;
