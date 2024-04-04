@@ -62,51 +62,20 @@ public class SkyRenderer extends IRenderHandler {
 
 	public Vec3d getSkyColor(Vec3d base, float partialTicks, WorldClient world){
 		int sunsetStart = 12610;
-		int sunsestEnd = 15000;
-		int sunsetDarkEnd = 14500;
-		int sunsetRedStart = 14000;
+		int midnightTime = 18000;
 
 		double angle = world.getCelestialAngle(partialTicks);
-		long time = world.getWorldTime() % 24000L * (Utils.getDay(world)-1);
+		long time = world.getWorldTime() % 24000;
 		//12610 = sunset start
 		if (time > sunsetStart) {
-			double mult = MathUtils.clamp(Math.abs(angle - 0.54), 0, 0.30);
-			double lightMult = 0;
+			int timeFromMidnight = (int) Math.abs(midnightTime - time);
+			int nightDuration = 24000 - sunsetStart;
+			float mult = Math.max(0,MathHelper.cos(timeFromMidnight/(nightDuration/3f))) * 0.2f;
 
-			//22300 = sunrise start
-			if(time > 22300){
-				lightMult = (time-22300)/1700d;
-			}
-
-			//System.out.println(lightMult +  " " + time + " " + ((time-12610)/1092d));
-			float rNew = (float)( mult * 0.1f);
-			float gNew = (float)( mult * 0.1f);
-			float bNew = (float)( mult * 0.1f);
-
-			float r = rNew;
-			float g = gNew;
-			float b = bNew;
-
-			if(time > 22300){
-				r = (float) MathUtils.lerp(rNew,base.x,(float)(((time-22300)/1700d) * (1 - ModConfig.client.blodmoonColorR)));
-				g = (float) MathUtils.lerp(gNew,base.y,(float)(((time-22300)/1700d) * (1 - ModConfig.client.blodmoonColorG)));
-				b = (float) MathUtils.lerp(bNew,base.z,(float)(((time-22300)/1700d) * (1 - ModConfig.client.blodmoonColorB)));
-			}
-			//13702 = sunset end
-			else if(time < sunsestEnd) {
-				double rOld = MathUtils.lerp(base.x,base.x-0.2f, (float) ((float) ((MathUtils.clamp(time,0,sunsetDarkEnd) - sunsetStart) / 390) * ModConfig.client.blodmoonColorR));
-				double gOld = MathUtils.lerp(base.y,base.y-0.2f, (float) ((float) ((MathUtils.clamp(time,0,sunsetDarkEnd) - sunsetStart) / 390) * ModConfig.client.blodmoonColorG));
-				double bOld = MathUtils.lerp(base.z,base.z-0.2f, (float) ((float) ((MathUtils.clamp(time,0,sunsetDarkEnd) - sunsetStart) / 390) * ModConfig.client.blodmoonColorB));
-				mult*=((time - sunsetStart) / (sunsestEnd-sunsetStart));
-				lightMult=1-((time - sunsetStart) / (sunsestEnd-sunsetStart));
-				rNew = (float)( mult * 0.1f);
-				if (time > sunsetRedStart){
-					r = (float) MathUtils.lerp(rOld, rNew, (float) (((time - 12610) / 1092d) * ModConfig.client.blodmoonColorR));
-					g = (float) MathUtils.lerp(gOld, gNew, (float) (((time - 12610) / 1092d) * ModConfig.client.blodmoonColorG));
-					b = (float) MathUtils.lerp(bOld, bNew, (float) (((time - 12610) / 1092d) * ModConfig.client.blodmoonColorB));
-				}
-			}
-			return new Vec3d(r, g, b);
+			return new Vec3d(
+					base.x + ModConfig.client.blodmoonColorR * mult,
+					base.y + ModConfig.client.blodmoonColorG * mult,
+					base.z + ModConfig.client.blodmoonColorB * mult);
 		}
 		return base;
 	}

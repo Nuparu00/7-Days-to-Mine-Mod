@@ -32,7 +32,7 @@ public class LayerZombieEyes<T extends EntityZombieBase> implements LayerRendere
 	public void doRenderLayer(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
 			float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		if (!entitylivingbaseIn.isDead && entitylivingbaseIn.getHealth() > 0) {
-			if (Utils.isBloodmoon(entitylivingbaseIn.world)) {
+			if (Utils.isBloodmoon(entitylivingbaseIn.world) && entitylivingbaseIn.world.getWorldTime() % 24000 > 12610) {
 
 				GlStateManager.pushMatrix();
 				renderer.bindTexture(TEXTURE);
@@ -50,7 +50,7 @@ public class LayerZombieEyes<T extends EntityZombieBase> implements LayerRendere
 				int j = i % 65536;
 				int k = i / 65536;
 				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
-				GlStateManager.color((float) ModConfig.client.blodmoonColorR, (float) ModConfig.client.blodmoonColorG, (float) ModConfig.client.blodmoonColorB, 1.0F);
+				GlStateManager.color((float) ModConfig.client.blodmoonColorR * 2, (float) ModConfig.client.blodmoonColorG * 2, (float) ModConfig.client.blodmoonColorB * 2, 1.0F);
 				Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
 				this.renderer.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks,
 						netHeadYaw, headPitch, scale);

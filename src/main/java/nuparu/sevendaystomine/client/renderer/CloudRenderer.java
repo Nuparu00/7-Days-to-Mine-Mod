@@ -63,10 +63,18 @@ public class CloudRenderer extends IRenderHandler {
 				Vec3d vec3d = world.getCloudColour(partialTicks);
 				float mult = 0;
 				if (Utils.isBloodmoon(world)) {
-					mult = (float) MathUtils.clamp(Math.abs(world.getCelestialAngle(partialTicks) - 0.54), 0, 0.30);
-					mult = (0.30f - mult) / 0.30f;
+					int sunsetStart = 12610;
+					int midnightTime = 18000;
+
+					double angle = world.getCelestialAngle(partialTicks);
+					long time = world.getWorldTime() % 24000;
+					//12610 = sunset start
+					if (time > sunsetStart) {
+						int timeFromMidnight = (int) Math.abs(midnightTime - time);
+						int nightDuration = 24000 - sunsetStart;
+						mult = Math.max(0, MathHelper.cos(timeFromMidnight / (nightDuration / 3f))) * 0.2f;
+					}
 				}
-				mult *= 0.2f;
 
 				float f = (float) vec3d.x + mult * (float) ModConfig.client.blodmoonColorR;
 				float f1 = (float) vec3d.y + mult * (float) ModConfig.client.blodmoonColorG;
@@ -148,11 +156,18 @@ public class CloudRenderer extends IRenderHandler {
 
 		float mult = 0;
 		if (Utils.isBloodmoon(world)) {
-			mult = (float) MathUtils.clamp(Math.abs(world.getCelestialAngle(partialTicks) - 0.54), 0, 0.30);
-			mult = (0.30f - mult) / 0.30f;
-		}
+			int sunsetStart = 12610;
+			int midnightTime = 18000;
 
-		mult *= 0.2f;
+			double angle = world.getCelestialAngle(partialTicks);
+			long time = world.getWorldTime() % 24000;
+			//12610 = sunset start
+			if (time > sunsetStart) {
+				int timeFromMidnight = (int) Math.abs(midnightTime - time);
+				int nightDuration = 24000 - sunsetStart;
+				mult = Math.max(0, MathHelper.cos(timeFromMidnight / (nightDuration / 3f))) * 0.2f;
+			}
+		}
 
 		float f3 = (float) vec3d.x + mult * (float) ModConfig.client.blodmoonColorR;
 		float f4 = (float) vec3d.y + mult * (float) ModConfig.client.blodmoonColorG;
