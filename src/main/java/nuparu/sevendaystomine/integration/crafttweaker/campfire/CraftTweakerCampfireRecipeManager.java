@@ -3,14 +3,11 @@ package nuparu.sevendaystomine.integration.crafttweaker.campfire;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import nuparu.sevendaystomine.SevenDaysToMine;
 import nuparu.sevendaystomine.crafting.campfire.CampfireRecipeManager;
 import nuparu.sevendaystomine.crafting.campfire.CampfireRecipeShaped;
 import nuparu.sevendaystomine.crafting.campfire.CampfireRecipeShapeless;
-import nuparu.sevendaystomine.crafting.forge.ForgeRecipeManager;
-import nuparu.sevendaystomine.crafting.forge.MaterialStack;
-import nuparu.sevendaystomine.integration.crafttweaker.repairs.CraftTweakerUpgradeManager;
+import nuparu.sevendaystomine.integration.crafttweaker.upgrades.CraftTweakerUpgradeManager;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
