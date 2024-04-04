@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=west": { "model": "sevendaystomine:battery_station" },
+        "facing=south": { "model": "sevendaystomine:battery_station", "y": 270 },
+        "facing=north": { "model": "sevendaystomine:battery_station", "y": 90 },
+        "facing=east": { "model": "sevendaystomine:battery_station", "y": 180 }
+    }
+}

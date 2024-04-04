@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:cash_register" },
-        "facing=west": { "model": "sevendaystomine:cash_register", "y": 270 },
-        "facing=east": { "model": "sevendaystomine:cash_register", "y": 90 },
-        "facing=south": { "model": "sevendaystomine:cash_register", "y": 180 }
-    }
-}

@@ -1,6 +1,0 @@
-{
-    "parent": "sevendaystomine:item/chlorine_tank",
-    "textures": {
-		"1": "blocks/concrete_red"
-	}
-}

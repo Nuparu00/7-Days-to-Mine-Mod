@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=south": { "model": "sevendaystomine:sandbags" },
+        "facing=east": { "model": "sevendaystomine:sandbags", "y": 270 },
+        "facing=west": { "model": "sevendaystomine:sandbags", "y": 90 },
+        "facing=north": { "model": "sevendaystomine:sandbags", "y": 180 }
+    }
+}

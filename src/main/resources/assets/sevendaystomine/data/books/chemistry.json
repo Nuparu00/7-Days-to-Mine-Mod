@@ -1,0 +1,436 @@
+{
+  "pages": [
+    {
+      "res": "sevendaystomine:textures/gui/books/chem_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "book_chemistry.title",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.5,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 64,
+          "y": 35,
+          "z": 0,
+          "text": "book_chemistry.subtitle",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 0.4
+        },
+        {
+          "x": 64,
+          "y": 43,
+          "z": 0,
+          "text": "book_chemistry.author",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000"
+        },
+        {
+          "x": 192,
+          "y": 20,
+          "z": 0,
+          "text": "book.contents",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.33
+        },
+        {
+          "x": 138,
+          "y": 38,
+          "z": 0,
+          "text": "book_chemistry.contents.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "link": 1,
+          "hover_color": "DD4C1D"
+        },
+        {
+          "x": 138,
+          "y": 48,
+          "z": 0,
+          "text": "book_chemistry.contents.2",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "link": 3,
+          "hover_color": "DD4C1D"
+        },
+        {
+          "x": 138,
+          "y": 58,
+          "z": 0,
+          "text": "book_chemistry.contents.3",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "link": 4,
+          "hover_color": "DD4C1D"
+        },
+        {
+          "x": 138,
+          "y": 68,
+          "z": 0,
+          "text": "book_chemistry.contents.4",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "link": 5,
+          "hover_color": "DD4C1D"
+        }
+      ],
+      "images": [
+        {
+          "x": 18,
+          "y": 64,
+          "z": 0,
+          "width": 96,
+          "height": 96,
+          "res": "minecraft:textures/items/gunpowder.png"
+        }
+      ]
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/chem_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "book_chemistry.contents.1",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 16,
+          "y": 35,
+          "z": 0,
+          "width": 105,
+          "text": "book_chemistry.chemistry.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        }
+      ]
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/chem_base.png",
+      "texts": [],
+      "crafting": [
+        {
+          "x": 16,
+          "y": 40,
+          "z": 0,
+          "recipe": "sevendaystomine:chemistry_station"
+        }
+      ],
+      "images": []
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/chem_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "book_chemistry.contents.2",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "x": 12,
+          "y": 33,
+          "z": 0,
+          "width": 94,
+          "height": 36,
+          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
+        },
+        {
+          "x": 12,
+          "y": 73,
+          "z": 0,
+          "width": 94,
+          "height": 36,
+          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
+        },
+        {
+          "x": 12,
+          "y": 113,
+          "z": 0,
+          "width": 94,
+          "height": 36,
+          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
+        },
+        {
+          "x": 138,
+          "y": 33,
+          "z": 0,
+          "width": 94,
+          "height": 36,
+          "res": "sevendaystomine:textures/gui/books/chemistry_background.png"
+        }
+      ],
+       "stacks": [
+        {
+          "x": 13,
+          "y": 34,
+          "z": 0,
+          "item": "minecraft:coal"
+        },
+		{
+          "x": 31,
+          "y": 34,
+          "z": 0,
+          "item": "sevendaystomine:potassium"
+        },
+		{
+          "x": 85,
+          "y": 43,
+          "z": 0,
+          "item": "minecraft:gunpowder"
+        },
+        {
+          "x": 13,
+          "y": 74,
+          "z": 0,
+          "item": "minecraft:wheat"
+        },
+		{
+          "x": 31,
+          "y": 74,
+          "z": 0,
+          "item": "minecraft:sugar"
+        },
+        {
+          "x": 13,
+          "y": 92,
+          "z": 0,
+          "item": "sevendaystomine:bottledwater"
+        },
+		{
+          "x": 85,
+          "y": 83,
+          "z": 0,
+          "item": "sevendaystomine:bottledbeer"
+        },
+        {
+          "x": 13,
+          "y": 114,
+          "z": 0,
+          "item": "sevendaystomine:corn"
+        },
+		{
+          "x": 31,
+          "y": 114,
+          "z": 0,
+          "item": "minecraft:sugar"
+        },
+        {
+          "x": 13,
+          "y": 132,
+          "z": 0,
+          "item": "sevendaystomine:bottledwater"
+        },
+		{
+          "x": 85,
+          "y": 123,
+          "z": 0,
+          "item": "sevendaystomine:bottledbeer"
+        },
+        {
+          "x": 139,
+          "y": 34,
+          "z": 0,
+          "item": "sevendaystomine:bottledwater"
+        },
+		{
+          "x": 157,
+          "y": 34,
+          "z": 0,
+          "item": "sevendaystomine:natrium_tank"
+        },
+        {
+          "x": 139,
+          "y": 52,
+          "z": 0,
+          "item": "sevendaystomine:chlorine_tank"
+        }
+        ,
+		{
+          "x": 211,
+          "y": 43,
+          "z": 0,
+          "item": "sevendaystomine:salt"
+        }
+        ]
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/chem_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "book_chemistry.contents.3",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 16,
+          "y": 35,
+          "z": 0,
+          "width": 105,
+          "text": "book_chemistry.electrolysis.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        },
+        {
+          "x": 138,
+          "y": 10,
+          "z": 0,
+		  "width" : 110,
+          "text": "book_chemistry.electrolysis.2",
+		  "unlocalized" : true,
+		  "centered": false,
+		  "color": 000000,
+		  "scale" : 1
+        }
+      ],
+      "crafting": [
+        {
+          "x": 138,
+          "y": 50,
+          "z": 0,
+          "recipe": "sevendaystomine:separator"
+        }
+      ]
+    },
+     {
+      "res": "sevendaystomine:textures/gui/books/chem_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "book_chemistry.contents.4",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "x": 12,
+          "y": 33,
+          "z": 0,
+          "width": 102,
+          "height": 18,
+          "res": "sevendaystomine:textures/gui/books/separator.png"
+        }
+      ],
+       "stacks": [
+        {
+          "x": 13,
+          "y": 34,
+          "z": 0,
+          "item": "sevendaystomine:chlorine_tank"
+        },
+		{
+          "x": 55,
+          "y": 34,
+          "z": 0,
+          "item": "sevendaystomine:salt"
+        },
+		{
+          "x": 97,
+          "y": 34,
+          "z": 0,
+          "item": "sevendaystomine:natrium_tank"
+        }
+        ]
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/chem_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 70,
+          "z": 0,
+          "text": "book_chemistry.title",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.25,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 64,
+          "y": 85,
+          "z": 0,
+          "width": 110,
+          "text": "book_chemistry.copyright",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1
+        },
+        {
+          "x": 16,
+          "y": 115,
+          "z": 0,
+          "width": 110,
+          "text": "book_chemistry.dontdistribute.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 0.9
+        }
+      ],
+      "crafting": [
+        {
+          "x": 16,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:book_chemistry"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    " F F ",
+    "WP PW",
+    " PRP ",
+    " PPP ",
+    "  P  "
+  ],
+  "key": {
+    "P": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "F": {
+      "item": "sevendaystomine:plantfiber"
+    },
+    "W": {
+      "item": "sevendaystomine:woodplank"
+    },
+    "R": {
+      "item": "minecraft:redstone_lamp"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:minibike_handles"
+  },
+  "recipe": "minibike",
+  "quality": true
+}

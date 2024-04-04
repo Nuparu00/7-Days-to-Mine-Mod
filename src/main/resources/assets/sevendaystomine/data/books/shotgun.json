@@ -1,0 +1,35 @@
+{
+  "pages": [
+    {
+      "res": "sevendaystomine:textures/gui/books/blueprint_base.png",
+      "texts": [
+        {
+          "x": 125,
+          "y": 13,
+          "z": 0,
+          "text": "Shotgun",
+		  "unlocalized" : false,
+		  "centered": true,
+		  "color": "eeeeee",
+		  "scale" : 1.5,
+		  "shadow" : true,
+		  "formatting" : ["UNDERLINE"]
+        }
+      ],
+       "crafting": [
+        {
+          "x": 43,
+          "y": 44,
+          "z": 0,
+          "recipe": "sevendaystomine:shotgun"
+        },
+		{
+          "x": 43,
+          "y": 116,
+          "z": 0,
+          "recipe": "sevendaystomine:shotgun_short"
+        }
+      ]
+    }
+  ]
+}

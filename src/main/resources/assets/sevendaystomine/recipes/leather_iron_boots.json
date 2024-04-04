@@ -1,0 +1,21 @@
+{
+   "type":"sevendaystomine:crafting_quality_shaped",
+   "pattern":[
+      "L L",
+      "I I"
+   ],
+   "key":{
+      "I":{
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+},
+      "L":{
+    "type": "forge:ore_dict",
+    "ore": "leather"
+}
+   },
+   "result":{
+      "item":"sevendaystomine:leather_iron_boots",
+      "count":1
+   }
+}

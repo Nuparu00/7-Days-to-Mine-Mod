@@ -1,0 +1,17 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "SSS",
+      "SSS",
+      "SSS"
+   ],
+   "key":{
+      "S":{
+         "item":"sevendaystomine:sand_dust"
+      }
+   },
+   "result":{
+      "item":"minecraft:sand",
+      "data": 0
+   }
+}

@@ -1,0 +1,94 @@
+{
+    "pools": [
+        {
+            "name" : "file",
+            "rolls": {
+                "min": 1,
+                "max": 9
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 35,
+                    "name": "minecraft:paper",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 20,
+                    "name": "minecraft:book",
+                    "quality": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 6,
+                    "name": "minecraft:writable_book"
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:survival_guide"
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "sevendaystomine:book_forging"
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "sevendaystomine:book_concrete"
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "sevendaystomine:book_minibike"
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "sevendaystomine:screwdriver",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:random_quality"
+                        }
+                    ]
+                },
+                {
+                    "type": "empty",
+                    "weight": 150
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "minecraft:map",
+					"functions": [
+                        {
+                            "function": "sevendaystomine:city_map",
+                     "conditions":[
+                        {
+                           "condition":"random_chance",
+                           "chance":0.5
+                        }
+                     ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:shower_head" },
-        "facing=south": { "model": "sevendaystomine:shower_head", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:shower_head", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:shower_head", "y": 90 }
-    }
-}
-

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+        "item": "minecraft:stick"
+      }
+  },
+  "result": {
+    "item": "sevendaystomine:wooden_spikes",
+    "count" : 2
+  }
+}

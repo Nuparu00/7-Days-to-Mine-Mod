@@ -1,0 +1,22 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "group": "wooden_frame",
+   "pattern":[
+      " P ",
+      "PLP",
+      " P "
+   ],
+   "key":{
+      "L":{
+         "item":"minecraft:log",
+         "data":1
+      },
+      "P":{
+         "item":"sevendaystomine:woodplank"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:spruceplanksframe",
+      "count":2
+   }
+}

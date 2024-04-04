@@ -1,0 +1,18 @@
+{
+   "type":"sevendaystomine:crafting_quality_shaped",
+   "pattern":[
+      "SSS",
+      "S S",
+      "S S"
+   ],
+   "key":{
+      "S":{
+    "type": "forge:ore_dict",
+    "ore": "leather"
+}
+   },
+   "result":{
+      "item":"sevendaystomine:leather_leggings",
+      "count":1
+   }
+}

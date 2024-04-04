@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=up": { "model": "sevendaystomine:cinder" },
+        "facing=south": { "model": "sevendaystomine:cinder" },
+        "facing=east": { "model": "sevendaystomine:cinder", "y": 270 },
+        "facing=west": { "model": "sevendaystomine:cinder", "y": 90 },
+        "facing=north": { "model": "sevendaystomine:cinder", "y": 180 }
+    }
+}

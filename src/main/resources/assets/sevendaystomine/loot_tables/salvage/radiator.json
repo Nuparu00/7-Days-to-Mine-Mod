@@ -1,0 +1,39 @@
+{
+	"type": "minecraft:generic",
+	"pools": [{
+		"name" : "main",
+		"rolls": {
+			"min": 1,
+			"max": 4
+		},
+		"entries": [{
+				"type": "item",
+				"weight": 150,
+				"name": "sevendaystomine:ScrapIron",
+				"functions": [{
+					"function": "set_count",
+					"count": {
+						"min": 1,
+						"max": 4
+					}
+				}]
+			},
+			{
+				"type": "item",
+				"weight": 30,
+				"name": "sevendaystomine:iron_pipe",
+				"functions": [{
+					"function": "set_count",
+					"count": {
+						"min": 1,
+						"max": 5
+					}
+				}]
+			},
+			{
+				"type": "empty",
+				"weight": 200
+			}
+		]
+	}]
+}

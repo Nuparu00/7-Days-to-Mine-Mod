@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "east=false,north=false,south=false,west=false": { "model": "sevendaystomine:table_spruce" , "uvlock" : true},
+        "east=false,north=true,south=false,west=false": { "model": "sevendaystomine:table_spruce_half", "y": 180 , "uvlock" : true},
+        "east=true,north=false,south=false,west=false": { "model": "sevendaystomine:table_spruce_half", "y": 270 , "uvlock" : true},
+        "east=false,north=false,south=true,west=false": { "model": "sevendaystomine:table_spruce_half", "y": 0 , "uvlock" : true},
+        "east=false,north=false,south=false,west=true": { "model": "sevendaystomine:table_spruce_half", "y": 90 , "uvlock" : true},
+        "east=true,north=true,south=false,west=false": { "model": "sevendaystomine:table_spruce_quad" , "y": 180 , "uvlock" : true},
+        "east=true,north=false,south=true,west=false": { "model": "sevendaystomine:table_spruce_quad", "y": 270 , "uvlock" : true},
+        "east=false,north=false,south=true,west=true": { "model": "sevendaystomine:table_spruce_quad", "y": 0 , "uvlock" : true},
+        "east=false,north=true,south=false,west=true": { "model": "sevendaystomine:table_spruce_quad", "y": 90 , "uvlock" : true},
+        "east=false,north=true,south=true,west=false": { "model": "sevendaystomine:table_spruce_plane", "y": 180 , "uvlock" : true},
+        "east=true,north=false,south=false,west=true": { "model": "sevendaystomine:table_spruce_plane" , "uvlock" : true},
+        "east=true,north=true,south=true,west=false": { "model": "sevendaystomine:table_spruce_plane" , "uvlock" : true},
+        "east=true,north=false,south=true,west=true": { "model": "sevendaystomine:table_spruce_plane", "y": 90 , "uvlock" : true},
+        "east=false,north=true,south=true,west=true": { "model": "sevendaystomine:table_spruce_plane", "y": 180 , "uvlock" : true},
+        "east=true,north=true,south=false,west=true": { "model": "sevendaystomine:table_spruce_plane"},
+        "east=true,north=true,south=true,west=true": { "model": "sevendaystomine:table_spruce_plane" , "uvlock" : true}
+    }
+}

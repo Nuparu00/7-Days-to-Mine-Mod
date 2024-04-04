@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sevendaystomine:dark_bricks_mossy"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:dark_bricks_mossy_stairs",
+    "count": 4
+  }
+}

@@ -1,0 +1,16 @@
+{
+   "forge_marker":1,
+   "defaults":{
+      "model":"sevendaystomine:wooden_table"
+   },
+   "variants":{
+      "metadata":{
+         "0":{
+            "model":"sevendaystomine:modern_table"
+         },
+         "8":{
+            "model":"sevendaystomine:wooden_table"
+         }
+      }
+   }
+}

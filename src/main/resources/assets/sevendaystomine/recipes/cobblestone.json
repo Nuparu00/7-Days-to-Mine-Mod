@@ -1,0 +1,16 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "SSS",
+      "SSS",
+      "SSS"
+   ],
+   "key":{
+      "S":{
+         "item":"sevendaystomine:smallstone"
+      }
+   },
+   "result":{
+      "item":"minecraft:cobblestone"
+   }
+}

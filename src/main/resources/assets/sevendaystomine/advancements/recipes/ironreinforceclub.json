@@ -1,0 +1,24 @@
+{
+	"parent": "minecraft:recipes/root",
+	"rewards": {
+		"recipes": [
+			"sevendaystomine:iron_reinforced_club",
+			"sevendaystomine:spiked_club"
+		]
+	},
+	"criteria": {
+		"has_block": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [{
+					"item": "sevendaystomine:woodenclub"
+				}]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_block"
+		]
+	]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "CWC",
+    "CEC",
+    "CWC"
+  ],
+  "key": {
+    "C": {
+      "item": "sevendaystomine:car_battery",
+      "data": 32767
+    },
+    "E": {
+      "item": "sevendaystomine:energy_pole"
+    },
+    "W": {
+      "item": "sevendaystomine:wire"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:battery_station"
+  },
+  "recipe": "electricity"
+}

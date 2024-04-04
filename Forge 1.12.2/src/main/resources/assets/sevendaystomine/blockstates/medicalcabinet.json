@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:medicalcabinet" },
-        "facing=south": { "model": "sevendaystomine:medicalcabinet", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:medicalcabinet", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:medicalcabinet", "y": 90 }
-    }
-}
-

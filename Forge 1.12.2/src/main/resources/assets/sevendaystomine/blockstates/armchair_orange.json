@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=up": { "model": "sevendaystomine:armchair_orange" },
-        "facing=south": { "model": "sevendaystomine:armchair_orange" },
-        "facing=east": { "model": "sevendaystomine:armchair_orange", "y": 270 },
-        "facing=west": { "model": "sevendaystomine:armchair_orange", "y": 90 },
-        "facing=north": { "model": "sevendaystomine:armchair_orange", "y": 180 }
-    }
-}

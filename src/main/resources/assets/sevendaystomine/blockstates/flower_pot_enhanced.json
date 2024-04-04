@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "contents=empty":            { "model": "minecraft:flower_pot" },
+        "contents=goldenrod":             { "model": "sevendaystomine:flower_pot_goldenrod" },
+        "contents=blueberry_bush":      { "model": "sevendaystomine:flower_pot_blueberry" },
+        "contents=baneberry_bush":           { "model": "sevendaystomine:flower_pot_baneberry" }
+    }
+}

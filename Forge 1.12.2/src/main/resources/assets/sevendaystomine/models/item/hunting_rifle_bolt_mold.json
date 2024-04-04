@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "sevendaystomine:items/hunting_rifle_bolt_mold"
-    }
-}

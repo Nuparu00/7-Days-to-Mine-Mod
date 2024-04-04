@@ -1,0 +1,387 @@
+{
+	"pools": [{
+			"name": "guns",
+			"rolls": {
+				"min": 0,
+				"max": 2
+			},
+			"entries": [{
+					"type": "item",
+					"weight": 65,
+					"name": "sevendaystomine:pistol",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 1,
+					"name": "sevendaystomine:ak47",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 10,
+					"name": "sevendaystomine:hunting_rifle",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 1,
+					"name": "sevendaystomine:sniper_rifle",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 10,
+					"name": "sevendaystomine:shotgun",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 12,
+					"name": "sevendaystomine:shotgun_short",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 20,
+					"name": "sevendaystomine:magnum",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 6,
+					"name": "sevendaystomine:magnum_scoped",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 2,
+					"name": "sevendaystomine:flamethrower",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 6,
+					"name": "sevendaystomine:mp5",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 1,
+					"name": "sevendaystomine:rpg",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 5,
+					"name": "sevendaystomine:m4",
+					"functions": [{
+							"function": "sevendaystomine:random_quality"
+						},
+						{
+							"function": "sevendaystomine:random_ammo"
+						}
+					]
+				},
+				{
+					"type": "item",
+					"weight": 70,
+					"name": "sevendaystomine:armyknife",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "empty",
+					"weight": 100
+				}
+			]
+		},
+		{
+			"name": "parts",
+			"rolls": {
+				"min": 0,
+				"max": 3
+			},
+			"entries": [{
+					"type": "item",
+					"weight": 30,
+					"name": "sevendaystomine:pistol_grip",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 30,
+					"name": "sevendaystomine:pistol_slide",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 30,
+					"name": "sevendaystomine:pistol_trigger",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 8,
+					"name": "sevendaystomine:sniper_rifle_parts",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 8,
+					"name": "sevendaystomine:sniper_rifle_barrel",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 8,
+					"name": "sevendaystomine:sniper_rifle_stock",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 8,
+					"name": "sevendaystomine:sniper_rifle_scope",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 8,
+					"name": "sevendaystomine:sniper_rifle_trigger",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 20,
+					"name": "sevendaystomine:shotgun_barrel",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 20,
+					"name": "sevendaystomine:shotgun_receiver",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 20,
+					"name": "sevendaystomine:shotgun_barrel_short",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 20,
+					"name": "sevendaystomine:shotgun_stock",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 20,
+					"name": "sevendaystomine:shotgun_stock_short",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 20,
+					"name": "sevendaystomine:shotgun_parts",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 15,
+					"name": "sevendaystomine:magnum_frame",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 15,
+					"name": "sevendaystomine:magnum_cylinder",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 15,
+					"name": "sevendaystomine:magnum_grip",
+					"functions": [{
+						"function": "sevendaystomine:random_quality"
+					}]
+				},
+				{
+					"type": "empty",
+					"weight": 100
+				}
+			]
+		},
+		{
+			"name": "ammo",
+			"rolls": {
+				"min": 0,
+				"max": 4
+			},
+			"entries": [{
+					"type": "item",
+					"weight": 30,
+					"name": "sevendaystomine:ninemmbullet",
+					"functions": [{
+						"function": "set_count",
+						"count": {
+							"min": 1,
+							"max": 30
+						}
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 15,
+					"name": "sevendaystomine:sevenmmbullet",
+					"functions": [{
+						"function": "set_count",
+						"count": {
+							"min": 1,
+							"max": 20
+						}
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 20,
+					"name": "sevendaystomine:bullet_magnum",
+					"functions": [{
+						"function": "set_count",
+						"count": {
+							"min": 1,
+							"max": 16
+						}
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 25,
+					"name": "sevendaystomine:shotgun_shell",
+					"functions": [{
+						"function": "set_count",
+						"count": {
+							"min": 1,
+							"max": 18
+						}
+					}]
+				},
+				{
+					"type": "item",
+					"weight": 25,
+					"name": "sevendaystomine:bullet_10mm",
+					"functions": [{
+						"function": "set_count",
+						"count": {
+							"min": 1,
+							"max": 30
+						}
+					}]
+				},
+				{
+					"type": "empty",
+					"weight": 100
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "S S",
+      " S ",
+      "S S"
+   ],
+   "key":{
+      "S":{
+         "item":"sevendaystomine:scrapiron"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:razor_wire"
+   }
+}

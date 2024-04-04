@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=up": { "model": "sevendaystomine:calendar" },
-        "facing=south": { "model": "sevendaystomine:calendar" },
-        "facing=east": { "model": "sevendaystomine:calendar", "y": 270 },
-        "facing=west": { "model": "sevendaystomine:calendar", "y": 90 },
-        "facing=north": { "model": "sevendaystomine:calendar", "y": 180 }
-    }
-}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WW",
+    "WW",
+    "WW"
+  ],
+  "key": {
+    "W": {
+      "item": "sevendaystomine:woodplank"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:woodendooritem"
+  }
+}

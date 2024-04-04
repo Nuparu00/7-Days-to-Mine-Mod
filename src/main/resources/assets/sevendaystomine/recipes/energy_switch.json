@@ -1,0 +1,15 @@
+{
+  "type":"sevendaystomine:crafting_locked_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:energy_pole"
+        },
+        {
+            "item": "minecraft:lever"
+        }
+   ],
+  "result": {
+    "item": "sevendaystomine:energy_switch"
+  },
+  "recipe": "electricity"
+}

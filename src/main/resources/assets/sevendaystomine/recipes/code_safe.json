@@ -1,0 +1,26 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "SSSSS",
+    "SBBBS",
+    "SGGGS",
+    "SBBBS",
+    "SSSSS"
+  ],
+  "key": {
+    "S": {
+    "type": "forge:ore_dict",
+    "ore": "ingotSteel"
+},
+    "B": {
+      "item": "minecraft:stone_button"
+    },
+    "G": {
+      "item": "sevendaystomine:gear"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:codesafe"
+  },
+  "recipe": "metalworking"
+}

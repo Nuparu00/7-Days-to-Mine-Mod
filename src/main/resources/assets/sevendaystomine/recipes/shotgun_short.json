@@ -1,0 +1,21 @@
+{
+   "type":"sevendaystomine:crafting_gun_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:shotgun_barrel_short"
+      },
+      {
+         "item":"sevendaystomine:shotgun_receiver"
+      },
+      {
+         "item":"sevendaystomine:shotgun_parts"
+      },
+      {
+         "item":"sevendaystomine:shotgun_stock_short"
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:shotgun_short"
+   },
+   "recipe":"shotgun"
+}

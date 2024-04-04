@@ -1,0 +1,19 @@
+{
+   "type": "minecraft:crafting_shapeless",
+  "group": "dyed_sleeping_bag",
+  "ingredients": [
+    {
+      "item": "sevendaystomine:sleepingbagitem",
+      "data": 32767
+    },
+    {
+      "item": "minecraft:dye",
+      "data": 4
+    }
+  ],
+   "result":{
+      "item":"sevendaystomine:sleepingbagitem",
+      "count":1,
+      "data":14
+   }
+}

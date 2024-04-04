@@ -1,0 +1,27 @@
+{
+   "display":{
+      "icon":{
+         "item":"sevendaystomine:shotgun"
+      },
+      "title":{
+         "translate":"advancements.shotgun.title"
+      },
+      "description":{
+         "translate":"advancements.shotgun.description"
+      }
+   },
+   "rewards":{
+      "experience": 1
+   },
+   "parent": "sevendaystomine:survival/rifle",
+   "criteria":{
+      "has_gun":{
+         "trigger":"gun_trigger"
+      }
+   },
+   "requirements":[
+      [
+         "has_gun"
+      ]
+   ]
+}

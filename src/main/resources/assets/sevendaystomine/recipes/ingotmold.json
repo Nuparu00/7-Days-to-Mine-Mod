@@ -1,0 +1,16 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "C C",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:ingotmold"
+  },
+  "recipe": "forging"
+}

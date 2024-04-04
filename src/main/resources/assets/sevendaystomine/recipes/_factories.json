@@ -1,0 +1,12 @@
+{
+    "recipes": {
+        "crafting_scrap": "nuparu.sevendaystomine.crafting.RecipesScraps$Factory",
+        "crafting_clothing_dyes": "nuparu.sevendaystomine.crafting.RecipeClothingDyes$Factory",
+        "crafting_quality_shapeless": "nuparu.sevendaystomine.crafting.RecipeQualityShapeless$Factory",
+        "crafting_quality_shaped": "nuparu.sevendaystomine.crafting.RecipeQualityShaped$Factory",
+        "crafting_locked_shaped": "nuparu.sevendaystomine.crafting.RecipeLockedShaped$Factory",
+        "crafting_locked_shapeless": "nuparu.sevendaystomine.crafting.RecipeLockedShapeless$Factory",
+        "crafting_workbench_shaped": "nuparu.sevendaystomine.crafting.workbench.RecipeWorkbenchShaped$Factory",
+        "crafting_gun_shapeless": "nuparu.sevendaystomine.crafting.RecipeGunShapeless$Factory"
+    }
+}

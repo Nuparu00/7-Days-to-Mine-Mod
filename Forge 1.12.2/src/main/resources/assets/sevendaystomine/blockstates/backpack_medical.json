@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:backpack_medical" },
-        "facing=south": { "model": "sevendaystomine:backpack_medical", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:backpack_medical", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:backpack_medical", "y": 90 }
-    }
-}
-

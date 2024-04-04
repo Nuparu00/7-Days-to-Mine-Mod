@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:crafting_quality_shaped",
+   "pattern":[
+      "SSS",
+      "S S"
+   ],
+   "key":{
+      "S":{
+    "type": "forge:ore_dict",
+    "ore": "ingotSteel"
+}
+   },
+   "result":{
+      "item":"sevendaystomine:steel_helmet",
+      "count":1
+   }
+}

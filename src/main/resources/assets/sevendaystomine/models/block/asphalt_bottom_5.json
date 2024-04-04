@@ -1,0 +1,8 @@
+{
+    "parent": "block/half_slab",
+    "textures": {
+        "bottom": "sevendaystomine:blocks/asphalt_5",
+        "top": "sevendaystomine:blocks/asphalt_5",
+        "side": "sevendaystomine:blocks/asphalt_5"
+    }
+}

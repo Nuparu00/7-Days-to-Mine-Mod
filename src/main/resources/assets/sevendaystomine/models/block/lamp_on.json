@@ -1,0 +1,6 @@
+{
+	"parent": "sevendaystomine:block/lamp_off",
+	"textures": {
+		"2": "blocks/redstone_lamp_on"
+	}
+}

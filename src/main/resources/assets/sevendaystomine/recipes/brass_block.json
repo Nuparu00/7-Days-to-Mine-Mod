@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+    "type": "forge:ore_dict",
+    "ore": "ingotBrass"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:brass_block"
+  }
+}

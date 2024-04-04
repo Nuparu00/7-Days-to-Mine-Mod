@@ -1,0 +1,17 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "P  ",
+      "PPP"
+   ],
+   "key":{
+      "P":{
+         "item":"sevendaystomine:plantfiber"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:sleepingbagitem",
+      "count":1,
+      "data":0
+   }
+}

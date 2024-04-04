@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom": { "model": "sevendaystomine:burnt_planks" },
+        "half=top": { "model": "sevendaystomine:burnt_planks" }
+    }
+}

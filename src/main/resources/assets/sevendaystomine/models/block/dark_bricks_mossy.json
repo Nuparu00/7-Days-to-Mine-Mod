@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "sevendaystomine:blocks/dark_brick_mossy"
+    }
+}

@@ -1,0 +1,15 @@
+{
+   "type":"sevendaystomine:crafting_gun_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:magnum"
+      },
+      {
+         "item":"sevendaystomine:sniper_rifle_scope"
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:magnum_scoped"
+   },
+   "recipe":"magnum"
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "W W",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "sevendaystomine:woodplank"
+    }
+  },
+  "result": {
+    "item": "minecraft:chest"
+  }
+}

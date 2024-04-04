@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "half=bottom": { "model": "sevendaystomine:dark_bricks_mossy" },
-        "half=top": { "model": "sevendaystomine:dark_bricks_mossy" }
-    }
-}

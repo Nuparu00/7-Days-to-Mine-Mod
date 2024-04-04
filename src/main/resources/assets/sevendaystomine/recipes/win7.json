@@ -1,0 +1,15 @@
+{
+  "type": "sevendaystomine:crafting_locked_shapeless",
+  "ingredients": [
+    {
+      "item": "sevendaystomine:winxp_disc"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "result": {
+    "item": "sevendaystomine:win7_disc"
+  },
+  "recipe": "computers"
+}

@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom": { "model": "sevendaystomine:catwalk_bottom" },
+        "half=top": { "model": "sevendaystomine:catwalk_top" }
+    }
+}

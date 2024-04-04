@@ -1,0 +1,28 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "SLLLS",
+    "LSISL",
+    "LICIL",
+    "LSISL",
+    "SLLLS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "I": {
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+},
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:backpack"
+  }
+}

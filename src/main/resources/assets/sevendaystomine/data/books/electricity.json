@@ -1,0 +1,383 @@
+{
+  "pages": [
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [
+        {
+          "x": 65,
+          "y": 20,
+          "z": 0,
+          "width": 105,
+          "text": "book_electricity.title",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.3,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 64,
+          "y": 35,
+          "z": 0,
+          "text": "book_electricity.subtitle",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 0.6942
+        },
+        {
+          "x": 64,
+          "y": 43,
+          "z": 0,
+          "text": "book_electricity.author",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000"
+        },
+        {
+          "x": 192,
+          "y": 20,
+          "z": 0,
+          "text": "book.contents",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.33
+        },
+        {
+          "x": 138,
+          "y": 38,
+          "z": 0,
+          "text": "book_electricity.contents.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "link": 1,
+          "hover_color": "DD4C1D"
+        },
+        {
+          "x": 138,
+          "y": 48,
+          "z": 0,
+          "text": "book_electricity.contents.2",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "link": 1,
+          "hover_color": "DD4C1D"
+        },
+        {
+          "x": 138,
+          "y": 58,
+          "z": 0,
+          "text": "book_electricity.contents.3",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "link": 5,
+          "hover_color": "DD4C1D"
+        },
+        {
+          "x": 138,
+          "y": 68,
+          "z": 0,
+          "text": "book_electricity.contents.4",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "link": 5,
+          "hover_color": "DD4C1D"
+        }
+      ],
+      "images": [
+        {
+          "x": 18,
+          "y": 64,
+          "z": 0,
+          "width": 96,
+          "height": 96,
+          "res": "sevendaystomine:textures/items/wire_coil.png"
+        }
+      ]
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "book_electricity.contents.1",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.15,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 16,
+          "y": 35,
+          "z": 0,
+          "width": 105,
+          "text": "book_electricity.coal.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        },
+        {
+          "x": 186,
+          "y": 70,
+          "z": 0,
+          "text": "book_electricity.contents.2",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 0.9,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 138,
+          "y": 85,
+          "z": 0,
+          "width": 110,
+          "text": "book_electricity.wind.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        }
+      ],
+      "crafting": [
+        {
+          "x": 138,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:coal_generator"
+        }
+      ]
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [
+        {
+          "x": 16,
+          "y": 20,
+          "z": 0,
+          "width": 110,
+          "text": "book_electricity.wind.2",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        },
+        {
+          "x": 16,
+          "y": 85,
+          "z": 0,
+          "width": 110,
+          "text": "book_electricity.solar.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        },
+        {
+          "x": 138,
+          "y": 20,
+          "z": 0,
+          "width": 110,
+          "text": "book_electricity.solar.2",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        }
+      ],
+      "crafting": []
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [],
+      "crafting": [
+        {
+          "x": 16,
+          "y": 40,
+          "z": 0,
+          "recipe": "sevendaystomine:wind_turbine"
+        }
+      ],
+      "images": []
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [],
+      "crafting": [
+        {
+          "x": 16,
+          "y": 40,
+          "z": 0,
+          "recipe": "sevendaystomine:solar_panel"
+        }
+      ],
+      "images": []
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [
+        {
+          "x": 64,
+          "y": 20,
+          "z": 0,
+          "text": "book_electricity.contents.3",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.15,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 16,
+          "y": 35,
+          "z": 0,
+          "width": 105,
+          "text": "book_electricity.gas.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        },
+        {
+          "x": 186,
+          "y": 20,
+          "z": 0,
+          "text": "book_electricity.contents.4",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.1,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 138,
+          "y": 35,
+          "z": 0,
+          "width": 110,
+          "text": "book_electricity.conductors.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 1
+        }
+      ],
+      "crafting": []
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [],
+      "crafting": [
+        {
+          "x": 16,
+          "y": 40,
+          "z": 0,
+          "recipe": "sevendaystomine:gas_generator"
+        }
+      ],
+      "images": []
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [],
+      "crafting": [
+        {
+          "x": 16,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:wire"
+        },
+        {
+          "x": 16,
+          "y": 70,
+          "z": 0,
+          "recipe": "sevendaystomine:energy_pole"
+        },
+        {
+          "x": 138,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:energy_switch"
+        },
+        {
+          "x": 138,
+          "y": 70,
+          "z": 0,
+          "recipe": "sevendaystomine:battery_station"
+        }
+      ]
+    },
+    {
+      "res": "sevendaystomine:textures/gui/books/electricity_base.png",
+      "texts": [
+        {
+          "x": 186,
+          "y": 70,
+          "z": 0,
+          "text": "book_electricity.title",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1.25,
+          "formatting": [
+            "UNDERLINE"
+          ]
+        },
+        {
+          "x": 186,
+          "y": 85,
+          "z": 0,
+          "width": 110,
+          "text": "book_electricity.copyright",
+          "unlocalized": true,
+          "centered": true,
+          "color": "000000",
+          "scale": 1
+        },
+        {
+          "x": 138,
+          "y": 115,
+          "z": 0,
+          "width": 110,
+          "text": "book_electricity.dontdistribute.1",
+          "unlocalized": true,
+          "centered": false,
+          "color": "000000",
+          "scale": 0.9
+        }
+      ],
+      "crafting": [
+        {
+          "x": 16,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:thermometer"
+        },
+        {
+          "x": 138,
+          "y": 10,
+          "z": 0,
+          "recipe": "sevendaystomine:book_electricity"
+        }
+      ]
+    }
+  ]
+}

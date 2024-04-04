@@ -1,0 +1,25 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "LLLLL",
+    "LWWWL",
+    "LWIWL",
+    " LLLL"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "I": {
+      "item": "sevendaystomine:scrapiron"
+    },
+    "W": {
+      "item": "sevendaystomine:woodplank"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:minibike_seat"
+  },
+  "recipe": "minibike",
+  "quality": true
+}

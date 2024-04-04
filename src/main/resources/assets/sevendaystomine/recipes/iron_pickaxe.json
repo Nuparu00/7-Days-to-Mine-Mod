@@ -1,0 +1,23 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "  II ",
+    "   SI",
+    "  S I",
+    " S   ",
+    "S    "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+}
+  },
+  "result": {
+    "item": "sevendaystomine:iron_pickaxe"
+  },
+  "quality": true
+}

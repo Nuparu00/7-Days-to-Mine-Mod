@@ -1,0 +1,23 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "IIIII",
+    "  S  ",
+    "  S  ",
+    "  S  ",
+    "  S  "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+                  "type": "forge:ore_dict",
+    "ore": "ingotSteel"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:sledgehammer"
+  },
+  "quality": true
+}

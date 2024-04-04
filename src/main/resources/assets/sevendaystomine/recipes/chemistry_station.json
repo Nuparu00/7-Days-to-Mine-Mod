@@ -1,0 +1,32 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "JJPPB",
+    "IIIII",
+    "IF  I",
+    "IIIII",
+    "I   I"
+  ],
+  "key": {
+    "I": {
+    "type": "forge:ore_dict",
+    "ore": "ingotIron"
+},
+    "F": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "P": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "B": {
+      "item": "sevendaystomine:beaker"
+    },
+    "J": {
+      "item": "sevendaystomine:emptyjar"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:chemistry_station"
+  },
+  "recipe": "chemistry"
+}

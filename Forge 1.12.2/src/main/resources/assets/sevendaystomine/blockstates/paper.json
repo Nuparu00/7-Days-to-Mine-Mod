@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:paper" },
-        "facing=south": { "model": "sevendaystomine:paper", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:paper", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:paper", "y": 90 }
-    }
-}

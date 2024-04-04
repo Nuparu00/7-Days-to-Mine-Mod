@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:crafting_quality_shaped",
+   "pattern":[
+      "P P",
+      "PPP",
+      "PPP"
+   ],
+   "key":{
+      "P":{
+         "item":"sevendaystomine:plantfiber"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:fiber_chestplate",
+      "count":1
+   }
+}

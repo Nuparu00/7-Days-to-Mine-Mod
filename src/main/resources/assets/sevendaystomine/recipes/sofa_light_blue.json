@@ -1,0 +1,19 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "group": "sofa",
+   "pattern":[
+      "W  ",
+      "W  ",
+      "WWW"
+   ],
+   "key":{
+      "W":{
+         "item":"minecraft:wool",
+         "data":3
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:sofa_light_blue",
+      "count":3
+   }
+}

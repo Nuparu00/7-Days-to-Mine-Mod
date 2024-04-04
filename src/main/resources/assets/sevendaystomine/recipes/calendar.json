@@ -1,0 +1,23 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "WWW",
+      "PIP",
+      "PPP"
+   ],
+   "key":{
+      "W":{
+         "item":"sevendaystomine:woodplank"
+      },
+      "P":{
+         "item":"minecraft:paper"
+      },
+      "I":{
+         "item":"minecraft:dye",
+         "data":0
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:calendar"
+   }
+}

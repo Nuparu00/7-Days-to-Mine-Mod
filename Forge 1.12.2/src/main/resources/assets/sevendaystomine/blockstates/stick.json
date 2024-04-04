@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:stick" },
-        "facing=south": { "model": "sevendaystomine:stick", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:stick", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:stick", "y": 90 }
-    }
-}

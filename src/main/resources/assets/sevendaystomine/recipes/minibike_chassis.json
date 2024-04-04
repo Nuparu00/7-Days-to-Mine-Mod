@@ -1,0 +1,23 @@
+{
+  "type": "sevendaystomine:crafting_workbench_shaped",
+  "pattern": [
+    "PPPPP",
+    "PF FP",
+    "PF  P",
+    "FPFFP",
+    " FPPP"
+  ],
+  "key": {
+    "P": {
+      "item": "sevendaystomine:iron_pipe"
+    },
+    "F": {
+      "item": "sevendaystomine:plantfiber"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:minibike_chassis"
+  },
+  "recipe": "minibike",
+  "quality": true
+}

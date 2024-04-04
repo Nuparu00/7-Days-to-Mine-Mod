@@ -1,0 +1,39 @@
+{
+   "display":{
+      "icon":{
+         "item":"sevendaystomine:stoneaxe"
+      },
+      "title":{
+         "translate":"advancements.stoneaxe.title"
+      },
+      "description":{
+         "translate":"advancements.stoneaxe.description"
+      }
+   },
+   "rewards":{
+      "recipes":[
+         "sevendaystomine:woodplank",
+         "sevendaystomine:stick",
+         "sevendaystomine:crafting_table"
+      ],
+      "experience": 1
+   },
+   "parent": "sevendaystomine:survival/smallstone",
+   "criteria":{
+      "has_axe":{
+         "trigger":"minecraft:inventory_changed",
+         "conditions":{
+            "items":[
+               {
+                  "item":"sevendaystomine:stoneaxe"
+               }
+            ]
+         }
+      }
+   },
+   "requirements":[
+      [
+         "has_axe"
+      ]
+   ]
+}

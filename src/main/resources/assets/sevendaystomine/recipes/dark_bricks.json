@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:brick_block"
+    },
+    {
+      "item": "minecraft:dye",
+      "data" : 0
+    }
+  ],
+  "result": {
+    "item": "sevendaystomine:dark_bricks"
+  }
+}

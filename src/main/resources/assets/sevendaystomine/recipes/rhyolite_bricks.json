@@ -1,0 +1,16 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "pattern":[
+      "RR",
+      "RR"
+   ],
+   "key":{
+      "R":{
+         "item":"sevendaystomine:rhyolite"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:rhyolitebricks",
+      "count":4
+   }
+}

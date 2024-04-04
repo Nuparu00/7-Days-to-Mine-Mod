@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:workbench" },
-        "facing=south": { "model": "sevendaystomine:workbench", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:workbench", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:workbench", "y": 90 }
-    }
-}
-

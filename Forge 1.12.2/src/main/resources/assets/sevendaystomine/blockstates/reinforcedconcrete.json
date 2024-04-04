@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "phase=0": { "model": "sevendaystomine:reinforcedconcrete" },
-		"phase=1": { "model": "sevendaystomine:reinforcedconcrete_stage1" },
-		"phase=2": { "model": "sevendaystomine:reinforcedconcrete_stage2" },
-		"phase=3": { "model": "sevendaystomine:reinforcedconcrete_stage3" }
-    }
-}

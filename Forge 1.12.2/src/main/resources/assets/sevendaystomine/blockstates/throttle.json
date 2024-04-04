@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=up": { "model": "sevendaystomine:throttle" },
-        "facing=south": { "model": "sevendaystomine:throttle" },
-        "facing=east": { "model": "sevendaystomine:throttle", "y": 270 },
-        "facing=west": { "model": "sevendaystomine:throttle", "y": 90 },
-        "facing=north": { "model": "sevendaystomine:throttle", "y": 180 }
-    }
-}

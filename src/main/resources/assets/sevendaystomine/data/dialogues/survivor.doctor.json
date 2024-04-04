@@ -1,0 +1,11 @@
+{  
+   "name":"survivor.doctor",
+   "trees":[  
+      {  
+         "id":"survivor.doctor.a",
+         "dialogues":[  
+            "survivor.trade"
+         ]
+      }
+   ]
+}

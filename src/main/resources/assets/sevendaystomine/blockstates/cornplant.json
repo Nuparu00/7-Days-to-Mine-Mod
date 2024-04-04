@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "age=0,half=lower": { "model": "sevendaystomine:corn_lower_0" },
+        "age=1,half=lower": { "model": "sevendaystomine:corn_lower_1" },
+        "age=2,half=lower": { "model": "sevendaystomine:corn_lower_2" },
+        "age=3,half=lower": { "model": "sevendaystomine:corn_lower_3" },
+        "age=0,half=upper": { "model": "sevendaystomine:corn_upper_0" },
+        "age=1,half=upper": { "model": "sevendaystomine:corn_upper_1" },
+        "age=2,half=upper": { "model": "sevendaystomine:corn_upper_2" },
+        "age=3,half=upper": { "model": "sevendaystomine:corn_upper_3" }
+    }
+}

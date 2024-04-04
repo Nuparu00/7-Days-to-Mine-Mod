@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=south": { "model": "sevendaystomine:separator" },
-        "facing=north": { "model": "sevendaystomine:separator", "y": 180 },
-        "facing=east":  { "model": "sevendaystomine:separator", "y": 270 },
-        "facing=west":  { "model": "sevendaystomine:separator", "y": 90 }
-    }
-}
-

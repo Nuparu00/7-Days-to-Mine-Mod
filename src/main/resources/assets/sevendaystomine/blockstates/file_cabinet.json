@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:file_cabinet" },
+        "facing=west": { "model": "sevendaystomine:file_cabinet", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:file_cabinet", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:file_cabinet", "y": 180 }
+    }
+}

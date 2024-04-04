@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:mailbox", "y": 180 },
+        "facing=south": { "model": "sevendaystomine:mailbox", "y": 0 },
+        "facing=west":  { "model": "sevendaystomine:mailbox", "y": 90 },
+        "facing=east":  { "model": "sevendaystomine:mailbox", "y": 270 }
+    }
+}

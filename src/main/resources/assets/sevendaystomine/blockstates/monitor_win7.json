@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=up": { "model": "sevendaystomine:monitor_win7" },
+        "facing=south": { "model": "sevendaystomine:monitor_win7" },
+        "facing=east": { "model": "sevendaystomine:monitor_win7", "y": 270 },
+        "facing=west": { "model": "sevendaystomine:monitor_win7", "y": 90 },
+        "facing=north": { "model": "sevendaystomine:monitor_win7", "y": 180 }
+    }
+}

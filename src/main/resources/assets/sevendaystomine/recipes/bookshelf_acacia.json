@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WSW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "sevendaystomine:woodplank"
+    },
+    "S": {
+      "item": "minecraft:wooden_slab",
+      "data" : 3
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:bookshelf_jungle"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+     "type": "forge:ore_dict",
+    "ore": "ingotBronze"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:bronze_block"
+  }
+}

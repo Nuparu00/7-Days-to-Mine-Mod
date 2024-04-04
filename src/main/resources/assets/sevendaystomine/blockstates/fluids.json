@@ -1,0 +1,22 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "forge:fluid"
+	},
+	"variants": {
+		"gasoline": [
+			{
+				"custom": {
+					"fluid": "gasoline"
+				}
+			}
+		],
+		"mercury": [
+			{
+				"custom": {
+					"fluid": "mercury"
+				}
+			}
+		]
+	}
+}

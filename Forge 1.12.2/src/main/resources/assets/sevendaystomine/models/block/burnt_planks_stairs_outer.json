@@ -1,8 +1,0 @@
-{
-    "parent": "block/outer_stairs",
-    "textures": {
-        "bottom": "sevendaystomine:blocks/planks_burnt",
-        "top": "sevendaystomine:blocks/planks_burnt",
-        "side": "sevendaystomine:blocks/planks_burnt"
-    }
-}

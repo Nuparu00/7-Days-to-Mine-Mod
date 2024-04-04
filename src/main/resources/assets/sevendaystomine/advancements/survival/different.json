@@ -1,0 +1,34 @@
+{
+   "display":{
+      "icon":{
+         "item":"sevendaystomine:turret_advanced"
+      },
+      "title":{
+         "translate":"advancements.different.title"
+      },
+      "description":{
+         "translate":"advancements.different.description"
+      }
+   },
+   "rewards":{
+      "experience": 1
+   },
+   "parent": "sevendaystomine:survival/automation",
+   "criteria":{
+      "has_block":{
+         "trigger":"minecraft:inventory_changed",
+         "conditions":{
+            "items":[
+               {
+                  "item":"sevendaystomine:turret_advanced"
+               }
+            ]
+         }
+      }
+   },
+   "requirements":[
+      [
+         "has_block"
+      ]
+   ]
+}

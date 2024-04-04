@@ -1,0 +1,23 @@
+{
+  "type": "sevendaystomine:crafting_locked_shaped",
+  "pattern": [
+    "S S",
+    "SSS",
+    "ISB"
+  ],
+  "key": {
+    "S": {
+      "item": "sevendaystomine:smallstone"
+    }, 
+    "I": {
+      "item": "sevendaystomine:iron_pipe"
+    }, 
+    "B": {
+      "item": "sevendaystomine:bellows"
+    }
+  },
+  "result": {
+    "item": "sevendaystomine:forge"
+  },
+  "recipe": "forging"
+}

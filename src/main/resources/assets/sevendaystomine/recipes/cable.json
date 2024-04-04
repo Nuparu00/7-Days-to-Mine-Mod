@@ -1,0 +1,14 @@
+{
+   "type":"minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "sevendaystomine:wire"
+        },
+        {
+            "item": "minecraft:redstone"
+        }
+    ],
+   "result":{
+      "item":"sevendaystomine:link_tool"
+   }
+}

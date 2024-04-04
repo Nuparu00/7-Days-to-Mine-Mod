@@ -1,0 +1,17 @@
+{
+   "type":"sevendaystomine:crafting_quality_shaped",
+   "pattern":[
+      "PPP",
+      "P P",
+      "P P"
+   ],
+   "key":{
+      "P":{
+         "item":"sevendaystomine:plantfiber"
+      }
+   },
+   "result":{
+      "item":"sevendaystomine:fiber_leggings",
+      "count":1
+   }
+}

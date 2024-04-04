@@ -1,5 +1,0 @@
-{
-    "variants": {
-        "normal": [ {"model": "sevendaystomine:marble", "weight": 1},{"model": "sevendaystomine:marble", "y": 90,"weight": 1},{"model": "sevendaystomine:marble", "y": 180, "weight": 1},{"model": "sevendaystomine:marble", "y": 270,"weight": 1}]
-    }
-}

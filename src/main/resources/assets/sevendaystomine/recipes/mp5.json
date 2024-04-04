@@ -1,0 +1,18 @@
+{
+   "type":"sevendaystomine:crafting_gun_shapeless",
+   "ingredients":[
+      {
+         "item":"sevendaystomine:mp5_barrel"
+      },
+      {
+         "item":"sevendaystomine:mp5_trigger"
+      },
+      {
+         "item":"sevendaystomine:mp5_stock"
+      }
+   ],
+   "result":{
+      "item":"sevendaystomine:mp5"
+   },
+   "recipe":"mp5"
+}

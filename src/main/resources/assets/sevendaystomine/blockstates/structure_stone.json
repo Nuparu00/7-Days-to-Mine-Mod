@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "variant=stone": { "model": "stone"},
+        "variant=diorite": { "model": "diorite"},
+         "variant=smooth_diorite": { "model": "diorite_smooth"},
+        "variant=andesite": { "model": "andesite"},
+        "variant=smooth_andesite": { "model": "andesite_smooth"},
+        "variant=granite": { "model": "granite"},
+        "variant=smooth_granite": { "model": "granite_smooth"}
+    }
+}

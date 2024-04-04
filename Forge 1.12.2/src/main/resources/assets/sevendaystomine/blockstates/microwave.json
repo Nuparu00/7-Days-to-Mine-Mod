@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "sevendaystomine:microwave" },
-        "facing=south": { "model": "sevendaystomine:microwave", "y": 180 },
-        "facing=west":  { "model": "sevendaystomine:microwave", "y": 270 },
-        "facing=east":  { "model": "sevendaystomine:microwave", "y": 90 }
-    }
-}
-

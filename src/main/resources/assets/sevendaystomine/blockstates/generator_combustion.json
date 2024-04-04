@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "sevendaystomine:generator_combustion" },
+        "facing=west": { "model": "sevendaystomine:generator_combustion", "y": 270 },
+        "facing=east": { "model": "sevendaystomine:generator_combustion", "y": 90 },
+        "facing=south": { "model": "sevendaystomine:generator_combustion", "y": 180 }
+    }
+}
