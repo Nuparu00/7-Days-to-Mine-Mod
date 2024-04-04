@@ -573,7 +573,7 @@ public class Building {
 				break;
 			}
 			case "workbench": {
-				IBlockState state = Blocks.BEDROCK.getDefaultState();
+				IBlockState state = Blocks.AIR.getDefaultState();
 				int r = world.rand.nextInt(50);
 				if (r <= 2) {
 					state = ModBlocks.WORKBENCH.getDefaultState().withProperty(BlockHorizontalBase.FACING, facing);
