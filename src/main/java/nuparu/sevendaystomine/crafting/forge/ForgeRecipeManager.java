@@ -166,7 +166,7 @@ public class ForgeRecipeManager {
 				ModItems.EMPTY_JAR_MOLD,
 				0.1f,
 				600,
-				new MaterialStack(EnumMaterial.GLASS,3)
+				new MaterialStack(EnumMaterial.GLASS,1)
 		);
 		addMaterialRecipe(
 				new ResourceLocation(SevenDaysToMine.MODID,"empty_jar--sand"),
@@ -174,7 +174,7 @@ public class ForgeRecipeManager {
 				ModItems.EMPTY_JAR_MOLD,
 				0.1f,
 				600,
-				new MaterialStack(EnumMaterial.SAND,3)
+				new MaterialStack(EnumMaterial.SAND,1)
 		);
 		addMaterialRecipe(
 				new ResourceLocation(SevenDaysToMine.MODID,"empty_can"),
@@ -182,7 +182,7 @@ public class ForgeRecipeManager {
 				ModItems.EMPTY_CAN_MOLD,
 				0.1f,
 				600,
-				new MaterialStack(EnumMaterial.IRON,3)
+				new MaterialStack(EnumMaterial.IRON,1)
 		);
 		addMaterialRecipe(
 				new ResourceLocation(SevenDaysToMine.MODID,"bullet_tip"),
