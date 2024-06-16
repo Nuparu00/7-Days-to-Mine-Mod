@@ -338,9 +338,12 @@ public class ModConfig {
 	}
 	
 	public static class CategoryWorldGen {
-	
-		@Config.RangeInt(min = 0)
-		@Config.Comment("How many streets can a city have")
+
+		@Config.RangeInt(min = 1)
+		@Config.Comment("The minimal number of streets a city must have. Must be less or equal to maxCitySize")
+		public int minCitySize = 8;
+		@Config.RangeInt(min = 1)
+		@Config.Comment("The maximal number of streets a city can have. Must be greater or equal to minCitySize")
 		public int maxCitySize = 14;
 		@Config.Comment("How many chunks between potential City locations")
 		public int citySpacing = 32;

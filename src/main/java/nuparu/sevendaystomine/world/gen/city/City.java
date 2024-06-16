@@ -26,8 +26,8 @@ public class City {
 	public BlockPos start;
 	public World world;
 
-	private List<Street> streets = new ArrayList<Street>();
-	private BlockingQueue<Street> streetsQueue = new LinkedBlockingQueue<Street>();
+	private final List<Street> streets = new ArrayList<>();
+	private final BlockingQueue<Street> streetsQueue = new LinkedBlockingQueue<>();
 
 	protected HashMap<Integer, String> streetNamesX = Maps.newHashMap();
 	protected HashMap<Integer, String> streetNamesZ = Maps.newHashMap();
@@ -44,9 +44,7 @@ public class City {
 
 	public int population;
 
-	public City() {
-
-	}
+	public City() {}
 
 	public City(World world, BlockPos start, EnumCityType type, Random rand) {
 		this.start = start;
@@ -55,9 +53,9 @@ public class City {
 		this.start = new BlockPos(this.start.getX(), 255, this.start.getZ());
 
 		this.world = world;
-		this.unclaimedStreetNames = new ArrayList<String>(CityHelper.streets);
+		this.unclaimedStreetNames = new ArrayList<>(CityHelper.streets);
 		this.name = CityHelper.getRandomCityName(this.rand);
-		this.roadsLimit = MathUtils.getIntInRange(rand, 8, Math.max(8, ModConfig.worldGen.maxCitySize));
+		this.roadsLimit = MathUtils.getIntInRange(rand, ModConfig.worldGen.minCitySize, ModConfig.worldGen.maxCitySize + 1);
 		roadsLimit = Math.round(roadsLimit * type.populationMultiplier);
 	}
 
@@ -85,13 +83,9 @@ public class City {
 		if (!areAllStreetsFound()) {
 			prepareStreets();
 		}
-		if (this.name.equals("Caprica City")) {
-			this.population = 50298;
-		} else {
-			this.population = this.roadsLimit
-					* (MathUtils.getIntInRange(rand, 128, 1024) * (type == EnumCityType.METROPOLIS ? 32
-							: (type == EnumCityType.CITY ? 16 : (type == EnumCityType.TOWN ? 2 : 1))));
-		}
+		this.population = this.roadsLimit
+				* (MathUtils.getIntInRange(rand, 128, 1024) * (type == EnumCityType.METROPOLIS ? 32
+				: (type == EnumCityType.CITY ? 16 : (type == EnumCityType.TOWN ? 2 : 1))));
 		generate();
 		CitySavedData.get(world).addCity(this);
 		if (!world.isRemote) {
@@ -150,7 +144,7 @@ public class City {
 			}
 		}
 		int attempts = 0;
-		while (streetsQueue.size() > 0 && attempts < 8192) {
+		while (!streetsQueue.isEmpty() && attempts < 8192) {
 			addIteration();
 			attempts++;
 		}
